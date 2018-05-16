@@ -84,7 +84,7 @@ if ($paramTeam!="") {
   $headerParameters.= i18n("colIdTeam") . ' : ' . htmlEncode(SqlList::getNameFromId('Team', $paramTeam)) . '<br/>';
 }
 if ( trim($paramResource)) {
-  $headerParameters.= i18n("colIdResource") . ' : ' . htmlEncode(SqlList::getNameFromId('Resource',$paramResource)) . '<br/>';
+  $headerParameters.= i18n("colIdResource") . ' : ' . htmlEncode(SqlList::getNameFromId('Affectable',$paramResource)) . '<br/>';
 }
 if ($periodType=='year' or $periodType=='month' or $periodType=='week') {
   $headerParameters.= i18n("year") . ' : ' . $paramYear . '<br/>';
@@ -140,7 +140,7 @@ $realDays=array();
 foreach ($lstWork as $work) {
 	$ref=$work->refType . "#" . $work->refId;
   if (! array_key_exists($work->idResource,$resources)) {
-    $resources[$work->idResource]=SqlList::getNameFromId('Resource', $work->idResource);
+    $resources[$work->idResource]=SqlList::getNameFromId('Affectable', $work->idResource);
   }
   if (! array_key_exists($work->idProject,$projects)) {
     $projects[$work->idProject]=SqlList::getNameFromId('Project', $work->idProject);
@@ -170,7 +170,7 @@ $lstPlanWork=$planWork->getSqlElementsFromCriteria(null,false, $where, $order);
 foreach ($lstPlanWork as $work) {
 	$ref=$work->refType . "#" . $work->refId;
   if (! array_key_exists($work->idResource,$resources)) {
-    $resources[$work->idResource]=SqlList::getNameFromId('Resource', $work->idResource);
+    $resources[$work->idResource]=SqlList::getNameFromId('Affectable', $work->idResource);
   }
   if (! array_key_exists($work->idProject,$projects)) {
     $projects[$work->idProject]=SqlList::getNameFromId('Project', $work->idProject);

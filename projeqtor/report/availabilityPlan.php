@@ -81,7 +81,7 @@ $resourceCalendar=array();
 $aff=new Affectation();
 $affLst=$aff->getSqlElementsFromCriteria(null,false, $where);
 foreach($affLst as $aff){
-	$ress=new Resource($aff->idResource);
+	$ress=new ResourceAll($aff->idResource);
 	if ($ress->id and !$ress->idle) {
     $resources[$ress->id]=htmlEncode($ress->name);
     $resourceCalendar[$ress->id]=$ress->idCalendarDefinition;
@@ -102,7 +102,7 @@ $result=array();
 
 $capacity=array();
 foreach ($resources as $id=>$name) {
-	$capacity[$id]=SqlList::getFieldFromId('Resource', $id, 'capacity');
+	$capacity[$id]=SqlList::getFieldFromId('ResourceAll', $id, 'capacity');
   $result[$id]=array();
 }
 
@@ -110,9 +110,9 @@ $real=array();
 foreach ($lstWork as $work) {
   if (! array_key_exists($work->idResource,$resources)) {
     continue;
-    //$resources[$work->idResource]=SqlList::getNameFromId('Resource', $work->idResource);
+    //$resources[$work->idResource]=SqlList::getNameFromId('Affectable', $work->idResource);
     //$resourceCalendar[$work->idResource]=SqlList::getFieldFromId('Resource', $work->idResource, 'idCalendarDefinition');
-    //$capacity[$work->idResource]=SqlList::getFieldFromId('Resource', $work->idResource, 'capacity');
+    //$capacity[$work->idResource]=SqlList::getFieldFromId('Affectable', $work->idResource, 'capacity');
     //$result[$work->idResource]=array();
   }
   if (! array_key_exists($work->idResource,$real)) {
@@ -129,9 +129,9 @@ $lstPlanWork=$planWork->getSqlElementsFromCriteria(null,false, $where, $order);
 foreach ($lstPlanWork as $work) {
   if (! array_key_exists($work->idResource,$resources)) {
     continue;
-    //$resources[$work->idResource]=SqlList::getNameFromId('Resource', $work->idResource);
+    //$resources[$work->idResource]=SqlList::getNameFromId('Affectable', $work->idResource);
     //$resourceCalendar[$work->idResource]=SqlList::getFieldFromId('Resource', $work->idResource, 'idCalendarDefinition');
-    //$capacity[$work->idResource]=SqlList::getFieldFromId('Resource', $work->idResource, 'capacity');
+    //$capacity[$work->idResource]=SqlList::getFieldFromId('Affectable', $work->idResource, 'capacity');
     //$result[$work->idResource]=array();
   }
   if (! array_key_exists($work->idResource,$real)) {

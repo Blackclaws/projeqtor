@@ -58,7 +58,7 @@ class ResourceTeamAffectation extends SqlElement {
     parent::__destruct();
   }
   
-  public static $maxAffectationDate='2029-12-31';
+  public static $maxAffectationDate='2099-12-31';
   public static $minAffectationDate='1970-01-01';
   
   private static function formatDate($date) {
@@ -205,9 +205,23 @@ class ResourceTeamAffectation extends SqlElement {
     }
     ksort($res);
     $_resourcePeriods[$idResourceAff][$showIdle]=$res;
+    
+    $maxCapacity = 0;
+    $today=date('Y-m-d');
+    foreach ($res as $val){
+        if($val['start'] >= $today or $val['start'] <= $today and $val['end'] >= $today ){
+          if($val['rate'] > $maxCapacity){
+            $maxCapacity = $val['rate'];
+          }
+        }
+    }
+    $resTeam = new ResourceTeam($idResourceAff);
+    $resTeam->capacity = $maxCapacity;
+    $resTeam->save();
+    
    return $res;
   }
-
+  
   public static function drawResourceTeamAffectation($idResourceAff, $showIdle=false) {
   global $print;
   	$periods=self::buildResourcePeriods($idResourceAff,$showIdle);

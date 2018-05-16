@@ -124,8 +124,8 @@ $workDayResource=array();
 $realDays=array();
 foreach ($lstWork as $work) {
   if (! array_key_exists($work->idResource,$resources)) {
-    $resources[$work->idResource]=SqlList::getNameFromId('Resource', $work->idResource);
-    $capacity[$work->idResource]=SqlList::getFieldFromId('Resource', $work->idResource, 'capacity');
+    $resources[$work->idResource]=SqlList::getNameFromId('Affectable', $work->idResource);
+    $capacity[$work->idResource]=SqlList::getFieldFromId('Affectable', $work->idResource, 'capacity');
     $result[$work->idResource]=array();
     $realDays[$work->idResource]=array();
     $workDayResource[$work->idResource]=array();
@@ -155,8 +155,8 @@ $lstPlanWork=$planWork->getSqlElementsFromCriteria(null,false, $where, $order);
 $today=date('Ymd');
 foreach ($lstPlanWork as $work) {
   if (! array_key_exists($work->idResource,$resources)) {
-    $resources[$work->idResource]=SqlList::getNameFromId('Resource', $work->idResource);
-    $capacity[$work->idResource]=SqlList::getFieldFromId('Resource', $work->idResource, 'capacity');
+    $resources[$work->idResource]=SqlList::getNameFromId('Affectable', $work->idResource);
+    $capacity[$work->idResource]=SqlList::getFieldFromId('Affectable', $work->idResource, 'capacity');
     $result[$work->idResource]=array();
     $realDays[$work->idResource]=array();
     $workDayResource[$work->idResource]=array();

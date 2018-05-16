@@ -252,7 +252,7 @@ foreach($tab as $proj=>$projet) {
   
  foreach($tab[$proj] as $resource=>$ressource) { 
  
-    echo '<td class="reportTableLineHeader" style="width:200px;">' . htmlEncode(SqlList::getNameFromId('Resource',$resource)) . '</td>';
+    echo '<td class="reportTableLineHeader" style="width:200px;">' . htmlEncode(SqlList::getNameFromId('Affectable',$resource)) . '</td>';
     
     $sum=0;
     foreach($arrDates as $date) {

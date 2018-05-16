@@ -64,4 +64,13 @@ CREATE TABLE `${prefix}resourceTeamAffectation` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 ;
 
-ALTER TABLE `${prefix}assignment` ADD `capacity` decimal(5,2) UNSIGNED DEFAULT NULL;
+-- =============================================================
+-- Default Copy To
+-- =============================================================
+
+ALTER TABLE `${prefix}copyable` ADD `idDefaultCopyable` int(12) unsigned DEFAULT NULL;
+
+UPDATE `${prefix}copyable` SET idDefaultCopyable=13 WHERE id=14;
+UPDATE `${prefix}copyable` SET idDefaultCopyable=15 WHERE id=13;
+UPDATE `${prefix}copyable` SET idDefaultCopyable=8 WHERE id=6;
+UPDATE `${prefix}copyable` SET idDefaultCopyable=5 WHERE id=16;
