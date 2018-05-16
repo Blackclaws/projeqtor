@@ -56,6 +56,8 @@ class ResourceMain extends SqlElement {
   public $_sec_Affectations;
   public $_spe_affectations;
   public $_spe_affectationGraph;
+  public $_sec_AffectationsResourceTeam;
+  public $_spe_affectationResourceTeamResource;
   public $_sec_Miscellaneous;
   public $dontReceiveTeamMails;
   public $password;
@@ -549,9 +551,15 @@ class ResourceMain extends SqlElement {
          $affList=$resourceTeamAff->getSqlElementsFromCriteria($critArray, false);
          drawAffectationsResourceTeamFromObject($affList, $this, 'ResourceTeam', false);
       return $result;
-    } else if ($item=='affectationResourceTeamGraph') {
+    }else if ($item=='affectationResourceTeamGraph') {
       $result.=ResourceTeamAffectation::drawResourceTeamAffectation($this->id);
       echo $result;
+    }else if ($item=='affectationResourceTeamResource') {
+      $resourceTeamAff = new ResourceTeamAffectation();
+      $critArray=array('idResource'=>$this->id);
+      $affList=$resourceTeamAff->getSqlElementsFromCriteria($critArray, false);
+      drawAffectationsResourceTeamResourceFromObject($affList, $this, 'ResourceTeam', false);
+      return $result;
     }
   }
   

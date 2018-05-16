@@ -46,7 +46,13 @@ if($copyType!='copyObjectTo' && $copyType!='copyProject' && $copyType!='copyVers
 $idClass=SqlList::getIdFromTranslatableName('Copyable', $objectClass);
 $toCopy=new $objectClass($objectId);
 if($copyType=="copyObjectTo"){
-  
+ $copyToClassId=SqlList::getFieldFromId('Copyable', $idClass, 'idDefaultCopyable', false);
+ if ($copyToClassId) {
+   $copyToClass=SqlList::getNameFromId('Copyable', $copyToClassId, false);
+ } else {
+   $copyToClassId=$idClass;
+   $copyToClass=$objectClass;
+ } 
 ?>
   <table>
     <tr>
@@ -64,7 +70,7 @@ if($copyType=="copyObjectTo"){
                <?php echo autoOpenFilteringSelect();?>
                 id="copyToClass" name="copyToClass" required
                 class="input" >
-                 <?php htmlDrawOptionForReference('idCopyable', $idClass, null, true);?>
+                 <?php htmlDrawOptionForReference('idCopyable', $copyToClassId, null, true);?>
                  <script type="dojo/connect" event="onChange" args="evt" >
                    var objclass=copyableArray[this.value];
                    dijit.byId('copyToType').set('value',null);
@@ -90,8 +96,8 @@ if($copyType=="copyObjectTo"){
                <?php echo autoOpenFilteringSelect();?>
                 id="copyToType" name="copyToType" required
                 class="input">
-                <?php ($objectClass=="PeriodicMeeting")?$colName='idMeetingType':$colName='id'.$objectClass.'Type';
-                      htmlDrawOptionForReference($colName, $toCopy->$colName, null, true);?>
+                <?php ($copyToClass=="PeriodicMeeting")?$colName='idMeetingType':$colName='id'.$copyToClass.'Type';
+                      htmlDrawOptionForReference($colName, (($copyToClass==$objectClass)?$toCopy->$colName:null), null, true);?>
                </select>
              </td>
            </tr>

@@ -64,7 +64,7 @@ if (array_key_exists('periodValue',$_REQUEST))
 }
 $headerParameters="";
 if ($idResource!="") {
-  $headerParameters.= i18n("colIdResource") . ' : ' . htmlEncode(SqlList::getNameFromId('Resource',$idResource)) . '<br/>';
+  $headerParameters.= i18n("colIdResource") . ' : ' . htmlEncode(SqlList::getNameFromId('Affectable',$idResource)) . '<br/>';
 }
 if ( $paramTeam) {
   $headerParameters.= i18n("team") . ' : ' . SqlList::getNameFromId('Team', $paramTeam) . '<br/>';
@@ -142,7 +142,7 @@ for ($i=1;$i<=2;$i++) {
     //$work=round($line['sumwork'],2);
     $work=$line['sumwork'];
     if (! array_key_exists($res, $tab) ) {
-      $tab[$res]=array("name"=>SqlList::getNameFromId('Resource', $res), "real"=>array(),"plan"=>array());
+      $tab[$res]=array("name"=>SqlList::getNameFromId('Affectable', $res), "real"=>array(),"plan"=>array());
     }
     $tab[$res][$var][$date]=$work;
     if ($start=="" or $start>$date) {
