@@ -402,7 +402,7 @@ public $_noCopy;
       $aff->save();
     }
   }
-  public static $maxAffectationDate='2029-12-31';
+  public static $maxAffectationDate='2099-12-31';
   public static $minAffectationDate='1970-01-01';
   private static $_resourcePeriods=array();
   public static function buildResourcePeriods($idResource,$showIdle=false) {
