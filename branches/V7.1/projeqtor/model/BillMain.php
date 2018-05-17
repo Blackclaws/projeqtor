@@ -444,7 +444,7 @@ class BillMain extends SqlElement {
         $result.= formatSmallButton('Payment');
         $result.='</td>';
         $result.='<td >#'.htmlEncode($pay->id).'</td><td>&nbsp;&nbsp;&nbsp;</td>';
-        $result.='<td style="padding:0px 5px">'.htmlEncode($pay->name).'</td></tr>';
+        $result.='<td style="padding:0px 5px;text-align:left">'.htmlEncode($pay->name).'</td></tr>';
       }
       $result.='</table>';
       $result.='</div>';

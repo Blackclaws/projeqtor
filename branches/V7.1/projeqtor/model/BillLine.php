@@ -416,7 +416,7 @@ class BillLine extends SqlElement {
       }
   	}
   	
-  	$this->amount=$this->quantity*$this->price;
+  	$this->amount=floatval($this->quantity)*floatval($this->price);
   	$result=parent::save();
   	
   	// Update Bill to get total of amount
