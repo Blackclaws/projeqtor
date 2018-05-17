@@ -58,6 +58,43 @@ class ResourceTeamAffectation extends SqlElement {
     parent::__destruct();
   }
   
+  public function control(){
+    $result="";
+    if($this->idle==0){
+      $idResource = $this->idResource;
+      $rate = $this->rate;
+      $start=($this->startDate)?$this->startDate:self::$minAffectationDate;
+      $end=($this->endDate)?$this->endDate:self::$maxAffectationDate;
+      $aff=new ResourceTeamAffectation();
+      $crit=array('idResource'=>$idResource);
+      $list=$aff->getSqlElementsFromCriteria($crit,false,null, 'startDate asc, endDate asc');
+      $periods=array();
+      foreach ($list as $val){
+        $startVal=($val->startDate)?$val->startDate:self::$minAffectationDate;
+        $endVal=($val->endDate)?$val->endDate:self::$maxAffectationDate;
+        if($val->idle == 0 ){
+          if($start=="1970-01-01" and $end == '2099-12-31'){
+            if( $val->id != $this->id ){
+              $rate += $val->rate;
+            }
+          }else if( $end >= $startVal and $endVal >= $end or $start >= $startVal and $start <= $endVal){
+            if( $val->id != $this->id ){
+              $rate += $val->rate;
+            }
+          }
+        }
+      }
+      if($rate > 100){
+        $result.='<br/>' . i18n('impossibleRateAffectationResourcePool', array($period->validatedDate,SqlList::getNameFromId('Resource', $idResource)));
+      }
+    }
+    if ($result=="") {
+      $result='OK';
+    }
+    return $result;
+  }
+  
+  
   public static $maxAffectationDate='2099-12-31';
   public static $minAffectationDate='1970-01-01';
   

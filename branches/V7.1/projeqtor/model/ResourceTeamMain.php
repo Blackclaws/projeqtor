@@ -76,7 +76,8 @@ class ResourceTeamMain extends Resource {
    */ 
   function __construct($id = NULL, $withoutDependentObjects=false) {
     parent::__construct($id,$withoutDependentObjects);
-        
+    unset($this->_sec_affectationResourceTeamResource);
+    unset($this->_spe_affectationResourceTeamResource);    
   }
 
    /** ==========================================================================

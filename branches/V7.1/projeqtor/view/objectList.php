@@ -556,7 +556,16 @@ if ($displayWidthList<1400) {
                 </script>
               </button>
             </td>
-<?php }?>       
+<?php }?>   
+      <td width="36px">
+              <button id="newButtonRefresh" dojoType="dijit.form.Button" showlabel="false"
+                title="<?php echo i18n('buttonRefreshList');?>"
+                iconClass="dijitButtonIcon dijitButtonIconRefresh" class="detailButton">
+                <script type="dojo/connect" event="onClick" args="evt">
+	                 refreshGrid();
+                </script>
+              </button>
+            </td>    
 <?php if ( property_exists($obj,'isEis') and !$hideEisSearch) { ?>
               <td style="vertical-align: middle; width:15%; min-width:110px; text-align:right;white-space:normal;">
                 <div style="max-height:32px;"> 
