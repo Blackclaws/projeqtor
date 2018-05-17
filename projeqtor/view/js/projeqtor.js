@@ -2524,6 +2524,7 @@ function drawGantt() {
       pStart = (trim(item.plannedstartdate) != "") ? item.plannedstartdate
           : pStart;
       pStart = (trim(item.realstartdate) != "") ? item.realstartdate : pStart;
+      pStart = (trim(item.plannedstartdate)!="" && trim(item.realstartdate) && item.plannedstartdate<item.realstartdate)?item.plannedstartdate:pStart;
       if (trim(item.plannedstartdate) != "" && trim(item.realenddate) == "") {
         pStartFraction = item.plannedstartfraction;
       }

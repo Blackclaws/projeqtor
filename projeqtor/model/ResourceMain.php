@@ -56,7 +56,7 @@ class ResourceMain extends SqlElement {
   public $_sec_Affectations;
   public $_spe_affectations;
   public $_spe_affectationGraph;
-  public $_sec_AffectationsResourceTeam;
+  public $_sec_affectationResourceTeamResource;
   public $_spe_affectationResourceTeamResource;
   public $_sec_Miscellaneous;
   public $dontReceiveTeamMails;

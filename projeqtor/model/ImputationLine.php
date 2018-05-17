@@ -128,7 +128,9 @@ class ImputationLine {
     $workList=$work->getSqlElementsFromCriteria($crit, false, null, null, false, true);
     $plannedWork=new PlannedWork();
     if ($showPlanned) {
-      $plannedWorkList=$plannedWork->getSqlElementsFromCriteria($crit, false, null, null, false, true);
+      $critWhere="idResource in ($ressList)";
+      $critWhere.=" and $rangeType='$rangeValue'";
+      $plannedWorkList=$plannedWork->getSqlElementsFromCriteria(null, false, $critWhere, null, false, true);
     }
     
     // Get acces restriction to hide projects dependong on access rights
