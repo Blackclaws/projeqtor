@@ -4261,6 +4261,8 @@ function addResourceCost(idResource, idRole, funcList) {
     showAlert(i18n('alertOngoingChange'));
     return;
   }
+  var callBack = function () {
+    affectationLoad=true;
   dojo.byId("resourceCostId").value="";
   dojo.byId("resourceCostIdResource").value=idResource;
   dojo.byId("resourceCostFunctionList").value=funcList;
@@ -4273,7 +4275,14 @@ function addResourceCost(idResource, idRole, funcList) {
   dijit.byId("resourceCostValue").reset('value');
   dijit.byId("resourceCostStartDate").set('value', null);
   resourceCostUpdateRole();
-  dijit.byId("dialogResourceCost").show();
+    dijit.byId("dialogResourceCost").show();
+    setTimeout("affectationLoad=false", 500);
+  };
+  var params="&idResource="+idResource;
+  params+="&funcList="+funcList;
+  params+="&idRole="+idRole;
+  params+="&mode=add";
+  loadDialog('dialogResourceCost',callBack,true,params);
 }
 
 function removeResourceCost(id, idRole, nameRole, startDate) {

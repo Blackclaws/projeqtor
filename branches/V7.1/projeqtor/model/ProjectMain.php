@@ -909,7 +909,7 @@ scriptLog("Project($this->id)->drawSubProjects(selectField=$selectField, recursi
 // ADD BY Marc TABARY - 2017-03-17 - COPY ACTIVITY PRICE WHEN COPY PROJECT
   public function copyTo($newClass, $newType, $newName, $setOrigin, $withNotes, $withAttachments, $withLinks, $withAssignments=false, $withAffectations=false,
                          $toProject=null, $toActivity=null, $copyToWithResult=false, $copyToWithVersionProjects=false, $copyToWithActivityPrice=false) {
-    
+
     // Control that copy is not directly copied into structure of copied project 
     if ($toProject) {
       $sub=$this->getSubProjectsList(false);
