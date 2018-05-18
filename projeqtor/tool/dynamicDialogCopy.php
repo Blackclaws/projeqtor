@@ -386,7 +386,20 @@ if($copyType=="copyObjectTo"){
                </div>
              </td>
            </tr>
-<!-- END ADD BY Marc TABARY - 2017-03-17 - COPY ACTIVITY PRICE WHEN COPY PROJECT -->           <tr><td>&nbsp;</td><td >&nbsp;</td></tr>
+<!-- END ADD BY Marc TABARY - 2017-03-17 - COPY ACTIVITY PRICE WHEN COPY PROJECT -->
+          <!-- Gautier #copyAttachments Project --> 
+           <tr>
+             <td class="dialogLabel" colspan="2" style="width:100%; text-align: left;">
+               <label for="copyToWithAttachments" style="width:90%;text-align: right;"><?php echo i18n("copyToWithAttachments") ?>&nbsp;:&nbsp;</label>
+               <?php $isCheckedWithAttachments=true;$isCheckedWithAttachments=Parameter::getUserParameter('isCheckedWithAttachments'.$objectClass);?>
+               <div id="copyToWithAttachments" name="copyToWithAttachments" dojoType="dijit.form.CheckBox" <?php if ($isCheckedWithAttachments=='true') echo " checked ";?> type="checkbox">
+               <script type="dojo/method" event="onChange" >
+                  saveDataToSession('isCheckedWithAttachments<?php echo $objectClass;?>',((this.checked)?true:false),true);
+               </script>
+               </div>
+             </td>
+           </tr>
+          <tr><td>&nbsp;</td><td >&nbsp;</td></tr>
          </table>
         </form>
       </td>

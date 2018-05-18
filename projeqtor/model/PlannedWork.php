@@ -599,6 +599,7 @@ class PlannedWork extends GeneralWork {
         	}
         }
         $plan->notPlannedWork=0;
+        debugLog ("*** PLAN $plan->refName");
         foreach ($listAss as $ass) {
           if ($ass->notPlannedWork>0) {
             $ass->notPlannedWork=0;
@@ -695,11 +696,11 @@ class PlannedWork extends GeneralWork {
             $ass->leftWork=0;
             $ass->plannedWork=$ass->realWork;
           }
-          if ($ress['team']) debugLog($ress);
+//          if ($ress['team']) debugLog($ress);
           while (1) {           
             if ($ress['team']) { // For team resource, check if unitary resources have enought availability
               $period=ResourceTeamAffectation::findPeriod($currentDate,$ress['periods']); 
-              debugLog("For $currentDate, found period=$period");
+//              debugLog("For $currentDate, found period=$period");
               if ($period===null) {
                 $capacity=0;
               } else {
@@ -710,18 +711,18 @@ class PlannedWork extends GeneralWork {
                     $tmpCapa=$ress['periods'][$period]['idResource'][$idMember];
 //                    debugLog("   found period $period and tmpCapa=$tmpCapa");
                     if (isset($member[$currentDate])) {
-                      debugLog("   already planned for $idMember on $currentDate=".$member[$currentDate]);
+//                      debugLog("   already planned for $idMember on $currentDate=".$member[$currentDate]);
                       if (isset($resources[$idMember]) and isset($resources[$idMember]['capacity'])) {
                         $capaMember=$resources[$idMember]['capacity'];
                       } else {
                         $capaMember=SqlList::getFieldFromId('Resource', $idMember, 'capacity');
                       }
-                      debugLog("   from capacity ".$capaMember);
+//                      debugLog("   from capacity ".$capaMember);
                       if ($capaMember-$member[$currentDate]>=$tmpCapa) {
-                        debugLog("   ".$capaMember."-".$member[$currentDate].">=".$tmpCapa." => nothing");
+//                        debugLog("   ".$capaMember."-".$member[$currentDate].">=".$tmpCapa." => nothing");
                         // tmpCapa preserved : enough left 
                       } else {
-                        debugLog("   ".$capaMember."-".$member[$currentDate]."<".$tmpCapa." => left is less than capa");
+//                        debugLog("   ".$capaMember."-".$member[$currentDate]."<".$tmpCapa." => left is less than capa");
                         $tmpCapa=$capaMember-$member[$currentDate];
                       }                      
                     }
@@ -732,7 +733,7 @@ class PlannedWork extends GeneralWork {
               }
 //              debugLog("Period for $currentDate is $period then capacity is $capacity");
             }
-            debugLog("   for $currentDate capacity=$capacity, capacityRate=$capacityRate");
+//            debugLog("   for $currentDate capacity=$capacity, capacityRate=$capacityRate");
             if ($profile=='RECW') {
               if ($currentDate<=$endPlan) {
                 $left=$capacity;
@@ -828,7 +829,7 @@ class PlannedWork extends GeneralWork {
                   $interval+=$step;
               	}
               }
-              debugLog("   planned=$planned, capacity=$capacity");
+//              debugLog("   planned=$planned, capacity=$capacity");
               if ($planned < $capacity)  {
                 $value=$capacity-$planned; 
                 if ($profile=='RECW') {                 
@@ -988,69 +989,64 @@ class PlannedWork extends GeneralWork {
                 	}
                 }
                 if ($value>=0.01) { // Store value on Resource Team if current resource belongs to a Resource Team
-//                  debugLog("idR:$ass->idResource for date $currentDate");
+                  debugLog("idR:$ass->idResource for date $currentDate currentValue=$value");
                   if (!$ress['team'] and isset($ress['isMemberOf']) and count($ress['isMemberOf'])>0) {
+                    // For each Pool current resource is member of
                     foreach($ress['isMemberOf'] as $idRT=>$rt) {
                       if (!isset($resources[$idRT]) ) {
                         $r=new ResourceAll($idRT,true);
                         $resources[$idRT]=$r->getWork($startDate, $withProjectRepartition);
                       }
                       $period=ResourceTeamAffectation::findPeriod($currentDate, $resources[$idRT]['periods']);
-                      $alreadyPlannedOnTeam=0;
-//                      debugLog("   Period found = $period");
-                      // For current date, if some work exists on Resource Team and current resource has some capacity on the Resource Team 
-                      // => must check that there is not constraint about left on 
+                      debugLog("   For Pool $idRT Period found = $period");
+                      // For current date : if 1) some work exists on Pool 2) current resource has not null capacity on Pool  
+                      // => must check that there is no constraint 
                       if ($period and isset($resources[$idRT][$currentDate]) 
                       and isset($resources[$idRT]['periods'][$period]['idResource'][$ass->idResource])
                       and $resources[$idRT]['periods'][$period]['idResource'][$ass->idResource]>0) {
-                        $leftOnDate=$resources[$idRT]['periods'][$period]['rate']-$resources[$idRT][$currentDate]; // = team capacity - already planned
-                        $totalCapacityMembers=0;
-                        $totalPlannedMembers=$resources[$idRT][$currentDate];
+                        $ctrlPlannedWorkOnPool=$resources[$idRT][$currentDate];
+                        $ctrlCanBeDoneByOthersOnPool=0;
                         foreach ($resources[$idRT]['members'] as $idMember=>$workMember) {
+                          if ($idMember==$ass->idResource) continue; // Do not count work that can be done by current (we count only "others")
                           if (isset($resources[$idMember]) and isset($resources[$idMember]['capacity'])) {
-                            $capaMember=$resources[$idMember]['capacity'];
+                            $ctrlCapaMember=$resources[$idMember]['capacity'];
                           } else {
-                            $capaMember=SqlList::getFieldFromId('Resource', $idMember, 'capacity');
+                            $ctrlCapaMember=SqlList::getFieldFromId('Resource', $idMember, 'capacity');
                           }
-                          if (isset($resources[$idRT]['periods'][$period]['idResource'][$idMember])) {
-                            $totalCapacityMembers+=$capaMember;
-                            if (isset($workMember[$currentDate])) {
-                              $totalPlannedMembers+=$workMember[$currentDate];
+                          $ctrlCanBeDoneByMember=$ctrlCapaMember; // Limit to own capacity of resource
+                          if (isset($resources[$idMember]) and isset($resources[$idMember][$currentDate])) {
+                            $ctrlCanBeDoneByMember-=$resources[$idMember][$currentDate]; // Subtract already planned for member
+                          }
+                          if (isset($resources[$idRT]['periods'][$period]['idResource'][$idMember])) { // If member has capacity on the period
+                            $capaMaxMemberOnPool=$resources[$idRT]['periods'][$period]['idResource'][$idMember];
+                            if ($capaMaxMemberOnPool<$ctrlCanBeDoneByMember) {
+                              $ctrlCanBeDoneByMember=$capaMaxMemberOnPool;
                             }
+                          } else {
+                            $ctrlCanBeDoneByMember=0;
                           }
-                          if (isset($workMember[$currentDate])) {
-                            if (isset($resources[$idRT]['periods'][$period]['idResource'][$idMember])) {
-                              $capaAffected=$resources[$idRT]['periods'][$period]['idResource'][$idMember];
-                            } else {
-                              $capaAffected=$capaMember;
-                            }
-                            $leftOnDate-=$workMember[$currentDate]-($capaMember-$capaAffected);
-                          }
+                          debugLog("      can be done by $idMember=$ctrlCanBeDoneByMember");
+                          $ctrlCanBeDoneByOthersOnPool+=$ctrlCanBeDoneByMember;
                         }
-                        if ($value>$totalCapacityMembers-$totalPlannedMembers) { //
-                          $value=$totalCapacityMembers-$totalPlannedMembers;
-                          if ($value<0) $value=0;
+                        $mustBeDoneByCurrentResourceOnPool=$ctrlPlannedWorkOnPool-$ctrlCanBeDoneByOthersOnPool;
+                        $available=$capacity-$mustBeDoneByCurrentResourceOnPool;
+                        if (isset($resources[$ass->idResource][$currentDate]) ) {
+                          $available-=$resources[$ass->idResource][$currentDate]; // Subtract already planned for current user
                         }
-                        if (isset($resources[$idRT]['periods'][$period]['idResource'][$ass->idResource])) {
-                          $capaRes=$resources[$idRT]['periods'][$period]['idResource'][$ass->idResource];
-                          $valueLeftOnTeam=$capaRes;
-                          if ($leftOnDate<$capaRes) {
-                            $valueLeftOnTeam=$leftOnDate;
-                          }
-                          $valueLeftOnResource=$capacity-$capaRes+$valueLeftOnTeam;
-                          if ($valueLeftOnResource<0) $valueLeftOnResource=0;
-                          if ($value>$valueLeftOnResource) {
-                            $value=$valueLeftOnResource;
-                          }
+                        if ($available<$value) {
+                          $value=$available;
                         }
-                                          
+                        if ($value<0) $value=0;
+                        debugLog("    CanBeDoneByOthersOnPool=$ctrlCanBeDoneByOthersOnPool MustBeDoneByCurrentResourceOnPool=$mustBeDoneByCurrentResourceOnPool newValue=$value");
                       }
+                    }
+                    foreach($ress['isMemberOf'] as $idRT=>$rt) {
+                      // Store detail of already planned for each member (will be used when planning Pool)
+                      // Attention, must be done after controlling every Pool, to have the correc $value
+                      $period=ResourceTeamAffectation::findPeriod($currentDate, $resources[$idRT]['periods']);
                       if ($period and isset($resources[$idRT]['periods'][$period]['idResource'][$ass->idResource])) {
-                        //if (! isset($resources[$idRT][$currentDate])) $resources[$idRT][$currentDate]=0;
-                        //$resources[$idRT][$currentDate]+=$value;
                         if (! isset($resources[$idRT]['members'][$ass->idResource][$currentDate])) $resources[$idRT]['members'][$ass->idResource][$currentDate]=0;
                         $resources[$idRT]['members'][$ass->idResource][$currentDate]+=$value;
-//                        debugLog("   OK, subtract $value");
                       }
                     }
                   }

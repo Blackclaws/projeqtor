@@ -1046,6 +1046,7 @@ class UserMain extends SqlElement {
    * @return -1 or Id of authentified user
    */
 	public function authenticate( $paramlogin, $parampassword) {
+	  global $loginSave;
 debugTraceLog("User->authenticate('$paramlogin', '$parampassword')" );	
 	  $paramLdap_allow_login=Parameter::getGlobalParameter('paramLdap_allow_login');
 	  $paramLdap_base_dn=Parameter::getGlobalParameter('paramLdap_base_dn');
@@ -1208,6 +1209,7 @@ debugTraceLog("User->authenticate('$paramlogin', '$parampassword')" );
 				  $this->name=strtolower($paramlogin);
 				  $this->idProfile=Parameter::getGlobalParameter('ldapDefaultProfile');
 				  $createAction=Parameter::getGlobalParameter('ldapCreationAction');
+				  
 				  if ($createAction=='createResource' or $createAction=='createResourceAndContact') {
 				    $this->isResource=1;
 				  }
@@ -1219,6 +1221,15 @@ debugTraceLog("User->authenticate('$paramlogin', '$parampassword')" );
 				  }
 				  setSessionUser($this);
 				  $resultSaveUser=$this->save();
+				  //gautier #ldapProject
+				  $idProject = Parameter::getGlobalParameter('ldapDefaultProject');
+				  $aff = new Affectation();
+				  $aff->idProject = $idProject;
+				  $aff->idResource = $this->id;
+				  $loginSave = true;
+				  $result=$aff->save();
+				  $loginSave = false;
+				  
 					$sendAlert=Parameter::getGlobalParameter('ldapMsgOnUserCreation');
 					if ($sendAlert!='NO') {
 						$title="ProjeQtOr - " . i18n('newUser');

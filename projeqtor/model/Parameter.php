@@ -492,6 +492,17 @@ class Parameter extends SqlElement {
           'createContact'=>i18n('createContactFromLdapUser'),
           'createResourceAndContact'=>i18n('createResourceAndContactFromLdapUser'));
         break;
+      case 'ldapDefaultProject':
+        if (sessionUserExists()) {
+          $user=getSessionUser();
+          $listVisible=$user->getVisibleProjects();
+        } else {
+          $listVisible=SqlList::getList('Project');
+        }
+        foreach ($listVisible as $key=>$val) {
+          $list[$key]=$val;
+        }
+        break;
       case 'responsibleFromProduct':
         $list=array('always'=>i18n('always'),
                     'ifempty'=>i18n('ifEmpty'),
@@ -792,6 +803,7 @@ class Parameter extends SqlElement {
           	                  'ldapDefaultProfile'=>'list',
           	                  'ldapMsgOnUserCreation'=>'list',
           	                  'ldapCreationAction'=>'list',
+          	                  'ldapDefaultProject'=>'list',
       	                  'newColumnAuthentRight'=>'newColumn',
       	                    'sectionUserAndPassword'=>'section',
           	                  'defaultProfile'=>'list',

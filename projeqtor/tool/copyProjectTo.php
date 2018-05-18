@@ -97,6 +97,8 @@ $copyToWithActivityPrice=false;
 if (array_key_exists('copyToWithActivityPrice',$_REQUEST)) {
   $copyToWithActivityPrice=true;
 }
+
+$copyToWithAttachments=RequestHandler::getBoolean('copyToWithAttachments');
 // END ADD BY Marc TABARY - 2017-03-17 - COPY ACTIVITY PRICE WHEN COPY PROJECT
 
 // copy from existing object
@@ -111,12 +113,13 @@ $proj->projectCode=$codeProject;
 $newProj=$proj->copyTo('Project',
                         $toType,
                         $toName, 
-                        false, false, false,
+                        false, false,
+                        $copyToWithAttachments,
                         $copyToWithLinks,
                         $copyAssignments,
                         false, $toSubProject, null, false,
                         $copyToWithVersionProjects,
-                        $copyToWithActivityPrice );
+                        $copyToWithActivityPrice);
   // Old
 //$newProj=$proj->copyTo('Project',$toType,$toName,false,false, false,$copyToWithLinks,$copyAssignments,false, $toSubProject, null, false, $copyToWithVersionProjects ); // toProject
 // END CHANGE BY Marc TABARY - 2017-03-17 - COPY ACTIVITY PRICE WHEN COPY PROJECT
@@ -131,7 +134,7 @@ if (! stripos($result,'id="lastOperationStatus" value="OK"')>0 ) {
 unset($newProj->_copyResult);
 if(!$error)$newProj->save();
 if (!$error and $copyStructure) {
-  $res=PlanningElement::copyStructure($proj, $newProj, false, false, false,$copyToWithLinks,$copyAssignments, $copyAffectations,$newProj->id,$copySubProjects,$copyToWithVersionProjects);
+  $res=PlanningElement::copyStructure($proj, $newProj, false, false, $copyToWithAttachments,$copyToWithLinks,$copyAssignments, $copyAffectations,$newProj->id,$copySubProjects,$copyToWithVersionProjects);
   if ($res!='OK') {
     $result=$res;
     $error=true;
@@ -141,7 +144,7 @@ if (!$error and $copyStructure) {
 }
 
 if (!$error and $copyOtherStructure) {
-  $res=PlanningElement::copyOtherStructure($proj, $newProj, false, false, false,$copyToWithLinks,$copyAssignments, $copyAffectations,$newProj->id,$copySubProjects,$copyToWithVersionProjects,$copyStructure);
+  $res=PlanningElement::copyOtherStructure($proj, $newProj, false, false, $copyToWithAttachments,$copyToWithLinks,$copyAssignments, $copyAffectations,$newProj->id,$copySubProjects,$copyToWithVersionProjects,$copyStructure);
   if ($res!='OK') {
     $result=$res;
     $error=true;
