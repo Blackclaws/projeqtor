@@ -1577,7 +1577,7 @@ class PlanningElement extends SqlElement {
   }
   
   static function copyStructure($obj, $newObj, $copyToOrigin=false, 
-      $copyToWithNotes=false, $copyToWithAttachments=false, $copyToWithLinks=false, 
+      $copyToWithNotes=false, $copyToWithAttachments, $copyToWithLinks=false, 
       $copyAssignments=false, $copyAffectations=false, $toProject=null, $copySubProjects=false) {
     self::$_noDispatch=true; // avoid recursive updates on each item, will be done only al elementary level
     $pe=new PlanningElement();
@@ -1622,7 +1622,7 @@ class PlanningElement extends SqlElement {
   }
   
   static function copyOtherStructure($obj, $newObj, $copyToOrigin=false,
-    $copyToWithNotes=false, $copyToWithAttachments=false, $copyToWithLinks=false,
+    $copyToWithNotes=false, $copyToWithAttachments, $copyToWithLinks=false,
     $copyAssignments=false, $copyAffectations=false, $toProject=null, $copySubProjects=false, $copyToWithVersionProjects=false, $copyStructure=false) {
     self::$_noDispatch=true; // avoid recursive updates on each item, will be done only al elementary level
     $pe=new PlanningElement();
