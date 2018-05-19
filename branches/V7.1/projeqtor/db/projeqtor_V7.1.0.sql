@@ -52,6 +52,9 @@ INSERT INTO `${prefix}accessright` (`idProfile`, `idMenu`, `idAccessProfile`) VA
 
 ALTER TABLE `${prefix}resource` ADD `isResourceTeam` int(1) UNSIGNED DEFAULT 0;
 
+ALTER TABLE `${prefix}assignment` ADD `isResourceTeam` int(1) UNSIGNED DEFAULT 0;
+ALTER TABLE `${prefix}assignment` ADD `capacity` decimal(5,2) UNSIGNED DEFAULT NULL;
+
 CREATE TABLE `${prefix}resourceTeamAffectation` (
   `id` int(12) unsigned NOT NULL AUTO_INCREMENT,
   `idResourceTeam` int(12) unsigned NOT NULL,

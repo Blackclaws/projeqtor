@@ -358,7 +358,6 @@ public $_noCopy;
       $result.='<br/>' . i18n('errorDeleteRights');
     }*/
     $affectable=new Affectable($this->idResourceSelect);
-    debugLog($affectable);
     if (!$affectable->isResourceTeam) {
       $prfOrder=SqlList::getFieldFromId('Profile', $this->idProfile, 'sortOrder',false);
       if (!$prfOrder) $prfOrder=0;

@@ -65,27 +65,21 @@ class ResourceTeamAffectation extends SqlElement {
       $rate = $this->rate;
       $start=($this->startDate)?$this->startDate:self::$minAffectationDate;
       $end=($this->endDate)?$this->endDate:self::$maxAffectationDate;
-      $aff=new ResourceTeamAffectation();
-      $crit=array('idResource'=>$idResource);
-      $list=$aff->getSqlElementsFromCriteria($crit,false,null, 'startDate asc, endDate asc');
-      $periods=array();
-      foreach ($list as $val){
-        $startVal=($val->startDate)?$val->startDate:self::$minAffectationDate;
-        $endVal=($val->endDate)?$val->endDate:self::$maxAffectationDate;
-        if($val->idle == 0 ){
-          if($start=="1970-01-01" and $end == '2099-12-31'){
-            if( $val->id != $this->id ){
-              $rate += $val->rate;
-            }
-          }else if( $end >= $startVal and $endVal >= $end or $start >= $startVal and $start <= $endVal){
-            if( $val->id != $this->id ){
-              $rate += $val->rate;
-            }
+      $ress=new Resource($this->idResource);
+      $capacity=$ress->capacity;
+      $periods=self::buildResourcePeriods($this->idResource,false,'Resource');
+      $maxExitingRate=0;
+      foreach ($periods as $period){
+        if ($start<=$period['end'] and $end>=$period['start'] and $capacity>0) {
+          $ratePeriod=floatval($period['idResource'][$this->idResource])*100/$capacity;
+          if ($ratePeriod>$maxExitingRate) {
+            $maxExitingRate=$ratePeriod;
           }
         }
       }
+      $rate+=$maxExitingRate;
       if($rate > 100){
-        $result.='<br/>' . i18n('impossibleRateAffectationResourcePool', array($period->validatedDate,SqlList::getNameFromId('Resource', $idResource)));
+        $result.='<br/>' . i18n('impossibleRateAffectationResourcePool', array($ress->name,$rate));
       }
     }
     if ($result=="") {
@@ -144,12 +138,18 @@ class ResourceTeamAffectation extends SqlElement {
   }
   
   private static $_resourcePeriods=array();
-  public static function buildResourcePeriods($idResourceAff,$showIdle=false) {
+  public static function buildResourcePeriods($idResourceAff,$showIdle=false,$target="Team") {
     if (isset(self::$_resourcePeriods[$idResourceAff][$showIdle])) {
       return self::$_resourcePeriods[$idResourceAff][$showIdle];
     }
     $aff=new ResourceTeamAffectation();
-    $crit=array('idResourceTeam'=>$idResourceAff);
+    if ($target=='Team') {
+      $crit=array('idResourceTeam'=>$idResourceAff);
+    } else if ($target=='Resource'){
+      $crit=array('idResource'=>$idResourceAff);
+    } else {
+      errorLog("Call buildResourcePeriods for incorrect target '$target'");
+    }
     if (!$showIdle) {
     		$crit['idle']='0';
     }

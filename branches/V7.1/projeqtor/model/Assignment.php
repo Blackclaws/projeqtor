@@ -61,6 +61,7 @@ class Assignment extends SqlElement {
   public $isNotImputable;
   public $optional;
   public $capacity;
+  public $isResourceTeam;
   
   private static $_fieldsAttributes=array("idProject"=>"required", 
     "idResource"=>"required", 
@@ -82,7 +83,8 @@ class Assignment extends SqlElement {
       "plannedCost"=>"readonly,noImport",
       "billedWork"=>"readonly,noImport",
       "dailyCost"=>"readonly,noImport",
-      "newDailyCost"=>"readonly,noImport"
+      "newDailyCost"=>"readonly,noImport",
+      "isResourceTeam"=>"hidden,noImport"
   );
   
    /** ==========================================================================
@@ -122,6 +124,10 @@ class Assignment extends SqlElement {
   public function save() {
     
     $old=$this->getOld();
+    
+    $additionalAssignedWork=$this->assignedWork-$old->assignedWork;
+    $additionalLeftWork=$this->leftWork-$old->leftWork;
+    
     if ($this->billedWork==null){
       $this->billedWork=0;
     }
@@ -132,7 +138,9 @@ class Assignment extends SqlElement {
     
     $this->plannedWork = $this->realWork + $this->leftWork;
     
-    $r=new Resource($this->idResource);
+    $r=new ResourceAll($this->idResource);
+    $this->isResourceTeam=$r->isResourceTeam; // Store isResourceTeam from Resource for convenient use
+      
     // If idRole not set, set to default for resource
     if (! $this->idRole) {
       $this->idRole=$r->idRole;
@@ -227,11 +235,74 @@ class Assignment extends SqlElement {
       }
     }
     
+    // If Resource is part of Resource Team (Pool), subtract additional work from Pool
+    if ($additionalAssignedWork>0) {
+      $arrTeams=array();
+      $currentRefType=$this->refType;
+      $currentRefId=$this->refId;
+      $stop=false;
+      if ($this->isResourceTeam) {
+        $arrTeams[$this->idResource]=$this->idResource;
+        if (property_exists($currentRefType,'idActivity')) {
+          $item=new $currentRefType($currentRefId);
+          if ($item->idActivity) {
+            $currentRefType='Activity';
+            $currentRefId=$item->idActivity;
+          } else {
+            $stop=true;
+          }
+        }
+      } else {
+        $rta=new ResourceTeamAffectation();
+        $rtaList=$rta->getSqlElementsFromCriteria(array('idResource'=>$this->idResource,'idle'=>'0'));    
+        $today=date('Y-m-d');
+        foreach($rtaList as $rta) {
+          if (!$rta->idle and ($rta->endDate==null or $rta->endDate>$today ) ) {
+            $arrTeams[$rta->idResourceTeam]=$rta->idResourceTeam;
+          }
+        }
+      }
+      while ($additionalAssignedWork>0 and !$stop) {
+        debugLog("Treat $currentRefType #$currentRefId for left=$additionalAssignedWork");
+        $assList=$this->getSqlElementsFromCriteria(array('refType'=>$currentRefType,'refId'=>$currentRefId,'isResourceTeam'=>'1'));
+        //if (count($assList)==0) $stop=true;
+        foreach ($assList as $ass) {
+          if (isset($arrTeams[$ass->idResource])) { // Current ressource is part of team already assigned, subtract additional work
+            $subtractable=($ass->assignedWork>$additionalAssignedWork)?$additionalAssignedWork:$ass->assignedWork;
+            if ($subtractable>0) {
+              $ass->assignedWork-=$subtractable;
+              if ($ass->assignedWork<0) $ass->assignedWork=0;
+              $ass->leftWork-=$subtractable;
+              if ($ass->leftWork<0) $ass->leftWork=0;
+              if ($ass->leftWork==0 and $ass->realWork==0) {
+                $ass->delete();
+              } else {
+                $ass->save();
+              }
+              //$stop=true;
+              $additionalAssignedWork-=$subtractable;
+            }
+          }
+        }
+        if (!$stop and $additionalAssignedWork>0 and property_exists($currentRefType,'idActivity')) {
+          debugLog("OK $currentRefType #$currentRefId has parent");
+          $item=new $currentRefType($currentRefId);
+          if ($item->idActivity) {
+            $currentRefType='Activity';
+            $currentRefId=$item->idActivity;
+          } else {
+            $stop=true;
+          }
+        } else {
+          $stop=true;
+        }
+      }
+    }
+    
     if ($old->leftWork!=$this->leftWork or $old->realWork!=$this->realWork) {
       Project::setNeedReplan($this->idProject);
     }
     
-    // Dispatch value
     return $result;
   }
   
