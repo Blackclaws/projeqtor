@@ -43,6 +43,7 @@ $userLink['ProductVersion']='ConfigurationManagement.html#product-version';
 $userLink['Component']='ConfigurationManagement.html#component';
 $userLink['ComponentVersion']='ConfigurationManagement.html#component-version';
 $userLink['Resource']='Resource.html#resource';
+$userLink['ResourceTeam']='Resource.html#pool';
 $userLink['User']='User.html#user';
 $userLink['Team']='Resource.html#team';
 $userLink['CalendarDefinition']='Resource.html#calendar';

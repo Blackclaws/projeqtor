@@ -74,7 +74,7 @@ Depending on the element, this section  may have a different name.
 .. _allocation-section:
 
 Allocations section
---------------------
+-------------------
 
 .. sidebar:: Concepts 
 
@@ -839,7 +839,7 @@ Progress, Expected, WBS & Priority
 
 .. _progress-section-planning-mode:
 
-Planning mode	
+Planning mode
 """""""""""""
 
 .. rubric:: > Used by: Activity & Test session
@@ -988,10 +988,15 @@ Planning mode
 
 
   .. compound:: **Recurring (on a weekly basis)**
-* This new mode allows reserving availability on recurring tasks on a weekly basis, for example 1/2 day every Monday, 1h every day, ...
-Activities in this mode dynamically assign the work based on the start and end bounds:
-start defined with a dependence End-Start or Start-Start
-end defined with an end-end dependency. This is the first planning mode in ProjeQtOr that defines activities whose assigned work is not fixed, but adapts to the duration of the project.
+  
+  * | 
+    | This new mode allows reserving availability on recurring tasks on a weekly basis, for example 1/2 day every Monday, 1h every day, ... 
+    
+    Activities in this mode dynamically assign the work based on the start and end bounds:
+    
+       * start defined with a dependence End-Start or Start-Start
+       * end defined with an end-end dependency. This is the first planning mode in ProjeQtOr that defines activities whose assigned work is not fixed, but adapts to the duration of the project.
+
 
 .. rubric:: Fixed duration
 
