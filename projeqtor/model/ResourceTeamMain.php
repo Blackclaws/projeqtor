@@ -46,7 +46,7 @@ class ResourceTeamMain extends Resource {
 	  
 	  private static $_fieldsAttributes=array(
 	      "name"=>"required, truncatedWidth100",
-	      "idCalendarDefinition"=>"truncatedWidth100",
+	      "idCalendarDefinition"=>"required,truncatedWidth100",
 	      "userName"=>"hidden" ,
 	      "email"=>"hidden" ,
 	      "capacity"=>"hidden" ,
