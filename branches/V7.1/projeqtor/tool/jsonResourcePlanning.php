@@ -198,6 +198,22 @@ foreach ($allowedResource as $resId=>$resName) {
 	  }
   }
 }
+
+// ADD POOL
+$rta=new ResourceTeamAffectation();
+$today=date('Y-m-d');
+foreach ($allowedResource as $resId=>$resName) {
+  $rtaList=$rta->getSqlElementsFromCriteria(array('idResource'=>$resId));
+  foreach ($rtaList as $rta) {
+    if ($rta->idle) continue;
+    if ($rta->endDate==null or $rta->endDate>=$today) {
+      if (!isset($allowedResource[$rta->idResourceTeam])) $allowedResource[$rta->idResourceTeam]=SqlList::getNameFromId('ResourceAll', $rta->idResourceTeam);
+    }
+  }
+}
+
+
+
 $queryWhere.="and ass.idResource in ".transformListIntoInClause($allowedResource);
 // constitute query and execute
 $queryWhere=($queryWhere=='')?' 1=1':$queryWhere;

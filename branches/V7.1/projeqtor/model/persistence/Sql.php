@@ -244,9 +244,9 @@ class Sql {
    * Return the connexion. Private. Only for internal use.
    * @return resource connexion to database
    */
-  public static function getConnection() {
+  public static function getConnection($forceToReconnect=false) {
     global $enforceUTF8;
-    if (self::$connexion != NULL) {
+    if (self::$connexion != NULL and $forceToReconnect==false) {
     	//if (mysql_ping(self::$connexion)) {
         return self::$connexion;
     	//}
@@ -270,15 +270,13 @@ class Sql {
       self::$lastConnectError="TYPE";
       exit;
     }
-
     //restore_error_handler();
     //error_reporting(0);
     enableCatchErrors();
     if (self::$dbType == "mysql") {
       ini_set('mysql.connect_timeout', 10);
     }
-  try {
-      
+    try {     
       //KEVIN
       $sslArray=array();
       $sslKey=Parameter::getGlobalParameter("SslKey");
@@ -325,6 +323,10 @@ class Sql {
     disableCatchErrors();
     self::$lastConnectError=NULL;
     return self::$connexion;
+  }
+  public static function reconnect() {
+    self::$connexion=null;
+    self::getConnection(true);
   }
 
    /** =========================================================================

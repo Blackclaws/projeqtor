@@ -127,7 +127,19 @@ if (array_key_exists('idProject',$_REQUEST) and $_REQUEST['idProject']!=' ') {
 $where.=($periodType=='week')?" and week='" . $periodValue . "'":'';
 $where.=($periodType=='month')?" and month='" . $periodValue . "'":'';
 $where.=($periodType=='year')?" and year='" . $periodValue . "'":'';
-$where.=($paramResource!='')?" and idResource='" . $paramResource . "'":'';
+$today=date('Y-m-d');
+if ($paramResource!='') {
+  $ressList=Sql::fmtId($paramResource);
+  $rta=new ResourceTeamAffectation();
+  $rtaList=$rta->getSqlElementsFromCriteria(array('idResource'=>$paramResource));
+  foreach ($rtaList as $rta) {
+    if ($rta->idle) continue;
+    if ($rta->endDate==null or $rta->endDate>=$today) {
+      $ressList.=','.Sql::fmtId($rta->idResourceTeam);
+    }
+  }
+  $where.=" and idResource in ($ressList)";
+}
 $order="";
 //echo $where;
 $work=new Work();

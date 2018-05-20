@@ -62,13 +62,13 @@ $resourceCalendar=array();
 $aff=new Affectation();
 $affLst=$aff->getSqlElementsFromCriteria(null,false, $where);
 foreach($affLst as $aff){
-	$ress=new Resource($aff->idResource);
+	$ress=new ResourceAll($aff->idResource);
 	if ($ress->id and !$ress->idle) {
     $resources[$ress->id]=htmlEncode($ress->name);
     $resourceCalendar[$ress->id]=$ress->idCalendarDefinition;
 	}
-	asort($resources);
 }
+asort($resources);
 
 $where="1=1"; // Ticket #2532 : must show availability whatever the project
 if ($paramPeriodScale=="month") {
@@ -108,7 +108,7 @@ $result=array();
 
 $capacity=array();
 foreach ($resources as $id=>$name) {
-	$capacity[$id]=SqlList::getFieldFromId('Resource', $id, 'capacity');
+	$capacity[$id]=SqlList::getFieldFromId('ResourceAll', $id, 'capacity');
   $result[$id]=array();
 }
 

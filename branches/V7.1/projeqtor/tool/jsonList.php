@@ -424,8 +424,7 @@ if ($type == 'empty') {} else if ($type == 'object') { // ======================
   }
   if ($dataType == "idProject" or $dataType == 'planning') {
     $sepChar = Parameter::getUserParameter ( 'projectIndentChar' );
-    if (! $sepChar)
-      $sepChar = '__';
+    if (! $sepChar) $sepChar = '__';
     $wbsLevelArray = array();
   }
   if ($dataType == 'idLinkable' or $dataType == 'idCopyable' or $dataType == 'idImportable' or $dataType == 'idMailable' or $dataType == 'idIndicatorable' or $dataType == 'idChecklistable' or $dataType == 'idDependable' or $dataType == 'idOriginable' or $dataType == 'idReferencable' or $dataType == 'idNotifiable'  ) {
@@ -438,7 +437,7 @@ if ($type == 'empty') {} else if ($type == 'object') { // ======================
     require $script; // execute code
   }
   foreach ( $table as $id => $name ) {
-    if (($dataType == "idProject" and $sepChar != 'no') or $dataType == 'planning') {
+    if (($dataType == "idProject" or $dataType == 'planning') and $sepChar != 'no') {
       if (isset ( $wbsList [$id] )) {
         $wbs = $wbsList [$id];
       } else {

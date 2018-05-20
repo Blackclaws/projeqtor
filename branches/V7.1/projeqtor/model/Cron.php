@@ -357,6 +357,7 @@ class Cron {
       if (self::checkStopFlag()) {
         return; 
       }
+      Sql::reconnect(); // Force reconnection to avoid "mysql has gone away"
       self::setRunningFlag();
       // CheckDates : automatically raise alerts based on dates
       if ($cronCheckDates>0) {

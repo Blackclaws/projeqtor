@@ -132,7 +132,7 @@ abstract class SqlElement {
   // confirm => confirmation will be requested
   private static $_relationShip = array(
       "AccessProfile" => array(
-          "AccessRight" => "cascade"), 
+          "AccessRight" => "controlStrict"), 
       "AccessScopeRead" => array(
           "AccessProfile" => "controlStrict"), 
       "AccessScopeCreate" => array(
