@@ -1657,8 +1657,8 @@ $keyDownEventScript=NumberFormatter52::getKeyDownEvent();
                     }
                     if ($proj=="*" or ! $proj) $proj=null;
                     $user=getSessionUser();
-                    $projs=$user->getListOfPlannableProjects();
-                    htmlDrawOptionForReference('planning', $proj, null, true);
+                    //$projs=$user->getListOfPlannableProjects();
+                    htmlDrawOptionForReference('planning', null, null, true);
                  ?>
                </select>
              </td>
