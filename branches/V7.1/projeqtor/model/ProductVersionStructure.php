@@ -208,5 +208,44 @@ class ProductVersionStructure extends SqlElement {
     }
     return $result;
   }
+  
+  public static function sortComponentVersionListOnType($pvs1, $pvs2) {
+    $v1 = new ComponentVersion($pvs1->idComponentVersion, true);
+    $v2 = new ComponentVersion($pvs2->idComponentVersion, true);
+    if ($v1->idVersionType == $v2->idVersionType) {
+      return strnatcmp($v2->name, $v1->name);
+    }
+    $t1 = new ComponentVersionType($v1->idVersionType, true);
+    $t2 = new ComponentVersionType($v2->idVersionType, true);
+    return strnatcmp($t1->name, $t2->name);
+  }
+  public static function sortVersionListOnType($pvs1, $pvs2) {
+    $v1 = new Version($pvs1->idProductVersion, true);
+    $v2 = new Version($pvs2->idProductVersion, true);
+    if ($v1->scope != $v2->scope) {
+      return strnatcmp($v2->scope, $v1->scope);
+    }
+    if ($v1->idVersionType == $v2->idVersionType) {
+      return strnatcmp($v2->name, $v1->name);
+    }
+    $t1 = new Type($v1->idVersionType, true);
+    $t2 = new Type($v2->idVersionType, true);
+    return strnatcmp($t1->name, $t2->name);
+  }
+  public static function sortProductVersionList($vca, $vcb)  {
+    global $idObj;
+    $a=new ProductVersion((($idObj==$vca->idVersionA)?$vca->idVersionB:$vca->idVersionA));
+    $b=new ProductVersion((($idObj==$vcb->idVersionA)?$vcb->idVersionB:$vcb->idVersionA));
+    if (strcmp($a->name, $b->name)==0) {
+      return strnatcmp($a->versionNumber, $b->versionNumber);
+    }
+    return strnatcmp($a->name, $b->name);
+  }
+  public static function sortVersionList($vp1, $vp2) {
+    $version1 = new Version($vp1->idVersion, false);
+    $version2 = new Version($vp2->idVersion, false);
+    return strnatcmp($version2->name, $version1->name);
+  }
+  
 }
 ?>
