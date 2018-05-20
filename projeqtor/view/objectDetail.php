@@ -4298,32 +4298,11 @@ function drawVersionStructureFromObject($obj, $refresh=false, $way, $item) {
     if ($way == 'composition') {
     	SqlElement::$_cachedQuery['ComponentVersion']=array(); // PBE : performance improvments
     	SqlElement::$_cachedQuery['ComponentVersionType']=array(); // PBE : performance improvments
-      usort($list, function($pvs1, $pvs2) {
-        $v1 = new ComponentVersion($pvs1->idComponentVersion, true);
-        $v2 = new ComponentVersion($pvs2->idComponentVersion, true);
-        if ($v1->idVersionType == $v2->idVersionType) {
-          return strnatcmp($v2->name, $v1->name);
-        }
-        $t1 = new ComponentVersionType($v1->idVersionType, true);
-        $t2 = new ComponentVersionType($v2->idVersionType, true);
-        return strnatcmp($t1->name, $t2->name);
-      });
+      usort($list, "ProductVersionStructure::sortComponentVersionListOnType");
     } else if ($way == 'structure') {
     	SqlElement::$_cachedQuery['Version']=array(); // PBE : performance improvments
     	SqlElement::$_cachedQuery['Type']=array(); // PBE : performance improvments
-      usort($list, function($pvs1, $pvs2) {
-        $v1 = new Version($pvs1->idProductVersion, true);
-        $v2 = new Version($pvs2->idProductVersion, true);
-        if ($v1->scope != $v2->scope) {
-          return strnatcmp($v2->scope, $v1->scope);
-        }
-        if ($v1->idVersionType == $v2->idVersionType) {
-          return strnatcmp($v2->name, $v1->name);
-        }
-        $t1 = new Type($v1->idVersionType, true);
-        $t2 = new Type($v2->idVersionType, true);
-        return strnatcmp($t1->name, $t2->name);
-      });
+      usort($list, "ProductVersionStructure::sortVersionListOnType");
     }
   }
   //END ADD qCazelles - Sort version composition-structure - Ticket 142
@@ -4445,6 +4424,7 @@ function drawVersionStructureFromObject($obj, $refresh=false, $way, $item) {
 
 // ADD qCazelles - Version compatibility
 function drawVersionCompatibility($obj, $refresh=false) {
+  global $idObj;
   $vcs=new VersionCompatibility();
   $crit=array();
   $crit['idVersionA']=$obj->id;
@@ -4457,14 +4437,8 @@ function drawVersionCompatibility($obj, $refresh=false) {
   }
   $idObj=$obj->id;
   
-  usort($list, function ($vca, $vcb) use($idObj) {
-    $a=new ProductVersion((($idObj==$vca->idVersionA)?$vca->idVersionB:$vca->idVersionA));
-    $b=new ProductVersion((($idObj==$vcb->idVersionA)?$vcb->idVersionB:$vcb->idVersionA));
-    if (strcmp($a->name, $b->name)==0) {
-      return strnatcmp($a->versionNumber, $b->versionNumber);
-    }
-    return strnatcmp($a->name, $b->name);
-  });
+  SqlElement::$_cachedQuery['ProductVersion']=array(); // PBE : performance improvments
+  usort($list, "ProductVersionStructure::sortProductVersionList");
   
   global $cr, $print, $user, $comboDetail;
   if ($comboDetail) {
@@ -5106,11 +5080,7 @@ function drawVersionProjectsFromObject($list, $obj, $refresh=false) {
   if (get_class($obj)=='Project') {
     SqlElement::$_cachedQuery['Version']=array(); // PBE : performance improvments
     //ADD qCazelles - Sorting Project versions list - Ticket 182
-    usort ($list, function($vp1, $vp2) {
-      $version1 = new Version($vp1->idVersion, false);
-      $version2 = new Version($vp2->idVersion, false);
-      return strnatcmp($version2->name, $version1->name);
-    });
+    usort ($list, "ProductVersionStructure::sortVersionList");
     //END ADD qCazelles - Sorting Project versions list - Ticket 182
   }
   foreach ($list as $vp) {

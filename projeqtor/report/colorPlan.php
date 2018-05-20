@@ -134,7 +134,7 @@ $resourcesFull = array();
 $resourcesAffect= array();
 $resourcesFull2 = array();
 $specific='imputation';
-$commonElement = getListForSpecificRights($specific);
+$commonElement = getListForSpecificRights($specific,true);
 //$commonElement = $table;
 //no parameters
 if(!$paramProject && !$paramTeam){
@@ -168,8 +168,8 @@ foreach ($lstWork as $work) {
       $team=SqlList::getFieldFromId('Resource', $work->idResource,'idTeam');
       if ($team!=$paramTeam) continue;
     }
-  	$resources[$work->idResource]=SqlList::getNameFromId('Resource', $work->idResource);
-  	$resourceCapacity[$work->idResource]=SqlList::getFieldFromId('Resource', $work->idResource, 'capacity');
+  	$resources[$work->idResource]=SqlList::getNameFromId('ResourceAll', $work->idResource);
+  	$resourceCapacity[$work->idResource]=SqlList::getFieldFromId('ResourceAll', $work->idResource, 'capacity');
     $result[$work->idResource]=array();
   }
   if (! array_key_exists($work->idProject,$projects)) {
@@ -196,8 +196,8 @@ foreach ($lstPlanWork as $work) {
       $team=SqlList::getFieldFromId('Resource', $work->idResource,'idTeam');
       if ($team!=$paramTeam) continue;
     }
-    $resources[$work->idResource]=SqlList::getNameFromId('Resource', $work->idResource);
-    $resourceCapacity[$work->idResource]=SqlList::getFieldFromId('Resource', $work->idResource, 'capacity');
+    $resources[$work->idResource]=SqlList::getNameFromId('ResourceAll', $work->idResource);
+    $resourceCapacity[$work->idResource]=SqlList::getFieldFromId('ResourceAll', $work->idResource, 'capacity');
     if ($paramTeam) {
       $resourcesTeam[$work->idResource]=SqlList::getFieldFromId('Resource', $work->idResource,'idTeam');
     }

@@ -508,7 +508,7 @@ function htmlDrawOptionForReference($col, $selection, $obj=null, $required=false
     asort($table);
   }
   // Retreive the char to indent projects structure
-  if ($col=="idProject") {
+  if ($col=="idProject" or $col=="planning") {
     $sepChar=Parameter::getUserParameter('projectIndentChar');
     if (!$sepChar) $sepChar='__';
     $wbsLevelArray=array();
@@ -548,13 +548,13 @@ function htmlDrawOptionForReference($col, $selection, $obj=null, $required=false
   foreach ($lstPluginEvt as $script) {
     require $script; // execute code
   }
-  if (! $obj) $sepChar='no';
+  if (! $obj and $col!="planning") $sepChar='no';
   $selectedFound=false;
   $next="";
   if (isset($table['*'])) unset($table['*']);
   foreach($table as $key => $val) {
     if (! array_key_exists($key, $excludeArray) and ( count($restrictArray)==0 or array_key_exists($key, $restrictArray) or $key==$selection) ) {
-      if ($col=="idProject" and $sepChar!='no') {   
+      if ( ($col=="idProject" or $col=="planning") and $sepChar!='no') {   
         if (isset($wbsList[$key])) {
           $wbs=$wbsList[$key];
         } else {
