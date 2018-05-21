@@ -358,6 +358,34 @@ class ProductVersionMain extends Version {
     } 
   }
   
+  /* START ADD molives 11/04/2018 Ticket 105 */
+  public function defaultLanguageVersion()
+  {
+    $product = new Product($this->idProduct);
+    $lang = new ProductLanguage();
+    $crit=array('scope'=>"Product",'idProduct'=>$product->id);
+    
+    $listLangProduct=$lang->getSqlElementsFromCriteria($crit,null,null,null,null,true);
+    $cptLang = count($listLangProduct);
+    
+    $langVersion = new VersionLanguage();
+    $crit2 =array('idVersion'=>$this->id);
+    $listLangProductVersion=$langVersion->getSqlElementsFromCriteria($crit2,null,null,null,null,true);
+    $cptLangVersion = count($listLangProductVersion);
+    
+    //if parent component have only 1 language and component version has no language
+    if ($cptLang == 1 && $cptLangVersion == 0){
+      $langVersion->idLanguage = $listLangProduct[0]->idLanguage;
+      $langVersion->scope = $this->scope;
+      $langVersion->idVersion = $this->id;
+      $langVersion->creationDate = date('Y-m-d');
+      $returnvalue = $langVersion->save();
+    }
+    return 1;
+  }
+  /* END ADD molives 11/04/2018 Ticket 105 */
+  
+  
   public function save() {
     global $doNotUpdateAllVersionProject;
     $old=$this->getOld();
@@ -368,6 +396,7 @@ class ProductVersionMain extends Version {
       $this->name=SqlList::getNameFromId('Product', $this->idProduct).$separator.$this->versionNumber;
     }
   	$result=parent::save();
+  	$this->defaultLanguageVersion();
     if (! strpos($result,'id="lastOperationStatus" value="OK"')) {
       return $result;     
     }
@@ -518,6 +547,7 @@ class ProductVersionMain extends Version {
     foreach($listLang as $lang){
       $lang->id = NULL;
       $lang->idVersion = $result->id;
+      $lang->scope = $result->scope; //Add mOlives - bugLanguage - 19/04/2018
       $lang->save();
     }
     //end add atrancoso ticket#149

@@ -2296,7 +2296,7 @@ paramDefaultProfile: "ユーザー作成時のデフォルトアクセスロー�
 paramDefaultProject: "デフォルトプロジェクト",
 paramDefaultTheme: "デフォルトテーマ",
 paramDependencyStrictMode: "関連に厳格モードを適用",
-paramDirectAccessToComponentList: "direct access to component full list",
+paramDirectAccessToComponentList: "direct access to product / component full list",
 paramDisplayAttachment: "添付を表示",
 paramDisplayBusinessFeature: "display Business features",
 paramDisplayChecklist: "チェックリストを表示",

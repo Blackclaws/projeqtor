@@ -352,6 +352,33 @@ class ComponentVersionMain extends Version {
   	//END ADD qCazelles - dateComposition
   }
   
+  /* START ADD molives 11/04/2018 Ticket 105 */
+  public function defaultLanguageVersion()
+  {
+    $component = new Component($this->idComponent);
+    $lang = new ProductLanguage();
+    $crit=array('scope'=>"Component",'idProduct'=>$component->id);
+    
+    $listLangComp=$lang->getSqlElementsFromCriteria($crit,null,null,null,null,true);
+    $cptLang = count($listLangComp);
+    
+    $langVersion = new VersionLanguage();
+    $crit2 =array('idVersion'=>$this->id);
+    $listLangCompVersion=$langVersion->getSqlElementsFromCriteria($crit2,null,null,null,null,true);
+    $cptLangVersion = count($listLangCompVersion);
+    
+    //if parent component have only 1 language and component version has no language
+    if ($cptLang == 1 && $cptLangVersion == 0){
+      $langVersion->idLanguage = $listLangComp[0]->idLanguage;
+      $langVersion->scope = $this->scope;
+      $langVersion->idVersion = $this->id;
+      $langVersion->creationDate = date('Y-m-d');
+      $returnvalue = $langVersion->save();
+    }
+    return 1;
+  }
+  /* END ADD molives 11/04/2018 Ticket 105 */
+  
   
   public function save() {
     $this->idProduct=$this->idComponent; // idProduct set from Version parent object, but may be not set, so avoid erasing.
@@ -363,6 +390,7 @@ class ComponentVersionMain extends Version {
       $this->name=SqlList::getNameFromId('Component', $this->idComponent).$separator.$this->versionNumber;
     }
   	$result=parent::save();
+  	$this->defaultLanguageVersion();
     if (! strpos($result,'id="lastOperationStatus" value="OK"')) {
       return $result;     
     }
@@ -484,6 +512,7 @@ class ComponentVersionMain extends Version {
     foreach($listLang as $lang){
       $lang->id = NULL;
       $lang->idVersion = $result->id;
+      $lang->scope = $result->scope; //Add mOlives - bugLanguage - 19/04/2018
       $lang->save();
     }
     //add atrancoso ticket#160
