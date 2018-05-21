@@ -4048,7 +4048,7 @@ function drawLanguageSection($obj, $refresh=false) {
   $scope=get_class($obj);
   if ($scope=='Product' or $scope=='Component') {
     $crit['idProduct']=$obj->id;
-    $crit['scope']=$scope;
+   // $crit['scope']=$scope; // useless because an idProduct can't be the same for Component and Product
     $langClass='ProductLanguage';
   } else if (get_class($obj)=='ProductVersion' or get_class($obj)=='ComponentVersion') {
     $crit['idVersion']=$obj->id;
@@ -4081,6 +4081,8 @@ function drawLanguageSection($obj, $refresh=false) {
   echo '<td class="linkHeader" style="width:'.(($print)?'20':'15').'%">'.i18n($listClass).'</td>';
   echo '<td class="linkHeader" style="width:80%">'.i18n('colName').'</td>';
   echo '</tr>';
+
+  
   foreach ($list as $lang) { // $lang is ProductLanguage
     $langObj=new Language($lang->idLanguage);
     $userId=$lang->idUser;

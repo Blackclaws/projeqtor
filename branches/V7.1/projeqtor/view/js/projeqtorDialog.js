@@ -665,8 +665,14 @@ function selectDetailItem(selectedValue, lastSavedName) {
         refreshProductStructureList(idFldVal,lastSavedName);
         setTimeout("dojo.byId('productStructureListId').focus()",500);
         enableWidget('dialogProductStructureSubmit');
+      //ADD aGaye - Ticket 179
+      } else if (comboName == 'versionCompatibilityListId'){
+    	  refreshVersionCompatibilityList(idFldVal,lastSavedName);
+    	  setTimeout("dojo.byId('versionCompatibilityListId').focus()",500);
+          enableWidget('dialogVersionCompatibilitySubmit');
+      //END aGaye - Ticket 179
       } else if (comboName == 'productVersionStructureListId') {
-        refreshProductVersionStructureList(idFldVal,lastSavedName);
+    	refreshProductVersionStructureList(idFldVal,lastSavedName);
         setTimeout("dojo.byId('productVersionStructureListId').focus()",500);
         enableWidget('dialogProductVersionStructureSubmit');
       } else if (comboName == 'otherVersionIdVersion') {
@@ -1639,15 +1645,52 @@ function removeProductContext(productContextId, refType) {
 //= Product Version Compatibility
 //=============================================================================
 function addVersionCompatibility() {
-if (checkFormChangeInProgress()) {
-	showAlert(i18n('alertOngoingChange'));
-	return;
+	if (checkFormChangeInProgress()) {
+		showAlert(i18n('alertOngoingChange'));
+		return;
+	}
+	var objectClass=dojo.byId("objectClass").value;
+	var objectId=dojo.byId("objectId").value;
+	var param="&objectClass="+objectClass+"&objectId="+objectId;
+	var callBackFunc=function() {
+		 if (dojo.byId('directAccessToList') && dojo.byId('directAccessToList').value=='true') {
+			  showDetail('versionCompatibilityListId', 0, 'ProductVersion', true);
+			  dijit.byId('dialogDetail').on('hide', function(evt) {
+				  dojo.xhrGet({
+					  url : "../tool/removeHiddenFilterDetail.php?objectClass=ProductVersion"
+				  });
+				  dijit.byId('dialogDetail').on('hide', null);
+				  dijit.byId('dialogVersionCompatibility').hide();
+			  });
+		  }else {
+			 	dijit.byId('dialogVersionCompatibility').show();
+		 }
+	};
+	loadDialog('dialogVersionCompatibility', callBackFunc, false, param, true);
 }
-var objectClass=dojo.byId("objectClass").value;
-var objectId=dojo.byId("objectId").value;
-var param="&objectClass="+objectClass+"&objectId="+objectId;
-loadDialog('dialogVersionCompatibility', null, true, param, false);
+
+//ADD aGaye - Ticket 179
+function refreshVersionCompatibilityList(selected,newName) {
+	  var selectList=dojo.byId('versionCompatibilityListId');
+	  if (selected && selectList) {
+	    if (newName) {
+	      var option = document.createElement("option");
+	      option.text = newName;
+	      option.value=selected;
+	      selectList.add(option);
+	    }
+	    var ids=selected.split('_');
+	    for (j=0;j<selectList.options.length;j++) {
+	      var sel=selectList.options[j].value;
+	      if (ids.indexOf(sel)>=0) { // Found in selected items
+	        selectList.options[j].selected='selected';
+	      }
+	    }
+	    selectList.focus();
+	    enableWidget('dialogVersionCompatibilitySubmit');
+	  }
 }
+//END aGaye - Ticket 179
 
 function saveVersionCompatibility() {
 if (dojo.byId('versionCompatibilityListId').value=='') return;
@@ -1709,6 +1752,7 @@ function addProductVersionStructure(way) {
   //END CHANGE qCazelles - Ticket 165
 }
 
+
 function editProductVersionStructure(way, productVersionStructureId) {
   if (checkFormChangeInProgress()) {
    showAlert(i18n('alertOngoingChange'));
@@ -1767,7 +1811,7 @@ function refreshProductVersionStructureList(selected,newName) {
         selectList.options[j].selected='selected';
       }
     }
-    selectList.focus()
+    selectList.focus();
     enableWidget('dialogProductVersionStructureSubmit');
   }
 }
@@ -3663,19 +3707,58 @@ function filterSelectAtribute(value) {
           var mySelect=dojo.byId("filterValueList");
           mySelect.options.length=0;
           var nbVal=0;
-          tmpStore.fetch({
-            query : {
-              id : "*"
-            },
-            onItem : function(item) {
-              mySelect.options[mySelect.length]=new Option(tmpStore.getValue(
-                  item, "name", ""), tmpStore.getValue(item, "id", ""));
-              nbVal++;
-            },
-            onError : function(err) {
-              console.info(err.message);
-            }
-          });
+        //ADD aGaye - Ticket 196
+          if(dijit.byId('idFilterAttribute').getValue()=="idBusinessFeature"){
+	          var listId = "";
+	          tmpStore.fetch({
+	              query : {
+	                id : "*"
+	              },
+	              onItem : function(item) {
+	            	  listId += (listId != "") ? '_' : '';
+	                  listId += parseInt(tmpStore.getValue(item, "id", ""), 10) + '';
+	                  nbVal++;
+	              },
+	              onError : function(err) {
+	                console.info(err.message);
+	              },
+	              onComplete : function() { 
+	            	  dojo.xhrGet({
+	    	        	url : '../tool/getProductNameFromBusinessFeature.php?listId=' + listId,
+	    			    handleAs : "text",
+	    			    load: function(data){
+	    			    	var listName = JSON.parse(data);
+	    			    	tmpStore.fetch({
+	    			              query : {
+	    			                id : "*"
+	    			              },
+	    			              onItem : function(item) {
+	    			                mySelect.options[mySelect.length]=new Option(tmpStore.getValue(item, "name", "") + " (" + listName[tmpStore.getValue(item, "id", "")] + ")", tmpStore.getValue(item, "id", ""));
+	    			              },
+	    			              onError : function(err) {
+	    			                console.info(err.message);
+	    			              }
+	    			            });
+	    			    }
+	    	          });
+	               }
+	            });
+          }else{
+        	  tmpStore.fetch({
+                  query : {
+                    id : "*"
+                  },
+                  onItem : function(item) {
+                    mySelect.options[mySelect.length]=new Option(tmpStore.getValue(
+                        item, "name", ""), tmpStore.getValue(item, "id", ""));
+                    nbVal++;
+                  },
+                  onError : function(err) {
+                    console.info(err.message);
+                  }
+                });
+          }
+          //END aGaye - Ticket 196
           mySelect.size=(nbVal > 10) ? 10 : nbVal;
           dojo.style(dijit.byId('filterValue').domNode, {
             display : 'none'

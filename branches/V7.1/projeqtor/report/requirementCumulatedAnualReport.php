@@ -340,7 +340,7 @@ if (! testGraphEnabled ()) {
   return;
 }
 
-$dataSet=new pData;
+$dataSet=new pData();
 $dataSet->addPoints($created,"created");
 $dataSet->setSerieDescription("created",i18n("created"));
 $dataSet->setSerieOnAxis("created",0);

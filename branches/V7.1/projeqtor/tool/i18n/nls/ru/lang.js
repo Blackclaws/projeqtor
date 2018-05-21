@@ -2296,7 +2296,7 @@ paramDefaultProfile: "профиль по-умолчанию при создан
 paramDefaultProject: "Проект по-умолчанию",
 paramDefaultTheme: "тема по-умолчанию",
 paramDependencyStrictMode: "применить жёсткий режим для зависимостей",
-paramDirectAccessToComponentList: "direct access to component full list",
+paramDirectAccessToComponentList: "direct access to product / component full list",
 paramDisplayAttachment: "Отображение вложений",
 paramDisplayBusinessFeature: "display Business features",
 paramDisplayChecklist: "отображать списки проверки",
