@@ -27,7 +27,7 @@ if (! isset ( $includedReport )) {
     $paramVersion = trim ( $_REQUEST ['idVersion'] );
     $paramVersion = Security::checkValidId ( $paramVersion ); // only allow digits
   }
-$paramUrgency = array();
+  $paramUrgency = array();
   if (array_key_exists ( 'urgency', $_REQUEST )) {
     foreach ( $_REQUEST ['urgency'] as $idUrgency => $boolean ) {
       $paramUrgency [] = $idUrgency;
@@ -286,69 +286,44 @@ $dataSet->setSerieDescription("created",i18n ( "requirementLeft" )."  ");
 $dataSet->setSerieDescription("perfect",i18n ( "idealNbOfRequirement" )."  ");
 $dataSet->setSerieOnAxis("created",0);
 $dataSet->setSerieOnAxis("perfect",0);
+$serieSettings = array("R"=>200,"G"=>100,"B"=>100,"Alpha"=>80);
+$dataSet->setPalette("created",$serieSettings);
+$serieSettings = array("R"=>000,"G"=>200,"B"=>100,"Alpha"=>80);
+$dataSet->setPalette("perfect",$serieSettings);
 $dataSet->setAbscissa("days");
 
-//$dataSet->AddPoint ( $created, "created" );
-//$dataSet->SetSerieName ( i18n ( "requirementLeft" ), "created" );
-//$dataSet->AddSerie ( "created" );
-//$dataSet->AddPoint ( $perfect, "perfect" );
-//$dataSet->SetSerieName ( i18n ( "idealNbOfRequirement" ), "perfect" );
-//$dataSet->AddSerie ( "perfect" );
-//$dataSet->AddPoint ( $arrDays, "days" );
-//$dataSet->SetAbsciseLabelSerie ( "days" );
-
 // Initialise the graph
-$width = 1000;
+//$dataSet->setPalette("days",array("R"=>100,"G"=>100,"B"=>200));
+$width=1000;
+$legendWidth=100;
+$height=400;
+$legendHeight=100;
+$graph = new pImage($width+$legendWidth, $height,$dataSet);
+$graph->setFontProperties(array("FontName"=>getFontLocation("verdana"),"FontSize"=>8));
 
-//$graph = new pChart ( $width, 230 );
-$graph = new pImage( $width, 230,$dataSet );
-$graph->setFontProperties(array("FontName"=>getFontLocation("verdana"),"FontSize"=>10));
-//$graph->setFontProperties ( "../external/pChart/Fonts/tahoma.ttf", 10 );
-// $graph->setColorPalette ( 0, 200, 100, 100 );
-// $graph->setColorPalette ( 1, 100, 200, 100 );
-// $graph->setColorPalette ( 2, 100, 100, 200 );
-// $graph->setColorPalette ( 3, 200, 100, 100 );
-// $graph->setColorPalette ( 4, 100, 200, 100 );
-// $graph->setColorPalette ( 5, 100, 100, 200 );
-$dataSet->setPalette("created",array("R"=>200,"G"=>100,"B"=>100));
-$dataSet->setPalette("perfect",array("R"=>100,"G"=>200,"B"=>100));
-$dataSet->setPalette("days",array("R"=>100,"G"=>100,"B"=>200));
-$graph = new pChart ( 1100, 250 );
-$graph->setFontProperties ( "../external/pChart/Fonts/tahoma.ttf", 10 );
-$graph->setColorPalette ( 0, 200, 100, 100 );
-$graph->setColorPalette ( 1, 100, 200, 100 );
-$graph->setColorPalette ( 2, 100, 100, 200 );
-$graph->setColorPalette ( 3, 200, 100, 100 );
-$graph->setColorPalette ( 4, 100, 200, 100 );
-$graph->setColorPalette ( 5, 100, 100, 200 );
-$graph->setGraphArea ( 40, 30, $width - 130, 160 );
-$graph->drawGraphArea ( 252, 252, 252 );
-$graph->setFontProperties ( "../external/pChart/Fonts/tahoma.ttf", 10 );
-$graph->drawScale ( $dataSet->GetData (), $dataSet->GetDataDescription (), SCALE_START0, 0, 0, 0, TRUE, 60, 1, true );
-$graph->drawGrid ( 0, TRUE, 230, 230, 230, 255 );
+/* Draw the background */
+$graph->Antialias = FALSE;
 
-//$graph->setGraphArea ( 40, 30, $width - 140, 160 );
-//$graph->drawGraphArea ( 252, 252, 252 );
-//$graph->setFontProperties ( "../external/pChart/Fonts/tahoma.ttf", 10 );
-$graph->setGraphArea(40,30,$width-140,160);
+/* Add a border to the picture */
+$settings = array("R"=>240, "G"=>240, "B"=>240, "Dash"=>0, "DashR"=>0, "DashG"=>0, "DashB"=>0);
+$graph->drawRoundedRectangle(5,5,$width+$legendWidth-8,$height-5,5,$settings);
+$graph->drawRectangle(0,0,$width+$legendWidth-1,$height-1,array("R"=>150,"G"=>150,"B"=>150));
+
+$graph->setGraphArea(60,20,$width-100,$height-80);
 $graph->setFontProperties(array("FontName"=>getFontLocation("verdana"),"FontSize"=>10));
 $formatGrid=array("SkippedGridTicks"=>0,
     "Mode"=>SCALE_MODE_START0, "GridTicks"=>0,
     "DrawYLines"=>array(0), "DrawXLines"=>true,
     "LabelRotation"=>60, "GridR"=>230,"GridG"=>230,"GridB"=>230);
 $graph->drawScale($formatGrid);
-//$graph->drawScale ( $dataSet->GetData (), $dataSet->GetDataDescription (), SCALE_START0, 0, 0, 0, TRUE, 60, 1, true );
-//$graph->drawGrid ( 0, TRUE, 230, 230, 230, 255 );
+
+//$graph->drawGrid ();
 $dataSet->setSerieDrawable("created",true);
 $dataSet->setSerieDrawable("perfect",true);
-$dataSet->setSerieDrawable("days",true);
+//$dataSet->setSerieDrawable("days",true);
+
 // Draw the line graph
-$graph->drawLineGraph ( $dataSet->GetData (), $dataSet->GetDataDescription () );
-if ($nbDay < 30){
-$graph->drawPlotGraph ( $dataSet->GetData (), $dataSet->GetDataDescription (), 3, 2, 255, 255, 255 );
-}
-// Draw the line graph
-$graph->drawLineGraph ();
+//$graph->drawLineGraph ();
 if ($nbDay < 30){
 	$graph->drawPlotGraph ();
 }
@@ -357,21 +332,11 @@ if ($nbDay < 30){
 $graph->drawAreaChart();
 
 // Finish the graph
-$graph->setFontProperties(array("FontName"=>getFontLocation("verdana"),"FontSize"=>10));
-//$graph->drawLegend ( $width - 100, 35, $dataSet->GetDataDescription (), 240, 240, 240 );
-
-$graph->drawLegend($width - 100,35,array("R"=>240,"G"=>240,"B"=>240));
-
-$graph->setFontProperties ( "../external/pChart/Fonts/tahoma.ttf", 10 );
-$graph->drawLegend ( $width - 135, 35, $dataSet->GetDataDescription (), 240, 240, 240 );
+$graph->drawLegend($width - 90,35,array("R"=>240,"G"=>240,"B"=>240));
 
 
-//$graph->drawRightScale ( $dataSet->GetData (), $dataSet->GetDataDescription (), SCALE_START0, 0, 0, 0, true, 60, 1, true );
-
-$imgName = getGraphImgName ( "Curve Of Requirements" );
+$imgName = getGraphImgName ( "Curve_of_Requirements" );
 $graph->render ( $imgName );
 echo '<table width="95%" align="center"><tr><td align="center">';
 echo '<img src="' . $imgName . '" />';
 echo '</td></tr></table>';
-
-
