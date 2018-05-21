@@ -20,6 +20,14 @@ $str=new VersionCompatibility();
 
 $listClass='ProductVersion';
 $critClass='ProductVersion';
+
+//ADD aGaye - Ticket 179
+$directAccessToList='false';
+$paramDirect=Parameter::getUserParameter('directAccessToComponentList');
+if ($paramDirect=='YES') {
+  $directAccessToList='true';
+}
+//END aGaye - Ticket 179
 ?>
 <table>
   <tr>
@@ -28,6 +36,10 @@ $critClass='ProductVersion';
         <input id="versionCompatibilityObjectClass" name="versionCompatibilityObjectClass" type="hidden" value="<?php echo $objectClass;?>" />
         <input id="versionCompatibilityObjectId" name="versionCompatibilityObjectId" type="hidden" value="<?php echo $objectId;?>" />
         <input id="versionCompatibilityListClass" name="versionCompatibilityListClass" type="hidden" value="<?php echo $listClass;?>" />
+        <?php //ADD aGaye - Ticket 179?>
+        <input id="directAccessToList" name="directAccessToList" type="hidden" value="<?php echo $directAccessToList;?>" />
+        <input id="directAccessToListButton" name="directAccessToListButton" type="hidden" value="dialogVersionCompatibilitySubmit" />
+        <?php //END aGaye - Ticket 179?>
         <table>
           <tr><td>&nbsp;</td><td>&nbsp;</td></tr>
           <tr><td colspan="2" class="section"><?php echo i18n('sectionVersion' ,array(i18n($objectClass),intval($objectId).' '.$object->name));?></td></tr>  

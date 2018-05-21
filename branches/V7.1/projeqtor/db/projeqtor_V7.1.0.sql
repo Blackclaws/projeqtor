@@ -77,3 +77,9 @@ UPDATE `${prefix}copyable` SET idDefaultCopyable=13 WHERE id=14;
 UPDATE `${prefix}copyable` SET idDefaultCopyable=15 WHERE id=13;
 UPDATE `${prefix}copyable` SET idDefaultCopyable=8 WHERE id=6;
 UPDATE `${prefix}copyable` SET idDefaultCopyable=5 WHERE id=16;
+
+-- ==============================================================
+-- IGE
+-- ==============================================================
+update ${prefix}productlanguage set scope = 'Component' where idProduct in (select id from ${prefix}product where scope = 'Component');
+update ${prefix}productlanguage set scope = 'Product' where idProduct in (select id from ${prefix}product where scope = 'Product');

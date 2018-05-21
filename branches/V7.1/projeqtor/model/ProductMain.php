@@ -401,6 +401,7 @@ class ProductMain extends ProductOrComponent {
     foreach($listLang as $lang){
       $lang->id = NULL;
       $lang->idProduct = $result->id;
+      $lang->scope = $result->scope; //Add mOlives - bugLanguage - 19/04/2018
       $lang->save();
     }
     return $result;
