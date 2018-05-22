@@ -47,6 +47,8 @@ public $_sec_description;
   public $idIncomingWeight;
   public $idResource;
   public $idMilestone;
+  public $_tab_4_1=array('initial','planned','real','ValidationDate','dueDate');
+  public $initialDate;
   public $plannedDate;
   public $realDate;
   public $validationDate;

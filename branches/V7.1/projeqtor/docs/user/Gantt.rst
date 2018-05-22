@@ -458,6 +458,14 @@ Project planning and activity planning calculation can be done in the Gantt.
     
    * All modifications about assignement (rate, name or numbers of resources, dates...) done are not displayed on the new planning screen until having, for this purpose, activited the planning calculation, either in an automatic run plan or not.
      On the contrary, the screen planning will not change even if modifications have been loaded yet.
+
+ .. compound:: **Automatic calculation **
+
+  *  Differential calculation = calculation of projects that require a recalculation.
+  * Complete calculation = calculation of all projects
+
+The calculations are programmed according to a frequency of CRON type (every minute, every hour, at a given hour every day, at a given time on a given week day, ...)
+
 .. rubric:: 6 - Store planned dates
 
 * Allows to store planned dates into requested and validated dates.
