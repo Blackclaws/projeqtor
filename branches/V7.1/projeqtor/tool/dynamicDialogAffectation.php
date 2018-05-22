@@ -142,7 +142,7 @@ $objTeam=($obj)?get_class($obj):'';
              </td>
              <td>
                <div id="affectationRate" name="affectationRate" value="<?php echo $affectation->rate;?>" 
-                 dojoType="dijit.form.NumberTextBox" 
+                 dojoType="dijit.form.NumberTextBox"  constraints="{min:0,max:100}"
                  style="width:100px" class="input"
                  hasDownArrow="true"
                >

@@ -78,6 +78,10 @@ Data entry for one resource, on a weekly base.
 
     * Check this box to show closed tasks.
 
+ .. compound:: **Show ID**
+
+* Show ID to identify all single task.
+
 .. note:: Global parameter "Display only handled tasks"
 
    * If the value of the parameter is set to "Yes", only tasks taken over (status "handled") will be displayed.
@@ -97,7 +101,7 @@ Buttons of the timesheet:
 
 Buttons allow to send and validate real work.
 
- .. compound:: **Button: Submit work**
+ .. compound:: **Button: Submit work**  (Displayed if mandatory )
 
     * Users can send works to project leader.
 
@@ -105,6 +109,9 @@ Buttons allow to send and validate real work.
 
     * Project leaders can validate works.
 
+ .. compound:: **Button: Enter real as planned**
+
+    * To enter automatically  the work as it is planned
 
 .. rubric:: 6 - Scroll bar
 
@@ -124,7 +131,7 @@ Buttons allow to send and validate real work.
 
 .. rubric:: 8 - Tasks list
 
-.. figure:: /images/GUI/ZONE_TaskList2.png
+.. figure:: /images/GUI/IMPUTATION2.png
    :alt: Task list zone
    :align: center
 
@@ -165,7 +172,7 @@ The list displays the assigned tasks for the resource.
       
       * to open windows view comments
       
-      .. figure:: /images/GUI/left_click_note.png
+.. figure:: /images/GUI/left_click_note.png
 
  .. compound:: **D - Progress data**
 
@@ -175,9 +182,9 @@ The list displays the assigned tasks for the resource.
     * **Left**: The remaining planned work. 
     * **Reassessed**: The work needed to complete the task.
 
-    .. note:: Total of days
-      
-      .. figure:: /images/GUI/total_real_work_allocation.png
+.. note:: Total of days
+
+  .. figure:: /images/GUI/screenshot126.png
        :alt: The last column is the sum for all days.
         
       * On the last column is the sum for all days of the week. It is a synthesis displayed for each project and globally for the whole week.
@@ -191,7 +198,7 @@ The list displays the assigned tasks for the resource.
 Selection timesheet
 ^^^^^^^^^^^^^^^^^^^
 
-.. figure:: /images/GUI/ZONE_TimeSheetSelector.png
+.. figure:: /images/GUI/127.png
    :alt: Timesheet selector zone
    :align: center
 
@@ -201,9 +208,12 @@ Selection timesheet
 
 * Users can only select themselves as a resource.
 
- .. note:: Access to other resources timesheet
 
-    * Depending on access rights, user can select other resource timesheet. 
+* Access to other resources timesheet depending on access rights, then user can select other resources timesheets. 
+Clicking on the checkbox below allows to select only resources allocated to the selected project on the list roll displayed. 
+
+.. figure:: /images/GUI/screenshot.128.png
+
 
 .. rubric:: Selection period
 
