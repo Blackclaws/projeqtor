@@ -88,6 +88,25 @@ Current version is V7.0
 
     \newpage
 
+
+.. rubric:: Notification system.
+
+* To generate notifications manually or according to some very "powerful" rules (defined as "where" clauses)
+  * See: :ref:`Notification system`
+
+.. raw:: latex
+
+    \newpage
+
+
+
+
+
+
+
+
+
+
 Features
 ========
 

@@ -168,7 +168,7 @@ $resource=new ResourceAll($idResource);
              <td>
                <div id="assignmentRate" name="assignmentRate" value="<?php echo ($mode=='edit' and $planningMode!='RECW')?$assignmentObj->rate:"100";?>" 
                  dojoType="dijit.form.NumberTextBox" 
-                 constraints="{min:0,max:999}" 
+                 constraints="{min:0,max:100}" 
                  style="width:97px" 
                  <?php if ($planningMode=='RECW') echo ' readonly';?>
                  missingMessage="<?php echo i18n('messageMandatory',array(i18n('colRate')));?>" 

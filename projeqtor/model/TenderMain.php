@@ -486,10 +486,12 @@ class TenderMain extends SqlElement {
       echo '</table><table class="detail" style="width:99%;" >';
     }
     $cft=new CallForTender();
+    if (!$val) $val='0';
     $list=$cft->getSqlElementsFromCriteria(array($crit=>$val));
     $cpt=0;
     foreach($list as $cft) {
       $cpt++;
+      echo "<tr><td>";
       if ($cpt>1) echo "<br/>";
       echo '<table style="width:99.9%"><tr class="noteHeader">';
       echo '<td  style="padding:3px 10px;vertical-align:middle;font-weight:bold;text-align:left">';
@@ -497,6 +499,7 @@ class TenderMain extends SqlElement {
       echo '<span onClick="gotoElement(\'CallForTender\','.$cft->id.')" style="cursor:pointer;padding-left:10px;position:relative;top:-3px;">'.$cft->name.'</span>';
       echo '</td></tr></table>';
       $cft->drawTenderSubmissionsFromObject(true);
+      echo "</td></tr>";
     } 
     
   }

@@ -848,6 +848,11 @@ Planning mode
 
 * The task is planned to finish as soon as possible.
 
+.. note::
+
+    * For tasks "as soon as possible", if no assignment is created but the validated work is defined, take the validated work as the default duration (instead of 1 days)
+
+
 .. rubric:: Work together
 
 * When two or more resources are assigned to the same task, planning tries to find periods where all resources are available to work together.

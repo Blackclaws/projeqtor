@@ -94,7 +94,7 @@ Messages
     * Allows to reorder sections displayed with drag & drop feature.
     * Using the selector area button icon drag |buttonIconDrag|. 
 
-.. figure:: /images/GUI/BOX_TodayParameters.png
+.. figure:: /images/GUI/BOX_TodayParameters1.png
    :alt: Dialog box - Today parameters 
    :align: center
 
