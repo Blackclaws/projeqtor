@@ -73,6 +73,10 @@ For instance, bugs should be managed through tickets :
     .. describe:: Respect of initial due date/time
     .. describe:: Respect of planned due date/time
 
+
+.. note::
+
+   * Initial due date of the ticket set as read only if it is calculated from the setting of "delays for tickets"
    
 
 -----------
@@ -229,21 +233,24 @@ If a product or component is selected, the responsible defined can be automatica
    * Automatically calculated from Urgency and Criticality values. See: :ref:`priority-calculation`.
    * Can be changed manually.
 
+.. topic:: Note
+
+   * Notion of regression can be added.
+
 .. topic:: Field: Left work
 
    * Automatically calculated as Estimated – Real.
    * Set to zero when ticket is done.
 
-.. topic:: Field: Solved
-
-   * The box is automatically checked or unchecked, according to the resolution selected.
 
 .. topic:: Fields: Target product version & Target comp. version
 
    * The list of values will be filtered depends on the selected value in fields "Product and component".
    * Click on |buttonAdd| to add a other version, see :ref:`multi-version-selection`.
 
+.. topic:: Field: Solved
 
+   * The box is automatically checked or unchecked, according to the resolution selected.
 
 .. raw:: latex
 

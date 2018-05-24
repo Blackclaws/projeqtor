@@ -77,7 +77,7 @@ Once defined, a workflow can be linked to any type of any item.
 * Just check the profile (or “all”) who is allowed to pass from one status to the other.
 
 
- .. figure:: /images/GUI/SEC_HabilitationTable.png
+.. figure:: /images/GUI/SEC_HabilitationTable.png
     :alt: Habilitation table
     :align: center
 
@@ -560,7 +560,8 @@ It is possible to attributes tresholds lines to KPI.
    * Keep in mind KPI is an indicator of performance at project level (opposite to indicator which is calculated at item level).
    * to display the indicator, use Kpi report. See: :ref:`report`
       
-      .. figure:: /images/GUI/Kpi_report.png
+      
+.. figure:: /images/GUI/Kpi_report.png
 
 
 .. raw:: latex
@@ -613,6 +614,10 @@ A JobList is built from JobList lines.
 
    * Looking like CheckLists with no choice.
 
+.. index:: ! Notification
+
+.. _notification-system :
+
 Notification system
 ---------
 
@@ -627,8 +632,7 @@ In order to automatically generate notifications based on certain field values o
 This notification system, whose purpose is to automatically generate notifications, is based on notification generation definitions.
 
 
-A) Creation
-____________________
+A) Creation _________________
 
 
 The definition of notification generation is based on the following:
@@ -806,7 +810,7 @@ For the definition of the notification rules (notificationDefinition), the right
 'read only' for other profiles
 
 
- C) THE IHMs ____________________
+ C) The IHMs ____________________
 
 
 After logging in, a message generated after "Login accepted" that tells you that you have unread notifications:

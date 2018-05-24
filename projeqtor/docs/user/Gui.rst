@@ -455,8 +455,9 @@ The advanced filter allows to define clause to filter and sort.
       operator AND is applies before OR. Example :  A or B and C is equivalent to A or(B(+)C)
       
     * Operator "starts with" to select sort clauses without displaying this list. 
-      
-    * **Dynamic filters** (the value of the critera is entered when the filter is activated).
+
+     
+    **Dynamic filters** (the value of the critera is entered when the filter is activated).
       So Click on Dynamic value creating this filter.
       Dynamics filters are available for all users in them session.
 
@@ -757,7 +758,7 @@ Copy item
 * Allows copied an item of the element.
 * The options displayed in dialog box depends on whether the element is simple or complex.
 
-.. figure:: /images/GUI/BOX_CopyElement.png
+.. figure:: /images/GUI/copyitem.png 
    :alt: Dialog box - Copy element
    :align: center
 
@@ -769,7 +770,7 @@ Copy item
 
 * Complex element (Tickets, Activities, …), it is possible to copy them into a new kind of elements.
 
-* For instance, it is possible to copy a Ticket (the request) into an Activity (the task to manage the request). 
+* For instance, it is possible to copy a Ticket (the request) into an Activity (the task to manage the request) or meeting, periodics meetings as well as test sessions. 
 
 .. compound::
 
@@ -840,6 +841,8 @@ Allows to subscribe to tracking of an item.
    :alt: Dialog box - Susbcribe detail
    
 This icon is checked when you subscribed.
+
+When a user "subscribes" to the project, he will receive notifications "to subscribers" for all elements of the project
 
 .. figure:: /images/GUI/Subscribe.png
    :alt: Dialog box - Susbcribe

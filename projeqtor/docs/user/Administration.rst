@@ -206,6 +206,9 @@ Global parameters screen allows configuration of application settings.
 .. compound:: **Only responsible works on ticket**
 
     * Only responsible can enter some real work on the ticket.
+
+.. compound:: **Display ticket at customer level**
+    * Display of tickets on the Customer screen and on the Contacts screen
     
 .. rubric:: Section: Organization
 .. rubric:: Section: Automation
@@ -217,6 +220,14 @@ Global parameters screen allows configuration of application settings.
       * **Always** : Values are replaced on activities and project.
       * **Only is set** : Replaces values, only if not already set. 
 .. rubric:: Section: Milestones
+
+Milestone Management on Requirements, Tickets, Product Versions, Incomings, Deliverables and Deliveries.
+It updates the target (planned) date of the element from the planned date of the milestone.
+
+It optionally allows you to link the element and the milestone (to get the list of linked elements from the milestone view)
+
+It optionally allows you to automatically retrieve the milestone from the milestone of the 
+Project Version. 
 .. rubric:: Section: Controls and restrictions    
    
 .. rubric:: GENERAL SECTION 3 : Display
@@ -241,6 +252,9 @@ Global parameters screen allows configuration of application settings.
 .. rubric:: Section: Emailing
 .. rubric:: Section: Mail titles
 .. rubric:: Section: Automatic emails grouping
+
+E-mail sending delay: possibility not to send emails in a row, but to delay them to send only one message if several changes generating an emails send are made in a short time.
+
 .. rubric:: Section: Test email configuration
 
 .. rubric:: GENERAL SECTION 6 : Authentication

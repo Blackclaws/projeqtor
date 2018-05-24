@@ -1383,7 +1383,9 @@ JSGantt.GanttChart =  function(pGanttVar, pDiv, pFormat) {
             vRightTable += '<div id=' + vBardivName + ' class="barDivTask" style="'
                 + ' border-bottom: 2px solid #' + vTaskList[i].getColor() + ';'
 	            + ' left:' + vBarLeft + 'px; height:11px; '
-	            + ' width:' + vBarWidth + 'px">';         
+	            + ' width:' + vBarWidth + 'px" '
+	            + ' oncontextmenu="'+vTaskList[i].getContextMenu()+';return false;" '
+	            +'>';         
             vRightTable += ' <div class="ganttTaskrowBarComplete"  '
             	+ ' style="width:' + vTaskList[i].getCompStr() + '; cursor: pointer;"'
       		    + ' onmousedown=JSGantt.startLink('+i+'); '

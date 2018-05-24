@@ -68,6 +68,8 @@ $userLink['IndicatorDefinition']='ControlAutomation.html#indicator';
 $userLink['IndicatorDefinitionPerProject']='ControlAutomation.html#indicator';
 $userLink['KpiDefinition']='ControlAutomation.html#kpi-definitions';
 $userLink['JoblistDefinition']='ControlAutomation.html#jobList';
+//AlainForma
+$userLink['Notification']='ControlAutomation.html#notification-system';
 $userLink['PredefinedNote']='ControlAutomation.html#predefined-notes';
 $userLink['ChecklistDefinition']='ControlAutomation.html#checklist-definition';
 $userLink['Profile']='AccessRights.html#profile';

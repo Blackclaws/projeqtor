@@ -92,20 +92,12 @@ Current version is V7.0
 .. rubric:: Notification system.
 
 * To generate notifications manually or according to some very "powerful" rules (defined as "where" clauses)
-  * See: :ref:`Notification system`
+  * See: :ref:`ControlAutomation`
+
 
 .. raw:: latex
 
     \newpage
-
-
-
-
-
-
-
-
-
 
 Features
 ========

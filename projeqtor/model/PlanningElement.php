@@ -1120,7 +1120,8 @@ class PlanningElement extends SqlElement {
     		$returnValue=i18n('moveDone');
       } else {
       	$returnValue=$resultTask;//i18n('moveCancelled');
-      	$status="ERROR";
+      	//$status="ERROR";
+      	$status=getLastOperationStatus($resultTask);
       }
     } else if ($status=="OK") { // Just reorder on same level
       if ($this->topRefType) {
@@ -1162,7 +1163,7 @@ class PlanningElement extends SqlElement {
       
     $returnValue .= '<input type="hidden" id="lastOperation" value="move" />';
     $returnValue .= '<input type="hidden" id="lastOperationStatus" value="' . $status . '" />';
-    $returnValue .= '<input type="hidden" id="lastPlanStatus" value="OK" />';
+    $returnValue .= '<input type="hidden" id="lastPlanStatus" value="OK" />'; // Must send OK to refresh planning (and revert move) 
     return $returnValue;
   }
 
