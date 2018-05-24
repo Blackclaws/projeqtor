@@ -27,7 +27,7 @@
 
 .. |iconGoto| image:: images/iconGoto.png
    :alt: Button icon goto 
-
+   
 .. |iconSave| image:: images/iconSave.png
    :alt: Button icon save 
 

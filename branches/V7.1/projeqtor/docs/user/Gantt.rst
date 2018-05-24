@@ -32,7 +32,7 @@ It is composed with two areas:
 
    * This screen offers many features that will be described in the next sections.
 
-.. figure:: /images/GUI/SCR_GanttPlanning2.png
+.. figure:: /images/GUI/PLANNING1.png 
    :alt: Gantt (Planning)
    :align: center
 
@@ -61,6 +61,8 @@ It is composed with two areas:
 * Click on |msProject| to export planning to MS-Project xml format.
 * Click on |buttonIconColumn| to define the columns of progress data that will be displayed. (See: :ref:`progress-data-view`)
 * Click on |createNewItem| to create a new item. (See: :ref:`project-planning`)
+
+* Click on |buttonIconFilter| to filter the list.
 * **Check the box** "save date" to keep registered displayed date of the overview planning, otherwise dates removing to general mode, after navigating away from this page.  
 
 .. rubric:: 5 - Show Baseline
@@ -72,6 +74,10 @@ It is composed with two areas:
    * Ability to display two baselines on the Gantt chart.
    * Baseline can be saved with |storePlannedDates|.
 
+
+.. rubric:: 6 - Show Critical path
+
+Activating the box, calculated and displayed in red color into the Gantt planning.
 
 .. raw:: latex
 
@@ -87,7 +93,7 @@ The task list area is composed with:
 * :ref:`task-list` |one| 
 * :ref:`progress-data-view` |two|
 
-.. figure:: /images/GUI/ZONE_GanttTaskListProgressData2.png
+.. figure:: /images/GUI/planning2.png
    :alt: Task list & progress data view
    :align: center
 
@@ -122,12 +128,11 @@ Tasks are regrouped by project and activity.
 * See: :ref:`top-bar`
 
 
-
-.. figure:: /images/GUI/ZONE_GanttTaskList.png
-   :alt: Task list zone
+.. figure:: /images/GUI/ZONE_GanttTaskList1.png
+   :alt: Task list & progress data view
    :align: center
 
-   Task list zone
+   Task list & progress data view
 
 .. rubric:: 1 - Hierarchical level
 
@@ -168,7 +173,7 @@ The progress data view allows to show progress on project elements.
 For each planning element, the progress data are displayed at them right.
 
 
-.. figure:: /images/GUI/ZONE_GanttProgressData.png
+.. figure:: /images/GUI/screenshot164.png 
    :alt: Progress data view
    :align: center
 
@@ -221,7 +226,7 @@ The Gantt chart view is a graphic representation of progress data.
 
 For each planning element, a Gantt bar is displayed at them right.
 
-.. figure:: /images/GUI/ZONE_GanttChartView3.png
+.. figure:: /images/GUI/screenshot167.png 
    :alt: Gantt chart view
    :align: center
 
@@ -387,7 +392,7 @@ Project planning and activity planning calculation can be done in the Gantt.
 
 
 
-.. figure:: /images/GUI/SCR_GanttPlanningProject.png
+.. figure:: /images/GUI/screenshot168.png 
    :alt: Project planning
    :align: center
 
@@ -503,7 +508,7 @@ It displays projects synthesis and project's dependencies, without project activ
    * All others behaviors are similar to :ref:`gantt-planning` screen.
 
 
-.. figure:: /images/GUI/SCR_GanttProjectsPortfolio.png
+.. figure:: /images/GUI/screenshot169.png 
    :alt: Gantt (Projects portfolio)
    :align: center
 
@@ -551,7 +556,7 @@ Assigned tasks are grouped under resource level.
    * All others behaviors are similar to :ref:`gantt-planning` screen.
 
 
-.. figure:: /images/GUI/SCR_GanttResourcePlanning2.png
+.. figure:: /images/GUI/screenshot171.png 
    :alt: Gantt (Resource planning) 
    :align: center
 

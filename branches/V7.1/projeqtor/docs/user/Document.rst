@@ -300,3 +300,11 @@ This section allows to manage document locking.
        - User who locked the document.
      * - Locked since
        - Date and time when document was locked.
+
+.. rubric:: Nomenclature
+
+.. topic:: Possibility to take into account the designation of the product in the nomenclature of documents with the new codes :
+
+   * {PROD} product designation
+   * {PROJ / PROD} the project code if specified, otherwise the product designation
+   * {PROD / PROJ} designation of the product if specified, otherwise the project code

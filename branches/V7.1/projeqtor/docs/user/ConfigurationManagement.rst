@@ -67,12 +67,14 @@ Allows to link components to product.
      - The contact, into customer organization, who will be responsible for the product delivery.
    * - Responsible
      - Person responsible for the product.
-   * - Is sub-product of 
-     - Name of the top product if this product is a sub-product. 
+   * - sub-product 
+     - Name of the top product if this product is a sub-product.
+   * - Status
+     - State to be registered.
    * - :term:`Closed`
+     
+   * - Description :
      - Box checked indicates the product is archived.
-   * - Description
-     - Complete description of the product.
 
 **\* Required field**
 
@@ -113,6 +115,8 @@ Allows to link a component version to product version.
 
 Allows to link the product version to a project.
 
+Ability to define the compatibility between product versions (feature activated through a global parameter)
+
 .. rubric:: Automatic formatting of version name
 
 * Possibility to define if the version name is automatically produced from the product name and version number.
@@ -152,7 +156,9 @@ Allows to link the product version to a project.
    * - Entry into service
      - Initial, planned and real entry into service date of the version. 
    * - End date
-     - Initial, planned and real end dates of the version.  
+     - Initial, planned and real end dates of the version.
+   * - Status 
+     - State to be registered
    * - Description
      - Complete description of the version.
 
@@ -221,6 +227,8 @@ Allows to define products using the component.
      - Another name to identify the component.
    * - Responsible
      - Person responsible for the component.
+   * - Statut 
+     - State to be registered
    * - :term:`Closed`
      - Box checked indicates the component is archived.
    * - Description
@@ -284,7 +292,9 @@ Allows to link a product version to component version.
    * - Entry into service
      - Initial, planned and real entry into service date of the version. 
    * - End date
-     - Initial, planned and real end dates of the version.  
+     - Initial, planned and real end dates of the version.
+   * - Statut 
+     - State to be registered
    * - Description
      - Complete description of the version.
 
@@ -396,6 +406,8 @@ This section allows to manage links between projects and versions of products.
      - Start date for validity of the link.
    * - End date
      - End date for validity of the link.
+   * - Status 
+     - State to be registerd
    * - Closed
      - Box checked indicates the link is not active anymore, without deleting it.
 
