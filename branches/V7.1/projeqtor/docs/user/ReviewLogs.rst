@@ -120,10 +120,9 @@ This will provide an easy way to find back when, where and why a decision has be
 
    * You can enter here only a short summary of the minutes and attach the full minutes as a file.
 
+**\* Steering**
 
-
-
-
+Retrieving the agenda of a meeting from the description of its type
 
 .. raw:: latex
 
@@ -513,7 +512,30 @@ Deliverables links with Milestones.
   
 .. raw:: latex
 
-    \newpage
+
+
+.. rubric:: Section: Validation
+
+.. tabularcolumns:: |l|l|
+
+.. list-table::
+   :widths: 20, 80
+   :header-rows: 1
+
+   * - Field
+     - Validation
+   * - Delivery statu
+     - Actual :term:`status` of the delivery.
+   * - Deliverable w
+     - Weight of the quality of the deliverable.
+   * - Responsible
+     - to name
+   * - due date
+     - as planned
+   * - :term:`Closed`
+     - Box to indicate that delivery is archived.
+
+To follow life cycle management on deliverables (status managed as a workflow)
 
 .. index:: ! Incoming
     
@@ -612,3 +634,5 @@ Added list of deliverables integrated in delivery.
      - validate the delivery date.
    * - :term:`Closed`
      - Flag to indicate that delivery is archived.
+
+To follow life cycle management on deliveries (status managed by a workflow)

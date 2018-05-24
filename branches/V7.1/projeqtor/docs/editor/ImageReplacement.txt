@@ -201,6 +201,9 @@
 .. |createNewItem| image:: images/createNewItem.png
    :alt: create new item button
 
+.. |iconFilter| image:: images/iconFilter.png
+   :alt: filter the list
+   
 .. |dndLink| image:: images/dndLink.png
    :alt: DND link
 
