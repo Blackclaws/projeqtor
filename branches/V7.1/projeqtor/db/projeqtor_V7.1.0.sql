@@ -84,9 +84,14 @@ UPDATE `${prefix}copyable` SET idDefaultCopyable=5 WHERE id=16;
 update ${prefix}productlanguage set scope = 'Component' where idProduct in (select id from ${prefix}product where scope = 'Component');
 update ${prefix}productlanguage set scope = 'Product' where idProduct in (select id from ${prefix}product where scope = 'Product');
 
-ALTER TABLE `${prefix}deliverable` ADD `initialDate` DATE NULL DEFAULT NULL;
+-- ==============================================================
+-- Gautier
+-- ==============================================================
 
+ALTER TABLE `${prefix}deliverable` ADD `initialDate` DATE NULL DEFAULT NULL;
 ALTER TABLE `${prefix}delivery` ADD `initialDate` DATE NULL DEFAULT NULL;
+
+
 
 --- ================================================================
 --  FIX

@@ -56,8 +56,17 @@ Security::checkValidClass($objectClass);
                  dojoType="dijit.form.MultiSelect" multiple
                  style="width:400px" size="10" class="selectList" onDblClick="selectDynamicFilter();">
                  <!-- REMPLIR LISTE -->
-                 <?php 
-                 htmlDrawOptionForReference($filterCriteria->sqlAttribute, null, null, true);
+                 <?php
+                 if($filterCriteria->sqlAttribute=='idBusinessFeature'){
+                   $bf = new BusinessFeature();
+                   $lstbf = $bf->getSqlElementsFromCriteria(null, false, null,'name');
+                   foreach ($lstbf as $bf) {
+                     $product = new Product($bf->idProduct);
+                     echo '<option value ="'.$bf->id.'">'.$bf->name.' ('.$product->name.')</option>';
+                   }
+                 }else{
+                   htmlDrawOptionForReference($filterCriteria->sqlAttribute, null, null, true);
+                 }
                  ?>
                </select>
                  	<?php

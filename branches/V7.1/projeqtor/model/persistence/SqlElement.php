@@ -360,6 +360,7 @@ abstract class SqlElement {
           "TestCase" => "controlStrict", 
           "TestSession" => "controlStrict", 
           "Work" => "controlStrict"), 
+      "ResourceTeam" => array ("ResourceTeamAffectation" => "cascade"),
       "Risk" => array("Attachment" => "cascade", "Link" => "cascade", "Note" => "cascade"), 
       "RiskLevel" => array("Requirement" => "controlStrict"), 
       "RiskType" => array("Risk" => "controlStrict"), 

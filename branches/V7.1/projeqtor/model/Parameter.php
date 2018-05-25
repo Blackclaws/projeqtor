@@ -1,4 +1,4 @@
-<?php 
+  <?php 
 /* ============================================================================
  * Parameter is a global kind of object for parametring.
  * It may be on user level, on project level or on global level.
@@ -611,6 +611,7 @@ class Parameter extends SqlElement {
                            'showSubscribedItems'=>'specific',
                            'team'=>'specific',
                            'organization'=>'specific',
+                           'profile'=>'specific',
                          'sectionPhoto'=>'section',
                            'image'=>'photo'
         );

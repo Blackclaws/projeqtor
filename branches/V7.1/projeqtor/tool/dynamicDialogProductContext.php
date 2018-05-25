@@ -6,21 +6,21 @@
 include_once("../tool/projeqtor.php");
 
 if (! array_key_exists('objectClass',$_REQUEST)) {
-	throwError('Parameter objectClass not found in REQUEST');
+  throwError('Parameter objectClass not found in REQUEST');
 }
 $objectClass=$_REQUEST['objectClass'];
 Security::checkValidClass($objectClass);
 
 if (! array_key_exists('objectId',$_REQUEST)) {
-	throwError('Parameter objectId not found in REQUEST');
+  throwError('Parameter objectId not found in REQUEST');
 }
 $objectId=$_REQUEST['objectId'];
 Security::checkValidId($objectId);
 
 $contextId=null;
 if (array_key_exists('contextId',$_REQUEST)) {
-	$contextId=$_REQUEST['contextId'];
-	Security::checkValidId($contextId);
+  $contextId=$_REQUEST['contextId'];
+  Security::checkValidId($contextId);
 }
 
 $listClass = 'Context';
@@ -33,13 +33,26 @@ if ($objectClass=='Product' or $objectClass=='Component') {
   $scopeClass='VersionContext';
 } else {
   errorLog("ERROR : dynamicDialogProductContext to neither 'Product' nor 'Component' nor 'ProductVersion' nor 'ComponentVersion' but to  '$objectClass'");
-  exit;  
+  exit;
 }
 $str=new $scopeClass($contextId);
 $listId = $str->idContext;
 
 $object=new $objectClass($objectId);
 
+$critFld = null;
+$critVals = null;
+if ($objectClass == 'ProductVersion' or $objectClass == 'ComponentVersion') {
+  if ($objectClass == 'ProductVersion') $typeId = 'idProduct';
+  if ($objectClass == 'ComponentVersion') $typeId = 'idComponent';
+  $critFld = 'id';
+  $critVals = array();
+  $vals = array();
+  foreach (SqlList::getListWithCrit('ProductContext', array('idProduct'=>$object->$typeId), 'idContext') as $idContext) {
+    $vals[] = $idContext;
+  }
+  $critVals[] = $vals;
+}
 ?>
 <table>
   <tr>
@@ -60,7 +73,7 @@ $object=new $objectClass($objectId);
             <td>
 				<select size="14" id="productContextListId" name="productContextListId[]"
                 <?php if (!$contextId) echo 'multiple'; ?> class="selectList" onchange="enableWidget('dialogProductContextSubmit');"  ondblclick="if (this.value) saveProductContext();" value="">
-                  <?php htmlDrawOptionForReference('id'.$listClass, $listId, $object, true);?>
+                  <?php htmlDrawOptionForReference('id'.$listClass, $listId, $object, true, $critFld, $critVals);?>
               </select>
             </td>
           </tr>
