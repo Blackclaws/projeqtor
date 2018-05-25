@@ -139,5 +139,16 @@ class ResourceTeamMain extends Resource {
     return self::$_databaseCriteria;
   }
   
+  public function delete() {
+  // Delete planned work for the assignment
+    $result = parent::delete();
+    if (! strpos($result,'id="lastOperationStatus" value="OK"')) {
+      return $result;
+    }
+    $aff=new Affectation();
+    $affList=$aff->purge('idResource='.Sql::fmtId($this->id));
+    return $result;
+  }
+  
 }
 ?>
