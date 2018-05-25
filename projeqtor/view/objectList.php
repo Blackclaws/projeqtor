@@ -5,23 +5,23 @@
  * Contributors : -
  *
  * This file is part of ProjeQtOr.
- * 
- * ProjeQtOr is free software: you can redistribute it and/or modify it under 
- * the terms of the GNU Affero General Public License as published by the Free 
- * Software Foundation, either version 3 of the License, or (at your option) 
+ *
+ * ProjeQtOr is free software: you can redistribute it and/or modify it under
+ * the terms of the GNU Affero General Public License as published by the Free
+ * Software Foundation, either version 3 of the License, or (at your option)
  * any later version.
- * 
+ *
  * ProjeQtOr is distributed in the hope that it will be useful, but WITHOUT ANY
- * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS 
- * FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for 
+ * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for
  * more details.
  *
  * You should have received a copy of the GNU Affero General Public License along with
  * ProjeQtOr. If not, see <http://www.gnu.org/licenses/>.
  *
  * You can get complete code of ProjeQtOr, other resource, help and information
- * about contributors at http://www.projeqtor.org 
- *     
+ * about contributors at http://www.projeqtor.org
+ *
  *** DO NOT REMOVE THIS NOTICE ************************************************/
 
 /* ============================================================================
@@ -51,15 +51,15 @@ if (array_key_exists('objectElementable',$_REQUEST)) {
 $obj=new $objectClass;
 
 if (array_key_exists('Directory', $_REQUEST)) {
-	setSessionValue('Directory', $_REQUEST['Directory']);
+  setSessionValue('Directory', $_REQUEST['Directory']);
 } else {
   unsetSessionValue('Directory');
 }
 $multipleSelect=false;
 if (array_key_exists('multipleSelect', $_REQUEST)) {
-	if ($_REQUEST['multipleSelect']) {
-		$multipleSelect=true;
-	}
+  if ($_REQUEST['multipleSelect']) {
+    $multipleSelect=true;
+  }
 }
 $showIdle=(! $comboDetail and sessionValueExists('projectSelectorShowIdle') and getSessionValue('projectSelectorShowIdle')==1)?1:0;
 if (! $comboDetail and is_array( getSessionUser()->_arrayFilters)) {
@@ -71,7 +71,7 @@ if (! $comboDetail and is_array( getSessionUser()->_arrayFilters)) {
       }
     }
   }
-} 
+}
 
 $displayWidthList="1980";
 if (RequestHandler::isCodeSet('destinationWidth')) {
@@ -616,20 +616,23 @@ if ($displayWidthList<1400) {
   $displayStatus=Parameter::getUserParameter("displayByStatusList_$objectClass");
   if (!$displayStatus) $displayStatus='none';
 ?>
-<div class="listTitle" id="barFilterByStatus" dojoType="dijit.layout.ContentPane" region="top" style="display: <?php echo $displayStatus;?>;height:16px">
-	<table style="position:absolute;top:-2px">
-		<tr>
-			<td style="font-weight:bold;padding-left:135px;">Status&nbsp;:&nbsp;</td>
-<?php
-	
-	$object = new $objectClass();
-	$listStatus = $object->getExistingStatus();
 
-	$cptStatus = 0;
+<?php
+//change height of filter status bar depending of number of status.
+$object = new $objectClass();
+$listStatus = $object->getExistingStatus();
+$height = ((floor((count($listStatus)-0.1)/10))+1)  * 20;
+?>
+  
+<div class="listTitle" id="barFilterByStatus" dojoType="dijit.layout.ContentPane" region="top" style="display: <?php echo $displayStatus;?>;height:<?php echo $height; ?>px;min-width:1250px;line-height:18px;">
+	<table style="position:absolute;top:2px">
+		<tr>
+			<td style="font-weight:bold;padding-left:50px;">Status&nbsp;:&nbsp;</td>
+<?php
+  $cptStatus=0;
 	foreach ($listStatus as $status) {
 		$cptStatus += 1;
-
-?>
+?>		
 			<td>
 				<div id="showStatus<?php echo $cptStatus; ?>" title="<?php echo $status->name; ?>" dojoType="dijit.form.CheckBox" type="checkbox" value="<?php echo $status->id; ?>">
 					<script type="dojo/method" event="onChange">
@@ -638,9 +641,8 @@ if ($displayWidthList<1400) {
 				</div>
 				<?php echo $status->name; ?>&nbsp;&nbsp;
 			</td>
-
 <?php
-	echo ($cptStatus % 15 == 0) ? '</tr><tr><td></td>' : '';
+	echo ($cptStatus % 10 == 0) ? '</tr><tr><td></td>' : '';
 	 } ?>
 		</tr>
 	</table>

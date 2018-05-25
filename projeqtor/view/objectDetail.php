@@ -643,6 +643,8 @@ $cr, $print, $treatedObjects, $displayWidth, $outMode, $comboDetail, $collapsedL
     // the field _tab_x_y must be an array containing x + y values :
     // - the x column headers
     // - the y line headers
+    
+    //gautier #3251
     if (substr($col, 0, 4)=='_tab') {
       // BEGIN - ADD BY TABARY - FORCE HEADER TAB VISIBLE
       $forceHeader=$obj->isAttributeSetToField($col, "forceHeader");
@@ -699,7 +701,7 @@ $cr, $print, $treatedObjects, $displayWidth, $outMode, $comboDetail, $collapsedL
       // unset($val[4]);
       // unset($val[5]);
       // }
-      // END ADD qCazelles - dateComposition
+      // END ADD qCazelles - dateComposition   
       $internalTableRowsCaptions=array_slice($val, $internalTableCols);
       $internalTableCurrentRow=0;
       $colWidth=($detailWidth)/$nbCol;
@@ -732,7 +734,6 @@ $cr, $print, $treatedObjects, $displayWidth, $outMode, $comboDetail, $collapsedL
       } else {
         $minWidth=75;
       }
-      
       for ($i=0; $i<$internalTableCols; $i++) { // draw table headers
      // echo '<td class="detail" style="min-width:75px;' . $internalTableBorderTitle . '">';
         echo '<td class="detail" style="min-width:'.$minWidth.'px;'.$internalTableBorderTitle.'">';
@@ -753,7 +754,6 @@ $cr, $print, $treatedObjects, $displayWidth, $outMode, $comboDetail, $collapsedL
       }
       // echo '</tr>'; NOT TO DO HERE - WILL BE DONE AFTER
     } else if (substr($col, 0, 5)=='_sec_' and (!$comboDetail or $col!='_sec_Link')) { // if field is _section, draw a new section bar column
-                                                                                               // ADD qCazelles - Lang-Context
       if ($col=='_sec_language' and Parameter::getGlobalParameter('displayLanguage')!='YES') continue;
       if ($col=='_sec_context' and Parameter::getGlobalParameter('displayContext')!='YES') continue;
       // END ADD qCazelles - Lang-Context
@@ -2286,9 +2286,48 @@ else if ($col=='idEmailTemplate') {
           }
           // END ADD BY Marc TABARY - 2017-03-01 - DIM CORRECT Pct
         }
+        //gautier #3251
         if (($isCost or $isWork or $isDuration or $isPercent) and $internalTable!=0 and $displayWidth<1600) {
-          $fieldWidth-=12;
+          if($isCost and $displayWidth>1500){
+            $fieldWidth-=5;
+          }else{
+            $fieldWidth-=12;
+          }
         }
+        if($isCost){
+          if($displayWidth>1600 and $displayWidth<1700 ){
+            $fieldWidth+=7;
+          }
+          if($displayWidth>1700 and $displayWidth<1800 ){
+            $fieldWidth+=14;
+          }
+          if($displayWidth>1800){
+            $fieldWidth+=22;
+          }
+        }
+        
+        $paramMaxNbcol=Parameter::getUserParameter('maxColumns');
+        if($paramMaxNbcol== 3 and $isCost and $displayWidth < 1350){
+          if($displayWidth > 1000){
+            $fieldWidth+=10;
+          }
+          if($displayWidth > 1100){
+            $fieldWidth+=10;
+          }
+          if($displayWidth > 1200){
+            $fieldWidth+=10;
+          }
+          if($displayWidth > 1300){
+            $fieldWidth+=10;
+          }
+        }
+        
+        if($paramMaxNbcol == 2 or $paramMaxNbcol == 1 ){
+          if($isCost and  $displayWidth > 1150){
+            $fieldWidth+=30;
+          } 
+        }
+        //end  #3251
         $spl=explode(',', $dataLength);
         $dec=0;
         if (count($spl)>1) {
@@ -2349,6 +2388,7 @@ else if ($col=='idEmailTemplate') {
         // BEGIN - ADD BY TABARY - TOOLTIP
         echo htmlDisplayTooltip($toolTip, $col, $print, $outMode);
         // END - ADD BY TABARY - TOOLTIP
+        //gautier #work
         echo '<div dojoType="dijit.form.NumberTextBox" ';
         echo $name;
         echo $attributes;

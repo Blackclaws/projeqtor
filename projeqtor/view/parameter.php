@@ -301,6 +301,10 @@ function drawTableFromObjectList($objectList) {
 			  	$res=new Resource($usr->id);
 			  	$orga=new Organization($res->idOrganization);
 			  	echo $orga->name;
+			  } else if ($code=='profile') {
+			  	  $usr=getSessionUser();
+			  	  $prof=new Profile($usr->idProfile);
+			  	  echo i18n($prof->name);
 			  } else if ($code=='mailerTest') {
 			    $title=i18n('helpMailerTest');
 			    echo '<div style="vertical-align:top">';
