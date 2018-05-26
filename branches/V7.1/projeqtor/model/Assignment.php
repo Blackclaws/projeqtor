@@ -263,7 +263,6 @@ class Assignment extends SqlElement {
         }
       }
       while ($additionalAssignedWork>0 and !$stop) {
-        debugLog("Treat $currentRefType #$currentRefId for left=$additionalAssignedWork");
         $assList=$this->getSqlElementsFromCriteria(array('refType'=>$currentRefType,'refId'=>$currentRefId,'isResourceTeam'=>'1'));
         //if (count($assList)==0) $stop=true;
         foreach ($assList as $ass) {
@@ -285,7 +284,6 @@ class Assignment extends SqlElement {
           }
         }
         if (!$stop and $additionalAssignedWork>0 and property_exists($currentRefType,'idActivity')) {
-          debugLog("OK $currentRefType #$currentRefId has parent");
           $item=new $currentRefType($currentRefId);
           if ($item->idActivity) {
             $currentRefType='Activity';

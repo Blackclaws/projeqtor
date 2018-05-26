@@ -79,12 +79,12 @@ class ResourceMain extends SqlElement {
 
   private static $_fieldsAttributes=array("name"=>"required, truncatedWidth100",
                                           "email"=>"truncatedWidth100",
-                                          "idProfile"=>"readonly",
-                                          "isUser"=>"readonly",
-                                          "isContact"=>"readonly",
+                                          "idProfile"=>"",
+                                          "isUser"=>"",
+                                          "isContact"=>"",
                                           "password"=>"hidden" ,
                                           "isResourceTeam"=>"hidden" ,
-                                          "userName"=>"readonly,truncatedWidth100",
+                                          "userName"=>"truncatedWidth100",
                                           "idRole"=>"required",
                                           "idCalendarDefinition"=>"required"
   );    
@@ -106,36 +106,6 @@ class ResourceMain extends SqlElement {
    */ 
   function __construct($id = NULL, $withoutDependentObjects=false) {
     parent::__construct($id,$withoutDependentObjects);
-    
-    $crit=array("name"=>"menuUser");
-    $menu=SqlElement::getSingleSqlElementFromCriteria('Menu', $crit);
-    if (! $menu) {
-      return;
-    }     
-    if (securityCheckDisplayMenu($menu->id)) {
-      $canUpdateUser=(securityGetAccessRightYesNo('menuUser', 'update', $this) == "YES");;
-      if (! $canUpdateUser) {
-        self::$_fieldsAttributes["idProfile"]="readonly";        
-      } else {
-      	self::$_fieldsAttributes["isUser"]="";
-      	self::$_fieldsAttributes["idProfile"]="";
-      	self::$_fieldsAttributes["userName"]="truncatedWidth100";
-      	if ($this->isUser) {
-      	  self::$_fieldsAttributes["idProfile"]="required";
-      	  self::$_fieldsAttributes["userName"]="required,truncatedWidth100";
-      	}
-      }
-    }
-    
-    $crit=array("name"=>"menuContact");
-    $menu=SqlElement::getSingleSqlElementFromCriteria('Menu', $crit);
-    if (! $menu) {
-      return;
-    }     
-    if (securityCheckDisplayMenu($menu->id)) {
-      self::$_fieldsAttributes["isContact"]="";
-    }
-    
   }
 
   
@@ -198,6 +168,48 @@ class ResourceMain extends SqlElement {
    */
   protected function getStaticColCaptionTransposition($fld=null) {
     return self::$_colCaptionTransposition;
+  }
+  
+  public function setAttributes() {
+    $crit=array("name"=>"menuUser");
+    $menu=SqlElement::getSingleSqlElementFromCriteria('Menu', $crit);
+    if (! $menu) {
+      return;
+    }
+    if (securityCheckDisplayMenu($menu->id)) {
+      $canUpdateUser=(securityGetAccessRightYesNo('menuUser', 'update', $this) == "YES");
+    } else {
+      $canUpdateUser=false;
+    }
+    if (! $canUpdateUser) {
+      self::$_fieldsAttributes["idProfile"]="readonly";
+      self::$_fieldsAttributes["isUser"]="readonly";
+      self::$_fieldsAttributes["userName"]="readonly,truncatedWidth100";
+    } else {
+      self::$_fieldsAttributes["isUser"]="";
+      self::$_fieldsAttributes["idProfile"]="";
+      self::$_fieldsAttributes["userName"]="truncatedWidth100";
+      if ($this->isUser) {
+        self::$_fieldsAttributes["idProfile"]="required";
+        self::$_fieldsAttributes["userName"]="required,truncatedWidth100";
+      }
+    }
+    
+    $crit=array("name"=>"menuContact");
+    $menu=SqlElement::getSingleSqlElementFromCriteria('Menu', $crit);
+    if (! $menu) {
+      return;
+    }
+    if (securityCheckDisplayMenu($menu->id)) {
+      $canUpdateContact=(securityGetAccessRightYesNo('menuContact', 'update', $this) == "YES");
+    } else {
+      $canUpdateContact=false;
+    }
+    if (!$canUpdateContact) {
+      self::$_fieldsAttributes["isContact"]="readonly";
+    } else {
+      self::$_fieldsAttributes["isContact"]="";
+    }
   }
   
 // ============================================================================**********

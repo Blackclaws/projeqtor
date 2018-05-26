@@ -36,6 +36,20 @@
       ';
     Parameter::storeUserParameter("dashboardRequirementMainTabPosition", $tabPosition);
   }
+  $addParam=addParametersDashboardRequirementMain();
+  if($addParam!=""){
+    $addParam=', "paramAdd":"'.$addParam.'"';
+  }
+  $tabPosition=json_decode($tabPosition,true);
+  if(isset($_REQUEST['updatePosTab'])){
+    $decodeRequest=json_decode($_REQUEST['updatePosTab'],true);
+    $tabPosition['orderListLeft']=$decodeRequest['addLeft'];
+    $tabPosition['orderListRight']=$decodeRequest['addRight'];
+    for ($ite=0; $ite<sizeof($decodeRequest['iddleList']); $ite++){
+      $tabPosition[$decodeRequest['iddleList'][$ite]["name"]]["idle"]=$decodeRequest['iddleList'][$ite]["idle"];
+    }
+    Parameter::storeUserParameter("dashboardRequirementMainTabPosition", json_encode($tabPosition));
+  }
   $filterTypes = '';
   $filterTypesArray = array();
   if (Parameter::getUserParameter("dashboardRequirementMainTypes")) {
@@ -89,22 +103,7 @@
     } elseif (in_array('RequirementType', $tabPosition['orderListRight'])) {
       unset($tabPosition['orderListRight'][array_search('RequirementType', $tabPosition['orderListRight'])]);
     }
-  }
-  $addParam=addParametersDashboardRequirementMain();
-  if($addParam!=""){
-    $addParam=', "paramAdd":"'.$addParam.'"';
-  }
-  $tabPosition=json_decode($tabPosition,true);
-  if(isset($_REQUEST['updatePosTab'])){
-    $decodeRequest=json_decode($_REQUEST['updatePosTab'],true);
-    $tabPosition['orderListLeft']=$decodeRequest['addLeft'];
-    $tabPosition['orderListRight']=$decodeRequest['addRight'];
-    for ($ite=0; $ite<sizeof($decodeRequest['iddleList']); $ite++){
-      $tabPosition[$decodeRequest['iddleList'][$ite]["name"]]["idle"]=$decodeRequest['iddleList'][$ite]["idle"];
-    }
-    Parameter::storeUserParameter("dashboardRequirementMainTabPosition", json_encode($tabPosition));
-  }
-  
+  }  
 if(isset($_REQUEST['goToRequirement'])){
   addParamToUser($user);
 }else{
@@ -114,7 +113,7 @@ if(isset($_REQUEST['goToRequirement'])){
 	<div dojo-type="dijit.layout.ContentPane" id="parameterButtonDiv"
 		class="listTitle" style="z-index: 3; overflow: visible" region="top">
 		<div id="resultDiv" region="top"
-			style="padding: 5px; padding-bottom: 20px; max-height: 100px; padding-left: 300px; z-index: -1"></div>
+			style="padding: 5px; padding-bottom: 20px; max-height: 100px; padding-left: 300px; z-index: -1;padding-right: 800px"></div>
 		<table width="40%">
 			<tr height="32px" >
 				<td width="50px" align="center"><?php echo formatIcon('DashboardRequirement', 32, null, true);?></td>
@@ -174,7 +173,7 @@ if(isset($_REQUEST['goToRequirement'])){
     foreach ($listType as $idType => $nameType) {
   	?>
   				<td>
-  					<div dojoType="dijit.form.CheckBox" type="checkbox" <?php echo ((0) ? 'checked' : ''); ?>
+  					<div dojoType="dijit.form.CheckBox" type="checkbox" <?php echo ((in_array($idType, $filterTypesArray)) ? 'checked' : ''); ?>
   					id="showType<?php echo $idType; ?>" name="showType<?php echo $idType; ?>" title="<?php echo htmlEncode($nameType); ?>"
   					onClick="changeParamDashboardRequirement('dashboardRequirementMainTypes=<?php echo $idType ?>')"></div>
   					<?php echo htmlEncode($nameType); ?>&nbsp;&nbsp;
@@ -186,48 +185,47 @@ if(isset($_REQUEST['goToRequirement'])){
     	</table>
     </div>
   </div>
-				
 	
 	<div dojo-type="dijit.layout.ContentPane" region="center" style="height:100%;overflow:auto;">
 		<div
 			style="width: 97%; margin: 0 auto; height: 90px; padding-bottom: 15px; border-bottom: 1px solid #CCC;">
 			<table width="100%" class="dashboardTicketMain">
 				<tr>
-					<td valign="top">
+					<td valign="top" style="width:25%">
 						<table>
 							<tr>
-								<td align="left"><a
+								<td align="left"><a style="cursor:pointer"
 									onClick="changeParamDashboardRequirement('dashboardRequirementMainAllRequirement=0')"
-									href="#"><?php echo i18n("dashboardTicketMainAllIssues").addSelected("dashboardRequirementMainAllRequirement",0);?></a></td>
+									href="#"><?php echo i18n("dashboardRequirementMainAllIssues").addSelected("dashboardRequirementMainAllRequirement",0);?></a></td>
 							</tr>
 							<tr>
-								<td align="left"><a
+								<td align="left"><a style="cursor:pointer"
 									onClick="changeParamDashboardRequirement('dashboardRequirementMainAllRequirement=2')"
-									href="#"><?php echo i18n("dashboardTicketMainUnclosed").addSelected("dashboardRequirementMainAllRequirement",2);?></a></td>
+									href="#"><?php echo i18n("dashboardRequirementMainUnclosed").addSelected("dashboardRequirementMainAllRequirement",2);?></a></td>
 							</tr>
 							<tr>
-								<td align="left"><a
+								<td align="left"><a style="cursor:pointer"
 									onClick="changeParamDashboardRequirement('dashboardRequirementMainAllRequirement=1')"
-									href="#"><?php echo i18n("dashboardTicketMainUnresolved").addSelected("dashboardRequirementMainAllRequirement",1);?></a></td>
+									href="#"><?php echo i18n("dashboardRequirementMainUnresolved").addSelected("dashboardRequirementMainAllRequirement",1);?></a></td>
 							</tr>
 						</table>
 					</td>
-					<td valign="top">
+					<td valign="top" style="width:25%">
 						<table>
 							<tr>
-								<td align="left"><a
+								<td align="left"><a style="cursor:pointer"
 									onClick="changeParamDashboardRequirement('dashboardRequirementMainRecent=1')"
-									href="#"><?php echo i18n("dashboardTicketMainAddedRecently").addSelected("dashboardRequirementMainRecent",1);?></a></td>
+									href="#"><?php echo i18n("dashboardRequirementMainAddedRecently").addSelected("dashboardRequirementMainRecent",1);?></a></td>
 							</tr>
 							<tr>
-								<td align="left"><a
+								<td align="left"><a style="cursor:pointer"
 									onClick="changeParamDashboardRequirement('dashboardRequirementMainRecent=2')"
-									href="#"><?php echo i18n("dashboardTicketMainResolvedRecently").addSelected("dashboardRequirementMainRecent",2);?></a></td>
+									href="#"><?php echo i18n("dashboardRequirementMainResolvedRecently").addSelected("dashboardRequirementMainRecent",2);?></a></td>
 							</tr>
 							<tr>
-								<td align="left"><a
+								<td align="left"><a style="cursor:pointer"
 									onClick="changeParamDashboardRequirement('dashboardRequirementMainRecent=3')"
-									href="#"><?php echo i18n("dashboardTicketMainUpdatedRecently").addSelected("dashboardRequirementMainRecent",3);?></a></td>
+									href="#"><?php echo i18n("dashboardRequirementMainUpdatedRecently").addSelected("dashboardRequirementMainRecent",3);?></a></td>
 							</tr>
 							<tr>
 								<td align="left"><?php echo i18n("dashboardTicketMainNumberDay");?>&nbsp;:&nbsp;<div
@@ -239,26 +237,26 @@ if(isset($_REQUEST['goToRequirement'])){
 							</tr>
 						</table>
 					</td>
-					<td valign="top">
+					<td valign="top" style="width:25%">
 						<table>
 							<tr>
-								<td align="left"><a
+								<td align="left"><a style="cursor:pointer"
 									onClick="changeParamDashboardRequirement('dashboardRequirementMainToMe=1')"
-									href="#"><?php echo i18n("dashboardTicketMainAssignedToMe").addSelected("dashboardRequirementMainToMe",1);?></a></td>
+									href="#"><?php echo i18n("dashboardRequirementMainAssignedToMe").addSelected("dashboardRequirementMainToMe",1);?></a></td>
 							</tr>
 							<tr>
-								<td align="left"><a
+								<td align="left"><a style="cursor:pointer"
 									onClick="changeParamDashboardRequirement('dashboardRequirementMainToMe=2')"
-									href="#"><?php echo i18n("dashboardTicketMainReportedByMe").addSelected("dashboardRequirementMainToMe",2);?></a></td>
+									href="#"><?php echo i18n("dashboardRequirementMainReportedByMe").addSelected("dashboardRequirementMainToMe",2);?></a></td>
 							</tr>
 						</table>
 					</td>
-					<td valign="top">
+					<td valign="top" style="width:25%">
 						<table>
 							<tr>
-								<td align="left"><a
+								<td align="left"><a style="cursor:pointer"
 									onClick="changeParamDashboardRequirement('dashboardRequirementMainUnresolved=1')"
-									href="#"><?php echo i18n("dashboardTicketMainUnscheduled").addSelected("dashboardRequirementMainUnresolved",1);?></a></td>
+									href="#"><?php echo i18n("dashboardRequirementMainUnscheduled").addSelected("dashboardRequirementMainUnresolved",1);?></a></td>
 							</tr>
 						</table>
 					</td>
@@ -321,7 +319,7 @@ if(isset($_REQUEST['goToRequirement'])){
     if(isset($param['paramAdd'])){
       $paramAdd=$param['paramAdd'];
       if($total1==null){
-        $result=Sql::query("SELECT COUNT(*) as nbline FROM $tableName r WHERE r.idProject in ".getVisibleProjectsList(false)." $paramAdd ");
+        $result=Sql::query("SELECT COUNT(*) as nbline FROM $tableName r WHERE (r.idProject in ".getVisibleProjectsList(false)." OR (r.idProject is null AND r.idProduct is not null)) $paramAdd");
         if (Sql::$lastQueryNbRows > 0) {
           $line = Sql::fetchLine($result);
           $total1=$line['nbline'];
@@ -330,7 +328,7 @@ if(isset($_REQUEST['goToRequirement'])){
       $total=$total1;
     }else{
       if($total2==null){
-        $result=Sql::query("SELECT COUNT(*) as nbline FROM $tableName r WHERE r.idProject in ".getVisibleProjectsList(false));
+        $result=Sql::query("SELECT COUNT(*) as nbline FROM $tableName r WHERE (r.idProject in ".getVisibleProjectsList(false)." OR (r.idProject is null AND r.idProduct is not null))");
         if (Sql::$lastQueryNbRows > 0) {
           $line = Sql::fetchLine($result);
           $total2=$line['nbline'];
@@ -339,8 +337,7 @@ if(isset($_REQUEST['goToRequirement'])){
       $total=$total2;
     }
     
-    $result=Sql::query("SELECT COUNT(*) as nbline, $ajoutGroupBy as idneed FROM $tableName r WHERE $ajoutGroupBy is not null AND r.idProject in ".getVisibleProjectsList(false)." $paramAdd GROUP BY $ajoutGroupBy ");
-    if ($total > 0) {
+    $result=Sql::query("SELECT COUNT(*) as nbline, $ajoutGroupBy as idneed FROM $tableName r WHERE $ajoutGroupBy is not null AND (r.idProject in ".getVisibleProjectsList(false)." OR (r.idProject is null AND r.idProduct is not null)) $paramAdd GROUP BY $ajoutGroupBy ");    if ($total > 0) {
       $res=array();
       $totR=0;
       while ($line = Sql::fetchLine($result)) {
@@ -400,7 +397,7 @@ if(isset($_REQUEST['goToRequirement'])){
       }
       echo "  <tr>";
       echo "    <td width=\"50%\">";
-      echo '<a class="styleADashboard" href="#" onclick="stockHistory(\'Requirement\',null,\'object\');loadContent(\'dashboardRequirementMain.php?goToRequirement='.$param["groupBy"].'\', \'centerDiv\', \'dashboardRequirementMainForm\');">'.i18n("dashboardTicketMainAllIssues").'</a>';
+      echo '<a class="styleADashboard" href="#" onclick="stockHistory(\'Requirement\',null,\'object\');loadContent(\'dashboardRequirementMain.php?goToRequirement='.$param["groupBy"].'\', \'centerDiv\', \'dashboardRequirementMainForm\');">'.i18n("dashboardRequirementMainAllIssues").'</a>';
       echo "    </td>";
       echo "    <td width=\"10%\">";
       echo '<span style="font-weight: bold;">'.$total.'</span>';
@@ -513,11 +510,11 @@ if(isset($_REQUEST['goToRequirement'])){
     }
     if (Sql::isPgsql()) {
       if($recent=="1")$result.=" AND $prefix.creationDateTime>=current_date - INTERVAL '" . intval($nbDay) . " day' ";
-      if($recent=="2")$result.=" AND $prefix.doneDateTime>=current_date - INTERVAL '" . intval($nbDay) . " day' ";
+      if($recent=="2")$result.=" AND $prefix.doneDate>=current_date - INTERVAL '" . intval($nbDay) . " day' ";
       if($recent=="3")$result.=" AND $prefix.id IN (SELECT r2.refId FROM history r2 WHERE r2.refId=$prefix.id AND r2.refType='Requirement' AND r2.operationDate>=current_date - INTERVAL '" . intval($nbDay) . " day' ) ";
     } else {
       if($recent=="1")$result.=" AND $prefix.creationDateTime>=ADDDATE(NOW(), INTERVAL (-" . intval($nbDay) . ") DAY) ";
-      if($recent=="2")$result.=" AND $prefix.doneDateTime>=ADDDATE(NOW(), INTERVAL (-" . intval($nbDay) . ") DAY) ";
+      if($recent=="2")$result.=" AND $prefix.doneDate>=ADDDATE(NOW(), INTERVAL (-" . intval($nbDay) . ") DAY) ";
       if($recent=="3")$result.=" AND $prefix.id IN (SELECT r2.refId FROM history r2 WHERE r2.refId=$prefix.id AND r2.refType='Requirement' AND r2.operationDate>=ADDDATE(NOW(), INTERVAL (-" . intval($nbDay) . ") DAY)) ";
     }
     
@@ -657,9 +654,9 @@ if(isset($_REQUEST['goToRequirement'])){
       }
       
       if($recent=="2"){
-        $user->_arrayFilters['Requirement'][$iterateur]['sql']['attribute']='doneDateTime';
+        $user->_arrayFilters['Requirement'][$iterateur]['sql']['attribute']='doneDate';
         $user->_arrayFilters['Requirement'][$iterateur]['sql']['operator']='>=';
-        $user->_arrayFilters['Requirement'][$iterateur]['disp']['attribute']=$obRef->getColCaption('doneDateTime');
+        $user->_arrayFilters['Requirement'][$iterateur]['disp']['attribute']=$obRef->getColCaption('doneDate');
         $user->_arrayFilters['Requirement'][$iterateur]['disp']['operator']=">=";
         $user->_arrayFilters['Requirement'][$iterateur]['disp']['value']=i18n('today').' -'.$nbDay.' '.i18n('days');
         if (Sql::isPgsql()) {
@@ -685,7 +682,7 @@ if(isset($_REQUEST['goToRequirement'])){
       
       $toMe=Parameter::getUserParameter("dashboardRequirementMainToMe");
       if($toMe=="1"){
-        $user->_arrayFilters['Requirement'][$iterateur]['sql']['attribute']='idResource';
+        $user->_arrayFilters['Requirement'][$iterateur]['sql']['attribute']=$obRef->getDatabaseColumnName('idResource');
         $user->_arrayFilters['Requirement'][$iterateur]['sql']['operator']='=';
         $user->_arrayFilters['Requirement'][$iterateur]['sql']['value']=$user->id;
         $user->_arrayFilters['Requirement'][$iterateur]['disp']['attribute']=$obRef->getColCaption('idResource');
@@ -694,7 +691,7 @@ if(isset($_REQUEST['goToRequirement'])){
         $iterateur++;
       }
       if($toMe=="2"){
-        $user->_arrayFilters['Requirement'][$iterateur]['sql']['attribute']='idUser';
+        $user->_arrayFilters['Requirement'][$iterateur]['sql']['attribute']=$obRef->getDatabaseColumnName('idUser');
         $user->_arrayFilters['Requirement'][$iterateur]['sql']['operator']='=';
         $user->_arrayFilters['Requirement'][$iterateur]['sql']['value']=$user->id;
         $user->_arrayFilters['Requirement'][$iterateur]['disp']['attribute']=$obRef->getColCaption('idUser');
@@ -702,10 +699,9 @@ if(isset($_REQUEST['goToRequirement'])){
         $user->_arrayFilters['Requirement'][$iterateur]['disp']['value']=$user->name;
         $iterateur++;
       }
-      
       $unresolved=Parameter::getUserParameter("dashboardRequirementMainUnresolved");
       if($unresolved=="1"){
-        $user->_arrayFilters['Requirement'][$iterateur]['sql']['attribute']='idTargetProductVersion';
+        $user->_arrayFilters['Requirement'][$iterateur]['sql']['attribute']=$obRef->getDatabaseColumnName('idTargetProductVersion');
         $user->_arrayFilters['Requirement'][$iterateur]['sql']['operator']='is null';
         $user->_arrayFilters['Requirement'][$iterateur]['sql']['value']='';
         $user->_arrayFilters['Requirement'][$iterateur]['disp']['attribute']=$obRef->getColCaption('idTargetProductVersion');
@@ -713,16 +709,16 @@ if(isset($_REQUEST['goToRequirement'])){
         $user->_arrayFilters['Requirement'][$iterateur]['disp']['value']='';
         $iterateur++;
       }
-      $filterTypes = '';
+      $types = '';
       if (Parameter::getUserParameter("dashboardRequirementMainTypes") != null) {
-        $filterTypes = Parameter::getUserParameter("dashboardRequirementMainTypes");
-        $filterTypesArray = explode(', ', $filterTypes);
+        $types = Parameter::getUserParameter("dashboardRequirementMainTypes");
+        $typesArray = explode(', ', $types);
         $typesNames = '';
-        foreach ($filterTypesArray as $idType) {
+        foreach ($typesArray as $idType) {
           $typesNames .= htmlEncode(SqlList::getNameFromId('Type', $idType)) . ', ';
         }
         $typesNames = substr($typesNames, 0, -2);
-        $user->_arrayFilters['Requirement'][$iterateur]['sql']['attribute'] = 'idRequirementType';
+        $user->_arrayFilters['Requirement'][$iterateur]['sql']['attribute'] = $obRef->getDatabaseColumnName('idRequirementType');
         $user->_arrayFilters['Requirement'][$iterateur]['sql']['operator'] = 'IN';
         $user->_arrayFilters['Requirement'][$iterateur]['sql']['value'] = '(' . $types . ')';
         $user->_arrayFilters['Requirement'][$iterateur]['disp']['attribute'] = $obRef->getColCaption('idRequirementType');

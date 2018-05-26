@@ -1566,7 +1566,6 @@ function finalizeMessageDisplay(destination, validationType) {
       && lastOperationStatus.value != "INVALID"
       && lastOperationStatus.value != "CONFIRM" && lastOperationStatus.value != "INCOMPLETE")) {
     if (destination == 'planResultDiv') {
-      console.log("lastOperationStatus="+lastOperationStatus.value);
       planningResultDivFadingOut = dojo.fadeOut({
         node : contentNode,
         duration : 3000,
@@ -1590,7 +1589,6 @@ function finalizeMessageDisplay(destination, validationType) {
       showError(message);
       addCloseBoxToMessage(destination);
     } else {
-      console.log("lastOperationStatus="+lastOperationStatus.value);
       if (lastOperationStatus.value == "CONFIRM") {
         if (message.indexOf('id="confirmControl" value="delete"') > 0 || message.indexOf('id="confirmControl" type="hidden" value="delete"') > 0) {
           confirm = function() {
@@ -3598,8 +3596,7 @@ function connect(resetPassword) {
       } else {
         getHashTry = 0;
         cryptData(data);
-        loadContent("../tool/loginCheck.php" + urlCompl, "loginResultDiv",
-            "loginForm");
+        loadContent("../tool/loginCheck.php" + urlCompl, "loginResultDiv", "loginForm");
       }
     }
   });

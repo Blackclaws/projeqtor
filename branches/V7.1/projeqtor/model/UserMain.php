@@ -147,27 +147,6 @@ class UserMain extends SqlElement {
     if (! $this->id) {
       $this->idProfile=Parameter::getGlobalParameter('defaultProfile');
     }
-  	// Fetch data to set attributes only to display user. Other access to User (for History) don't need these attributes.
-  	if (isset($objClass) and $objClass and $objClass=='User') {
-	    $crit=array("name"=>"menuContact");
-	    $menu=SqlElement::getSingleSqlElementFromCriteria('Menu', $crit);
-	    if (! $menu) {
-	      return;
-	    }     
-	    if (securityCheckDisplayMenu($menu->id)) {
-	      self::$_fieldsAttributes["isContact"]="";
-	    }
-	    $paramLdap_allow_login=Parameter::getGlobalParameter('paramLdap_allow_login');
-	    if ($this->isLdap!=0 and isset($paramLdap_allow_login) and strtolower($paramLdap_allow_login)=='true') {
-	    	self::$_fieldsAttributes["name"]="readonly, truncatedWidth100";
-	    	//self::$_fieldsAttributes["resourceName"]="readonly";
-	    	self::$_fieldsAttributes["email"]="readonly, truncatedWidth100";
-	    	self::$_fieldsAttributes["password"]="hidden";
-	    }
-	    if ($this->isResource or $this->isContact) {
-	      self::$_fieldsAttributes["resourceName"]="required,truncatedWidth100";
-	    }
-  	}
   }
 
   
@@ -191,6 +170,59 @@ class UserMain extends SqlElement {
     return self::$_layout;
   }
    
+  public function setAttributes() {
+    // Fetch data to set attributes only to display user. Other access to User (for History) don't need these attributes.
+    $crit=array("name"=>"menuContact");
+    $menu=SqlElement::getSingleSqlElementFromCriteria('Menu', $crit);
+    if (! $menu) {
+      return;
+    }
+    if (securityCheckDisplayMenu($menu->id)) {
+      $canUpdateContact=(securityGetAccessRightYesNo('menuContact', 'update', $this) == "YES");
+    } else {
+      $canUpdateContact=false;
+    }
+    if (!$canUpdateContact) {
+      self::$_fieldsAttributes["isContact"]="readonly";
+    } else {
+      self::$_fieldsAttributes["isContact"]="";
+    }
+    $crit=array("name"=>"menuResource");
+    $menu=SqlElement::getSingleSqlElementFromCriteria('Menu', $crit);
+    if (! $menu) {
+      return;
+    }
+    if (securityCheckDisplayMenu($menu->id)) {
+      $canUpdateResource=(securityGetAccessRightYesNo('menuResource', 'update', $this) == "YES");
+    } else {
+      $canUpdateResource=false;
+    }
+    if (!$canUpdateResource) {
+      self::$_fieldsAttributes["isResource"]="readonly";
+      self::$_fieldsAttributes["resourceName"]="readonly";
+    } else {
+      self::$_fieldsAttributes["isResource"]="";
+      self::$_fieldsAttributes["resourceName"]="truncatedWidth100";
+    }
+    if ($this->isResource or $this->isContact) {
+      self::$_fieldsAttributes["resourceName"]="required,truncatedWidth100";
+    }
+    if (!$canUpdateContact and !$canUpdateResource) {
+      self::$_fieldsAttributes["resourceName"]="readonly,truncatedWidth100";
+    } else {
+      self::$_fieldsAttributes["resourceName"]="truncatedWidth100";
+    }
+
+    $paramLdap_allow_login=Parameter::getGlobalParameter('paramLdap_allow_login');
+    if ($this->isLdap!=0 and isset($paramLdap_allow_login) and strtolower($paramLdap_allow_login)=='true') {
+      self::$_fieldsAttributes["name"]="readonly, truncatedWidth100";
+      //self::$_fieldsAttributes["resourceName"]="readonly";
+      self::$_fieldsAttributes["email"]="readonly, truncatedWidth100";
+      self::$_fieldsAttributes["password"]="hidden";
+    }
+   
+  }
+  
   /** ============================================================================
    * Return the specific colCaptionTransposition
    * @return the colCaptionTransposition
@@ -1046,7 +1078,7 @@ class UserMain extends SqlElement {
    * @return -1 or Id of authentified user
    */
 	public function authenticate( $paramlogin, $parampassword) {
-	  global $loginSave;
+	  //global $loginSave;
 debugTraceLog("User->authenticate('$paramlogin', '$parampassword')" );	
 	  $paramLdap_allow_login=Parameter::getGlobalParameter('paramLdap_allow_login');
 	  $paramLdap_base_dn=Parameter::getGlobalParameter('paramLdap_base_dn');
