@@ -4282,7 +4282,7 @@ abstract class SqlElement {
         }
         //end
         foreach($relationShip[get_class($this)] as $object => $mode) {
-          if($canForceClose){
+          if($canForceClose and $mode=='control'){
             $mode = "confirm";
           }
           if (($mode == 'control' or $mode == 'confirm') and property_exists ( $object, 'idle' )) {
@@ -6801,6 +6801,16 @@ public function getMailDetailFromTemplate($templateToReplace, $lastChangeDate=nu
     $status = key($stList); // first status always first in the list
     return $status;
   }
+  public static function mergeAttributesArrays($selfArray,$parentArray){
+    foreach($parentArray as $key=>$val) {
+      if (!isset($selfArray[$key])) {
+        $selfArray[$key]=$val;
+      } else {
+        $selfArray[$key].=','.$val;
+      }
+    }
+    //return self::$_fieldsAttributes=array_merge_preserve_keys($selfArray,$parentArray);
+    return $selfArray;
+  }
 }
-
 ?>

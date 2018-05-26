@@ -306,7 +306,11 @@ function htmlDrawOptionForReference($col, $selection, $obj=null, $required=false
         $class=get_class($obj);
         $proj = new Project(getSessionValue("project"));
         $lstChild = $proj->getRecursiveSubProjectsFlatList(true,true);
-        $restrictArray=array_intersect_assoc($restrictArray,$lstChild);
+        if (count($restrictArray)>0) {
+          $restrictArray=array_intersect_assoc($restrictArray,$lstChild);
+        } else {
+          $restrictArray=$lstChild;
+        }
       }
       // end of $col=="idProject"
     } else if ($col=='idStatus') {
@@ -463,7 +467,7 @@ function htmlDrawOptionForReference($col, $selection, $obj=null, $required=false
       $restrictArray=$restrictArrayVersion;
     }
   } 
-  if ($col=='idProduct') {
+  if ($col=='idProduct' and $obj and get_class($obj)!='ProductVersion') {
     // Must restrict to products visible to user
     $restrictArrayProduct=getSessionUser()->getVisibleProducts();
     if (isset($restrictArray) && count($restrictArray)>0) {

@@ -106,34 +106,6 @@ class ContactMain extends SqlElement {
    */ 
   function __construct($id = NULL, $withoutDependentObjects=false) {
     parent::__construct($id,$withoutDependentObjects);
-        
-    $crit=array("name"=>"menuUser");
-    $menu=SqlElement::getSingleSqlElementFromCriteria('Menu', $crit);
-    if (! $menu) {
-      return;
-    }      
-    if (securityCheckDisplayMenu($menu->id)) {
-      $canUpdateUser=(securityGetAccessRightYesNo('menuUser', 'update', $this) == "YES");;
-      if (! $canUpdateUser) {
-        self::$_fieldsAttributes["idProfile"]="readonly";
-      } else {
-        self::$_fieldsAttributes["isUser"]="";
-        self::$_fieldsAttributes["idProfile"]="";
-        if ($this->isUser) {
-          self::$_fieldsAttributes["idProfile"]="required";
-          self::$_fieldsAttributes["userName"]="required,truncatedWidth100";
-        }
-      }
-    }
-    
-    $crit=array("name"=>"menuResource");
-    $menu=SqlElement::getSingleSqlElementFromCriteria('Menu', $crit);
-    if (! $menu) {
-      return;
-    }     
-    if (securityCheckDisplayMenu($menu->id)) {
-      self::$_fieldsAttributes["isResource"]="";
-    }
   }
 
   
@@ -157,6 +129,52 @@ class ContactMain extends SqlElement {
     return self::$_layout;
   }
  
+  public function setAttributes() {
+    $crit=array("name"=>"menuUser");
+    $menu=SqlElement::getSingleSqlElementFromCriteria('Menu', $crit);
+    if (! $menu) {
+      return;
+    }
+    if (securityCheckDisplayMenu($menu->id)) {
+      $canUpdateUser=(securityGetAccessRightYesNo('menuUser', 'update', $this) == "YES");
+    } else {
+      $canUpdateUser=false;
+    }
+    if (! $canUpdateUser) {
+      self::$_fieldsAttributes["idProfile"]="readonly";
+      self::$_fieldsAttributes["isUser"]="readonly";
+      self::$_fieldsAttributes["userName"]="readonly,truncatedWidth100";
+    } else {
+      self::$_fieldsAttributes["isUser"]="";
+      self::$_fieldsAttributes["idProfile"]="";
+      self::$_fieldsAttributes["userName"]="truncatedWidth100";
+      if ($this->isUser) {
+        self::$_fieldsAttributes["idProfile"]="required";
+        self::$_fieldsAttributes["userName"]="required,truncatedWidth100";
+      }
+    }
+  
+    $crit=array("name"=>"menuResource");
+    $menu=SqlElement::getSingleSqlElementFromCriteria('Menu', $crit);
+    if (! $menu) {
+      return;
+    }
+    if (securityCheckDisplayMenu($menu->id)) {
+      $canUpdateResource=(securityGetAccessRightYesNo('menuResource', 'update', $this) == "YES");
+    } else {
+      $canUpdateResource=false;
+    }
+    if (!$canUpdateResource) {
+      self::$_fieldsAttributes["isResource"]="readonly";
+    } else {
+      self::$_fieldsAttributes["isResource"]="";
+    }
+    
+    if (Parameter::getGlobalParameter('manageTicketCustomer') != 'YES') {
+      self::$_fieldsAttributes["_sec_TicketsClient"]='hidden';
+      self::$_fieldsAttributes["_spe_tickets"]='hidden';
+    }
+  }
   /** ========================================================================
    * Return the specific databaseTableName
    * @return the databaseTableName
@@ -391,11 +409,5 @@ class ContactMain extends SqlElement {
     return $result;
   }
   
-  public function setAttributes() {
-    if (Parameter::getGlobalParameter('manageTicketCustomer') != 'YES') {
-      self::$_fieldsAttributes["_sec_TicketsClient"]='hidden';
-      self::$_fieldsAttributes["_spe_tickets"]='hidden';
-    }
-  }
 }
 ?>
