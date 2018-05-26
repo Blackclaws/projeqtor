@@ -91,10 +91,21 @@ update ${prefix}productlanguage set scope = 'Product' where idProduct in (select
 ALTER TABLE `${prefix}deliverable` ADD `initialDate` DATE NULL DEFAULT NULL;
 ALTER TABLE `${prefix}delivery` ADD `initialDate` DATE NULL DEFAULT NULL;
 
-
-
 --- ================================================================
 --  FIX
 --- ================================================================
 UPDATE `${prefix}dependency` SET predecessorRefType='Project' where predecessorRefType='Replan';
 UPDATE `${prefix}dependency` SET successorRefType='Project' where successorRefType='Replan';
+
+--- ================================================================
+--  Dashboard of Requirements
+--- ================================================================
+-- BEGIN - ADD qCazelles - Requirements dashboard - Ticket 90
+
+INSERT INTO `${prefix}menu` (`id`, `name`, `idMenu`, `type`, `sortOrder`, `level`, `idle`, `menuClass`) VALUES
+(189, 'menuDashboardRequirement', 110, 'item', 165, NULL, 0, 'RequirementTest');
+
+INSERT INTO `${prefix}habilitation` (`idProfile`, `idMenu`, `allowaccess`) VALUES
+(1, 189, 1);
+
+--END - ADD qCazelles - Requirements dashboard - Ticket 90
