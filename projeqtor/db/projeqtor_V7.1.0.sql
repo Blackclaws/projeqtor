@@ -109,3 +109,17 @@ INSERT INTO `${prefix}habilitation` (`idProfile`, `idMenu`, `allowaccess`) VALUE
 (1, 189, 1);
 
 --END - ADD qCazelles - Requirements dashboard - Ticket 90
+
+-- =================================================================
+INSERT INTO `${prefix}report`(`id`, `name`, `idReportCategory`, `file`, `sortOrder`, `idle`, `orientation`, `hasCsv`, `hasView`, `hasPrint`, `hasPdf`, `hasToday`, `hasFavorite`, `hasWord`, `hasExcel`) VALUES 
+(84,'reportRequirementOpenQuestion',8,'requirementOpenQuestion.php',880,0,'L',0,1,1,1,1,1,0,0);
+
+INSERT INTO `${prefix}reportparameter`(`idReport`, `name`, `paramType`, `sortOrder`, `idle`, `defaultValue`, `multiple`) VALUES 
+(84,'idProject','projectList',10,0,'currentProject',0),
+(84,'idProduct','productList',20,0,null,0),
+(84,'idVersion','versionList',30,0,null,0);
+
+INSERT INTO `${prefix}habilitationreport` (`idProfile`, `idReport`, `allowAccess`) VALUES
+(1, 84, 1),
+(2, 84, 1),
+(3, 84, 1);
