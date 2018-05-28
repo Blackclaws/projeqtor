@@ -111,6 +111,9 @@ INSERT INTO `${prefix}habilitation` (`idProfile`, `idMenu`, `allowaccess`) VALUE
 --END - ADD qCazelles - Requirements dashboard - Ticket 90
 
 -- =================================================================
+-- IGE Reports
+-- =================================================================
+
 INSERT INTO `${prefix}report`(`id`, `name`, `idReportCategory`, `file`, `sortOrder`, `idle`, `orientation`, `hasCsv`, `hasView`, `hasPrint`, `hasPdf`, `hasToday`, `hasFavorite`, `hasWord`, `hasExcel`) VALUES 
 (84,'reportRequirementOpenQuestion',8,'requirementOpenQuestion.php',880,0,'L',0,1,1,1,1,1,0,0);
 
@@ -123,3 +126,5 @@ INSERT INTO `${prefix}habilitationreport` (`idProfile`, `idReport`, `allowAccess
 (1, 84, 1),
 (2, 84, 1),
 (3, 84, 1);
+
+ALTER TABLE `${prefix}type` ADD `lockUseOnlyForCC` int(1) unsigned default '0';

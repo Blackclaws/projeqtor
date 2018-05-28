@@ -191,6 +191,7 @@ class Type extends SqlElement {
     self::$_cacheClassList[$includeProjectType]=$result;
     return $result;
   }
+
   public static function getRestrictedTypes($idProject,$idProjectType,$idProfile) {
     if ($idProject) {
       $crit['idProject']=$idProject;

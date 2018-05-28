@@ -29,11 +29,43 @@
  */ 
 require_once('_securityCheck.php');
 class ComponentType extends Type {
-
+  public $_sec_Description;
+  public $id;    // redefine $id to specify its visible place
+  public $name;
+  public $code;
+  public $idWorkflow;
+  public $sortOrder=0;
+  public $idle;
+  public $description;
+  public $_sec_Behavior;
+  public $mandatoryDescription;
+  public $_lib_mandatoryField;
+  public $mandatoryResourceOnHandled;
+  public $_lib_mandatoryOnHandledStatus;
+  public $mandatoryResultOnDone;
+  public $_lib_mandatoryOnDoneStatus;
+  public $mandatoryResolutionOnDone;
+  public $_lib_mandatoryResolutionOnDoneStatus;
+  public $lockHandled;
+  public $_lib_statusMustChangeHandled;
+  public $lockDone;
+  public $_lib_statusMustChangeDone;
+  public $lockIdle;
+  public $_lib_statusMustChangeIdle;
+  public $lockUseOnlyForCC;
+  public $_lib_statusUseOnlyForCC;
+  public $lockCancelled;
+  public $_lib_statusMustChangeCancelled;
+  public $lockNoLeftOnDone;
+  public $_lib_statusMustChangeLeftDone;
+  public $showInFlash;
+  public $internalData;
+  public $scope;
   // Define the layout that will be used for lists
     
   private static $_fieldsAttributes=array(//'idWorkflow'=>'hidden', //CHANGE qCazelles - Ticket #53
       "mandatoryResultOnDone"=>"hidden",
+      "lockUseOnlyForCC"=>"nobr",
       "_lib_mandatoryOnDoneStatus"=>"hidden",
       "lockHandled"=>"hidden",
       "_lib_statusMustChangeHandled"=>"hidden",
