@@ -56,6 +56,8 @@ class ComponentVersionType extends Type {
   public $_lib_statusMustChangeIntoservice;
   public $lockIdle;
   public $_lib_statusMustChangeIdle;
+  public $lockUseOnlyForCC;
+  public $_lib_statusUseOnlyForCC;
   public $lockCancelled;
   public $_lib_statusMustChangeCancelled;
   public $lockNoLeftOnDone;
@@ -67,6 +69,7 @@ class ComponentVersionType extends Type {
   private static $_fieldsAttributes=array(//'idWorkflow'=>'hidden', //CHANGE qCazelles - Ticket #53
    "mandatoryResultOnDone"=>"hidden",
     "_lib_mandatoryOnDoneStatus"=>"hidden",
+      "lockUseOnlyForCC"=>"nobr",
 //     "lockHandled"=>"hidden",
 //     "_lib_statusMustChangeHandled"=>"hidden",
 //     "lockDone"=>"hidden",

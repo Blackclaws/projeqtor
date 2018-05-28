@@ -83,6 +83,9 @@ class ComponentVersionMain extends Version {
   public $_productContext;
   public $_sec_Ticket;
   public $_spe_tickets;
+  public $_sec_Activity;
+  public $_spe_activity;
+  public $_spe_hideClosedActivity;
   //END ADD qCazelles - LANG 2
   public $_sec_Link;
   public $_Link = array();
@@ -166,7 +169,13 @@ class ComponentVersionMain extends Version {
     if (Parameter::getGlobalParameter('manageTicketVersion') != 'YES') {
       self::$_fieldsAttributes["_sec_Ticket"]='hidden';
       self::$_fieldsAttributes["_spe_tickets"]='hidden';
-    }    
+    }
+    
+    if (Parameter::getGlobalParameter('displayListOfActivity') != 'YES') {
+      self::$_fieldsAttributes["_sec_Activity"]='hidden';
+      self::$_fieldsAttributes["_spe_activity"]='hidden';
+    }
+    
     if ($this->id and $this->isStarted) {
       self::$_fieldsAttributes["initialStartDate"]='readonly';
       self::$_fieldsAttributes["plannedStartDate"]='readonly';
@@ -340,6 +349,8 @@ class ComponentVersionMain extends Version {
    */
   public function drawSpecificItem($item){
     $result="";
+    $showClosedActivity=(Parameter::getUserParameter('showClosedActivity')!='0')?true:false;
+  
     if ($item=='tenders') {
        Tender::drawListFromCriteria('id'.get_class($this),$this->id);
     }
@@ -349,6 +360,18 @@ class ComponentVersionMain extends Version {
   		$result=parent::drawFlatStructureButton('ComponentVersion', $this->id);
   		return $result;
   	}
+  	if ($item=='hideClosedActivity' and !$print and $this->id){
+  	  $result.='<td for="showClosedActivity" style="color:white;position:absolute;right:25px;top:3px;">'.i18n('labelShowIdleActivities').'</td>';
+  	  $result.='<div id="hideClosedActivity" style="position:absolute;right:3px;top:3px;" dojoType="dijit.form.CheckBox" type="checkbox" '.(($showClosedActivity)?'checked':'').'>';  	  
+  	  $result.='title="'.i18n('labelShowIdle').'"';
+  	  $result.='<script type="dojo/connect" event="onChange" args="evt">';
+  	  $result.=' saveUserParameter("showClosedActivity",((this.checked)?"1":"0"));';
+  	  $result.=' if (checkFormChangeInProgress()) {return false;}';
+  	  $result.=' loadContent("objectDetail.php", "detailDiv", "listForm");';
+  	  $result.=' </script>';
+  	  $result.='</div>';
+  	}
+  	return $result;
   	//END ADD qCazelles - dateComposition
   }
   

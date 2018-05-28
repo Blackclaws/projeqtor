@@ -25,6 +25,11 @@ Each user is linked to a profile to define the data he can see and possibly mana
 * In the next screens, the name of profiles is displayed in columns.
 * Access rights and options are displayed in rows.
 * This display format allows to manage easily authorizations for each profile.  
+
+
+.. figure:: /images/GUI/PROFILISTE.png 
+   :alt: Access to forms screen
+   :align: center 
  
 
 -----------------------
@@ -105,6 +110,10 @@ Each access is defined as scope of visible and updatable elements, that can be :
 
 -----------------------
 
+.. figure:: /images/GUI/accesmode1.png 
+   :alt: Access to forms screen
+   :align: center 
+
 .. rubric:: Value of Field "Name"
 
 * The value of field "Name"  is not the name displayed, but it is a code in the translation table. 
@@ -172,8 +181,8 @@ Users belonging to a profile can see the corresponding screen in the menu.
 * Screens are grouped as seen in the menu.
 * Click on checkbox to permit or revoke access to the screen for a profile.
 
-.. figure:: /images/GUI/SCR_AccessToForms.png
-   :alt: Access to forms screen
+.. figure:: /images/GUI/ACCESTOFORM1.png
+   :alt: Access to forms scREEN
    :align: center
 
    Access to forms screen

@@ -1445,8 +1445,12 @@ function addProductStructure(way) {
       dijit.byId('dialogProductStructure').show();
     }
   }
+  dojo.xhrGet({
+   	url : "../tool/filterComponentType.php?" + param,
+	});
   loadDialog('dialogProductStructure',callBackFunc, false, param, true);
 }
+
 function editProductStructure(way,productStructureId) {
   if (checkFormChangeInProgress()) {
    showAlert(i18n('alertOngoingChange'));
