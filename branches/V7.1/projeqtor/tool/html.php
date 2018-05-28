@@ -39,7 +39,7 @@ require_once "../tool/projeqtor.php";
  * @return void
  */
 // CHANGE BY Marc TABARY - 2017-02-17
-function htmlDrawOptionForReference($col, $selection, $obj=null, $required=false, $critFld=null, $critVal=null, $limitToActiveProjects=true, $limitToActiveOrganizations=true) {
+function htmlDrawOptionForReference($col, $selection, $obj=null, $required=false, $critFld=null, $critVal=null, $limitToActiveProjects=true, $limitToActiveOrganizations=true) { 
 	scriptLog("      =>htmlDrawOptionForReference(col=$col,selection=$selection,object=" .debugDisplayObj($obj).",required=$required,critFld=".debugDisplayObj($critFld).",critVal=".debugDisplayObj($critVal).")");
   // Take into account array of $critFld // TODO : check where it is used 
 
@@ -154,7 +154,20 @@ function htmlDrawOptionForReference($col, $selection, $obj=null, $required=false
     if($listType=="Activity" and $class=='Ticket' and $limitPlanning=="YES"){
       $critArray['isPlanningActivity']=1;
     }    
+    
+    if ($col =='idTargetComponentVersion' and $obj and (get_class($obj)=='Activity') and $obj->idProduct == null and $obj->idComponent == null){
+      $type = new Type();
+      $componentVersionTypeDisplay = $type->getSqlElementsFromCriteria(array('lockUseOnlyForCC'=>'0','scope'=>'ComponentVersion'));
+      $cpt=0;
+      foreach ($componentVersionTypeDisplay as $cvtd){     
+        $arrayType[$cpt] = $cvtd->id;
+        $cpt+=1;
+      }  
+      $critArray['idVersionType'] = array_values($arrayType);        
+    }
+    
     $table=SqlList::getListWithCrit($listType,$critArray,$column,$selection);
+    
     if ($selection) {
       $refTable=substr($col,2);
       if (substr($listType,-7)=='Version' and SqlElement::is_a($refTable, 'Version')) $refTable='Version';
@@ -358,7 +371,7 @@ function htmlDrawOptionForReference($col, $selection, $obj=null, $required=false
     	$lst=$proj->getTopProjectList(true);
     	$inClause='(0';
     	foreach ($lst as $prj) {
-    	  if ($prj) {
+    	  if ($prj){
     	    $inClause.=',';
     	    $inClause.=$prj;
     	  }
@@ -366,10 +379,29 @@ function htmlDrawOptionForReference($col, $selection, $obj=null, $required=false
     	$inClause.=')';
     	$versProjList=$versProj->getSqlElementsFromCriteria(null, false, 'idProject in '.$inClause);
     	if (count($versProjList)==0) $table=array();
-    	foreach ($versProjList as $versProj) {
-    		$vers=new Version($versProj->idVersion,true);
-    		$restrictArray[$vers->idProduct]="OK";
+    	    	
+    	// hide automatically component depending of his type - Add mOlives - Ticket 178 - 17/05/2018
+    	if ($col =='idComponent' and get_class($obj)=='Activity' and $obj->idProduct == null){
+    	  $type = new Type();
+    	  $componentTypeDisplay = $type->getSqlElementsFromCriteria(array('lockUseOnlyForCC'=>'0','scope'=>'Component'));
+    	  
+    	  foreach ($versProjList as $versProj) {
+    	    $vers=new Version($versProj->idVersion,true);
+    	    $comp = new Component($vers->idProduct);   	      	    
+    	    foreach ($componentTypeDisplay as $filterType){
+    	      if ($comp->idComponentType == $filterType->id)
+    	        $restrictArray[$vers->idProduct]="OK";
+    	    }
+    	  }  	    
     	}
+    	else{
+    	  foreach ($versProjList as $versProj) {
+    	    $vers=new Version($versProj->idVersion,true);
+    	    $restrictArray[$vers->idProduct]="OK";
+    	  }
+    	}  	
+    	//End mOlives - Ticket 178 - 17/05/2018
+    	
     	// Add list of products  directly linked to project (not only through version)
     	$pp=new ProductProject();
     	$ppList=$pp->getSqlElementsFromCriteria(null, false, 'idProject in '.$inClause);
@@ -385,6 +417,20 @@ function htmlDrawOptionForReference($col, $selection, $obj=null, $required=false
       // Limit list of components depending on Product (only components linked to the product) 
       $prod=new Product($critVal,true);
       $table=$prod->getComposition(true,true);
+      
+     // hide automatically component depending of his type - Add mOlives - Ticket 178 - 17/05/2018
+      if ($col =='idComponent' and (get_class($obj)=='Activity' or get_class($obj)=='Ticket') and $obj->idProduct != null){
+        $type = new Type();
+        $componentTypeNoDisplay = $type->getSqlElementsFromCriteria(array('lockUseOnlyForCC'=>'1','scope'=>'Component'));        
+        foreach($table as $key => $val){
+           $comp = new Component($key);
+           foreach ($componentTypeNoDisplay as $ctnd){
+             if ($comp->idComponentType == $ctnd->id )
+               unset($table[$key]);       
+           }
+        }        
+      }
+      //End mOlives - Ticket 178 - 17/05/2018
       if ($selection) {
         $table[$selection]=SqlList::getNameFromId(substr($col,2), $selection);
       }
@@ -393,10 +439,25 @@ function htmlDrawOptionForReference($col, $selection, $obj=null, $required=false
       // Limit Component version (target, source or else) depending on Product Version
       $prodVers=new ProductVersion($critVal,true);
       $table=$prodVers->getComposition(true,true);
+      
       if (isset($critFld1) and isset($critVal1) and $critFld1=='idComponent') {
         $listVers=SqlList::getListWithCrit('ComponentVersion', array('idComponent'=>$critVal1));
         $table=array_intersect_assoc($table,$listVers);
       }
+      
+      if (get_class($obj) == 'Ticket'){
+        $type = new Type();
+        $componentTypeNoDisplay = $type->getSqlElementsFromCriteria(array('lockUseOnlyForCC'=>'1','scope'=>'ComponentVersion'));
+        //// hide automatically component Version depending of his type - Add mOlives - Ticket 178 - 17/05/2018
+        foreach ($table as $key => $val){
+          $compVers = new ComponentVersion($key);
+          foreach($componentTypeNoDisplay as $ctnd){
+            if ($compVers->idComponentVersionType == $ctnd->id)
+              unset($table[$key]); 
+          }
+        }    
+      }
+      
       if ($selection) {
         $table[$selection]=SqlList::getNameFromId('ComponentVersion', $selection);
       }

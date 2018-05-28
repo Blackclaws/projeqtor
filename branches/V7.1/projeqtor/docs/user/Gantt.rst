@@ -300,19 +300,29 @@ For each planning element, a Gantt bar is displayed at them right.
 * To modify dependency link, click on dependency to displays a pop-up
 
 .. figure:: /images/GUI/dependencies.png
-   :alt: Multiple mode
-   3 options : 
-* end-start. The second activity can not start before the end of the first activity.
+   :alt: update dependency pop-up
+   update dependency pop-up
+
+3 dependency types are managed: 
+
+* End-Start. The second activity can not start before the end of the first activity.
 * Start-Start: the successor can not begin before the beginning of the predecessor. Anyway, the successor can begin after the beginning of the predecessor.
-* End-End: The successor should not end after the end of the predecessor, which leads to planning "as late as possible". Anyway, the successor can end before the predecessor.
-Note that the successor "should" not end after the end of predecessor, but in some cases this will not be respected:
-if the resource is already 100% used until the end of the successor
-if the successor has another predecessor of type "End-Start" or "Start-Start" and the remaining time is not enough to complete the task
-if the delay from the planning start date does not allow to complete the task
+* End-End: The successor should not end after the end of the predecessor, which leads to planning "as late as possible". Anyway, the successor can end before the predecessor. Note that the successor "should" not end after the end of predecessor, but in some cases this will not be respected:
+
+  * if the resource is already 100% used until the end of the successor
+  * if the successor has another predecessor of type "End-Start" or "Start-Start" and the remaining time is not enough to complete the task
+  * if the delay from the planning start date does not allow to complete the task
  
 .. note:: Pop-up
 
+     * Right click on a dependency link (when its color is orange) will show update pop-up
      * You can modify the delay, add a comment or remove the dependency.
+
+.. note:: Graphical add dependency
+
+     * You can easily add a dependency with drag and drop from predecessor bar to successor bar
+     * These dependencies are always End-Start, but you can change their type afterwards
+
 
 .. raw:: latex
 

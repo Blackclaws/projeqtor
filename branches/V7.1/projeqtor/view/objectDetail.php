@@ -5,23 +5,23 @@
  * Contributors : -
  *
  * This file is part of ProjeQtOr.
- * 
- * ProjeQtOr is free software: you can redistribute it and/or modify it under 
- * the terms of the GNU Affero General Public License as published by the Free 
- * Software Foundation, either version 3 of the License, or (at your option) 
+ *
+ * ProjeQtOr is free software: you can redistribute it and/or modify it under
+ * the terms of the GNU Affero General Public License as published by the Free
+ * Software Foundation, either version 3 of the License, or (at your option)
  * any later version.
- * 
+ *
  * ProjeQtOr is distributed in the hope that it will be useful, but WITHOUT ANY
- * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS 
- * FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for 
+ * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for
  * more details.
  *
  * You should have received a copy of the GNU Affero General Public License along with
  * ProjeQtOr. If not, see <http://www.gnu.org/licenses/>.
  *
  * You can get complete code of ProjeQtOr, other resource, help and information
- * about contributors at http://www.projeqtor.org 
- *     
+ * about contributors at http://www.projeqtor.org
+ *
  *** DO NOT REMOVE THIS NOTICE ************************************************/
 
 /*
@@ -42,7 +42,7 @@ if (!isset($comboDetail)) {
 $collapsedList=Collapsed::getCollaspedList();
 $readOnly=false;
 if (false===function_exists('lcfirst')) {
-
+  
   function lcfirst($str) {
     $str[0]=strtolower($str[0]);
     return (string)$str;
@@ -876,6 +876,11 @@ $cr, $print, $treatedObjects, $displayWidth, $outMode, $comboDetail, $collapsedL
     } else if ($col=='_spe_tickets' and !$obj->isAttributeSetTofield($col, 'hidden')) {
       drawTicketsList($obj);
       // END ADD qCazelles - Manage ticket at customer level - Ticket #87
+    }
+      // Add mOlives - ticket 215 - 09/05/2018
+    else if ($col=='_spe_activity' and !$obj->isAttributeSetTofield($col, 'hidden')){
+      drawActivityList($obj);
+      // End mOlives - ticket 215 - 09/05/2018
     } else if (substr($col, 0, 5)=='_spe_') { // if field is _spe_xxxx, draw the specific item xxx
       $item=substr($col, 5);
       if ($internalTable) {
@@ -4324,6 +4329,74 @@ function drawTicketsList($obj, $refresh=false) {
   }
 }
 // END ADD qCazelles - Manage ticket at customer level - Ticket #87
+
+// Add mOlives - ticket 215 - 09/05/2018
+function drawActivityList($obj, $refresh=false) {
+  global $cr, $print, $user, $comboDetail;
+  if ($comboDetail) {
+    return;
+  }
+  
+  $canUpdate=securityGetAccessRightYesNo('menu'.get_class($obj), 'update', $obj)=="YES";
+  if ($obj->idle==1) {
+    $canUpdate=false;
+  }
+  if (!$refresh) echo '<tr><td colspan="4">';
+  echo '<table style="width:100%;">';
+  echo '<tr>';
+  $listClass='Activity';
+  echo '<td class="linkHeader" style="width:'.(($print)?'20':'15').'%">'.i18n($listClass).'</td>';
+  echo '<td class="linkHeader" style="width:45%">'.i18n('colName').'</td>';
+  echo '<td class="linkHeader" style="width:15%">'.i18n('colProgress').'</td>';
+  echo '<td class="linkHeader" style="width:20%">'.i18n('colIdStatus').'</td>';
+  echo '</tr>';
+  if (!$obj->id) {
+    $list=array();
+  } else if (get_class($obj)=='ComponentVersion') {
+    $crit=array('idTarget'.get_class($obj)=>$obj->id);
+    $activity=new Activity();
+    $list=$activity->getSqlElementsFromCriteria($crit);
+  }
+  if (!isset($list)) $list=array();
+  $showClosedActivity=Parameter::getUserParameter('showClosedActivity');
+  foreach ($list as $activity) {
+    if ( $showClosedActivity == 1  or ( $showClosedActivity == 0 and $activity->idle == 0)){
+    $canGoto=(securityCheckDisplayMenu(null, $listClass) and securityGetAccessRightYesNo('menu'.$listClass, 'read', $activity)=="YES")?true:false;
+    echo '<tr>';
+    $classCompName=i18n($listClass);
+    echo '<td class="linkData" style="white-space:nowrap;width:'.(($print)?'20':'15').'%"><table><tr><td>'.formatIcon($listClass, 16).'</td><td style="vertical-align:top">&nbsp;'.'#'.$activity->id.'</td></tr></table>';
+    echo '</td>';
+    $goto="";
+    if (!$print and $canGoto) {
+      $goto=' onClick="gotoElement('."'".$listClass."','".htmlEncode($activity->id)."'".');" style="cursor: pointer;" ';
+    }
+    echo '<td class="linkData" '.$goto.' style="position:relative;">';
+    echo htmlEncode($activity->name);
+    echo '</td><td class="linkData">';    
+    $pe = new PlanningElement();
+    $crit = array('refId'=>$activity->id);
+    $arrayActivity = $pe->getSqlElementsFromCriteria($crit);
+    $act=reset($arrayActivity);
+    $activityProgress = $act->progress;
+    
+    echo progressFormatter($activityProgress,null);
+    echo '</td><td class="linkData">';
+    
+    echo colorNameFormatter(SqlList::getNameFromId('Status', $activity->idStatus)."#split#".SqlList::getFieldFromId('Status', $activity->idStatus, 'color')).'</td>';
+    echo '</td>';
+    echo '</tr>';
+  }
+  }
+  
+  
+  echo '</table>';
+  if (!$refresh) echo '</td></tr>';
+  if (!$print) {
+    echo '<input id="ActivitySectionCount" type="hidden" value="'.count($list).'" />';
+  }
+}
+// END mOlives - ticket 215 - 09/05/2018
+
 function drawVersionStructureFromObject($obj, $refresh=false, $way, $item) {
   $crit=array();
   if ($way=='composition') {

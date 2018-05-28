@@ -266,6 +266,7 @@ class Parameter extends SqlElement {
       case 'autoUpdateActivityStatus':
       case 'subscriptionAuto':
       case 'displayBusinessFeature':
+      case 'displayListOfActivity':
       case 'filterByStatus':
       case 'displayLanguage' :
       case 'displayContext' :
@@ -726,23 +727,27 @@ class Parameter extends SqlElement {
       	                       'billReferenceFormat'=>'text',
       	                       'billNumSize'=>'number',
       	                  'columnMiscellanousRight'=>'newColumn',
-      	                    'sectionProductAndComponent'=>'section',  	// ADD by qCazelles
-      	                      'displayBusinessFeature'=>'list',
-    	                        'displayMilestonesStartDelivery'=>'list',
-                             	'displayLanguage'=>'list',
-                             	'displayContext'=>'list',
-                             	'showTendersOnVersions'=>'list',
-                             	'directAccessToComponentList'=>'list',
-                            	'versionNameAutoformat'=>'list',
-                             	'versionNameAutoformatSeparator'=>'text',
-                             	'subscriptionAuto'=>'list',
-                             	'versionCompatibility'=>'list',
-                              //'sectionDelivery'=>'section', //ADD qCazelles
-                              'productVersionOnDelivery'=>'list',
-                              'sortVersionComboboxNameDesc'=>'list', //ADD qCazelles - Sort versions in combobox - Ticket 89
-                              'sortCompositionStructure'=>'list', //ADD qCazelles - Sort version composition-structure - Ticket 142
-                              'manageComponentOnRequirement'=>'list',   //ADD qCazelles - Add Component to Requirement - Ticket 171
-                              'dontAddClosedDeliveredVersionToProject'=>'list', //ADD qCazelles - Dont add closed and delivered versions to Project - Ticket 181
+      	              'tabConfiguration'=>'tab', //Add molives - ticket 178 - 26/04/2018
+      	                  'columnConfigurationLeft'=>'newColumn',
+        	                  'sectionProductAndComponent'=>'section',  	// ADD by qCazelles
+        	                  'displayBusinessFeature'=>'list',
+        	                  'displayMilestonesStartDelivery'=>'list',
+        	                  'displayLanguage'=>'list',
+        	                  'displayContext'=>'list',
+        	                  'showTendersOnVersions'=>'list',
+        	                  'displayListOfActivity'=>'list',
+        	                  'directAccessToComponentList'=>'list',
+        	                  'versionNameAutoformat'=>'list',
+        	                  'versionNameAutoformatSeparator'=>'text',
+        	                  'subscriptionAuto'=>'list',
+        	                  'versionCompatibility'=>'list',
+                            //'sectionDelivery'=>'section', //ADD qCazelles
+                            'productVersionOnDelivery'=>'list',
+                            'sortVersionComboboxNameDesc'=>'list', //ADD qCazelles - Sort versions in combobox - Ticket 89
+                            'sortCompositionStructure'=>'list', //ADD qCazelles - Sort version composition-structure - Ticket 142
+                            'manageComponentOnRequirement'=>'list',   //ADD qCazelles - Add Component to Requirement - Ticket 171
+                            'dontAddClosedDeliveredVersionToProject'=>'list', //ADD qCazelles - Dont add closed and delivered versions to Project - Ticket 181
+                          'columnConfigurationRight'=>'newColumn',
                         'tabMail'=>"tab",   
                           'newColumnMailLeft'=>'newColumn',
                             'sectionMail'=>'section',

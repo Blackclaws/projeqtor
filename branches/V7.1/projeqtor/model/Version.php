@@ -548,11 +548,12 @@ class Version extends SqlElement {
   public function treatmentVersionPlanning ($parentVersion) {    
     if ($this->directChild($parentVersion)) {
       $this->displayVersion($parentVersion);
-      
+   
       if ($this->hasChild()) {
         foreach (ProductVersionStructure::getComposition($this->id) as $key => $idComponentVersion) {
           $componentVersion = new ComponentVersion($idComponentVersion);
-          $componentVersion->treatmentVersionPlanning($this);
+          $hide=SqlList::getFieldFromId('ComponentVersionType', $componentVersion->idComponentVersionType, 'lockUseOnlyForCC');
+          if ($hide!=1) $componentVersion->treatmentVersionPlanning($this);
         }
       }
     }
