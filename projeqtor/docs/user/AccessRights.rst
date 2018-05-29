@@ -15,9 +15,9 @@ Profiles
 
    * :ref:`profiles-definition`
 
-The profile is a group of authorization and access rights to the data.
+The profile is an entitlement group, each with specific access rights to the database.
 
-Each user is linked to a profile to define the data he can see and possibly manage. 
+So, each user is linked to a profile which defines the data he can see and possibly manage. 
 
 
 .. rubric:: Display format
@@ -98,9 +98,9 @@ Each user is linked to a profile to define the data he can see and possibly mana
 Access modes
 ------------
 
-The access mode defines a combination of rights to read, created, update or delete items.
+The access mode defines a combination of rights to read, created, update or delete items. (CRUD RIGHTS)
 
-Each access is defined as scope of visible and updatable elements, that can be :
+Each access is defined as scope of visible and/or updatable, that can be, by kind of elements:
 
 * **No element:** No element is visible and updatable.
 * **Own elements:** Only the elements created by the user.
@@ -172,13 +172,13 @@ Each access is defined as scope of visible and updatable elements, that can be :
 Access to forms
 ---------------
 
-This screen allows to define screen access for each profile.
+This table is used to define the access to the selected screen for each profile.
 
-Users belonging to a profile can see the corresponding screen in the menu.
+Users belonging to one profile can see the corresponding screen if authorized or not. 
 
 .. rubric:: How to do
 
-* Screens are grouped as seen in the menu.
+* Screens are grouped as seen therefore in the menu.
 * Click on checkbox to permit or revoke access to the screen for a profile.
 
 .. figure:: /images/GUI/ACCESTOFORM1.png
@@ -218,7 +218,7 @@ Access to data (project dependant)
 
 This screen allows to set element access mode for each profile.
 
-Allows to define scope of visibility and updating of data in elements for users and resources.
+Allows to define scope of visibility  and/or updating of data in elements for users and resources.
 
 This screen is only for the elements reliant on a project.
 
