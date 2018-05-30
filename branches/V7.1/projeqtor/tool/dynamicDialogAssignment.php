@@ -314,7 +314,7 @@ $resource=new ResourceAll($idResource);
                <label for="assignmentComment" ><?php echo i18n("colComment");?>&nbsp;:&nbsp;</label>
              </td>
              <td>
-               <input id="assignmentComment" name="assignmentComment" value="<?php echo $assignmentObj->comment;?>"  
+               <input id="assignmentComment" name="assignmentComment" value="<?php echo htmlEncode($assignmentObj->comment);?>"  
                  dojoType="dijit.form.Textarea"
                  class="input" 
                  /> 
