@@ -174,6 +174,7 @@ class NotificationDefinition extends SqlElement {
    */ 
   function __construct($id = NULL, $withoutDependentObjects=false) {
         parent::__construct($id,$withoutDependentObjects);
+        if (! isNotificationSystemActiv()) return;
         
         // Min of spinner $notificationGenerateBeforeInMin = param cronCheckNotifications
         $cronCheckNotifications = Parameter::getGlobalParameter ( 'cronCheckNotifications' ) / 60 ;

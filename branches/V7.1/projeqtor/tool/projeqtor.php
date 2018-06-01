@@ -957,7 +957,14 @@ function getUserVisibleObjectClassWithFieldDateType() {
  * @return boolean
  */
 function isNotificationSystemActiv() {
-    return (Parameter::getGlobalParameter ( 'notificationSystemActiv' )==="NO"?false:true);
+  
+    if (Parameter::getGlobalParameter ( 'notificationSystemActiv' )==="NO") {
+      return false;
+    } else if (! intval(Parameter::getGlobalParameter ( 'cronCheckNotification' ))) {
+      return false;
+    } else {
+      return true;
+    }
 }
 
 // END - ADD BY TABARY - NOTIFICATION SYSTEM
