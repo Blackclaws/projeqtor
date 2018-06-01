@@ -36,7 +36,7 @@ class TicketSimpleMain extends TicketMain {
   private static $_layout='
     <th field="id" formatter="numericFormatter" width="5%" ># ${id}</th>
     <th field="nameProject" width="10%" >${idProject}</th>
-    <th field="name" width="50%" >${name}</th>
+    <th field="name" width="50%" >${ticketName}</th>
     <th field="colorNameStatus" width="10%" formatter="colorNameFormatter">${idStatus}</th>
     <th field="actualDueDateTime" width="10%" formatter="dateTimeFormatter">${dueDate}</th>
     <th field="handled" width="5%" formatter="booleanFormatter" >${handled}</th>
@@ -90,7 +90,8 @@ class TicketSimpleMain extends TicketMain {
     "isRegression"=>"hidden"
   );  
     
-  private static $_colCaptionTransposition = array('idUser'=>'issuer', 
+  private static $_colCaptionTransposition = array('name'=>'ticketName',
+                                                   'idUser'=>'issuer', 
                                                    'idResource'=> 'responsible',
                                                    'idActivity' => 'planningActivity',
                                                    'idContact' => 'requestor',
