@@ -2757,15 +2757,7 @@ abstract class SqlElement {
     $empty = true;
     // If id is set, get the element from Database
     if ($curId != NULL) {
-      //gautier #screenCusto
-      $databaseName = $this->getDatabaseTableName() ;
-      $findme   = 'main';
-      $pos = strpos($databaseName, $findme, 1);
-      if($pos == true){
-          $explode = explode('main', $databaseName);
-          $databaseName = $explode[0];
-      }
-      $query = "select * from " . $databaseName . ' where id=' . $curId;
+      $query = "select * from " . $this->getDatabaseTableName () . ' where id=' . $curId;
       foreach ( $this->getDatabaseCriteria () as $critFld => $critVal ) {
         $query .= ' and ' . $critFld . ' = ' . Sql::str ( $critVal );
       }
@@ -3259,7 +3251,13 @@ abstract class SqlElement {
    * @return string the name of the data table
    */
   public function getDatabaseTableName() {
-    return $this->getStaticDatabaseTableName ();
+    if (substr(get_class($this),-4)=='Main') {
+      $notMain=substr(get_class($this),0,-4);
+      $obj=new $notMain();
+      return $obj->getDatabaseTableName();
+    } else {
+      return $this->getStaticDatabaseTableName ();
+    }
   }
 
   /**
