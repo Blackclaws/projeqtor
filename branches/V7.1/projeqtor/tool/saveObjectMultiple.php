@@ -77,6 +77,14 @@ $idUser="";
 if (array_key_exists('idUser',$_REQUEST)) {
 	$idUser=trim($_REQUEST['idUser']);
 }
+$idClient="";
+if (array_key_exists('idClient',$_REQUEST)) {
+  $idClient=trim($_REQUEST['idClient']);
+}
+$idBusinessFeature="";
+if (array_key_exists('idBusinessFeature',$_REQUEST)) {
+  $idBusinessFeature=trim($_REQUEST['idBusinessFeature']);
+}
 $idContact="";
 if (array_key_exists('idContact',$_REQUEST)) {
 	$idContact=trim($_REQUEST['idContact']);
@@ -93,6 +101,14 @@ $idProject="";
 if (array_key_exists('idProject',$_REQUEST)) {
   $idProject=trim($_REQUEST['idProject']);
 }
+$idProduct="";
+if (array_key_exists('idProduct',$_REQUEST)) {
+  $idProduct=trim($_REQUEST['idProduct']);
+}
+$idComponent="";
+if (array_key_exists('idComponent',$_REQUEST)) {
+  $idComponent=trim($_REQUEST['idComponent']);
+}
 $idTargetVersion="";
 if (array_key_exists('idTargetVersion',$_REQUEST)) {
   $idTargetVersion=trim($_REQUEST['idTargetVersion']);
@@ -100,6 +116,10 @@ if (array_key_exists('idTargetVersion',$_REQUEST)) {
 $idTargetProductVersion="";
 if (array_key_exists('idTargetProductVersion',$_REQUEST)) {
   $idTargetProductVersion=trim($_REQUEST['idTargetProductVersion']);
+}
+$idTargetComponentVersion="";
+if (array_key_exists('idTargetComponentVersion',$_REQUEST)) {
+  $idTargetComponentVersion=trim($_REQUEST['idTargetComponentVersion']);
 }
 
 $initialDueDate="";
@@ -213,6 +233,12 @@ foreach ($selectList as $id) {
   if ($idUser and property_exists($item,'idUser')) {
   	$item->idUser=$idUser;
   }
+  if ($idClient and property_exists($item,'idClient')) {
+    $item->idClient=$idClient;
+  }
+  if ($idBusinessFeature and property_exists($item,'idBusinessFeature')) {
+    $item->idBusinessFeature=$idBusinessFeature;
+  }
   if ($idContact and property_exists($item,'idContact')) {
   	$item->idContact=$idContact;
   }
@@ -222,12 +248,22 @@ foreach ($selectList as $id) {
   if ($idProject and property_exists($item,'idProject')) {
     $item->idProject=$idProject;
   }
+  if ($idProduct and property_exists($item,'idProduct')) {
+    $item->idProduct=$idProduct;
+  }
+  if ($idComponent and property_exists($item,'idComponent')) {
+    $item->idComponent=$idComponent;
+  }  
   if ($idTargetVersion and property_exists($item,'idTargetVersion')) {
     $item->idTargetVersion=$idTargetVersion;
   } 
   if ($idTargetProductVersion and property_exists($item,'idTargetProductVersion')) {
     $item->idTargetProductVersion=$idTargetProductVersion;
   }
+  if ($idTargetComponentVersion and property_exists($item,'idTargetComponentVersion')) {
+
+    $item->idTargetComponentVersion=$idTargetComponentVersion;
+  }  
   if ($initialDueDate and property_exists($item,'initialDueDate')) {
   	$item->initialDueDate=$initialDueDate;
   }
