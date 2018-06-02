@@ -41,6 +41,7 @@
   $objectClass=$_REQUEST['objectClass'];
   Security::checkValidClass($objectClass);
   $obj=new $objectClass();
+  
 ?>
 <div dojoType="dijit.layout.BorderContainer" class="background">
   <div id="buttonDiv" dojoType="dijit.layout.ContentPane" region="top">
@@ -222,6 +223,46 @@
               </td>
             </tr>
             <?php }
+            // Customer
+              if (isDisplayable($obj,'idClient')) {?>
+            <tr class="detail">
+              <td class="label" style="width:<?php echo $labelWidth;?>px;"><?php echo i18n('colChangeCustomer');?>&nbsp;:&nbsp;</td>
+              <td>
+                <select dojoType="dijit.form.FilteringSelect" class="input" style="width:<?php echo $fieldWidth-25;?>px;" 
+                <?php echo autoOpenFilteringSelect();?>
+                 id="idClient" name="idClient">
+                 <?php htmlDrawOptionForReference('idClient', null, null, false);?>
+                </select>
+                <button id="clientButton" dojoType="dijit.form.Button" showlabel="false"
+                  title="<?php echo i18n('showDetail');?>" iconClass="iconView">
+                  <script type="dojo/connect" event="onClick" args="evt">
+                                showDetail("idClient",0); 
+                              </script>
+                </button>
+              </td>
+            </tr>
+             <?php }
+      // Business Feature
+             $paramDisplayBusinessFeature=Parameter::getGlobalParameter('displayBusinessFeature');
+             if ( $paramDisplayBusinessFeature == "YES"){
+             if (isDisplayable($obj,'idBusinessFeature')) {?>
+            <tr class="detail">
+              <td class="label" style="width:<?php echo $labelWidth;?>px;"><?php echo i18n('colChangeBusinessFeature');?>&nbsp;:&nbsp;</td>
+              <td>
+                <select dojoType="dijit.form.FilteringSelect" class="input" style="width:<?php echo $fieldWidth-25;?>px;" 
+                <?php echo autoOpenFilteringSelect();?>
+                 id="idBusinessFeature" name="idBusinessFeature">
+                 <?php htmlDrawOptionForReference('idBusinessFeature', null, null, false);?>
+                </select>
+                <button id="businessFeatureButton" dojoType="dijit.form.Button" showlabel="false"
+                  title="<?php echo i18n('showDetail');?>" iconClass="iconView">
+                  <script type="dojo/connect" event="onClick" args="evt">
+                                showDetail("idBusinessFeature",0); 
+                              </script>
+                </button>
+              </td>
+            </tr>
+             <?php }}
        // fix planning, under construction
              $arrayCheckbox=array("fixPlanning","isUnderConstruction");
              foreach($arrayCheckbox as $checkField) {
@@ -369,10 +410,29 @@
               </td>
             </tr>
             <?php }
+            //Product
+            if (isDisplayable($obj,'idProduct')) {?>
+            <tr class="detail">
+              <td class="label" style="width:<?php echo $labelWidth;?>px;"><?php echo i18n('colChangeProduct');?>&nbsp;:&nbsp;</td>
+              <td>
+                <select dojoType="dijit.form.FilteringSelect" class="input" style="width:<?php echo $fieldWidth-25;?>px;" 
+                <?php echo autoOpenFilteringSelect();?>
+                 id="idProduct" name="idProduct">
+                 <?php htmlDrawOptionForReference('idProduct', null, null, false);?>
+                </select>
+                <button id="productButton" dojoType="dijit.form.Button" showlabel="false"
+                  title="<?php echo i18n('showDetail');?>" iconClass="iconView">
+                  <script type="dojo/connect" event="onClick" args="evt">
+                    showDetail("idProduct",0); 
+                  </script>
+                </button>
+              </td>
+            </tr>
+             <?php }
          // Product Target Version
              if (isDisplayable($obj,'idTargetProductVersion')) {?>
             <tr class="detail">
-              <td class="label" style="width:<?php echo $labelWidth;?>px;"><?php echo i18n('colChangeTargetVersion');?>&nbsp;:&nbsp;</td>
+              <td class="label" style="width:<?php echo $labelWidth;?>px;"><?php echo i18n('colChangeTargetProductVersion');?>&nbsp;:&nbsp;</td>
               <td>
                 <select dojoType="dijit.form.FilteringSelect" class="input" style="width:<?php echo $fieldWidth-25;?>px;" 
                 <?php echo autoOpenFilteringSelect();?>
@@ -388,6 +448,47 @@
               </td>
             </tr>
             <?php }
+            
+            //component
+            if (isDisplayable($obj,'idComponent')) {?>
+            <tr class="detail">
+              <td class="label" style="width:<?php echo $labelWidth;?>px;"><?php echo i18n('colChangeComponent');?>&nbsp;:&nbsp;</td>
+              <td>
+                <select dojoType="dijit.form.FilteringSelect" class="input" style="width:<?php echo $fieldWidth-25;?>px;" 
+                <?php echo autoOpenFilteringSelect();?>
+                 id="idComponent" name="idComponent">
+                 <?php htmlDrawOptionForReference('idComponent', null, null, false);?>
+                </select>
+                <button id="idComponentBis" dojoType="dijit.form.Button" showlabel="false"
+                  title="<?php echo i18n('showDetail');?>" iconClass="iconView">
+                  <script type="dojo/connect" event="onClick" args="evt">
+                    showDetail("idComponent",0); 
+                  </script>
+                </button>
+              </td>
+            </tr>
+             <?php }
+             //ComponentVersion
+             if (isDisplayable($obj,'idTargetComponentVersion')) {?>
+               
+            <tr class="detail">
+              <td class="label" style="width:<?php echo $labelWidth;?>px;"><?php echo i18n('colChangeTargetComponentVersion');?>&nbsp;:&nbsp;</td>
+              <td>
+                <select dojoType="dijit.form.FilteringSelect" class="input" style="width:<?php echo $fieldWidth-25;?>px;" 
+                <?php echo autoOpenFilteringSelect();?>
+                 id="idTargetComponentVersion" name="idTargetComponentVersion">
+                 <?php htmlDrawOptionForReference('idComponentVersion', null, null, false);?>
+                </select>
+                <button id="targetComponentVersion" dojoType="dijit.form.Button" showlabel="false"
+                  title="<?php echo i18n('showDetail');?>" iconClass="iconView">
+                  <script type="dojo/connect" event="onClick" args="evt">
+                    showDetail("idComponentVersion",0); 
+                  </script>
+                </button>
+              </td>
+            </tr>
+             <?php }
+             
        // Initial Due Date
             if (isDisplayable($obj,'initialDueDate')) {?>
             <tr class="detail">
