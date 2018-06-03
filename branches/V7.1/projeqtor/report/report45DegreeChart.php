@@ -103,7 +103,7 @@ if (! testGraphEnabled()) { return;}
 $user=getSessionUser();
 $proj=new Project($idProject,true);
 $today=date('Y-m-d');
-$refTime=' 23:00:00';
+$refTime=' 00:00:00';
 
 $start="";
 $end="";
@@ -192,16 +192,21 @@ if (!$start or !$end) {
 $date=$start;
 $arrDates=array();
 ksort($existingDates);
+$arrayShow=array();
 while ($date<=$end) {
+  $show=false;
   if (isset($existingDates[$date]) or $date==$today or $date==$end or $date==$start) {
-    if ($scale=='day') { 
-      $arrDates[$date]=strtotime($date.$refTime);
-    } else {
-      $dt=new DateTime();
-      $dt->setTimestamp(strtotime($date.$refTime));
-      $last=lastDayOf($scale,$dt);
-      $arrDates[$date]=$last->getTimestamp(); 
-    }
+    $show=true;
+  }
+  if ($scale=='day') { 
+    $arrDates[$date]=strtotime($date.$refTime);
+    if ($show) $arrayShow[$date.$refTime]=true;
+  } else {
+    $dt=new DateTime();
+    $dt->setTimestamp(strtotime($date.$refTime));
+    $last=lastDayOf($scale,$dt);
+    $arrDates[$date]=$last->getTimestamp(); 
+    if ($show) $arrayShow[$last->getTimestamp()]=true;
   }
   $date=addDaysToDate($date, 1);
 }
@@ -348,8 +353,10 @@ if ($showToday) {
   $min=reset($arrLabel);
   $max=$arrLabel[count($arrLabel)-1];
   $td=strtotime($today.$refTime);
-  $pos=($td-$min)/($max-$min)*(count($arrLabel)-1);
-  $graph->drawXThreshold(array($pos),array("Alpha"=>70,"Ticks"=>0));
+  if ($min!=$max) {
+    $pos=($td-$min)/($max-$min)*(count($arrLabel)-1);
+    $graph->drawXThreshold(array($pos),array("Alpha"=>70,"Ticks"=>0));
+  }
 }
 $graph->setFontProperties(array("FontName"=>getFontLocation("verdana"),"FontSize"=>10,"R"=>100,"G"=>100,"B"=>100));
 $graph->drawLegend($graphWidth-210,17,array("Mode"=>LEGEND_VERTICAL, "Family"=>LEGEND_FAMILY_BOX ,
