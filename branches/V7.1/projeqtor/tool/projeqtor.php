@@ -46,8 +46,8 @@ if ( is_session_started() === FALSE ) {
 // === Application data : version, dependencies, about message, ...
 $applicationName = "ProjeQtOr"; // Name of the application
 $copyright = $applicationName; // Copyright to be displayed
-$version = "V7.1.0"; // Version of application : Major / Minor / Release
-$build = "0197"; // Build number. To be increased on each release
+$version = "V7.1.1"; // Version of application : Major / Minor / Release
+$build = "0202"; // Build number. To be increased on each release
 $website = "http://www.projeqtor.org"; // ProjeQtOr site url
 if (!isset($aesKeyLength)) { // one can define key lenth to 256 in parameters.php with $aesKeyLength=256; // valid values are 128, 192 and 256
   $aesKeyLength=128;
@@ -1200,6 +1200,10 @@ function i18n($str, $vars = null) {
  * @return void
  */
 function exceptionHandler($exception) {
+  global $globalSilentErrors;
+  if ($globalSilentErrors) {
+    return true;
+  }
   $logLevel = Parameter::getGlobalParameter ( 'logLevel' );
   errorLog ( "EXCEPTION *****" );
   errorLog ( "on file '" . $exception->getFile () . "' at line (" . $exception->getLine () . ")" );

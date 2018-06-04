@@ -2274,6 +2274,7 @@ abstract class SqlElement {
   public function getSqlElementsFromCriteria($critArray, $initializeIfEmpty = false, $clauseWhere = null, $clauseOrderBy = null, $getIdInKey = false, $withoutDependentObjects = false, $maxElements = null) {
     // scriptLog("getSqlElementsFromCriteria(implode('|',$critArray), $initializeIfEmpty,$clauseWhere, $clauseOrderBy, $getIdInKey)");
     // Build where clause from criteria
+    global $globalSilentErrors;
     $whereClause = '';
     $objects = array();
     $className = get_class ( $this );
@@ -2345,7 +2346,8 @@ abstract class SqlElement {
             } else if (array_key_exists ( strtolower ( $dbColName ), $line )) {
               $obj->{$col_name} = $line [strtolower ( $dbColName )];
             } else {
-              errorLog ( "Error on SqlElement to get '" . $col_name . "' for Class '" . get_class ( $obj ) . "' " . " : field '" . $dbColName . "' not found in Database." );
+              if (! $globalSilentErrors)
+                errorLog ( "Error on SqlElement to get '" . $col_name . "' for Class '" . get_class ( $obj ) . "' " . " : field '" . $dbColName . "' not found in Database." );
             }
             if ($col_name == 'id' and $getIdInKey) {
               $keyId = '#' . $obj->{$col_name};
@@ -2737,6 +2739,7 @@ abstract class SqlElement {
    * @return void
    */
   private function getSqlElement($withoutDependentObjects = false) {
+    global $globalSilentErrors;
     $curId = $this->id;
     if (! trim ( $curId )) {
       $curId = null;
@@ -2823,7 +2826,8 @@ abstract class SqlElement {
               $dbColName = strtolower ( $dbColName );
               $this->{$col_name} = $line [$dbColName];
             } else {
-              errorLog ( "Error on SqlElement to get '" . $col_name . "' for Class '" . get_class ( $this ) . "' " . " : field '" . $dbColName . "' not found in Database." );
+              if (! $globalSilentErrors)
+                errorLog ( "Error on SqlElement to get '" . $col_name . "' for Class '" . get_class ( $this ) . "' " . " : field '" . $dbColName . "' not found in Database." );
             }
             // FOR PHP 7.1 COMPATIBILITY
             if ($this->{$col_name}===null 

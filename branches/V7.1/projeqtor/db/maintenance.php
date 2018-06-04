@@ -663,6 +663,20 @@ if (beforeVersion($currVersion,'V6.5.0')) {
   }
 }
 
+if ($currVersion=='V7.1.0') {
+  error_reporting(0);
+  enableCatchErrors();
+  enableSilentErrors();
+  $rta=new ResourceTeamAffectation(1);
+  disableSilentErrors();
+  if (Sql::$lastQueryErrorCode) {
+    traceLog("Rename table resourceTeamAffectation into lowercase");
+    $nbErrors+=runScript('V7.1.1.linux');
+  }
+  error_reporting(E_ALL);
+  disableCatchErrors();
+}
+
 // To be sure, after habilitations updates ...
 Habilitation::correctUpdates();
 Habilitation::correctUpdates();

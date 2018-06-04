@@ -772,6 +772,8 @@ The mode of delivery.
    
 **\* Required field**
 
+* Add dates on deliveries to follow dates : initial, planned, real, validation
+
 
 .. raw:: latex
 
@@ -938,6 +940,7 @@ That is useful to calculate weighting between different parameters in Reports->K
    
 **\* Required field**
 
+
 Incoming status
 ^^^^^^^^^^^^^^^
 
@@ -968,6 +971,9 @@ Define your incoming status list and select it in Incoming screen.
    
 **\* Required field**
 
+*Add dates on incomings to follow dates : initial, planned, real, validation
+
+
 Deliverable status
 ^^^^^^^^^^^^^^^^^^
 
@@ -997,6 +1003,8 @@ Define your deliverable status list and select it in Deliverable screen.
      - Flag to indicate this value is archived.
    
 **\* Required field**
+
+*Add dates on deliverables to follow dates : initial, planned, real, validation 
 
 Languages
 ^^^^^^^^^

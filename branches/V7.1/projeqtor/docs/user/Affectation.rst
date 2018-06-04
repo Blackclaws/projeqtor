@@ -67,4 +67,3 @@ Offers a global view of allocation.
    * If none is selected then the user connected is used to define the allocation.
    * If a contact is a resource and inversely, then resource or contact name will be selected too.
 
-

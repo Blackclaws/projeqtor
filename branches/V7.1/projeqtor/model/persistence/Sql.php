@@ -105,6 +105,10 @@ class Sql {
         $checkResult="EXCEPTION";
 	      self::$lastQueryErrorMessage=$e->getMessage();
 	      self::$lastQueryErrorCode=$e->getCode();
+	      global $globalSilentErrors;
+	      if ($globalSilentErrors) {
+	        return false;
+	      }
 	      errorLog('Exception-[' . self::$lastQueryErrorCode . '] ' .self::$lastQueryErrorMessage);
 	      errorLog('   For query : '.$sqlRequest);
 	      errorLog('   Strack trace :');

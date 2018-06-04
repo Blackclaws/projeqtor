@@ -214,6 +214,12 @@ Pool of Resources
 
 A pool is a group of resources that can work as any of the assigned resources.
 
+.. figure:: /images/GUI/pool.png
+   :alt: Resource cost dialog box
+   :align: center
+
+   Resources in a pool 
+
 You assign resources to the pool at a given rate for a given period.
 
 .. note:: 
