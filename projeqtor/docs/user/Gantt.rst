@@ -163,6 +163,13 @@ Tasks are regrouped by project and activity.
 
     \newpage
 
+.. note::
+
+   * Filter on the planning: possibility to filter the activities to be displayed on the Gantt Planning view
+     
+   * The "parents" of the selected activities are also displayed to maintain the WBS structure.. 
+
+
 .. _progress-data-view:
 
 Progress data view
@@ -380,12 +387,13 @@ For each planning element, a Gantt bar is displayed at them right.
 .. rubric:: 9 - Detail of the work
 
 * Right click on a bar to displays the detail of the work for this bar.
-  
-  .. image:: /images/GUI/Right_click_gantt.png
 
- .. warning::
- 
-  * You have to selected week or day scale to display detail or a message will ask you to switch to smaller scale.
+.. figure:: /images/GUI/gantressources.png 
+   :alt: Popup menu - Create a new item
+   :align: center 
+
+*warning: You have to selected week or day scale to display detail or a message 
+will ask you to switch to smaller scale.
 
 .. raw:: latex
 
@@ -429,6 +437,7 @@ Project planning and activity planning calculation can be done in the Gantt.
 .. rubric:: 2 - Reorder planning elements
 
 * The selector |buttonIconDrag| allows to reorder the planning elements.
+ Ability to move multiple tasks at one time from one location to another using the key control to select the lines and then dragging and dropping them.
 
 
 .. rubric:: 3 - Indenting element

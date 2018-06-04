@@ -200,6 +200,9 @@ Allows to define product components.
 
 Allows to define products using the component.
 
+Possibility to define component types and component versions that will only be used for definition of structure (not for Version Planning or Tickets)
+
+
 .. sidebar:: Other sections
    
    * :ref:`Structure - List of products or components using this component<relationship-product-component>`   

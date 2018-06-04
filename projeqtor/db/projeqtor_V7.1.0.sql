@@ -55,7 +55,7 @@ ALTER TABLE `${prefix}resource` ADD `isResourceTeam` int(1) UNSIGNED DEFAULT 0;
 ALTER TABLE `${prefix}assignment` ADD `isResourceTeam` int(1) UNSIGNED DEFAULT 0;
 ALTER TABLE `${prefix}assignment` ADD `capacity` decimal(5,2) UNSIGNED DEFAULT NULL;
 
-CREATE TABLE `${prefix}resourceTeamAffectation` (
+CREATE TABLE `${prefix}resourceteamaffectation` (
   `id` int(12) unsigned NOT NULL AUTO_INCREMENT,
   `idResourceTeam` int(12) unsigned NOT NULL,
   `idResource` int(12) unsigned NOT NULL,
@@ -81,8 +81,8 @@ UPDATE `${prefix}copyable` SET idDefaultCopyable=5 WHERE id=16;
 -- ==============================================================
 -- IGE
 -- ==============================================================
-update ${prefix}productlanguage set scope = 'Component' where idProduct in (select id from ${prefix}product where scope = 'Component');
-update ${prefix}productlanguage set scope = 'Product' where idProduct in (select id from ${prefix}product where scope = 'Product');
+UPDATE ${prefix}productlanguage set scope = 'Component' where idProduct in (select id from ${prefix}product where scope = 'Component');
+UPDATE ${prefix}productlanguage set scope = 'Product' where idProduct in (select id from ${prefix}product where scope = 'Product');
 
 -- ==============================================================
 -- Gautier
