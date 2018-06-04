@@ -325,7 +325,9 @@ class ActivityMain extends SqlElement {
     
     /// KROWRY HERE
     if(Parameter::getGlobalParameter('autoSetAssignmentByResponsible')=="YES"){ 
-      if ($this->idResource and trim ( $this->idResource ) != '' and ! trim ( $oldResource ) and stripos ( $result, 'id="lastOperationStatus" value="OK"' ) > 0) {
+      $proj=new Project($this->idProject,true);
+      $type=new Type($proj->idProjectType);
+      if ($type->code!='ADM' and $this->idResource and trim ( $this->idResource ) != '' and ! trim ( $oldResource ) and stripos ( $result, 'id="lastOperationStatus" value="OK"' ) > 0) {
         // Add assignment for responsible
         $habil = SqlElement::getSingleSqlElementFromCriteria ( 'HabilitationOther', array(
             'idProfile' => getSessionUser ()->getProfile ( $this->idProject ), 
