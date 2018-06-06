@@ -958,13 +958,17 @@ function getUserVisibleObjectClassWithFieldDateType() {
  */
 function isNotificationSystemActiv() {
   
-    if (Parameter::getGlobalParameter ( 'notificationSystemActiv' )==="NO") {
-      return false;
-    } else if (! intval(Parameter::getGlobalParameter ( 'cronCheckNotification' ))) {
-      return false;
-    } else {
+  if (Parameter::getGlobalParameter ( 'notificationSystemActiv' )==="NO") {
+    return false;
+  } else {
+    $notifCheckDelay=Parameter::getGlobalParameter('cronCheckNotifications');
+    debugLog($notifCheckDelay);
+    if (intval($notifCheckDelay)>0) {
       return true;
+    } else {
+      return false;
     }
+  }
 }
 
 // END - ADD BY TABARY - NOTIFICATION SYSTEM
@@ -2924,6 +2928,10 @@ function addDelayToDatetime($dateTime, $delay, $unit) {
   } else if ($unit == 'HH') {
     $hh = substr ( $time, 0, 2 );
     $mn = substr ( $time, 3, 2 );
+    if(!$hh and !$mn){
+      $hh = 00;
+      $mn = 00;
+    }
     $res = minutesToTime ( $hh * 60 + $mn + $delay * 60 );
     $newDate = addDaysToDate ( $date, $res ['d'] );
     return $newDate . " " . padto2 ( $res ['h'] ) . ":" . padto2 ( $res ['m'] ) . ':00';
