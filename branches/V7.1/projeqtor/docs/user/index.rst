@@ -47,7 +47,58 @@ This section summarizes significant changes made in the user guide document for 
 
 To see complete list of changes made to software, visit the ProjeQtOr web site.
 
-Current version is V7.0 
+Current version is V7.1 
+
+
+
+.. rubric:: Planning
+-	Managements of pool of resource
+
+A pool is a resource that contains several resources and can therefore be allocated to projects and assigned to activities.
+The pool has a capacity deducted from the resources that are assigned to it.
+It is planned taking into account the individual assignment of each resource.
+Conversely, each resource is assigned taking into account its participation in resource pools.
+A resource assigned to a pool can automatically enter real work on activities assigned to the pool.
+
+-	Filter on the planning
+
+Possibility to filter the activities to be displayed on the Gantt Planning view. The "parents" of the selected activities are also displayed to maintain the WBS structure.
+
+.. rubric:: Steering
+
+Add dates on incomings, deliverables and deliveries to follow dates : initial, planned, real, validation
+
+.. rubric:: Requirements and tests
+
+Add new Requirements dashboard, similar to existing Ticket Dashboard
+
+.. rubric:: Configuration management (Products et Versions)
+     
+Possibility to define component types and component versions that will only be used for definition of structure (not for Version Planning or Tickets)
+
+.. rubric:: Controls et Automation
+    
+On workflows, view the list of types that use this workflow
+
+Define a project to be assigned by default to new users coming from LDAP
+
+.. rubric:: Miscellaneous
+
+Management of multiple customers.
+
+Define the default copy class.
+
+
+.. rubric:: Reports
+     
+New report "Customer impacted by tickets" for a given product or a given product version
+
+.. rubric:: Technical
+
+Display external libraries (and their version) on the pop-up "About"
+
+.. rubric:: Prévious version was V7.0
+
   
 .. rubric:: Activity Stream.
 
