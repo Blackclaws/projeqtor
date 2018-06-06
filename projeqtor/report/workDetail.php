@@ -46,7 +46,9 @@ $paramMonth='';
 if (array_key_exists('monthSpinner',$_REQUEST)) {
 	$paramMonth=$_REQUEST['monthSpinner'];
   $paramMonth=Security::checkValidMonth($paramMonth);
-};
+} else {
+  $paramMonth='01';
+}
 $paramWeek='';
 if (array_key_exists('weekSpinner',$_REQUEST)) {
 	$paramWeek=$_REQUEST['weekSpinner'];
