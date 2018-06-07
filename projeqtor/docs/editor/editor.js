@@ -102,3 +102,12 @@ function undoFile() {
     selectFile($("#file").val());
   }
 }
+
+function switchTo(mode) {
+  if (changeInProgress) {
+    $("#resultMsg").html(errorMsg("save or cancell before selecting new file"));
+    $("#selectedFile").val($("#file").val());
+    return;
+  }
+  window.location='index.php?mode='+mode;
+}

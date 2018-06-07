@@ -1,6 +1,9 @@
 <?php
+session_start();
+
 include_once('File.php');
 include_once "../../external/rst/autoload.php";
+$dir=File::getDir();
 
 $action=$_REQUEST['action'];
 switch ($action) {

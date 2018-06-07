@@ -89,8 +89,16 @@ if ($idProject AND ($startDateReport == null OR $endDateReport == null)) {
     $endDateReport = $today;
   }
 }
+
 $start="";
 $end="";
+
+if($startDateReport > $endDateReport){
+  echo '<div style="background: #FFDDDD;font-size:150%;color:#808080;text-align:center;padding:20px">';
+   echo i18n('ProjectIsNotStarted');
+  echo '</div>';
+  exit;
+}
 
 $proj=new Project($idProject,true);
 
