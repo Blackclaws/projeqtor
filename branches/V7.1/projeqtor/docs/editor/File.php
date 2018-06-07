@@ -27,6 +27,7 @@
 class File {
 
   private static $dir='../user/';
+  
 	/** ==========================================================================
 	 * Constructor
 	 * @param $id the id of the object in the database (null if not stored yet)
@@ -61,6 +62,7 @@ class File {
 	public static function getFile($file) {
 	  return file_get_contents(self::$dir.$file);
 	}
+	
 	public static function convert($data) {
 	  $parser = new Gregwar\RST\Parser;
 	  //foreach (self::getRstList() as $file) {
@@ -76,7 +78,16 @@ class File {
 	  $doc=str_replace('images/', self::$dir.'images/', $doc);
 	  return $doc;
 	}
+	
 	public static function getDir() {
+	  if (isset($_REQUEST['mode'])) {
+	    //if ($_REQUEST['mode']=='technical' or $_REQUEST['mode']=='user') {
+	      $_SESSION['mode']=$_REQUEST['mode'];
+	      self::$dir='../'.$_REQUEST['mode'].'/';
+	    //}
+	  } else if (isset($_SESSION['mode'])) {
+      self::$dir='../'.$_SESSION['mode'].'/';
+	  }
 	  return self::$dir;
 	}
 	public static function saveFile($fileName,$data,$withBackup=true) {

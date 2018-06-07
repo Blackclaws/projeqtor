@@ -1156,6 +1156,8 @@ class PlannedWork extends GeneralWork {
         // TODO : take into acount E-S dependency to determine end
       }
     }
+    // Moved transaction at end of procedure (out of script plan.php) to minimize lock possibilities
+    Sql::beginTransaction();
     $cpt=0;
     $query='';
     foreach ($arrayPlannedWork as $pw) {
@@ -1242,6 +1244,14 @@ class PlannedWork extends GeneralWork {
     	$result=i18n('planDone', array($duration));
     	$result .= '<input type="hidden" id="lastPlanStatus" value="OK" />';
     }
+    // Moved transaction at end of procedure (out of script plan.php) to minimize lock possibilities
+    $status = getLastOperationStatus ( $result );
+    if ($status == "OK" or $status=="NO_CHANGE" or $status=="INCOMPLETE") {
+      Sql::commitTransaction ();
+    } else {
+      Sql::rollbackTransaction ();
+    }
+    echo '<div class="message' . $status . '" >' . $result . '</div>';
     return $result;
   }
 // End of PLAN

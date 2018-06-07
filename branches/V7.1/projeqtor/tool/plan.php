@@ -43,10 +43,14 @@ if (! array_key_exists('startDatePlan',$_REQUEST)) {
 $startDatePlan=trim($_REQUEST['startDatePlan']);
 Security::checkValidDateTime($startDatePlan);
 
+// Moved transaction at end of procedure (out of script plan.php) to minimize lock possibilities
+// Sql::beginTransaction();
+
 projeqtor_set_time_limit(600);
-Sql::beginTransaction();
 $result=PlannedWork::plan($idProjectPlan, $startDatePlan);
 
 // Message of correct saving
-displayLastOperationStatus($result);
+
+// Moved transaction at end of procedure (out of script plan.php) to minimize lock possibilities
+//displayLastOperationStatus($result);
 ?>

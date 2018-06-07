@@ -27,6 +27,8 @@
 /* ============================================================================
  * Manage RST files
  */
+session_start();
+
 include "File.php";
 $dir=File::getDir();
 ?>
@@ -83,7 +85,22 @@ $dir=File::getDir();
      </td>
    </tr>
  </table>
-
+ <?php 
+$mode='user';
+if (isset($_REQUEST['mode'])) {
+  $mode=$_REQUEST['mode'];
+} else if (isset($_SESSION['mode'])) {
+  $mode=$_SESSION['mode'];
+}
+$newMode='technical';
+if ($mode=='technical') {
+  $newMode='user';
+}
+?>
+<div style="cursor:pointer;width:20%;left:40%;color:#ffffff;font-weight:bold;text-align:center;position:fixed;top:5px;border:2px solid #ffffff;"
+onClick="switchTo('<?php echo $newMode;?>');">
+<?php echo strtoupper($mode);?> MANUAL
+</div>
   
 </body>
 </html>
