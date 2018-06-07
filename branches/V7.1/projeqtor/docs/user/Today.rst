@@ -98,7 +98,9 @@ Messages
    :alt: Dialog box - Today parameters 
    :align: center
 
-
+  .. note:: 
+    * If you have added any reports to the Today page, they will appear in the list.
+    * You can then hide or delete any added reports.
 
 .. raw:: latex
 
