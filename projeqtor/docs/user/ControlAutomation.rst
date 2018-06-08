@@ -76,15 +76,11 @@ Once defined, a workflow can be linked to any type of any item.
 * It is not possible to go from one status to itself (these cells are blank).
 * Just check the profile (or “all”) who is allowed to pass from one status to the other.
 
-
 .. figure:: /images/GUI/SEC_HabilitationTable.png
-    :alt: Habilitation table
-    :align: center
+   :alt: Habilitation table
+   :align: center
 
-    Habilitation table
-
-
- .. compound:: **In the upper example:**
+.. compound:: **In the upper example:**
 
     * Anyone can move an item from “recorded” to “assigned” and from “recorded” to “cancelled”.
     * No one can move an item from “qualified” status to any other status. In this case, pay attention that it must never be possible to move an item to “qualified” status, because it will not be possible to leave this status.
