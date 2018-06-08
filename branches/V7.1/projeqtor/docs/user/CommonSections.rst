@@ -894,6 +894,8 @@ Planning mode
     * Work will be evenly divided between on working days.
     * For instance, 0.2 days during 10 days.
 
+
+
  .. compound:: **Regular in full days**
  
     * Work will be distributed on full day between on working days.
@@ -902,7 +904,6 @@ Planning mode
            :widths: 10,9,9,9,9,9,9,9,9,9,9
            :header-rows: 1
            :stub-columns: 1
-
            * - Day
              - 1
              - 2

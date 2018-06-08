@@ -92,7 +92,7 @@ Project allocation defines its availability.
    * - Description
      - Complete description of the resource.
 
-**\* Required field**
+**\* Required field** 
 
 .. topic:: Field: Capacity (FTE)
 

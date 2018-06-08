@@ -110,7 +110,7 @@ Each access is defined as scope of visible and/or updatable, that can be, by kin
 
 -----------------------
 
-.. figure:: /images/GUI/accesmode1.png 
+.. figure:: /images/GUI/screenshot198.png 
    :alt: Access to forms screen
    :align: center 
 
