@@ -189,6 +189,9 @@ class GeneralWork extends SqlElement {
     $coef=self::$imputationCoef;
     if (!$coef) return $val;
     if (!$val) return 0;
+    if(!is_numeric($val)){
+      return 0;
+    }
     return (round($val/$coef,5));
   }
   

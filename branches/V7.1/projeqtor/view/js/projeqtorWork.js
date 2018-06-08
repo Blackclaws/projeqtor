@@ -597,6 +597,9 @@ function updateDispatchWorkTotal() {
   var sum=0;
   while (dijit.byId('dispatchWorkValue_'+cpt)) {
     val=dijit.byId('dispatchWorkValue_'+cpt).get('value');
+    if(isNaN(val)){
+      val = 0;
+    }
     if (val==0 && dojo.byId('dispatchWorkValue_'+cpt).value) {
       val=dojo.byId('dispatchWorkValue_'+cpt).value;
     }
