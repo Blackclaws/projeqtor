@@ -32,6 +32,7 @@ if (array_key_exists('print', $_REQUEST)) {
 $paramProduct = trim(RequestHandler::getId('idProduct'));
 $paramProductVersion = trim(RequestHandler::getId('idProductVersion'));
 $paramListTickets = RequestHandler::getBoolean('listTickets');
+$paramShowDetail = RequestHandler::getBoolean('showDetail');
 $paramStatus = RequestHandler::getValue('idStatus');
 
 $crit='1=1';
@@ -171,7 +172,7 @@ function formatText($val) {
   return '"'.$val.'"';
 }
 function printResult() {
-  global $arrayClient,$paramListTickets,$paramProduct,$paramProductVersion;
+  global $arrayClient,$paramListTickets,$paramProduct,$paramProductVersion,$paramShowDetail;
   $clientCss='border: 1px solid #A0A0A0;padding:5px 10px;';
   $ticketCss='border: 1px solid #A0A0A0;padding:2px 5px;vertical-align:top;';
   $title="";
@@ -201,16 +202,16 @@ function printResult() {
       echo "        <tr class=''>";
       echo "          <td style='width:10%;text-align:right' >".i18n('menuTicket')."&nbsp;&nbsp;&nbsp;</td>";
       echo "          <td style='width:5%;text-align:center' class='reportTableLineHeader'>".i18n('colId')."</td>";
-      echo "          <td style='width:25%;text-align:center' class='reportTableLineHeader'>".i18n('colName')."</td>";
-      echo "          <td style='width:45%;text-align:center' class='reportTableLineHeader'>".i18n('colDescription')."</td>";
+      echo "          <td style='width:".(($paramShowDetail)?'25':'70')."%;text-align:center' class='reportTableLineHeader'>".i18n('colName')."</td>";
+      if ($paramShowDetail) echo "          <td style='width:45%;text-align:center' class='reportTableLineHeader'>".i18n('colDescription')."</td>";
       echo "          <td style='width:15%;text-align:center' class='reportTableLineHeader'>".i18n('colIdStatus')."</td>";
       echo "        </tr>";
       foreach ($client['tickets'] as $ticket) {
         echo "        <tr class=''>";
         echo "          <td style='width:10%;text-align:right' >&nbsp;</td>";
         echo "          <td style='width:5%;text-align:center;$ticketCss' class=''>".$ticket['id']."</td>";
-        echo "          <td style='width:25%;text-align:left;$ticketCss' class=''>".$ticket['name']."</td>";
-        echo "          <td style='width:45%;text-align:left;font-size:80%;$ticketCss' class=''>".$ticket['description']."</td>";
+        echo "          <td style='width:".(($paramShowDetail)?'25':'70')."%;text-align:left;$ticketCss' class=''>".$ticket['name']."</td>";
+        if ($paramShowDetail) echo "          <td style='width:45%;text-align:left;font-size:80%;$ticketCss' class=''>".$ticket['description']."</td>";
         echo "          <td style='width:15%;text-align:center;$ticketCss' class=''>".SqlList::getNameFromId('Status',$ticket['status'])."</td>";
         echo "        </tr>";
       }
