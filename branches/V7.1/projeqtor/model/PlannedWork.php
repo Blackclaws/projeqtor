@@ -157,6 +157,7 @@ class PlannedWork extends GeneralWork {
       if (count($listProj)-1 > Parameter::getGlobalParameter('maxProjectsToDisplay')) {
         $result=i18n('selectProjectToPlan');
         $result .= '<input type="hidden" id="lastPlanStatus" value="INVALID" />';
+        echo '<div class="messageINVALID" >' . $result . '</div>';
         return $result;
       }
     }
@@ -196,8 +197,9 @@ class PlannedWork extends GeneralWork {
     $order="wbsSortable asc";
     $list=$pe->getSqlElementsFromCriteria(null,false,$clause,$order,true);
     if (count($list)==0) {
-      $result=i18n('planDone', array('0'));
+      $result=i18n('planEmpty');
       $result.= '<input type="hidden" id="lastPlanStatus" value="INCOMPLETE" />';
+      echo '<div class="messageINCOMPLETE" >' . $result . '</div>';
       return $result;
     }
     $fullListPlan=PlanningElement::initializeFullList($list);
