@@ -962,7 +962,6 @@ function isNotificationSystemActiv() {
     return false;
   } else {
     $notifCheckDelay=Parameter::getGlobalParameter('cronCheckNotifications');
-    debugLog($notifCheckDelay);
     if (intval($notifCheckDelay)>0) {
       return true;
     } else {

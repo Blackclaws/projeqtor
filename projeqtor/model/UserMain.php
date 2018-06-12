@@ -466,12 +466,13 @@ class UserMain extends SqlElement {
     foreach ($affList as $aff) {
       $prj=new Project($aff->idProject,true); 
       if (!$prj->id) continue;
-    	if (! isset($resultToSort[$prj->sortOrder])) {
-	      $resultToSort[$prj->sortOrder]=array('id'=>$prj->id,'name'=>$prj->name);
+      // PBE : to avoid security issue in case of wrong wbs numbering, suffix order with id
+    	if (! isset($resultToSort[$prj->sortOrder.'-'.$prj->id])) {
+	      $resultToSort[$prj->sortOrder.'-'.$prj->id]=array('id'=>$prj->id,'name'=>$prj->name);
 	      $lstSubPrj=$prj->getRecursiveSubProjectsFlatList($limitToActiveProjects);
 	      foreach ($lstSubPrj as $idSubPrj=>$nameSubPrj) {
 	        $prjSub=new Project($idSubPrj,true);
-	      	$resultToSort[$prjSub->sortOrder]=array('id'=>$prjSub->id,'name'=>$prjSub->name);
+	      	$resultToSort[$prjSub->sortOrder.'-'.$idSubPrj]=array('id'=>$prjSub->id,'name'=>$prjSub->name);
 	      }
     	}
     }

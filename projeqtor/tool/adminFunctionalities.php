@@ -86,12 +86,20 @@ if ($adminFunctionality=='sendAlert') {
   $param->parameterValue=$msgClosedApplication;
   $param->save();
   Parameter::clearGlobalParameters();
+} else if ($adminFunctionality=='checkConsistency') {
+  $correct=RequestHandler::getBoolean('correct');
+  echo "<div class='section'>CHECK WBS ORDERING</div>";
+  //echo $correct;
+  PlanningElement::consistencyCheckWbs($correct,false);
+  $result=false;
+  Sql::commitTransaction();
 } else {
-	$result="ERROR - functionality '$adminFunctionality' not defined";
+	traceHack("Functionality '$adminFunctionality' not defined");
+	$result=false;
 }
 
 // Message for result
-displayLastOperationStatus($result);
+if ($result) displayLastOperationStatus($result);
 
 function sendAlert(){
   $alertSendTo=(array_key_exists('alertSendTo', $_REQUEST))?$_REQUEST['alertSendTo']:'';
@@ -252,4 +260,10 @@ function updateReference($element) {
 	$returnValue .= '<input type="hidden" id="lastOperation" value="update" />';
   $returnValue .= '<input type="hidden" id="lastOperationStatus" value="OK" />';
   return $returnValue;
+}
+function displayError($msg){
+  echo "<span class='messageERROR' style='position:relative;top:4px;left:20px;'>$msg</span><br/><br/>";
+}
+function displayOK($msg){
+  echo "<span class='messageOK' style='position:relative;top:4px;left:20px;'>$msg</span><br/><br/>";
 }
