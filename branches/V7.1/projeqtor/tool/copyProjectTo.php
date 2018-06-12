@@ -132,7 +132,10 @@ if (! stripos($result,'id="lastOperationStatus" value="OK"')>0 ) {
   $result .= '<input type="hidden" id="lastOperationStatus" value="INVALID" />';
 }
 unset($newProj->_copyResult);
-if(!$error)$newProj->save();
+if(!$error) {
+  $newProj->sortOrder=$newProj->ProjectPlanningElement->wbsSortable; // update sortOrder
+  $newProj->save();
+}
 if (!$error and $copyStructure) {
   $res=PlanningElement::copyStructure($proj, $newProj, false, false, $copyToWithAttachments,$copyToWithLinks,$copyAssignments, $copyAffectations,$newProj->id,$copySubProjects,$copyToWithVersionProjects);
   if ($res!='OK') {
