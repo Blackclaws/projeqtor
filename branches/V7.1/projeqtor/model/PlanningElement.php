@@ -1793,5 +1793,87 @@ class PlanningElement extends SqlElement {
       }
     }
   }
+  /**
+   * Check consistency of WBS ordering
+   * @param string $display
+   * @param string $correct
+   */
+  public static function consistencyCheckWbs($correct=false,$trace=false) {
+    $pe=new PlanningElement();
+    $peList=$pe->getSqlElementsFromCriteria(null,null,null,'wbsSortable asc');
+    $lastWbs='';
+    $lastPe=$pe;
+    $errors=0;
+    $arrayWbs=array();
+    foreach ($peList as $pe) {
+      if ($trace) echo "$pe->wbsSortable - $pe->refType #$pe->refId - $pe->refName<br/>";
+      // check for duplicate WBS
+      if ($pe->wbsSortable==$lastWbs) {
+        displayError("Duplicate wbs $lastWbs for $lastPe->refType #$lastPe->refId and $pe->refType #$pe->refId");
+        $errors++;
+      }
+      // Check Parent
+      $parentWbs='';
+      if ($pe->topRefType and $pe->topRefId) {
+        $key=$pe->topRefType.'#'.$pe->topRefId;
+        $parentWbs=(isset($arrayWbs[$key]))?$arrayWbs[$key]:'';
+        if ($parentWbs=='') {
+          displayError("Cannot find wbs for $pe->topRefType #$pe->topRefId, parent of $pe->refType #$pe->refId - Incorrect Order ?");
+          $errors++;
+        }
+      }
+      if ($parentWbs and $parentWbs!=substr($pe->wbsSortable,0,strlen($parentWbs))) {
+        displayError("Wbs '$pe->wbsSortable' for $pe->refType #$pe->refId inconsistent with Wbs '$parentWbs' for its parent $pe->topRefType #$pe->topRefId");
+        $errors++;
+      } else if ($parentWbs and strlen($pe->wbsSortable)!=strlen($parentWbs)+4) {
+        displayError("Wbs '$pe->wbsSortable' for $pe->refType #$pe->refId inconsistent with Wbs '$parentWbs' for its parent $pe->topRefType #$pe->topRefId");
+        $errors++;
+      }
+      // Check Order
+      $order=substr($pe->wbsSortable,-3);
+      if ($lastWbs==$parentWbs) { // Previous is parent, so must be 001
+        if (intval($order)!=1) {
+          displayError("Wbs '$pe->wbsSortable' for $pe->refType #$pe->refId should incorrect for first of parent (001 expected)");
+          $errors++;
+        }
+      } else if (substr($lastWbs,0,-4)==$parentWbs) { // Previous has same root (same parent), number must be is sequence
+        if (intval($order)!=intval(substr($lastWbs,-3))+1) {
+          displayError("Wbs '$pe->wbsSortable' for $pe->refType #.$pe->refId order incorrect after '$lastWbs'");
+          $errors++;
+        }
+      } else { // Change root, current numbering must be is sequence
+        $rootPrev=substr($lastWbs,0,strlen($pe->wbsSortable));
+        if (intval($order)!=intval(substr($rootPrev,-3))+1) {
+          displayError("Wbs '$pe->wbsSortable' for $pe->refType #$pe->refId order incorrect after '$lastWbs'");
+          $errors++;
+        }
+      }
+      // Check displayed wbs compared to wbsSortable
+      
+      // Check project order
+      if ($pe->refType=='Project') {
+        $prj=new Project($pe->refId);
+        if ($prj->sortOrder!=$pe->wbsSortable) {
+          displayError("Incorrect sortOrder for Project #$prj->id : $prj->sortOrder instead of $pe->wbsSortable");
+          $errors++;
+          if ($correct) {
+            $prj->sortOrder=$pe->wbsSortable;
+            $res=$prj->save();
+            if (getLastOperationStatus($res)=='OK') displayOK("Fixed");
+          }
+        }
+        
+      }
+      // Continue
+      $key=$pe->refType.'#'.$pe->refId;
+      $arrayWbs[$key]=$pe->wbsSortable;
+      $lastWbs=$pe->wbsSortable;
+      $lastPe=$pe;
+    }
+    if (!$errors) {
+      displayOK("No error");
+    }
+  }
+  
 }
 ?>
