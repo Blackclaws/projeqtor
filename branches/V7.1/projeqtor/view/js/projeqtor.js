@@ -275,13 +275,13 @@ function filterJsonList() {
   selectGridRow();
 }
 
-function refreshGrid() {
+function refreshGrid(noReplan) {
   if (dijit.byId("objectGrid")) { // Grid exists : refresh it
     showWait();
     refreshJsonList(dojo.byId('objectClass').value, true);
   } else { // If Grid does not exist, we are displaying Planning : refresh it
     showWait();
-    if (dojo.byId('automaticRunPlan') && dojo.byId('automaticRunPlan').checked) {
+    if (dojo.byId('automaticRunPlan') && dojo.byId('automaticRunPlan').checked && ! noReplan ) {
       plan();
     } else {
       refreshJsonPlanning();
@@ -2988,7 +2988,7 @@ function gotoElement(eltClass, eltId, noHistory, forceListRefresh, target) {
       return;
     }
     if (forceListRefresh) {
-      refreshGrid();
+      refreshGrid(true);
     }
     dojo.byId('objectClass').value = eltClass;
     dojo.byId('objectId').value = eltId;

@@ -481,6 +481,12 @@ class ImputationLine {
   }
 
   static function drawLines($resourceId, $rangeType, $rangeValue, $showIdle, $showPlanned=true, $print=false, $hideDone=false, $hideNotHandled=false, $displayOnlyCurrentWeekMeetings=false, $currentWeek=0, $currentYear=0, $showId=false) {
+    $lowRes=0;
+    if (array_key_exists('destinationWidth', $_REQUEST)) {
+      $width=$_REQUEST['destinationWidth'];
+      if ($width<1150) $lowRes=3; // $lowRes will contain colSpan value ;)
+      if ($width<1000) $lowRes=1;
+    }
     $outMode=(isset($_REQUEST['outMode']))?$_REQUEST['outMode']:'';
     $outMode=preg_replace('/.*(pdf|csv|html|mpp).*/', '$1', $outMode); // can only be [pdf|csv|html|mpp]
                                                                        // scriptLog(" => ImputationLine->drawLines(resourceId=$resourceId, rangeType=$rangeType, rangeValue=$rangeValue, showIdle=$showIdle, showPlanned=$showPlanned, print=$print, hideDone=$hideDone, hideNotHandled=$hideNotHandled, displayOnlyCurrentWeekMeetings=$displayOnlyCurrentWeekMeetings)");
@@ -582,10 +588,10 @@ class ImputationLine {
     echo '<TR class="ganttHeight">';
     echo '  <TD class="ganttLeftTopLine" style="width:'.$iconWidth.'px;"></TD>';
     echo '  <TD class="ganttLeftTopLine" style="width:'.$iconWidth.'px;"></TD>';
-    echo '  <TD class="ganttLeftTopLine" colspan="5" style="width:'.($nameWidth+2*$dateWidth+2*$workWidth).'px">';
+    echo '  <TD class="ganttLeftTopLine" colspan="'.(($lowRes)?$lowRes:'5').'" style="width:'.($nameWidth+2*$dateWidth+2*$workWidth).'px">';
     echo '<table style="width:98%"><tr><td style="width:99%">'.htmlEncode($resource->name).' - '.i18n($rangeType).' '.$rangeValueDisplay;
     echo '</td>';
-    if (!$print and !$period->validated) { // and $resourceId == $user->id
+    if (!$print and !$period->validated and !$lowRes) { // and $resourceId == $user->id
       echo '<td style="width:1%">';
       echo '<button id="enterRealAsPlanned" dojoType="dijit.form.Button" showlabel="true" >';
       echo '<script type="dojo/connect" event="onClick" args="evt">enterRealAsPlanned('.$nbDays.');</script>';
@@ -653,14 +659,14 @@ class ImputationLine {
     echo '  <TD class="ganttLeftTitle" style="width:'.$iconWidth.'px;"></TD>';
     echo '  <TD class="ganttLeftTitle" style="width:'.$iconWidth.'px;border-left:0px;"></TD>';
     echo '  <TD class="ganttLeftTitle" style="text-align: left; '.'border-left:0px; " nowrap>'.i18n('colTask').'</TD>';
-    echo '  <TD class="ganttLeftTitle" style="width: '.$dateWidth.'px;max-width:'.$dateWidth.'px;overflow:hidden;">'.i18n('colStart').'</TD>';
-    echo '  <TD class="ganttLeftTitle" style="width: '.$dateWidth.'px;max-width:'.$dateWidth.'px;overflow:hidden;">'.i18n('colEnd').'</TD>';
-    echo '  <TD class="ganttLeftTitle" style="width: '.$workWidth.'px;max-width:'.$workWidth.'px;overflow:hidden;">'.i18n('colAssigned').'</TD>';
-    echo '  <TD class="ganttLeftTitle" style="width: '.$workWidth.'px;max-width:'.$workWidth.'px;overflow:hidden;">'.i18n('colReal').'</TD>';
+    if ($lowRes==0) echo '  <TD class="ganttLeftTitle" style="width: '.$dateWidth.'px;max-width:'.$dateWidth.'px;overflow:hidden;">'.i18n('colStart').'</TD>';
+    if ($lowRes==0) echo '  <TD class="ganttLeftTitle" style="width: '.$dateWidth.'px;max-width:'.$dateWidth.'px;overflow:hidden;">'.i18n('colEnd').'</TD>';
+    if ($lowRes!=1) echo '  <TD class="ganttLeftTitle" style="width: '.$workWidth.'px;max-width:'.$workWidth.'px;overflow:hidden;">'.i18n('colAssigned').'</TD>';
+    if ($lowRes!=1) echo '  <TD class="ganttLeftTitle" style="width: '.$workWidth.'px;max-width:'.$workWidth.'px;overflow:hidden;">'.i18n('colReal').'</TD>';
     $curDate=$startDate;
     $businessDay=0;
     for ($i=1; $i<=$nbDays; $i++) {
-      echo '  <TD class="ganttLeftTitle" style="width: '.$inputWidth.'px;max-width:'.$inputWidth.'px;overflow:hidden;';
+      echo '  <TD class="ganttLeftTitle" style="width: '.$inputWidth.'px;max-width:'.$inputWidth.'px;min-width:'.$inputWidth.'px;overflow:hidden;';
       if ($today==$curDate) {
         echo ' background-color:#'.$currentdayColor.'; color: #aaaaaa;';
       } else if (isOffDay($curDate, $cal)) {
@@ -678,8 +684,8 @@ class ImputationLine {
       $curDate=date('Y-m-d', strtotime("+1 days", strtotime($curDate)));
     }
     $businessDay=$businessDay*$capacity;
-    echo '  <TD class="ganttLeftTitle" style="width: '.$workWidth.'px;max-width:'.$workWidth.'px;overflow:hidden;">'.i18n('colLeft').'</TD>';
-    echo '  <TD class="ganttLeftTitle" style="width: '.$workWidth.'px;max-width:'.$workWidth.'px;overflow:hidden;">'.i18n('colReassessed').'</TD>';
+    echo '  <TD class="ganttLeftTitle" style="width: '.$workWidth.'px;max-width:'.$workWidth.'px;min-width:'.$workWidth.'px;overflow:hidden;">'.i18n('colLeft').'</TD>';
+    echo '  <TD class="ganttLeftTitle" style="width: '.$workWidth.'px;max-width:'.$workWidth.'px;min-width:'.$workWidth.'px;overflow:hidden;"><div>'.i18n('colReassessed').'</div></TD>';
     echo '</TR>';
     if (!$print) {
       echo '</table></div>';
@@ -855,40 +861,45 @@ class ImputationLine {
         echo '</tr></table>';
         echo '</td>';
         // echo '<td class="ganttDetail" align="center">' . htmlEncode($line->description) . '</td>';
-        echo '<td class="ganttDetail" align="center" width="'.$dateWidth.'px">'.htmlFormatDate($line->startDate).'</td>';
-        echo '<td class="ganttDetail" align="center" width="'.$dateWidth.'px">'.htmlFormatDate($line->endDate).'</td>';
-        echo '<td class="ganttDetail" align="center" width="'.$workWidth.'px">';
-        if ($line->imputable) {
-          if (!$print) {
-            echo '<input type="text" xdojoType="dijit.form.NumberTextBox" ';
-            // echo ' constraints="{pattern:\'###0.0#\'}"';
-            echo ' style="width: 60px; text-align: center; " ';
-            echo ' trim="true" class="input dijitTextBox dijitNumberTextBox dijitValidationTextBox displayTransparent" readOnly="true" tabindex="-1" ';
-            echo ' id="assignedWork_'.$nbLine.'"';
-            echo ' value="'.htmlDisplayNumericWithoutTrailingZeros(Work::displayImputation($line->assignedWork)).'" ';
-            echo ' />';
-            // echo '</div>';
-          } else {
-            echo Work::displayImputation($line->assignedWork);
+        if (!$lowRes) echo '<td class="ganttDetail" align="center" width="'.$dateWidth.'px">'.htmlFormatDate($line->startDate).'</td>';
+        if (!$lowRes) echo '<td class="ganttDetail" align="center" width="'.$dateWidth.'px">'.htmlFormatDate($line->endDate).'</td>';
+        if ($lowRes!=1) {
+          echo '<td class="ganttDetail" align="center" width="'.$workWidth.'px">';
+          if ($line->imputable) {
+            if (!$print) {
+              echo '<input type="text" xdojoType="dijit.form.NumberTextBox" ';
+              // echo ' constraints="{pattern:\'###0.0#\'}"';
+              echo ' style="width: 60px; text-align: center; " ';
+              echo ' trim="true" class="input dijitTextBox dijitNumberTextBox dijitValidationTextBox displayTransparent" readOnly="true" tabindex="-1" ';
+              echo ' id="assignedWork_'.$nbLine.'"';
+              echo ' value="'.htmlDisplayNumericWithoutTrailingZeros(Work::displayImputation($line->assignedWork)).'" ';
+              echo ' />';
+              // echo '</div>';
+            } else {
+              echo Work::displayImputation($line->assignedWork);
+            }
           }
-        }
-        echo '</td>';
-        echo '<td class="ganttDetail" align="center" width="'.$workWidth.'px">';
-        if ($line->imputable) {
-          if (!$print) {
-            echo '<input type="text" xdojoType="dijit.form.NumberTextBox" ';
-            // echo ' constraints="{pattern:\'###0.0#\'}"';
-            echo ' style="width: 60px; text-align: center;" ';
-            echo ' trim="true" class="input dijitTextBox dijitNumberTextBox dijitValidationTextBox displayTransparent" readOnly="true" tabindex="-1" ';
-            echo ' id="realWork_'.$nbLine.'"';
-            echo ' value="'.htmlDisplayNumericWithoutTrailingZeros(Work::displayImputation($line->realWork)).'" ';
-            echo ' />';
-            // echo '</div>';
-          } else {
-            echo Work::displayImputation($line->realWork);
+          echo '</td>';
+          echo '<td class="ganttDetail" align="center" width="'.$workWidth.'px">';
+          if ($line->imputable) {
+            if (!$print) {
+              echo '<input type="text" xdojoType="dijit.form.NumberTextBox" ';
+              // echo ' constraints="{pattern:\'###0.0#\'}"';
+              echo ' style="width: 60px; text-align: center;" ';
+              echo ' trim="true" class="input dijitTextBox dijitNumberTextBox dijitValidationTextBox displayTransparent" readOnly="true" tabindex="-1" ';
+              echo ' id="realWork_'.$nbLine.'"';
+              echo ' value="'.htmlDisplayNumericWithoutTrailingZeros(Work::displayImputation($line->realWork)).'" ';
+              echo ' />';
+              // echo '</div>';
+            } else {
+              echo Work::displayImputation($line->realWork);
+            }
           }
+          echo '</td>';
+        } else { // very low resolution
+          echo '<input type="hidden" id="assignedWork_'.$nbLine.'" value="'.htmlDisplayNumericWithoutTrailingZeros(Work::displayImputation($line->assignedWork)).'" />';
+          echo '<input type="hidden" id="realWork_'.$nbLine.'" value="'.htmlDisplayNumericWithoutTrailingZeros(Work::displayImputation($line->realWork)).'" />';
         }
-        echo '</td>';
         $curDate=$startDate;
         $listProject=Project::getAdminitrativeProjectList(true);
         for ($i=1; $i<=$nbDays; $i++) {
@@ -1045,7 +1056,7 @@ class ImputationLine {
     echo '<TR class="ganttDetail" >';
     echo '  <TD class="ganttLeftTopLine" style="width:'.$iconWidth.'px;"></TD>';
     echo '  <TD class="ganttLeftTopLine" style="width:'.$iconWidth.'px;"></TD>';
-    echo '  <TD class="ganttLeftTopLine" colspan="5" style="text-align: left; '.'border-left:0px;" nowrap><span class="nobr">';
+    echo '  <TD class="ganttLeftTopLine" colspan="'.(($lowRes)?$lowRes:'5').'" style="text-align: left; '.'border-left:0px;" nowrap><span class="nobr">';
     echo Work::displayImputationUnit();
     echo '</span></TD>';
     
