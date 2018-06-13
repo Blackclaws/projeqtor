@@ -5936,12 +5936,14 @@ function undoItemButton(curClass,curId) {
   historyPosition-=1;
   var currentItem=historyTable[historyPosition];
   var currentScreen=currentItem[2];
-  
   var target="";
   if (currentScreen=="object" && currentItem[1]!=null){
     gotoElement(currentItem[0], currentItem[1], true, false, currentScreen);
   } else if (currentScreen=="object") {
     loadContent("objectMain.php?objectClass=" + currentItem[0],"centerDiv");
+    //gautier #3413
+  } else if (currentScreen=="Planning" && currentItem[1]!=null){ 
+    gotoElement(currentItem[0], currentItem[1], false, false, "planning");
   } else {
     target=getTargetFromCurrentScreen(currentScreen);
     loadContent(target,"centerDiv"); 
@@ -6008,6 +6010,9 @@ function redoItemButton() {
     gotoElement(currentItem[0], currentItem[1], true, false, currentScreen);
   } else if (currentScreen=="object") {
     loadContent("objectMain.php?objectClass=" + currentItem[0],"centerDiv");
+  //gautier
+  } else if (currentScreen=="Planning" && currentItem[1]!=null){ 
+    gotoElement(currentItem[0], currentItem[1], false, false, "planning");
   } else {
     target=getTargetFromCurrentScreen(currentScreen);
     loadContent(target,"centerDiv"); 

@@ -26,17 +26,18 @@ Restrictions can be defined for a project, a project type or a profile.
 .. rubric:: Type restriction management
 
 #. Click on "Restrict types" button to display the dialog box.
-#. For each element type, select values that will be in the list of values.
+#. For each element type, select values that will be in the list of values displayed.
 
-If none element type is selected, by default all values of the row will be displayed.
+If no element type is selected, by default all values of the row will be displayed on each screen concerned by.
+(One example below of selection)
 
-.. figure:: /images/GUI/BOX_RestrictTypeForProject.png
+.. figure:: /images/GUI/LISTTYPERESTRICTION.png
    :alt: Dialog box - Restrict types for the project 
    :align: center
 
 .. rubric:: Displays element type names where a restriction is applied
 
-.. figure:: /images/GUI/ZONE_TypeRestrictionSection2.png
+.. figure:: /images/GUI/LISTETYPERESTRICTION2.png
    :alt: Section - Restrict types 
    :align: center
 
@@ -48,6 +49,8 @@ If none element type is selected, by default all values of the row will be displ
 .. index:: ! Project (Type)
 
 .. _project-type:
+
+ Reminder : It means too, no restriction for remainding element types on each dedicated screen.
 
 Projects types
 --------------

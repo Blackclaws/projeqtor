@@ -272,7 +272,7 @@ Depending on options of functionality, allows to grant access rights, to define 
 
 * For each option, select the access granted to a profile.
 
-.. figure:: /images/GUI/SCR_SpecificAccess.png
+.. figure:: /images/GUI/specificaccessscreen.png 
    :alt: Specific access screen
    :align: center
 
@@ -281,13 +281,14 @@ Depending on options of functionality, allows to grant access rights, to define 
 
 ------------------------
 
-.. rubric:: Section: Real work allocation and Diary
+.. rubric:: Section: Access to resource data
 
 This section allows to:
 
 * Defines who will be able to see and update “real work” for other users.
 * Defines who can validate weekly work for resource.
 * Defines who have access on diary for resources.
+* Defines who, as a resource, can subscribe to survey for users. 
 
 .. note:: Validate real work
 
@@ -317,6 +318,14 @@ This section allows to:
 
     * Defines visibility or not to the checklist (if defined).
 
+ .. compound:: **Access to jobs lists**
+
+    * Defines visibility or not to the jobs lists (if defined).
+
+ .. compound:: **Multiple update**
+
+    * Defines the possibility or not  to change one or more criteria for one or more selected rows at a time
+
 
 .. rubric:: Section: Planning access rights
 
@@ -330,6 +339,10 @@ This section allows to:
 
     * This option defines for each profile the ability to see the resource planning of others.
 
+ .. compound:: **Change validated data**
+
+* This option defines for each profile the ability to change the validated data or not on details area.
+
 .. rubric:: Section: Unlock items
 
 * This section defines for each profile the ability to unlock any document or requirement.
@@ -342,7 +355,21 @@ This section allows to:
 .. rubric:: Section: Specific update rights
 
 * Defines for each profile the ability to force delete items.
+* Defines for each profile the ability to force close items.
 * Defines for each profile the ability to update creation information.
+* Defines for each profile the ability to mention or not the components on a ticket.
+
+
+.. rubric:: Section: Limit visibilty to resources
+
+* By profil, allows to restrict or not the number of resources displayed, by organizations or own team, on resource lists 
+ .
+* By profil, allows to restrict or not the number of resources displayed, by organizations or own team, on resource screen .
+
+.. rubric:: Section: Limit visibility to organizations
+
+* By profil, allows to restrict or not the number of organizations displayed, by organizations or own organization, on organization lists .
+* By profil, allows to restrict or not the number of organizations displayed, by organizations or own organization, on organization screen .
 
 .. raw:: latex
 
