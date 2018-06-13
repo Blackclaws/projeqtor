@@ -660,6 +660,13 @@ if ($type == 'empty') {} else if ($type == 'object') { // ======================
     foreach ( $wsList as $ws ) {
       $compTable [$ws->idStatusTo] = "ok";
     }
+    // Ticket #3417Ticket #3417
+    $currentStatus=new Status($docVers->idStatus);
+    if ($currentStatus->isCopyStatus) {
+      $listAll=SqlList::getList('Status','id');
+      $compTable[reset($listAll)]='ok';
+      unset($compTable[currentStatus]);
+    }
     $table = array_intersect_key ( $table, $compTable );
   } else {
     reset ( $table );

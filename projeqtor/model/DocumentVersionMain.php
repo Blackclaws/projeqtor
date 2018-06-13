@@ -169,8 +169,7 @@ class DocumentVersionMain extends SqlElement {
   			return $resultFileImport;
   		}
   	}
-  	
-  	if (! strpos($result,'id="lastOperationStatus" value="OK"')) {
+  	if ($resultStatus!="OK") {
       return $result;     
     }
     if ( ($doc->version==null) 
@@ -199,10 +198,9 @@ class DocumentVersionMain extends SqlElement {
     	$doc->idle=$st->setIdleStatus;
       $saveDoc=true;
     }
-    
     if ($saveDoc and !$fromDoc) {
-      $doc->save();
-    }
+      $resDoc=$doc->save();
+   }
     
     // Inset approvers from document if not existing (on creation)
     if ($mode=='insert') {

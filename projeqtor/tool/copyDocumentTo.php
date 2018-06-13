@@ -59,9 +59,15 @@ foreach ($list as $vd) {
   $vd->idDocument=$newObj->id;
   $vd->id=null;
   $vd->name = $vd->name;
+  // Ticket #3417
+  $vd->idStatus=$newObj->idStatus;
   $vd->save();
   $dest = $vd->getUploadFileName();
   copy($source, $dest);
+  if ($vd->version==$newObj->version and $vd->revision==$newObj->revision and $vd->draft==$newObj->draft) {
+    $newObj->idDocumentVersion=$vd->id;
+    $newObj->save();
+  }
 }
 
 // Message of correct saving
