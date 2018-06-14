@@ -3776,6 +3776,15 @@ function onKeyDownCkEditorFunction(event, editor) {
     }
   } 
 }
+
+function cancelBothFullScreen(){
+  if(top.editorInFullScreen() && top.whichFullScreen!=-1){
+    top.editorArray[whichFullScreen].execCommand('maximize');
+    dijit.byId("globalContainer").resize();
+  }
+  
+}
+
 function isEditingKey(evt) {
   if (evt.ctrlKey && (evt.keyCode == 65 || evt.keyCode == 67))
     return false; // Copy or Select All

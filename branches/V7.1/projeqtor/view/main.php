@@ -337,7 +337,18 @@ $keyDownEventScript=NumberFormatter52::getKeyDownEvent();
       //  dojo.connect(document, "onkeypress", this, onKeyPressFunc);
       //} else {
         dojo.connect(document, "onkeydown", this, onKeyDownFunc);
-      //}
+      //} 
+        var fullScr=function(evt){
+          var fullscreenElement = document.fullscreenElement || document.mozFullScreenElement ||
+          document.webkitFullscreenElement || document.msFullscreenElement;
+          if(!fullscreenElement){
+            setTimeout('cancelBothFullScreen();',10);
+          }
+        };
+        document.addEventListener("fullscreenchange",fullScr);
+        document.addEventListener("webkitfullscreenchange",fullScr);
+        document.addEventListener("mozfullscreenchange",fullScr);
+        document.addEventListener("msfullscreenchange",fullScr);
       <?php 
       $firstPage="welcome.php";
       if (securityCheckDisplayMenu(1) ) {
