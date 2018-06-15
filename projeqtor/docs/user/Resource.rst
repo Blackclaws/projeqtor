@@ -270,16 +270,15 @@ A pool can not be a user and does not have a profile as it may not connect to th
    * A pool does not have a specific capacity. It's capacity is calculated from capacity and rate of assigned resources.
 
 .. rubric:: Limits
+
   * A pool can not be a user and does not have a profile as it may not connect to the application.
   * A pool can not be a contact
   * A pool cannot be the responsible of an item
-
 
 .. rubric:: Real work input
 
   * When a pool is assigned to an activity, any resource of the pool can input real work on the activity
   * This possibility is restricted to the period of assignment of the resource to the pool
-
 
 .. rubric:: Automatic decrement for assigned work
 
@@ -291,7 +290,6 @@ A pool can not be a user and does not have a profile as it may not connect to th
 .. rubric:: Planning
   * When planning a pool, availability of unitary resources already booked on other tasks is taken into account
   * When planning an unitary resource, availability already booked through the pool on other tasks is also taken into account (globally for all the resources of the pool)
-
 
 .. rubric:: Possible use cases for pool
 

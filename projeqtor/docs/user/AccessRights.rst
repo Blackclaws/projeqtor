@@ -362,14 +362,13 @@ This section allows to:
 
 .. rubric:: Section: Limit visibilty to resources
 
-* By profil, allows to restrict or not the number of resources displayed, by organizations or own team, on resource lists 
- .
-* By profil, allows to restrict or not the number of resources displayed, by organizations or own team, on resource screen .
+* By profil, allows to restrict or not the number of resources displayed, by organizations or own team, on resource lists.
+* By profil, allows to restrict or not the number of resources displayed, by organizations or own team, on resource screen.
 
 .. rubric:: Section: Limit visibility to organizations
 
-* By profil, allows to restrict or not the number of organizations displayed, by organizations or own organization, on organization lists .
-* By profil, allows to restrict or not the number of organizations displayed, by organizations or own organization, on organization screen .
+* By profil, allows to restrict or not the number of organizations displayed, by organizations or own organization, on organization lists.
+* By profil, allows to restrict or not the number of organizations displayed, by organizations or own organization, on organization screen.
 
 .. raw:: latex
 

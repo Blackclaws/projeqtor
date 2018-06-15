@@ -1381,6 +1381,7 @@ Info bar
 
 
 .. rubric:: c - Language
+
 ProjeQtOr is multilingual.
 
 Each user can choose the language to display all the captions.
@@ -1394,6 +1395,7 @@ Each user can choose the language to display all the captions.
 Users can select Theme to display the interface. 
 
 .. rubric:: User parameter “Theme”
+
 * This parameter defines the theme to display.
 * The new theme is automatically applied when selected.
 
@@ -1404,12 +1406,12 @@ Users can select Theme to display the interface.
   * By default your selected theme is "ProjeQtOr 'Flat Desgin' Blue".
   * Screenshoots has been taken with "ProjeQtOr Standard" theme. 
 
-
 .. rubric:: e - Fist page
+
 Scrolling the list, it is possible to choose  the screen that will be displayed first, on each connection, among items of the general menu.
 
+.. rubric:: f - Change password
 
-.. rubric:: f - Change password 
 Validate the new one clicking and activating the next combo box 
 
 .. rubric:: g - Online manual
