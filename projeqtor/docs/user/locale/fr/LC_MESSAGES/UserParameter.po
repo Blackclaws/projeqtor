@@ -1,0 +1,109 @@
+# 
+msgid ""
+msgstr ""
+"Project-Id-Version: ProjeQtOr User guide 5.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2015-07-08 14:45-0400\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: ../../UserParameter.rst:12 ../../UserParameter.rst:7
+msgid "User parameters"
+msgstr ""
+
+#: ../../UserParameter.rst:18
+msgid "Generic display parameter for user."
+msgstr ""
+
+#: ../../UserParameter.rst:22
+msgid "Selection of graphic interface behavior."
+msgstr ""
+
+#: ../../UserParameter.rst:26
+msgid ""
+"Selection of printing history for detailed items and destination for "
+"printing and PDF export."
+msgstr ""
+
+#: ../../UserParameter.rst:30
+msgid ""
+"Default selected project and choice of character used to indent lists of "
+"projects, to represent the WBS structure of projects and sub-project (cannot"
+" be a “space”, can be “none” to get flat lists)."
+msgstr ""
+
+#: ../../UserParameter.rst:38
+msgid "Changes the user's password."
+msgstr ""
+
+#: ../../UserParameter.rst:43
+msgid "User parameters are efficient even without saving."
+msgstr ""
+
+#: ../../UserParameter.rst:44
+msgid ""
+"Saving parameters will retrieve the selected parameters on each connection."
+msgstr ""
+
+#: ../../UserParameter.rst:14
+msgid "User parameters screen allows configuration of personal settings."
+msgstr ""
+
+#: ../../UserParameter.rst:17
+msgid "Display parameters"
+msgstr ""
+
+#: ../../UserParameter.rst:21
+msgid "Graphic interface behavior"
+msgstr ""
+
+#: ../../UserParameter.rst:25
+msgid "Print and Export parameters"
+msgstr ""
+
+#: ../../UserParameter.rst:29
+msgid "Miscellaneous"
+msgstr ""
+
+#: ../../UserParameter.rst:33
+msgid "Photo"
+msgstr ""
+
+#: ../../UserParameter.rst:34
+msgid "Add a picture for the user."
+msgstr ""
+
+#: ../../UserParameter.rst:37
+msgid "Password"
+msgstr ""
+
+#~ msgid "User parameters screen allow configuration of personal settings."
+#~ msgstr ""
+
+#~ msgid "The parameters are grouped by section :"
+#~ msgstr ""
+
+#~ msgid "**Display parameters**"
+#~ msgstr ""
+
+#~ msgid "**Graphic interface behaviour**"
+#~ msgstr ""
+
+#~ msgid "**Print and Export parameters**"
+#~ msgstr ""
+
+#~ msgid "**Miscellaneous**"
+#~ msgstr ""
+
+#~ msgid "**Photo**"
+#~ msgstr ""
+
+#~ msgid "Add a picture to the user."
+#~ msgstr ""
+
+#~ msgid "**Password**"
+#~ msgstr ""
