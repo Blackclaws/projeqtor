@@ -512,8 +512,6 @@ Deliverables links with Milestones.
   
 .. raw:: latex
 
-
-
 .. rubric:: Section: Validation
 
 .. tabularcolumns:: |l|l|

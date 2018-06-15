@@ -615,9 +615,7 @@ A JobList is built from JobList lines.
 .. _notification-system :
 
 Notification system
----------
-
-
+-------------------
 
 This system also allows you to generate notifications manually or according to some very "powerful" rules (defined as "where" clauses).
 We now have 2 systems for generating alerts or reminders :  indicators and notifications.
@@ -633,28 +631,28 @@ A) Creation _________________
 
 The definition of notification generation is based on the following:
 
-▪ The element of the system that determines the notification, called "Notifiable Element" (notifiable)
+* The element of the system that determines the notification, called "Notifiable Element" (notifiable)
+   
+* The notification rule notifying the elements related to the generation of a notification
+   
+* The date (referred to as the reference date) at which the notification must be generated. This is one of the dates of the notifiable item that is not the creation date.
 
-▪ The notification rule notifying the elements related to the generation of a notification
+* The generated notification receivers. Fields of the notifiable element or its sub-elements that refer to users.
 
-▪ The date (referred to as the reference date) at which the notification must be generated
-This is one of the dates of the notifiable item that is not the creation date.
 
-▪ The generated notification receivers. Fields of the notifiable element (or its sub-elements) that refer to users
-
-▪ The type of notification (Alert, Warning, Information)
-
-▪ The title that can contain the field values of the notifiable element or its sub-elements
-
-▪ The content may also contain the field values of the notifiable element or its sub-elements.
-
-▪ The choice to send, or not, to all the sending of emails at the same time as the notifications.
+* The type of notification (Alert, Warning, Information)
+   
+* The title that can contain the field values of the notifiable element or its sub-elements
+   
+* The content may also contain the field values of the notifiable element or its sub-elements.
+   
+* The choice to send, or not, to all the sending of emails at the same time as the notifications.
 
 
 **\* Definition of notifications**
 
 
-  .. rubric:: Section: Description
+.. rubric:: Section: Description
 
 .. tabularcolumns:: |l|l|
 
@@ -670,9 +668,10 @@ This is one of the dates of the notifiable item that is not the creation date.
      - Type of the element the list applies to .
    * - Type
      - Type represents level 1 of the unread notification tree.
-  
 
-   .. rubric:: Section: Notification title
+
+.. rubric:: Section: Notification title
+
 .. tabularcolumns:: |l|l|
 
 .. list-table::
@@ -684,10 +683,7 @@ This is one of the dates of the notifiable item that is not the creation date.
    * - :term:`Title`
      - Can add dynamics fields.
 
-
-
    
-
 This is the screen used to define the "programmed" parameters of the programming generation.
 
 • Section 'Description':

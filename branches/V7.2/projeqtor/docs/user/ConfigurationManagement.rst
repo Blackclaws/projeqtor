@@ -72,7 +72,7 @@ Allows to link components to product.
    * - Status
      - State to be registered.
    * - :term:`Closed`
-     
+     - item is closed if checked
    * - Description :
      - Box checked indicates the product is archived.
 

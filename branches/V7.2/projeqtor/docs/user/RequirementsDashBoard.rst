@@ -12,7 +12,7 @@
 .. _requirements-dashboard:
 
 Requirements dashboard
-=================
+======================
 
 Allows user to have a requirement global view of his projects.
 

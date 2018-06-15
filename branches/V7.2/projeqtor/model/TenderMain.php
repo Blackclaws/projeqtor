@@ -85,6 +85,9 @@ class TenderMain extends SqlElement {
   public $_Link=array();
   public $_Attachment=array();
   public $_Note=array();
+  
+  public $_BillLine=array();
+  public $_BillLine_colSpan="2";
 
   public $_nbColMax=3;  
   // Define the layout that will be used for lists
@@ -109,6 +112,7 @@ class TenderMain extends SqlElement {
                                   "idle"=>"nobr",
                                   "idleDate"=>"nobr",
                                   "cancelled"=>"nobr",
+                                  "initialAmount"=>"readonly",
                                   "plannedTaxAmount"=>"readonly",
                                   "initialTaxAmount"=>"readonly",
                                   "plannedFullAmount"=>"readonly",
@@ -284,6 +288,20 @@ class TenderMain extends SqlElement {
     if (getLastOperationStatus($result)=='NO_CHANGE' and $resultEval!="" and getLastOperationStatus($resultEval)=="OK") {
       return str_replace(array(getLastOperationMessage($result),'NO_CHANGE','#'.$resultEvalId),array(getLastOperationMessage($resultEval),"OK",'#'.$this->id),$result);
     }
+    
+    $billLine=new BillLine();
+    $crit = array("refType"=> "Tender", "refId"=>$this->id);
+    $billLineList = $billLine->getSqlElementsFromCriteria($crit,false);
+    if (count($billLineList)>0) {
+      $amount=0;
+      $numberDays=0;
+      foreach ($billLineList as $line) {
+        $amount+=$line->amount;
+      }
+      $this->initialAmount=$amount;
+    }
+    $this->initialFullAmount=$this->initialAmount*(1+$this->taxPct/100);
+    $result = parent::save();
     return $result;
   }
   
