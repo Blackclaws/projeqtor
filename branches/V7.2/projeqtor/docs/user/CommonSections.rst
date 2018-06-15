@@ -904,6 +904,7 @@ Planning mode
            :widths: 10,9,9,9,9,9,9,9,9,9,9
            :header-rows: 1
            :stub-columns: 1
+
            * - Day
              - 1
              - 2
