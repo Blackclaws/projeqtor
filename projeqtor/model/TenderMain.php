@@ -76,6 +76,9 @@ class TenderMain extends SqlElement {
   public $_lib_cancelled;
   public $result;
   
+  public $_BillLine=array();
+  public $_BillLine_colSpan="2";
+  
   public $_sec_evaluation;
   public $_spe_evaluation;
   public $evaluationValue;
@@ -86,8 +89,7 @@ class TenderMain extends SqlElement {
   public $_Attachment=array();
   public $_Note=array();
   
-  public $_BillLine=array();
-  public $_BillLine_colSpan="2";
+ 
 
   public $_nbColMax=3;  
   // Define the layout that will be used for lists
@@ -206,7 +208,12 @@ class TenderMain extends SqlElement {
    * @return the return message of persistence/SqlElement#save() method
    */
   public function save() {
-    
+    if (trim($this->idProvider)) {
+      $provider=new Provider($this->idProvider);
+      if ($provider->taxPct!='' and !$this->taxPct) {
+        $this->taxPct=$provider->taxPct;
+      }
+    }
     // Update amounts
     if ($this->initialAmount!=null) {
       if ($this->taxPct!=null) {
@@ -301,7 +308,7 @@ class TenderMain extends SqlElement {
       $this->initialAmount=$amount;
     }
     $this->initialFullAmount=$this->initialAmount*(1+$this->taxPct/100);
-    $result = parent::save();
+    parent::simpleSave();
     return $result;
   }
   

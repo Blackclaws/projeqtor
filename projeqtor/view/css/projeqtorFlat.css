@@ -1203,6 +1203,14 @@ body .ProjeQtOrFlatBlue {
 .ProjeQtOrFlatBlue .iconProviderType22 { background-image: url(customIcons/blue/iconProviderType.png);  background-repeat: no-repeat; width: 22px; height: 22px; background-size: 22px 22px;}
 .ProjeQtOrFlatBlue .iconProviderType16 { background-image: url(customIcons/blue/iconProviderType.png);  background-repeat: no-repeat; width: 16px; height: 16px; background-size: 16px 16px; }
 
+.ProjeQtOrFlatBlue .iconProviderOrder32 { background-image: url(customIcons/blue/iconProviderCommand.png);  background-repeat: no-repeat; width: 32px; height: 32px; background-size: 32px 32px;}
+.ProjeQtOrFlatBlue .iconProviderOrder22 { background-image: url(customIcons/blue/iconProviderCommand.png);  background-repeat: no-repeat; width: 22px; height: 22px; background-size: 22px 22px;}
+.ProjeQtOrFlatBlue .iconProviderOrder16 { background-image: url(customIcons/blue/iconProviderCommand.png);  background-repeat: no-repeat; width: 16px; height: 16px; background-size: 16px 16px; }
+
+.ProjeQtOrFlatBlue .iconProviderOrderType32 { background-image: url(customIcons/blue/iconProviderCommandType.png);  background-repeat: no-repeat; width: 32px; height: 32px; background-size: 32px 32px;}
+.ProjeQtOrFlatBlue .iconProviderOrderType22 { background-image: url(customIcons/blue/iconProviderCommandType.png);  background-repeat: no-repeat; width: 22px; height: 22px; background-size: 22px 22px;}
+.ProjeQtOrFlatBlue .iconProviderOrderType16 { background-image: url(customIcons/blue/iconProviderCommandType.png);  background-repeat: no-repeat; width: 16px; height: 16px; background-size: 16px 16px; }
+
 .ProjeQtOrFlatBlue .iconQuality32 { background-image: url(customIcons/blue/iconQuality.png);  background-repeat: no-repeat; width: 32px; height: 32px; background-size: 32px 32px;}
 .ProjeQtOrFlatBlue .iconQuality22 { background-image: url(customIcons/blue/iconQuality.png);  background-repeat: no-repeat; width: 22px; height: 22px; background-size: 22px 22px;}
 .ProjeQtOrFlatBlue .iconQuality16 { background-image: url(customIcons/blue/iconQuality.png);  background-repeat: no-repeat; width: 16px; height: 16px; background-size: 16px 16px; }
@@ -2570,6 +2578,14 @@ body .ProjeQtOrFlatRed {
 .ProjeQtOrFlatRed .iconProviderType22 { background-image: url(customIcons/red/iconProviderType.png);  background-repeat: no-repeat; width: 22px; height: 22px; background-size: 22px 22px;}
 .ProjeQtOrFlatRed .iconProviderType16 { background-image: url(customIcons/red/iconProviderType.png);  background-repeat: no-repeat; width: 16px; height: 16px; background-size: 16px 16px; }
 
+.ProjeQtOrFlatRed .iconProviderOrder32 { background-image: url(customIcons/red/iconProviderCommand.png);  background-repeat: no-repeat; width: 32px; height: 32px; background-size: 32px 32px;}
+.ProjeQtOrFlatRed .iconProviderOrder22 { background-image: url(customIcons/red/iconProviderCommand.png);  background-repeat: no-repeat; width: 22px; height: 22px; background-size: 22px 22px;}
+.ProjeQtOrFlatRed .iconProviderOrder16 { background-image: url(customIcons/red/iconProviderCommand.png);  background-repeat: no-repeat; width: 16px; height: 16px; background-size: 16px 16px; }
+
+.ProjeQtOrFlatRed .iconProviderOrderType32 { background-image: url(customIcons/red/iconProviderCommandType.png);  background-repeat: no-repeat; width: 32px; height: 32px; background-size: 32px 32px;}
+.ProjeQtOrFlatRed .iconProviderOrderType22 { background-image: url(customIcons/red/iconProviderCommandType.png);  background-repeat: no-repeat; width: 22px; height: 22px; background-size: 22px 22px;}
+.ProjeQtOrFlatRed .iconProviderOrderType16 { background-image: url(customIcons/red/iconProviderCommandType.png);  background-repeat: no-repeat; width: 16px; height: 16px; background-size: 16px 16px; }
+
 .ProjeQtOrFlatRed .iconQuality32 { background-image: url(customIcons/red/iconQuality.png);  background-repeat: no-repeat; width: 32px; height: 32px; background-size: 32px 32px;}
 .ProjeQtOrFlatRed .iconQuality22 { background-image: url(customIcons/red/iconQuality.png);  background-repeat: no-repeat; width: 22px; height: 22px; background-size: 22px 22px;}
 .ProjeQtOrFlatRed .iconQuality16 { background-image: url(customIcons/red/iconQuality.png);  background-repeat: no-repeat; width: 16px; height: 16px; background-size: 16px 16px; }
@@ -3935,6 +3951,14 @@ body .ProjeQtOrFlatGreen {
 .ProjeQtOrFlatGreen .iconProviderType32 { background-image: url(customIcons/green/iconProviderType.png);  background-repeat: no-repeat; width: 32px; height: 32px; background-size: 32px 32px;}
 .ProjeQtOrFlatGreen .iconProviderType22 { background-image: url(customIcons/green/iconProviderType.png);  background-repeat: no-repeat; width: 22px; height: 22px; background-size: 22px 22px;}
 .ProjeQtOrFlatGreen .iconProviderType16 { background-image: url(customIcons/green/iconProviderType.png);  background-repeat: no-repeat; width: 16px; height: 16px; background-size: 16px 16px; }
+
+.ProjeQtOrFlatGreen .iconProviderOrder32 { background-image: url(customIcons/green/iconProviderCommand.png);  background-repeat: no-repeat; width: 32px; height: 32px; background-size: 32px 32px;}
+.ProjeQtOrFlatGreen .iconProviderOrder22 { background-image: url(customIcons/green/iconProviderCommand.png);  background-repeat: no-repeat; width: 22px; height: 22px; background-size: 22px 22px;}
+.ProjeQtOrFlatGreen .iconProviderOrder16 { background-image: url(customIcons/green/iconProviderCommand.png);  background-repeat: no-repeat; width: 16px; height: 16px; background-size: 16px 16px; }
+
+.ProjeQtOrFlatGreen .iconProviderOrderType32 { background-image: url(customIcons/green/iconProviderCommandType.png);  background-repeat: no-repeat; width: 32px; height: 32px; background-size: 32px 32px;}
+.ProjeQtOrFlatGreen .iconProviderOrderType22 { background-image: url(customIcons/green/iconProviderCommandType.png);  background-repeat: no-repeat; width: 22px; height: 22px; background-size: 22px 22px;}
+.ProjeQtOrFlatGreen .iconProviderOrderType16 { background-image: url(customIcons/green/iconProviderCommandType.png);  background-repeat: no-repeat; width: 16px; height: 16px; background-size: 16px 16px; }
 
 .ProjeQtOrFlatGreen .iconQuality32 { background-image: url(customIcons/green/iconQuality.png);  background-repeat: no-repeat; width: 32px; height: 32px; background-size: 32px 32px;}
 .ProjeQtOrFlatGreen .iconQuality22 { background-image: url(customIcons/green/iconQuality.png);  background-repeat: no-repeat; width: 22px; height: 22px; background-size: 22px 22px;}
@@ -5302,6 +5326,14 @@ body .ProjeQtOrFlatGrey {
 .ProjeQtOrFlatGrey .iconProviderType32 { background-image: url(customIcons/grey/iconProviderType.png);  background-repeat: no-repeat; width: 32px; height: 32px; background-size: 32px 32px;}
 .ProjeQtOrFlatGrey .iconProviderType22 { background-image: url(customIcons/grey/iconProviderType.png);  background-repeat: no-repeat; width: 22px; height: 22px; background-size: 22px 22px;}
 .ProjeQtOrFlatGrey .iconProviderType16 { background-image: url(customIcons/grey/iconProviderType.png);  background-repeat: no-repeat; width: 16px; height: 16px; background-size: 16px 16px; }
+
+.ProjeQtOrFlatGrey .iconProviderOrder32 { background-image: url(customIcons/grey/iconProviderCommand.png);  background-repeat: no-repeat; width: 32px; height: 32px; background-size: 32px 32px;}
+.ProjeQtOrFlatGrey .iconProviderOrder22 { background-image: url(customIcons/grey/iconProviderCommand.png);  background-repeat: no-repeat; width: 22px; height: 22px; background-size: 22px 22px;}
+.ProjeQtOrFlatGrey .iconProviderOrder16 { background-image: url(customIcons/grey/iconProviderCommand.png);  background-repeat: no-repeat; width: 16px; height: 16px; background-size: 16px 16px; }
+
+.ProjeQtOrFlatGrey .iconProviderOrderType32 { background-image: url(customIcons/grey/iconProviderCommandType.png);  background-repeat: no-repeat; width: 32px; height: 32px; background-size: 32px 32px;}
+.ProjeQtOrFlatGrey .iconProviderOrderType22 { background-image: url(customIcons/grey/iconProviderCommandType.png);  background-repeat: no-repeat; width: 22px; height: 22px; background-size: 22px 22px;}
+.ProjeQtOrFlatGrey .iconProviderOrderType16 { background-image: url(customIcons/grey/iconProviderCommandType.png);  background-repeat: no-repeat; width: 16px; height: 16px; background-size: 16px 16px; }
 
 .ProjeQtOrFlatGrey .iconQuality32 { background-image: url(customIcons/grey/iconQuality.png);  background-repeat: no-repeat; width: 32px; height: 32px; background-size: 32px 32px;}
 .ProjeQtOrFlatGrey .iconQuality22 { background-image: url(customIcons/grey/iconQuality.png);  background-repeat: no-repeat; width: 22px; height: 22px; background-size: 22px 22px;}

@@ -337,7 +337,7 @@ class PlannedWork extends GeneralWork {
         if (isset($reserved['W'][$plan->id]['end'])   and $reserved['W'][$plan->id]['end'] ) {
           $endPlan=$reserved['W'][$plan->id]['end'];
         } 
-        if (1 and (!$endPlan or !$startPlan)) {
+        if (!$endPlan or !$startPlan) {
           $idPeProj=null;
           $curPe=$plan;
           while (!$idPeProj) {
@@ -347,16 +347,18 @@ class PlannedWork extends GeneralWork {
             }
             $topPe=$fullListPlan['#'.$curPe->topId];
             if ($topPe->refType=='Project') {
-              $idPeProj=$topPe->id;
+              $idPeProj=$topPe->id; // Will exit loop, after setting curPe
             }
             $curPe=$topPe;
           }
           if ($idPeProj>0) {
             if (!$endPlan) {
-              $endPlan=$curPe->plannedEndDate;
+              if ($curPe->plannedEndDate) $endPlan=$curPe->plannedEndDate;
+              else $endPlan=$curPe->validatedEndDate;
             } 
             if (!$startPlan) {
-              $startPlan=$curPe->plannedStartDate;
+              if ($curPe->plannedStartDate) $startPlan=$curPe->plannedStartDate;
+              else $startPlan=$curPe->validatedStartDate;
             }
           }
         }
