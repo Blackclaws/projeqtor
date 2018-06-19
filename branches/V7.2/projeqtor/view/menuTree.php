@@ -59,7 +59,7 @@
       }
       echo substr('          ',0,$level*2);
       echo '{ id:"' . $name . '", name:"' . i18n('menu'.$menu) . '"';
-      echo ', "type":"' . $type . '" , iconClass:"icon' . $icon .  $paramIconSize . '"'; 
+      echo ', "type":"' . $type . '" , iconClass:"icon' . $icon .  $paramIconSize . ' icon'.$icon.' iconSize'.$paramIconSize.'"'; 
       if ($class and $type=='class') {
         echo ', "objectClass":"' . $class . '"';
       }

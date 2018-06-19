@@ -256,7 +256,7 @@ class ColumnSelector extends SqlElement {
 	        $cs->widthPct=10;
 				}
 			} else if ($dataType=='int' or $dataType=='decimal') {
-				if (strtolower(substr($col,-8))=='progress' or strpos($col,'Pct')!=false) {
+				if (strtolower(substr($col,-8))=='progress' or strpos($col,'Pct')!=false or substr($col, -4, 4)=='Rate') {
 					 $cs->formatter="percentFormatter";
 				} else if (strtolower(substr($col,-4))=='work') {
 					 $cs->formatter="workFormatter";

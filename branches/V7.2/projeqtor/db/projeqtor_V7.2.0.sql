@@ -1,9 +1,13 @@
 -- ///////////////////////////////////////////////////////////
 -- // PROJECTOR                                             //
 -- //-------------------------------------------------------//
--- // Version : 7.1.0                                       //
--- // Date : 2018-04-23                                     //
+-- // Version : 7.2.0                                       //
+-- // Date : 2018-06-18                                     //
 -- ///////////////////////////////////////////////////////////
+
+-- ==================================================================
+-- Financial evolutions
+-- ==================================================================
 
 CREATE TABLE `${prefix}providerOrder` (
   `id` int(12) unsigned NOT NULL AUTO_INCREMENT,
@@ -46,11 +50,11 @@ CREATE TABLE `${prefix}providerOrder` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-CREATE INDEX providerCommandProject ON `${prefix}providerCommand` (idProject);
-CREATE INDEX providerCommandUser ON `${prefix}providerCommand` (idUser);
-CREATE INDEX providerCommandResource ON `${prefix}providerCommand` (idResource);
-CREATE INDEX providerCommandStatus ON `${prefix}providerCommand` (idStatus);
-CREATE INDEX providerCommandType ON `${prefix}providerCommand` (idProviderOrderType);
+CREATE INDEX providerOrderProject ON `${prefix}providerOrder` (idProject);
+CREATE INDEX providerOrderUser ON `${prefix}providerOrder` (idUser);
+CREATE INDEX providerOrderResource ON `${prefix}providerOrder` (idResource);
+CREATE INDEX providerOrderStatus ON `${prefix}providerOrder` (idStatus);
+CREATE INDEX providerOrderType ON `${prefix}providerOrder` (idProviderOrderType);
 
 INSERT INTO `${prefix}menu` (`id`,`name`, `idMenu`, `type`, `sortOrder`, `level`, `idle`, `menuClass`) VALUES
 (190,'menuProviderOrderType', 79, 'object', 826, 'Project', 0, 'Type '),
@@ -63,3 +67,28 @@ INSERT INTO `${prefix}habilitation` (`idProfile`, `idMenu`, `allowAccess`) VALUE
 INSERT INTO `${prefix}accessright` (`idProfile`, `idMenu`, `idAccessProfile`) VALUES
 (1,190,8),
 (1,191,8);
+
+-- ==================================================================
+-- Global views
+-- ==================================================================
+
+INSERT INTO `${prefix}menu` (`id`,`name`, `idMenu`, `type`, `sortOrder`, `level`, `idle`, `menuClass`) VALUES
+(192,'menuGlobalView', 2, 'object', 95, 'Project', 0, 'Work');
+INSERT INTO `${prefix}habilitation` (`idProfile`, `idMenu`, `allowAccess`) VALUES 
+(1,192,1),
+(2,192,1),
+(3,192,1),
+(4,192,1);
+INSERT INTO `${prefix}accessright` (`idProfile`, `idMenu`, `idAccessProfile`) VALUES 
+(1,192, 8),
+(2,192, 2),
+(3,192, 7),
+(4,192, 7);
+
+CREATE OR REPLACE VIEW `${prefix}globalview` (id, objectClass, objectId, idProject, idType,  name,  idStatus,  idResource,  idUser,  description, result, reference, handled, done, idle, cancelled ) AS 
+SELECT concat('Project',id), 'Project', id, id, idProjectType, name, idStatus, idResource, idUser, description, null, null, handled, done, idle, cancelled from `{prefix}project`
+UNION SELECT concat('Ticket',id), 'Ticket', id, idProject, idTicketType, name, idStatus, idResource, idUser, description, result, reference, handled, done, idle, cancelled from `{prefix}ticket`
+UNION SELECT concat('Activity',id), 'Activity', id, idProject, idActivityType, name, idStatus, idResource, idUser, description, result, reference, handled, done, idle, cancelled from `{prefix}activity`;
+
+
+

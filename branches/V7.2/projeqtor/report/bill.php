@@ -92,9 +92,7 @@ foreach ($billList as $bill)
   echo '</div>';
   echo '</td><td style="width:50%">';
   // BILLING
-  $numBill=Parameter::getGlobalParameter('billPrefix')
-          . str_pad($bill->billId,Parameter::getGlobalParameter('billNumSize'),'0', STR_PAD_LEFT)
-          . Parameter::getGlobalParameter('billSuffix');   
+  $numBill=$bill->reference;   
   echo '<div style="position: relative; top: 1em; left: 1em; width: 90%; height: 4em; ';
     echo ' border: 2px solid #7070A0;-moz-border-radius: 15px; border-radius: 15px;">';
     echo '<table style="width:100%">';

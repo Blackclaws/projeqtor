@@ -106,6 +106,8 @@ function runScript($vers,$pluginSqlFile=null) {
               $action="CREATE INDEX";
             } else if (substr($query,0,19)=='CREATE UNIQUE INDEX') {
               $action="CREATE UNIQUE INDEX";
+            } else if (substr($query,0,22)=='CREATE OR REPLACE VIEW') {
+              $action="CREATE OR REPLACE VIEW";
             }
             $deb=strlen($action)+stripos($query, $action);            
             $end=strpos($query,' ', $deb+1);

@@ -102,7 +102,7 @@
         }
         echo '>';
         //echo '<img src="../view/css/images/icon' . $class . $iconSize.'.png" />';
-        echo '<div class="icon' . $class . $iconSize.'" style="margin-left:9px;width:'.$iconSize.'px;height:'.$iconSize.'px" ></div>';
+        echo '<div class="icon' . $class . $iconSize.' icon'.$class.' iconSize'.$iconSize.'" style="margin-left:9px;width:'.$iconSize.'px;height:'.$iconSize.'px" ></div>';
         echo '<div class="menuBarItemCaption">'.i18n($menu->name).'</div>';
         if ($menuName=='menuReports' and isHtml5() ) {?>
           <button class="comboButtonInvisible" dojoType="dijit.form.DropDownButton" 
@@ -135,7 +135,7 @@
       	echo '<div class="'.$menuClass.'" style="'.$style.'" id="'.$class.'" ';
       	echo 'oncontextmenu="event.preventDefault();customMenuManagement(\''.$class.'\');" ';
       	echo 'onClick="loadMenuBarObject(\'' . $class .  '\',\'' . htmlEncode(i18n($menu->name),'quotes') . '\',\'bar\');" >';
-      	echo '<div class="icon' . $class . $iconSize.'" style="margin-left:9px;width:'.$iconSize.'px;height:'.$iconSize.'px" ></div>';
+      	echo '<div class="icon' . $class . $iconSize.' icon'.$class.' iconSize.'.$iconSize.'" style="margin-left:9px;width:'.$iconSize.'px;height:'.$iconSize.'px" ></div>';
       	//echo '<img src="../view/css/images/icon' . $class . $iconSize. '.png" />';
       	echo '<div class="menuBarItemCaption">'.i18n('menu'.$class).'</div>';
       	echo '</div>';
@@ -219,7 +219,7 @@
       <span style="position: relative; left:7px; top:-7px; height: 20px">
         <button id="projectSelectorParametersButton" dojoType="dijit.form.Button" showlabel="false"
          title="<?php echo i18n('dialogProjectSelectorParameters');?>" style="top:2px;height:20px;"
-         iconClass="iconParameter16" xclass="detailButton">
+         iconClass="iconParameter16 iconParameter iconSize16" xclass="detailButton">
           <script type="dojo/connect" event="onClick" args="evt">
            loadDialog('dialogProjectSelectorParameters', null, true);
           </script>
@@ -234,7 +234,7 @@
      <div dojoType="dijit.layout.ContentPane" id="menuBarNotificationCount"  style="text-align: center; position:relative;top:-4px">
        <div dojoType="dijit.form.DropDownButton"  id=""
             style="display: table-cell;background-color: #D3D3D3;vertical-align: middle;" >
-          <span  class="iconNotification32" style="display: table-cell;">  
+          <span  class="iconNotification32 iconNotification iconSize32" style="display: table-cell;">  
             <span id="countNotifications" class="menuBarNotificationCount" style="text-align:center;" >
               0
             </span>
@@ -277,7 +277,7 @@
       				</td>
       			  <?php } else {?>
       				<td style="width:24px;padding-top:2px;">
-      				  <div class="iconUserParameter22">&nbsp;</div> 
+      				  <div class="iconUserParameter22 iconUserParameter iconSize22">&nbsp;</div> 
       				</td>
       			   <?php }?>
       			  <td style="vertical-align:middle;">&nbsp;<?php echo ($user->resourceName)?$user->resourceName:$user->name; ?>&nbsp;&nbsp;</td>
