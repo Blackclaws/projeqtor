@@ -283,13 +283,13 @@
 .iconHideStream22 { background-image: url(images/iconHideStream.png);  background-repeat: no-repeat; width: 22px; height: 22px; background-size: 20px 22px;}
 .iconHideStream16 { background-image: url(images/iconHideStream.png);  background-repeat: no-repeat; width: 16px; height: 16px; background-size: 16px 16px;}
 
-.iconCommand32 { background-image: url(images/iconClientCommand32.png);  background-repeat: no-repeat; width: 32px; height: 32px; }
-.iconCommand22 { background-image: url(images/iconClientCommand32.png);  background-repeat: no-repeat; width: 22px; height: 22px; }
-.iconCommand16 { background-image: url(images/iconClientCommand32.png);  background-repeat: no-repeat; width: 16px; height: 16px; }
+.iconCommand32 { background-image: url(images/iconClientCommand32.png);  background-repeat: no-repeat; width: 32px; height: 32px; background-size: 32px 32px;}
+.iconCommand22 { background-image: url(images/iconClientCommand32.png);  background-repeat: no-repeat; width: 22px; height: 22px; background-size: 22px 22px;}
+.iconCommand16 { background-image: url(images/iconClientCommand32.png);  background-repeat: no-repeat; width: 16px; height: 16px; background-size: 16px 16px;}
 
-.iconCommandType32 { background-image: url(images/iconClientCommandType32.png);  background-repeat: no-repeat; width: 32px; height: 32px; }
-.iconCommandType22 { background-image: url(images/iconClientCommandType32.png);  background-repeat: no-repeat; width: 22px; height: 22px; }
-.iconCommandType16 { background-image: url(images/iconClientCommandType32.png);  background-repeat: no-repeat; width: 16px; height: 16px; }
+.iconCommandType32 { background-image: url(images/iconClientCommandType32.png);  background-repeat: no-repeat; width: 32px; height: 32px; background-size: 32px 32px;}
+.iconCommandType22 { background-image: url(images/iconClientCommandType32.png);  background-repeat: no-repeat; width: 22px; height: 22px; background-size: 22px 22px;}
+.iconCommandType16 { background-image: url(images/iconClientCommandType32.png);  background-repeat: no-repeat; width: 16px; height: 16px; background-size: 16px 16px;}
 
 .iconComment32 { background-image: url(images/iconComment32.png);  background-repeat: no-repeat; width: 32px; height: 32px; }
 .iconComment22 { background-image: url(images/iconComment22.png);  background-repeat: no-repeat; width: 22px; height: 22px; }
@@ -749,6 +749,14 @@
 .iconProviderType22 { background-image: url(images/iconProviderType22.png);  background-repeat: no-repeat; width: 22px; height: 22px; }
 .iconProviderType16 { background-image: url(images/iconProviderType16.png);  background-repeat: no-repeat; width: 16px; height: 16px; }
 
+.iconProviderOrder32 { background-image: url(images/iconProviderOrder32.png);  background-repeat: no-repeat; width: 32px; height: 32px; background-size: 32px 32px;}
+.iconProviderOrder22 { background-image: url(images/iconProviderOrder32.png);  background-repeat: no-repeat; width: 22px; height: 22px; background-size: 22px 22px;}
+.iconProviderOrder16 { background-image: url(images/iconProviderOrder32.png);  background-repeat: no-repeat; width: 16px; height: 16px; background-size: 16px 16px;}
+
+.iconProviderOrderType32 { background-image: url(images/iconProviderOrderType32.png);  background-repeat: no-repeat; width: 32px; height: 32px; background-size: 32px 32px;}
+.iconProviderOrderType22 { background-image: url(images/iconProviderOrderType32.png);  background-repeat: no-repeat; width: 22px; height: 22px; background-size: 22px 22px;}
+.iconProviderOrderType16 { background-image: url(images/iconProviderOrderType32.png);  background-repeat: no-repeat; width: 16px; height: 16px; background-size: 16px 16px;}
+
 .iconQuality32 { background-image: url(images/iconQuality32.png);  background-repeat: no-repeat; width: 32px; height: 32px; }
 .iconQuality22 { background-image: url(images/iconQuality22.png);  background-repeat: no-repeat; width: 22px; height: 22px; }
 .iconQuality16 { background-image: url(images/iconQuality16.png);  background-repeat: no-repeat; width: 16px; height: 16px; }
@@ -978,3 +986,28 @@
 .calendarWhiteUpdate32 { background-image: url(images/calendarWhiteUpdate32.png);  background-repeat: no-repeat; width: 32px; height: 32px; background-size: 32px 32px;}
 .calendarWhiteUpdate22 { background-image: url(images/calendarWhiteUpdate32.png);  background-repeat: no-repeat; width: 22px; height: 22px; background-size: 22px 22px;}
 .calendarWhiteUpdate16 { background-image: url(images/calendarWhiteUpdate32.png);  background-repeat: no-repeat; width: 16px; height: 16px; background-size: 16px 16px;}
+
+/* =============================================================================== */
+/* New Format                                                                      */
+/* =============================================================================== */
+
+
+/* Sizes */
+
+.iconSize32 { background-repeat: no-repeat; width: 32px; height: 32px; background-size: 32px 32px;}
+.iconSize22 { background-repeat: no-repeat; width: 22px; height: 22px; background-size: 22px 22px;}
+.iconSize16 { background-repeat: no-repeat; width: 16px; height: 16px; background-size: 16px 16px; }
+
+/* G */
+
+.iconGlobalPlanning { background-image: url(images/iconGlobalPlanning.png); }
+.ProjeQtOrFlatBlue .iconGlobalPlanning { background-image: url(customIcons/blue/iconGlobalPlanning.png); }
+.ProjeQtOrFlatRed .iconGlobalPlanning { background-image: url(customIcons/red/iconGlobalPlanning.png); }
+.ProjeQtOrFlatGreen .iconGlobalPlanning { background-image: url(customIcons/green/iconGlobalPlanning.png); }
+.ProjeQtOrFlatGrey .iconGlobalPlanning { background-image: url(customIcons/grey/iconGlobalPlanning.png); }
+
+.iconGlobalView { background-image: url(images/iconGlobalView.png); }
+.ProjeQtOrFlatBlue .iconGlobalView { background-image: url(customIcons/blue/iconGlobalView.png); }
+.ProjeQtOrFlatRed .iconGlobalView { background-image: url(customIcons/red/iconGlobalView.png); }
+.ProjeQtOrFlatGreen .iconGlobalView { background-image: url(customIcons/green/iconGlobalView.png); }
+.ProjeQtOrFlatGrey .iconGlobalView { background-image: url(customIcons/grey/iconGlobalView.png); }

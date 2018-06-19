@@ -123,6 +123,7 @@ if ($displayWidthList<1400) {
     }
   }
 }
+$iconClassName=((SqlElement::is_subclass_of($objectClass, 'PlgCustomList'))?'ListOfValues':$objectClass);
 ?>
 <div dojoType="dojo.data.ItemFileReadStore" id="objectStore" jsId="objectStore" clearOnClose="true"
   url="../tool/jsonQuery.php?objectClass=<?php echo $objectClass;?><?php echo ($comboDetail)?'&comboDetail=true':'';?><?php echo ($showIdle)?'&idle=true':'';?>" >
@@ -138,8 +139,8 @@ if ($displayWidthList<1400) {
      style="display:none; height:100%; width: 100%; position: absolute;">
     <table >
       <tr height="100%" style="vertical-align: middle;">
-        <td width="50px" align="center">
-         <div style="position:absolute; top:0px;left:5px ;" class="icon<?php echo ((SqlElement::is_subclass_of($objectClass, 'PlgCustomList'))?'ListOfValues':$objectClass);?>32" style="margin-left:9px;width:32px;height:32px" /></div>    
+        <td width="50px" align="center">        
+         <div style="position:absolute; top:0px;left:5px ;" class="icon<?php echo $iconClassName;?>32 icon<?php echo $iconClassName;?> iconSize32" style="margin-left:9px;width:32px;height:32px" /></div>    
         </td>
         <td><span class="title" ><?php echo i18n("menu" . $objectClass);?></span></td>
         <td style="text-align:right;" width="200px">
@@ -182,16 +183,17 @@ if ($displayWidthList<1400) {
   <tr >
     <td width="50px" align="center">
        <div style="position:absolute;left:0px;width:43px;top:0px;height:36px;" class="iconHighlight">&nbsp;</div>
-       <div style="position:absolute; top:0px;left:5px ;" class="icon<?php echo ((SqlElement::is_subclass_of($objectClass, 'PlgCustomList'))?'ListOfValues':$objectClass);?>32" style="margin-left:9px;width:32px;height:32px" /></div>
+       <div style="position:absolute; top:0px;left:5px ;" class="icon<?php echo $iconClassName;?>32 icon<?php echo $iconClassName;?> iconSize32" style="margin-left:9px;width:32px;height:32px" /></div>
     </td>
     <td><span class="title"><?php echo i18n("menu" . $objectClass);?></span></td>
     <td>   
       <form dojoType="dijit.form.Form" id="listForm" action="" method="" >
         <script type="dojo/method" event="onSubmit" >
           return false;        
-        </script>
-        <input type="hidden" id="objectClass" name="objectClass" value="<?php echo $objectClass;?>" /> 
+        </script>  
+        <input type="hidden" id="objectClass" name="objectClass" value="<?php echo $objectClass;?>" />  
         <input type="hidden" id="objectId" name="objectId" value="<?php if (isset($_REQUEST['objectId']))  { echo htmlEncode($_REQUEST['objectId']);}?>" />
+        <input type="hidden" id="objectClassList" name="objectClassList" value="<?php echo $objectClass;?>" />
         <table style="width: 100%; height: 27px;">
           <tr>
           <?php if ( ! $hideIdSearch ) { ?>
@@ -671,7 +673,7 @@ $height = ((floor((count($listStatus)-0.1)/10))+1)  * 20;
   </thead>
   <script type="dojo/connect" event="onSelected" args="evt">
     if (gridReposition) {return;}
-    if (multiSelection) {updateSelectedCountMultiple();return;}
+    if (multiSelection) {updateSelectedCountMultiple();return;} 
 	  if ( dojo.byId('comboDetail') ) {
       rows=objectGrid.selection.getSelected();
       row=rows[0]; 
@@ -684,7 +686,11 @@ $height = ((floor((count($listStatus)-0.1)/10))+1)  * 20;
       rows=objectGrid.selection.getSelected();
       row=rows[0]; 
       var id = row.id;
-	  dojo.byId('objectId').value=id;
+	    dojo.byId('objectId').value=id;
+<?php if (get_class($obj)=='GlobalView') {?>
+      dojo.byId('objectId').value=row.objectId;
+      dojo.byId('objectClass').value=row.objectClass;
+<?php }?>
 	  //cleanContent("detailDiv");
       formChangeInProgress=false; 
       listClick();

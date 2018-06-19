@@ -1194,7 +1194,7 @@ $cr, $print, $treatedObjects, $displayWidth, $outMode, $comboDetail, $collapsedL
       }
       // ADD BY Marc TABARY - 2017-02-28 - DATA CONSTRUCTED BY FUNCTION
       if (substr($col, 0, 7)=='_byMet_') {
-        if (substr($col, -4, 4)=='Work' or substr($col, -3, 3)=='Pct' or strpos(strtolower($col), 'amount')!==false) {
+        if (substr($col, -4, 4)=='Work' or substr($col, -3, 3)=='Pct' or substr($col, -4, 4)=='Rate' or strpos(strtolower($col), 'amount')!==false) {
           $dataType='decimal';
           $dataLength='14.5';
         }
@@ -1488,7 +1488,7 @@ $cr, $print, $treatedObjects, $displayWidth, $outMode, $comboDetail, $collapsedL
           echo '<span style="'.$fieldStyle.'">';
           echo Work::displayWork($val).' '.Work::displayShortWorkUnit();
           echo '</span>';
-        } else if (strtolower(substr($col, -8, 8))=='progress' or substr($col, -3, 3)=='Pct') {
+        } else if (strtolower(substr($col, -8, 8))=='progress' or substr($col, -3, 3)=='Pct' or substr($col, -4, 4)=='Rate') {
           echo '<span style="'.$fieldStyle.'">';
           echo $val.'&nbsp;%';
           echo '</span>';
@@ -2227,7 +2227,7 @@ else if ($col=='idEmailTemplate') {
         }
       } else if (strpos($obj->getFieldAttributes($col), 'display')!==false) {
         echo '<div ';
-        echo ' class="display generalColClass input'.$col.'Class" style="'.$specificStyle.'"';
+        echo ' class="display generalColClass input'.$col.'Class" style="'.$specificStyle.'width: '.$fieldWidth.'px;"';
         echo ' >';
         if (strpos($obj->getFieldAttributes($col), 'html')!==false) {
           echo $val;
@@ -2242,7 +2242,7 @@ else if ($col=='idEmailTemplate') {
           // END - ADD BY TABARY - TOOLTIP
           echo '<input type="hidden" '.$name.' value="'.htmlEncode($val).'" />';
         }
-        if (strtolower(substr($col, -8, 8))=='progress' or substr($col, -3, 3)=='Pct') {
+        if (strtolower(substr($col, -8, 8))=='progress' or substr($col, -3, 3)=='Pct' or substr($col, -4, 4)=='Rate') {
           echo '&nbsp;%';
         }
         echo '</div>';
@@ -2283,10 +2283,10 @@ else if ($col=='idEmailTemplate') {
           $fieldWidth=$smallWidth;
         }
         
-        if (strtolower(substr($col, -8, 8))=='progress' or substr($col, -3, 3)=='Pct') {
+        if (strtolower(substr($col, -8, 8))=='progress' or substr($col, -3, 3)=='Pct' or substr($col, -4, 4)=='Rate') {
           $isPercent=true;
           // ADD BY Marc TABARY - 2017-03-01 - DIM CORRECT Pct
-          if (substr($col, -3, 3)=='Pct') {
+          if (substr($col, -3, 3)=='Pct' or substr($col, -4, 4)=='Rate') {
             $fieldWidth=$smallWidth;
           }
           // END ADD BY Marc TABARY - 2017-03-01 - DIM CORRECT Pct
@@ -5371,6 +5371,11 @@ function drawAffectationsResourceTeamFromObject($list, $obj, $type, $refresh=fal
     $canDelete=false;
   }
   if ($obj->idle==1) {
+    $canUpdate=false;
+    $canCreate=false;
+    $canDelete=false;
+  }
+  if (get_class($obj)=='GlobalView') {
     $canUpdate=false;
     $canCreate=false;
     $canDelete=false;

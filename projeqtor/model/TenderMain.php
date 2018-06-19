@@ -114,7 +114,6 @@ class TenderMain extends SqlElement {
                                   "idle"=>"nobr",
                                   "idleDate"=>"nobr",
                                   "cancelled"=>"nobr",
-                                  "initialAmount"=>"readonly",
                                   "plannedTaxAmount"=>"readonly",
                                   "initialTaxAmount"=>"readonly",
                                   "plannedFullAmount"=>"readonly",
@@ -153,6 +152,10 @@ class TenderMain extends SqlElement {
     } else {
       self::$_fieldsAttributes['evaluationValue']='hidden';
       self::$_fieldsAttributes['evaluationRank']='hidden';
+    }
+    
+    if (count($this->_BillLine)) {
+      self::$_fieldsAttributes['initialAmount']='readonly';
     }
   }
 

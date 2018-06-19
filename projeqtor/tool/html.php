@@ -1601,7 +1601,7 @@ function htmlDrawSpinner($col, $val, $spinnerAttributes, $attributes, $name, $ti
     // </div>
     $result.= '</div>';
     // Pct
-    if (substr($col,-3,3)=='Pct') {
+    if (substr($col,-3,3)=='Pct' or substr($col, -4, 4)=='Rate') {
         $result.= '<span class="generalColClass '.$col.'Class">%'.($bkColor==''?'&nbsp;':'').'</span>';
     }
     // Background Color            
