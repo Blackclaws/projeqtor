@@ -308,6 +308,10 @@ class TicketMain extends SqlElement {
    */
   public function control(){
     $result="";
+    // TODO : if planned changed so that left is null, control still blocks
+    // if (isset($this->WorkElement)) {
+    //   $this->WorkElement->leftWork=$this->WorkElement->plannedWork-$this->WorkElement->realWork;
+    // }
     if (trim($this->idActivity)) {    
       $parentActivity=new Activity($this->idActivity);
       if ($parentActivity->idProject!=$this->idProject) {

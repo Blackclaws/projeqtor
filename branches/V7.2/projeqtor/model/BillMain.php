@@ -101,7 +101,7 @@ class BillMain extends SqlElement {
                       'idBillType'=>'required',
                       'idProject'=>'required',
 // BEGIN - ADD BY TABARY - See billId      
-                      'billId'=>'size1/2,readonly,display',
+                      'billId'=>'size1/3,display',
 // END - ADD BY TABARY - See billId                            
                       'taxAmount'=>'calculated,readonly',
   										'idPrec'=>'required',

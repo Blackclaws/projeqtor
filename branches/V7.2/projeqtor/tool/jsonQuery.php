@@ -73,7 +73,7 @@
     $table=$obj->getDatabaseTableName();
     $accessRightRead=securityGetAccessRight($obj->getMenuClass(), 'read');  
     $querySelect = '';
-    $queryFrom=$table;
+    $queryFrom=($objectClass=='GlobalView')?GlobalView::getTableNameQuery().' as '.$table:$table;
     $queryWhere='';
     $queryOrderBy='';
     $idTab=0;

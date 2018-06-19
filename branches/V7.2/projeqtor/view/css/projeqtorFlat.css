@@ -556,6 +556,7 @@ body .ProjeQtOrFlatBlue {
   { background-image: url(images/calendarYellowUpdateFlat.png);  background-repeat: no-repeat; width: 22px; height: 22px; background-size: 22px 22px;}
 .ProjeQtOrFlatBlue .calendarYellowUpdate16, .ProjeQtOrFlatRed .calendarYellowUpdate16, .ProjeQtOrFlatGreen .calendarYellowUpdate16, .ProjeQtOrFlatGrey .calendarYellowUpdate16 
   { background-image: url(images/calendarYellowUpdateFlat.png);  background-repeat: no-repeat; width: 16px; height: 16px; background-size: 16px 16px;}
+  
 /* =============================================================================== */
 /* ICONS                                                                           */
 /* =============================================================================== */
@@ -5571,3 +5572,4 @@ body .ProjeQtOrFlatGrey {
 /* =============================================================================== */
 /* ProjeQtOr THEME END                                                             */
 /* =============================================================================== */
+

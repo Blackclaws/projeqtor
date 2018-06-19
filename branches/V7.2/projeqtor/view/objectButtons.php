@@ -93,8 +93,9 @@
       <table style="width:100%;height:100%;">
         <tr style="height:35px;">
           <td style="width:43px;">&nbsp;
+            <?php $iconClassName=((SqlElement::is_subclass_of($class, 'PlgCustomList'))?'ListOfValues':$class);?>
             <div style="position:absolute;left:0px;width:43px;top:0px;height:36px;" class="iconHighlight">&nbsp;</div>
-            <div style="position:absolute; top:0px;left:5px ;" class="icon<?php echo ((SqlElement::is_subclass_of($class, 'PlgCustomList'))?'ListOfValues':$class);?>32" style="margin-left:9px;width:32px;height:32px" /></div>
+            <div style="position:absolute; top:0px;left:5px ;" class="icon<?php echo $iconClassName;?>32 icon<?php echo $iconClassName;?> iconSize32" style="margin-left:9px;width:32px;height:32px" /></div>
           </td>
           <td class="title" style="width:10%;">
             &nbsp;<?php echo i18n($_REQUEST['objectClass']);
@@ -137,7 +138,7 @@
   </td>
   <td  style="white-space:nowrap;">
     <div style="float:left;position:relative;width:45%;white-space:nowrap" id="buttonDivContainerDiv"> 
-    <?php if (! $comboDetail ) {?>
+    <?php if (! $comboDetail and $class!='GlobalView') {?>
       <?php organizeButtons();?>
       <button id="newButton" dojoType="dijit.form.Button" showlabel="false"
        title="<?php echo i18n('buttonNew', array(i18n($_REQUEST['objectClass'])));?>"

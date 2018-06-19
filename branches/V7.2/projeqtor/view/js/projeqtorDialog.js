@@ -3175,6 +3175,10 @@ function removeDependency(dependencyId, refType, refId) {
  * 
  */
 function addBillLine(billingType) {
+  if (checkFormChangeInProgress()) {
+    showAlert(i18n('alertOngoingChange'));
+    return;
+  }
   var postLoad=function() {  
     var prj=dijit.byId('idProject').get('value');
     refreshListSpecific('listTermProject', 'billLineIdTerm', 'idProject', prj);
@@ -3194,6 +3198,10 @@ function addBillLine(billingType) {
  * 
  */
 function editBillLine(id,billingType) {
+  if (checkFormChangeInProgress()) {
+    showAlert(i18n('alertOngoingChange'));
+    return;
+  }
   var params="&id="+id;
   params+="&refType="+dojo.byId("objectClass").value;
   params+="&refId="+dojo.byId("objectId").value;
@@ -3230,6 +3238,10 @@ function saveBillLine() {
  * 
  */
 function removeBillLine(lineId) {
+  if (checkFormChangeInProgress()) {
+    showAlert(i18n('alertOngoingChange'));
+    return;
+  }
   //dojo.byId("billLineId").value=lineId;
   actionOK=function() {
     loadContent("../tool/removeBillLine.php?billLineId="+lineId, "resultDiv", null,
@@ -3581,7 +3593,8 @@ function showFilterDialog() {
     });
     dojo.byId('filterDynamicParameterPane').style.display='none';
     dijit.byId('idFilterAttribute').reset();
-    if (dojo.byId('objectClass') && dojo.byId('objectClass').value) dojo.byId('filterObjectClass').value=dojo.byId('objectClass').value;
+    if (dojo.byId('objectClassList') && dojo.byId('objectClassList').value) dojo.byId('filterObjectClass').value=dojo.byId('objectClassList').value;
+    else if (dojo.byId('objectClass') && dojo.byId('objectClass').value) dojo.byId('filterObjectClass').value=dojo.byId('objectClass').value;
     else if (dojo.byId('objectClassManual') && dojo.byId('objectClassManual').value) dojo.byId('filterObjectClass').value=dojo.byId('objectClassManual').value;
     else dojo.byId('filterObjectClass').value=null;
     filterType="";
@@ -3601,7 +3614,8 @@ function showFilterDialog() {
     loadContent("../tool/displayFilterSharedList.php" + compUrl,
         "listSharedFilters", "dialogFilterForm", false);
     var objectClass='';
-    if (dojo.byId("objectClass") && dojo.byId("objectClass").value) objectClass=dojo.byId("objectClass").value;
+    if (dojo.byId('objectClassList') && dojo.byId('objectClassList').value) objectClass=dojo.byId('objectClassList').value;
+    else if (dojo.byId("objectClass") && dojo.byId("objectClass").value) objectClass=dojo.byId("objectClass").value;
     else if (dojo.byId("objectClassManual") && dojo.byId("objectClassManual").value && dojo.byId("objectClassManual").value=='Planning') objectClass='Activity';
     refreshListSpecific('object', 'idFilterAttribute', 'objectClass', objectClass);
     dijit.byId("dialogFilter").show();
