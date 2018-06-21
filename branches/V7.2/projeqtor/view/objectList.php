@@ -243,6 +243,15 @@ $iconClassName=((SqlElement::is_subclass_of($objectClass, 'PlgCustomList'))?'Lis
                 </select>
               </td>
               <?php }?>
+              <?php if ( $objectClass=='GlobalView') { ?>
+              <td style="vertical-align: middle; text-align:right;" width="5px">
+                 <span class="nobr">&nbsp;&nbsp;&nbsp;
+                <?php echo i18n("colClass");?>
+              </td>
+              <td width="5px">
+                <?php GlobalView::drawGlobalizableList();?>
+              </td>
+              <?php }?>
              <?php  if (sessionValueExists('project')){
                  $proj=getSessionValue('project');
                }else{
@@ -378,7 +387,7 @@ $iconClassName=((SqlElement::is_subclass_of($objectClass, 'PlgCustomList'))?'Lis
             <td width="5px"><span class="nobr">&nbsp;</span></td>
             <!-- CHANGE qCazelles - Filter by status button is moved here -->
             <?php //Filter by status button is moved here
-              if ( property_exists($obj, 'idStatus') and Parameter::getGlobalParameter('filterByStatus') == 'YES') {  ?>
+              if ( property_exists($obj, 'idStatus') and Parameter::getGlobalParameter('filterByStatus') == 'YES' and $objectClass!='GlobalView') {  ?>
             <td width="36px">
             	<button title="<?php echo i18n('filterByStatus');?>"
 			             dojoType="dijit.form.Button"
@@ -689,7 +698,9 @@ $height = ((floor((count($listStatus)-0.1)/10))+1)  * 20;
 	    dojo.byId('objectId').value=id;
 <?php if (get_class($obj)=='GlobalView') {?>
       dojo.byId('objectId').value=row.objectId;
-      dojo.byId('objectClass').value=row.objectClass;
+      classNameCol=row.objectClass+"";
+      className=classNameCol.split('|');
+      dojo.byId('objectClass').value=className[1];
 <?php }?>
 	  //cleanContent("detailDiv");
       formChangeInProgress=false; 

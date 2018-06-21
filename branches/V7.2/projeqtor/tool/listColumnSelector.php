@@ -35,7 +35,7 @@ $listColumns=ColumnSelector::getColumnsList($objectClass);
 $cpt=0;
 
 foreach ($listColumns as $col) {
-	if ( ! SqlElement::isVisibleField($col->attribute) ) {
+	if ( ! SqlElement::isVisibleField($col->attribute) or ($objectClass=='GlobalView' and $col->field=='id') ) {
 		// nothing
 	} else {
 		echo '<div style="width:100%;" class="dojoDndItem" id="listColumnSelectorId'.htmlEncode($col->id).'" dndType="planningColumn">';
@@ -46,7 +46,7 @@ foreach ($listColumns as $col) {
 		}
 		echo '<span dojoType="dijit.form.CheckBox" type="checkbox" id="checkListColumnSelectorId'.$cpt.'" '
 		. ((! $col->hidden)?' checked="checked" ':'')
-		. (( $col->field=='id' or $col->field=='name')?' disabled="disabled" ':'')
+		. (( $col->field=='id' or $col->field=='name' or $col->field=='objectId' or $col->field=='objectClass')?' disabled="disabled" ':'')
 		. ' onChange="changeListColumn(\'' . htmlEncode($col->id) . '\','.$cpt.',this.checked,\'' . htmlEncode($col->sortOrder) . '\')" '
 		. '></span><label for="checkListColumnSelectorId'.$cpt.'" class="checkLabel">';
 		echo '&nbsp;';

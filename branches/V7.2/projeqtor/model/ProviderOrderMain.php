@@ -49,15 +49,22 @@ class ProviderOrderMain extends SqlElement {
   public $idStatus;
   public $idResource;
   public $idContact;
-  public $_tab_4_2 = array('untaxedAmountShort', 'tax', '', 'fullAmountShort','initial', 'negotiated');
-  public $initialAmount;
+   public $_tab_4_3 = array('untaxedAmountShort', 'tax', '', 'fullAmountShort','initial','discount', 'countTotal');
+  //init
+  public $untaxedAmount;
   public $taxPct;
-  public $initialTaxAmount;
-  public $initialFullAmount;
-  public $plannedAmount;
+  public $taxAmount;
+  public $fullAmount;
+  //remise
+  public $discountAmount;
+  public $_label_rate;
+  public $discountRate;
   public $_void_1;
-  public $plannedTaxAmount;
-  public $plannedFullAmount;
+  //total
+  public $totalUntaxedAmount;
+  public $_void_2;
+  public $totalTaxAmount;
+  public $totalFullAmount;
   public $paymentCondition;
   public $deliveryDelay;
   public $_tab_3_1 = array('expectedDate','doneDate','validatedDate','dateDelivery');
@@ -102,13 +109,12 @@ class ProviderOrderMain extends SqlElement {
       "done"=>"nobr",
       "idle"=>"nobr",
       "idPaymentDelay"=>"hidden",
-      "taxAmount"=>"calculated,readonly",
+      "totalTaxAmount"=>"readonly",
+      "taxAmount"=>"readonly",
       "fullAmount"=>"readonly",
-      "addTaxAmount"=>"calculated,readonly",
-      "addFullAmount"=>"readonly",
-      "totalTaxAmount"=>"calculated,readonly",
-      "totalFullAmount"=>"readonly",
       "totalUntaxedAmount"=>"readonly",
+      "totalTaxAmount"=>"readonly",
+      "totalFullAmount"=>"readonly",
       "externalReference"=>"required",
       "idleDate"=>"nobr",
       "cancelled"=>"nobr",
@@ -129,6 +135,9 @@ class ProviderOrderMain extends SqlElement {
    */
   function __construct($id = NULL, $withoutDependentObjects=false) {
     parent::__construct($id,$withoutDependentObjects);
+    if (count($this->_BillLine)) {
+      self::$_fieldsAttributes['untaxedAmount']='readonly';
+    }
   }
   
   /** ==========================================================================
@@ -176,51 +185,80 @@ class ProviderOrderMain extends SqlElement {
   }
   
   public function save() {
-    if (trim($this->idProvider)) {
+   if (trim($this->idProvider)) {
       $provider=new Provider($this->idProvider);
       if ($provider->taxPct!='' and !$this->taxPct) {
         $this->taxPct=$provider->taxPct;
       }
     }
     // Update amounts
-    if ($this->initialAmount!=null) {
+    if ($this->untaxedAmount!=null) {
       if ($this->taxPct!=null) {
-        $this->initialTaxAmount=round(($this->initialAmount*$this->taxPct/100),2);
+        $this->taxAmount=round(($this->untaxedAmount*$this->taxPct/100),2);
       } else {
-        $this->initialTaxAmount=null;
-      }
-      $this->initialFullAmount=$this->initialAmount+$this->initialTaxAmount;
+        $this->taxAmount=null;
+      } 
+      $this->fullAmount=$this->untaxedAmount+$this->taxAmount;
     } else {
-      $this->initialTaxAmount=null;
-      $this->initialFullAmount=null;
-    }
-    if ($this->plannedAmount!=null) {
+      $this->taxAmount=null;
+      $this->fullAmount=null;
+    }  
+    if ($this->totalUntaxedAmount!=null) {
       if ($this->taxPct!=null) {
-        $this->plannedTaxAmount=round(($this->plannedAmount*$this->taxPct/100),2);
+        $this->totalTaxAmount=round(($this->totalUntaxedAmount*$this->taxPct/100),2);
       } else {
-        $this->plannedTaxAmount=null;
+        $this->totalTaxAmount=null;
       }
-      $this->plannedFullAmount=$this->plannedAmount+$this->plannedTaxAmount;
+      $this->totalFullAmount=$this->totalUntaxedAmount+$this->totalTaxAmount;
     } else {
-      $this->plannedTaxAmount=null;
-      $this->plannedFullAmount=null;
+      $this->totalTaxAmount=null;
+      $this->totalFullAmount=null;
     }
-  
+    $result=parent::save();
+    
     $billLine=new BillLine();
-    $crit = array("refType"=> "ProviderOrder", "refId"=>$this->id);
+    $crit = array("refType"=> "Tender", "refId"=>$this->id);
     $billLineList = $billLine->getSqlElementsFromCriteria($crit,false);
     if (count($billLineList)>0) {
       $amount=0;
-      $numberDays=0;
       foreach ($billLineList as $line) {
         $amount+=$line->amount;
       }
-      $this->initialAmount=$amount;
+      $this->untaxedAmount=$amount;
     }
-    $this->initialFullAmount=$this->initialAmount*(1+$this->taxPct/100);
-    //parent::simpleSave();
-    $result=parent::save();
+    $this->fullAmount=$this->untaxedAmount*(1+$this->taxPct/100);
+    $this->taxAmount=$this->fullAmount-$this->untaxedAmount;
+    parent::simpleSave();
     return $result;
+  }
+  
+  // ============================================================================**********
+  // GET VALIDATION SCRIPT
+  // ============================================================================**********
+  
+  /** ==========================================================================
+   * Return the validation sript for some fields
+   * @return the validation javascript (for dojo framework)
+   */
+  public function getValidationScript($colName) {
+    $colScript = parent::getValidationScript($colName);
+    if($colName=="untaxedAmount" or $colName=="taxPct" or $colName=="discountAmount") {
+      $colScript .= '<script type="dojo/connect" event="onChange" >';
+      $colScript .= '  updateFinancialTotal();';
+      $colScript .= '  formChanged();';
+      $colScript .= '</script>';
+    }else if ($colName=="discountRate") {
+      $colScript .= '<script type="dojo/connect" event="onChange" >';
+      $colScript .= '   var rate=dijit.byId("discountRate").get("value");';
+      $colScript .= '   var untaxedAmount=dijit.byId("untaxedAmount").get("value");';
+      $colScript .= '  if (!isNaN(rate)) {';
+      $colScript .= '   var discount=Math.round(untaxedAmount*rate)/100;';
+      $colScript .= '    dijit.byId("discountAmount").set("value",discount);';
+      $colScript .= '  }';
+      $colScript .= '  formChanged();';
+      $colScript .= '</script>';
+    }
+    return $colScript;
   }
   
 }

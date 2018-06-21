@@ -278,7 +278,8 @@ function filterJsonList() {
 function refreshGrid(noReplan) {
   if (dijit.byId("objectGrid")) { // Grid exists : refresh it
     showWait();
-    refreshJsonList(dojo.byId('objectClass').value, true);
+    if (dojo.byId('objectClassList')) refreshJsonList(dojo.byId('objectClassList').value, true);
+    else refreshJsonList(dojo.byId('objectClass').value, true);
   } else { // If Grid does not exist, we are displaying Planning : refresh it
     showWait();
     if (dojo.byId('automaticRunPlan') && dojo.byId('automaticRunPlan').checked && ! noReplan ) {
@@ -305,14 +306,6 @@ function refreshGridCount(repeat) {
     dojo.byId('gridRowCountShadow1').innerHTML = grid.rowCount;
     dojo.byId('gridRowCountShadow2').innerHTML = grid.rowCount;
   }
-  /*
-   * objClass=dojo.byId("objectClass").value; if (avoidRecursiveRefresh==false &&
-   * (objClass=='Resource' || objClass=='User' || objClass=='Contact') ) { // If
-   * list may contain image, refresh once to fix issue : list not complete on
-   * Chrome avoidRecursiveRefresh=true;
-   * setTimeout('dijit.byId("objectGrid")._refresh();',100); } else {
-   * avoidRecursiveRefresh=false; }
-   */
 }
 
 /**
@@ -749,7 +742,7 @@ function loadContent(page, destination, formName, isResultMessage,
               if (dojo.byId('objectClassManual') && dojo.byId('objectClassManual').value=='Planning') {
                 refreshJsonPlanning();
               } else {
-                refreshJsonList(dojo.byId('objectClass').value);
+                refreshJsonList(dojo.byId('objectClassList').value);
               }
             }
           }
@@ -970,9 +963,9 @@ function checkLogin() {
       quitConfirmed = true;
       noDisconnect = true;
       url = "main.php";
-      if (dojo.byId("objectClass") && dojo.byId("objectId")) {
+      if (dojo.byId('objectClass') && dojo.byId("objectId")) {
         url += "?directAccess=true&objectClass="
-            + dojo.byId("objectClass").value + "&objectId="
+            + dojo.byId('objectClass').value + "&objectId="
             + dojo.byId("objectId").value;
       }
       var tempo=400;
@@ -1138,7 +1131,6 @@ function finalizeMessageDisplay(destination, validationType) {
           loadDiv(url, 'buttonDivCreationInfo', null);
         }
       } else if (validationType == 'attachment') {
-        //loadContent("objectDetail.php?refreshAttachment=true", dojo.byId('objectClass').value+ '_Attachment', 'listForm');
         if (dojo.byId('buttonDivCreationInfo')) {
           var url = '../tool/getObjectCreationInfo.php?objectClass='+ dojo.byId('objectClass').value 
           + '&objectId='+dojo.byId('objectId').value;
@@ -1189,10 +1181,6 @@ function finalizeMessageDisplay(destination, validationType) {
               .byId('objectClass').value
               + '_history', 'listForm');
         }
-        // loadContent("objectDetail.php?refreshTestCaseRun=true",
-        // dojo.byId('objectClass').value+'_TestCaseRun', 'listForm');
-        // loadContent("objectDetail.php?refreshLinks=true",
-        // dojo.byId('objectClass').value+'_Link', 'listForm');
       } else if (validationType == 'copyTo' || validationType == 'copyProject') {
         if (validationType == 'copyProject') {
           needProjectListRefresh = true;
@@ -1447,8 +1435,7 @@ function finalizeMessageDisplay(destination, validationType) {
                       .byId('objectClass').value
                       + '_checklistDefinitionLine', 'listForm');
             }
-            if (dojo.byId(dojo.byId('objectClass').value
-                + '_jobDefinition')) {
+            if (dojo.byId(dojo.byId('objectClass').value + '_jobDefinition')) {
               loadContent(
                   "objectDetail.php?refreshJobDefinition=true", dojo
                       .byId('objectClass').value
@@ -2226,9 +2213,7 @@ function selectRowById(gridName, id, tryCount) {
   gridReposition = false;
 }
 function selectPlanningRow() {
-  setTimeout(
-      "selectPlanningLine(dojo.byId('objectClass').value,dojo.byId('objectId').value);",
-      1);
+  setTimeout("selectPlanningLine(dojo.byId('objectClass').value,dojo.byId('objectId').value);",1);
 }
 function selectGridRow() {
   setTimeout("selectRowById('objectGrid',dojo.byId('objectId').value);", 100);
@@ -2327,6 +2312,10 @@ function setSelectedProject(idProject, nameProject, selectionField) {
           } else {
             loadContent("planningList.php", "listDiv", 'listForm');
           }
+        } else if (dijit.byId("listForm") && dojo.byId('objectClassList') && dojo.byId('listShowIdle')) {
+          refreshJsonList(dojo.byId('objectClassList').value);
+        } else if (dijit.byId("listForm") && dojo.byId('objectClassList') && dojo.byId('listShowIdle')) {
+          refreshJsonList(dojo.byId('objectClassList').value);
         } else if (dijit.byId("listForm") && dojo.byId('objectClass') && dojo.byId('listShowIdle')) {
           refreshJsonList(dojo.byId('objectClass').value);
         } else if (dojo.byId('objectClassManual') && dojo.byId('objectClassManual').value == 'Today') {
@@ -2436,9 +2425,9 @@ function beforequit() {
  */
 function drawGantt() {
   // first, if detail is displayed, reload class
-  if (dojo.byId("objectClass") && !dojo.byId("objectClass").value
+  if (dojo.byId('objectClass') && !dojo.byId('objectClass').value
       && dojo.byId("objectClassName") && dojo.byId("objectClassName").value) {
-    dojo.byId("objectClass").value = dojo.byId("objectClassName").value;
+    dojo.byId('objectClass').value = dojo.byId("objectClassName").value;
   }
   if (dojo.byId("objectId") && !dojo.byId("objectId").value && dijit.byId("id")
       && dijit.byId("id").get("value")) {
@@ -3471,6 +3460,42 @@ function updateCommandTotal() {
 
   cancelRecursiveChange_OnGoingChange = false;
 }
+//gautier
+function updateFinancialTotal() {
+  if (cancelRecursiveChange_OnGoingChange)
+    return;
+  cancelRecursiveChange_OnGoingChange = true;
+  // Retrieve values used for calculation
+  var untaxedAmount = dijit.byId("untaxedAmount").get("value");
+  if (!untaxedAmount)
+    untaxedAmount = 0;
+  var taxPct = dijit.byId("taxPct").get("value");
+  if (!taxPct)
+    taxPct = 0;
+    
+  var discount=dijit.byId("discountAmount").get("value");
+  if (!isNaN(discount)) {
+    var rate=Math.round(100*discount)/untaxedAmount;
+    dijit.byId("discountRate").set("value",rate);
+  }
+  if (!discount){
+    discount=0;
+  }
+  // Calculated values
+  var taxAmount = Math.round(untaxedAmount * taxPct) / 100;
+  var fullAmount = taxAmount + untaxedAmount;
+  var totalUntaxedAmount = untaxedAmount - discount;
+  var totalTaxAmount = Math.round(totalUntaxedAmount * taxPct) / 100;
+  var totalFullAmount = totalUntaxedAmount + totalTaxAmount;
+  // Set values to fields
+  dijit.byId("taxAmount").set('value', taxAmount);
+  dijit.byId("fullAmount").set('value', fullAmount);
+  dijit.byId("totalUntaxedAmount").set('value', totalUntaxedAmount);
+  dijit.byId("totalTaxAmount").set('value', totalTaxAmount);
+  dijit.byId("totalFullAmount").set('value', totalFullAmount);
+  cancelRecursiveChange_OnGoingChange = false;
+}
+//end
 function updateBillTotal() { // Also used for Qutation !!!
   if (cancelRecursiveChange_OnGoingChange)
     return;
@@ -3978,7 +4003,7 @@ function getExtraHiddenFields(idType,idStatus,idProfile) {
   }
   dojo.xhrGet({
     url : "../tool/getExtraHiddenFields.php" + "?type=" + idType+"&status="+idStatus+"&profile="+idProfile
-        + "&objectClass=" + dojo.byId("objectClass").value,
+        + "&objectClass=" + dojo.byId('objectClass').value,
     handleAs : "text",
     load : function(data) {
       var obj = JSON.parse(data);
@@ -4006,7 +4031,7 @@ function getExtraReadonlyFields(idType,idStatus,idProfile) {
   }
   dojo.xhrGet({
     url : "../tool/getExtraReadonlyFields.php" + "?type=" + idType+"&status="+idStatus+"&profile="+idProfile
-        + "&objectClass=" + dojo.byId("objectClass").value,
+        + "&objectClass=" + dojo.byId('objectClass').value,
     handleAs : "text",
     load : function(data) {
       var obj = JSON.parse(data);

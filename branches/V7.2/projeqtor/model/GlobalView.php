@@ -61,12 +61,12 @@ class GlobalView extends SqlElement {
   // Define the layout that will be used for lists
   private static $_layout='
     <th field="id" width="0%" >${id}</th>
-    <th field="objectClass" formatter="translateFormatter" width="10%" >${objectClass}</th>
+    <th field="objectClass" formatter="classNameFormatter" width="10%" >${refType}</th>
     <th field="objectId" formatter="numericFormatter" width="5%" ># ${id}</th>
     <th field="nameProject" width="10%" >${idProject}</th>
-    <th field="nameType" width="10%" >${idType}</th>
-    <th field="name" width="30%" >${name}</th>
-     <th field="colorNameStatus" width="15%" formatter="colorNameFormatter">${idStatus}</th>
+    <th field="nameType" width="10%" >${type}</th>
+    <th field="name" width="35%" >${name}</th>
+     <th field="colorNameStatus" width="10%" formatter="colorNameFormatter">${idStatus}</th>
     <th field="idle" width="5%" formatter="booleanFormatter" >${idle}</th>
     ';
 
@@ -80,7 +80,7 @@ class GlobalView extends SqlElement {
                                   "cancelled"=>"nobr"
   );  
   
-  private static $_colCaptionTransposition = array('idResource'=>'decisionAccountable'
+  private static $_colCaptionTransposition = array('idResource'=>'responsible', 'idType'=>'type', 'objectClass'=>'refType'
   );
   
   //private static $_databaseColumnName = array('idResource'=>'idUser');
@@ -237,30 +237,61 @@ class GlobalView extends SqlElement {
         if (substr($fld,0,1)=='_' or $fld=='id') continue;
         
         $query.=", ";
-        if ($fld=='objectClass') $query.="'$class'";
+        if ($fld=='objectClass') $query.="concat('".i18n($class)."','|','$class')";
         else if ($fld=='objectId') $query.="id";
-        else if ($fld=='idType') $query.="id".$class."Type";
         else if (isset($convert[$fld])) $query.=$convert[$fld];
+        else if ($fld=='idType') $query.="id".$class."Type";
         else $query.=$fld;
         $query.=" as $fld";
       }
-      $query.=" FROM $paramDbPrefix".strtolower($class);
+      $clsObj=new $class();
+      $query.=" FROM ".$clsObj->getDatabaseTableName();
     }
     $query.=')';
     return $query;
   }
   
   public function getGlobalizables() {
-    
+    $result=array();
+    foreach (self::$_globalizables as $key=>$val) {
+      $result[i18n($key)]=$key;
+    }
+    ksort($result);
+    array_flip($result);
+    return $result;
   }
   
   static protected $_globalizables=array(
       'Project'=>array('idProject'=>'id','result'=>'null','reference'=>'null'),
       'Ticket'=>array(),
       'Activity'=>array(),
-      
+      'Milestone'=>array(),
+      'Action'=>array(),
+      'Requirement'=>array(),
+      'TestCase'=>array(),
+      'TestSession'=>array(),
+      'Risk'=>array(),
+      'Opportunity'=>array(),
+      'Issue'=>array(),
+      'Meeting'=>array(),
+      'Decision'=>array('result'=>'null','handled'=>'null'),
+      'Question'=>array(),
+      'Incoming'=>array('idType'=>'null','idStatus'=>'null','handled'=>'null','done'=>'null','cancelled'=>'null'),
+      'Deliverable'=>array('idType'=>'null','idStatus'=>'null','handled'=>'null','done'=>'null','cancelled'=>'null'),
+      //'Delivery'=>array(),
   );
 
+  public static function drawGlobalizableList() {
+    
+    /*<select title="<?php echo i18n('filterOnType')?>" type="text" class="filterField roundedLeft" dojoType="dijit.form.FilteringSelect"
+                    <?php echo autoOpenFilteringSelect();?>
+                    id="listTypeFilter" name="listTypeFilter" style="width:<?php echo $referenceWidth*4;?>px">
+                      <?php htmlDrawOptionForReference('id' . $objectClass . 'Type', $objectType, $obj, false); ?>
+                      <script type="dojo/method" event="onChange" >
+                        refreshJsonList('<?php echo $objectClass;?>');
+                      </script>
+                    </select>*/
+  }
   
 }
 ?>
