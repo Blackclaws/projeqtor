@@ -41,7 +41,7 @@ if (sessionValueExists('projectSelectorDisplayMode')) {
            var callBack = function(){
              //loadContent("../view/menuProjectSelector.php", 'projectSelectorDiv');
              refreshProjectSelectorList();
-             if (dojo.byId("objectClass") ) {
+             if (dojo.byId('objectClass') ) {
                refreshGrid();
              }
            }

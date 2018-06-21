@@ -27,13 +27,15 @@ CREATE TABLE `${prefix}providerOrder` (
   `receptionDateTime` datetime DEFAULT NULL,
   `evaluationValue` decimal(7,2) DEFAULT NULL,
   `evaluationRank` int(3) DEFAULT NULL,
-  `plannedAmount` decimal(11,2) UNSIGNED,
+  `totalUntaxedAmount` decimal(11,2) UNSIGNED,
   `taxPct` decimal(5,2) DEFAULT NULL,
-  `plannedTaxAmount` decimal(11,2) UNSIGNED,
-  `plannedFullAmount` decimal(11,2) UNSIGNED,
-  `initialAmount` decimal(11,2) UNSIGNED,
-  `initialTaxAmount` decimal(11,2) UNSIGNED,
-  `initialFullAmount` decimal(11,2) UNSIGNED,
+  `totalTaxAmount` decimal(11,2) UNSIGNED,
+  `totalFullAmount` decimal(11,2) UNSIGNED,
+  `untaxedAmount` decimal(11,2) UNSIGNED,
+  `taxAmount` decimal(11,2) UNSIGNED,
+  `fullAmount` decimal(11,2) UNSIGNED,
+  `discountAmount` DECIMAL(11,2),
+  `discountRate`   DECIMAL(5,2),
   `deliveryDelay` varchar(100) DEFAULT NULL,
   `deliveryExpectedDate` date DEFAULT NULL,
   `deliveryDoneDate` date DEFAULT NULL,
@@ -67,6 +69,17 @@ INSERT INTO `${prefix}habilitation` (`idProfile`, `idMenu`, `allowAccess`) VALUE
 INSERT INTO `${prefix}accessright` (`idProfile`, `idMenu`, `idAccessProfile`) VALUES
 (1,190,8),
 (1,191,8);
+
+
+ALTER TABLE `${prefix}tender`
+CHANGE `initialAmount` `untaxedAmount` DECIMAL(11,2) UNSIGNED NULL DEFAULT NULL,
+CHANGE `initialTaxAmount` `taxAmount` DECIMAL(11,2) UNSIGNED NULL DEFAULT NULL,
+CHANGE `initialFullAmount` `fullAmount` DECIMAL(11,2) UNSIGNED NULL DEFAULT NULL,
+CHANGE `plannedAmount` `totalUntaxedAmount` DECIMAL(11,2) UNSIGNED NULL DEFAULT NULL,
+CHANGE `plannedTaxAmount` `totalTaxAmount` DECIMAL(11,2) UNSIGNED NULL DEFAULT NULL,
+CHANGE `plannedFullAmount` `totalFullAmount` DECIMAL(11,2) UNSIGNED NULL DEFAULT NULL,
+ADD `discountAmount` DECIMAL(11,2),
+ADD `discountRate`   DECIMAL(5,2);
 
 -- ==================================================================
 -- Global views

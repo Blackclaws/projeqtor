@@ -285,7 +285,7 @@ function workFormatter(value) {
   if (value == '-') return hiddenField;
   // result=dojo.number.format(value);
   var paramUnit=top.paramWorkUnit;
-  if (dojo.byId('objectClass') && (dojo.byId('objectClass').value=='Ticket' || dojo.byId('objectClass').value=='TicketSimple')) {
+  if (dojo.byId('objectClassList') && (dojo.byId('objectClassList').value=='Ticket' || dojo.byId('objectClassList').value=='TicketSimple')) {
     paramUnit=top.paramImputationUnit;
   } 
   if (paramUnit != 'days') {
@@ -433,6 +433,13 @@ function sortableFormatter(value) {
     result += tab[i].replace(/^0+/, "");
   }
   return result;
+}
+
+function classNameFormatter(value) {
+  var res=value.split('|');
+  var className=res[0];
+  var classId=(res.length>1)?res[1]:'';
+  return '<div><table><tr><td><div class="icon'+classId+'16 icon'+classId+' iconSize16"></div></td><td>&nbsp;</td><td>'+className+'</td></tr></table></span>';
 }
 
 function thumb16(value) {
