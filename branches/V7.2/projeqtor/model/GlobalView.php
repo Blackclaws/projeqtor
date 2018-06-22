@@ -41,6 +41,7 @@ class GlobalView extends SqlElement {
   public $idProject;
   public $idUser;
   public $description;
+  public $_sec_treatment;
   public $idStatus;
   public $idResource;
   public $result;
@@ -49,13 +50,10 @@ class GlobalView extends SqlElement {
   public $idle;
   public $cancelled;
   public $_lib_cancelled;
-  //public $_sec_linkMeeting;
-  //public $_Link_Meeting=array();
   public $_sec_Link;
   public $_Link=array();
   public $_Attachment=array();
   public $_Note=array();
-
   public $_nbColMax=3;
   
   // Define the layout that will be used for lists
@@ -229,35 +227,54 @@ class GlobalView extends SqlElement {
   public static function getTableNameQuery() {
     $paramDbPrefix=Parameter::getGlobalParameter('paramDbPrefix');
     $obj=new GlobalView();
+    $itemsToDisplay=Parameter::getUserParameter('globalViewSelectedItems');
+    $itemsToDisplayArray=explode(',', $itemsToDisplay);
     $query='(';
-    foreach (self::$_globalizables as $class=>$convert) {
+    foreach (self::getGlobalizables() as $class=>$className) {
+      if ($itemsToDisplay and $itemsToDisplay!=' ' and !in_array($class,$itemsToDisplayArray)) {
+        continue;
+      }
+      $clsObj=new $class();
+      $table=$clsObj->getDatabaseTableName();
+      $convert=self::$_globalizables[$class];
       if ($query!='(') $query.=' UNION ';
       $query.="SELECT concat('$class',id) as id";
       foreach ($obj as $fld=>$val) {
-        if (substr($fld,0,1)=='_' or $fld=='id') continue;
-        
+        if (substr($fld,0,1)=='_' or $fld=='id') continue;        
         $query.=", ";
-        if ($fld=='objectClass') $query.="concat('".i18n($class)."','|','$class')";
+        if ($fld=='objectClass') $query.="'$class'";
         else if ($fld=='objectId') $query.="id";
         else if (isset($convert[$fld])) $query.=$convert[$fld];
         else if ($fld=='idType') $query.="id".$class."Type";
         else $query.=$fld;
         $query.=" as $fld";
       }
-      $clsObj=new $class();
-      $query.=" FROM ".$clsObj->getDatabaseTableName();
+      $query.=" FROM ".$table;
+      // Add control rights
+      // $accessRightRead=securityGetAccessRight($obj->getMenuClass(), 'read');  
+      // if ($objectClass=='Project' and $accessRightRead!='ALL') {
+      //For project : $queryWhere.=  '(' . $table . ".id in " . transformListIntoInClause(getSessionUser()->getVisibleProjects(! $showIdle)) ;
+      //              $queryWhere.= " or $table.codeType='TMP' ";
+      $clause=getAccesRestrictionClause($class,$table, false);
+      if ($class=='Project') {
+         $query.=" WHERE (".$clause." or ".$table.".codeType='TMP' )"; // Templates projects are always visible in projects list
+      } else {
+        $query.=" WHERE ".$clause;
+      }
     }
     $query.=')';
     return $query;
   }
   
-  public function getGlobalizables() {
+  public static function getGlobalizables() {
     $result=array();
     foreach (self::$_globalizables as $key=>$val) {
-      $result[i18n($key)]=$key;
+      if (securityCheckDisplayMenu(null,$key)) {
+        $result[i18n($key)]=$key;
+      }
     }
     ksort($result);
-    array_flip($result);
+    $result=array_flip($result);
     return $result;
   }
   
@@ -278,19 +295,20 @@ class GlobalView extends SqlElement {
       'Question'=>array(),
       'Incoming'=>array('idType'=>'null','idStatus'=>'null','handled'=>'null','done'=>'null','cancelled'=>'null'),
       'Deliverable'=>array('idType'=>'null','idStatus'=>'null','handled'=>'null','done'=>'null','cancelled'=>'null'),
-      //'Delivery'=>array(),
+      'Delivery'=>array(),
   );
 
   public static function drawGlobalizableList() {
-    
-    /*<select title="<?php echo i18n('filterOnType')?>" type="text" class="filterField roundedLeft" dojoType="dijit.form.FilteringSelect"
-                    <?php echo autoOpenFilteringSelect();?>
-                    id="listTypeFilter" name="listTypeFilter" style="width:<?php echo $referenceWidth*4;?>px">
-                      <?php htmlDrawOptionForReference('id' . $objectClass . 'Type', $objectType, $obj, false); ?>
-                      <script type="dojo/method" event="onChange" >
-                        refreshJsonList('<?php echo $objectClass;?>');
-                      </script>
-                    </select>*/
+    $itemsToDisplay=Parameter::getUserParameter('globalViewSelectedItems');
+    $itemsToDisplayArray=explode(',', $itemsToDisplay);
+    echo '<select dojoType="dojox.form.CheckedMultiSelect"  multiple="true" style="border:1px solid #A0A0A0;width:initial;height:218px;max-height:218px;"';
+    echo '  id="globalViewSelectItems" name="globalViewSelectItems[]" onChange="globalViewSelectItems(this.value);" value="'.$itemsToDisplay.'" >';
+    echo '  <option value=" "><strong>'.i18n("activityStreamAllItems").'</strong></option>';
+    $items=self::getGlobalizables();
+    foreach ($items as $class=>$className) {
+      echo "  <option value='$class'>$className</option>";
+    }
+    echo '</select>';
   }
   
 }

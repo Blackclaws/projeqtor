@@ -4105,7 +4105,7 @@ function selectFilterContinue() {
     if (dojo.byId("objectClassManual") && dojo.byId("objectClassManual").value=='Planning' && ! top.dijit.byId('dialogDetail').open) {
       refreshJsonPlanning();
     } else {
-      doc.refreshJsonList(dojo.byId('objectClass').value);
+      doc.refreshJsonList(objectClass);
     }
   }
   dijit.byId("dialogFilter").hide();
@@ -4303,8 +4303,10 @@ function selectDynamicFilterContinue() {
 	      false, 'returnFromFilter', false);
 	  if (dojo.byId("objectClassManual") && dojo.byId("objectClassManual").value=='Planning' && ! top.dijit.byId('dialogDetail').open) {
       refreshJsonPlanning();
-    } else {
-	    doc.refreshJsonList(dojo.byId('objectClass').value);
+	  } else if (doc.dojo.byId('objectClassList')) {
+      doc.refreshJsonList(doc.dojo.byId('objectClassList').value);
+	  } else {
+	    doc.refreshJsonList(doc.dojo.byId('objectClass').value);
     }
 	  dijit.byId("dialogDynamicFilter").hide();
 }
@@ -6863,6 +6865,29 @@ function recalculateColumnSelectorName() {
 }
 
 // =========================================================
+// Items selector
+// =========================================================
+var oldSelectedItems=null;
+function globalViewSelectItems(value) {
+  if (!oldSelectedItems || oldSelectedItems==value) return;
+  if (oldSelectedItems.indexOf(" ")>=0 && value.length>1 ) {
+    value[0]=null;
+    oldSelectedItems=value;
+    dijit.byId("globalViewSelectItems").set("value",value);
+  } else if (value.indexOf(" ")>=0 && oldSelectedItems.indexOf(" ")===-1) {
+    value=[" "];
+    oldSelectedItems=value;
+    dijit.byId("globalViewSelectItems").set("value",value);
+  }
+  var finish=function() {
+    refreshJsonList("GlobalView");
+  };
+  if (value.length==0) value='none';
+  saveDataToSession('globalViewSelectedItems', value, true, finish);
+  oldSelectedItems=value;
+}
+
+// =========================================================
 // Other
 // =========================================================
 function showMailOptions() {
@@ -7557,8 +7582,7 @@ function checkExportColumns(scope) {
   if (scope == 'aslist') {
     showWait();
     dojo.xhrGet({
-      url : "../tool/getColumnsList.php?objectClass="
-          + (dojo.byId('objectClassList'))?dojo.byId('objectClassList').value:dojo.byId('objectClass').value,
+      url : "../tool/getColumnsList.php?objectClass="+((dojo.byId('objectClassList'))?dojo.byId('objectClassList').value:dojo.byId('objectClass').value),
       load : function(data) {
         var list=";" + data;
         var val=dojo.byId('column0').value;

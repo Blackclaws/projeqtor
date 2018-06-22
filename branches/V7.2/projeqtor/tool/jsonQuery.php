@@ -92,6 +92,7 @@
     	$note=new Note();
     	$noteTable=$note->getDatabaseTableName();
     	foreach($obj as $fld=>$val) {
+    	  if ($fld=='id' or $fld=='objectId' or $fld=='objectClass' or $fld=='refType' or $fld=='refId') continue;
     	  if ($obj->getDataType($fld)=='varchar') {    				
             $queryWhere.=' or '.$table.".".$fld." ".((Sql::isMysql())?'LIKE':'ILIKE')." '%".$quickSearch."%'";
     	  }
@@ -99,10 +100,15 @@
     	if (is_numeric($quickSearch)) {
     		$queryWhere.= ' or ' . $table . ".id=" . $quickSearch . "";
     	}
-    	$queryWhere.=" or exists ( select 'x' from $noteTable " 
-    	                           . " where $noteTable.refType=".Sql::str($objectClass)
-    	                           . " and $noteTable.refId=$table.id " 
-    	                           . " and $noteTable.note ".((Sql::isMysql())?'LIKE':'ILIKE')." '%" . $quickSearch . "%' ) ";
+    	$queryWhere.=" or exists ( select 'x' from $noteTable ";
+    	if ($objectClass=='GlobalView') {
+    	  $queryWhere.=" where $noteTable.refId=$table.objectId ";
+    	  $queryWhere.=" and $noteTable.refType=$table.objectClass ";
+    	} else {
+    	  $queryWhere.=" where $noteTable.refId=$table.id ";
+    	  $queryWhere.=" and $noteTable.refType=".Sql::str($objectClass);
+    	} 
+      $queryWhere.=" and $noteTable.note ".((Sql::isMysql())?'LIKE':'ILIKE')." '%" . $quickSearch . "%' ) ";
     	$queryWhere.=" )";
     }
     
@@ -229,7 +235,7 @@
     } else {
       $clause=getAccesRestrictionClause($objectClass,$table, $showIdleProjects);
       //gautier #1700
-      if (trim($clause) and $objectClass!="Work") {
+      if (trim($clause) and $objectClass!="Work" and $objectClass!='GlobalView') {
         $queryWhere.= ($queryWhere=='')?'(':' and (';
         $queryWhere.= $clause;
         if ($objectClass=='Project') {
@@ -583,8 +589,9 @@
     	  	//$arrayFieldsWithCase=$obj->getFieldsArray();        
         //}
     		while ($line = Sql::fetchLine($result)) {
-    			if ($first) {
+    		  if ($first) {
 	    			foreach ($line as $id => $val) {
+	    			  if ($objectClass=='GlobalView' and $id=='id') continue;   
 	    				$colId=$id;
 	    				if (Sql::isPgsql() and isset($arrayFields[$id])) {
 	    					$colId=$arrayFields[$id];
@@ -629,6 +636,7 @@
     			}
     			$refType=null;
     			foreach ($line as $id => $val) {
+    			  if ($objectClass=='GlobalView' and $id=='id') continue;
     			  if ($id=='refType') $refType=$val;
     				$foreign=false;
     				if (substr($id, 0,2)=='id' and strlen($id)>2) {
@@ -687,6 +695,7 @@
 	      echo '<tr>';
 	      $layout=str_ireplace('width="','style="border:1px solid black;width:',$layout);
 	      $layout=str_ireplace('<th ','<th class="reportHeader" ',$layout);
+	      if ($objectClass=='GlobalView' ) $layout=str_replace('<th class="reportHeader" field="id" style="border:1px solid black;width:0%">id</th>','',$layout);
 	      echo $layout;
 	      echo '</tr>';
 	      if (Sql::$lastQueryNbRows > 0) {
@@ -698,13 +707,14 @@
 	          foreach ($line as $id => $val) {
 	            $numField+=1;
 	            $disp="";
+	            if ($objectClass=='GlobalView' and $id=='id') continue;
 	            if (!isset($arrayWidth[$numField]) or $arrayWidth[$numField]=='') continue;
 	            if ($formatter[$numField]=="colorNameFormatter") {
-	              $disp=colorNameFormatter($val);
-// BEGIN - ADD BY TABARY - COLOR TRANSLATE NAME FORMATER                      
+	              $disp=colorNameFormatter($val); 
+	            } else if ($formatter[$numField]=="classNameFormatter") {
+	              $disp=classNameFormatter($val);
               } else if ($formatter[$numField]=="colorTranslateNameFormatter") {
 	              $disp=colorTranslateNameFormatter($val);                        
-// END - ADD BY TABARY - COLOR TRANSLATE NAME FORMATER                      
 	            } else if ($formatter[$numField]=="booleanFormatter") {
 	              $disp=booleanFormatter($val);
 	            } else if ($formatter[$numField]=="colorFormatter") {
@@ -790,6 +800,8 @@
             $numericLength=0;
             if ($id=='id') {
             	$numericLength=6;
+            } else if ($formatter[$nbFields]=='classNameFormatter') {
+              $val=i18n($val).'|'.$val;
             } else if ($formatter[$nbFields]=='percentFormatter') {
             	$numericLength=3;
             	if ($val<0) $numericLenght=0;

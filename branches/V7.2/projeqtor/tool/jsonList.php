@@ -70,10 +70,11 @@ if ($type == 'ExpenseDetailType') {
   $type = 'list';
 }
 
-if ($type == 'empty') {} else if ($type == 'object') { // ================================================= OBJECT =====================================================================================
+if ($type == 'empty') {
+  // Emty ;)
+} else if ($type == 'object') { // ================================================= OBJECT =====================================================================================
   $objectClass = $_REQUEST ['objectClass'];
   Security::checkValidClass ( $objectClass, 'objectClass' );
-  
   $obj = new $objectClass ();
   $nbRows = listFieldsForFilter ( $obj, 0 );
 } else if ($type == 'operator') { // =============================================== OPERATOR ===================================================================================
@@ -685,6 +686,7 @@ echo ' ] }';
 function listFieldsForFilter($obj, $nbRows, $included = false) {
   // return result in json format
   foreach ( $obj as $col => $val ) {
+    if (get_class($obj)=='GlobalView' and $col=='id') continue;
     if (substr ( $col, 0, 1 ) != "_" and substr ( $col, 0, 1 ) != ucfirst ( substr ( $col, 0, 1 ) ) and ! $obj->isAttributeSetToField ( $col, 'hidden' ) and ! $obj->isAttributeSetToField ( $col, 'calculated' ) and 
     // ADD BY Marc TABARY - 2017-03-20 - FIELD NOT PRESENT FOR FILTER
     ! $obj->isAttributeSetToField ( $col, 'notInFilter' ) and 
