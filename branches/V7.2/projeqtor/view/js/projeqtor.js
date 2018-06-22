@@ -741,8 +741,10 @@ function loadContent(page, destination, formName, isResultMessage,
               }
               if (dojo.byId('objectClassManual') && dojo.byId('objectClassManual').value=='Planning') {
                 refreshJsonPlanning();
-              } else {
+              } else if (dojo.byId('objectClassList')) {
                 refreshJsonList(dojo.byId('objectClassList').value);
+              } else {
+                refreshJsonList(dojo.byId('objectClass').value);
               }
             }
           }
@@ -2165,6 +2167,9 @@ function selectRowById(gridName, id, tryCount) {
   if (dojo.isIE && parseInt(dojo.isIE, 10) <= '8') {
     return;
   }
+  if (dojo.byId('objectClassList') && dojo.byId('objectClassList').value=='GlobalView' && dojo.byId('objectClass')) {
+    id=dojo.byId('objectClass').value+id;
+  }
   var nbRow = grid.rowCount;
   gridReposition = true;
   var j = -1;
@@ -2312,8 +2317,6 @@ function setSelectedProject(idProject, nameProject, selectionField) {
           } else {
             loadContent("planningList.php", "listDiv", 'listForm');
           }
-        } else if (dijit.byId("listForm") && dojo.byId('objectClassList') && dojo.byId('listShowIdle')) {
-          refreshJsonList(dojo.byId('objectClassList').value);
         } else if (dijit.byId("listForm") && dojo.byId('objectClassList') && dojo.byId('listShowIdle')) {
           refreshJsonList(dojo.byId('objectClassList').value);
         } else if (dijit.byId("listForm") && dojo.byId('objectClass') && dojo.byId('listShowIdle')) {
@@ -3472,11 +3475,17 @@ function updateFinancialTotal() {
   var taxPct = dijit.byId("taxPct").get("value");
   if (!taxPct)
     taxPct = 0;
-    
   var discount=dijit.byId("discountAmount").get("value");
+  var rate=dijit.byId("discountRate").get("value");
   if (!isNaN(discount)) {
-    var rate=Math.round(100*discount)/untaxedAmount;
-    dijit.byId("discountRate").set("value",rate);
+    var rateNew=Math.round(100*discount)/untaxedAmount;
+    if (!isNaN(rate)) {
+      if(Math.round(rate)!= Math.round(rateNew)){
+        dijit.byId("discountRate").set("value",rateNew);
+      }
+    }else{
+      dijit.byId("discountRate").set("value",rateNew);
+    }
   }
   if (!discount){
     discount=0;

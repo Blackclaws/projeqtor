@@ -439,7 +439,7 @@ function classNameFormatter(value) {
   var res=value.split('|');
   var className=res[0];
   var classId=(res.length>1)?res[1]:'';
-  return '<div><table><tr><td><div class="icon'+classId+'16 icon'+classId+' iconSize16"></div></td><td>&nbsp;</td><td>'+className+'</td></tr></table></span>';
+  return '<div><table><tr><td><div class="icon'+classId+'16 icon'+classId+' iconSize16"></div></td><td>&nbsp;</td><td>'+className+'</td></tr></table></div>';
 }
 
 function thumb16(value) {

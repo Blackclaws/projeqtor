@@ -48,12 +48,16 @@ foreach ($csList as $cs) {
 	}
 }
 $arrayDependantObjects=array('Document'=>array('_DocumentVersion'=>'withSection'));
-$htmlresult='<td valign="top">';
+$htmlresult='<td valign="top" style="width:1px">';
 $FieldsArray=$obj->getFieldsArray(true);
 foreach($FieldsArray as $key => $val) {
 	if ( ! SqlElement::isVisibleField($val) ) {
 		unset($FieldsArray[$key]);
     continue;
+	}
+	if ($objectClass=='GlobalView' and $key=='id') {
+	  unset($FieldsArray[$key]);
+	  continue;
 	}
 	if (substr($val,0,5)=='_sec_') {
 		if (strlen($val)>6) {
@@ -131,7 +135,6 @@ foreach($FieldsArray as $key => $val){
 		if($val!=$last_key) {
 			$htmlresult.='</td><td style="vertical-align:top;width: 200px;" valign="top">';
 			$htmlresult.='<div class="section" style="width:90%"><b>'.$val.'</b>';
-			
 			$htmlresult.='</div><br/>';
 			if ($key=='_sec_DocumentVersion') {
 				$htmlresult.='<div class="noteHeader" style="width:94%">';
@@ -144,7 +147,6 @@ foreach($FieldsArray as $key => $val){
 				$htmlresult.='</div><br/>';
 			}
 		}
-		
 	} else if(substr($key,0,5)=="input"){
 	}else {
 		$checked='checked';
@@ -222,7 +224,7 @@ $htmlresult.="<br/>";
   </table>
 <table style="width: 100%;">
   <tr>
-  <?php  echo $htmlresult; ?>
+  <?php  echo $htmlresult;?>
   </tr>
 </table>
 <div style="height:10px;"></div>    

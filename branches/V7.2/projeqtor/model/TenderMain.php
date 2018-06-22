@@ -321,6 +321,9 @@ class TenderMain extends SqlElement {
     }
     $this->fullAmount=$this->untaxedAmount*(1+$this->taxPct/100);
     $this->taxAmount=$this->fullAmount-$this->untaxedAmount;
+    $this->totalUntaxedAmount=$this->untaxedAmount-$this->discountAmount;
+    $this->totalFullAmount=$this->totalUntaxedAmount*(1+$this->taxPct/100);
+    $this->totalTaxAmount=$this->totalFullAmount-$this->totalUntaxedAmount;
     parent::simpleSave();
     return $result;
   }
@@ -400,7 +403,6 @@ class TenderMain extends SqlElement {
       $colScript .= '  formChanged();';
       $colScript .= '</script>';
     }
-   
     return $colScript;
   }
 

@@ -246,10 +246,44 @@ $iconClassName=((SqlElement::is_subclass_of($objectClass, 'PlgCustomList'))?'Lis
               <?php if ( $objectClass=='GlobalView') { ?>
               <td style="vertical-align: middle; text-align:right;" width="5px">
                  <span class="nobr">&nbsp;&nbsp;&nbsp;
-                <?php echo i18n("colClass");?>
+                <?php echo i18n("listTodayItems");?>&nbsp;
               </td>
               <td width="5px">
-                <?php GlobalView::drawGlobalizableList();?>
+                <div dojoType="dijit.form.DropDownButton"							    
+  							  id="listItemsSelector" jsId="listItemsSelector" name="listItemsSelector" 
+  							  showlabel="false" class="comboButton" iconClass="iconGlobalView iconSize22" 
+  							  title="<?php echo i18n('itemSelector');?>">
+                  <span>title</span>
+  							  <div dojoType="dijit.TooltipDialog" class="white" id="listItemsSelectorDialog"
+  							    style="position: absolute; top: 50px; right: 40%">   
+                    <script type="dojo/connect" event="onShow" args="evt">
+                      oldSelectedItems=dijit.byId('globalViewSelectItems').get('value');
+                    </script>                 
+                    <div style="text-align: center;position: relative;"> 
+                      <button title="" dojoType="dijit.form.Button" 
+                        class="mediumTextButton" id="" name="" showLabel="true"><?php echo i18n('buttonOK');?>
+                        <script type="dojo/connect" event="onClick" args="evt">
+                          dijit.byId('listItemsSelector').closeDropDown();
+                        </script>
+                      </button>
+                      <div style="position: absolute;top: 34px; right:42px;"></div>
+                    </div>   
+                    <div style="height:5px;border-bottom:1px solid #AAAAAA"></div>    
+  							    <div>                       
+  							      <?php GlobalView::drawGlobalizableList();?>
+  							    </div>
+                    <div style="height:5px;border-top:1px solid #AAAAAA"></div>    
+                    <div style="text-align: center;position: relative;">
+                      <button title="" dojoType="dijit.form.Button" 
+                         class="mediumTextButton" id="" name="" showLabel="true"><?php echo i18n('buttonOK');?>
+                        <script type="dojo/connect" event="onClick" args="evt">
+                          dijit.byId('listItemsSelector').closeDropDown();
+                        </script>
+                      </button>
+                      <div style="position: absolute;bottom: 33px; right:42px;" ></div>
+                    </div>   
+  							  </div>
+  							</div>                   
               </td>
               <?php }?>
              <?php  if (sessionValueExists('project')){
@@ -547,6 +581,39 @@ $iconClassName=((SqlElement::is_subclass_of($objectClass, 'PlgCustomList'))?'Lis
               </button>              
             </td>
             <td width="36px">
+              <?php if ($objectClass=='GlobalView') {?>
+              <div dojoType="dijit.form.DropDownButton"
+                             class="comboButton"   
+                             id="planningNewItem" jsId="planningNewItem" name="planningNewItem" 
+                             showlabel="false" class="" iconClass="dijitButtonIcon dijitButtonIconNew"
+                             title="<?php echo i18n('comboNewButton');?>">
+                          <span>title</span>
+                          <div dojoType="dijit.TooltipDialog" class="white" style="width:200px;">   
+                            <div style="font-weight:bold; height:25px;text-align:center">
+                            <?php echo i18n('comboNewButton');?>
+                            </div>
+                            <?php $arrayItems=GlobalView::getGlobalizables();
+                            foreach($arrayItems as $item=>$itemName) {
+                              $canCreate=securityGetAccessRightYesNo('menu' . $item,'create');
+                              if ($canCreate=='YES') {
+                                if (! securityCheckDisplayMenu(null,$item) ) {
+                                  $canCreate='NO';
+                                }
+                              }
+                              if ($canCreate=='YES') {?>
+                              <div style="vertical-align:top;cursor:pointer;" class="dijitTreeRow"
+                               onClick="addNewItem('<?php echo $item;?>');" >
+                                <table width:"100%"><tr style="height:22px" >
+                                <td style="vertical-align:top; width: 30px;padding-left:5px"><?php echo formatIcon($item, 22, null, false);;?></td>    
+                                <td style="vertical-align:top;padding-top:2px"><?php echo i18n($item)?></td>
+                                </tr></table>   
+                              </div>
+                              <div style="height:5px;"></div>
+                              <?php } 
+                              }?>
+                          </div>
+                        </div>
+              <?php } else {?>
               <button id="newButtonList" dojoType="dijit.form.Button" showlabel="false"
                 title="<?php echo i18n('buttonNew', array(i18n($_REQUEST['objectClass'])));?>"
                 iconClass="dijitButtonIcon dijitButtonIconNew" class="detailButton">
@@ -566,6 +633,7 @@ $iconClassName=((SqlElement::is_subclass_of($objectClass, 'PlgCustomList'))?'Lis
 	                }
                 </script>
               </button>
+              <?php }?>
             </td>
 <?php }?>   
       <td width="36px">
