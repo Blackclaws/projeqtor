@@ -1011,3 +1011,15 @@
 .ProjeQtOrFlatRed .iconGlobalView { background-image: url(customIcons/red/iconGlobalView.png); }
 .ProjeQtOrFlatGreen .iconGlobalView { background-image: url(customIcons/green/iconGlobalView.png); }
 .ProjeQtOrFlatGrey .iconGlobalView { background-image: url(customIcons/grey/iconGlobalView.png); }
+
+.iconProviderBill { background-image: url(images/iconProviderBill.png); }
+.ProjeQtOrFlatBlue .iconProviderBill { background-image: url(customIcons/blue/iconProviderBill.png); }
+.ProjeQtOrFlatRed .iconProviderBill { background-image: url(customIcons/red/iconProviderBill.png); }
+.ProjeQtOrFlatGreen .iconProviderBill { background-image: url(customIcons/green/iconProviderBill.png); }
+.ProjeQtOrFlatGrey .iconProviderBill { background-image: url(customIcons/grey/iconProviderBill.png); }
+
+.iconProviderBillType { background-image: url(images/iconProviderBillType.png); }
+.ProjeQtOrFlatBlue .iconProviderBillType { background-image: url(customIcons/blue/iconProviderBillType.png); }
+.ProjeQtOrFlatRed .iconProviderBillType { background-image: url(customIcons/red/iconProviderBillType.png); }
+.ProjeQtOrFlatGreen .iconProviderBillType { background-image: url(customIcons/green/iconProviderBillType.png); }
+.ProjeQtOrFlatGrey .iconProviderBillType { background-image: url(customIcons/grey/iconProviderBillType.png); }

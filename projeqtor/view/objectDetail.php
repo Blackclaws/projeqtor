@@ -2807,7 +2807,7 @@ function startTitlePane($classObj, $section, $collapsedList, $widthPct, $print, 
     echo '<td class="detail" >&nbsp;</td>';
     echo '</tr>';
     echo '</table><table class="detail" style="width:'.$widthPct.';'.$display.'" >'; // For PDF
-                                                                                               // echo '</table><table class="detail" style="width:' . $widthPct . ';" >'; // For PDF
+         // echo '</table><table class="detail" style="width:' . $widthPct . ';" >'; // For PDF
   }
 }
 

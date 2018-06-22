@@ -28,17 +28,17 @@
  * Action is establised during meeting, to define an action to be followed.
  */ 
 require_once('_securityCheck.php');
-class ProviderOrderMain extends SqlElement {
+class ProviderBillMain extends SqlElement {
   // List of fields that will be exposed in general user interface
   public $_sec_description;
   public $id; 
   public $reference;
   public $name;
-  public $idProviderOrderType;
+  public $idProviderBillType;
   public $idProject;
   public $idUser;
-  public $creationDate;
-  public $sendDate;
+ // public $creationDate;
+  public $date;
   public $Origin;
   public $idProvider;
   public $externalReference;
@@ -66,11 +66,9 @@ class ProviderOrderMain extends SqlElement {
   public $totalTaxAmount;
   public $totalFullAmount;
   public $paymentCondition;
-  public $deliveryDelay;
-  public $_tab_3_1 = array('expectedDate','doneDate','validatedDate','dateDelivery');
-  public $deliveryExpectedDate;
-  public $deliveryDoneDate;
-  public $deliveryValitedDate;
+  public $expectedPaymentDate;
+  public $lastPaymentDate;
+  public $paymentAmount;
   public $handled;
   public $handledDate;
   public $done;
@@ -94,11 +92,11 @@ class ProviderOrderMain extends SqlElement {
   private static $_layout='
     <th field="id" formatter="numericFormatter" width="4%" ># ${id}</th>
     <th field="nameProject" width="9%" >${idProject}</th>
-    <th field="nameProviderOrderType" width="9%" >${idProviderOrderType}</th>
+    <th field="nameProviderBillType" width="9%" >${idProviderBillType}</th>
     <th field="name" width="27%" >${name}</th>
     <th field="colorNameStatus" width="9%" formatter="colorNameFormatter">${idStatus}</th>
     <th field="nameResource" formatter="thumbName22" width="8%" >${responsible}</th>
-    <th field="deliveryExpectedDate" width="8%" formatter="dateFormatter" >${deliveryExpectedDate}</th>
+    <th field="expectedPaymentDate" width="8%" formatter="dateFormatter" >${expectedPaymentDate}</th>
     <th field="untaxedAmount" width="7%" formatter="amountFormatter">${untaxedAmount}</th>
     <th field="totalUntaxedAmount" width="7%" formatter="amountFormatter">${totalUntaxedAmount}</th>
     <th field="handled" width="4%" formatter="booleanFormatter" >${handled}</th>
@@ -118,7 +116,7 @@ class ProviderOrderMain extends SqlElement {
       "totalUntaxedAmount"=>"readonly",
       "totalTaxAmount"=>"readonly",
       "totalFullAmount"=>"readonly",
-      "idStatus"=>"required",
+      "externalReference"=>"required",
       "idleDate"=>"nobr",
       "cancelled"=>"nobr",
       "validatedWork"=>"readonly",
@@ -220,7 +218,7 @@ class ProviderOrderMain extends SqlElement {
     $result=parent::save();
     
     $billLine=new BillLine();
-    $crit = array("refType"=> "ProviderOrder", "refId"=>$this->id);
+    $crit = array("refType"=> "ProviderBill", "refId"=>$this->id);
     $billLineList = $billLine->getSqlElementsFromCriteria($crit,false);
     if (count($billLineList)>0) {
       $amount=0;

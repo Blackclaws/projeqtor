@@ -229,12 +229,20 @@ class BillLine extends SqlElement {
     // Only save without calculate the amount
     
 // Fin Code Marc
-
     //gautier #devisTender
     if (property_exists($bill, 'totalUntaxedAmount') and property_exists($bill, 'totalTaxAmount') and property_exists($bill, 'totalFullAmount') ) {
-      $bill->totalUntaxedAmount=$bill->totalUntaxedAmount-$this->amount;
-      $bill->totalFullAmount=$bill->totalUntaxedAmount*(1+$bill->taxPct*0.01);
-      $bill->totalTaxAmount=$bill->totalFullAmount-$bill->totalUntaxedAmount;
+      if($bill->untaxedAmount == 0){
+        $bill->taxAmount=0;
+        $bill->totalUntaxedAmount=0;
+        $bill->totalFullAmount=0;
+        $bill->totalTaxAmount=0;
+        $bill->fullAmount=0;
+      }else{
+        $bill->taxAmount = $bill->fullAmount-$bill->untaxedAmount;
+        $bill->totalUntaxedAmount=$bill->totalUntaxedAmount-$this->amount;
+        $bill->totalFullAmount=$bill->totalUntaxedAmount*(1+$bill->taxPct*0.01);
+        $bill->totalTaxAmount=$bill->totalFullAmount-$bill->totalUntaxedAmount;
+      }
       $billToSave=true;
     }
     
