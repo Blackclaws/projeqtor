@@ -571,6 +571,15 @@ class Parameter extends SqlElement {
           'J-30'=>i18n('daysBeforeToday',array('30'))
         );
         break;
+      case 'notApplicableValue' :
+        $list=array(
+          'null'=>'',
+          "'N/A'"=>'N/A',
+          "'-'"=>'-',
+          "'[]'"=>'[]',
+          "'Ø'"=>'Ø'
+        );
+        break;
     } 
     return $list;
   }
@@ -589,6 +598,7 @@ class Parameter extends SqlElement {
                            'paramIconSize'=>'list',
                            "paramShowThumb"=>"list",
                            "paramShowThumbList"=>"list",
+                           "notApplicableValue"=>"list",
                          'sectionIHM'=>'section',
                            "displayHistory"=>"list",
                            "displayChecklist"=>"list",  
@@ -712,6 +722,7 @@ class Parameter extends SqlElement {
       	                      'displayHistory'=>'list',
       	                      "editor"=>'list',
       	                      "scaytAutoStartup"=>'list',
+      	                      "notApplicableValue"=>"list",
       	                'tabMiscellaneous'=>"tab",
       	                  'columnMiscellanousLeft'=>'newColumn',
       	                     'sectionReferenceFormat'=>'section',

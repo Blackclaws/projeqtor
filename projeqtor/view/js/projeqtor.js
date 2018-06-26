@@ -753,13 +753,20 @@ function loadContent(page, destination, formName, isResultMessage,
           }
           if (directAccess) {
             if (dojo.byId('objectClass') && dojo.byId('objectId') && dijit.byId('listForm')) {
-              dojo.byId('objectId').value = directAccess;
+              if (dojo.byId('objectClassList') && dojo.byId('objectClassList').value=='GlobalView') {
+                var expl= directAccess.split('|');
+                dojo.byId('objectClass').value = expl[0];
+                dojo.byId('objectId').value = expl[1];
+              } else {
+                dojo.byId('objectId').value = directAccess;
+                directAccess=parseInt(directAccess);
+              }
               showWait();
               loadContent("objectDetail.php", "detailDiv", 'listForm');
               if (dijit.byId('detailRightDiv')) loadContent("objectStream.php", "detailRightDiv",'listForm');
               showWait();
               hideList();
-              setTimeout('selectRowById("objectGrid", '+parseInt(directAccess)+');', 500);
+              setTimeout('selectRowById("objectGrid", '+directAccess+');', 100);
             }
           }
           if (isResultMessage) {    
@@ -2990,7 +2997,7 @@ function gotoElement(eltClass, eltId, noHistory, forceListRefresh, target) {
     if (dojo.byId("detailDiv")) {
       cleanContent("detailDiv");
     }
-    if (!dojo.byId('objectClass') || dojo.byId('objectClass').value != eltClass
+    if ( ( (!dojo.byId('objectClass') || dojo.byId('objectClass').value != eltClass) && (!dojo.byId('objectClassList') || dojo.byId('objectClassList').value != eltClass))
         || forceListRefresh || dojo.byId('titleKanban')) {
       var callBack=null;
       if (dijit.byId("detailRightDiv")) callBack=function(){loadContent("objectStream.php", "detailRightDiv", "listForm");}; 
@@ -2998,12 +3005,19 @@ function gotoElement(eltClass, eltId, noHistory, forceListRefresh, target) {
           false, false, eltId,false,callBack);
       
     } else {
-      dojo.byId('objectClass').value = eltClass;
-      dojo.byId('objectId').value = eltId;
+      if (eltClass=='GlobalView') {
+        var explode=eltId.split('|');
+        dojo.byId('objectClass').value = explode[0];
+        dojo.byId('objectId').value =  explode[1];
+      } else {
+        dojo.byId('objectClass').value = eltClass;
+        dojo.byId('objectId').value = eltId;
+      }
       loadContent('objectDetail.php', 'detailDiv', 'listForm');
       if (dijit.byId("detailRightDiv")) loadContent("objectStream.php", "detailRightDiv", "listForm"); 
       hideList();
-      setTimeout('selectRowById("objectGrid", ' + parseInt(eltId) + ');', 100);
+      var key=(eltClass=='GlobalView')?eltId:parseInt(eltId);
+      setTimeout('selectRowById("objectGrid", ' + key + ');', 100);
     }
   }
   if (!noHistory) {

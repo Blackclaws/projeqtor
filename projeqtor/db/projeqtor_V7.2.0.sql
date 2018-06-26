@@ -100,24 +100,40 @@ CREATE TABLE `${prefix}providerBill` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+CREATE TABLE `${prefix}providerTerm` (
+  `id` int(12) unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(100) DEFAULT NULL,
+  `idProject` int(12) unsigned DEFAULT NULL,
+  `idle` int(1) unsigned DEFAULT NULL,
+  `idProviderOrder` int(12) unsigned DEFAULT NULL,
+  `idProviderBill` int(12) unsigned DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=innoDB DEFAULT CHARSET=utf8 ;
+
+CREATE INDEX providerTermProject ON `${prefix}providerTerm` (idProject);
+CREATE INDEX providerTermOrder ON `${prefix}providerTerm` (idProviderOrder);
+CREATE INDEX providerTermBill ON `${prefix}providerTerm` (idProviderBill);
+
 INSERT INTO `${prefix}menu` (`id`,`name`, `idMenu`, `type`, `sortOrder`, `level`, `idle`, `menuClass`) VALUES
 (190,'menuProviderOrderType', 79, 'object', 826, 'Project', 0, 'Type '),
 (191,'menuProviderOrder', 151, 'object', 207, 'Project', 0, 'Financial '),
 (193,'menuProviderBillType', 79, 'object', 826, 'Project', 0, 'Type '),
-(194,'menuProviderBill', 151, 'object', 208, 'Project', 0, 'Financial ');
+(194,'menuProviderBill', 151, 'object', 209, 'Project', 0, 'Financial '),
+(195,'menuProviderTerm', 151, 'object', 208, 'Project', 0, 'Financial ');
 
 INSERT INTO `${prefix}habilitation` (`idProfile`, `idMenu`, `allowAccess`) VALUES
 (1, 190, 1),
 (1, 191, 1),
 (1, 193, 1),
-(1, 194, 1);
+(1, 194, 1),
+(1, 195, 1);
 
 INSERT INTO `${prefix}accessright` (`idProfile`, `idMenu`, `idAccessProfile`) VALUES
 (1,190,8),
 (1,191,8),
 (1,193,8),
-(1,194,8);
-
+(1,194,8),
+(1,195,8);
 
 ALTER TABLE `${prefix}tender`
 CHANGE `initialAmount` `untaxedAmount` DECIMAL(11,2) UNSIGNED NULL DEFAULT NULL,
@@ -132,6 +148,12 @@ ADD `discountRate`   DECIMAL(5,2);
 INSERT INTO `${prefix}type` (`scope`, `name`, `sortOrder`, `idle`, `color`, idWorkflow) VALUES
 ('ProviderOrder', 'Product', 10, 0, NULL, 1),
 ('ProviderOrder', 'Service', 20, 0, NULL, 1);
+
+INSERT INTO `${prefix}copyable` (`id`,`name`, `idle`, `sortOrder`,`idDefaultCopyable`) VALUES 
+(23,'ProviderOrder', '0', '121','24'),
+(24,'ProviderBill', '0', '122',NULL);
+UPDATE `${prefix}copyable` SET idDefaultCopyable=23 WHERE id=16;
+
 -- ==================================================================
 -- Global views
 -- ==================================================================
@@ -170,9 +192,9 @@ CREATE TABLE `${prefix}globalview` (
   `handledDate` date DEFAULT NULL,
   `doneDate` date DEFAULT NULL,
   `idleDate` date DEFAULT NULL,
-  `validateDate` date DEFAULT NULL,
-  `plannedDate`  date DEFAULT NULL,
-  `realDate`  date DEFAULT NULL,
+  `validatedEndDate` date DEFAULT NULL,
+  `plannedEndDate`  date DEFAULT NULL,
+  `realEndDate`  date DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 

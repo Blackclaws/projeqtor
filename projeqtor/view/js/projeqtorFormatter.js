@@ -322,6 +322,9 @@ function costFormatter(value) {
  */
 function dateFormatter(value) {
   fmt = top.getBrowserLocaleDateFormatJs();
+  if (value.length == 19) {
+    value=value.substr(0,10);
+  }
   if (value.length == 10) {
     vDate = dojo.date.locale.parse(value, {
       selector : "date",

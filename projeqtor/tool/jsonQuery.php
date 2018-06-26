@@ -554,6 +554,7 @@
       }
     }
     //end gautier
+    if (!$queryWhere) $queryWhere='1=1';
     $query='select ' . $querySelect 
          . ' from ' . $queryFrom
          . ' where ' . $queryWhere 

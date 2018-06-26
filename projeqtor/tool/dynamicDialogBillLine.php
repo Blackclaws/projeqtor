@@ -124,7 +124,7 @@ if ($line->line) {
          <input id="billLineRefId" name="billLineRefId" type="hidden" value="<?php echo htmlEncode($refId);?>" />
          <input id="billLineBillingType" name="billLineBillingType" type="hidden" value="<?php echo htmlEncode($billingType);?>" />
        	 <table>
-       	 <?php if ($billingType == 'M' &&  $refType != 'Tender' and $refType != 'ProviderOrder') {?>
+       	 <?php if ($billingType == 'M' &&  $refType != 'Tender' and $refType != 'ProviderOrder' and $refType != 'ProviderBill') {?>
        	     <tr>
              <td class="dialogLabel"  >
                <label for="billLineIdCatalog" ><?php echo i18n("colIdCatalog") ?>&nbsp;:&nbsp;</label>
