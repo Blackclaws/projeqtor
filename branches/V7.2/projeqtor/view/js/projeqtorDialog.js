@@ -5896,19 +5896,22 @@ function consoleLogHistory(msg) {
 }
 
 function stockHistory(curClass, curId, currentScreen) {
+  consoleLogHistory("before stockHistory");
+  
   if (!currentScreen) {
-    if (dojo.byId('objectClassList') && dojo.byId('objectClassList').value!=curClass) {
-      currentScreen=dojo.byId('objectClassList').value;
-    } else {
-      currentScreen="object";
-    }
+    currentScreen="object";
     if (dojo.byId("objectClassManual")){
       currentScreen=dojo.byId("objectClassManual").value;
     }
   }
+  if (dojo.byId('objectClassList') && dojo.byId('objectClassList').value=='GlobalView' && curId) {
+    curId=curClass+'|'+parseInt(curId);
+    curClass=dojo.byId('objectClassList').value;
+  }
   if (historyPosition>=0) {
     current=historyTable[historyPosition];
     if (current[0]==curClass && current[1]==curId && current[2]==currentScreen) return; // do not re-stock current item
+    if (current[0]==curClass && current[1]==null && current[2]==currentScreen) historyPosition-=1; // previous is same class but with no selection, will overwrite
   }
   historyPosition+=1;
   historyTable[historyPosition]=new Array(curClass, curId,currentScreen);
@@ -5922,6 +5925,7 @@ function stockHistory(curClass, curId, currentScreen) {
   if (historyPosition == historyTable.length - 1) {
     disableWidget('menuBarRedoButton');
   }
+  consoleLogHistory("after stockHistory");
 }
 
 

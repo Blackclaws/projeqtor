@@ -68,6 +68,11 @@ if ($noselect) {
   $profile=getSessionUser()->idProfile;
 } else {
   $objId=$_REQUEST['objectId'];
+  if ($objClass=='GlobalView') {
+    $expl=explode('|',$objId);
+    $objClass=$expl[0];
+    $objId=$expl[1];
+  }
   $obj=new $objClass($objId);
   $profile=getSessionUser()->getProfile($obj);
   //gautier   
