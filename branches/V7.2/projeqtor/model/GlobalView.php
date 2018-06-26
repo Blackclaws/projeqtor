@@ -46,10 +46,16 @@ class GlobalView extends SqlElement {
   public $idResource;
   public $result;
   public $handled;
+  public $handledDate;
   public $done;
+  public $doneDate;
   public $idle;
+  public $idleDate;
   public $cancelled;
   public $_lib_cancelled;
+  public $validatedEndDate;
+  public $plannedEndDate;
+  public $realEndDate;
   public $_sec_Link;
   public $_Link=array();
   public $_Attachment=array();
@@ -227,6 +233,10 @@ class GlobalView extends SqlElement {
   public static function getTableNameQuery() {
     $paramDbPrefix=Parameter::getGlobalParameter('paramDbPrefix');
     $obj=new GlobalView();
+    $na=Parameter::getUserParameter('notApplicableValue');
+    if (!$na) $na='null';
+    $pe=new PlanningElement();
+    $peTable=$pe->getDatabaseTableName();
     $itemsToDisplay=Parameter::getUserParameter('globalViewSelectedItems');
     $itemsToDisplayArray=explode(',', $itemsToDisplay);
     $query='(';
@@ -238,28 +248,32 @@ class GlobalView extends SqlElement {
       $table=$clsObj->getDatabaseTableName();
       $convert=self::$_globalizables[$class];
       if ($query!='(') $query.=' UNION ';
-      $query.="SELECT concat('$class',id) as id";
+      $query.="SELECT concat('$class',$table.id) as id";
       foreach ($obj as $fld=>$val) {
         if (substr($fld,0,1)=='_' or $fld=='id') continue;        
         $query.=", ";
         if ($fld=='objectClass') $query.="'$class'";
-        else if ($fld=='objectId') $query.="id";
-        else if (isset($convert[$fld])) $query.=$convert[$fld];
-        else if ($fld=='idType') $query.="id".$class."Type";
-        else $query.=$fld;
+        else if ($fld=='objectId') $query.="$table.id";
+        else if (isset($convert[$fld])) $query.=(($convert[$fld]=='null')?$na:"$table.".$convert[$fld]);
+        else if ($fld=='idType') $query.="$table.id".$class."Type";
+        else if (($fld=='validatedEndDate' or $fld=='plannedEndDate' or $fld=='realEndDate') and property_exists($class, $class.'PlanningElement')) $query.="$peTable.$fld";
+        else $query.="$table.$fld";
         $query.=" as $fld";
       }
       $query.=" FROM ".$table;
+      if (property_exists($class, $class.'PlanningElement')) {
+        $query.=" LEFT JOIN $peTable ON $peTable.refType='$class' and $peTable.refId=$table.id ";
+      }
       // Add control rights
-      // $accessRightRead=securityGetAccessRight($obj->getMenuClass(), 'read');  
-      // if ($objectClass=='Project' and $accessRightRead!='ALL') {
-      //For project : $queryWhere.=  '(' . $table . ".id in " . transformListIntoInClause(getSessionUser()->getVisibleProjects(! $showIdle)) ;
-      //              $queryWhere.= " or $table.codeType='TMP' ";
       $clause=getAccesRestrictionClause($class,$table, false);
       if ($class=='Project') {
          $query.=" WHERE (".$clause." or ".$table.".codeType='TMP' )"; // Templates projects are always visible in projects list
       } else {
         $query.=" WHERE ".$clause;
+      }
+      $crit=$clsObj->getDatabaseCriteria();
+      foreach ($crit as $col => $val) {
+        $query.= " and $table.".$clsObj->getDatabaseColumnName($col)."=".Sql::str($val);
       }
     }
     $query.=')';
@@ -280,22 +294,22 @@ class GlobalView extends SqlElement {
   
   static protected $_globalizables=array(
       'Project'=>array('idProject'=>'id','result'=>'null','reference'=>'null'),
-      'Ticket'=>array(),
+      'Ticket'=>array('handledDate'=>'handledDateTime','doneDate'=>'doneDateTime','idleDate'=>'idleDateTime','validatedEndDate'=>'initialDueDateTime','plannedEndDate'=>'actualDueDateTime','realEndDate'=>'doneDateTime'),
       'Activity'=>array(),
       'Milestone'=>array(),
-      'Action'=>array(),
-      'Requirement'=>array(),
-      'TestCase'=>array(),
+      'Action'=>array('validatedEndDate'=>'initialDueDate','plannedEndDate'=>'actualDueDate','realEndDate'=>'doneDate'),
+      'Requirement'=>array('validatedEndDate'=>'initialDueDate','plannedEndDate'=>'actualDueDate','realEndDate'=>'doneDate'),
+      'TestCase'=>array('validatedEndDate'=>'null','plannedEndDate'=>'null','realEndDate'=>'doneDate'),
       'TestSession'=>array(),
-      'Risk'=>array(),
-      'Opportunity'=>array(),
-      'Issue'=>array(),
+      'Risk'=>array('validatedEndDate'=>'initialEndDate','plannedEndDate'=>'actualEndDate','realEndDate'=>'doneDate'),
+      'Opportunity'=>array('validatedEndDate'=>'initialEndDate','plannedEndDate'=>'actualEndDate','realEndDate'=>'doneDate'),
+      'Issue'=>array('validatedEndDate'=>'initialEndDate','plannedEndDate'=>'actualEndDate','realEndDate'=>'doneDate'),
       'Meeting'=>array(),
-      'Decision'=>array('result'=>'null','handled'=>'null'),
-      'Question'=>array(),
-      'Incoming'=>array('idType'=>'null','idStatus'=>'null','handled'=>'null','done'=>'null','cancelled'=>'null'),
-      'Deliverable'=>array('idType'=>'null','idStatus'=>'null','handled'=>'null','done'=>'null','cancelled'=>'null'),
-      'Delivery'=>array(),
+      'Decision'=>array('result'=>'null','handled'=>'null','handledDate'=>'null','doneDate'=>'null','idleDate'=>'null','validatedEndDate'=>'null','plannedEndDate'=>'null','realEndDate'=>'decisionDate'),
+      'Question'=>array('validatedEndDate'=>'initialDueDate','plannedEndDate'=>'actualDueDate','realEndDate'=>'doneDate'),
+      'Incoming'=>array('idType'=>'null','idStatus'=>'null','handled'=>'null','done'=>'null','cancelled'=>'null','handledDate'=>'null','doneDate'=>'null','idleDate'=>'null','validatedEndDate'=>'initialDate','plannedEndDate'=>'plannedDate','realEndDate'=>'realDate'),
+      'Deliverable'=>array('idType'=>'null','idStatus'=>'null','handled'=>'null','done'=>'null','cancelled'=>'null','handledDate'=>'null','doneDate'=>'null','idleDate'=>'null','validatedEndDate'=>'initialDate','plannedEndDate'=>'plannedDate','realEndDate'=>'realDate'),
+      'Delivery'=>array('handledDate'=>'handledDateTime','doneDate'=>'doneDateTime','idleDate'=>'idleDateTime','validatedEndDate'=>'initialDate','plannedEndDate'=>'plannedDate','realEndDate'=>'realDate'),
   );
 
   public static function drawGlobalizableList() {

@@ -1023,3 +1023,9 @@
 .ProjeQtOrFlatRed .iconProviderBillType { background-image: url(customIcons/red/iconProviderBillType.png); }
 .ProjeQtOrFlatGreen .iconProviderBillType { background-image: url(customIcons/green/iconProviderBillType.png); }
 .ProjeQtOrFlatGrey .iconProviderBillType { background-image: url(customIcons/grey/iconProviderBillType.png); }
+
+.iconProviderTerm { background-image: url(images/iconProviderTerm.png); }
+.ProjeQtOrFlatBlue .iconProviderTerm { background-image: url(customIcons/blue/iconProviderTerm.png); }
+.ProjeQtOrFlatRed .iconProviderTerm { background-image: url(customIcons/red/iconProviderTerm.png); }
+.ProjeQtOrFlatGreen .iconProviderTerm { background-image: url(customIcons/green/iconProviderTerm.png); }
+.ProjeQtOrFlatGrey .iconProviderTerm { background-image: url(customIcons/grey/iconProviderTerm.png); }

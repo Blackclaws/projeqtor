@@ -109,6 +109,7 @@ function colorFormatter($value) {
 }
 
 function dateFormatter($value) {
+  if (strlen($value)==19) $value=substr($value,0,10);
   return htmlFormatDate($value,false);
 }
 
