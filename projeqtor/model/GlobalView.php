@@ -317,7 +317,7 @@ class GlobalView extends SqlElement {
     $itemsToDisplayArray=explode(',', $itemsToDisplay);
     echo '<select dojoType="dojox.form.CheckedMultiSelect"  multiple="true" style="border:1px solid #A0A0A0;width:initial;height:218px;max-height:218px;"';
     echo '  id="globalViewSelectItems" name="globalViewSelectItems[]" onChange="globalViewSelectItems(this.value);" value="'.$itemsToDisplay.'" >';
-    echo '  <option value=" "><strong>'.i18n("activityStreamAllItems").'</strong></option>';
+    echo '  <option value=" ">'.i18n("activityStreamAllItems").'</option>';
     $items=self::getGlobalizables();
     foreach ($items as $class=>$className) {
       echo "  <option value='$class'>$className</option>";

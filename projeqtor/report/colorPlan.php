@@ -132,37 +132,40 @@ $idRessource=getSessionUser()->id;
 $resss=new ResourceAll($idRessource);
 $resourcesFull = array();
 $resourcesAffect= array();
-$resourcesFull2 = array();
+$resourcesToShow = array();
 $specific='imputation';
 $commonElement = getListForSpecificRights($specific,true);
 //$commonElement = $table;
 //no parameters
 if(!$paramProject && !$paramTeam){
   $resourcesFull =SqlList::getList('ResourceAll');
-  $resourcesFull2 = array_intersect($commonElement,$resourcesFull);
+  $resourcesToShow = array_intersect($commonElement,$resourcesFull);
 }
 //project
 if($paramProject && !$paramTeam ){
-  $resourcesAffect = SqlList::getListWithCrit('Affectation', array('idProject'=>$paramProject),'idResource');
-  $resourcesFull = SqlList::getListWithCrit('ResourceAll', array('id'=>$resourcesAffect));
-  $resourcesFull2 = array_intersect($commonElement,$resourcesFull);
+  $proj=new Project($paramProject);
+  $listProj=$proj->getRecursiveSubProjectsFlatList(false,true);
+  $resourcesAffect = SqlList::getListWithCrit('Affectation', array('idProject'=>array_keys($listProj)),'idResource');
+  $resourcesProject = SqlList::getListWithCrit('ResourceAll', array('id'=>$resourcesAffect));
+  $resourcesToShow = array_intersect($commonElement,$resourcesProject);
 }
 //team
 if($paramTeam && !$paramProject){
   $resourcesFull =SqlList::getListWithCrit('ResourceAll', array('idTeam'=>$paramTeam));
-  $resourcesFull2 = array_intersect($commonElement,$resourcesFull);
+  $resourcesToShow = array_intersect($commonElement,$resourcesFull);
 }
 //team and project
 if($paramTeam && $paramProject){
-  $resourcesAffect = SqlList::getListWithCrit('Affectation', array('idProject'=>$paramProject),'idResource');
-  $resourcesFullProject = SqlList::getListWithCrit('ResourceAll', array('id'=>$resourcesAffect));
-  $resourcesFullTeam = SqlList::getListWithCrit('ResourceAll', array('idTeam'=>$paramTeam));
-  $resourcesFull = array_intersect($resourcesFullProject,$resourcesFullTeam);
-  $resourcesFull2 = array_intersect($commonElement,$resourcesFull);
+  $proj=new Project($paramProject);
+  $listProj=$proj->getRecursiveSubProjectsFlatList(false,true);
+  $resourcesAffect = SqlList::getListWithCrit('Affectation', array('idProject'=>array_keys($listProj)),'idResource');
+  $resourcesProject = SqlList::getListWithCrit('ResourceAll', array('id'=>$resourcesAffect));
+  $resourcesTeam = SqlList::getListWithCrit('ResourceAll', array('idTeam'=>$paramTeam));
+  $resourcesToShow = array_intersect($commonElement,$resourcesTeam, $resourcesProject);
 }
 
 foreach ($lstWork as $work) {
-  if (! isset($resourcesFull2[$work->idResource])) continue;
+  if (! isset($resourcesToShow[$work->idResource])) continue;
   if (! array_key_exists($work->idResource,$resources)) {
     if ($paramTeam) {
       $team=SqlList::getFieldFromId('Resource', $work->idResource,'idTeam');
@@ -190,7 +193,7 @@ foreach ($lstWork as $work) {
 $planWork=new PlannedWork();
 $lstPlanWork=$planWork->getSqlElementsFromCriteria(null,false, $where, $order);
 foreach ($lstPlanWork as $work) {
-  if (! isset($resourcesFull2[$work->idResource])) continue;
+  if (! isset($resourcesToShow[$work->idResource])) continue;
   if (! array_key_exists($work->idResource,$resources)) {
     if ($paramTeam) {
       $team=SqlList::getFieldFromId('Resource', $work->idResource,'idTeam');
@@ -236,7 +239,7 @@ $weekendFrontColor='#555555';
 $weekendStyle=' style="background-color:' . $weekendBGColor . '; color:' . $weekendFrontColor . '" ';
 
 $month=$paramYear.'-'.$paramMonth;
-if (checkNoData($result,$month)) continue;
+if (count($resourcesToShow)==0 and checkNoData($result,$month)) continue;
 
 echo '<table width="95%" align="center">';
 echo '<tr><td>';
@@ -302,9 +305,9 @@ for($i=1; $i<=$nbDays;$i++) {
 
 echo '</tr>';
 
-asort($resourcesFull2);
+asort($resourcesToShow);
 //asort($resources);
-foreach ($resourcesFull2 as $idR=>$nameR) {
+foreach ($resourcesToShow as $idR=>$nameR) {
 	if ($paramTeam) {
     $res=new Resource($idR);
   }
