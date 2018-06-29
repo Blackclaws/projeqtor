@@ -3768,6 +3768,12 @@ function sessionUserExists() {
   }
 }
  
+/**
+ * Get list of resources depending on access rights visibility : restricted on team or or organization or without rtestriction depending on spécific access rights
+ * @param string $specific : type or scope of the list. Possible values are : 'imputation', 'diary', 'planning'
+ * @param boolean $includePool
+ * @return simple list of resources of type id=>name
+ */
 function getListForSpecificRights($specific,$includePool=false){
 	global $user;
   if (!isset($user)) {
