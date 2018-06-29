@@ -954,33 +954,15 @@ scriptLog("Project($this->id)->drawSubProjects(selectField=$selectField, recursi
     $proj=SqlElement::getSingleSqlElementFromCriteria("ProjectPlanningElement",array('refType'=>'Project','refId'=>$id),true);
     $proj->needReplan=false;
     $proj->simpleSave();
-    /*if ($proj->topId) {
+    if ($proj->topId) {
       $top=new ProjectPlanningElement($proj->topId);
       if ($top->needReplan) {
         $count=$top->countSqlElementsFromCriteria(array('refType'=>'Project','topId'=>$top->id, 'needReplan'=>'1'));
         if ($count==0) {
-          self::unsetNeedReplan($top->id);
+          self::unsetNeedReplan($top->refId);
         }
       }
-    }*/
+    }
   }
-// END ADD BY Marc TABARY - 2017-03-17 - COPY ACTIVITY PRICE WHEN COPY PROJECT  
-  
-// COMMENT BY Marc TABARY - 2017-03-17 - COPY ACTIVITY PRICE WHEN COPY PROJECT
-//  public function copyTo($newClass, $newType, $newName, $setOrigin, $withNotes, $withAttachments,$withLinks, $withAssignments=false, $withAffectations=false, $toProject=null, $toActivity=null, $copyToWithResult=false,$copyToWithVersionProjects=false) {
-//    $result=parent::copyTo($newClass, $newType, $newName, $setOrigin, $withNotes, $withAttachments, $withLinks,$withAssignments, $withAffectations, $toProject);
-//    if($copyToWithVersionProjects==true){
-//      $vp=new VersionProject();
-//      $crit=array('idProject'=>$this->id);
-//      $list=$vp->getSqlElementsFromCriteria($crit);
-//      foreach ($list as $vp) {
-//        $vp->idProject=$result->id;
-//        $vp->id=null;
-//        $vp->save();
-//      }
-//    }
-//    return $result;
-//  }
-// END COMMENT BY Marc TABARY - 2017-03-17 - COPY ACTIVITY PRICE WHEN COPY PROJECT
-  }
+}
 ?>
