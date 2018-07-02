@@ -406,13 +406,7 @@ if (array_key_exists('refresh', $_REQUEST)) {
  */
 function drawTableFromObject($obj, $included=false, $parentReadOnly=false, $parentHidden=false) {
   scriptLog("drawTableFromObject(obj, included=$included, parentReadOnly=$parentReadOnly)");
-  global  // BEGIN - ADD BY TABARY - TOOLTIP
-  $toolTip, 
-// END - ADD BY TABARY - TOOLTIP
-$cr, $print, $treatedObjects, $displayWidth, $outMode, $comboDetail, $collapsedList, $printWidth, $profile, $detailWidth, $readOnly, $largeWidth, $widthPct, $nbColMax, $preseveHtmlFormatingForPDF, $reorg, $leftPane, $rightPane, $extraPane, $bottomPane, $nbColMax, $section, $beforeAllPanes;
-  // if ($outMode == 'pdf') { V5.0 removed as field may content html tags...
-  // $obj->splitLongFields ();
-  // }
+  global $toolTip, $cr, $print, $treatedObjects, $displayWidth, $outMode, $comboDetail, $collapsedList, $printWidth, $profile, $detailWidth, $readOnly, $largeWidth, $widthPct, $nbColMax, $preseveHtmlFormatingForPDF, $reorg, $leftPane, $rightPane, $extraPane, $bottomPane, $nbColMax, $section, $beforeAllPanes;
   $ckEditorNumber=0; // Will be used only if getEditor=="CK" for CKEditor
   
   if (property_exists($obj, '_sec_Assignment')) {
@@ -624,6 +618,14 @@ $cr, $print, $treatedObjects, $displayWidth, $outMode, $comboDetail, $collapsedL
     if ($included and ($col=='id' or $col=='refId' or $col=='refType' or $col=='refName')) {
       $hide=true;
     }
+    // For PDF Export : hide line if section is hidden
+    $hiddenSection=false;
+    if ($section) {
+      if ($parentHidden or $obj->isAttributeSetToField('_sec_'.$section, 'hidden') or in_array('_sec_'.$section, $extraHiddenFields)) {
+        $hide=true;
+        $hiddenSection=true;
+      }
+    }
     if (substr($col, 0, 7)=='_label_') {
       $attFld=substr($col, 7);
       if ($attFld=='expected') $attFld='expectedProgress';
@@ -685,6 +687,7 @@ $cr, $print, $treatedObjects, $displayWidth, $outMode, $comboDetail, $collapsedL
         if (substr($arrCol, 0, 6)=='_void_' or substr($arrCol, 0, 7)=='_label_' or substr($arrCol, 0, 8)=='_button_') {
           continue;
         }
+        if ($hiddenSection) continue;
         // BEGIN - CHANGE BY TABARY - FORCE HEADER TAB VISIBLE
         // $spinnerAttr = $obj->getSpinnerAttributes($arrCol);
         // $showLabelInTab = (strpos($spinnerAttr,'showLabelInTab')===false?false:true);
@@ -850,7 +853,6 @@ $cr, $print, $treatedObjects, $displayWidth, $outMode, $comboDetail, $collapsedL
           }
         }
         // END ADD BY Marc TABARY - 2017-03-16 - FORCE SECTION ITEM'S COUNT
-        // echo "***** $section *****<br/>";
       }
       // Determine colSpan
       $colSpan=null;
@@ -860,7 +862,6 @@ $cr, $print, $treatedObjects, $displayWidth, $outMode, $comboDetail, $collapsedL
       }
       $widthPct=setWidthPct($displayWidth, $print, $printWidth, $obj, $colSpan);
       if ($col=='_sec_void') {
-        // endBuffering($prevSection, $included);
         if ($prevSection) {
           echo '</table>';
           if (!$print) {
@@ -1352,8 +1353,7 @@ $cr, $print, $treatedObjects, $displayWidth, $outMode, $comboDetail, $collapsedL
         $fieldWidth=$fieldWidth/2-2;
       }
       if (is_object($val)) {
-        // if (!$obj->isAttributeSetToField($col, 'hidden') and !in_array($col,$extraHiddenFields)) {
-        if ($col=='Origin') {
+        if ($col=='Origin' and !$hide) {
           drawOrigin($obj->Origin, $val->originType, $val->originId, $obj, $col, $print);
         } else {
           // Draw an included object (recursive call) =========================== Type Object
@@ -2713,9 +2713,6 @@ function startTitlePane($classObj, $section, $collapsedList, $widthPct, $print, 
   // scriptLog("startTitlePane(classObbj=$classObj, section=$section, collapsedList=array, widthPct=$widthPct, print=$print, outMode=$outMode, prevSection=$prevSection, nbCol=$nbCol, nbBadge=$nbBadge)");
   global $currentColumn, $reorg, $leftPane, $rightPane, $extraPane, $bottomPane, $beforeAllPanes;
   if (!$currentColumn) $currentColumn=0;
-  // echo '<tr><td colspan="2" style="width: 100%" class="halfLine">&nbsp;</td></tr>';
-  
-  // if ($prevSection and !$print) {
   if ($prevSection) {
     echo '</table>';
     if (!$print) {
@@ -2739,49 +2736,11 @@ function startTitlePane($classObj, $section, $collapsedList, $widthPct, $print, 
   $labelStyle=$style["caption"];
   $extraHiddenFields=$obj->getExtraHiddenFields();
   if (!$print) {
-/*    $arrayPosition=array(
-        'treatment'=>array('clear'=>(($nbCol==2)?'right':'none')), 
-        'progress'=>array('float'=>(($nbCol==2)?'right':'left'), 'clear'=>(($nbCol==2)?'right':'none')), 
-        'predecessor'=>array('clear'=>(($nbCol==2)?'both':(($classObj=='Activity')?'left':'none'))), 
-        'successor'=>array('float'=>(($nbCol==2 or $classObj!='Project')?'left':'right'), 'clear'=>'none'), 
-        
-        // 'subprojects'=> array('float'=>(($nbCol==2)?'left':'left'), 'clear'=>(($nbCol==2)?'left':'none')),
-        'versionproject_versions'=>array('float'=>(($nbCol==2)?'right':'left'), 'clear'=>'right'), 
-        
-        'version'=>array('float'=>(($nbCol==2)?'right':'left'), 'clear'=>'none'), 
-        'approver'=>array('float'=>'right', 'clear'=>'right'), 
-        'lock'=>array('float'=>(($nbCol==2)?'left':'right'), 'clear'=>(($nbCol==2)?'none':'right')), 
-        
-        'assignment'=>array('float'=>'left', 'clear'=>(($nbCol==2)?'left':'none')), 
-        'attendees'=>array('float'=>'left', 'clear'=>(($nbCol==2)?'left':'none')), 
-        
-        // 'periodicity'=> array('float'=>'left','clear'=>'left'),
-        
-        'internalalert'=>array('float'=>'right'), 
-        
-        'expensedetail'=>array('clear'=>'left'), 
-        'billline'=>array('clear'=>'left'), 
-        'link'=>array('clear'=>(($nbCol==3)?'left':'left')), 
-        'attachment'=>array('float'=>'left', 'clear'=>'none'), 
-        'note'=>array('float'=>'right', 'clear'=>'none')); */
-
-    
     $float='left';
     $clear='none';
     $lc=strtolower($section);
-    //if (isset($arrayPosition[$lc]['float'])) $float=$arrayPosition[$lc]['float'];
-    //if (isset($arrayPosition[$lc]['clear'])) $clear=$arrayPosition[$lc]['clear'];
-    /*if ($nbCol==3 and ($lc=='note' or $lc=='link' or $lc=='attachment')) {
-      $float='right';
-      $clear='right';
-    }
-    if ($reorg) {
-      $float='left';
-      $clear='none';
-    }*/
     $titlePane=$classObj."_".$section;
     startBuffering($included);
-    // $sectionName=(strpos($section, '_')!=0)?explode('_',$section)[0]:$section;
     $display='inline-block';
     if ($obj->isAttributeSetToField('_sec_'.$section, 'hidden') or in_array('_sec_'.$section, $extraHiddenFields)) {
       $display='none';
@@ -2798,21 +2757,24 @@ function startTitlePane($classObj, $section, $collapsedList, $widthPct, $print, 
     echo ' onHide="saveCollapsed(\''.$titlePane.'\');"';
     echo ' onShow=";saveExpanded(\''.$titlePane.'\');">';
     $titleHeight=($fontSize)?$fontSize*1.6:'';
-    // echo ' <script type="dojo/connect" event="onShow" > setAttributeOnTitlepane(\''.$titlePane.'\',\''.$labelStyle.'\',\''.$titleHeight.'\');</script>';
     echo ' <script type="dojo/method" event="titlePaneHandler" > setAttributeOnTitlepane(\''.$titlePane.'\',\''.$labelStyle.'\',\''.$titleHeight.'\');</script>';
     echo '<table class="detail"  style="width: 100%;" >';
   } else {
+    $hide=false;
     $display='';
     if ($obj->isAttributeSetToField('_sec_'.$section, 'hidden') or in_array('_sec_'.$section, $extraHiddenFields)) {
       $display='display:none;';
+      $hide=true;
     }
-    echo '<table class="detail" style="width:'.$widthPct.';'.$display.'" >';
-    echo '<tr><td class="section">'.i18n('section'.ucfirst($sectionName)).'</td></tr>';
-    echo '<tr class="detail" style="height:2px;font-size:2px;">';
-    echo '<td class="detail" >&nbsp;</td>';
-    echo '</tr>';
-    echo '</table><table class="detail" style="width:'.$widthPct.';'.$display.'" >'; // For PDF
-         // echo '</table><table class="detail" style="width:' . $widthPct . ';" >'; // For PDF
+    if (!$hide) {
+      echo '<table class="detail" style="width:'.$widthPct.';'.$display.'" >';
+      echo '<tr><td class="section">'.i18n('section'.ucfirst($sectionName)).'</td></tr>';
+      echo '<tr class="detail" style="height:2px;font-size:2px;">';
+      echo '<td class="detail" >&nbsp;</td>';
+      echo '</tr>';
+      echo '</table>';
+    }
+    echo '<table class="detail" style="width:'.$widthPct.';'.$display.'" >'; 
   }
 }
 
