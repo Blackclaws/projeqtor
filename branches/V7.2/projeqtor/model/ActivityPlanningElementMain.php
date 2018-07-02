@@ -49,8 +49,9 @@ class ActivityPlanningElementMain extends PlanningElement {
   public $validatedDuration;
   public $plannedDuration;
   public $realDuration;
-  public $_spe_isOnCriticalPath;
+  public $_void_4;
   public $initialDuration;
+  public $_spe_isOnCriticalPath;
   public $_tab_5_2_smallLabel_1 = array('validated', 'assigned', 'real', 'left', 'reassessed', 'work', 'cost');
   public $validatedWork;
   public $assignedWork;
