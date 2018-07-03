@@ -6,7 +6,7 @@
 // --- MySql Degfault
 $paramDbType='mysql'; $paramDbPort='3306'; $paramDbUser='root'; $paramDbPassword='mysql';
 $paramDbName='projeqtor_v71';$paramDbPrefix='';
-$paramDbName='projeqtor_formation';
+//$paramDbName='projeqtor_formation';
 // --- PostgreSql Default
 //$paramDbType='pgsql'; $paramDbPort='5432'; $paramDbName='projeqtor'; $paramDbUser='projeqtor'; $paramDbPassword='projeqtor';
 //$paramDbName='support_ige';$paramDbPrefix=''; 
@@ -36,5 +36,4 @@ $debugIEcompatibility=false;       // If set to true, will allow compatibility m
 //$pdfPlanningBeta='true';           // Force new PDF Export planning with all browsers (by default it only works on Chrome)
 $scaytAutoStartup='NO';
 //$filenameCharsetForImport="WINDOWS-1252";
-//$paramReorg=false;
 //======= END
