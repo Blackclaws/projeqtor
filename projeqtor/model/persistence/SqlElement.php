@@ -2830,7 +2830,8 @@ abstract class SqlElement {
                 errorLog ( "Error on SqlElement to get '" . $col_name . "' for Class '" . get_class ( $this ) . "' " . " : field '" . $dbColName . "' not found in Database." );
             }
             // FOR PHP 7.1 COMPATIBILITY
-            if ($this->{$col_name}===null 
+            //if ($this->{$col_name}===null    // FOR TEST PURPOSE
+            if ($this->{$col_name}===''  
             and ( ( $dbType=='numeric') or ( $dbType=='decimal') ) 
             and $col_name!='warningValue' and $col_name!='alertValue')  {
               $this->{$col_name}=0;
