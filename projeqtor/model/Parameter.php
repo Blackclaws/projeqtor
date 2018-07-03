@@ -76,6 +76,7 @@ class Parameter extends SqlElement {
     } else if ($colName=="paramConfirmQuit") {
       $colScript .= '<script type="dojo/connect" event="onChange" >';
       $colScript .= '  paramConfirmQuit=this.value;';
+      $colScript .= ' saveDataToSession(\''.$colName.'\', paramConfirmQuit);';
       $colScript .= '</script>';
     } else if ($colName=="paramTopIconSize" or $colName=="paramIconSize") {
     	$colScript .= '<script type="dojo/connect" event="onChange" >';
@@ -110,11 +111,9 @@ class Parameter extends SqlElement {
       $colScript .= '<script type="dojo/connect" event="onChange" >';
       $colScript .= '  if (this.value=="NO") {';
       $colScript .= '    switchedMode=false;';
-      $colScript .= '    dijit.byId("buttonSwitchMode").set("label",i18n("buttonSwitchedMode"));';
       $colScript .= '  } else {';
       $colScript .= '    switchedMode=true;';
       $colScript .= '    switchListMode=this.value;';
-      $colScript .= '    dijit.byId("buttonSwitchMode").set("label",i18n("buttonStandardMode"));';
       $colScript .= '  }';
       $colScript .= '  newValue=this.value;';
       $colScript .= '  saveDataToSession(\''.$colName.'\', newValue); ';
@@ -494,6 +493,7 @@ class Parameter extends SqlElement {
           'createResourceAndContact'=>i18n('createResourceAndContactFromLdapUser'));
         break;
       case 'ldapDefaultProject':
+        $list['']=' ';
         if (sessionUserExists()) {
           $user=getSessionUser();
           $listVisible=$user->getVisibleProjects();
