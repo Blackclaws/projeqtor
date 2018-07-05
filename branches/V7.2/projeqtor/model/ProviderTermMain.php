@@ -38,6 +38,13 @@ class ProviderTermMain extends SqlElement {
   public $idProviderOrder;
   public $idProviderBill;
   public $idle;
+  public $_sec_Price;
+  public $_tab_4_1 = array('untaxedAmountShort', 'tax', '', 'fullAmountShort','initial');
+  public $untaxedAmount;
+  public $taxPct;
+  public $taxAmount;
+  public $fullAmount;
+  public $date;
   public $_Note=array();
   public $_sec_Link;
   public $_Link=array();
@@ -54,7 +61,8 @@ class ProviderTermMain extends SqlElement {
   
   private static $_fieldsAttributes=array("name"=>"required",
                                           "idProject"=>"required",
-  								                        "idProviderBill"=>"readonly"
+                                          "date"=>"required",
+  								                        "idProviderBill"=>"display,readonly"
   );  
   
   private static $_colCaptionTransposition = array("idUser"=>"issuer");
@@ -129,6 +137,21 @@ class ProviderTermMain extends SqlElement {
     return $result;
   }
   
+  
+  /** ==========================================================================
+   * Return the validation sript for some fields
+   * @return the validation javascript (for dojo frameword)
+   */
+  public function getValidationScript($colName) {
+    $colScript = parent::getValidationScript($colName);
+    if ($colName=="untaxedAmount" || $colName=="taxPct") {
+      $colScript .= '<script type="dojo/connect" event="onChange" >';
+      $colScript .= '  updateBillTotal();';
+      $colScript .= '  formChanged();';
+      $colScript .= '</script>';
+    } 
+    return $colScript;
+  }
   
 /** =========================================================================
    * Overrides SqlElement::save() function to add specific treatments

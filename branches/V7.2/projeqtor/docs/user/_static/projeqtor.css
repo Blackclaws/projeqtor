@@ -16,3 +16,13 @@ table.docutils {
     border-collapse: collapse;
     margin-left: 2em;
 }
+
+pre {
+    padding: 5px;
+    background-color: #fefeee;
+    color: #333333;
+    line-height: 120%;
+    border: 1px solid #eeeeae;
+    border-left: none;
+    border-right: none;
+}

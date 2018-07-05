@@ -3519,7 +3519,7 @@ function drawBillLinesFromObject($obj, $refresh=false) {
   echo '<td class="noteHeader" style="width:10%">'.i18n('colUnitPrice').'</td>';
   echo '<td class="noteHeader" style="width:10%">'.i18n('colQuantity').'</td>';
   echo '<td class="noteHeader" style="width:10%">'.strtolower(i18n('sum')).'</td>';
-  if(get_class($obj)!='Tender'){
+  if(get_class($obj)!='Tender' and get_class($obj)!='ProviderOrder' and get_class($obj)!='ProviderBill'){
     echo '<td class="noteHeader" style="width:15%">'.i18n('colDays').'</td>';
   }
   echo '</tr>';
@@ -3557,7 +3557,7 @@ function drawBillLinesFromObject($obj, $refresh=false) {
     $unitQuantity=($unit->name)?' '.(($line->quantity>1)?$unit->pluralName:$unit->name):'';
     echo '<td class="noteData" style="width:10%">'.htmlDisplayNumericWithoutTrailingZeros($line->quantity).$unitQuantity.'</td>';
     echo '<td class="noteData" style="width:10%">'.htmlDisplayCurrency($line->amount).'</td>';
-    if(get_class($obj)!='Tender'){
+    if(get_class($obj)!='Tender' and get_class($obj)!='ProviderOrder' and get_class($obj)!='ProviderBill'){
       echo '<td class="noteData" style="width:15%">'.htmlDisplayNumericWithoutTrailingZeros($line->numberDays).'</td>';
     }
     echo '</tr>';
@@ -5422,6 +5422,102 @@ function drawAffectationsResourceTeamFromObject($list, $obj, $type, $refresh=fal
   echo '</table>';
 }
 
+//gautier #ProviderTerm
+function drawProviderTermFromObject($list, $obj, $type, $refresh=false) {
+  global $cr, $print, $user, $browserLocale, $comboDetail;
+  $pluginObjectClass='ProviderTerm';
+  $tableObject=$list;
+  $lstPluginEvt=Plugin::getEventScripts('list', $pluginObjectClass);
+  foreach ($lstPluginEvt as $script) {
+    require $script; // execute code
+  }
+  $listTemp=$tableObject;
+  $list=array();
+  foreach ($listTemp as $term) {
+    $list['#'.$term->id]=$term;
+  }
+  ksort($list);
+  if ($comboDetail) {
+    return;
+  }
+  $canCreate=securityGetAccessRightYesNo('menuAffectation', 'create')=="YES";
+  if (!(securityGetAccessRightYesNo('menu'.get_class($obj), 'update', $obj)=="YES")) {
+    $canCreate=false;
+    $canUpdate=false;
+    $canDelete=false;
+  }
+  if ($obj->idle==1) {
+    $canUpdate=false;
+    $canCreate=false;
+    $canDelete=false;
+  }
+  
+  if (get_class($obj)=='ProviderOrder') {
+    $idProviderOrder=$obj->id;
+  } else {
+    $idProviderOrder=null;
+  }
+  
+  echo '<table style="width:100%">';
+  echo '<tr><td colspan=2 style="width:100%;"><table style="width:100%;">';
+  echo '<tr>';
+  echo '<td class="assignHeader" style="width:15%">';
+  echo  '<a onClick="addProviderTerm(\''.get_class($obj).'\',\''.$type.'\',\''.$idProviderOrder.'\');" title="'.i18n('addProviderTerm').'" /> '.formatSmallButton('Add').'</a>';
+  echo '</td>';
+  echo '<td class="assignHeader" style="width:10%">'.i18n('colId').'</td>';
+  echo '<td class="assignHeader" style="width:25%">'.i18n('colStatusDateTime').'</td>';
+  echo '<td class="assignHeader" style="width:25%">'.i18n('colValidatedAmount2').'</td>';
+  echo '<td class="assignHeader" style="width:25%">'.i18n('colIdProviderBill').'</td>';
+
+  echo '</tr>';
+  foreach ($list as $term) {
+    $canUpdate=securityGetAccessRightYesNo('menuProvideTerm', 'update', $term)=="YES";
+    $canDelete=securityGetAccessRightYesNo('menuProvideTerm', 'delete', $term)=="YES";
+    if (!(securityGetAccessRightYesNo('menu'.get_class($obj), 'update', $obj)=="YES")) {
+      $canCreate=false;
+      $canUpdate=false;
+      $canDelete=false;
+    }
+    if ($obj->idle==1) {
+      $canUpdate=false;
+      $canCreate=false;
+      $canDelete=false;
+    }
+    $idleClass=($term->idle)?' affectationIdleClass':'';
+    $goto="";
+    $typeAffectable='ProviderTerm';
+    if (!$print and securityCheckDisplayMenu(null, $typeAffectable) and securityGetAccessRightYesNo('menu'.$typeAffectable, 'read', '')=="YES") {
+      $goto=' onClick="gotoElement(\''.$typeAffectable.'\',\''.htmlEncode($term->id).'\');" style="cursor: pointer;" ';
+    }
+    
+      echo '<tr>';
+      if (!$print) {
+        echo '<td class="assignData'.$idleClass.'" style="text-align:center;white-space: nowrap;">';
+        if ($canUpdate and !$print) {
+          echo '  <a onClick="editProviderTerm();" '.'title="'.i18n('editProviderTerm').'" > '.formatSmallButton('Edit').'</a>';
+        }
+        if ($canDelete and !$print) {
+          echo '  <a onClick="removeProviderTerm('."'".htmlEncode($term->id)."'".');" '.'title="'.i18n('removeProviderTerm').'" > '.formatSmallButton('Remove').'</a>';
+        }
+          if ($term->idle) {
+            echo '<a><div style="display:table-cell;width:20px;"><img style="position:relative;top:4px;left:2px" src="css/images/tabClose.gif" '.'title="'.i18n('colIdle').'"/></div></a>';
+          } else {
+            echo '<a><div style="display:table-cell;width:20px;">&nbsp;</div></a>';
+          }
+        echo '</td>';
+      }
+      echo  '<td class="assignData'.$idleClass.'" align="center"'.$goto.'>'.htmlEncode($term->id).'</td>';
+      echo  '<td class="assignData'.$idleClass.'" align="center" style="white-space: nowrap;">'.htmlFormatDate($term->date).'</td>';
+      echo  '<td class="assignData'.$idleClass.'" align="center" style="white-space: nowrap;">'.htmlEncode($term->fullAmount).'</td>';
+      echo  '<td class="assignData'.$idleClass.'" align="center" style="white-space: nowrap;">'.htmlFormatDate($term->idProviderBill).'</td>';
+      echo '</tr>';
+    
+  }
+  echo '</table></td></tr>';
+  echo '</table>';
+}
+
+
 function drawAffectationsResourceTeamResourceFromObject($list, $obj, $type, $refresh=false) {
   global $cr, $print, $user, $browserLocale, $comboDetail;
   $pluginObjectClass='Affectation';
@@ -6008,11 +6104,12 @@ function endBuffering($prevSection, $included) {
       'notificationrule'=>array('2'=>'left', '3'=>'left'),
       'notificationcontent'=>array('2'=>'left', '3'=>'right'),
       'notification'=>array('3'=>'bottom', '3'=>'extra'),
+      'predecessor'=>array('2'=>'bottom', '3'=>'bottom'),
       'projectsofobject'=>array('2'=>'bottom', '3'=>'extra'),
       'progress'=>array('2'=>'right', '3'=>'extra'),
       'progress_left'=>array('2'=>'left', '3'=>'extra'),
       'productcomponent'=>array('2'=>'left', '3'=>'extra'),
-      'predecessor'=>array('2'=>'bottom', '3'=>'bottom'),
+     // 'providerterm'=>array('2'=>'right', '3'=>'right'),
       'receivers'=>array('3'=>'bottom', '3'=>'extra'),
       'resourcesofobject'=>array('2'=>'bottom', '3'=>'extra'),
       'resourcecost'=>array('2'=>'right', '3'=>'extra'),
