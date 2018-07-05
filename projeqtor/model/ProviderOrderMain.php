@@ -80,14 +80,16 @@ class ProviderOrderMain extends SqlElement {
   public $cancelled;
   public $_lib_cancelled;
   public $comment;
+  public $_BillLine=array();
+  public $_BillLine_colSpan="2";
+  //tab term
+  public $_sec_ProviderTerm;
+  public $_spe_ProviderTerm;
   //link
   public $_sec_Link;
   public $_Link=array();
   public $_Attachment=array();
   public $_Note=array();
-  
-  public $_BillLine=array();
-  public $_BillLine_colSpan="2";
   
   public $_nbColMax=3;
  
@@ -253,9 +255,28 @@ class ProviderOrderMain extends SqlElement {
   }
   
   public function copyTo($newClass, $newType, $newName, $setOrigin, $withNotes, $withAttachments, $withLinks, $withAssignments = false, $withAffectations = false, $toProject = NULL, $toActivity = NULL, $copyToWithResult = false,$copyToWithVersionProjects=false) {
-
     return parent::copyTo($newClass, $newType, $newName, $setOrigin, $withNotes, $withAttachments, $withLinks);
   }
+  
+  /** =========================================================================
+   * Draw a specific item for the current class.
+   * @param $item the item. Correct values are :
+   *    - subprojects => presents sub-projects as a tree
+   * @return an html string able to display a specific item
+   *  must be redefined in the inherited class
+   */
+  public function drawSpecificItem($item){
+    global $comboDetail, $print, $outMode, $largeWidth;
+    $result="";
+    if ($item=='ProviderTerm') {
+      $term=new ProviderTerm();
+      $critArray=array('idProviderOrder'=>(($this->id)?$this->id:'0'));
+      $termList=$term->getSqlElementsFromCriteria($critArray, false);
+      drawProviderTermFromObject($termList, $this, 'ProviderTerm', false);
+      return $result;
+    } 
+  }
+  
   // ============================================================================**********
   // GET VALIDATION SCRIPT
   // ============================================================================**********
