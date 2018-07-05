@@ -40,8 +40,8 @@ if (isset($objectClass) and isset($objectId)) {
   $nameType='id'.$objectClass.'Type';
   if (property_exists($obj, $nameType)) {
     $idType=$obj->$nameType;
-    $idTextable=SqlList::getIdFromTranslatableName('Textable', $refType);
   }
+  $idTextable=SqlList::getIdFromTranslatableName('Textable', $refType);
 } else {
   $refType=$_REQUEST['objectClass'];
   $idType=$_REQUEST['objectType'];
