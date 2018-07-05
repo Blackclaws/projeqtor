@@ -67,7 +67,7 @@ Security::checkValidDateTime($endDate);
 
 $idle=0;
 
-$resObj=new Resource($resource);
+$resObj=new ResourceAll($resource);
 $rc=new ResourceCost();
 $crit=array('idResource'=>$resource,'endDate'=>null);
 $rcList=$rc->getSqlElementsFromCriteria($crit,null,null,'id asc');
@@ -101,6 +101,7 @@ $newAff->endDate=$endDate;
 $newAff->idProfile=$profile;
 $result=$newAff->save();
 
+$oldRes=new ResourceAll($aff->idResource);
 // save old affectation
 if ($startDate) {
   $endTst=addWorkDaysToDate($startDate, -1);
@@ -155,6 +156,10 @@ foreach ($assList as $ass) {
     $newAss->plannedWork=$newAss->realWork+$newAss->leftWork;
     $newAss->notPlannedWork=0;
     $newAss->rate=$rate;
+    if ($resObj->isResourceTeam and !$oldRes->isResourceTeam) { // deduct capacity from rate
+      $newAss->capacity=round($oldRes->capacity*$ass->rate/100,2);
+    }
+    $newAss->isResourceTeam=$resObj->isResourceTeam;
     $newAss->idRole=(isset($costArray[$ass->idRole]))?$ass->idRole:$defaultRole;
     $newAss->dailyCost=(isset($costArray[$ass->idRole]))?$costArray[$ass->idRole]:$defaultCost;
     $newAss->newDailyCost=$newAss->dailyCost;
