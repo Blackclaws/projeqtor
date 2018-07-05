@@ -5129,6 +5129,38 @@ function changeStatusNotification(objId, objStatusId) {
 
 // END - ADD BY TABARY - NOTIFICATION SYSTEM
 
+
+//=============================================================================
+//= Financial
+//=============================================================================
+
+//gautier #providerTerm
+function removeProviderTerm(id) {
+  if (checkFormChangeInProgress()) {
+    showAlert(i18n('alertOngoingChange'));
+    return;
+  }
+  actionOK=function() {
+    loadContent("../tool/removeProviderTerm.php?providerTermId="+id, "resultDiv",
+        null, true, 'providerTerm');
+  };
+    msg=i18n('confirmDeleteProviderTerm', new Array(id));
+    showConfirm(msg, actionOK);
+}
+
+function addProviderTerm(objectClass, type, idProviderOrder) {
+  var callBack = function () {
+    affectationLoad=true;
+    dijit.byId("dialogProviderTerm").show();
+    setTimeout("affectationLoad=false", 500);
+  };
+  var params="&idProviderOrder="+idProviderOrder;
+  params+="&type="+type;
+  params+="&mode=add";
+  loadDialog('dialogProviderTerm',callBack,false,params);
+}
+
+
 // =============================================================================
 // = Affectation
 // =============================================================================

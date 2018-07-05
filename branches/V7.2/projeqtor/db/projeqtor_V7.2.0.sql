@@ -107,6 +107,11 @@ CREATE TABLE `${prefix}providerTerm` (
   `idle` int(1) unsigned DEFAULT NULL,
   `idProviderOrder` int(12) unsigned DEFAULT NULL,
   `idProviderBill` int(12) unsigned DEFAULT NULL,
+  `untaxedAmount` decimal(11,2) UNSIGNED,
+  `taxPct` decimal(5,2) DEFAULT NULL,
+  `taxAmount` decimal(11,2) UNSIGNED,
+  `fullAmount` decimal(11,2) UNSIGNED,
+  `date` date DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=innoDB DEFAULT CHARSET=utf8 ;
 

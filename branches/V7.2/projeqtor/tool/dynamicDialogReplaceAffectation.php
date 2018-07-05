@@ -59,7 +59,7 @@
                 <?php echo autoOpenFilteringSelect();?>
                 onChange="replaceAffectationChangeResource();" 
                 class="input required" value="" required="required" style="width:200px;">
-           <?php htmlDrawOptionForReference('idResource', null, null, true);?>
+           <?php htmlDrawOptionForReference('idResourceAll', null, null, true);?>
           </select></td>
     </tr>
     <tr>
