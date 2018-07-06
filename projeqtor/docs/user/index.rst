@@ -60,9 +60,13 @@ It is planned taking into account the individual assignment of each resource.
 Conversely, each resource is assigned taking into account its participation in resource pools.
 A resource assigned to a pool can automatically enter real work on activities assigned to the pool.
 
+ * See: :ref:`pool`
+
 -	Filter on the planning
 
 Possibility to filter the activities to be displayed on the Gantt Planning view. The "parents" of the selected activities are also displayed to maintain the WBS structure.
+
+ * See: :ref:`gantt-planning`
 
 .. rubric:: Steering
 
@@ -72,6 +76,8 @@ Add dates on incomings, deliverables and deliveries to follow dates : initial, p
 
 Add new Requirements dashboard, similar to existing Ticket Dashboard
 
+ * See: :ref:`requirements-dashboard`
+ 
 .. rubric:: Configuration management (Products et Versions)
      
 Possibility to define component types and component versions that will only be used for definition of structure (not for Version Planning or Tickets)
@@ -80,7 +86,11 @@ Possibility to define component types and component versions that will only be u
     
 On workflows, view the list of types that use this workflow
 
+ * See: :ref:`workflow`
+
 Define a project to be assigned by default to new users coming from LDAP
+
+ * See: :ref:`global-parameters`
 
 .. rubric:: Miscellaneous
 

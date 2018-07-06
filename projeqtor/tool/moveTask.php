@@ -49,6 +49,10 @@ if ($mode!='before' and $mode!='after') {
   $mode='before';
 }
 
+if ($mode=='after') {
+  $arrayFrom=array_reverse($arrayFrom);
+}
+  
 Sql::beginTransaction();
 
 foreach ($arrayFrom as $from) {

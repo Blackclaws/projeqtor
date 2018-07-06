@@ -187,6 +187,9 @@ class Assignment extends SqlElement {
     if (! strpos($result,'id="lastOperationStatus" value="OK"')) {
       return $result;     
     }
+    if (property_exists($this, "_skipDispatch") and $this->_skipDispatch==true) { // When called from Assignment::insertAdministrativeLines(), no dispatch needed
+      return $result;
+    }
     
     if ($this->refType=='PeriodicMeeting') {
       $meet=new Meeting();
@@ -423,6 +426,7 @@ class Assignment extends SqlElement {
             $assi->notPlannedWork=0;
             $assi->rate=0;
             $assi->idle=0;
+            $assi->_skipDispatch=true;
             $assi->save();
           }
     	  }
