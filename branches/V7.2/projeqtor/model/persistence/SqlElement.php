@@ -1349,7 +1349,7 @@ abstract class SqlElement {
         'TargetVersion', 
         'TargetProductVersion', 
         'TargetComponentVersion');
-    foreach ( $versionTypes as $versType ) {
+    foreach ( $versionTypes as $versType ) { // If version is cleared and item has other version, replace main with first other
       $otherFld = '_Other' . $versType;
       $versFld = 'id' . $versType;
       if (property_exists ( $this, $versFld ) and property_exists ( $this, $otherFld )) {
@@ -1361,6 +1361,21 @@ abstract class SqlElement {
           if ($otherVers->idVersion == $this->$versFld) {
             $otherVers->delete ();
           }
+        }
+      }
+    }
+    if (get_class($this)=='Ticket') {
+      debugLog("'$this->idClient'");
+      debugLog($this->_OtherClient);
+    }
+    if (property_exists ( $this, 'idClient' ) and property_exists ( $this, '_OtherClient' )) { // If client is cleared and item has other client, replace main with first other
+      usort ( $oldObject->_OtherClient, "OtherClient::sort" );
+      foreach ( $oldObject->_OtherClient as $otherClient ) {
+        if (! trim ( $this->idClient )) {
+          $this->idClient = $otherClient->idClient;
+        }
+        if ($otherClient->idClient == $this->idClient) {
+          $otherClient->delete ();
         }
       }
     }

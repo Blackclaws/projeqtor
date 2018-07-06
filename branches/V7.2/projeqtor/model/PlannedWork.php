@@ -260,6 +260,7 @@ class PlannedWork extends GeneralWork {
       }
     }
     $arrayNotPlanned=array();
+    $arrayWarning=array();
 //-- Treat each PlanningElement ---------------------------------------------------------------------------------------------------
     foreach ($listPlan as $plan) {
       if (! $plan->id) {
@@ -554,8 +555,19 @@ class PlannedWork extends GeneralWork {
         $groupAss=array();
         //$groupMaxLeft=0;
         //$groupMinLeft=99999;           
-        if ($profile=='GROUP' and count($listAss)<2) {
-        	$profile=='ASAP';
+        if ($profile=='GROUP') {
+          if (count($listAss)<2) {
+        	  $profile='ASAP';
+          } else {
+            foreach ($listAss as $assTmp) {
+              if ($assTmp->isResourceTeam) {
+                $profile='ASAP';
+                $arrayWarning[$assTmp->id]=i18n("warningPlanningModePool",array(i18n("PlanningModeGROUP")));
+                break;
+              }
+            }
+            
+          }
         }
         if ($profile=='GROUP') {
         	foreach ($listAss as $ass) {
@@ -1231,17 +1243,23 @@ class PlannedWork extends GeneralWork {
     $endTime=time();
     $endMicroTime=microtime(true);
     $duration = round(($endMicroTime - $startMicroTime)*1000)/1000;
-    if (count($arrayNotPlanned)>0) {
+    if (count($arrayNotPlanned)>0 or $arrayWarning>0) {
     	$result=i18n('planDoneWithLimits', array($duration));
     	$result.='<br/><br/><table style="width:100%">';
-    	$result .='<tr style="color:#888888;font-weight:bold;border:1px solid #aaaaaa"><td style="width:50%">'.i18n('colElement').'</td><td style="width:30%">'.i18n('colCause').'</td><td style="width:20%">'.i18n('colIdResource').'</td></tr>';
+    	$result .='<tr style="color:#888888;font-weight:bold;border:1px solid #aaaaaa"><td style="width:40%">'.i18n('colElement').'</td><td style="width:40%">'.i18n('colCause').'</td><td style="width:20%">'.i18n('colIdResource').'</td></tr>';
     	foreach ($arrayNotPlanned as $assId=>$left) {
     		$ass=new Assignment($assId,true);
-    		$rName=SqlList::getNameFromId('Resource', $ass->idResource);
+    		$rName=SqlList::getNameFromId('ResourceAll', $ass->idResource);
     		$oName=SqlList::getNameFromId($ass->refType, $ass->refId);
     		$msg = (is_numeric($left))?i18n('colNotPlannedWork').' : '.Work::displayWorkWithUnit($left):$left;
     		$result .='<tr style="border:1px solid #aaaaaa;"><td style="padding:1px 10px;">'.i18n($ass->refType).' #'.htmlEncode($ass->refId).' : '.$oName. '</td><td style="padding:1px 10px;">'.$msg.'</td><td style="padding:1px 10px;">'.$rName.'</td></tr>'; 
     	}	
+    	foreach ($arrayWarning as $assId=>$msg) {
+    	  $ass=new Assignment($assId,true);
+    	  $rName=SqlList::getNameFromId('ResourceAll', $ass->idResource);
+    	  $oName=SqlList::getNameFromId($ass->refType, $ass->refId);
+    	  $result .='<tr style="border:1px solid #aaaaaa;"><td style="padding:1px 10px;">'.i18n($ass->refType).' #'.htmlEncode($ass->refId).' : '.$oName. '</td><td style="padding:1px 10px;">'.$msg.'</td><td style="padding:1px 10px;">'.$rName.'</td></tr>';
+    	}
     	$result.='</table>';
     	$result .= '<input type="hidden" id="lastPlanStatus" value="INCOMPLETE" />';
     } else {
