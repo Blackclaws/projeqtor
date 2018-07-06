@@ -404,10 +404,13 @@ foreach ($listParam as $param) {
      >
        <?php htmlDrawOptionForReference('idProduct', $defaultValue, null, false); ?>
        <script type="dojo/connect" event="onChange" args="evt">
-          if (dijit.byId('idVersion')) {
+          var version=null;
+          if (dijit.byId('idVersion')) version='idVersion';
+          else if (dijit.byId('idProductVersion')) version='idProductVersion';     
+          if (version) {
             if (dijit.byId('idProject')) {
               if (trim(this.value)) {
-                refreshList("idVersion","idProduct", this.value);
+                refreshList(version,"idProduct", this.value);
               } else {
                 if (trim( dijit.byId("idProject").get("value")) ) {
                   refreshList("idVersion","idProject", dijit.byId("idProject").get("value"));
@@ -417,9 +420,9 @@ foreach ($listParam as $param) {
               }
             } else {
               if (trim(this.value)) {
-                refreshList("idVersion","idProduct", this.value);
+                refreshList(version,"idProduct", this.value);
               } else {
-                refreshList("idVersion");
+                refreshList(version);
               }
             }
           } 

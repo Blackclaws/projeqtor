@@ -36,53 +36,29 @@ class ImputationLine {
   // List of fields that will be exposed in general user interface
   // public $id; // redefine $id to specify its visible place
   public $refType;
-
   public $refId;
-
   public $idProject;
-
   public $idAssignment;
-
   public $name;
-
   public $comment;
-
   public $wbs;
-
   public $wbsSortable;
-
   public $topId;
-
   public $validatedWork;
-
   public $assignedWork;
-
   public $plannedWork;
-
   public $realWork;
-
   public $leftWork;
-
   public $imputable;
-
   public $elementary;
-
   public $arrayWork;
-
   public $arrayPlannedWork;
-
   public $startDate;
-
   public $endDate;
-
   public $idle;
-
   public $locked;
-
   public $description;
-
   public $functionName;
-
   public $fromPool;
 
   /**
