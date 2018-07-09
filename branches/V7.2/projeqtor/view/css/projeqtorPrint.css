@@ -410,3 +410,37 @@ div .scrollLeftTop {
 }
 div.iconFavorite16 { background-image: url(images/iconFavorite16.png); background-repeat: no-repeat; width: 16px; height: 16px;}
 div.iconFavorite22 { background-image: url(images/iconFavorite16.png); background-repeat: no-repeat; width: 22px; height: 22px;}
+
+.messageOK, .messageNO_CHANGE, .messageINVALID, .messageERROR, .messageWARNING, .messageINCOMPLETE {
+  top:0px;
+  overflow:hidden;
+  vertical-align: middle;
+  padding: 5px 5px;
+  color:#555555; 
+  border: 1px solid #CCCCCC;
+  border-radius: 10px;
+  min-height:16px; max-height:200px;
+  min-width: 100px;
+  overflow-y:auto; overflox-x: hidden;
+  width:95%;
+  height:100%;
+  box-shadow: 5px 5px 10px #656565;
+}
+span.messageOK {
+  background: #DDFFDD url() !important;
+  font-weight: 600;
+}
+.messageERROR {
+  background: #FF0000 url() !important;
+  color: #FFFFFF !important;
+  text-shadow: 1px 1px #555555; 
+}
+.messageWARNING, .messageINCOMPLETE {
+  background: #FFDDDD url() !important;
+}
+.messageNO_CHANGE {
+  background: #F0F0F0 url() !important;
+}
+.messageINVALID {
+  background: #FFDDDD url() !important;
+}

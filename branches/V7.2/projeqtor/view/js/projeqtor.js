@@ -3847,7 +3847,7 @@ function isEditingKey(evt) {
 function onKeyDownFunctionEditorSave() {
   if (dojo.byId('formDiv')) {
     formDivPosition = dojo.byId('formDiv').scrollTop;
-    dijit.byId('id').focus();
+    if (dijit.byId('id')) dijit.byId('id').focus();
     dojo.byId('formDiv').scrollTop = formDivPosition;
   }
   top.setTimeout("top.globalSave();", 20);

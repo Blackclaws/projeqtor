@@ -289,6 +289,36 @@
                 </td>
               </tr>  
               
+            </table></div><br/>
+            
+            <?php $titlePane="Admin_manageConsistency"; ?> 
+            <div dojoType="dijit.TitlePane"
+             open="<?php echo ( array_key_exists($titlePane, $collapsedList)?'false':'true');?>"
+             id="<?php echo $titlePane;?>" 
+             onHide="saveCollapsed('<?php echo $titlePane;?>');"
+             onShow="saveExpanded('<?php echo $titlePane;?>');"
+             title="<?php echo i18n('manageConnections');?>">
+            <table style="width:100%;">
+              <tr>
+                <td width="200px" class="label"><?php echo i18n("runConsistencyCheck"). "&nbsp;:&nbsp;";?></td>
+                <td style="width:99%;text-align:left;">
+                  <button id="runConsistencyCheck" dojoType="dijit.form.Button" showlabel="true">
+                    <?php echo i18n('consistencyCheck'); ?>
+                   <script type="dojo/connect" event="onClick" args="evt">   
+                     page="../tool/adminFunctionalities.php?adminFunctionality=checkConsistency&correct=0";           
+                     showPrint(page, "admin", null, "html", "P");
+                   </script>
+                 </button><br/>
+                 <button id="runConsistencyFix" dojoType="dijit.form.Button" showlabel="true">
+                    <?php echo i18n('consistencyFix'); ?>
+                   <script type="dojo/connect" event="onClick" args="evt">                 
+                     page="../tool/adminFunctionalities.php?adminFunctionality=checkConsistency&correct=1";           
+                     showPrint(page, "admin", null, "html", "P");
+                   </script>
+                 </button>
+                </td>
+              </tr>
+              
             </table></div><br/>    
           </td>
           <td style="width:10px">&nbsp;</td>
