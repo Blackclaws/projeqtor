@@ -33,9 +33,11 @@
   $obj=new Menu();
   $sortOrder = 'sortOrder asc';
   $menuList=$obj->getSqlElementsFromCriteria(null, false,null,$sortOrder);
+  $isLanguageActive=(Parameter::getGlobalParameter('displayLanguage')=='YES')?true:false;
   
   foreach ($menuList as $menu) {
     if (!isNotificationSystemActiv() and strpos($menu->name, "Notification")!==false) { continue; }
+    if (!$isLanguageActive and $menu->name=="menuLanguage") { continue; }
     if ($level>0 and securityCheckDisplayMenu($menu->id,substr($menu->name,4)) ) {
       while ($level>0 and $menu->idMenu!= $menuLevel[$level]) {
         drawMenuIconCloseChildren();
