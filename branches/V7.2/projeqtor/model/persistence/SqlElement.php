@@ -1364,10 +1364,6 @@ abstract class SqlElement {
         }
       }
     }
-    if (get_class($this)=='Ticket') {
-      debugLog("'$this->idClient'");
-      debugLog($this->_OtherClient);
-    }
     if (property_exists ( $this, 'idClient' ) and property_exists ( $this, '_OtherClient' )) { // If client is cleared and item has other client, replace main with first other
       usort ( $oldObject->_OtherClient, "OtherClient::sort" );
       foreach ( $oldObject->_OtherClient as $otherClient ) {

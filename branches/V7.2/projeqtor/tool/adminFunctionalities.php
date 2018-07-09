@@ -88,7 +88,7 @@ if ($adminFunctionality=='sendAlert') {
   Parameter::clearGlobalParameters();
 } else if ($adminFunctionality=='checkConsistency') {
   $correct=RequestHandler::getBoolean('correct');
-  echo "<div class='section'>CHECK WBS ORDERING</div>";
+  echo "<div class='section' style='width:95%;height:90%'>CHECK WBS ORDERING</div>";
   //echo $correct;
   PlanningElement::consistencyCheckWbs($correct,false);
   $result=false;

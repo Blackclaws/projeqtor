@@ -239,6 +239,7 @@ class GlobalView extends SqlElement {
     $peTable=$pe->getDatabaseTableName();
     $itemsToDisplay=Parameter::getUserParameter('globalViewSelectedItems');
     $itemsToDisplayArray=explode(',', $itemsToDisplay);
+    if (count($itemsToDisplayArray)==0 or (count($itemsToDisplayArray)==1 and $itemsToDisplayArray[0]=='none')) return $obj->getDatabaseTableName();
     $query='(';
     foreach (self::getGlobalizables() as $class=>$className) {
       if ($itemsToDisplay and $itemsToDisplay!=' ' and !in_array($class,$itemsToDisplayArray)) {
