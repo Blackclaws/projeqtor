@@ -317,7 +317,7 @@ class PlanningElement extends SqlElement {
     // update topId if needed
     $topElt=null;
     if (! $this->wbs or trim($this->wbs)=='') { //
-      $this->topId==null; // Will force redefine $topElt, to be sure to get correct wbs
+      $this->topId=null; // Will force redefine $topElt, to be sure to get correct wbs
     }
     if ( (! $this->topId or trim($this->topId)=='') and ( $this->topRefId and trim($this->topRefId)!='') ) {
       $crit=array("refType"=>$this->topRefType, "refId"=>$this->topRefId);
