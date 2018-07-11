@@ -88,7 +88,7 @@ if ($adminFunctionality=='sendAlert') {
   Parameter::clearGlobalParameters();
 } else if ($adminFunctionality=='checkConsistency') {
   $correct=RequestHandler::getBoolean('correct');
-  echo "<div class='section' style='width:95%;height:90%'>CHECK WBS ORDERING</div>";
+  echo "<div class='section' style='width:95%;height:100%'>CHECK WBS ORDERING</div>";
   //echo $correct;
   PlanningElement::consistencyCheckWbs($correct,false);
   $result=false;
@@ -261,9 +261,11 @@ function updateReference($element) {
   $returnValue .= '<input type="hidden" id="lastOperationStatus" value="OK" />';
   return $returnValue;
 }
-function displayError($msg){
+function displayError($msg,$indent=false){
+  if ($indent) echo "<span style='display:inline-block;padding-left:50px'>&nbsp;</span>";
   echo "<span class='messageERROR' style='position:relative;top:4px;left:20px;'>$msg</span><br/><br/>";
 }
-function displayOK($msg){
+function displayOK($msg,$indent=false){
+  if ($indent) echo "<span style='display:inline-block;padding-left:50px'>&nbsp;</span>";
   echo "<span class='messageOK' style='position:relative;top:4px;left:20px;'>$msg</span><br/><br/>";
 }
