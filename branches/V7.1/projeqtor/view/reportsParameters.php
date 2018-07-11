@@ -515,7 +515,7 @@ foreach ($listParam as $param) {
        <?php if (! $canChangeResource) echo ' readonly ';?>
        id="<?php echo $param->name;?>" name="<?php echo $param->name;?>"
      >
-       <?php htmlDrawOptionForReference('idResource', $defaultValue, null, false); ?> 
+       <?php htmlDrawOptionForReference('idResourceAll', $defaultValue, null, false); ?> 
      </select>    
     </td>
     </tr>
