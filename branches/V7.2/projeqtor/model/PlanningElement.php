@@ -317,7 +317,7 @@ class PlanningElement extends SqlElement {
     // update topId if needed
     $topElt=null;
     if (! $this->wbs or trim($this->wbs)=='') { //
-      $this->topId==null; // Will force redefine $topElt, to be sure to get correct wbs
+      $this->topId=null; // Will force redefine $topElt, to be sure to get correct wbs
     }
     if ( (! $this->topId or trim($this->topId)=='') and ( $this->topRefId and trim($this->topRefId)!='') ) {
       $crit=array("refType"=>$this->topRefType, "refId"=>$this->topRefId);
@@ -330,13 +330,10 @@ class PlanningElement extends SqlElement {
     
     // calculate wbs
     $dispatchNeeded=false;
-    //$wbs="";
     $crit='';
     if (! $this->wbs or trim($this->wbs)=='') {
       $wbs="";
-      //if ( $this->topId and trim($this->topId)!='') {
       if ($topElt) {
-        //$elt=new PlanningElement($this->topId);
         $wbs=$topElt->wbs . ".";
         $crit=" topId=" . Sql::fmtId($this->topId);
       } else {
@@ -413,8 +410,7 @@ class PlanningElement extends SqlElement {
     	if ($this->plannedStartDate>$this->plannedEndDate) $this->plannedEndDate=$this->plannedStartDate;
     	$this->plannedDuration=workDayDiffDates($this->plannedStartDate, $this->plannedEndDate);
     }
-    
-    
+    debugLog("Save PE #$this->id for $this->refType #$this->refId : WBS changed from $old->wbsSortable to $this->wbsSortable");
     $result=parent::save();
     if (! strpos($result,'id="lastOperationStatus" value="OK"')) {
       return $result;     
@@ -459,13 +455,15 @@ class PlanningElement extends SqlElement {
     if ($this->topId!='' and ! self::$_noDispatch) { // and ($old->topId!=$this->topId or $old->cancelled!=$this->cancelled)) {
       $this->updateSynthesis($this->topRefType, $this->topRefId);
     }
-    if ($this->wbsSortable!=$old->wbsSortable ) {
+    
+    if ($this->wbsSortable!=$old->wbsSortable) {
     	$refType=$this->refType;
       if ($refType=='Project') {
         $refObj=new $refType($this->refId);
         if ($refObj and $refObj->id) {
         	$refObj->sortOrder=$this->wbsSortable;
         	$subRes=$refObj->saveForced(true);
+        	debugLog("  saveForced for Project #$this->refId : $subRes");
         }
       }
     }
@@ -607,13 +605,15 @@ class PlanningElement extends SqlElement {
 
   public function wbsSave() {
   	//
+  	debugLog("wbsSave() for $this->refType #$this->refId");
   	$this->_noHistory=true;
   	$this->wbsSortable=formatSortableWbs($this->wbs);
   	$resTmp=$this->saveForced();
   	if ($this->refType=='Project') {
   		$proj=new Project($this->refId); 
   		$proj->sortOrder=$this->wbsSortable;
-  		$proj->saveForced();
+  		$resSaveProj=$proj->saveForced();
+  		debugLog("   wbsSave() saveForced for Project $this->refId : $resSaveProj");
   	} 
   	$crit=" topId=" . Sql::fmtId($this->id);
   	$lstElt=$this->getSqlElementsFromCriteria(null, null, $crit ,'wbsSortable asc');
@@ -621,6 +621,7 @@ class PlanningElement extends SqlElement {
   	foreach ($lstElt as $elt) {
   		$cpt++;
   		$elt->wbs=$this->wbs . '.' . $cpt;
+  		debugLog("   Must saveWbs for $elt->refType #$elt->refId");
   		if ($elt->refType) { // just security for unit testing
   			$elt->wbsSave();
   		}
@@ -1805,12 +1806,16 @@ class PlanningElement extends SqlElement {
     $lastPe=$pe;
     $errors=0;
     $arrayWbs=array();
-    foreach ($peList as $pe) {
+    foreach ($peList as $idx=>$pe) {
+      $currentWbs=$pe->wbsSortable;
       if ($trace) echo "$pe->wbsSortable - $pe->refType #$pe->refId - $pe->refName<br/>";
       // check for duplicate WBS
       if ($pe->wbsSortable==$lastWbs) {
-        displayError("Duplicate wbs $lastWbs for $lastPe->refType #$lastPe->refId and $pe->refType #$pe->refId");
+        displayError(i18n("checkWbsDuplicate",array($lastWbs,$lastPe->refType,$lastPe->refId,$pe->refType,$pe->refId)));
         $errors++;
+        if ($correct) {
+          $pe->fixOrder("duplicate",$peList,$idx);
+        }
       }
       // Check Parent
       $parentWbs='';
@@ -1818,34 +1823,52 @@ class PlanningElement extends SqlElement {
         $key=$pe->topRefType.'#'.$pe->topRefId;
         $parentWbs=(isset($arrayWbs[$key]))?$arrayWbs[$key]:'';
         if ($parentWbs=='') {
-          displayError("Cannot find wbs for $pe->topRefType #$pe->topRefId, parent of $pe->refType #$pe->refId - Incorrect Order ?");
+          displayError(i18n("checkWbsPArentNotFound",array($pe->topRefType,$pe->topRefId, $pe->refType, $pe->refId)));
           $errors++;
+          if ($correct) {
+            displayError(i18n("checkWbsCannotFix"),true);
+          }
         }
       }
       if ($parentWbs and $parentWbs!=substr($pe->wbsSortable,0,strlen($parentWbs))) {
-        displayError("Wbs '$pe->wbsSortable' for $pe->refType #$pe->refId inconsistent with Wbs '$parentWbs' for its parent $pe->topRefType #$pe->topRefId");
+        displayError(i18n("checkWbsParentIssue",array($pe->wbsSortable,$pe->refType,$pe->refId,$parentWbs,$pe->topRefType,$pe->topRefId)));
         $errors++;
+        if ($correct) {
+          $pe->fixOrder("parent",$peList,$idx);
+        }
       } else if ($parentWbs and strlen($pe->wbsSortable)!=strlen($parentWbs)+4) {
-        displayError("Wbs '$pe->wbsSortable' for $pe->refType #$pe->refId inconsistent with Wbs '$parentWbs' for its parent $pe->topRefType #$pe->topRefId");
+        displayError(i18n("checkWbsParentIssue",array($pe->wbsSortable,$pe->refType,$pe->refId,$parentWbs,$pe->topRefType,$pe->topRefId)));
         $errors++;
+        if ($correct) {
+          $pe->fixOrder("parent",$peList,$idx);
+        }
       }
       // Check Order
       $order=substr($pe->wbsSortable,-3);
       if ($lastWbs==$parentWbs) { // Previous is parent, so must be 001
         if (intval($order)!=1) {
-          displayError("Wbs '$pe->wbsSortable' for $pe->refType #$pe->refId should incorrect for first of parent (001 expected)");
+          displayError(i18n("checkWbsFirst", array($pe->wbsSortable,$pe->refType,$pe->refId)));
           $errors++;
+          if ($correct) {
+            $pe->fixOrder("first",$peList,$idx);
+          }
         }
       } else if (substr($lastWbs,0,-4)==$parentWbs) { // Previous has same root (same parent), number must be is sequence
         if (intval($order)!=intval(substr($lastWbs,-3))+1) {
-          displayError("Wbs '$pe->wbsSortable' for $pe->refType #.$pe->refId order incorrect after '$lastWbs'");
+          displayError(i18n("checkWbsOrder",array($pe->wbsSortable, $pe->refType, $pe->refId, $lastWbs)));
           $errors++;
+          if ($correct) {
+            $pe->fixOrder("order",$peList,$idx);
+          }
         }
       } else { // Change root, current numbering must be is sequence
         $rootPrev=substr($lastWbs,0,strlen($pe->wbsSortable));
         if (intval($order)!=intval(substr($rootPrev,-3))+1) {
-          displayError("Wbs '$pe->wbsSortable' for $pe->refType #$pe->refId order incorrect after '$lastWbs'");
+          displayError(i18n("checkWbsOrder",array($pe->wbsSortable, $pe->refType, $pe->refId,$lastWbs)));
           $errors++;
+          if ($correct) {
+            $pe->fixOrder("order",$peList,$idx);
+          }
         }
       }
       // Check displayed wbs compared to wbsSortable
@@ -1854,26 +1877,100 @@ class PlanningElement extends SqlElement {
       if ($pe->refType=='Project') {
         $prj=new Project($pe->refId);
         if ($prj->sortOrder!=$pe->wbsSortable) {
-          displayError("Incorrect sortOrder for Project #$prj->id : $prj->sortOrder instead of $pe->wbsSortable");
+          displayError(i18n("checkWbsSortOrderProject",array($prj->id,$prj->sortOrder,$pe->wbsSortable)));
           $errors++;
           if ($correct) {
             $prj->sortOrder=$pe->wbsSortable;
             $res=$prj->save();
-            if (getLastOperationStatus($res)=='OK') displayOK("Fixed");
+            debugLog("FIX sortOrder on Project #$pe->refId : $res");
+            if (getLastOperationStatus($res)=='OK'  or getLastOperationStatus($res)=='NO_CHANGE') displayOK(i18n("checkFixed"),true);
+            else displayError($res,true);
           }
         }
         
       }
       // Continue
       $key=$pe->refType.'#'.$pe->refId;
-      $arrayWbs[$key]=$pe->wbsSortable;
-      $lastWbs=$pe->wbsSortable;
+      $arrayWbs[$key]=$currentWbs;
+      $lastWbs=$currentWbs;
       $lastPe=$pe;
     }
     if (!$errors) {
-      displayOK("No error");
+      displayOK(i18n("checkNoError"));
     }
   }
+  private function fixOrder($issue,$peList,$idx) {
+    $actual=new PlanningElement($this->id);
+    if ($this->wbsSortable!=$actual->wbsSortable) {
+      displayOK(i18n("checkFixed"),true);
+      return;
+    }
+    $action="unknown";
+    $peNext=null;
+    $pePrec=null;
+    if ($issue=="duplicate" or $issue=="parent") { // Duplicate or inconsistent with Parent => just get a good one (order is sure incorrect)
+      $action="recalculate";
+    } else if ($issue=="first") {
+      $action="recalculateLevel";
+    } else if ($issue=="order") {
+      $action="recalculate";
+      $cur=$idx-1;
+      while ($action=="recalculate" and $cur>=0) {
+        $pePrec=$peList[$cur];
+        debugLog(substr($this->wbsSortable,0,strlen($this->wbsSortable)-3).' != '.substr($pePrec->wbsSortable,0,strlen($this->wbsSortable)-3).' ?');
+        if (substr($this->wbsSortable,0,strlen($this->wbsSortable)-3)!=substr($pePrec->wbsSortable,0,strlen($this->wbsSortable)-3)) {
+          debugLog(" ok, break");
+          $cur=-1;
+          break;
+        }
+        if (strlen($this->wbsSortable)==strlen($pePrec->wbsSortable)) {
+          $action="moveFromPrec";
+        }
+        $cur--;
+      }
+    } else {
+      displayError(i18n("checkCannotFix"),true);
+    }
+    if ($action=="recalculate") {
+      $this->wbs=null;
+      $this->wbsSortable=null;
+      $res=$this->save();
+      debugLog("FIX $action for issue $issue on $this->refType #$this->refId : $res");
+      if (getLastOperationStatus($res)=='OK' or getLastOperationStatus($res)=='NO_CHANGE') displayOK(i18n("checkFixed"),true);
+      else displayError($res,true);
+    } else if ($action=='moveFromPrec' and $pePrec) {
+      $res=$this->moveTo($pePrec->id,'after');
+      debugLog("FIX $action for issue $issue on $this->refType #$this->refId : $res");
+      if (getLastOperationStatus($res)=='OK' or getLastOperationStatus($res)=='NO_CHANGE') displayOK(i18n("checkFixed"),true);
+      else displayError($res,true);
+    } else if ($action=="recalculateLevel") {
+      $where="topId=$this->topId";
+      $levelList=$this->getSqlElementsFromCriteria(null,null,$where,'wbsSortable');
+      if (count($levelList)==1) {
+        $this->wbs=null;
+        $this->wbsSortable=null;
+        $res=$this->save();
+        debugLog("FIX $action (1 only) for issue $issue on $this->refType #$this->refId : $res");
+        if (getLastOperationStatus($res)=='OK' or getLastOperationStatus($res)=='NO_CHANGE') displayOK(i18n("checkFixed"),true);
+        else displayError($res,true);
+      } else {
+        $first=$levelList[0];
+        $second=$levelList[1];
+        $res=$second->moveTo($first->id,'before');
+        $first=new PlanningElement($first->id);
+        $second=new PlanningElement($second->id);
+        $res=$first->moveTo($second->id,'before');
+        debugLog("FIX $action for issue $issue on $this->refType #$this->refId : $res");
+        if (getLastOperationStatus($res)=='OK' or getLastOperationStatus($res)=='NO_CHANGE') displayOK(i18n("checkFixed"),true);
+        else displayError($res,true);
+      } 
+    } else {
+      if ($issue!='') {
+        displayError(i18n("checkCannotFix"),true);
+      }
+    }
+  }
+ 
   
 }
 ?>
