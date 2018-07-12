@@ -410,7 +410,6 @@ class PlanningElement extends SqlElement {
     	if ($this->plannedStartDate>$this->plannedEndDate) $this->plannedEndDate=$this->plannedStartDate;
     	$this->plannedDuration=workDayDiffDates($this->plannedStartDate, $this->plannedEndDate);
     }
-    debugLog("Save PE #$this->id for $this->refType #$this->refId : WBS changed from $old->wbsSortable to $this->wbsSortable");
     $result=parent::save();
     if (! strpos($result,'id="lastOperationStatus" value="OK"')) {
       return $result;     
@@ -463,7 +462,6 @@ class PlanningElement extends SqlElement {
         if ($refObj and $refObj->id) {
         	$refObj->sortOrder=$this->wbsSortable;
         	$subRes=$refObj->saveForced(true);
-        	debugLog("  saveForced for Project #$this->refId : $subRes");
         }
       }
     }
@@ -605,7 +603,6 @@ class PlanningElement extends SqlElement {
 
   public function wbsSave() {
   	//
-  	debugLog("wbsSave() for $this->refType #$this->refId");
   	$this->_noHistory=true;
   	$this->wbsSortable=formatSortableWbs($this->wbs);
   	$resTmp=$this->saveForced();
@@ -613,7 +610,6 @@ class PlanningElement extends SqlElement {
   		$proj=new Project($this->refId); 
   		$proj->sortOrder=$this->wbsSortable;
   		$resSaveProj=$proj->saveForced();
-  		debugLog("   wbsSave() saveForced for Project $this->refId : $resSaveProj");
   	} 
   	$crit=" topId=" . Sql::fmtId($this->id);
   	$lstElt=$this->getSqlElementsFromCriteria(null, null, $crit ,'wbsSortable asc');
@@ -621,7 +617,6 @@ class PlanningElement extends SqlElement {
   	foreach ($lstElt as $elt) {
   		$cpt++;
   		$elt->wbs=$this->wbs . '.' . $cpt;
-  		debugLog("   Must saveWbs for $elt->refType #$elt->refId");
   		if ($elt->refType) { // just security for unit testing
   			$elt->wbsSave();
   		}
@@ -1876,13 +1871,13 @@ class PlanningElement extends SqlElement {
       // Check project order
       if ($pe->refType=='Project') {
         $prj=new Project($pe->refId);
+        $pe=$prj->ProjectPlanningElement;
         if ($prj->sortOrder!=$pe->wbsSortable) {
           displayError(i18n("checkWbsSortOrderProject",array($prj->id,$prj->sortOrder,$pe->wbsSortable)));
           $errors++;
           if ($correct) {
             $prj->sortOrder=$pe->wbsSortable;
             $res=$prj->save();
-            debugLog("FIX sortOrder on Project #$pe->refId : $res");
             if (getLastOperationStatus($res)=='OK'  or getLastOperationStatus($res)=='NO_CHANGE') displayOK(i18n("checkFixed"),true);
             else displayError($res,true);
           }
@@ -1917,9 +1912,7 @@ class PlanningElement extends SqlElement {
       $cur=$idx-1;
       while ($action=="recalculate" and $cur>=0) {
         $pePrec=$peList[$cur];
-        debugLog(substr($this->wbsSortable,0,strlen($this->wbsSortable)-3).' != '.substr($pePrec->wbsSortable,0,strlen($this->wbsSortable)-3).' ?');
         if (substr($this->wbsSortable,0,strlen($this->wbsSortable)-3)!=substr($pePrec->wbsSortable,0,strlen($this->wbsSortable)-3)) {
-          debugLog(" ok, break");
           $cur=-1;
           break;
         }
@@ -1935,12 +1928,10 @@ class PlanningElement extends SqlElement {
       $this->wbs=null;
       $this->wbsSortable=null;
       $res=$this->save();
-      debugLog("FIX $action for issue $issue on $this->refType #$this->refId : $res");
       if (getLastOperationStatus($res)=='OK' or getLastOperationStatus($res)=='NO_CHANGE') displayOK(i18n("checkFixed"),true);
       else displayError($res,true);
     } else if ($action=='moveFromPrec' and $pePrec) {
       $res=$this->moveTo($pePrec->id,'after');
-      debugLog("FIX $action for issue $issue on $this->refType #$this->refId : $res");
       if (getLastOperationStatus($res)=='OK' or getLastOperationStatus($res)=='NO_CHANGE') displayOK(i18n("checkFixed"),true);
       else displayError($res,true);
     } else if ($action=="recalculateLevel") {
@@ -1950,7 +1941,6 @@ class PlanningElement extends SqlElement {
         $this->wbs=null;
         $this->wbsSortable=null;
         $res=$this->save();
-        debugLog("FIX $action (1 only) for issue $issue on $this->refType #$this->refId : $res");
         if (getLastOperationStatus($res)=='OK' or getLastOperationStatus($res)=='NO_CHANGE') displayOK(i18n("checkFixed"),true);
         else displayError($res,true);
       } else {
@@ -1960,7 +1950,6 @@ class PlanningElement extends SqlElement {
         $first=new PlanningElement($first->id);
         $second=new PlanningElement($second->id);
         $res=$first->moveTo($second->id,'before');
-        debugLog("FIX $action for issue $issue on $this->refType #$this->refId : $res");
         if (getLastOperationStatus($res)=='OK' or getLastOperationStatus($res)=='NO_CHANGE') displayOK(i18n("checkFixed"),true);
         else displayError($res,true);
       } 
