@@ -205,3 +205,5 @@ CREATE TABLE `${prefix}globalview` (
 
 UPDATE `${prefix}menu`set menuClass=REPLACE(menuClass,'Meeting','Review') WHERE menuClass LIKE '%Meeting%';
 
+ALTER TABLE `${prefix}activity`
+ADD `idMilestone` int(12) UNSIGNED DEFAULT NULL;

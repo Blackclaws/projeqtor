@@ -50,6 +50,7 @@ class ActivityMain extends SqlElement {
   public $idActivity;
   public $idStatus;
   public $idResource;
+  public $idMilestone;
   public $handled;
   public $handledDate;
   public $done;
@@ -500,5 +501,11 @@ class ActivityMain extends SqlElement {
     }*/
     return $result;
   }
+  public function setAttributes() {
+    if (Parameter::getGlobalParameter('manageMilestoneOnItems') != 'YES' and (! property_exists('Activity','_customFields') or ! in_array('idMilestone', Activity::$_customFields))) {
+      self::$_fieldsAttributes["idMilestone"]='hidden';
+    }
+  }
+
 }
 ?>
