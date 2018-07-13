@@ -499,7 +499,7 @@ if (Sql::$lastQueryNbRows == 0) {
 					}
 				}
 			}
-			echo ', "depend":"' . $listPred . '"';
+			echo ', "depend":"' . '"';
 			echo '}';
 		}
 		echo ' ] }';

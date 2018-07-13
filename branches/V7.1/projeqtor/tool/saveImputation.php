@@ -34,6 +34,12 @@ $status="NO_CHANGE";
 $errors="";
 $finalResult="";
 
+if (!isset($_REQUEST['nbLines'])) {
+  traceLog('WARNING - Left work not retrieved from screen');
+  traceLog('        - Maybe max_input_vars is too small in php.ini (actual value is '.ini_get('max_input_vars').')');
+  trigger_error('Error - Maybe max_input_vars is too small in php.ini',E_USER_ERROR);
+  exit;
+}
 $rangeType=$_REQUEST['rangeType'];
 $rangeValue=$_REQUEST['rangeValue'];
 $userId=$_REQUEST['userId'];
@@ -61,19 +67,6 @@ if (isset($_REQUEST['imputationComment'])) {
     }
   }
 }
-
-// No need : these vars cannot be changed with ini_set
-//ini_set('max_input_vars', 50*$nbLines+20);
-//ini_set('suhosin.post.max_vars', 50*$nbLines+20);
-//ini_set('suhosin.request.max_vars', 50*$nbLines+20);
-// TODO : try and dynamically create .htaccess on directory when reading data (we yould know max)
-//        but must pay attention to only increase existing never decrease 
-//        (2 users may access on same time, one with many lines, one with few lines  
-//php_value max_input_vars 4000
-//php_value suhosin.get.max_vars 4000
-//php_value suhosin.post.max_vars 4000
-//php_value suhosin.request.max_vars 4000
-
 Sql::beginTransaction();
 for ($i=0; $i<$nbLines; $i++) {
 	$imputable=$_REQUEST['imputable'][$i];

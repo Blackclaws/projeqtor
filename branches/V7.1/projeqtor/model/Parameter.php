@@ -299,6 +299,7 @@ class Parameter extends SqlElement {
       case 'scaytAutoStartup':
       case 'changeReferenceOnTypeChange': case 'rememberMe':
       case 'getVersion':
+      case 'displayPoolsOnImputation':
         $list=array('YES'=>i18n('displayYes'),
       	            'NO'=>i18n('displayNo'));
       	break;
@@ -653,6 +654,7 @@ class Parameter extends SqlElement {
             	                'maxDaysToBookWork'=>'number',
             	                'maxDaysToBookWorkBlocking'=>'number',
             	                'imputationAlertInputByOther'=>'list',
+            	                'displayPoolsOnImputation'=>'list',
       	                'tabPlanning'=>"tab",
       	                  'columnPlanningLeft'=>'newColumn',
         	                  'sectionPlanning'=>'section',
