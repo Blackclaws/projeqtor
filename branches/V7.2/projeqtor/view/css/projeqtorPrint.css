@@ -444,3 +444,17 @@ span.messageOK {
 .messageINVALID {
   background: #FFDDDD url() !important;
 }
+.consistencySection {
+  width:95%;
+  height:100%;
+  background-color:#A0A0C0;
+  color: white;
+  margin:20px 5px; 
+  padding:10px;
+  font-size:200%;
+  font-weight:bold;
+  text-align:center;
+  border:2px solid #A0A0A0;
+  border-radius: 20px;
+  box-shadow : 5px 5px 5px #656565;
+}

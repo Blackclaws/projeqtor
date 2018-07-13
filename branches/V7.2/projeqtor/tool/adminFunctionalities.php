@@ -88,9 +88,11 @@ if ($adminFunctionality=='sendAlert') {
   Parameter::clearGlobalParameters();
 } else if ($adminFunctionality=='checkConsistency') {
   $correct=RequestHandler::getBoolean('correct');
-  echo "<div class='section' style='width:95%;height:100%'>CHECK WBS ORDERING</div>";
+  echo "<div class='consistencySection' style='background-color:#A0A0C0;'>".i18n('sectionCheckWbs')."</div>";
   //echo $correct;
-  PlanningElement::consistencyCheckWbs($correct,false);
+  Consistency::checkWbs($correct,false);
+  echo "<div class='consistencySection' style=''>".i18n('sectionCheckWorkDuplicate')."</div>";
+  Consistency::checkDuplicateWork($correct, false);
   $result=false;
   Sql::commitTransaction();
 } else {
