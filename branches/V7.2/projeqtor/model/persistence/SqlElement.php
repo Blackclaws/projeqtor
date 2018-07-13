@@ -1637,6 +1637,10 @@ abstract class SqlElement {
         $control = $controlPe;
       }
     }
+    global $adminFunctionality;
+    if (isset($adminFunctionality) and $adminFunctionality=="checkConsistency") {
+      $control='OK';
+    }
     
     if ($control != "OK") {
       // errors on control => don't save, display error message

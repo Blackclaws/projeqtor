@@ -675,7 +675,7 @@ function selectDetailItem(selectedValue, lastSavedName) {
           enableWidget('dialogVersionCompatibilitySubmit');
       //END aGaye - Ticket 179
       } else if (comboName == 'productVersionStructureListId') {
-    	refreshProductVersionStructureList(idFldVal,lastSavedName);
+    	  refreshProductVersionStructureList(idFldVal,lastSavedName);
         setTimeout("dojo.byId('productVersionStructureListId').focus()",500);
         enableWidget('dialogProductVersionStructureSubmit');
       } else if (comboName == 'otherVersionIdVersion') {
@@ -5928,8 +5928,6 @@ function consoleLogHistory(msg) {
 }
 
 function stockHistory(curClass, curId, currentScreen) {
-  consoleLogHistory("before stockHistory");
-  
   if (!currentScreen) {
     currentScreen="object";
     if (dojo.byId("objectClassManual")){
@@ -5957,9 +5955,7 @@ function stockHistory(curClass, curId, currentScreen) {
   if (historyPosition == historyTable.length - 1) {
     disableWidget('menuBarRedoButton');
   }
-  consoleLogHistory("after stockHistory");
 }
-
 
 function undoItemButton(curClass,curId) {
   var len=historyTable.length;
@@ -7137,6 +7133,15 @@ function unlockRequirement() {
 
 // CHANGE BY Marc TABARY - 2017-03-13 - CHANGE TITLE DYNAMIC DIALOG
 function loadDialog(dialogDiv, callBack, autoShow, params, clearOnHide, closable, dialogTitle) {
+  // Before loading, be sure to clear dialogs containing "directAccessToListButton" 
+  // This is mandatory as these dialogs may not be cleared on direct access, as they are not showed so .hide() and no effect and clearOnHide is not triggered  
+  if (dojo.byId('directAccessToListButton')) {
+    var parentName=dojo.byId('directAccessToListButton').parentNode.id;
+    var dialogName="dialog"+parentName.substr(0,1).toUpperCase()+parentName.substr(1,parentName.length-5);
+    if (dijit.byId(dialogName)){
+      dijit.byId(dialogName).set("content",null);
+    }
+  }
 // Old    
 //function loadDialog(dialogDiv, callBack, autoShow, params, clearOnHide, closable) {
 // END CHANGE BY Marc TABARY - 2017-03-13 - PERIODIC YEAR BUDGET ELEMENT
@@ -7151,17 +7156,17 @@ function loadDialog(dialogDiv, callBack, autoShow, params, clearOnHide, closable
     };
   }
   
-// ADD BY Marc TABARY - 2017-03-13 - CHANGE TITLE DYNAMIC DIALOG
-var setTitle=false;
-if(typeof dialogTitle == 'undefined') {
-    theDialogTitle = dialogDiv;
-} else if (dialogTitle=='') {
-    theDialogTitle = dialogDiv;    
-} else {
-    theDialogTitle = dialogTitle;
-    setTitle=true;
-}
-// END ADD BY Marc TABARY - 2017-03-13 - CHANGE TITLE DYNAMIC DIALOG
+  // ADD BY Marc TABARY - 2017-03-13 - CHANGE TITLE DYNAMIC DIALOG
+  var setTitle=false;
+  if(typeof dialogTitle == 'undefined') {
+      theDialogTitle = dialogDiv;
+  } else if (dialogTitle=='') {
+      theDialogTitle = dialogDiv;    
+  } else {
+      theDialogTitle = dialogTitle;
+      setTitle=true;
+  }
+  // END ADD BY Marc TABARY - 2017-03-13 - CHANGE TITLE DYNAMIC DIALOG
   
   extraClass="projeqtorDialogClass";
   if (dialogDiv=="dialogLogfile") {

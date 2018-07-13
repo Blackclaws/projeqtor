@@ -207,3 +207,5 @@ UPDATE `${prefix}menu`set menuClass=REPLACE(menuClass,'Meeting','Review') WHERE 
 
 ALTER TABLE `${prefix}activity`
 ADD `idMilestone` int(12) UNSIGNED DEFAULT NULL;
+
+UPDATE `${prefix}menu` SET menuClass='Work Configuration EnvironmentalParameter' WHERE id in (86,87,141,142,179);

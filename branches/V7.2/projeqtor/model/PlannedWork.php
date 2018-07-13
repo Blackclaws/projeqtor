@@ -1243,7 +1243,7 @@ class PlannedWork extends GeneralWork {
     $endTime=time();
     $endMicroTime=microtime(true);
     $duration = round(($endMicroTime - $startMicroTime)*1000)/1000;
-    if (count($arrayNotPlanned)>0 or $arrayWarning>0) {
+    if (count($arrayNotPlanned)>0 or count($arrayWarning)>0) {
     	$result=i18n('planDoneWithLimits', array($duration));
     	$result.='<br/><br/><table style="width:100%">';
     	$result .='<tr style="color:#888888;font-weight:bold;border:1px solid #aaaaaa"><td style="width:40%">'.i18n('colElement').'</td><td style="width:40%">'.i18n('colCause').'</td><td style="width:20%">'.i18n('colIdResource').'</td></tr>';

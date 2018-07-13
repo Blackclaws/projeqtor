@@ -286,6 +286,13 @@ if(Parameter::getUserParameter("showId")!=null && Parameter::getUserParameter("s
                   refreshImputationList();
                 </script>
               </button>    
+              <button id="refreshButton" dojoType="dijit.form.Button" showlabel="false"
+                title="<?php echo i18n('buttonRefreshList');?>"
+                iconClass="dijitButtonIcon dijitButtonIconRefresh" class="detailButton">
+                <script type="dojo/connect" event="onClick" args="evt">
+	                 refreshImputationList();
+                </script>
+              </button> 
               <div dojoType="dijit.Tooltip" connectId="saveButton"><?php echo i18n("buttonSaveImputation")?></div>
             </td>
           </tr>
