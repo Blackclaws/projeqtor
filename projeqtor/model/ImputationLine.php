@@ -108,12 +108,14 @@ class ImputationLine {
     
     // Get All assignments, including the ones from pools
     $ressList=Sql::fmtId($resourceId);
-    $rta=new ResourceTeamAffectation();
-    $rtaList=$rta->getSqlElementsFromCriteria(array('idResource'=>$resourceId));
-    foreach ($rtaList as $rta) {
-      if ($rta->idle) continue;
-      if (($rta->startDate==null or $rta->startDate<=$endDate) and ($rta->endDate==null or $rta->endDate>=$startDate)) {
-        $ressList.=','.Sql::fmtId($rta->idResourceTeam);
+    if (Parameter::getGlobalParameter('displayPoolsOnImputation')!='NO') {
+      $rta=new ResourceTeamAffectation();
+      $rtaList=$rta->getSqlElementsFromCriteria(array('idResource'=>$resourceId));
+      foreach ($rtaList as $rta) {
+        if ($rta->idle) continue;
+        if (($rta->startDate==null or $rta->startDate<=$endDate) and ($rta->endDate==null or $rta->endDate>=$startDate)) {
+          $ressList.=','.Sql::fmtId($rta->idResourceTeam);
+        }
       }
     }
     $critWhere="idResource in ($ressList)";
@@ -127,7 +129,7 @@ class ImputationLine {
     $crit=array('idResource'=>$resourceId);
     $crit[$rangeType]=$rangeValue;
     $work=new Work();
-    $workList=$work->getSqlElementsFromCriteria($crit, false, null, null, false, true);
+    $workList=$work->getSqlElementsFromCriteria($crit, false, 'id asc', null, false, true);
     $plannedWork=new PlannedWork();
     if ($showPlanned) {
       $critWhere="idResource in ($ressList)";
@@ -356,7 +358,9 @@ class ImputationLine {
           $workDate=$work->workDate;
           $offset=dayDiffDates($startDate, $workDate)+1;
           if (isset($elt->arrayWork[$offset])) {
-            $elt->arrayWork[$offset]->work+=$work->work;
+            //$elt->arrayWork[$offset]->work+=$work->work;
+            // This is a consistency issue
+            $work->delete();
           } else {
             $elt->arrayWork[$offset]=$work;
           }
