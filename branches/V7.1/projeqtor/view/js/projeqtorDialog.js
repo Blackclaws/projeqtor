@@ -7088,6 +7088,15 @@ function unlockRequirement() {
 
 // CHANGE BY Marc TABARY - 2017-03-13 - CHANGE TITLE DYNAMIC DIALOG
 function loadDialog(dialogDiv, callBack, autoShow, params, clearOnHide, closable, dialogTitle) {
+  // Before loading, be sure to clear dialogs containing "directAccessToListButton" 
+  // This is mandatory as these dialogs may not be cleared on direct access, as they are not showed so .hide() and no effect and clearOnHide is not triggered  
+  if (dojo.byId('directAccessToListButton')) {
+    var parentName=dojo.byId('directAccessToListButton').parentNode.id;
+    var dialogName="dialog"+parentName.substr(0,1).toUpperCase()+parentName.substr(1,parentName.length-5);
+    if (dijit.byId(dialogName)){
+      dijit.byId(dialogName).set("content",null);
+    }
+  }
 // Old    
 //function loadDialog(dialogDiv, callBack, autoShow, params, clearOnHide, closable) {
 // END CHANGE BY Marc TABARY - 2017-03-13 - PERIODIC YEAR BUDGET ELEMENT
