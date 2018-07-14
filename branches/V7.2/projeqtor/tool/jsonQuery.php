@@ -315,7 +315,6 @@
     // --- Apply sorting filers --------------------------------------------------------------
     // --- 1) retrieve corresponding filter clauses depending on context
     $arrayFilter=($quickSearch)?array():jsonGetFilterArray($objectClass, $comboDetail, $quickSearch);
-    
     // --- 2) sort from index checked in List Header (only used for printing, as direct filter is done on client side)
     $sortIndex=null;   
     if ($print and $outMode!='csv') {

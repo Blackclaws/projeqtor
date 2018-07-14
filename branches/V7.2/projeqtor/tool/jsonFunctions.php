@@ -51,6 +51,7 @@ function jsonBuildSortCriteria(&$querySelect,&$queryFrom,&$queryWhere,&$queryOrd
     if ($crit['sql']['operator']=='SORT') {
       $doneSort=false;
       $split=explode('_', $crit['sql']['attribute']);
+      if (strpos($crit['sql']['attribute'], '__id')>0) $split=array();
       if (count($split)>1 ) {
         $externalClass=$split[0];
         $externalObj=new $externalClass();
@@ -110,6 +111,7 @@ function jsonBuildWhereCriteria(&$querySelect,&$queryFrom,&$queryWhere,&$queryOr
       $crit = $arrayFilter[$i];
       if ($crit['sql']['operator']!='SORT') { // Sorting already applied previously
         $split=explode('_', $crit['sql']['attribute']);
+        if (strpos($crit['sql']['attribute'], '__id')>0) $split=array();
         $critSqlValue=$crit['sql']['value'];
         if (substr($crit['sql']['attribute'], -4, 4) == 'Work') {
           if ($objectClass=='Ticket') {

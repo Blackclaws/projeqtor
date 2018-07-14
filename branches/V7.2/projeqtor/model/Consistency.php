@@ -253,7 +253,6 @@ class Consistency {
             // Do not delete first not null
           } else {            
             $res=$work->delete();
-            debugLog("delete work $work->id : $res");
           }
           
         }
