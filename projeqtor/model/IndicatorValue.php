@@ -483,10 +483,11 @@ class IndicatorValue extends SqlElement {
         foreach ($affList as $aff) {
           $resource=new Resource($aff->idResource);
           $usr=new User($aff->idResource);
-          $canRead=false;
-          if ($usr and $usr->id) {
-          	$canRead=(securityGetAccessRightYesNo('menu' . get_class($obj), 'read', $obj, $usr)=='YES');
-          }
+          $canRead=true; // Acces right control is no need : email alets contain only id, name and alert.
+          //if ($usr and $usr->id) {
+          //  $canRead=(securityGetAccessRightYesNo('menu' . get_class($obj), 'read', $obj, $usr)=='YES');
+          //  $canRead=true;
+          //}
           if ($canRead and ! $resource->dontReceiveTeamMails) {
 	          if ($def->alertToProject and $resource->isUser) {
 	          	$arrayAlertDest[$resource->id]=$resource->name;
