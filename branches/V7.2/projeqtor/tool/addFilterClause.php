@@ -148,8 +148,18 @@ if ($idFilterAttribute and $idFilterOperator) {
   $arraySql=array();
   $dataType=$obj->getDataType($idFilterAttribute);
   $dataLength=$obj->getDataLength($idFilterAttribute);
+  $foreignKey=null;
+  $foreignKeyName=null;
+  $pos=strpos($idFilterAttribute, "__id");
+  if ($pos>0) {
+    $dataType='int';
+    $dataLength='12';
+    $foreignKey=foreignKeyWithoutAlias($idFilterAttribute);
+    $foreignKeyName=i18n(substr($idFilterAttribute,0,$pos));
+    //$idFilterAttribute=$foreignKey;
+  }
   $split=explode('_',$idFilterAttribute);
-  if (count($split)>1 ) {
+  if (count($split)>1 and !$foreignKey) {
   	$externalClass=$split[0];
     $externalObj=new $externalClass();
     $arrayDisp["attribute"]=$externalObj->getColCaption($split[1]);
@@ -158,7 +168,8 @@ if ($idFilterAttribute and $idFilterOperator) {
     if (substr($idFilterAttribute,0,9)=='idContext') {
       $arrayDisp["attribute"]=SqlList::getNameFromId('ContextType',substr($idFilterAttribute,9));
     } else {
-      $arrayDisp["attribute"]=$obj->getColCaption($idFilterAttribute);
+      if ($foreignKeyName) $arrayDisp["attribute"]=$foreignKeyName;
+      else $arrayDisp["attribute"]=$obj->getColCaption($idFilterAttribute);
     }
   }
   $arraySql["attribute"]=$obj->getDatabaseColumnName($idFilterAttribute);
@@ -213,11 +224,19 @@ if ($idFilterAttribute and $idFilterOperator) {
     foreach ($filterValueList as $key=>$val) {
       $arrayDisp["value"].=($key==0)?"":", ";
       $arraySql["value"].=($key==0)?"":", ";
-      $arrayDisp["value"].="'" . Sql::fmtStr(SqlList::getNameFromId(Sql::fmtStr(substr($idFilterAttribute,2)),$val)) . "'";
+      $arrayDisp["value"].="'" . Sql::fmtStr(SqlList::getNameFromId(Sql::fmtStr(substr(($foreignKey)?$foreignKey:$idFilterAttribute,2)),$val)) . "'";
       $arraySql["value"].=Security::checkValidId($val);
     }
     //$arrayDisp["value"].=")";
     $arraySql["value"].=")";
+    if ($idFilterAttribute="assignedResource__idResource") {
+      $arraySql["operator"]=' exists ';
+      $ass=new Assignment();
+      $assTable=$ass->getDatabaseTableName();
+      $obj=new $objectClass();
+      $objTable=$obj->getDatabaseTableName();
+      $arraySql["value"]="(select 'x' from $assTable where $assTable.refType='$objectClass' and $assTable.refId=$objTable.id and $assTable.idResource $idFilterOperator ".$arraySql["value"].")";
+    }
   } else if ($idFilterOperator=="isEmpty") {
       $arrayDisp["operator"]=i18n("isEmpty");
       $arraySql["operator"]="is null";
