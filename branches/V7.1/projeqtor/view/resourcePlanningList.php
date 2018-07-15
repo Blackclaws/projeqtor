@@ -257,6 +257,7 @@ if (RequestHandler::isCodeSet('destinationWidth')) {
                          <option value=""></option>
                         <?php 
                          $specific='imputation';
+                         $includePool=true;
                          $specificDoNotInitialize=true;
                          include '../tool/drawResourceListForSpecificAccess.php';?>  
                       </select>

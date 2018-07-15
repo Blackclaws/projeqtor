@@ -177,6 +177,7 @@ foreach ($list as $script) {
 
 $table=array();
 $specific="imputation";
+$includePool=true;
 ob_start();
 include("../tool/drawResourceListForSpecificAccess.php");
 if (ob_get_length()){
