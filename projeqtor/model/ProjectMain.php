@@ -548,7 +548,7 @@ scriptLog("Project($this->id)->drawSubProjects(selectField=$selectField, recursi
     }
     if ($selectField!=null and ! $recursiveCall) { 
       $result .= '<table ><tr><td>';
-      $clickEvent=' onClick=\'setSelectedProject("*", "<i>' . i18n('allProjects') . '</i>", "' . $selectField . '");\' ';
+      $clickEvent=' onClick=\'setSelectedProject("*", "<i>' . i18n('allProjects') . '</i>", "' . $selectField . '",true);\' ';
       $result .= '<div ' . $clickEvent . ' class="menuTree" style="width:100%;">';
       $result .= '<i>' . i18n('allProjects') . '</i>';
       $result .= '</div></td></tr></table>';
@@ -579,7 +579,7 @@ scriptLog("Project($this->id)->drawSubProjects(selectField=$selectField, recursi
           } else if (! $reachLine) {
             $result .= '<td style="#AAAAAA;" NOWRAP><div class="display" style="width: 100%;">' . htmlEncode($prj->name) . '</div>';
           } else {
-            $clickEvent=' onClick=\'setSelectedProject("' . htmlEncode($prj->id) . '", "' . htmlEncode($prj->name,'parameter') . '", "' . $selectField . '");\' ';
+            $clickEvent=' onClick=\'setSelectedProject("' . htmlEncode($prj->id) . '", "' . htmlEncode($prj->name,'parameter') . '", "' . $selectField . '",true);\' ';
             $result .= '<td><div ' . $clickEvent . ' class="menuTree" style="width:100%;">';
             $result .= htmlEncode($prj->name);
             $result .= '</div>';

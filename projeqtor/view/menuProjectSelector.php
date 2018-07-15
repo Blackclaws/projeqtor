@@ -80,7 +80,7 @@ if ($proj=='*') {
    name="projectSelectorFiletering" id="projectSelectorFiletering" >
    <script type="dojo/connect" event="onChange" args="evt">
     if (this.isValid()) {
-      setSelectedProject(this.value, this.displayedValue, null);
+      setSelectedProject(this.value, this.displayedValue, null,true);
     }
   </script>
    <option value="*"><i><?php echo i18n("allProjects");?></i></option>
@@ -95,7 +95,7 @@ name="projectSelectorFiletering"
         autoComplete:false">
   <script type="dojo/connect" event="onChange" args="evt">
     if (this.isValid()) {
-      setSelectedProject(this.value, this.displayedValue, null);
+      setSelectedProject(this.value, this.displayedValue, null,true);
     }
   </script>
    <option value="*"><i><?php echo i18n("allProjects");?></i></option>

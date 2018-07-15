@@ -229,6 +229,53 @@
           </script>
         </button>
       </span>
+      <span style="position: relative; left:7px; top:-7px; height: 20px">
+      <button id="projectSelectorSelectCurrent" dojoType="dijit.form.Button" showlabel="false"
+         title="<?php echo i18n('selectCurrentProject');?>" style="top:2px;height:20px;"
+         iconClass="iconProject16 iconProject iconSize16" xclass="detailButton">
+          <script type="dojo/connect" event="onClick" args="evt">
+            var selected=null;
+            var selectedName=null; 
+            if (dojo.byId("objectClass") && dijit.byId("idProject") && dijit.byId("id")) {
+              if (dojo.byId("objectClass").value=='Project' && dijit.byId("id").value) {
+                selected=dijit.byId("id").get("value");
+                selectedName=dijit.byId("name").get("value");
+              } else {
+                selected=dijit.byId("idProject").get("value");
+                selectedName=dijit.byId("idProject").get("displayedValue");
+              }
+            }
+            if (previousSelectedProject) {
+              selected=previousSelectedProject;
+              selectedName=previousSelectedProjectName;
+            }
+            if (selected) {
+              if (dijit.byId("projectSelectorFiletering")) {
+                if (!previousSelectedProject || previousSelectedProject!=selected) {
+                  previousSelectedProject=dijit.byId("projectSelectorFiletering").get("value");
+                  previousSelectedProjectName=dijit.byId("projectSelectorFiletering").get("displayedValue");
+                } else {
+                  previousSelectedProject=null;
+                  previousSelectedProjectName=null;
+                }
+                dijit.byId("projectSelectorFiletering").set("value",selected);
+              } else {
+                if (!previousSelectedProject || previousSelectedProject!=selected) {
+                  previousSelectedProject=currentSelectedProject;
+                  previousSelectedProjectName=dijit.byId('selectedProject').get("label");
+                } else {
+                  previousSelectedProject=null;
+                  previousSelectedProjectName=null;
+                }
+                setSelectedProject(selected,selectedName,'selectedProject');
+              }
+            } else {
+              showAlert(i18n("noCurrentProject"));
+            }
+          </script>
+        </button>
+
+      </span>
     </td>
     <td width="" style="text-align:center;">
       <div style="position:absolute;font-size:130%;top:5px;left:50%;width:600px;margin-left:-300px;z-index:-1"><?php htmlDisplayDatabaseInfos();?></div>

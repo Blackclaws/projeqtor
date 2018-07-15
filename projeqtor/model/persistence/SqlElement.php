@@ -5189,10 +5189,10 @@ abstract class SqlElement {
         } else if ($hide) {
           // Nothing
         } else if ($dataLength > 4000) {
-          $text = new Html2Text ( $val );
-          $plainText = $text->getText ();
-          if (mb_strlen ( $plainText ) > 4000) {
-            $msg .= nl2br ( mb_substr ( $plainText, 0, 4000 ) );
+          if (mb_strlen ( $val ) > 1000000) {
+            $text = new Html2Text ( $val );
+            $plainText = $text->getText();
+            $msg .= nl2br(mb_substr($plainText,0, 1000000));
           } else {
             $msg .= $val;
           }
@@ -5291,8 +5291,8 @@ abstract class SqlElement {
           // $msg.=htmlEncode($note->note,'print');
           $text = new Html2Text ( $note->note );
           $plainText = $text->getText ();
-          if (mb_strlen ( $plainText ) > 4000) { // Should not send too long email
-            $noteTruncated = nl2br ( mb_substr ( $plainText, 0, 4000 ) );
+          if (mb_strlen ( $plainText ) > 10000) { // Should not send too long email
+            $noteTruncated = nl2br ( mb_substr ( $plainText, 0, 10000 ) );
             $msg .= $noteTruncated;
           } else {
             $msg .= $note->note;

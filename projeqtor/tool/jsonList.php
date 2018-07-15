@@ -296,11 +296,10 @@ if ($type == 'empty') {
       // } else {
       $proj = new Project ( $critValue );
       $listProjs = $proj->getRecursiveSubProjectsFlatList ( false, true );
-      $clauseWhere = 'idProject in (';
+      $clauseWhere = 'idProject in (0';
       foreach ( $listProjs as $idProj => $nameProj ) {
-        $clauseWhere .= $idProj . ', ';
+        $clauseWhere .= ", $idProj";
       }
-      $clauseWhere = substr ( $clauseWhere, 0, - 2 );
       $clauseWhere .= ')';
       $versionProject = new VersionProject ();
       $listVersionProjects = $versionProject->getSqlElementsFromCriteria ( null, false, $clauseWhere );

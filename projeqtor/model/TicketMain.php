@@ -410,11 +410,10 @@ class TicketMain extends SqlElement {
       $crit = array('idProductVersion' => $this->idTargetProductVersion);
       $pvss = $pvs->getSqlElementsFromCriteria($crit, false);
       if (count($pvss) > 0) {
-        $clauseWhere = 'id in (';
+        $clauseWhere = 'id in (0';
         foreach ($pvss as $pvs) {
-          $clauseWhere .= $pvs->idComponentVersion . ', ';
+          $clauseWhere .= ','.$pvs->idComponentVersion;
         }
-        $clauseWhere = substr($clauseWhere, 0, -2);
         $clauseWhere .= ')';
         $cv = new ComponentVersion();
         $cvs = $cv->getSqlElementsFromCriteria(null, false, $clauseWhere);
