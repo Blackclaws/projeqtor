@@ -1062,7 +1062,8 @@ function removeNote(noteId) {
  * 
  */
 function addAttachment(attachmentType) {
-  content=dijit.byId('dialogAttachment').get('content');
+  var content="";
+  if (dijit.byId('dialogAttachment')) content=dijit.byId('dialogAttachment').get('content');
   if (content == "") {
     callBack=function() {
       dojo.connect(dijit.byId("attachmentFile"), "onComplete", function(dataArray) {
@@ -1225,7 +1226,8 @@ function saveAttachmentProgress(data) {
  * 
  */
 function removeAttachment(attachmentId) {
-  content=dijit.byId('dialogAttachment').get('content');
+  var content="";
+  if (dijit.byId('dialogAttachment')) content=dijit.byId('dialogAttachment').get('content');
   if (content == "") {
     callBack=function() {
       dojo.connect(dijit.byId("attachmentFile"), "onComplete", function(

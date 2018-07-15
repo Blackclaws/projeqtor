@@ -46,8 +46,8 @@ if ( is_session_started() === FALSE ) {
 // === Application data : version, dependencies, about message, ...
 $applicationName = "ProjeQtOr"; // Name of the application
 $copyright = $applicationName; // Copyright to be displayed
-$version = "V7.1.2"; // Version of application : Major / Minor / Release
-$build = "0203"; // Build number. To be increased on each release
+$version = "V7.1.3"; // Version of application : Major / Minor / Release
+$build = "0204"; // Build number. To be increased on each release
 $website = "http://www.projeqtor.org"; // ProjeQtOr site url
 if (!isset($aesKeyLength)) { // one can define key lenth to 256 in parameters.php with $aesKeyLength=256; // valid values are 128, 192 and 256
   $aesKeyLength=128;
@@ -982,7 +982,7 @@ function isNotificationSystemActiv() {
  * @param boolean $idLinkObjectName = '' if not restrict on idLinkObjectName - true if restrict to resource with idLinkObject null 
  * @return list of visible resources
  */
-function getUserVisibleResourcesList($limitToActiveResources=false, $listScreen="List", $idLinkObjectName='') {
+function getUserVisibleResourcesList($limitToActiveResources=false, $listScreen="List", $idLinkObjectName='',$includePool=false) {
     $crit="";
     if ($limitToActiveResources) {
         $crit = "idle=0 and "; 
@@ -992,6 +992,7 @@ function getUserVisibleResourcesList($limitToActiveResources=false, $listScreen=
     }
     $resourcesList = array();
     $res=new Resource();
+    if ($includePool) $res=new ResourceAll();
     $scope=Affectable::getVisibilityScope($listScreen);
     switch($scope) {
         case 'all' :
