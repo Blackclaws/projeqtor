@@ -239,6 +239,7 @@ class Sql {
       $str=str_replace('\\\\','\\',$str);
     }   
     $str=str_replace(chr(8),'',$str);
+    if ($str===null) $str='';
     $cnx=self::getConnection();
     return $cnx->quote($str);
   }

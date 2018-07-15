@@ -133,9 +133,9 @@ $resource=new ResourceAll($idResource);
                 class="input" 
                 onChange="assignmentChangeRole();" <?php echo ($realWork!=0 && $idRole)?"readonly=readonly":"";?>>                
                  <?php if($mode=='edit'){
-                          htmlDrawOptionForReference('idRole', $idRole, null, true);
+                   htmlDrawOptionForReference('idRole', $idRole, null, true);
                  } else {
-                          htmlDrawOptionForReference('idRole', null, null, false);
+                   htmlDrawOptionForReference('idRole', null, null, false);
                  }?>            
                </select>  
              </td>
@@ -183,6 +183,7 @@ $resource=new ResourceAll($idResource);
                  <label for="assignmentCapacity" ><?php echo i18n("colCapacity");?>&nbsp;:&nbsp;</label>
                </td>
                <td>
+                 <?php if ($mode=='edit' and $assignmentObj->capacity==0 and !$resource->isResourceTeam) round($assignmentObj->capacity=$resource->capacity*$assignmentObj->rate/100,1);?>
                  <div id="assignmentCapacity" name="assignmentCapacity" value="<?php echo ($mode=='edit')?$assignmentObj->capacity:"1";?>"
                    dojoType="dijit.form.NumberTextBox" 
                    style="width:97px" 
