@@ -188,19 +188,13 @@
     //ADD qCazelles - Filter by Status
     // --- Direct filter on status
     if ( array_key_exists('countStatus',$_REQUEST) and property_exists($obj, 'idStatus') and !$quickSearch) {
-      //CHANGE qCazelles - Correction filter by status - Ticket 185
-      //Old
-    	//$queryWhere.= ($queryWhere=='')?'':' and '.$table.'.'.$obj->getDatabaseColumnName('idStatus').' in (';
-    	//New
-    	$queryWhere .= ($queryWhere=='')?'':' and ';
-    	$queryWhere .= $table.'.'.$obj->getDatabaseColumnName('idStatus').' in (';
-    	//END CHANGE - Correction filter by status - Ticket 185
+      $queryWhere .= ($queryWhere=='')?'':' and ';
+    	$queryWhere .= $table.'.'.$obj->getDatabaseColumnName('idStatus').' in (0';
     	for ($i = 1; $i <= $_REQUEST['countStatus']; $i++) {
     		if ( array_key_exists('objectStatus'.$i,$_REQUEST) and trim($_REQUEST['objectStatus'.$i])!='') {
-    			$queryWhere.= Sql::str($_REQUEST['objectStatus'.$i]).', ';
+    			$queryWhere.= ', '.Sql::str($_REQUEST['objectStatus'.$i]);
     		}
     	}
-    	$queryWhere = substr($queryWhere, 0, -2); //Remove the last comma & space
     	$queryWhere.=')';
     }
     //END ADD qCazelles
