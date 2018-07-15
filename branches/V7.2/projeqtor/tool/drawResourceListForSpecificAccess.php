@@ -38,7 +38,8 @@ $table=array();
 if (! $user->isResource) {
   $table[0]=' ';
 }
-$table = getListForSpecificRights($specific);
+if (!isset($includePool)) $includePool=false;
+$table = getListForSpecificRights($specific,$includePool);
 
 $selectedProject=getSessionValue('project');
 if ($selectedProject and $selectedProject!='*' and (isset($limitResourceByProj) and $limitResourceByProj=='on') ) {
@@ -55,7 +56,7 @@ if ($selectedProject and $selectedProject!='*' and (isset($limitResourceByProj) 
 	}
 }
 
-$restrictArrayVisibility = getUserVisibleResourcesList(true);
+$restrictArrayVisibility = getUserVisibleResourcesList(true,null,null,$includePool);
 foreach ($table as $idR=>$nameR) {
   if (isset($restrictTableProjectSelected) and !isset($restrictTableProjectSelected[$idR])) {
     unset($table[$idR]);

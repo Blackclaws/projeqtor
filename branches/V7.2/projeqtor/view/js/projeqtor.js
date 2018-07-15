@@ -55,6 +55,9 @@ var directAccessIndex = null;
 var debugPerf = new Array();
 
 var pluginMenuPage = new Array();
+
+var previousSelectedProject=null;
+var previousSelectedProjectName=null;
 // =============================================================================
 // = Functions
 // =============================================================================
@@ -2305,12 +2308,16 @@ function i18n(str, vars) {
  *          the name of the field where selection is executed
  * @return void
  */
-function setSelectedProject(idProject, nameProject, selectionField) {
+function setSelectedProject(idProject, nameProject, selectionField,resetPrevious) {
   if (selectionField) {
     dijit.byId(selectionField).set(
         "label",
         '<div style="width:140px; overflow: hidden;text-align: left;" >'
             + nameProject + '</div>');
+  }
+  if (resetPrevious) {
+    previousSelectedProject=null;
+    previousSelectedProjectName=null;  
   }
   currentSelectedProject = idProject;
   if (idProject != "") {

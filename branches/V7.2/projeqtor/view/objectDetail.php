@@ -4242,11 +4242,10 @@ function drawTicketsList($obj, $refresh=false) {
     $crit=array('idClient'=>$obj->id);
     $listContacts=$contact->getSqlElementsFromCriteria($crit);
     if (count($listContacts)>0) {
-      $clauseWhere='idContact in (';
+      $clauseWhere='idContact in (0';
       foreach ($listContacts as $contact) {
-        $clauseWhere.=$contact->id.', ';
+        $clauseWhere.=",".$contact->id;
       }
-      $clauseWhere=substr($clauseWhere, 0, -2);
       $clauseWhere.=') and idle=0';
     } else {
       $clauseWhere='1=0';
