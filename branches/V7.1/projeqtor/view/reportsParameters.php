@@ -509,13 +509,15 @@ foreach ($listParam as $param) {
     <tr>
     <td class="label"><label><?php echo i18n('col' . ucfirst($param->name));?>&nbsp;:&nbsp;</label></td>
     <td>
-    <select dojoType="dijit.form.FilteringSelect" class="input" 
-    <?php echo autoOpenFilteringSelect();?>
+    <?php if (! $canChangeResource) $param->multiple=0;?>
+    <select dojoType="<?php echo (($param->multiple == 1) ? 'dojox.form.CheckedMultiSelect' : 'dijit.form.FilteringSelect') ?>" class="input" 
+    <?php echo ($param->multiple == 1) ? '' : autoOpenFilteringSelect(); ?>
+    <?php echo (($param->multiple == 1) ? ' style="border:0px;border-bottom:1px solid #eeeeee;width: 200px !important; height: 90px;" multiple="true"' : ' style="width:200px;"') ?>
        style="width: 200px;"
        <?php if (! $canChangeResource) echo ' readonly ';?>
-       id="<?php echo $param->name;?>" name="<?php echo $param->name;?>"
+       id="<?php echo $param->name;?>" name="<?php echo $param->name . (($param->multiple == 1) ? '[]' : '');?>"
      >
-       <?php htmlDrawOptionForReference('idResourceAll', $defaultValue, null, false); ?> 
+       <?php htmlDrawOptionForReference('idResourceAll', $defaultValue, null, (($param->multiple == 1)?true:false) ); ?> 
      </select>    
     </td>
     </tr>
