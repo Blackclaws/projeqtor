@@ -85,8 +85,16 @@ for ($i=0;$i<$nbDynamicFilterClauses;$i++) {
 	$arraySql=array();
 	$dataType=$obj->getDataType($idFilterAttribute);
 	$dataLength=$obj->getDataLength($idFilterAttribute);
+	$pos=strpos($idFilterAttribute, "__id");
+	if ($pos>0) {
+	  $dataType='int';
+	  $dataLength='12';
+	  $foreignKey=foreignKeyWithoutAlias($idFilterAttribute);
+	  $foreignKeyName=i18n(substr($idFilterAttribute,0,$pos));
+	  //$idFilterAttribute=$foreignKey;
+	}
 	$split=explode('_',$idFilterAttribute);
-	if (count($split)>1 ) {
+	if (count($split)>1 and strpos($idFilterAttribute, "__id")<0) {
 		$externalClass=$split[0];
 		$externalObj=new $externalClass();
 		$arrayDisp["attribute"]=$externalObj->getColCaption($split[1]);
@@ -159,6 +167,14 @@ for ($i=0;$i<$nbDynamicFilterClauses;$i++) {
 			$arraySql["value"].=Security::checkValidId($val);
 		}
 		$arraySql["value"].=")";
+		if ($idFilterAttribute=="assignedResource__idResourceAll") {
+		  $arraySql["operator"]=' exists ';
+		  $ass=new Assignment();
+		  $assTable=$ass->getDatabaseTableName();
+		  $obj=new $objectClass();
+		  $objTable=$obj->getDatabaseTableName();
+		  $arraySql["value"]="(select 'x' from $assTable where $assTable.refType='$objectClass' and $assTable.refId=$objTable.id and $assTable.idResource $idFilterOperator ".$arraySql["value"].")";
+		}
 	} else if ($idFilterOperator=="<=" and $filterDataType=="intDate") {
 		$arrayDisp["operator"]="<= " . i18n('today') . (($filterValue>0)?' +':' ');
 		$arraySql["operator"]="<=";
