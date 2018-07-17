@@ -229,7 +229,7 @@ if ($idFilterAttribute and $idFilterOperator) {
     }
     //$arrayDisp["value"].=")";
     $arraySql["value"].=")";
-    if ($idFilterAttribute="assignedResource__idResource") {
+    if ($idFilterAttribute=="assignedResource__idResourceAll" and ! $filterDynamicParameter) {
       $arraySql["operator"]=' exists ';
       $ass=new Assignment();
       $assTable=$ass->getDatabaseTableName();
