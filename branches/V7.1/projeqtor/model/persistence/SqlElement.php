@@ -4724,7 +4724,7 @@ abstract class SqlElement {
         }
         if ($affList and count ( $affList ) > 0) {
           foreach ( $affList as $aff ) {
-            $resource = new Resource ( $aff->idResource );
+            $resource = new Affectable ( $aff->idResource );
             if ($statusMail->mailToProject or $statusMail->mailToProjectIncludingParentProject) {
               // Change on V4.4.0 oly send mail if user has read access to item
               if ($aff->idResource == getSessionUser ()->id) {
@@ -4770,7 +4770,7 @@ abstract class SqlElement {
         $crit = array('refType' => $objectClass, 'refId' => $this->id);
         $assList = $ass->getSqlElementsFromCriteria ( $crit );
         foreach ( $assList as $ass ) {
-          $res = new Resource ( $ass->idResource );
+          $res = new ResourceAll ( $ass->idResource );
           $newDest = "###" . $res->email . "###";
           if ($res->email and strpos ( $destTab[$emailTemplateTab[$i]->id], $newDest ) === false) {
             $destTab[$emailTemplateTab[$i]->id] .= ($destTab[$emailTemplateTab[$i]->id]) ? ', ' : '';
