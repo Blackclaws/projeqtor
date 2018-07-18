@@ -200,9 +200,21 @@ foreach ($allowedResource as $resId=>$resName) {
   }
 }
 
-// ADD POOL
 $rta=new ResourceTeamAffectation();
 $today=date('Y-m-d');
+
+// ADD RESOURCES OF SELECTED POOL
+foreach ($allowedResource as $resId=>$resName) {
+  $rtaList=$rta->getSqlElementsFromCriteria(array('idResourceTeam'=>$resId));
+  foreach ($rtaList as $rta) {
+    if ($rta->idle) continue;
+    if ($rta->endDate==null or $rta->endDate>=$today) {
+      if (!isset($allowedResource[$rta->idResource])) $allowedResource[$rta->idResource]=SqlList::getNameFromId('ResourceAll', $rta->idResource);
+    }
+  }
+}
+
+// ADD POOLS OF SELECTED RESOURCES
 foreach ($allowedResource as $resId=>$resName) {
   $rtaList=$rta->getSqlElementsFromCriteria(array('idResource'=>$resId));
   foreach ($rtaList as $rta) {
