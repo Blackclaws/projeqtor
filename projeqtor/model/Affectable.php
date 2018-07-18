@@ -44,6 +44,7 @@ class Affectable extends SqlElement {
   public $idTeam;
   public $idOrganization;
   public $idle;
+  public $dontReceiveTeamMails;
   public $_constructForName=true;
   public $_calculateForColumn=array("name" => "coalesce(fullName,concat(name,' #'))","userName" => "coalesce(name,concat(fullName,' *'))");
   private static $_fieldsAttributes=array("name" => "required","isContact" => "readonly","isUser" => "readonly","isResource" => "readonly","isResourceTeam"=>"readonly","idle" => "hidden");
