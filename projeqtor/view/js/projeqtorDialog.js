@@ -3583,8 +3583,8 @@ function showFilterDialog() {
     });
     dojo.byId('filterDynamicParameterPane').style.display='none';
     dijit.byId('idFilterAttribute').reset();
-    if (dojo.byId('objectClass') && dojo.byId('objectClass').value) dojo.byId('filterObjectClass').value=dojo.byId('objectClass').value;
-    else if (dojo.byId('objectClassManual') && dojo.byId('objectClassManual').value) dojo.byId('filterObjectClass').value=dojo.byId('objectClassManual').value;
+    if (dojo.byId('objectClassManual') && dojo.byId('objectClassManual').value) dojo.byId('filterObjectClass').value=dojo.byId('objectClassManual').value;
+    else if (dojo.byId('objectClass') && dojo.byId('objectClass').value) dojo.byId('filterObjectClass').value=dojo.byId('objectClass').value;
     else dojo.byId('filterObjectClass').value=null;
     filterType="";
     var compUrl=(top.dijit.byId("dialogDetail").open) ? '&comboDetail=true' : '';
@@ -3603,8 +3603,8 @@ function showFilterDialog() {
     loadContent("../tool/displayFilterSharedList.php" + compUrl,
         "listSharedFilters", "dialogFilterForm", false);
     var objectClass='';
-    if (dojo.byId("objectClass") && dojo.byId("objectClass").value) objectClass=dojo.byId("objectClass").value;
-    else if (dojo.byId("objectClassManual") && dojo.byId("objectClassManual").value && dojo.byId("objectClassManual").value=='Planning') objectClass='Activity';
+    if (dojo.byId("objectClassManual") && dojo.byId("objectClassManual").value && dojo.byId("objectClassManual").value=='Planning') objectClass='Activity';
+    else  if (dojo.byId("objectClass") && dojo.byId("objectClass").value) objectClass=dojo.byId("objectClass").value;
     refreshListSpecific('object', 'idFilterAttribute', 'objectClass', objectClass);
     dijit.byId("dialogFilter").show();
   }
@@ -4083,8 +4083,8 @@ function selectFilterContinue() {
   } else {
     doc.dijit.byId("listFilterFilter").set("iconClass", "iconFilter");
   }
-  if (dojo.byId("objectClass") && dojo.byId("objectClass").value) objectClass=dojo.byId("objectClass").value;
-  else if (! top.dijit.byId('dialogDetail').open && dojo.byId("objectClassManual") && dojo.byId("objectClassManual").value) objectClass=dojo.byId("objectClassManual").value;
+  if (! top.dijit.byId('dialogDetail').open && dojo.byId("objectClassManual") && dojo.byId("objectClassManual").value) objectClass=dojo.byId("objectClassManual").value;
+  else if (dojo.byId("objectClass") && dojo.byId("objectClass").value) objectClass=dojo.byId("objectClass").value;
   doc.loadContent(
       "../tool/displayFilterList.php?context=directFilterList&filterObjectClass="
           + objectClass + compUrl, "directFilterList", null,
@@ -4191,8 +4191,8 @@ function selectStoredFilter(idFilter, context, contentLoad, container) {
         top.dojo.byId('noFilterSelected').value='false';
       }
     }
-    if (dojo.byId("objectClass") && dojo.byId("objectClass").value) objectClass=dojo.byId("objectClass").value;
-    else if (dojo.byId("objectClassManual") && dojo.byId("objectClassManual").value) objectClass=dojo.byId("objectClassManual").value;
+    if (dojo.byId("objectClassManual") && dojo.byId("objectClassManual").value) objectClass=dojo.byId("objectClassManual").value;
+    else if (dojo.byId("objectClass") && dojo.byId("objectClass").value) objectClass=dojo.byId("objectClass").value;
   	if (dojo.byId('dynamicFilterId'+idFilter)) {  		
   		var param="&idFilter="+idFilter+"&filterObjectClass="+objectClass;
   		loadDialog('dialogDynamicFilter', null, true, param, true);
@@ -4283,8 +4283,8 @@ function selectDynamicFilterContinue() {
 		  dojo.byId('filterName').value=dijit.byId('filterNameDisplay').get('value');
 	  }
 	  doc.dijit.byId("listFilterFilter").set("iconClass", "iconActiveFilter");
-	  if (dojo.byId("objectClass") && dojo.byId("objectClass").value) objectClass=dojo.byId("objectClass").value;
-    else if (dojo.byId("objectClassManual") && dojo.byId("objectClassManual").value) objectClass=dojo.byId("objectClassManual").value;
+	  if (dojo.byId("objectClassManual") && dojo.byId("objectClassManual").value) objectClass=dojo.byId("objectClassManual").value;
+	  else if (dojo.byId("objectClass") && dojo.byId("objectClass").value) objectClass=dojo.byId("objectClass").value;
 	  doc.loadContent(
 	      "../tool/displayFilterList.php?context=directFilterList&filterObjectClass="
 	          + objectClass, "directFilterList", null,
