@@ -4732,6 +4732,7 @@ function hideDirectChangeStatus() {
 }
 
 function drawGraphStatus() {
+  if (! dijit.byId("idStatus") || ! dijit.byId("idProject") || ! dojo.byId('objectClass') ) return;
   var callBack = function(){
     dojo.byId('graphStatusContentDiv');
   };

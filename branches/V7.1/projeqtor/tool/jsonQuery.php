@@ -572,10 +572,8 @@
     		$obj=new $objectClass();
     		$first=true;
     		$arrayFields=array();
-    	  //if (Sql::isPgsql()) {
-    	  	$arrayFields=$obj->getLowercaseFieldsArray();
-    	  	//$arrayFieldsWithCase=$obj->getFieldsArray();        
-        //}
+    	  $arrayFields=$obj->getLowercaseFieldsArray();
+    	  $arrayFieldsWithCase=$obj->getFieldsArray(true);        
     		while ($line = Sql::fetchLine($result)) {
     			if ($first) {
 	    			foreach ($line as $id => $val) {
@@ -583,6 +581,7 @@
 	    				if (Sql::isPgsql() and isset($arrayFields[$id])) {
 	    					$colId=$arrayFields[$id];
 	    				}
+	    				if (!isset($arrayFieldsWithCase[$colId])) continue;
 	    				if (property_exists($obj, $colId)) {
 	    				  $val=encodeCSV($obj->getColCaption($colId));
 	    				} else if (property_exists($obj, 'WorkElement') and property_exists('WorkElement', $colId)) {
@@ -625,6 +624,11 @@
     			foreach ($line as $id => $val) {
     			  if ($id=='refType') $refType=$val;
     				$foreign=false;
+    				$colId=$id;
+    				if (Sql::isPgsql() and isset($arrayFields[$id])) {
+    				  $colId=$arrayFields[$id];
+    				}
+    				if (!isset($arrayFieldsWithCase[$colId])) continue;
     				if (substr($id, 0,2)=='id' and strlen($id)>2) {
     					$class=substr($arrayFields[strtolower($id)], 2);
     					if (ucfirst($class)==$class) {
