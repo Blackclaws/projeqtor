@@ -194,7 +194,7 @@ function htmlDrawOptionForReference($col, $selection, $obj=null, $required=false
   } else if ($col=='idLinkable' || $col=='idCopyable'){
     // Limit list of object to Link or to Copy to to objects visible to the user (depending on his access rights
     $typeRight='read';
-    if($col=='idCopyable')$typeRight='update';
+    if($col=='idCopyable') $typeRight='create';
     $table=SqlList::getListNotTranslated($listType,$column,$selection, (! $obj)?!$limitToActiveProjects:false );
     $arrayToDel=array();
     foreach($table as $key => $val){

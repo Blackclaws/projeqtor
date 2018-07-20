@@ -3372,7 +3372,7 @@ abstract class SqlElement {
 
   public function getFieldsArray($limitToExportableFields = false) {
     $arrayFields = array();
-    $extraHiddenFields = $this->getExtraHiddenFields ( null, null, getSessionUser ()->getProfile () );
+    $extraHiddenFields = $this->getExtraHiddenFields ( null, null, getSessionUser ()->getProfile (), $limitToExportableFields );
     foreach ( $this as $fld => $fldVal ) {
       if (is_object ( $this->$fld )) {
         $arrayFields = array_merge ( $arrayFields, $this->$fld->getFieldsArray ( $limitToExportableFields ) );
@@ -6303,7 +6303,7 @@ public function getMailDetailFromTemplate($templateToReplace, $lastChangeDate=nu
     return $result;
   }
 
-  public function getExtraHiddenFields($newType = "", $newStatus = "", $newProfile = "") {
+  public function getExtraHiddenFields($newType = "", $newStatus = "", $newProfile = "", $forExport=false) {
     $class = get_class ( $this );
     $testObj = $this;
     $testClass = $class;
@@ -6359,6 +6359,7 @@ public function getMailDetailFromTemplate($templateToReplace, $lastChangeDate=nu
     // if ($newStatus=='*' and $newProfile=='*') return $listType;
     // if ($newType=='*' and $newProfile=='*') return $listStatus;
     // if ($newType=='*' and $newStatus=='*') return $listProfile;
+    if ($forExport) return array_unique ( $listProfile );
     return array_unique ( array_merge ( $listType, $listStatus, $listProfile ) );
   }
 
