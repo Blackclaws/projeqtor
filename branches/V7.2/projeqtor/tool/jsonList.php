@@ -289,7 +289,8 @@ if ($type == 'empty') {
       }
     }
     // ADD qCazelles
-    if ($dataType == 'idProductVersion' and $critField == 'idProject') {
+    if (($dataType=='idProductVersion' or $dataType=='idTargetProductVersion' or $dataType=='idOriginalProductVersion') and $critField=='idProject') {
+    //if ($dataType == 'idProductVersion' and $critField == 'idProject') {
       // if (Parameter::getGlobalParameter('sortingLists')=='YES') {
       // $versionProject=new VersionProject();
       // $list=$versionProject->getVersionsFromProject($critValue);

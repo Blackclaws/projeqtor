@@ -28,7 +28,7 @@
  * Stauts defines list stauts an activity or action can get in (lifecylce).
  */ 
 require_once('_securityCheck.php');
-class ResourceTeamMain extends Resource {
+class ResourceTeamMain extends ResourceMain {
   // extends SqlElement, so has $id
   
   public $_sec_AffectationsResourceTeam;
