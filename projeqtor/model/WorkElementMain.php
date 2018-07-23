@@ -356,10 +356,11 @@ class WorkElementMain extends SqlElement {
 		return $result;
 	}
   function control() {
+    global $saveDispatchMode;
     $result="";
     $old = $this->getOld ();
     $diff=$this->realWork-$old->realWork;
-    if ($diff < 0) {
+    if ($diff < 0 and $saveDispatchMode!=true ) {
       $crit = array (
           'idWorkElement' => $this->id,
           'idResource' => getSessionUser()->id
