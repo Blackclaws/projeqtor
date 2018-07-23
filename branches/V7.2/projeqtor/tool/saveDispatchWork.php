@@ -75,7 +75,7 @@ $we=new WorkElement($weId);
 $obj=new $refType($refId);
 
 Sql::beginTransaction();
-
+$saveDispatchMode=true;
 $error=false;
 $result=i18n("messageNoChange").' '.i18n("colRealWork").'<input type="hidden" id="lastSaveId" value="" /><input type="hidden" id="lastOperation" value="update" /><input type="hidden" id="lastOperationStatus" value="NO_CHANGE" />';
 if ($we->realWork!=$total) {
