@@ -79,7 +79,7 @@ function htmlDrawOptionForReference($col, $selection, $obj=null, $required=false
 		$column='location';
 	}	
 	// idProductOrComponent is an idProduct
-  if (($col=='idVersion' or $col=='idProductVersion' or $col=='idComponentVersion') and ($critFld=='idProductOrComponent')) {
+  if ((substr($col,0,2)=='id' and substr($col,0,-7)=='Version') and ($critFld=='idProductOrComponent')) {
     $critFld='idProduct';
   }
   if ($col=='idProfile'){
