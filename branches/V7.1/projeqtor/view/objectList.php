@@ -627,7 +627,7 @@ $height = ((floor((count($listStatus)-0.1)/10))+1)  * 20;
 <div class="listTitle" id="barFilterByStatus" dojoType="dijit.layout.ContentPane" region="top" style="display: <?php echo $displayStatus;?>;height:<?php echo $height; ?>px;min-width:1250px;line-height:18px;">
 	<table style="position:absolute;top:2px">
 		<tr>
-			<td style="font-weight:bold;padding-left:50px;">Status&nbsp;:&nbsp;</td>
+			<td style="font-weight:bold;padding-left:50px;"><?php echo i18n("colIdStatus");?>&nbsp;:&nbsp;</td>
 <?php
   $cptStatus=0;
 	foreach ($listStatus as $status) {
