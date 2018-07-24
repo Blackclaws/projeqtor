@@ -192,8 +192,8 @@ class IndicatorValue extends SqlElement {
   	  $indVal->warningTargetValue=null;
   	  $indVal->alertTargetValue=null;
   	  if (trim($indVal->targetDateTime)) {
-  	  	$indVal->warningTargetDateTime=addDelayToDatetime($indVal->targetDateTime, (-1)*$def->warningValue, $def->codeWarningDelayUnit);
-  	    $indVal->alertTargetDateTime=addDelayToDatetime($indVal->targetDateTime, (-1)*$def->alertValue, $def->codeAlertDelayUnit);
+  	  	if ($def->warningValue) $indVal->warningTargetDateTime=addDelayToDatetime($indVal->targetDateTime, (-1)*$def->warningValue, $def->codeWarningDelayUnit);
+  	    if ($def->alertValue) $indVal->alertTargetDateTime=addDelayToDatetime($indVal->targetDateTime, (-1)*$def->alertValue, $def->codeAlertDelayUnit);
   	  }
   	  $indVal->checkDates($obj);  	  
   	} else if ($ind->type=="percent") {
