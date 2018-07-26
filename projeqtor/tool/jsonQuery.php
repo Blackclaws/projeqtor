@@ -578,8 +578,8 @@
     		$obj=new $objectClass();
     		$first=true;
     		$arrayFields=array();
-    	  $arrayFields=$obj->getLowercaseFieldsArray();
-   	  	$arrayFieldsWithCase=$obj->getFieldsArray();        
+        $arrayFields=$obj->getLowercaseFieldsArray();
+   	    $arrayFieldsWithCase=$obj->getFieldsArray();        
     		while ($line = Sql::fetchLine($result)) {
     		  if ($first) {
 	    			foreach ($line as $id => $val) {
