@@ -417,7 +417,7 @@
   	        foreach ($assList as $ass) {       	
   	        	$res=new ResourceAll($ass->idResource,true);
   	        	if (! isset($arrayResource[$res->id])) {
-    	        	$display=$res->$displayResource;
+    	        	$display=($displayResource=='NO')?null:$res->$displayResource;
     	        	if ($displayResource=='initials' and ! $display) {
     	        	  //$encoding=mb_detect_encoding($res->name, 'ISO-8859-1, UTF-8');
     	        	  //$display=$encoding;
