@@ -517,6 +517,7 @@ class ProjectMain extends SqlElement {
    */  
   public function drawSubProjects($selectField=null, $recursiveCall=false, $limitToUserProjects=false, $limitToActiveProjects=false) {
 scriptLog("Project($this->id)->drawSubProjects(selectField=$selectField, recursiveCall=$recursiveCall, limitToUserProjects=$limitToUserProjects, limitToActiveProjects=$limitToActiveProjects)");
+    global $outMode;
   	self::$_drawSubProjectsDone[$this->id]=$this->name;
     if ($limitToUserProjects) {
       $user=getSessionUser();
@@ -535,6 +536,7 @@ scriptLog("Project($this->id)->drawSubProjects(selectField=$selectField, recursi
     }  
     $result="";
     $clickEvent=' onClick=""';
+    if ($outMode=='html' or $outMode=='pdf') $clickEvent='';
     if ($limitToUserProjects and $user->_accessControlVisibility != 'ALL' and ! $recursiveCall) {
     	$subList=array();
     	foreach($visibleProjectsList as $idP=>$nameP) {
@@ -549,7 +551,8 @@ scriptLog("Project($this->id)->drawSubProjects(selectField=$selectField, recursi
     if ($selectField!=null and ! $recursiveCall) { 
       $result .= '<table ><tr><td>';
       $clickEvent=' onClick=\'setSelectedProject("*", "<i>' . i18n('allProjects') . '</i>", "' . $selectField . '");\' ';
-      $result .= '<div ' . $clickEvent . ' class="menuTree" style="width:100%;">';
+      if ($outMode=='html' or $outMode=='pdf') $clickEvent='';
+      $result .= '<div ' . $clickEvent . ' class="'.(($outMode=='html' or $outMode=='pdf')?'':'menuTree').'" style="width:100%;">';
       $result .= '<i>' . i18n('allProjects') . '</i>';
       $result .= '</div></td></tr></table>';
     }
@@ -575,12 +578,13 @@ scriptLog("Project($this->id)->drawSubProjects(selectField=$selectField, recursi
         	$prj=new Project($idPrj);
           $result .='<tr><td valign="top" width="20px"><img src="css/images/iconList16.png" height="16px" /></td>';
           if ($selectField==null) {
-            $result .= '<td class="display"  NOWRAP>' . htmlDrawLink($prj);
+            $result .= '<td class="'.(($outMode=='html' or $outMode=='pdf')?'':'display').'"  NOWRAP>' . (($outMode=='html' or $outMode=='pdf')?htmlEncode($prj->name):htmlDrawLink($prj));
           } else if (! $reachLine) {
-            $result .= '<td style="#AAAAAA;" NOWRAP><div class="display" style="width: 100%;">' . htmlEncode($prj->name) . '</div>';
+            $result .= '<td style="#AAAAAA;" NOWRAP><div class="'.(($outMode=='html' or $outMode=='pdf')?'':'display').'" style="width: 100%;">' . htmlEncode($prj->name) . '</div>';
           } else {
             $clickEvent=' onClick=\'setSelectedProject("' . htmlEncode($prj->id) . '", "' . htmlEncode($prj->name,'parameter') . '", "' . $selectField . '");\' ';
-            $result .= '<td><div ' . $clickEvent . ' class="menuTree" style="width:100%;">';
+            if ($outMode=='html' or $outMode=='pdf') $clickEvent='';
+            $result .= '<td><div ' . $clickEvent . ' class="'.(($outMode=='html' or $outMode=='pdf')?'':'menuTree').'" style="width:100%;color:black">';
             $result .= htmlEncode($prj->name);
             $result .= '</div>';
           }
