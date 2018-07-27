@@ -406,7 +406,7 @@ if (array_key_exists('refresh', $_REQUEST)) {
  */
 function drawTableFromObject($obj, $included=false, $parentReadOnly=false, $parentHidden=false) {
   scriptLog("drawTableFromObject(obj, included=$included, parentReadOnly=$parentReadOnly)");
-  global $toolTip, $cr, $print, $treatedObjects, $displayWidth, $outMode, $comboDetail, $collapsedList, $printWidth, $profile, $detailWidth, $readOnly, $largeWidth, $widthPct, $nbColMax, $preseveHtmlFormatingForPDF, $reorg, $leftPane, $rightPane, $extraPane, $bottomPane, $nbColMax, $section, $beforeAllPanes;
+  global $toolTip, $cr, $print, $treatedObjects, $displayWidth, $outMode, $comboDetail, $collapsedList, $printWidth, $profile, $detailWidth, $readOnly, $largeWidth, $widthPct, $nbColMax, $preseveHtmlFormatingForPDF, $reorg, $leftPane, $rightPane, $extraPane, $bottomPane, $nbColMax, $section, $beforeAllPanes, $colWidth;
   $ckEditorNumber=0; // Will be used only if getEditor=="CK" for CKEditor
   
   if (property_exists($obj, '_sec_Assignment')) {
