@@ -301,6 +301,7 @@ if ($type == 'empty') {} else if ($type == 'object') { // ======================
       $versionProject = new VersionProject ();
       $listVersionProjects = $versionProject->getSqlElementsFromCriteria ( null, false, $clauseWhere );
       $crit = array('id' => array());
+      if (count ($listVersionProjects)==0 ) $crit ['id'] []=0;
       foreach ( $listVersionProjects as $versionProject ) {
         $crit ['id'] [] = $versionProject->idVersion;
       }
