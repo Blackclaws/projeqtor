@@ -53,7 +53,7 @@ function generateImputationAlert() {
 
   $tmpDate=$startDate;
   $emptyArray=array(
-    'name'=>$name,
+    'name'=>'',
     'full'=>false,
     'days'=>array(),
     'capacity'=>1,
@@ -71,6 +71,7 @@ function generateImputationAlert() {
   // Initialize list of resources
   $lstRes=array();
   foreach ($lstResource as $id=>$name) {
+    $emptyArray['name']=$name;
     $lstRes[$id]=array(
         'name'=>$name, 
         'full'=>false, 

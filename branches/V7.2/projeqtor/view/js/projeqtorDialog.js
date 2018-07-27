@@ -7537,7 +7537,7 @@ function openExportDialog(Type) {
   }
   var objectClass=(dojo.byId('objectClassList'))?dojo.byId('objectClassList').value:dojo.byId('objectClass').value;
   var params = "&objectClass=" + objectClass;
-  if(objectClass.value == 'Work'){
+  if(objectClass == 'Work'){
     params += "&dateWeek="+ dojo.byId("dateWeek").value;
     params += "&dateMonth="+ dojo.byId("dateMonth").value;
     params += "&userId="+ dojo.byId("userId").value;
