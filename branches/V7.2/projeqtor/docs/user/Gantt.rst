@@ -392,7 +392,7 @@ For each planning element, a Gantt bar is displayed at them right.
    :alt: Popup menu - Create a new item
    :align: center 
 
-*warning: You have to selected week or day scale to display detail or a message 
+Warning: You have to selected week or day scale to display detail or a message 
 will ask you to switch to smaller scale.
 
 .. raw:: latex

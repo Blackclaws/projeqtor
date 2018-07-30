@@ -187,6 +187,9 @@ Global parameters screen allows configuration of application settings.
 
     * Select your type of alert : Internal, Email, both or none.
 
+ .. compound:: **Display pools on timesheet**
+     * Possibly to display the pool whose the resource belongs to.
+
 .. rubric:: GENERAL SECTION 2 : Activity
 
 .. rubric:: Section: Planning
@@ -195,41 +198,107 @@ Global parameters screen allows configuration of application settings.
 
  .. compound:: **Show resource in Gantt**
 
-    * Select if the resource can be displayed in a Gantt chart, and format for display (name or initials).
+    * Select if the resource can be displayed in a Gantt chart, and format for display (name or initials or none).
 
  .. compound:: **Max projects to display**
 
     * Defines maximum number of projects to display.
     * To avoid performance issues.
+
+
+  .. compound:: **Apply strict mode for dependencies**
+
+    * If yes, the successor should begin the next day 
+    * If no, the successor can start the same day.
     
 .. rubric:: Section: Tickets
-.. compound:: **Only responsible works on ticket**
+ .. compound:: **Only responsible works on ticket**
 
     * Only responsible can enter some real work on the ticket.
 
-.. compound:: **Display ticket at customer level**
+ .. compound:: **Ticket responsible from product Responsible**
+
+    * Select if the product Responsible is displayed ( always, if empty, never) as Ticket Responsible on that screen
+
+ .. compound:: **Limit planning activity to those whit flag**
+    * Display planning activity selected for the ticket
+
+ .. compound:: **Enable to filter ticket reports by priority **
+    * Can display tickets on Report screen by level of priority
+
+ .. compound:: **Display ticket at customer level**
     * Display of tickets on the Customer screen and on the Contacts screen
+
+ .. compound:: **Display ticket at version level**
+    * Display of tickets on the version screen 
+
+ .. compound:: **Manage accontable on ticket**
+    * Display the coordinator as Accountable, so the Responsible is the current actor
     
 .. rubric:: Section: Organization
-.. rubric:: Section: Automation
-.. compound:: **Consolidate validated work & cost**
 
-    * Select if validated work & cost are consolidated on top activities and projects :
+ .. compound:: **Use budget feature for organizations**
+
+    *If yes, can display and work on budget for an organization.
+
+
+
+.. rubric:: Section: Automation
+
+ .. compound:: **Consolidate validated work & cost**
+
+    * Select if validated work & cost are consolidated on top activities and therefore for projects :
   
-      * **Never** : Not consolidate
-      * **Always** : Values are replaced on activities and project.
-      * **Only is set** : Replaces values, only if not already set. 
+      * **Never** : Not consolidated
+      * **Always** : Values are replaced on activities and project.(erase parents)
+      * **Only is set** : Replaces values ( excepted if set by null or stay not indicated,do not erase parents)
+
+ .. compound:: **Auto set Responsible if single resource**
+
+    * Automatically set Responsible if not set and by the only one resource allocated to the project 
+
+ .. compound:: ** Auto allocated the Manager to the project**
+ * Automatically create an allocation for the project Manager to the project. He should be a resource.
+
+ .. compound:: ** Auto set a Responsible if needed**
+ * Automatically set Responsible to current resource (as using the element) if not set and if a Responsible is required (respecting access rights)
+
+ .. compound:: ** Auto assign Responsible to activity**
+ * Assign automatically the Responsible to activities
+
+ .. compound:: ** Update milestone from deliverable** (Have to link elements)
+ * Update milestone Responsible automatically when the Responsible of deliverable has changed.
+
+ .. compound:: ** Update milestone from incoming** (Have to link elements)
+ * Update milestone Responsible automatically when the Responsible of deliverable has changed.
+
+ .. compound:: ** Update deliverable from milestone**(have to link elements)
+ * Update deliverable Responsible automatically when the Responsible of mielstone has changed.
+
+ .. compound:: ** Update incoming from milestone**(have to link elements)
+ * Update incoming Responsible automatically when the Responsible of milestone has changed.
+
+ .. compound:: ** Auto set parent activity status**
+ * Auto set status of parent activity from the status of children activity. 
+
+
 .. rubric:: Section: Milestones
 
-Milestone Management on Requirements, Tickets, Product Versions, Incomings, Deliverables and Deliveries.
-It updates the target (planned) date of the element from the planned date of the milestone.
+ .. compound:: ** Manage target milestone**
+ * It updates the target (planned) date of the element (on Requirements, Tickets, Product Versions, Incomings, Deliverables and Deliveries) from the planned date of the milestone.
 
-It optionally allows you to link the element and the milestone (to get the list of linked elements from the milestone view)
+ .. compound:: ** Auto link the milestone**
+ * It optionally allows you to display the element linked to the milestone (The option above should be on "yes" to have access to the selection of milestone targetted)
 
-It optionally allows you to automatically retrieve the milestone from the milestone of the 
-Project Version. 
-.. rubric:: Section: Controls and restrictions    
+ .. compound:: ** Set milestone from product version**
+ * It optionally allows you to automatically retrieve the milestone from the milestone of the Project Version.
    
+.. rubric:: Section: Controls and restrictions
+
+ .. compound:: ** Allow type restriction on project**
+ * if yes : allow to define additional restrictions of types on each projet type additionally to restrictions defined eventually at each project type level by the Administrator.
+
+ 
 .. rubric:: GENERAL SECTION 3 : Display
 .. rubric:: Section: Display
 .. rubric:: Section: Localization
