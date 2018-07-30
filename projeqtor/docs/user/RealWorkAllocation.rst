@@ -170,7 +170,7 @@ The list displays the assigned tasks for the resource.
     
     .. note:: Click on icon |Note|
       
-      * to open windows view comments
+* to open windows view comments
       
 .. figure:: /images/GUI/left_click_note.png
 
@@ -187,7 +187,7 @@ The list displays the assigned tasks for the resource.
   .. figure:: /images/GUI/screenshot126.png
        :alt: The last column is the sum for all days.
         
-      * On the last column is the sum for all days of the week. It is a synthesis displayed for each project and globally for the whole week.
+      On the last column is the sum for all days of the week. It is a synthesis displayed for each project and globally for the whole week.
       
 .. raw:: latex
 

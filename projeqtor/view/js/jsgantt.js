@@ -2231,14 +2231,22 @@ JSGantt.exitBarLink = function (idRow) {
 function leftMouseWheel(evt) {
 	var oldTop=parseInt(dojo.byId('leftside').style.top);
 	var newTop=oldTop;
-	if (evt) newTop=oldTop+(100*evt.wheelDelta/120);
+	if (evt && evt.deltaMode==1) {
+	  var delta=evt.deltaY;
+	  if (dojo.isFF) {
+	    if (delta>0) delta+=1;
+	    else delta-=1;
+	  }
+	  newTop=oldTop-(delta*21);
+	} else if (evt) {
+	  newTop=oldTop-(evt.deltaY);
+	}
 	var visibleHeight=parseInt(dojo.byId('rightGanttChartDIV').style.height);
 	var totalHeight=parseInt(dojo.byId('leftside').style.height);
 	if (newTop>0) newTop=0;
-	//alert('oldTop='+oldTop+" newTop="+newTop+' visibleHeight='+visibleHeight+' totalHeight='+totalHeight);
-    dojo.byId('rightGanttChartDIV').scrollTop +=oldTop-newTop;
-    //dojo.byId('leftside').style.top=newTop+'px';
-    dojo.byId('leftside').style.top='-'+(dojo.byId('rightGanttChartDIV').scrollTop)+'px';
+  dojo.byId('rightGanttChartDIV').scrollTop +=oldTop-newTop;
+  //dojo.byId('leftside').style.top=newTop+'px';
+  dojo.byId('leftside').style.top='-'+(dojo.byId('rightGanttChartDIV').scrollTop)+'px';
 }
 
 function adjustSpecificDaysHeight() {

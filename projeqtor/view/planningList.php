@@ -490,7 +490,7 @@ if (RequestHandler::isCodeSet('destinationWidth')) {
       style="width:<?php echo $leftPartSize;?>; height:100%; overflow-x:scroll; overflow-y:hidden;" class="ganttDiv" 
       id="leftGanttChartDIV" name="leftGanttChartDIV"
       onScroll="dojo.byId('ganttScale').style.left=(this.scrollLeft)+'px'; this.scrollTop=0;" 
-      onmousewheel="leftMouseWheel(event);">
+      onWheel="leftMouseWheel(event);">
       <script type="dojo/method" event="onUnload" >
          var width=this.domNode.style.width;
          setTimeout("saveUserParameter('planningLeftSize','"+width+"');",1);

@@ -514,3 +514,6 @@ div .scrollRightTop {
 	width:3px !important;
 	background-color: #0000ff !important;
 }
+#leftside, #rightGanttChartDIV {
+  scroll-behavior: smooth;
+}
