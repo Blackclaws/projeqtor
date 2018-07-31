@@ -1122,11 +1122,6 @@ Special fields
 
 This section describes the ProjeQtOr special fields.
 
-.. contents:: Special fields
-   :depth: 1
-   :local: 
-   :backlinks: top
-
 
 Accelerator buttons
 """""""""""""""""""
