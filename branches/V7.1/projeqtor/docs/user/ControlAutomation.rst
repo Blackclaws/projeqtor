@@ -724,10 +724,10 @@ AND
 AND
 isnull (# {paymentDate)
 
-.. note:: 
+.. note::
 
-* The rule to apply is not mandatory. If the rule is empty, then only the reference date is used to determine whether or not a notification is generated.
-In addition to choosing a dynamic field, you can choose to use an operator or function with the following elements:
+  The rule to apply is not mandatory. If the rule is empty, then only the reference date is used to determine whether or not a notification is generated. 
+  In addition to choosing a dynamic field, you can choose to use an operator or function with the following elements:
 
 .. figure:: /images/GUI/screenshot155.png
 

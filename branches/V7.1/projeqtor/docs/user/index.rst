@@ -52,6 +52,7 @@ Current version is V7.1
 
 
 .. rubric:: Planning
+
 -	Managements of pool of resource
 
 A pool is a resource that contains several resources and can therefore be allocated to projects and assigned to activities.
@@ -255,6 +256,7 @@ Requirements & Tests
    :maxdepth: 1
 
    RequirementsTest
+   RequirementsDashBoard
 
 Financial
 =========
@@ -376,7 +378,7 @@ Administration
    Administration
 
 Activity Stream
-==============
+===============
 
 .. toctree::
    :maxdepth: 1

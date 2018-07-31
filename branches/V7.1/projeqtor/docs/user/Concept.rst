@@ -316,8 +316,8 @@ Two methods can be used to create a draft planning.
 
 .. _planning-element:
 
-Planning elements
------------------
+Plannable elements
+------------------
 
 ProjeQtOr offers standard planning elements like Project, Activity and Milestone.
 
