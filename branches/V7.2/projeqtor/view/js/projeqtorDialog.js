@@ -6238,6 +6238,10 @@ function loadMenuBarItem(item, itemName, from) {
     vGanttCurrentLine=-1;
     cleanContent("centerDiv");
     loadContent("resourcePlanningMain.php", "centerDiv");
+  } else if (item == 'GlobalPlanning') {
+    vGanttCurrentLine=-1;
+    cleanContent("centerDiv");
+    loadContent("globalPlanningMain.php", "centerDiv");
   } else if (item == 'Imputation') {
     loadContent("imputationMain.php", "centerDiv");
   } else if (item == 'Diary') {
@@ -6918,6 +6922,24 @@ function globalViewSelectItems(value) {
   };
   if (value.length==0) value='none';
   saveDataToSession('globalViewSelectedItems', value, true, finish);
+  oldSelectedItems=value;
+}
+function globalPlanningSelectItems(value) {
+  if (!oldSelectedItems || oldSelectedItems==value) return;
+  if (oldSelectedItems.indexOf(" ")>=0 && value.length>1 ) {
+    value[0]=null;
+    oldSelectedItems=value;
+    dijit.byId("globalPlanningSelectItems").set("value",value);
+  } else if (value.indexOf(" ")>=0 && oldSelectedItems.indexOf(" ")===-1) {
+    value=[" "];
+    oldSelectedItems=value;
+    dijit.byId("globalPlanningSelectItems").set("value",value);
+  }
+  var finish=function() {
+    refreshJsonPlanning();
+  };
+  if (value.length==0) value='none';
+  saveDataToSession('globalPlanningSelectedItems', value, true, finish);
   oldSelectedItems=value;
 }
 

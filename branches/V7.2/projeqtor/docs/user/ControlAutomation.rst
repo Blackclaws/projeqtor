@@ -720,10 +720,10 @@ AND
 AND
 isnull (# {paymentDate)
 
-.. note:: 
+.. note::
 
-* The rule to apply is not mandatory. If the rule is empty, then only the reference date is used to determine whether or not a notification is generated.
-In addition to choosing a dynamic field, you can choose to use an operator or function with the following elements:
+  The rule to apply is not mandatory. If the rule is empty, then only the reference date is used to determine whether or not a notification is generated. 
+  In addition to choosing a dynamic field, you can choose to use an operator or function with the following elements:
 
 .. figure:: /images/GUI/screenshot155.png
 
@@ -733,8 +733,8 @@ In addition to choosing a dynamic field, you can choose to use an operator or fu
 
 • Start as: 
 
-• Reference Date : This is the notification date of the creation of the notification.
-Example: 'Due date' (paymentDueDate) is selected. For all invoices that are not the previous rule, a notification will be generated if the due date is greater than or equal to the current date.
+• | Reference Date : This is the notification date of the creation of the notification.
+  | Example: 'Due date' (paymentDueDate) is selected. For all invoices that are not the previous rule, a notification will be generated if the due date is greater than or equal to the current date.
 
 • Month: If checked, the generator (notification) applies to the year from the reference date to the reference day.
 
@@ -752,9 +752,9 @@ Example: 'Due date' (paymentDueDate) is selected. For all invoices that are not 
 
 • Notify before: This is a number of days before the notification date for which the notification is to be generated
 
-• Send to: These are the types of people who are notified.
-The syntax is as follows: One of the words in the "Help - Authorized Recipients" section separated by a ';
-The following items allow you to choose the type of remitter.
+• | Send to: These are the types of people who are notified.
+  | The syntax is as follows: One of the words in the "Help - Authorized Recipients" section separated by a ';
+  | The following items allow you to choose the type of remitter.
 
 .. figure:: /images/GUI/screenshot157.png 
 
@@ -768,11 +768,11 @@ The following items allow you to choose the type of remitter.
 
 There are 2 global settings for the notification system:
 
-   • notificationSystemActiv
-If YES, the notification system is implemented.
+   • | notificationSystemActiv
+     | If YES, the notification system is implemented.
 
-   • CronCheckNotifications
-Gives in seconds, the time interval between two generations of notification (and the Cron system is active) and between two the refresh of notifications on the HMI.
+   • | CronCheckNotifications
+     | Gives in seconds, the time interval between two generations of notification (and the Cron system is active) and between two the refresh of notifications on the HMI.
 
 
 Generation of notifications

@@ -123,8 +123,8 @@ if (! array_key_exists('filterObjectClass',$_REQUEST)) {
   throwError('filterObjectClass parameter not found in REQUEST');
 }
 $filterObjectClass=$_REQUEST['filterObjectClass'];
-if ($filterObjectClass!='Planning') Security::checkValidClass($filterObjectClass);
-$objectClass=($filterObjectClass=='Planning')?'Activity':$filterObjectClass;
+if ($filterObjectClass!='Planning' and $filterObjectClass!='GlobalPlanning') Security::checkValidClass($filterObjectClass);
+$objectClass=($filterObjectClass=='Planning' or $filterObjectClass=='GlobalPlanning')?'Activity':$filterObjectClass;
 
 $name="";
 if (array_key_exists('filterName',$_REQUEST)) {

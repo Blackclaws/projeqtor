@@ -1,0 +1,781 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2018, ProjeQtOr
+# This file is distributed under the same license as the ProjeQtOr Bedienhandbuch Deutsch package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: ProjeQtOr Bedienhandbuch Deutsch 7.2\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2018-07-03 14:34+0200\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: ../../RiskIssueManagement.rst:8
+msgid "Risks"
+msgstr ""
+
+#: ../../RiskIssueManagement.rst:10
+msgid "A risk is any threat of an event that may have a negative impact to the project, and which may be neutralized, or at least minimized, through pre-defined actions."
+msgstr ""
+
+#: ../../RiskIssueManagement.rst:12
+msgid "The risk management plan is a key point to project management :"
+msgstr ""
+
+#: ../../RiskIssueManagement.rst:14
+msgid "Identify risks and estimate their severity and likelihood."
+msgstr ""
+
+#: ../../RiskIssueManagement.rst:15
+msgid "Identify mitigating actions."
+msgstr ""
+
+#: ../../RiskIssueManagement.rst:16
+msgid "Identify opportunities."
+msgstr ""
+
+#: ../../RiskIssueManagement.rst:17
+msgid "Follow-up actions."
+msgstr ""
+
+#: ../../RiskIssueManagement.rst:18
+msgid "Identify risks that finally occur (becoming an issue)."
+msgstr ""
+
+#: ../../RiskIssueManagement.rst:23
+msgid "Contingency reserve"
+msgstr ""
+
+#: ../../RiskIssueManagement.rst:24
+msgid "Contingency reserve is defined according to monetary impact and likelihood of occurrence."
+msgstr ""
+
+#: ../../RiskIssueManagement.rst:25
+#: ../../RiskIssueManagement.rst:143
+msgid "Contingency reserve for risks and potential gain for opportunities allow to define the project reserve. (See: :ref:`Project reserve<project-reserve>`)"
+msgstr ""
+
+#: ../../RiskIssueManagement.rst:28
+#: ../../RiskIssueManagement.rst:282
+#: ../../RiskIssueManagement.rst:389
+msgid "Monitoring indicator"
+msgstr ""
+
+#: ../../RiskIssueManagement.rst:29
+#: ../../RiskIssueManagement.rst:283
+#: ../../RiskIssueManagement.rst:390
+msgid "Possibility to define indicators to follow the respect of dates values."
+msgstr ""
+
+#: ../../RiskIssueManagement.rst:36
+#: ../../RiskIssueManagement.rst:147
+#: ../../RiskIssueManagement.rst:291
+#: ../../RiskIssueManagement.rst:397
+msgid ":ref:`Linked element<linkElement-section>`"
+msgstr ""
+
+#: ../../RiskIssueManagement.rst:37
+#: ../../RiskIssueManagement.rst:148
+#: ../../RiskIssueManagement.rst:292
+#: ../../RiskIssueManagement.rst:398
+msgid ":ref:`Attachments<attachment-section>`"
+msgstr ""
+
+#: ../../RiskIssueManagement.rst:38
+#: ../../RiskIssueManagement.rst:149
+#: ../../RiskIssueManagement.rst:293
+#: ../../RiskIssueManagement.rst:399
+msgid ":ref:`Notes<note-section>`"
+msgstr ""
+
+#: ../../RiskIssueManagement.rst:41
+#: ../../RiskIssueManagement.rst:152
+#: ../../RiskIssueManagement.rst:296
+#: ../../RiskIssueManagement.rst:402
+msgid "Section: Description"
+msgstr ""
+
+#: ../../RiskIssueManagement.rst:48
+#: ../../RiskIssueManagement.rst:97
+#: ../../RiskIssueManagement.rst:159
+#: ../../RiskIssueManagement.rst:207
+#: ../../RiskIssueManagement.rst:303
+#: ../../RiskIssueManagement.rst:336
+#: ../../RiskIssueManagement.rst:409
+#: ../../RiskIssueManagement.rst:436
+msgid "Field"
+msgstr ""
+
+#: ../../RiskIssueManagement.rst:49
+#: ../../RiskIssueManagement.rst:98
+#: ../../RiskIssueManagement.rst:160
+#: ../../RiskIssueManagement.rst:208
+#: ../../RiskIssueManagement.rst:304
+#: ../../RiskIssueManagement.rst:337
+#: ../../RiskIssueManagement.rst:410
+#: ../../RiskIssueManagement.rst:437
+msgid "Description"
+msgstr ""
+
+#: ../../RiskIssueManagement.rst:50
+#: ../../RiskIssueManagement.rst:161
+#: ../../RiskIssueManagement.rst:305
+#: ../../RiskIssueManagement.rst:411
+msgid ":term:`Id`"
+msgstr ""
+
+#: ../../RiskIssueManagement.rst:51
+msgid "Unique Id for the risk."
+msgstr ""
+
+#: ../../RiskIssueManagement.rst:52
+#: ../../RiskIssueManagement.rst:163
+#: ../../RiskIssueManagement.rst:307
+#: ../../RiskIssueManagement.rst:413
+msgid "**Name**"
+msgstr ""
+
+#: ../../RiskIssueManagement.rst:53
+msgid "Short description of the risk."
+msgstr ""
+
+#: ../../RiskIssueManagement.rst:54
+#: ../../RiskIssueManagement.rst:165
+#: ../../RiskIssueManagement.rst:309
+msgid "**Type**"
+msgstr ""
+
+#: ../../RiskIssueManagement.rst:55
+msgid "Type of risk."
+msgstr ""
+
+#: ../../RiskIssueManagement.rst:56
+#: ../../RiskIssueManagement.rst:167
+#: ../../RiskIssueManagement.rst:311
+#: ../../RiskIssueManagement.rst:417
+msgid "**Project**"
+msgstr ""
+
+#: ../../RiskIssueManagement.rst:57
+msgid "The project concerned by the risk."
+msgstr ""
+
+#: ../../RiskIssueManagement.rst:58
+msgid "Severity"
+msgstr ""
+
+#: ../../RiskIssueManagement.rst:59
+#: ../../RiskIssueManagement.rst:170
+#: ../../RiskIssueManagement.rst:314
+msgid "Level of importance of the impact for the project."
+msgstr ""
+
+#: ../../RiskIssueManagement.rst:60
+#: ../../RiskIssueManagement.rst:171
+msgid "Likelihood"
+msgstr ""
+
+#: ../../RiskIssueManagement.rst:61
+msgid "Probability level of the risk to occur."
+msgstr ""
+
+#: ../../RiskIssueManagement.rst:62
+#: ../../RiskIssueManagement.rst:173
+#: ../../RiskIssueManagement.rst:313
+msgid "Criticality"
+msgstr ""
+
+#: ../../RiskIssueManagement.rst:63
+msgid "Global evaluation level of the risk."
+msgstr ""
+
+#: ../../RiskIssueManagement.rst:64
+msgid "Cost of impact"
+msgstr ""
+
+#: ../../RiskIssueManagement.rst:65
+msgid "Impact cost of the risk."
+msgstr ""
+
+#: ../../RiskIssueManagement.rst:66
+msgid "Project reserved cost"
+msgstr ""
+
+#: ../../RiskIssueManagement.rst:67
+msgid "The reserve amount according to the risk likelihood."
+msgstr ""
+
+#: ../../RiskIssueManagement.rst:68
+#: ../../RiskIssueManagement.rst:179
+#: ../../RiskIssueManagement.rst:317
+msgid ":term:`Origin`"
+msgstr ""
+
+#: ../../RiskIssueManagement.rst:69
+msgid "Element which is the origin of the risk."
+msgstr ""
+
+#: ../../RiskIssueManagement.rst:70
+#: ../../RiskIssueManagement.rst:319
+msgid "Cause"
+msgstr ""
+
+#: ../../RiskIssueManagement.rst:71
+msgid "Description of the event that may trigger the risk."
+msgstr ""
+
+#: ../../RiskIssueManagement.rst:72
+#: ../../RiskIssueManagement.rst:183
+#: ../../RiskIssueManagement.rst:321
+msgid "Impact"
+msgstr ""
+
+#: ../../RiskIssueManagement.rst:73
+msgid "Description of the estimated impact on the project if the risk occurs."
+msgstr ""
+
+#: ../../RiskIssueManagement.rst:74
+#: ../../RiskIssueManagement.rst:185
+#: ../../RiskIssueManagement.rst:323
+#: ../../RiskIssueManagement.rst:423
+msgid ":term:`Description`"
+msgstr ""
+
+#: ../../RiskIssueManagement.rst:75
+msgid "Complete description of the risk."
+msgstr ""
+
+#: ../../RiskIssueManagement.rst:77
+#: ../../RiskIssueManagement.rst:120
+#: ../../RiskIssueManagement.rst:188
+#: ../../RiskIssueManagement.rst:230
+#: ../../RiskIssueManagement.rst:326
+#: ../../RiskIssueManagement.rst:357
+#: ../../RiskIssueManagement.rst:426
+#: ../../RiskIssueManagement.rst:459
+msgid "**\\* Required field**"
+msgstr ""
+
+#: ../../RiskIssueManagement.rst:81
+msgid "Automatically calculated from Severity and Likelihood values. (See: :ref:`criticality-calculation`)"
+msgstr ""
+
+#: ../../RiskIssueManagement.rst:82
+#: ../../RiskIssueManagement.rst:193
+msgid "Value can be changed."
+msgstr ""
+
+#: ../../RiskIssueManagement.rst:86
+#: ../../RiskIssueManagement.rst:197
+msgid "Automatically calculated from the percentage defined for the selected likelihood. (See: :ref:`likelihood`)"
+msgstr ""
+
+#: ../../RiskIssueManagement.rst:90
+#: ../../RiskIssueManagement.rst:200
+#: ../../RiskIssueManagement.rst:329
+#: ../../RiskIssueManagement.rst:429
+msgid "Section: Treatment"
+msgstr ""
+
+#: ../../RiskIssueManagement.rst:99
+#: ../../RiskIssueManagement.rst:209
+#: ../../RiskIssueManagement.rst:338
+#: ../../RiskIssueManagement.rst:438
+msgid "**Status**"
+msgstr ""
+
+#: ../../RiskIssueManagement.rst:100
+msgid "Actual :term:`status` of the risk."
+msgstr ""
+
+#: ../../RiskIssueManagement.rst:101
+#: ../../RiskIssueManagement.rst:211
+#: ../../RiskIssueManagement.rst:340
+#: ../../RiskIssueManagement.rst:440
+msgid ":term:`Responsible`"
+msgstr ""
+
+#: ../../RiskIssueManagement.rst:102
+msgid "Resource who is responsible for the treatment of the risk."
+msgstr ""
+
+#: ../../RiskIssueManagement.rst:103
+#: ../../RiskIssueManagement.rst:213
+#: ../../RiskIssueManagement.rst:315
+#: ../../RiskIssueManagement.rst:419
+msgid "Priority"
+msgstr ""
+
+#: ../../RiskIssueManagement.rst:104
+msgid "Expected priority to take into account this risk."
+msgstr ""
+
+#: ../../RiskIssueManagement.rst:105
+#: ../../RiskIssueManagement.rst:215
+#: ../../RiskIssueManagement.rst:342
+msgid "Initial end date"
+msgstr ""
+
+#: ../../RiskIssueManagement.rst:106
+msgid "Initially expected end date of the risk."
+msgstr ""
+
+#: ../../RiskIssueManagement.rst:107
+#: ../../RiskIssueManagement.rst:217
+#: ../../RiskIssueManagement.rst:344
+msgid "Planned end date"
+msgstr ""
+
+#: ../../RiskIssueManagement.rst:108
+msgid "Updated end date of the risk."
+msgstr ""
+
+#: ../../RiskIssueManagement.rst:109
+#: ../../RiskIssueManagement.rst:219
+#: ../../RiskIssueManagement.rst:346
+#: ../../RiskIssueManagement.rst:446
+msgid ":term:`Handled`"
+msgstr ""
+
+#: ../../RiskIssueManagement.rst:110
+msgid "Flag to indicate that risk is taken into account."
+msgstr ""
+
+#: ../../RiskIssueManagement.rst:111
+#: ../../RiskIssueManagement.rst:221
+#: ../../RiskIssueManagement.rst:348
+#: ../../RiskIssueManagement.rst:448
+msgid ":term:`Done`"
+msgstr ""
+
+#: ../../RiskIssueManagement.rst:112
+msgid "Flag to indicate that risk has been treated."
+msgstr ""
+
+#: ../../RiskIssueManagement.rst:113
+#: ../../RiskIssueManagement.rst:223
+#: ../../RiskIssueManagement.rst:350
+#: ../../RiskIssueManagement.rst:450
+msgid ":term:`Closed`"
+msgstr ""
+
+#: ../../RiskIssueManagement.rst:114
+msgid "Flag to indicate that risk is archived."
+msgstr ""
+
+#: ../../RiskIssueManagement.rst:115
+#: ../../RiskIssueManagement.rst:225
+#: ../../RiskIssueManagement.rst:352
+#: ../../RiskIssueManagement.rst:452
+msgid "Cancelled"
+msgstr ""
+
+#: ../../RiskIssueManagement.rst:116
+msgid "Flag to indicate that risk is cancelled."
+msgstr ""
+
+#: ../../RiskIssueManagement.rst:117
+#: ../../RiskIssueManagement.rst:227
+#: ../../RiskIssueManagement.rst:354
+#: ../../RiskIssueManagement.rst:456
+msgid ":term:`Result`"
+msgstr ""
+
+#: ../../RiskIssueManagement.rst:118
+msgid "Complete description of the treatment done on the risk."
+msgstr ""
+
+#: ../../RiskIssueManagement.rst:134
+msgid "Opportunities"
+msgstr ""
+
+#: ../../RiskIssueManagement.rst:136
+msgid "An opportunity can be seen as a positive risk. It is not a threat but the opportunity to have a positive impact to the project."
+msgstr ""
+
+#: ../../RiskIssueManagement.rst:141
+msgid "Potential gain"
+msgstr ""
+
+#: ../../RiskIssueManagement.rst:142
+msgid "The potential gain is defined according to the expected amount and likelihood of occurrence."
+msgstr ""
+
+#: ../../RiskIssueManagement.rst:162
+msgid "Unique Id for the opportunity."
+msgstr ""
+
+#: ../../RiskIssueManagement.rst:164
+msgid "Short description of the opportunity."
+msgstr ""
+
+#: ../../RiskIssueManagement.rst:166
+msgid "Type of opportunity."
+msgstr ""
+
+#: ../../RiskIssueManagement.rst:168
+msgid "The project concerned by the opportunity."
+msgstr ""
+
+#: ../../RiskIssueManagement.rst:169
+msgid "Significance"
+msgstr ""
+
+#: ../../RiskIssueManagement.rst:172
+msgid "Evaluation of the estimated improvement, or positive impact, on the project of the opportunity."
+msgstr ""
+
+#: ../../RiskIssueManagement.rst:174
+msgid "Global evaluation level of the opportunity."
+msgstr ""
+
+#: ../../RiskIssueManagement.rst:175
+msgid "Expected improvement"
+msgstr ""
+
+#: ../../RiskIssueManagement.rst:176
+msgid "Expected amount of the opportunity."
+msgstr ""
+
+#: ../../RiskIssueManagement.rst:177
+msgid "Project reserved gain"
+msgstr ""
+
+#: ../../RiskIssueManagement.rst:178
+msgid "The estimated gain, according to the opportunity likelihood."
+msgstr ""
+
+#: ../../RiskIssueManagement.rst:180
+msgid "Element which is the origin of the opportunity."
+msgstr ""
+
+#: ../../RiskIssueManagement.rst:181
+msgid "Opportunity source"
+msgstr ""
+
+#: ../../RiskIssueManagement.rst:182
+msgid "Description of the event that may trigger the opportunity."
+msgstr ""
+
+#: ../../RiskIssueManagement.rst:184
+msgid "Description of the estimated positive impact on the project."
+msgstr ""
+
+#: ../../RiskIssueManagement.rst:186
+msgid "Complete description of the opportunity."
+msgstr ""
+
+#: ../../RiskIssueManagement.rst:192
+msgid "Automatically calculated from Significance and Likelihood values. (See: :ref:`criticality-calculation`)"
+msgstr ""
+
+#: ../../RiskIssueManagement.rst:210
+msgid "Actual :term:`status` of the opportunity."
+msgstr ""
+
+#: ../../RiskIssueManagement.rst:212
+msgid "Resource who is responsible for the opportunity."
+msgstr ""
+
+#: ../../RiskIssueManagement.rst:214
+msgid "Expected priority to take into account this opportunity."
+msgstr ""
+
+#: ../../RiskIssueManagement.rst:216
+msgid "Initially expected end date of the opportunity."
+msgstr ""
+
+#: ../../RiskIssueManagement.rst:218
+msgid "Updated end date of the opportunity."
+msgstr ""
+
+#: ../../RiskIssueManagement.rst:220
+msgid "Flag to indicate that opportunity is taken into account."
+msgstr ""
+
+#: ../../RiskIssueManagement.rst:222
+msgid "Flag to indicate that opportunity has been treated."
+msgstr ""
+
+#: ../../RiskIssueManagement.rst:224
+msgid "Flag to indicate that opportunity is archived."
+msgstr ""
+
+#: ../../RiskIssueManagement.rst:226
+msgid "Flag to indicate that opportunity is cancelled."
+msgstr ""
+
+#: ../../RiskIssueManagement.rst:228
+msgid "Complete description of the treatment of the opportunity."
+msgstr ""
+
+#: ../../RiskIssueManagement.rst:241
+msgid "Criticality value calculation"
+msgstr ""
+
+#: ../../RiskIssueManagement.rst:243
+msgid "Criticality value is automatically calculated from **Severity (Significance)** and **Likelihood** values."
+msgstr ""
+
+#: ../../RiskIssueManagement.rst:245
+msgid "Criticality, Severity (Significance) and Likelihood values are defined in lists of values screens. See: :ref:`criticality`, :ref:`severity` and :ref:`likelihood` screens."
+msgstr ""
+
+#: ../../RiskIssueManagement.rst:247
+msgid "In the previous screens, a name of value is set with numeric value."
+msgstr ""
+
+#: ../../RiskIssueManagement.rst:249
+msgid "Criticality numeric value is determined by a simple equation as follows:"
+msgstr ""
+
+#: ../../RiskIssueManagement.rst:253
+msgid "[Criticality value] = [Severity value] X [Likelihood value] / 2"
+msgstr ""
+
+#: ../../RiskIssueManagement.rst:254
+msgid "For example:"
+msgstr ""
+
+#: ../../RiskIssueManagement.rst:256
+msgid "Critical (8) = High (4) X High (4) / 2"
+msgstr ""
+
+#: ../../RiskIssueManagement.rst:259
+msgid "Default values"
+msgstr ""
+
+#: ../../RiskIssueManagement.rst:260
+msgid "Default values are determined."
+msgstr ""
+
+#: ../../RiskIssueManagement.rst:261
+msgid "You can change its values while respecting the equation defined above."
+msgstr ""
+
+#: ../../RiskIssueManagement.rst:273
+msgid "Issues"
+msgstr ""
+
+#: ../../RiskIssueManagement.rst:275
+msgid "An issue is a problem that occurs during the project."
+msgstr ""
+
+#: ../../RiskIssueManagement.rst:277
+msgid "If the risk Management plan has been correctly managed, issues should always be occurring identified risks."
+msgstr ""
+
+#: ../../RiskIssueManagement.rst:279
+msgid "Actions must be defined to solve the issue."
+msgstr ""
+
+#: ../../RiskIssueManagement.rst:306
+msgid "Unique Id for the issue."
+msgstr ""
+
+#: ../../RiskIssueManagement.rst:308
+msgid "Short description of the issue."
+msgstr ""
+
+#: ../../RiskIssueManagement.rst:310
+msgid "Type of issue."
+msgstr ""
+
+#: ../../RiskIssueManagement.rst:312
+msgid "The project concerned by the issue."
+msgstr ""
+
+#: ../../RiskIssueManagement.rst:316
+msgid "Priority requested to the treatment of the issue."
+msgstr ""
+
+#: ../../RiskIssueManagement.rst:318
+msgid "Element which is the origin of the issue."
+msgstr ""
+
+#: ../../RiskIssueManagement.rst:320
+msgid "Description of the event that led to the issue."
+msgstr ""
+
+#: ../../RiskIssueManagement.rst:322
+msgid "Description of the impact of the issue on the project."
+msgstr ""
+
+#: ../../RiskIssueManagement.rst:324
+msgid "Complete description of the issue."
+msgstr ""
+
+#: ../../RiskIssueManagement.rst:339
+msgid "Actual :term:`status` of the issue."
+msgstr ""
+
+#: ../../RiskIssueManagement.rst:341
+msgid "Resource who is responsible for the issue."
+msgstr ""
+
+#: ../../RiskIssueManagement.rst:343
+msgid "Initially expected end date of the issue."
+msgstr ""
+
+#: ../../RiskIssueManagement.rst:345
+msgid "Updated end date of the issue."
+msgstr ""
+
+#: ../../RiskIssueManagement.rst:347
+msgid "Flag to indicate that issue is taken into account."
+msgstr ""
+
+#: ../../RiskIssueManagement.rst:349
+msgid "Flag to indicate that issue has been treated."
+msgstr ""
+
+#: ../../RiskIssueManagement.rst:351
+msgid "Flag to indicate that issue is archived."
+msgstr ""
+
+#: ../../RiskIssueManagement.rst:353
+msgid "Flag to indicate that issue is cancelled."
+msgstr ""
+
+#: ../../RiskIssueManagement.rst:355
+msgid "Complete description of the treatment of the issue."
+msgstr ""
+
+#: ../../RiskIssueManagement.rst:369
+msgid "Actions"
+msgstr ""
+
+#: ../../RiskIssueManagement.rst:371
+msgid "An action is a task or activity that is set-up in order to :"
+msgstr ""
+
+#: ../../RiskIssueManagement.rst:373
+msgid "Reduce the likelihood of a risk"
+msgstr ""
+
+#: ../../RiskIssueManagement.rst:374
+msgid "or reduce the impact of a risk"
+msgstr ""
+
+#: ../../RiskIssueManagement.rst:375
+msgid "or solve an issue"
+msgstr ""
+
+#: ../../RiskIssueManagement.rst:376
+msgid "or build a post-meeting action plan"
+msgstr ""
+
+#: ../../RiskIssueManagement.rst:377
+msgid "or just define a “to do list”."
+msgstr ""
+
+#: ../../RiskIssueManagement.rst:379
+msgid "The actions are the main activities of the risk management plan."
+msgstr ""
+
+#: ../../RiskIssueManagement.rst:381
+msgid "They must be regularly followed-up."
+msgstr ""
+
+#: ../../RiskIssueManagement.rst:384
+msgid "Private action"
+msgstr ""
+
+#: ../../RiskIssueManagement.rst:385
+msgid "Private actions allow to manage a personal to-do list."
+msgstr ""
+
+#: ../../RiskIssueManagement.rst:412
+msgid "Unique Id for the action."
+msgstr ""
+
+#: ../../RiskIssueManagement.rst:414
+msgid "Short description of the action."
+msgstr ""
+
+#: ../../RiskIssueManagement.rst:415
+msgid "**Action type**"
+msgstr ""
+
+#: ../../RiskIssueManagement.rst:416
+msgid "Type of action."
+msgstr ""
+
+#: ../../RiskIssueManagement.rst:418
+msgid "The project concerned by the action."
+msgstr ""
+
+#: ../../RiskIssueManagement.rst:420
+msgid "Priority requested to the treatment of the action."
+msgstr ""
+
+#: ../../RiskIssueManagement.rst:421
+msgid "Private"
+msgstr ""
+
+#: ../../RiskIssueManagement.rst:422
+msgid "Box checked allows to define a private action."
+msgstr ""
+
+#: ../../RiskIssueManagement.rst:424
+msgid "Complete description of the action."
+msgstr ""
+
+#: ../../RiskIssueManagement.rst:439
+msgid "Actual :term:`status` of the action."
+msgstr ""
+
+#: ../../RiskIssueManagement.rst:441
+msgid "Resource who is responsible for the action."
+msgstr ""
+
+#: ../../RiskIssueManagement.rst:442
+msgid "Initial due date"
+msgstr ""
+
+#: ../../RiskIssueManagement.rst:443
+msgid "Initially expected end date of the action."
+msgstr ""
+
+#: ../../RiskIssueManagement.rst:444
+msgid "Planned due date"
+msgstr ""
+
+#: ../../RiskIssueManagement.rst:445
+msgid "Updated end date of the action."
+msgstr ""
+
+#: ../../RiskIssueManagement.rst:447
+msgid "Box checked indicates that the action is taken over."
+msgstr ""
+
+#: ../../RiskIssueManagement.rst:449
+msgid "Box checked indicates that the action has been treated."
+msgstr ""
+
+#: ../../RiskIssueManagement.rst:451
+msgid "Box checked indicates that the action is archived."
+msgstr ""
+
+#: ../../RiskIssueManagement.rst:453
+msgid "Box checked indicates that the action is cancelled."
+msgstr ""
+
+#: ../../RiskIssueManagement.rst:454
+msgid "Efficiency"
+msgstr ""
+
+#: ../../RiskIssueManagement.rst:455
+msgid "Evaluation of the efficiency the action had on the objective (for instance on the risk mitigation)."
+msgstr ""
+
+#: ../../RiskIssueManagement.rst:457
+msgid "Complete description of the treatment of the action."
+msgstr ""
+

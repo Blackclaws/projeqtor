@@ -1,0 +1,66 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2018, ProjeQtOr
+# This file is distributed under the same license as the ProjeQtOr Bedienhandbuch Deutsch package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: ProjeQtOr Bedienhandbuch Deutsch 7.2\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2018-07-03 14:34+0200\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: ../../ActivityStream.rst:14
+msgid "Activity Stream"
+msgstr ""
+
+#: ../../ActivityStream.rst:16
+msgid "This screen is devoted to display notes."
+msgstr ""
+
+#: ../../ActivityStream.rst:18
+msgid "To default you will see all visible notes for each items."
+msgstr ""
+
+#: ../../ActivityStream.rst:20
+msgid "There are filters to refine the search."
+msgstr ""
+
+#: ../../ActivityStream.rst:29
+msgid "Click on |buttonCollapseClose|  to hide note comment."
+msgstr ""
+
+#: ../../ActivityStream.rst:30
+msgid "Click on |buttonCollapseOpen|  to display note comment."
+msgstr ""
+
+#: ../../ActivityStream.rst:37
+msgid "Chat"
+msgstr ""
+
+#: ../../ActivityStream.rst:39
+msgid "Display of notes on right part of screen."
+msgstr ""
+
+#: ../../ActivityStream.rst:41
+msgid "The chat displays notes on the selected item."
+msgstr ""
+
+#: ../../ActivityStream.rst:43
+msgid "Possibility to quickly add note, write your text and press 'Enter' key."
+msgstr ""
+
+#: ../../ActivityStream.rst:45
+msgid "You can change the visibility of the note if you click on the bottom right corner."
+msgstr ""
+
+#: ../../ActivityStream.rst:47
+msgid "Click on |iconHideStream|  to hide or display the chat."
+msgstr ""
+

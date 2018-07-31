@@ -229,6 +229,9 @@
    }
   }
   
+  debugLog($_REQUEST);
+  $global=RequestHandler::getBoolean('global');
+  
   // Apply restrictions on Filter
   $act=new Activity();
   $pe=new PlanningElement();
@@ -242,7 +245,7 @@
   $arrayFilter=jsonGetFilterArray('Planning', false);
   $arrayRestrictWbs=array();
   $cpt=0;
-  if (count($arrayFilter)>0 and ! $portfolio) {
+  if (count($arrayFilter)>0 and ! $portfolio and !$global) {
     $applyFilter=true;
     jsonBuildWhereCriteria($querySelectAct,$queryFromAct,$queryWhereAct,$queryOrderByAct,$cpt,$arrayFilter,$act);
     $queryAct='select ' . $querySelectAct

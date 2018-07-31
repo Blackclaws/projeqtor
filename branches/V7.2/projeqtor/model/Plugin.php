@@ -204,7 +204,7 @@ class Plugin extends SqlElement {
               $evt=new PluginTriggeredEvent();
               $evt->idPlugin=null; // to be defined later
               $evt->idle=0; // Active by default
-              if ($className!='Planning' and $className!='ResourcePlanning' and $className!='PortfolioPlanning') { // Pseudo Classes
+              if ($className!='Planning' and $className!='ResourcePlanning' and $className!='PortfolioPlanning' and $className!='GlobalPlanning') { // Pseudo Classes
                 Security::checkValidClass($className);
               }
               $evt->className=$className;

@@ -36,7 +36,7 @@ if (! array_key_exists('filterObjectClass',$_REQUEST)) {
   throwError('filterObjectClass parameter not found in REQUEST');
 }
 $filterObjectClass=$_REQUEST['filterObjectClass'];
-if ($filterObjectClass!='Planning') Security::checkValidClass($filterObjectClass, 'filterObjectClass');
+if ($filterObjectClass!='Planning' and $filterObjectClass!='GlobalPlanning') Security::checkValidClass($filterObjectClass, 'filterObjectClass');
 
 if (! array_key_exists('idFilter',$_REQUEST)) {
   throwError('idFilter parameter not found in REQUEST');

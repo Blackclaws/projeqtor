@@ -1,0 +1,682 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2018, ProjeQtOr
+# This file is distributed under the same license as the ProjeQtOr Bedienhandbuch Deutsch package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: ProjeQtOr Bedienhandbuch Deutsch 7.2\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2018-07-03 14:34+0200\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: ../../Ticket.rst:11
+msgid "Tickets"
+msgstr ""
+
+#: ../../Ticket.rst:13
+msgid "A ticket is a kind of task that can not be unitarily planned."
+msgstr ""
+
+#: ../../Ticket.rst:15
+msgid "It is generally a short time activity for a single ticket, that is interesting to follow unitarily to give a feedback to the issuer or to keep trace of result."
+msgstr ""
+
+#: ../../Ticket.rst:17
+msgid "It can be globally planned as a general activity, but not unitarily."
+msgstr ""
+
+#: ../../Ticket.rst:19
+msgid "For instance, bugs should be managed through tickets :"
+msgstr ""
+
+#: ../../Ticket.rst:21
+msgid "You can not plan bugs before they are registered."
+msgstr ""
+
+#: ../../Ticket.rst:22
+msgid "You must be able to give a feedback on each bug."
+msgstr ""
+
+#: ../../Ticket.rst:23
+msgid "You can (or at least should) globally plan bug fixing activity."
+msgstr ""
+
+#: ../../Ticket.rst:29
+msgid "This screen is a limited version of screen \"Tickets\"."
+msgstr ""
+
+#: ../../Ticket.rst:30
+msgid "It's dedicated to users who want to create and follow their own tickets without be involved in their treatment."
+msgstr ""
+
+#: ../../Ticket.rst:31
+msgid "When fields and features are available, the description is similar."
+msgstr ""
+
+#: ../../Ticket.rst:34
+#: ../../Ticket.rst:190
+msgid "Planning activity"
+msgstr ""
+
+#: ../../Ticket.rst:35
+msgid "Planning activity field allows to link the ticket with a planning activity."
+msgstr ""
+
+#: ../../Ticket.rst:36
+msgid "Work on the ticket will be included in this activity."
+msgstr ""
+
+#: ../../Ticket.rst:38
+msgid "**Put the real work from tickets to the resource timesheet**"
+msgstr ""
+
+#: ../../Ticket.rst:40
+msgid "When a resource has entered the real work on the ticket and the ticket is linked to a planning activity."
+msgstr ""
+
+#: ../../Ticket.rst:41
+msgid "The resource is automatically assigned to this activity."
+msgstr ""
+
+#: ../../Ticket.rst:42
+msgid "Real work set on tickets is automatically set in resource timesheet."
+msgstr ""
+
+#: ../../Ticket.rst:49
+msgid "Restrict the entry of real work in the ticket."
+msgstr ""
+
+#: ../../Ticket.rst:50
+msgid "Possibility to define that only the responsible of ticket can enter real work."
+msgstr ""
+
+#: ../../Ticket.rst:51
+msgid "This behavior can be set in  :ref:`Global parameters<responsible-section>` screen."
+msgstr ""
+
+#: ../../Ticket.rst:56
+msgid "Due dates"
+msgstr ""
+
+#: ../../Ticket.rst:57
+msgid "Initial and planned due date allows to define a target date for solving the ticket."
+msgstr ""
+
+#: ../../Ticket.rst:59
+msgid "**Initial due date**"
+msgstr ""
+
+#: ../../Ticket.rst:61
+msgid "If a definition of ticket delay exists for giving ticket type and urgency the date is automatically calculated with this delay."
+msgstr ""
+
+#: ../../Ticket.rst:62
+msgid ":ref:`delay-for-ticket` screen allows to define ticket delay."
+msgstr ""
+
+#: ../../Ticket.rst:64
+msgid "**Planned due date**"
+msgstr ""
+
+#: ../../Ticket.rst:66
+msgid "Is used to define a target date after evaluation."
+msgstr ""
+
+#: ../../Ticket.rst:67
+msgid "Automatically initialized to the initial due date."
+msgstr ""
+
+#: ../../Ticket.rst:69
+msgid "**Monitoring indicator**"
+msgstr ""
+
+#: ../../Ticket.rst:71
+msgid "Possibility to define indicators to follow the respect of dates values."
+msgstr ""
+
+#: ../../Ticket.rst:79
+msgid "Initial due date of the ticket set as read only if it is calculated from the setting of \"delays for tickets\""
+msgstr ""
+
+#: ../../Ticket.rst:85
+msgid "Product, component and versions fields"
+msgstr ""
+
+#: ../../Ticket.rst:86
+msgid "Allows to identify the product and component relating to the issue."
+msgstr ""
+
+#: ../../Ticket.rst:87
+msgid "Identifies from which versions, the issue occurs and to which versions a resolution will be applied."
+msgstr ""
+
+#: ../../Ticket.rst:89
+msgid "**Versions identified**"
+msgstr ""
+
+#: ../../Ticket.rst:91
+msgid "A ticket can identify all versions allocated."
+msgstr ""
+
+#: ../../Ticket.rst:92
+msgid "Possibility to define a main version and the other versions allocated."
+msgstr ""
+
+#: ../../Ticket.rst:96
+msgid "More detail, see: :ref:`Product concept<product-concept>`."
+msgstr ""
+
+#: ../../Ticket.rst:102
+msgid "Responsible of product"
+msgstr ""
+
+#: ../../Ticket.rst:103
+msgid "A responsible can be defined for a product or component."
+msgstr ""
+
+#: ../../Ticket.rst:105
+msgid "If a product or component is selected, the responsible defined can be automatically assigned to the ticket."
+msgstr ""
+
+#: ../../Ticket.rst:107
+msgid "Global parameter: Ticket responsible from product responsible"
+msgstr ""
+
+#: ../../Ticket.rst:109
+msgid "This parameter allows to define, if the defined responsible is automatically assigned to the ticket or not."
+msgstr ""
+
+#: ../../Ticket.rst:117
+msgid ":ref:`Linked element<linkElement-section>`"
+msgstr ""
+
+#: ../../Ticket.rst:118
+msgid ":ref:`Attachments<attachment-section>`"
+msgstr ""
+
+#: ../../Ticket.rst:119
+msgid ":ref:`Notes<note-section>`"
+msgstr ""
+
+#: ../../Ticket.rst:123
+msgid "Section: Description"
+msgstr ""
+
+#: ../../Ticket.rst:130
+#: ../../Ticket.rst:188
+#: ../../Ticket.rst:288
+msgid "Field"
+msgstr ""
+
+#: ../../Ticket.rst:131
+#: ../../Ticket.rst:189
+#: ../../Ticket.rst:289
+msgid "Description"
+msgstr ""
+
+#: ../../Ticket.rst:132
+msgid ":term:`Id`"
+msgstr ""
+
+#: ../../Ticket.rst:133
+msgid "Unique Id for the ticket."
+msgstr ""
+
+#: ../../Ticket.rst:134
+msgid "**Name**"
+msgstr ""
+
+#: ../../Ticket.rst:135
+msgid "Short description of the ticket."
+msgstr ""
+
+#: ../../Ticket.rst:136
+msgid "**Ticket type**"
+msgstr ""
+
+#: ../../Ticket.rst:137
+msgid "Type of ticket."
+msgstr ""
+
+#: ../../Ticket.rst:138
+msgid "**Project**"
+msgstr ""
+
+#: ../../Ticket.rst:139
+msgid "The project concerned by the ticket."
+msgstr ""
+
+#: ../../Ticket.rst:140
+msgid ":term:`External reference`"
+msgstr ""
+
+#: ../../Ticket.rst:141
+msgid "External reference of the ticket."
+msgstr ""
+
+#: ../../Ticket.rst:142
+msgid "Urgency"
+msgstr ""
+
+#: ../../Ticket.rst:143
+msgid "Urgency for treatment of the ticket, as requested by the issuer."
+msgstr ""
+
+#: ../../Ticket.rst:144
+msgid ":term:`Requestor`"
+msgstr ""
+
+#: ../../Ticket.rst:145
+msgid "Contact at the origin of the ticket."
+msgstr ""
+
+#: ../../Ticket.rst:146
+msgid ":term:`Origin`"
+msgstr ""
+
+#: ../../Ticket.rst:147
+msgid "Element which is the origin of the ticket."
+msgstr ""
+
+#: ../../Ticket.rst:148
+msgid "Duplicate ticket"
+msgstr ""
+
+#: ../../Ticket.rst:149
+msgid "Link to another ticket, to link duplicate tickets."
+msgstr ""
+
+#: ../../Ticket.rst:150
+msgid "Context"
+msgstr ""
+
+#: ../../Ticket.rst:151
+msgid "List of 3 items describing the context of the ticket."
+msgstr ""
+
+#: ../../Ticket.rst:152
+msgid "Product"
+msgstr ""
+
+#: ../../Ticket.rst:153
+msgid "The product for which this ticket has been identified."
+msgstr ""
+
+#: ../../Ticket.rst:154
+msgid "Component"
+msgstr ""
+
+#: ../../Ticket.rst:155
+msgid "The component for which this ticket has been identified."
+msgstr ""
+
+#: ../../Ticket.rst:156
+msgid "Original product version"
+msgstr ""
+
+#: ../../Ticket.rst:157
+msgid "Product versions for which the issue has been identified."
+msgstr ""
+
+#: ../../Ticket.rst:158
+msgid "Original comp. version"
+msgstr ""
+
+#: ../../Ticket.rst:159
+msgid "Component versions for which the issue has been identified."
+msgstr ""
+
+#: ../../Ticket.rst:160
+msgid ":term:`Description`"
+msgstr ""
+
+#: ../../Ticket.rst:161
+msgid "Complete description of the ticket."
+msgstr ""
+
+#: ../../Ticket.rst:163
+#: ../../Ticket.rst:229
+msgid "**\\* Required field**"
+msgstr ""
+
+#: ../../Ticket.rst:167
+msgid "Contexts are initialized for IT Projects as “Environment”, “OS” and “Browser”."
+msgstr ""
+
+#: ../../Ticket.rst:168
+msgid "This can be easily changed values in :ref:`context` screen."
+msgstr ""
+
+#: ../../Ticket.rst:172
+msgid "List of values contains the products and components linked the selected project."
+msgstr ""
+
+#: ../../Ticket.rst:176
+#: ../../Ticket.rst:248
+msgid "The list of values will be filtered depends on the selected value in fields \"Product and component\"."
+msgstr ""
+
+#: ../../Ticket.rst:177
+#: ../../Ticket.rst:249
+msgid "Click on |buttonAdd| to add a other version, see :ref:`multi-version-selection`."
+msgstr ""
+
+#: ../../Ticket.rst:181
+msgid "Section: Treatment"
+msgstr ""
+
+#: ../../Ticket.rst:191
+msgid "Activity where global work for this kind of ticket is planned."
+msgstr ""
+
+#: ../../Ticket.rst:192
+msgid "**Status**"
+msgstr ""
+
+#: ../../Ticket.rst:193
+msgid "Actual :term:`status` of the ticket."
+msgstr ""
+
+#: ../../Ticket.rst:194
+msgid "Resolution"
+msgstr ""
+
+#: ../../Ticket.rst:195
+msgid "Ticket resolution."
+msgstr ""
+
+#: ../../Ticket.rst:196
+msgid ":term:`Responsible`"
+msgstr ""
+
+#: ../../Ticket.rst:197
+msgid "Resource who is responsible for the ticket."
+msgstr ""
+
+#: ../../Ticket.rst:198
+msgid "Criticality"
+msgstr ""
+
+#: ../../Ticket.rst:199
+msgid "Importance of impact on the system, as determined after analysis."
+msgstr ""
+
+#: ../../Ticket.rst:200
+msgid "Priority"
+msgstr ""
+
+#: ../../Ticket.rst:201
+msgid "Priority of treatment."
+msgstr ""
+
+#: ../../Ticket.rst:202
+msgid "Initial due date"
+msgstr ""
+
+#: ../../Ticket.rst:203
+msgid "Initial target date for solving the ticket."
+msgstr ""
+
+#: ../../Ticket.rst:204
+msgid "Planned due date"
+msgstr ""
+
+#: ../../Ticket.rst:205
+msgid "Actual target date for solving the ticket."
+msgstr ""
+
+#: ../../Ticket.rst:206
+msgid "Estimated work"
+msgstr ""
+
+#: ../../Ticket.rst:207
+msgid "Estimated workload needed to treat the ticket."
+msgstr ""
+
+#: ../../Ticket.rst:208
+msgid "Real work"
+msgstr ""
+
+#: ../../Ticket.rst:209
+msgid "Real workload spent to treat the ticket."
+msgstr ""
+
+#: ../../Ticket.rst:210
+msgid "Left work"
+msgstr ""
+
+#: ../../Ticket.rst:211
+msgid "Left workload needed to finish the ticket."
+msgstr ""
+
+#: ../../Ticket.rst:212
+msgid ":term:`Handled`"
+msgstr ""
+
+#: ../../Ticket.rst:213
+msgid "Box checked indicates the ticket is taken over."
+msgstr ""
+
+#: ../../Ticket.rst:214
+msgid ":term:`Done`"
+msgstr ""
+
+#: ../../Ticket.rst:215
+msgid "Box checked indicates the ticket has been treated."
+msgstr ""
+
+#: ../../Ticket.rst:216
+msgid "Solved"
+msgstr ""
+
+#: ../../Ticket.rst:217
+msgid "Box checked indicates the ticket has been solved."
+msgstr ""
+
+#: ../../Ticket.rst:218
+msgid ":term:`Closed`"
+msgstr ""
+
+#: ../../Ticket.rst:219
+msgid "Box checked indicates the ticket is archived."
+msgstr ""
+
+#: ../../Ticket.rst:220
+msgid "Cancelled"
+msgstr ""
+
+#: ../../Ticket.rst:221
+msgid "Box checked indicates the ticket is cancelled."
+msgstr ""
+
+#: ../../Ticket.rst:222
+msgid "Target product version"
+msgstr ""
+
+#: ../../Ticket.rst:223
+msgid "Product versions for which a resolution of issue will be delivered."
+msgstr ""
+
+#: ../../Ticket.rst:224
+msgid "Target comp. version"
+msgstr ""
+
+#: ../../Ticket.rst:225
+msgid "Component versions for which a resolution of issue will be delivered."
+msgstr ""
+
+#: ../../Ticket.rst:226
+msgid ":term:`Result`"
+msgstr ""
+
+#: ../../Ticket.rst:227
+msgid "Complete description of the resolution of the ticket."
+msgstr ""
+
+#: ../../Ticket.rst:233
+msgid "Automatically calculated from Urgency and Criticality values. See: :ref:`priority-calculation`."
+msgstr ""
+
+#: ../../Ticket.rst:234
+msgid "Can be changed manually."
+msgstr ""
+
+#: ../../Ticket.rst:238
+msgid "Notion of regression can be added."
+msgstr ""
+
+#: ../../Ticket.rst:242
+msgid "Automatically calculated as Estimated – Real."
+msgstr ""
+
+#: ../../Ticket.rst:243
+msgid "Set to zero when ticket is done."
+msgstr ""
+
+#: ../../Ticket.rst:253
+msgid "The box is automatically checked or unchecked, according to the resolution selected."
+msgstr ""
+
+#: ../../Ticket.rst:260
+msgid "Button: Start/End work"
+msgstr ""
+
+#: ../../Ticket.rst:261
+msgid "This button is clock on/off timer."
+msgstr ""
+
+#: ../../Ticket.rst:262
+msgid "If connected user is a resource, he has the possibility to start working on the ticket."
+msgstr ""
+
+#: ../../Ticket.rst:263
+msgid "When work is finished, he will just have to stop the timer."
+msgstr ""
+
+#: ../../Ticket.rst:267
+msgid "Closing the application or starting work on another ticket will automatically stop the current ongoing work."
+msgstr ""
+
+#: ../../Ticket.rst:269
+msgid "The spend time will automatically be converted as real work, and transferred on planning activity if it is set (decreasing left work on the activity)."
+msgstr ""
+
+#: ../../Ticket.rst:272
+msgid "Button: Dispatch"
+msgstr ""
+
+#: ../../Ticket.rst:273
+msgid "This button allows to dispatch ticket."
+msgstr ""
+
+#: ../../Ticket.rst:280
+msgid "Click on |buttonAdd| to add a line."
+msgstr ""
+
+#: ../../Ticket.rst:284
+msgid "Fields - Dispatch work dialog box"
+msgstr ""
+
+#: ../../Ticket.rst:290
+msgid "Date"
+msgstr ""
+
+#: ../../Ticket.rst:291
+msgid "Dispatch date."
+msgstr ""
+
+#: ../../Ticket.rst:292
+msgid "Resources"
+msgstr ""
+
+#: ../../Ticket.rst:293
+msgid "Work dispatch to a resource."
+msgstr ""
+
+#: ../../Ticket.rst:294
+msgid "Work"
+msgstr ""
+
+#: ../../Ticket.rst:295
+msgid "Planned work to this resource."
+msgstr ""
+
+#: ../../Ticket.rst:304
+msgid "Multi-version selection"
+msgstr ""
+
+#: ../../Ticket.rst:306
+msgid "In the version fields, it's possible to set several versions."
+msgstr ""
+
+#: ../../Ticket.rst:310
+msgid "The version with smaller id will appear in the select list and is considered as the main version."
+msgstr ""
+
+#: ../../Ticket.rst:311
+msgid "Other versions are listed above."
+msgstr ""
+
+#: ../../Ticket.rst:312
+msgid "It is possible to set an ‘other’ version as the main version using the button |iconSwitch|."
+msgstr ""
+
+#: ../../Ticket.rst:315
+msgid "Click on |buttonAdd| to add a other version."
+msgstr ""
+
+#: ../../Ticket.rst:316
+msgid "Click on |buttonIconDelete| to delete a version."
+msgstr ""
+
+#: ../../Ticket.rst:326
+msgid "Priority value calculation"
+msgstr ""
+
+#: ../../Ticket.rst:328
+msgid "Priority value is automatically calculated from **Urgency** and **Criticality** values."
+msgstr ""
+
+#: ../../Ticket.rst:330
+msgid "Priority, Urgency and Criticality values  are defined in lists of values screens. See: :ref:`priority`, :ref:`urgency` and :ref:`criticality` screens."
+msgstr ""
+
+#: ../../Ticket.rst:332
+msgid "In the previous screens, a name of value is set with numeric value."
+msgstr ""
+
+#: ../../Ticket.rst:334
+msgid "Priority numeric value is determined by a simple equation as follows:"
+msgstr ""
+
+#: ../../Ticket.rst:338
+msgid "[Priority value] = [Urgency value] X [Criticality value] / 2"
+msgstr ""
+
+#: ../../Ticket.rst:339
+msgid "For example:"
+msgstr ""
+
+#: ../../Ticket.rst:341
+msgid "Critical priority (8) = Blocking (4) X Critical (8) / 2"
+msgstr ""
+
+#: ../../Ticket.rst:344
+msgid "Default values"
+msgstr ""
+
+#: ../../Ticket.rst:345
+msgid "Default values are determined."
+msgstr ""
+
+#: ../../Ticket.rst:346
+msgid "You can change its values while respecting the equation defined above."
+msgstr ""
+
