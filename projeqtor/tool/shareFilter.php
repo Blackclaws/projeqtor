@@ -34,7 +34,7 @@ require_once "../tool/projeqtor.php";
 // Get the filter info
 $filterObjectClass=RequestHandler::getValue('filterObjectClass',true);
 if (!isset($objectClass) or !$objectClass) $objectClass=$filterObjectClass;
-if ($objectClass=='Planning') $objectClass='Activity';
+if ($objectClass=='Planning' or $objectClass=='GlobalPlanning') $objectClass='Activity';
 Security::checkValidClass($objectClass);
 
 $idFilter=RequestHandler::getId('idFilter',true); // validated to be numeric value in SqlElement base constructor.

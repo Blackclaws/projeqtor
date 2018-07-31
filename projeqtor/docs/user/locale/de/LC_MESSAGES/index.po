@@ -1,0 +1,273 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2018, ProjeQtOr
+# This file is distributed under the same license as the ProjeQtOr Bedienhandbuch Deutsch package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"POT-Creation-Date: \n"
+"PO-Revision-Date: \n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=ISO-8859-1\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: de\n"
+"X-Generator: Poedit 2.0.8\n"
+
+#: ../../index.rst:8
+msgid "Welcome"
+msgstr "Willkommen"
+
+#: ../../index.rst:10
+msgid "ProjeQtOr is a Quality based Project Organizer, as a web application."
+msgstr "ProjeQtOr ist ein qualitätsbasierter Projekt-Organizer, als Web-Anwendung."
+
+#: ../../index.rst:43
+msgid "What's New in this user guide version?"
+msgstr "Was ist neu in dieser Bedienungsanleitung?"
+
+#: ../../index.rst:50
+msgid "Current version is V7.1"
+msgstr "Aktuelle Version ist V7.1"
+
+#: ../../index.rst:54
+msgid "Planning"
+msgstr "Planung"
+
+#: ../../index.rst:55
+msgid "Managements of pool of resource"
+msgstr "Management des Ressourcenpools"
+
+#: ../../index.rst:63
+msgid "Filter on the planning"
+msgstr "Filter auf die Planung"
+
+#: ../../index.rst:68
+msgid "Steering"
+msgstr "Lenkung"
+
+#: ../../index.rst:72
+msgid "Requirements and tests"
+msgstr "Anforderungen und Tests"
+
+#: ../../index.rst:73
+msgid "Add new Requirements dashboard, similar to existing Ticket Dashboard"
+msgstr "Add new Requirements Dashboard, ähnlich dem bestehenden Ticket Dashboard"
+
+#: ../../index.rst:76
+msgid "Configuration management (Products et Versions)"
+msgstr "Konfigurationsmanagement (Produkte und Versionen)"
+
+#: ../../index.rst:80
+msgid "Controls et Automation"
+msgstr "Steuerung und Automatisierun"
+
+#: ../../index.rst:81
+msgid "On workflows, view the list of types that use this workflow"
+msgstr "Auf Workflows, sehen Sie die Liste der Typen, die diesen Workflow verwenden"
+
+#: ../../index.rst:86
+msgid "Miscellaneous"
+msgstr "Sonstiges"
+
+#: ../../index.rst:87
+msgid "Management of multiple customers."
+msgstr "Verwaltung mehrerer Kunden."
+
+#: ../../index.rst:89
+msgid "Define the default copy class."
+msgstr "Definieren Sie die Standard-Kopierklasse."
+
+#: ../../index.rst:93
+msgid "Reports"
+msgstr "Berichte"
+
+#: ../../index.rst:97
+msgid "Technical"
+msgstr "Technische"
+
+#: ../../index.rst:98
+msgid "Display external libraries (and their version) on the pop-up \"About\""
+msgstr "Externe Bibliotheken (und ihre Version) auf dem Popup-Fenster anzeigen \"About\""
+
+#: ../../index.rst:102
+msgid "PrÃ©vious version was V7.0"
+msgstr "Vorläufige Version war V7.0"
+
+#: ../../index.rst:104
+msgid "Activity Stream."
+msgstr "Tätigkeitsfluss."
+
+#: ../../index.rst:105 ../../index.rst:379
+msgid "Activity Stream"
+msgstr "Tätigkeitsfluss"
+
+#: ../../index.rst:107
+msgid "Display of notes on right part of screen."
+msgstr "Anzeige der Notizen im rechten Teil des Bildschirms."
+
+#: ../../index.rst:109
+msgid "Possibility to quickly add note, in chat like mode."
+msgstr "Möglichkeit, schnell Notizen hinzuzufügen, im Chat-Modus."
+
+#: ../../index.rst:111
+msgid "See: :ref:`AS`"
+msgstr "Siehe: :ref:`AS`"
+
+#: ../../index.rst:114
+msgid "Configuration Management."
+msgstr "Konfigurationsmanagement."
+
+#: ../../index.rst:115
+msgid "Versions planning"
+msgstr "Versions-Planung"
+
+#: ../../index.rst:119
+msgid "See: :ref:`versions-planning`"
+msgstr "Siehe: :ref:`versions-planning`"
+
+#: ../../index.rst:122
+msgid "Review logs."
+msgstr "Protokolle prüfen."
+
+#: ../../index.rst:123
+msgid "Deliverys"
+msgstr "Lieferungen"
+
+#: ../../index.rst:125
+msgid "Added list of deliverables integrated in delivery."
+msgstr "Liste der in die Lieferung integrierten Leistungen hinzugefügt."
+
+#: ../../index.rst:127
+msgid "Automatic dispatch of delivery status to deliverables."
+msgstr "Automatischer Versand des Lieferstatus an Liefergegenstände."
+
+#: ../../index.rst:129
+msgid "See: :ref:`deliveries`"
+msgstr "Siehe: :ref:`deliveries`"
+
+#: ../../index.rst:133
+msgid "List of values."
+msgstr "Werteliste."
+
+#: ../../index.rst:134
+msgid "Consolidation of status changes."
+msgstr "Konsolidierung von Statusänderungen."
+
+#: ../../index.rst:136
+msgid "See: :ref:`status`"
+msgstr "Siehe: :ref:`status`"
+
+#: ../../index.rst:144
+msgid "Notification system."
+msgstr "Benachrichtigungssystem."
+
+#: ../../index.rst:154
+msgid "Features"
+msgstr "Eigenschaften"
+
+#: ../../index.rst:156
+msgid "ProjeQtOr  is a \"Quality based Project Organizer\"."
+msgstr "ProjeQtOr ist ein auf Qualität basierender Projektorganisator."
+
+#: ../../index.rst:168
+msgid "Concepts"
+msgstr "Konzepte"
+
+#: ../../index.rst:170
+msgid "This chapter defines the concepts of ProjeQtOr."
+msgstr "Dieses Kapitel definiert die Konzepte von ProjeQtOr."
+
+#: ../../index.rst:172
+msgid "They can be referred in the following chapters."
+msgstr "Sie können in den folgenden Kapiteln beschrieben werden."
+
+#: ../../index.rst:181
+msgid "Graphical user interface"
+msgstr "Grafische Benutzeroberfläche"
+
+#: ../../index.rst:183
+msgid "ProjeQtOr provides a very rich user interface."
+msgstr "ProjeQtOr bietet eine sehr umfangreiche Benutzeroberfläche."
+
+#: ../../index.rst:199
+msgid "Planning and Follow-up"
+msgstr "Planung und Nachbereitung"
+
+#: ../../index.rst:218
+msgid "Real work allocation"
+msgstr "Echte Arbeitsverteilung"
+
+#: ../../index.rst:232
+msgid "Document management"
+msgstr "Verwaltung von Dokumente"
+
+#: ../../index.rst:234
+msgid "ProjeQtOr integrates an easy to use Document Management feature."
+msgstr "ProjeQtOr integriert eine einfach zu bedienende Dokumentenverwaltung."
+
+#: ../../index.rst:242
+msgid "Ticket management"
+msgstr "Ticket-Verwaltung"
+
+#: ../../index.rst:252
+msgid "Requirements & Tests"
+msgstr "Anforderungen & Tests"
+
+#: ../../index.rst:260
+msgid "Financial"
+msgstr "Finanzwesen"
+
+#: ../../index.rst:271
+msgid "Configuration Management"
+msgstr "Configuration Management\" (Konfigurationsverwaltung"
+
+#: ../../index.rst:279
+msgid "Risk & Issue Management"
+msgstr "Risk & Issue Management\" (Risikomanagement"
+
+#: ../../index.rst:287
+msgid "Review logs"
+msgstr "Protokolle prüfen"
+
+#: ../../index.rst:295
+msgid "Environmental parameters"
+msgstr "Umweltparamete"
+
+#: ../../index.rst:310
+msgid "Tools"
+msgstr "Werkzeuge"
+
+#: ../../index.rst:318
+msgid "Controls & Automation"
+msgstr "Steuerung & Automatisierung"
+
+#: ../../index.rst:326
+msgid "Access rights"
+msgstr "Zugriffsberechtigunge"
+
+#: ../../index.rst:334
+msgid "Lists of values"
+msgstr "Wertelisten"
+
+#: ../../index.rst:345
+msgid "Lists of types"
+msgstr "Typenlisten"
+
+#: ../../index.rst:355
+msgid "Plug-ins"
+msgstr "Plug-ins"
+
+#: ../../index.rst:363
+msgid "Organizations"
+msgstr "Organisationen"
+
+#: ../../index.rst:371
+msgid "Administration"
+msgstr "Verwaltung"
+
+#: ../../index.rst:387
+msgid "Glossary"
+msgstr "Glossar"

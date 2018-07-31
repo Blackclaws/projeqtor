@@ -180,14 +180,17 @@ function refreshJsonList(className, keepUrl) {
  * @return void
  */
 function refreshJsonPlanning() {
+  param = false;
   if (dojo.byId("resourcePlanning")) {
     url = "../tool/jsonResourcePlanning.php";
   } else if (dojo.byId("versionsPlanning")) {
 	  url = "../tool/jsonVersionsPlanning.php";
+  } else if (dojo.byId("globalPlanning")) {
+    url = "../tool/jsonPlanning.php?global=true";
+    param=true;
   } else {
     url = "../tool/jsonPlanning.php";
   }
-  param = false;
   
   //ADD qCazelles - GANTT
   if (dojo.byId('nbPvs')) {
@@ -691,6 +694,7 @@ function loadContent(page, destination, formName, isResultMessage,
             }
           }
           hideBigImage(); // Will avoid resident pop-up always displayed
+          cleanContent(destination);
           if(!editorInFullScreen()) contentWidget.set('content', data);
           checkDestination(destination);
           // Create instances of CKEDITOR
@@ -811,6 +815,9 @@ function loadContent(page, destination, formName, isResultMessage,
               || page.indexOf("resourcePlanningMain.php") >= 0
               || page.indexOf("resourcePlanningList.php") >= 0
               || (page.indexOf("jsonResourcePlanning.php") >= 0 && dijit.byId("startDatePlanView"))
+              || page.indexOf("globalPlanningMain.php") >= 0
+              || page.indexOf("globalPlanningList.php") >= 0
+              || (page.indexOf("jsonGlobalPlanning.php") >= 0 && dijit.byId("startDatePlanView"))
               || page.indexOf("portfolioPlanningMain.php") >= 0
               || page.indexOf("portfolioPlanningList.php") >= 0
               || (page.indexOf("jsonPortfolioPlanning.php") >= 0 && dijit.byId("startDatePlanView"))
@@ -2328,6 +2335,8 @@ function setSelectedProject(idProject, nameProject, selectionField,resetPrevious
             loadContent("resourcePlanningList.php", "listDiv", 'listForm');
           } else if (dojo.byId("portfolioPlanning")) {
             loadContent("portfolioPlanningList.php", "listDiv", 'listForm');
+          } else if (dojo.byId("globalPlanning")) {
+            loadContent("globalPlanningList.php", "listDiv", 'listForm');
           } else {
             loadContent("planningList.php", "listDiv", 'listForm');
           }

@@ -82,7 +82,7 @@
 .. |buttonIconDrag| image:: images/iconDrag.png
    :alt: Button icon drag
 
-.. |buttonIconFilter| image:: images/iconFilter.png
+.. |buttonIconFilter| image:: images/iconActiveFilter.png
    :alt: button icon filter
 
 .. |comboArrowDown| image:: images/comboArrowDown.png

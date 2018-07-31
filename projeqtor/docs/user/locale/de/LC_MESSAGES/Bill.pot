@@ -1,0 +1,1079 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2018, ProjeQtOr
+# This file is distributed under the same license as the ProjeQtOr Bedienhandbuch Deutsch package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: ProjeQtOr Bedienhandbuch Deutsch 7.2\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2018-07-03 14:34+0200\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: ../../Bill.rst:11
+#: ../../Bill.rst:429
+#: ../../Bill.rst:588
+msgid "Bill"
+msgstr ""
+
+#: ../../Bill.rst:20
+msgid "Bills"
+msgstr ""
+
+#: ../../Bill.rst:22
+msgid "A bill is a request for payment for delivered work."
+msgstr ""
+
+#: ../../Bill.rst:24
+msgid "Billing will depend on billing type defined for the project through project type."
+msgstr ""
+
+#: ../../Bill.rst:33
+msgid "Billing types"
+msgstr ""
+
+#: ../../Bill.rst:38
+msgid "Each bill is linked to project, a project has a project type, and a project type is linked to a billing type."
+msgstr ""
+
+#: ../../Bill.rst:40
+msgid "So the billing type is automatically defined for the selected project."
+msgstr ""
+
+#: ../../Bill.rst:42
+msgid "Billing type will influence bill line format."
+msgstr ""
+
+#: ../../Bill.rst:46
+msgid "**At terms**"
+msgstr ""
+
+#: ../../Bill.rst:48
+msgid "A :ref:`term <term>` must be defined to generate the bill, generally following a billing calendar."
+msgstr ""
+
+#: ../../Bill.rst:49
+msgid "Used for instance for: **Fixed price projects**."
+msgstr ""
+
+#: ../../Bill.rst:51
+msgid "**On produced work**"
+msgstr ""
+
+#: ../../Bill.rst:53
+#: ../../Bill.rst:59
+msgid "No term is needed."
+msgstr ""
+
+#: ../../Bill.rst:54
+#: ../../Bill.rst:60
+msgid "The billing will be calculated based on produced work for resources on selected :ref:`activities <activity-price>`, on a selected period."
+msgstr ""
+
+#: ../../Bill.rst:55
+msgid "Used, for instance for: **Time & Materials projects**."
+msgstr ""
+
+#: ../../Bill.rst:57
+msgid "**On capped produced work**"
+msgstr ""
+
+#: ../../Bill.rst:62
+msgid "Used, for instance for: **Capped Time & Materials projects**."
+msgstr ""
+
+#: ../../Bill.rst:66
+msgid "Taking into account that total billing cannot be more than project validated work."
+msgstr ""
+
+#: ../../Bill.rst:68
+msgid "**Manual**"
+msgstr ""
+
+#: ../../Bill.rst:70
+msgid "Billing is defined manually, with no link to the project activity."
+msgstr ""
+
+#: ../../Bill.rst:71
+msgid "Used, for instance for: **Any kind of project where no link to activity is needed**."
+msgstr ""
+
+#: ../../Bill.rst:73
+msgid "**Not billed**"
+msgstr ""
+
+#: ../../Bill.rst:75
+msgid "No billing is possible for these kinds of projects."
+msgstr ""
+
+#: ../../Bill.rst:76
+msgid "Used, for instance for: **Internal projects & Administrative projects**."
+msgstr ""
+
+#: ../../Bill.rst:80
+msgid "Billing report"
+msgstr ""
+
+#: ../../Bill.rst:82
+msgid "Only bill with at least status \"done\" will be available for reporting."
+msgstr ""
+
+#: ../../Bill.rst:83
+msgid "Before this status, they are considered as a draft."
+msgstr ""
+
+#: ../../Bill.rst:91
+msgid ":ref:`Linked element<linkElement-section>`"
+msgstr ""
+
+#: ../../Bill.rst:92
+msgid ":ref:`Attachments<attachment-section>`"
+msgstr ""
+
+#: ../../Bill.rst:93
+#: ../../Bill.rst:411
+msgid ":ref:`Notes<note-section>`"
+msgstr ""
+
+#: ../../Bill.rst:96
+#: ../../Bill.rst:414
+#: ../../Bill.rst:504
+#: ../../Bill.rst:547
+#: ../../Bill.rst:622
+msgid "Section: Description"
+msgstr ""
+
+#: ../../Bill.rst:103
+#: ../../Bill.rst:152
+#: ../../Bill.rst:218
+#: ../../Bill.rst:260
+#: ../../Bill.rst:302
+#: ../../Bill.rst:359
+#: ../../Bill.rst:421
+#: ../../Bill.rst:444
+#: ../../Bill.rst:481
+#: ../../Bill.rst:511
+#: ../../Bill.rst:554
+#: ../../Bill.rst:576
+#: ../../Bill.rst:629
+#: ../../Bill.rst:654
+msgid "Field"
+msgstr ""
+
+#: ../../Bill.rst:104
+#: ../../Bill.rst:153
+#: ../../Bill.rst:219
+#: ../../Bill.rst:224
+#: ../../Bill.rst:261
+#: ../../Bill.rst:266
+#: ../../Bill.rst:303
+#: ../../Bill.rst:314
+#: ../../Bill.rst:360
+#: ../../Bill.rst:365
+#: ../../Bill.rst:422
+#: ../../Bill.rst:445
+#: ../../Bill.rst:482
+#: ../../Bill.rst:512
+#: ../../Bill.rst:555
+#: ../../Bill.rst:562
+#: ../../Bill.rst:577
+#: ../../Bill.rst:630
+msgid "Description"
+msgstr ""
+
+#: ../../Bill.rst:105
+#: ../../Bill.rst:220
+#: ../../Bill.rst:423
+#: ../../Bill.rst:513
+#: ../../Bill.rst:556
+#: ../../Bill.rst:631
+msgid ":term:`Id`"
+msgstr ""
+
+#: ../../Bill.rst:106
+msgid "Unique Id for the bill."
+msgstr ""
+
+#: ../../Bill.rst:107
+#: ../../Bill.rst:425
+#: ../../Bill.rst:558
+#: ../../Bill.rst:633
+msgid "**Name**"
+msgstr ""
+
+#: ../../Bill.rst:108
+msgid "Short description of the bill."
+msgstr ""
+
+#: ../../Bill.rst:109
+msgid "**Bill type**"
+msgstr ""
+
+#: ../../Bill.rst:110
+msgid "Type of bill."
+msgstr ""
+
+#: ../../Bill.rst:111
+#: ../../Bill.rst:427
+#: ../../Bill.rst:517
+msgid "**Project**"
+msgstr ""
+
+#: ../../Bill.rst:112
+msgid "The project concerned by the bill."
+msgstr ""
+
+#: ../../Bill.rst:113
+msgid "Date"
+msgstr ""
+
+#: ../../Bill.rst:114
+msgid "Date of the bill."
+msgstr ""
+
+#: ../../Bill.rst:115
+msgid "Payment deadline"
+msgstr ""
+
+#: ../../Bill.rst:116
+msgid "Payment deadline."
+msgstr ""
+
+#: ../../Bill.rst:117
+msgid "Payment due date"
+msgstr ""
+
+#: ../../Bill.rst:118
+msgid "Due date for payment (read only)."
+msgstr ""
+
+#: ../../Bill.rst:119
+#: ../../Bill.rst:592
+msgid "Customer"
+msgstr ""
+
+#: ../../Bill.rst:120
+msgid "Customer who will pay for the bill."
+msgstr ""
+
+#: ../../Bill.rst:121
+msgid "Bill contact"
+msgstr ""
+
+#: ../../Bill.rst:122
+msgid "Contact who will receive the bill."
+msgstr ""
+
+#: ../../Bill.rst:123
+#: ../../Bill.rst:594
+msgid "Recipient"
+msgstr ""
+
+#: ../../Bill.rst:124
+msgid "Recipient who will receive the payment for the bill."
+msgstr ""
+
+#: ../../Bill.rst:125
+msgid ":term:`Origin`"
+msgstr ""
+
+#: ../../Bill.rst:126
+msgid "Element which is the origin of the bill."
+msgstr ""
+
+#: ../../Bill.rst:127
+msgid "Billing type"
+msgstr ""
+
+#: ../../Bill.rst:128
+msgid "Project billing type."
+msgstr ""
+
+#: ../../Bill.rst:130
+#: ../../Bill.rst:178
+#: ../../Bill.rst:273
+#: ../../Bill.rst:327
+#: ../../Bill.rst:434
+#: ../../Bill.rst:528
+#: ../../Bill.rst:565
+#: ../../Bill.rst:602
+#: ../../Bill.rst:646
+msgid "**\\* Required field**"
+msgstr ""
+
+#: ../../Bill.rst:134
+msgid "The value is calculated with date of bill + payment deadline."
+msgstr ""
+
+#: ../../Bill.rst:138
+msgid "Automatically updated from project fields."
+msgstr ""
+
+#: ../../Bill.rst:145
+#: ../../Bill.rst:569
+#: ../../Bill.rst:649
+msgid "Section: Treatment"
+msgstr ""
+
+#: ../../Bill.rst:154
+msgid "**Status**"
+msgstr ""
+
+#: ../../Bill.rst:155
+msgid "Actual :term:`status` of the bill."
+msgstr ""
+
+#: ../../Bill.rst:156
+msgid ":term:`Responsible`"
+msgstr ""
+
+#: ../../Bill.rst:157
+msgid "Resource who is responsible for the bill."
+msgstr ""
+
+#: ../../Bill.rst:158
+msgid "Sent date"
+msgstr ""
+
+#: ../../Bill.rst:159
+msgid "Date when bill is sent to customer contact."
+msgstr ""
+
+#: ../../Bill.rst:160
+msgid "Send mode"
+msgstr ""
+
+#: ../../Bill.rst:161
+msgid "Delivery mode."
+msgstr ""
+
+#: ../../Bill.rst:162
+msgid ":term:`Done`"
+msgstr ""
+
+#: ../../Bill.rst:163
+msgid "Flag to indicate that the bill has been treated."
+msgstr ""
+
+#: ../../Bill.rst:164
+#: ../../Bill.rst:431
+#: ../../Bill.rst:525
+#: ../../Bill.rst:598
+msgid ":term:`Closed`"
+msgstr ""
+
+#: ../../Bill.rst:165
+msgid "Flag to indicate that the bill is archived."
+msgstr ""
+
+#: ../../Bill.rst:166
+msgid "Cancelled"
+msgstr ""
+
+#: ../../Bill.rst:167
+msgid "Flag to indicate that the bill is cancelled."
+msgstr ""
+
+#: ../../Bill.rst:168
+#: ../../Bill.rst:322
+#: ../../Bill.rst:373
+msgid "Amount"
+msgstr ""
+
+#: ../../Bill.rst:169
+msgid "Total amount of the bill."
+msgstr ""
+
+#: ../../Bill.rst:170
+msgid "% of order"
+msgstr ""
+
+#: ../../Bill.rst:171
+msgid "Percentage of the bill balance over order amount."
+msgstr ""
+
+#: ../../Bill.rst:172
+msgid "Payment"
+msgstr ""
+
+#: ../../Bill.rst:173
+msgid "Payment of bill."
+msgstr ""
+
+#: ../../Bill.rst:174
+msgid ":term:`Comments<Description>`"
+msgstr ""
+
+#: ../../Bill.rst:175
+msgid "Comments for the bill."
+msgstr ""
+
+#: ../../Bill.rst:182
+#: ../../Bill.rst:196
+msgid "Columns:"
+msgstr ""
+
+#: ../../Bill.rst:184
+msgid "**Ex VAT**: Amount without taxes."
+msgstr ""
+
+#: ../../Bill.rst:186
+msgid "The value is automatically updated with the sum of bill line amounts."
+msgstr ""
+
+#: ../../Bill.rst:188
+msgid "**Tax**: Applicable tax."
+msgstr ""
+
+#: ../../Bill.rst:190
+msgid "Automatically updated from customer field."
+msgstr ""
+
+#: ../../Bill.rst:192
+msgid "**Full**: Amount with taxes."
+msgstr ""
+
+#: ../../Bill.rst:198
+msgid "**Date**: Date of payment."
+msgstr ""
+
+#: ../../Bill.rst:199
+msgid "**Amount**: Payment amount."
+msgstr ""
+
+#: ../../Bill.rst:200
+msgid "**Complete**: Flag to indicate that complete payment."
+msgstr ""
+
+#: ../../Bill.rst:209
+msgid "Section: Bill lines"
+msgstr ""
+
+#: ../../Bill.rst:210
+msgid "Input for each bill line depends on billing type."
+msgstr ""
+
+#: ../../Bill.rst:221
+msgid "Unique Id for the bill line."
+msgstr ""
+
+#: ../../Bill.rst:222
+#: ../../Bill.rst:262
+#: ../../Bill.rst:304
+#: ../../Bill.rst:361
+msgid "N°"
+msgstr ""
+
+#: ../../Bill.rst:223
+#: ../../Bill.rst:263
+#: ../../Bill.rst:305
+msgid "Number of the line for the bill."
+msgstr ""
+
+#: ../../Bill.rst:225
+#: ../../Bill.rst:366
+msgid "Description of the line."
+msgstr ""
+
+#: ../../Bill.rst:226
+#: ../../Bill.rst:268
+#: ../../Bill.rst:316
+#: ../../Bill.rst:367
+#: ../../Bill.rst:639
+msgid "Detail"
+msgstr ""
+
+#: ../../Bill.rst:227
+#: ../../Bill.rst:269
+#: ../../Bill.rst:317
+#: ../../Bill.rst:368
+msgid "Detail of the line."
+msgstr ""
+
+#: ../../Bill.rst:228
+#: ../../Bill.rst:656
+msgid "Unit price"
+msgstr ""
+
+#: ../../Bill.rst:229
+msgid "Unitary price of billed element."
+msgstr ""
+
+#: ../../Bill.rst:230
+#: ../../Bill.rst:320
+#: ../../Bill.rst:371
+#: ../../Bill.rst:658
+msgid "Quantity"
+msgstr ""
+
+#: ../../Bill.rst:231
+msgid "Quantity of billed element."
+msgstr ""
+
+#: ../../Bill.rst:232
+msgid "Sum"
+msgstr ""
+
+#: ../../Bill.rst:233
+msgid "Total price for the line (Price x Quantity)."
+msgstr ""
+
+#: ../../Bill.rst:236
+msgid "Bill lines management"
+msgstr ""
+
+#: ../../Bill.rst:237
+msgid "Click on |buttonAdd| to add a bill line. A different “Bill line” dialog box will be displayed depends on billing type."
+msgstr ""
+
+#: ../../Bill.rst:238
+msgid "Click on |buttonEdit| to modify an existing bill line."
+msgstr ""
+
+#: ../../Bill.rst:239
+msgid "Click on |buttonIconDelete| to delete the bill line."
+msgstr ""
+
+#: ../../Bill.rst:247
+msgid "Bill line: At terms"
+msgstr ""
+
+#: ../../Bill.rst:252
+msgid "Bill line - At terms"
+msgstr ""
+
+#: ../../Bill.rst:256
+msgid "Fields - Bill line - At terms"
+msgstr ""
+
+#: ../../Bill.rst:264
+msgid "**Term**"
+msgstr ""
+
+#: ../../Bill.rst:265
+msgid "Project terms to be selected."
+msgstr ""
+
+#: ../../Bill.rst:267
+#: ../../Bill.rst:315
+msgid "Description of line."
+msgstr ""
+
+#: ../../Bill.rst:270
+#: ../../Bill.rst:318
+#: ../../Bill.rst:369
+msgid "Price"
+msgstr ""
+
+#: ../../Bill.rst:271
+msgid "Real amount of term."
+msgstr ""
+
+#: ../../Bill.rst:277
+msgid "Automatically set with the term name."
+msgstr ""
+
+#: ../../Bill.rst:278
+#: ../../Bill.rst:332
+msgid "Can be modified on update."
+msgstr ""
+
+#: ../../Bill.rst:282
+#: ../../Bill.rst:336
+msgid "Can be set on update."
+msgstr ""
+
+#: ../../Bill.rst:291
+msgid "Bill line: On produced work & On capped produced work"
+msgstr ""
+
+#: ../../Bill.rst:296
+msgid "Bill line - On produced work & On capped produced work"
+msgstr ""
+
+#: ../../Bill.rst:298
+msgid "Fields - Bill line - On produced work & On capped produced work"
+msgstr ""
+
+#: ../../Bill.rst:306
+msgid "**Resource**"
+msgstr ""
+
+#: ../../Bill.rst:307
+msgid "Project resources to be selected."
+msgstr ""
+
+#: ../../Bill.rst:308
+msgid "**Activity price**"
+msgstr ""
+
+#: ../../Bill.rst:309
+msgid "Project activities price to be selected."
+msgstr ""
+
+#: ../../Bill.rst:310
+msgid "**Start date**"
+msgstr ""
+
+#: ../../Bill.rst:311
+msgid "Start date of the period to take into account."
+msgstr ""
+
+#: ../../Bill.rst:312
+msgid "**End date**"
+msgstr ""
+
+#: ../../Bill.rst:313
+msgid "End date of the period  to take into account."
+msgstr ""
+
+#: ../../Bill.rst:319
+msgid "Price of the activity."
+msgstr ""
+
+#: ../../Bill.rst:321
+#: ../../Bill.rst:372
+msgid "Quantity of element."
+msgstr ""
+
+#: ../../Bill.rst:323
+#: ../../Bill.rst:374
+msgid "Amount for the line (Price x Quantity)."
+msgstr ""
+
+#: ../../Bill.rst:331
+msgid "Automatically set with selected resource, activity price name and dates."
+msgstr ""
+
+#: ../../Bill.rst:346
+msgid "Bill line: Manual billing"
+msgstr ""
+
+#: ../../Bill.rst:351
+msgid "Bill line - Manual billing"
+msgstr ""
+
+#: ../../Bill.rst:355
+msgid "Fields - Bill line - Manual billing"
+msgstr ""
+
+#: ../../Bill.rst:362
+msgid "Number of the line."
+msgstr ""
+
+#: ../../Bill.rst:363
+msgid "Amendment"
+msgstr ""
+
+#: ../../Bill.rst:364
+msgid "Flag to indicate this is an amendment line."
+msgstr ""
+
+#: ../../Bill.rst:370
+msgid "Unitary price of element / measure unit."
+msgstr ""
+
+#: ../../Bill.rst:378
+msgid "This field is used for amendment values in order detail."
+msgstr ""
+
+#: ../../Bill.rst:390
+msgid "Terms"
+msgstr ""
+
+#: ../../Bill.rst:392
+msgid "A term is a planned trigger for billing."
+msgstr ""
+
+#: ../../Bill.rst:394
+msgid "You can define as many terms as you wish, to define the billing calendar."
+msgstr ""
+
+#: ../../Bill.rst:398
+msgid "Terms are mandatory to bill “Fixed price” project."
+msgstr ""
+
+#: ../../Bill.rst:399
+msgid "A term can be used just one time. The bill name will be displayed."
+msgstr ""
+
+#: ../../Bill.rst:402
+msgid "A term has triggers"
+msgstr ""
+
+#: ../../Bill.rst:403
+msgid "You can link the activities that should be billed at this term."
+msgstr ""
+
+#: ../../Bill.rst:404
+msgid "A summary of activities is displayed for validated and planned amount and end date."
+msgstr ""
+
+#: ../../Bill.rst:405
+msgid "Validated and planned values play the role of reminder."
+msgstr ""
+
+#: ../../Bill.rst:406
+msgid "You can use these values to set real amount and date."
+msgstr ""
+
+#: ../../Bill.rst:424
+msgid "Unique Id for the term."
+msgstr ""
+
+#: ../../Bill.rst:426
+msgid "Short description of the term."
+msgstr ""
+
+#: ../../Bill.rst:428
+msgid "The project concerned with the term."
+msgstr ""
+
+#: ../../Bill.rst:430
+msgid "Bill name that uses this term."
+msgstr ""
+
+#: ../../Bill.rst:432
+msgid "Flag to indicate that term is archived"
+msgstr ""
+
+#: ../../Bill.rst:437
+msgid "Section: Fixed price for term"
+msgstr ""
+
+#: ../../Bill.rst:446
+msgid "Real amount"
+msgstr ""
+
+#: ../../Bill.rst:447
+msgid "Defined amount for the term."
+msgstr ""
+
+#: ../../Bill.rst:448
+msgid "Real date"
+msgstr ""
+
+#: ../../Bill.rst:449
+msgid "Defined date for the term."
+msgstr ""
+
+#: ../../Bill.rst:450
+msgid "Validated amount"
+msgstr ""
+
+#: ../../Bill.rst:451
+msgid "Sum of validated amounts of activities defined as triggers **(Read only)**."
+msgstr ""
+
+#: ../../Bill.rst:452
+msgid "Validated date"
+msgstr ""
+
+#: ../../Bill.rst:453
+#: ../../Bill.rst:457
+msgid "Max of validated end dates of activities defined as triggers **(Read only)**."
+msgstr ""
+
+#: ../../Bill.rst:454
+msgid "Planned amount"
+msgstr ""
+
+#: ../../Bill.rst:455
+msgid "Sum of planned amounts of activities defined as triggers **(Read only)**."
+msgstr ""
+
+#: ../../Bill.rst:456
+msgid "Planned date"
+msgstr ""
+
+#: ../../Bill.rst:461
+msgid "When a trigger is entered, the values of planned and validated are automatically updated with the sum and the max of triggered amounts."
+msgstr ""
+
+#: ../../Bill.rst:464
+msgid "Section: Trigger elements for the term"
+msgstr ""
+
+#: ../../Bill.rst:465
+msgid "This section allows to manage element trigger."
+msgstr ""
+
+#: ../../Bill.rst:468
+msgid "Trigger element management"
+msgstr ""
+
+#: ../../Bill.rst:469
+msgid "Click on |buttonAdd| to add an element trigger."
+msgstr ""
+
+#: ../../Bill.rst:470
+msgid "Click on |buttonIconDelete| to delete an element trigger."
+msgstr ""
+
+#: ../../Bill.rst:477
+msgid "Fields - Add a trigger element to term dialog box"
+msgstr ""
+
+#: ../../Bill.rst:483
+msgid "Linked element type"
+msgstr ""
+
+#: ../../Bill.rst:484
+msgid "Type of element to be selected (Activity, Meeting, Milestone, Project, Test session)."
+msgstr ""
+
+#: ../../Bill.rst:485
+msgid "Linked element"
+msgstr ""
+
+#: ../../Bill.rst:486
+msgid "Item to be selected."
+msgstr ""
+
+#: ../../Bill.rst:497
+msgid "Activities prices"
+msgstr ""
+
+#: ../../Bill.rst:499
+msgid "Activity price defines daily price for activities of a given **activity type** and a given **project**."
+msgstr ""
+
+#: ../../Bill.rst:501
+msgid "This is used to calculate a billing amount for billing type **On produced work** and **On capped produced work**."
+msgstr ""
+
+#: ../../Bill.rst:514
+msgid "Unique Id for the activity price."
+msgstr ""
+
+#: ../../Bill.rst:515
+msgid "Name"
+msgstr ""
+
+#: ../../Bill.rst:516
+msgid "Short description of the activity price."
+msgstr ""
+
+#: ../../Bill.rst:518
+msgid "The project concerned with the activity price."
+msgstr ""
+
+#: ../../Bill.rst:519
+msgid "**Activity type**"
+msgstr ""
+
+#: ../../Bill.rst:520
+msgid "Type of activities concerned with the activity price."
+msgstr ""
+
+#: ../../Bill.rst:521
+msgid "Price of the activity"
+msgstr ""
+
+#: ../../Bill.rst:522
+msgid "Daily price of the activities of the given activity type and the given project."
+msgstr ""
+
+#: ../../Bill.rst:523
+msgid "Sort order"
+msgstr ""
+
+#: ../../Bill.rst:524
+msgid "Number to define order of display in lists."
+msgstr ""
+
+#: ../../Bill.rst:526
+msgid "Flag to indicate that activity price is archived."
+msgstr ""
+
+#: ../../Bill.rst:540
+msgid "Payments"
+msgstr ""
+
+#: ../../Bill.rst:542
+msgid "Allow to define payment of bills."
+msgstr ""
+
+#: ../../Bill.rst:544
+msgid "The bill keeps track of payment."
+msgstr ""
+
+#: ../../Bill.rst:557
+#: ../../Bill.rst:632
+msgid "Unique Id for the payment."
+msgstr ""
+
+#: ../../Bill.rst:559
+msgid "Short description of the payment."
+msgstr ""
+
+#: ../../Bill.rst:560
+msgid "**Payment type**"
+msgstr ""
+
+#: ../../Bill.rst:561
+msgid "Type of payment."
+msgstr ""
+
+#: ../../Bill.rst:563
+msgid "Description of the payment."
+msgstr ""
+
+#: ../../Bill.rst:578
+msgid "**Payment mode**"
+msgstr ""
+
+#: ../../Bill.rst:579
+msgid "The mode of payment."
+msgstr ""
+
+#: ../../Bill.rst:580
+msgid "**Payment date**"
+msgstr ""
+
+#: ../../Bill.rst:581
+msgid "Date of payment."
+msgstr ""
+
+#: ../../Bill.rst:582
+msgid "**Payment amount**"
+msgstr ""
+
+#: ../../Bill.rst:583
+msgid "Amount of the payment."
+msgstr ""
+
+#: ../../Bill.rst:584
+msgid "Payment fee"
+msgstr ""
+
+#: ../../Bill.rst:585
+msgid "Payment of the fee."
+msgstr ""
+
+#: ../../Bill.rst:586
+msgid "Payment credit"
+msgstr ""
+
+#: ../../Bill.rst:587
+msgid "Balance of payment amount less payment fee."
+msgstr ""
+
+#: ../../Bill.rst:589
+msgid "Bill concerned with the payment."
+msgstr ""
+
+#: ../../Bill.rst:590
+msgid "Bill reference"
+msgstr ""
+
+#: ../../Bill.rst:591
+msgid "Reference of bill."
+msgstr ""
+
+#: ../../Bill.rst:593
+msgid "Customer of bill."
+msgstr ""
+
+#: ../../Bill.rst:595
+msgid "Recipient of bill."
+msgstr ""
+
+#: ../../Bill.rst:596
+msgid "Bill amount"
+msgstr ""
+
+#: ../../Bill.rst:597
+msgid "Amount of bill."
+msgstr ""
+
+#: ../../Bill.rst:599
+msgid "Flag to indicate that payment is archived."
+msgstr ""
+
+#: ../../Bill.rst:615
+msgid "Catalog"
+msgstr ""
+
+#: ../../Bill.rst:617
+msgid "Catalog defines items (products or services) that can be obects of a quotation, an order or a bill."
+msgstr ""
+
+#: ../../Bill.rst:619
+msgid "This is used on the quotation lines, order lines and invoice lines. See: :ref:`Bill lines<manual-billing>`."
+msgstr ""
+
+#: ../../Bill.rst:634
+msgid "Name of the catalog."
+msgstr ""
+
+#: ../../Bill.rst:635
+msgid "**Catalog type**"
+msgstr ""
+
+#: ../../Bill.rst:636
+msgid "Type of catalog."
+msgstr ""
+
+#: ../../Bill.rst:637
+msgid "**Description**"
+msgstr ""
+
+#: ../../Bill.rst:638
+msgid "Description of the catalog."
+msgstr ""
+
+#: ../../Bill.rst:640
+msgid "Detail of the catalog."
+msgstr ""
+
+#: ../../Bill.rst:641
+msgid "Nomenclature"
+msgstr ""
+
+#: ../../Bill.rst:642
+msgid "Nomenclature of the catalog."
+msgstr ""
+
+#: ../../Bill.rst:643
+msgid "Specification"
+msgstr ""
+
+#: ../../Bill.rst:644
+msgid "Specification of the catalog."
+msgstr ""
+
+#: ../../Bill.rst:655
+msgid "Treatment"
+msgstr ""
+
+#: ../../Bill.rst:657
+msgid "Type of unit."
+msgstr ""
+
+#: ../../Bill.rst:659
+msgid "Quantity of catalog."
+msgstr ""
+
+#: ../../Bill.rst:660
+msgid "Product"
+msgstr ""
+
+#: ../../Bill.rst:661
+msgid "Type of product."
+msgstr ""
+
+#: ../../Bill.rst:662
+msgid "Product version"
+msgstr ""
+
+#: ../../Bill.rst:663
+msgid "Version of the product."
+msgstr ""
+

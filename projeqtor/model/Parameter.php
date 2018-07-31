@@ -457,6 +457,7 @@ class Parameter extends SqlElement {
       	if (securityCheckDisplayMenu(null,'Planning')) {$list['planningMain.php']=i18n('menuPlanning');}
       	if (securityCheckDisplayMenu(null,'PortfolioPlanning')) {$list['portfolioPlanningMain.php']=i18n('menuPortfolioPlanning');}
       	if (securityCheckDisplayMenu(null,'ResourcePlanning')) {$list['resourcePlanningMain.php']=i18n('menuResourcePlanning');}
+      	if (securityCheckDisplayMenu(null,'GlobalPlanning')) {$list['globalPlanningMain.php']=i18n('menuGlobalPlanning');}
         if (securityCheckDisplayMenu(null,'Kanban')) {$list['../plugin/kanban/kanbanViewMain.php']=i18n('menuKanban');}
       	$arrayItem=array('Project','Document','Ticket','TicketSimple','Activity','Action','Requirement','ProductVersion','ComponentVersion','GlobalView');
       	foreach  ($arrayItem as $item) {
@@ -476,8 +477,8 @@ class Parameter extends SqlElement {
       case 'editor' :
         $list=array('CK'=>i18n('CKEditor'),
                     'CKInline'=>i18n('CkEditorInline'),
-                    'Dojo'=>i18n('DojoEditor'),
-                    'DojoInline'=>i18n('DojoEditorInline'),
+                    // 'Dojo'=>i18n('DojoEditor'), // Removed because buggy
+                    // 'DojoInline'=>i18n('DojoEditorInline'), // Removed because buggy
                     'text'=>i18n('plainTextEditor'));
         break;
       case 'maxColumns':
@@ -708,7 +709,6 @@ class Parameter extends SqlElement {
       	                      'paramFadeLoadingMode'=>'list',
       	                      'maxItemsInTodayLists'=>'number',
       	                      'filterByStatus'=>'list', //ADD by qCazelles - Filter by Status
-      	                      'restrictProjectList'=>'list',
       	                      //'projectRestriction'=>'list', // Babynus : feature disabled do to regressions
                           	'sectionLocalization'=>'section',
                             	'currency'=>'text',
@@ -725,6 +725,7 @@ class Parameter extends SqlElement {
       	                      "editor"=>'list',
       	                      "scaytAutoStartup"=>'list',
       	                      "notApplicableValue"=>"list",
+      	                      'restrictProjectList'=>'list',
       	                'tabMiscellaneous'=>"tab",
       	                  'columnMiscellanousLeft'=>'newColumn',
       	                     'sectionReferenceFormat'=>'section',

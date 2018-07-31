@@ -1,0 +1,118 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2018, ProjeQtOr
+# This file is distributed under the same license as the ProjeQtOr Bedienhandbuch Deutsch package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: ProjeQtOr Bedienhandbuch Deutsch 7.2\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2018-07-03 14:34+0200\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: ../../Diary.rst:12
+msgid "Diary"
+msgstr ""
+
+#: ../../Diary.rst:14
+msgid "Allows to display planned task to a resource on a calendar view."
+msgstr ""
+
+#: ../../Diary.rst:16
+msgid "This view can be monthly, weekly or daily."
+msgstr ""
+
+#: ../../Diary.rst:18
+msgid "Just click on any task to access directly."
+msgstr ""
+
+#: ../../Diary.rst:20
+msgid "On mouse over the task"
+msgstr ""
+
+#: ../../Diary.rst:22
+msgid "You can see a short information about the task."
+msgstr ""
+
+#: ../../Diary.rst:26
+msgid "**Yellow day** : Current day"
+msgstr ""
+
+#: ../../Diary.rst:27
+msgid "**Grey days** : Days off"
+msgstr ""
+
+#: ../../Diary.rst:35
+msgid "Calendar selector"
+msgstr ""
+
+#: ../../Diary.rst:43
+msgid "1 - Period"
+msgstr ""
+
+#: ../../Diary.rst:44
+msgid "Display the month, week, or day."
+msgstr ""
+
+#: ../../Diary.rst:47
+msgid "2 - 1st day"
+msgstr ""
+
+#: ../../Diary.rst:48
+msgid "Allows to select the displayed calendar."
+msgstr ""
+
+#: ../../Diary.rst:49
+msgid "The first day of mouth or the week is displayed."
+msgstr ""
+
+#: ../../Diary.rst:52
+msgid "3 - Resource"
+msgstr ""
+
+#: ../../Diary.rst:53
+msgid "Allows to select the resource calendar."
+msgstr ""
+
+#: ../../Diary.rst:56
+msgid "4 - Show done items & Show closed items"
+msgstr ""
+
+#: ../../Diary.rst:57
+msgid "Allows to display or not the done and closed items."
+msgstr ""
+
+#: ../../Diary.rst:60
+msgid "5 - Top buttons"
+msgstr ""
+
+#: ../../Diary.rst:61
+msgid "Allows to change current month, week, or day."
+msgstr ""
+
+#: ../../Diary.rst:64
+msgid "6 - Left side buttons"
+msgstr ""
+
+#: ../../Diary.rst:65
+msgid "Click on |arrowRight| to go to week display mode."
+msgstr ""
+
+#: ../../Diary.rst:66
+msgid "Click on |arrowLeft| to return to the last display mode."
+msgstr ""
+
+#: ../../Diary.rst:69
+msgid "7 - Day number button"
+msgstr ""
+
+#: ../../Diary.rst:70
+msgid "Click on the day number button to go day display mode."
+msgstr ""
+

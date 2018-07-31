@@ -1,0 +1,113 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2018, ProjeQtOr
+# This file is distributed under the same license as the ProjeQtOr Bedienhandbuch Deutsch package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"POT-Creation-Date: \n"
+"PO-Revision-Date: \n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=ISO-8859-1\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: de\n"
+"X-Generator: Poedit 2.0.8\n"
+
+#: ../../Organization.rst:10
+msgid "Organizations"
+msgstr "Organisationen"
+
+#: ../../Organization.rst:13
+msgid "Management of organizations"
+msgstr "Management von Organisationen"
+
+#: ../../Organization.rst:22
+msgid ":ref:`Current project<progress-section-activity>`"
+msgstr ":ref:`Current project<progress-section-activity>`"
+
+#: ../../Organization.rst:23
+msgid ":ref:`Linked element<linkElement-section>`"
+msgstr ":ref:`Linked element<linkElement-sektion>`"
+
+#: ../../Organization.rst:24
+msgid ":ref:`Attachments<attachment-section>`"
+msgstr ":ref:`Attachments<Attachment-Bereich>`"
+
+#: ../../Organization.rst:25
+msgid ":ref:`Notes<note-section>`"
+msgstr ":ref:`Notes<note-section>`"
+
+#: ../../Organization.rst:29
+msgid "Section: Description"
+msgstr "Sektion: Beschreibung"
+
+#: ../../Organization.rst:36
+msgid "Field"
+msgstr "Feld"
+
+#: ../../Organization.rst:37
+msgid "Description"
+msgstr "Beschreibung"
+
+#: ../../Organization.rst:38
+msgid ":term:`Id`"
+msgstr ":term:`Id``"
+
+#: ../../Organization.rst:39
+msgid "Unique Id for the Organization."
+msgstr "Unique Id for the Organization."
+
+#: ../../Organization.rst:40
+msgid "**Name**"
+msgstr "**Name**"
+
+#: ../../Organization.rst:41
+msgid "Short name of the Organization."
+msgstr "Kurzname der Organisation."
+
+#: ../../Organization.rst:42
+msgid "**Organization type**"
+msgstr "**Organisationsart**"
+
+#: ../../Organization.rst:43
+msgid "Type of organization."
+msgstr "Art der Organisation."
+
+#: ../../Organization.rst:44
+msgid "Manager"
+msgstr "Manager"
+
+#: ../../Organization.rst:45
+msgid "Manager of organization."
+msgstr "Manager der Organisation."
+
+#: ../../Organization.rst:46
+msgid "Hierarchy"
+msgstr "Hierarchie"
+
+#: ../../Organization.rst:47
+msgid "list of parents organizations."
+msgstr "Liste der Elternorganisationen."
+
+#: ../../Organization.rst:48
+msgid "Parent organization"
+msgstr "Muttergesellschaft"
+
+#: ../../Organization.rst:49
+msgid "parent organization."
+msgstr "Mutterorganisation."
+
+#: ../../Organization.rst:50
+msgid "Closed"
+msgstr "Geschlossen"
+
+#: ../../Organization.rst:51
+msgid "Box checked indicates the organization is archived."
+msgstr "Kontrollkästchen zeigt an, dass die Organisation archiviert ist."
+
+#: ../../Organization.rst:53
+msgid "**\\* Required field**"
+msgstr "**\\* Pflichtfeld**"

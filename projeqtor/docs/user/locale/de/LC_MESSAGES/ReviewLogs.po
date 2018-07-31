@@ -1,0 +1,736 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2018, ProjeQtOr
+# This file is distributed under the same license as the ProjeQtOr Bedienhandbuch Deutsch package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"POT-Creation-Date: \n"
+"PO-Revision-Date: \n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=ISO-8859-1\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: de\n"
+"X-Generator: Poedit 2.0.8\n"
+
+#: ../../ReviewLogs.rst:10
+msgid "Meetings"
+msgstr "Sitzungen"
+
+#: ../../ReviewLogs.rst:14
+msgid "Progress Meetings"
+msgstr "Progress Meetings"
+
+#: ../../ReviewLogs.rst:15
+msgid "Steering committees"
+msgstr "Lenkungsausschüsse"
+
+#: ../../ReviewLogs.rst:16
+msgid "Functional workshops"
+msgstr "Funktionale Werkstätten"
+
+#: ../../ReviewLogs.rst:24
+msgid "Meeting features"
+msgstr "Besprechungsfunktionen"
+
+#: ../../ReviewLogs.rst:27
+msgid "Project task"
+msgstr "Projektaufgabe"
+
+#: ../../ReviewLogs.rst:28
+msgid "Meeting is a task."
+msgstr "Besprechung ist eine Aufgabe."
+
+#: ../../ReviewLogs.rst:29
+msgid "You can assign project resources (named attendees)."
+msgstr "Sie können Projektressourcen (benannte Teilnehmer) zuordnen."
+
+#: ../../ReviewLogs.rst:35 ../../ReviewLogs.rst:168
+msgid ":ref:`Attendees<attendees-section>`"
+msgstr ":ref:`Attendees<attendees-section>`"
+
+#: ../../ReviewLogs.rst:36 ../../ReviewLogs.rst:169
+msgid ":ref:`Progress<progress-section-meeting>`"
+msgstr ":ref:`Progress<progress-section-meeting>`"
+
+#: ../../ReviewLogs.rst:37 ../../ReviewLogs.rst:170
+msgid ":ref:`Predecessor and Sucessor element<predSuces-element-section>`"
+msgstr ":ref:`Predecessor and Sucessor element<predSuces-element-section>`"
+
+#: ../../ReviewLogs.rst:38 ../../ReviewLogs.rst:304 ../../ReviewLogs.rst:396
+#: ../../ReviewLogs.rst:609
+msgid ":ref:`Linked element<linkElement-section>`"
+msgstr ":ref:`Linked element<linkElement-Bereich>`"
+
+#: ../../ReviewLogs.rst:39 ../../ReviewLogs.rst:305 ../../ReviewLogs.rst:397
+#: ../../ReviewLogs.rst:610
+msgid ":ref:`Attachments<attachment-section>`"
+msgstr ":ref:`Attachments<attachment-section>`"
+
+#: ../../ReviewLogs.rst:40 ../../ReviewLogs.rst:171 ../../ReviewLogs.rst:306
+#: ../../ReviewLogs.rst:398 ../../ReviewLogs.rst:611
+msgid ":ref:`Notes<note-section>`"
+msgstr ":ref:`Notes<note-section>`"
+
+#: ../../ReviewLogs.rst:43 ../../ReviewLogs.rst:178 ../../ReviewLogs.rst:309
+#: ../../ReviewLogs.rst:401 ../../ReviewLogs.rst:485 ../../ReviewLogs.rst:582
+msgid "Section: Description"
+msgstr "Abschnitt: Beschreibung"
+
+#: ../../ReviewLogs.rst:50 ../../ReviewLogs.rst:94 ../../ReviewLogs.rst:185
+#: ../../ReviewLogs.rst:210 ../../ReviewLogs.rst:227 ../../ReviewLogs.rst:316
+#: ../../ReviewLogs.rst:339 ../../ReviewLogs.rst:408 ../../ReviewLogs.rst:435
+#: ../../ReviewLogs.rst:492 ../../ReviewLogs.rst:523 ../../ReviewLogs.rst:589
+#: ../../ReviewLogs.rst:621
+msgid "Field"
+msgstr "Feld"
+
+#: ../../ReviewLogs.rst:51 ../../ReviewLogs.rst:95 ../../ReviewLogs.rst:186
+#: ../../ReviewLogs.rst:211 ../../ReviewLogs.rst:228 ../../ReviewLogs.rst:317
+#: ../../ReviewLogs.rst:340 ../../ReviewLogs.rst:409 ../../ReviewLogs.rst:436
+#: ../../ReviewLogs.rst:493 ../../ReviewLogs.rst:504 ../../ReviewLogs.rst:590
+#: ../../ReviewLogs.rst:601 ../../ReviewLogs.rst:622
+msgid "Description"
+msgstr "Beschreibung"
+
+#: ../../ReviewLogs.rst:52 ../../ReviewLogs.rst:187 ../../ReviewLogs.rst:318
+#: ../../ReviewLogs.rst:410 ../../ReviewLogs.rst:494 ../../ReviewLogs.rst:591
+msgid ":term:`Id`"
+msgstr ":term:`Id`"
+
+#: ../../ReviewLogs.rst:53
+msgid "Unique Id for the meeting."
+msgstr "Eindeutige ID für die Besprechung."
+
+#: ../../ReviewLogs.rst:54 ../../ReviewLogs.rst:189
+msgid "Name"
+msgstr "Name"
+
+#: ../../ReviewLogs.rst:55 ../../ReviewLogs.rst:190
+msgid "Short description of the meeting."
+msgstr "Kurzbeschreibung des Treffens."
+
+#: ../../ReviewLogs.rst:56 ../../ReviewLogs.rst:191
+msgid "**Meeting type**"
+msgstr "**Besprechungstyp**"
+
+#: ../../ReviewLogs.rst:57 ../../ReviewLogs.rst:192
+msgid "Type of meeting."
+msgstr "Art der Besprechung."
+
+#: ../../ReviewLogs.rst:58 ../../ReviewLogs.rst:193 ../../ReviewLogs.rst:324
+#: ../../ReviewLogs.rst:416 ../../ReviewLogs.rst:597
+msgid "**Project**"
+msgstr "**Projekt**"
+
+#: ../../ReviewLogs.rst:59 ../../ReviewLogs.rst:194
+msgid "The project concerned by the meeting."
+msgstr "Das vom Treffen betroffene Projekt."
+
+#: ../../ReviewLogs.rst:60
+msgid "**Meeting date**"
+msgstr "**Besprechungstermin**"
+
+#: ../../ReviewLogs.rst:62 ../../ReviewLogs.rst:195
+msgid "Location"
+msgstr "Ort"
+
+#: ../../ReviewLogs.rst:63 ../../ReviewLogs.rst:196
+msgid "Place (room or else) when meeting will stand."
+msgstr "Ort (Raum oder sonstwie), an dem das Treffen stattfindet."
+
+#: ../../ReviewLogs.rst:64 ../../ReviewLogs.rst:197 ../../ReviewLogs.rst:326
+#: ../../ReviewLogs.rst:418
+msgid ":term:`Description`"
+msgstr ":term:`Beschreibung`"
+
+#: ../../ReviewLogs.rst:65 ../../ReviewLogs.rst:198
+msgid "Description of the meeting."
+msgstr "Beschreibung des Treffens."
+
+#: ../../ReviewLogs.rst:67 ../../ReviewLogs.rst:113 ../../ReviewLogs.rst:200
+#: ../../ReviewLogs.rst:238 ../../ReviewLogs.rst:329 ../../ReviewLogs.rst:354
+#: ../../ReviewLogs.rst:421 ../../ReviewLogs.rst:458 ../../ReviewLogs.rst:604
+msgid "**\\* Required field**"
+msgstr "**\\* Erforderliches Feld**"
+
+#: ../../ReviewLogs.rst:73
+msgid "Description can be used to store agenda."
+msgstr "Beschreibung kann verwendet werden, um Agenda zu speichern."
+
+#: ../../ReviewLogs.rst:76
+msgid "Button: Email invitation"
+msgstr "Schaltfläche: E-Mail-Einladung"
+
+#: ../../ReviewLogs.rst:77
+msgid "Allows to send the email to attendees."
+msgstr "Ermöglicht das Senden der E-Mail an Teilnehmer."
+
+#: ../../ReviewLogs.rst:78
+msgid "They will receive the invitation in their calendar management tool."
+msgstr "Sie erhalten die Einladung in ihrem Kalenderverwaltungstool."
+
+#: ../../ReviewLogs.rst:87 ../../ReviewLogs.rst:203
+msgid "Section: Treatment"
+msgstr "Sektion: Behandlung"
+
+#: ../../ReviewLogs.rst:96 ../../ReviewLogs.rst:212
+msgid "Parent activity"
+msgstr "Eltern-Tätigkeit"
+
+#: ../../ReviewLogs.rst:97 ../../ReviewLogs.rst:213
+msgid "Parent activity of the meeting."
+msgstr "Elternaktivität des Treffens."
+
+#: ../../ReviewLogs.rst:98 ../../ReviewLogs.rst:341 ../../ReviewLogs.rst:437
+msgid "**Status**"
+msgstr "**Status**"
+
+#: ../../ReviewLogs.rst:99
+msgid "Actual :term:`status` of the meeting."
+msgstr "Aktueller :term:`Status` des Treffens."
+
+#: ../../ReviewLogs.rst:100 ../../ReviewLogs.rst:214 ../../ReviewLogs.rst:439
+msgid ":term:`Responsible`"
+msgstr ":term:`Verantwortlich`"
+
+#: ../../ReviewLogs.rst:101 ../../ReviewLogs.rst:215
+msgid "Resource who is responsible for the organization of the meeting."
+msgstr "Ressource, die für die Organisation des Treffens verantwortlich ist."
+
+#: ../../ReviewLogs.rst:102 ../../ReviewLogs.rst:447
+msgid ":term:`Handled`"
+msgstr ":term:`Bearbeitet`"
+
+#: ../../ReviewLogs.rst:103
+msgid "Flag to indicate that meeting has been taken into account."
+msgstr "Flagge, um anzuzeigen, dass die Besprechung berücksichtigt wurde."
+
+#: ../../ReviewLogs.rst:104 ../../ReviewLogs.rst:449
+msgid ":term:`Done`"
+msgstr ":term:`Fertig`"
+
+#: ../../ReviewLogs.rst:105
+msgid "Flag to indicate that meeting has been held."
+msgstr "Flagge, um anzuzeigen, dass das Treffen stattgefunden hat."
+
+#: ../../ReviewLogs.rst:106 ../../ReviewLogs.rst:216 ../../ReviewLogs.rst:349
+#: ../../ReviewLogs.rst:451 ../../ReviewLogs.rst:533 ../../ReviewLogs.rst:633
+msgid ":term:`Closed`"
+msgstr ":term:`Geschlossen`"
+
+#: ../../ReviewLogs.rst:107
+msgid "Flag to indicate that meeting is archived."
+msgstr "Kennzeichen, dass die Besprechung archiviert ist."
+
+#: ../../ReviewLogs.rst:108 ../../ReviewLogs.rst:351 ../../ReviewLogs.rst:453
+msgid "Cancelled"
+msgstr "Abgesagt"
+
+#: ../../ReviewLogs.rst:109
+msgid "Flag to indicate that meeting is cancelled."
+msgstr "Flagge, um anzuzeigen, dass das Meeting abgesagt wurde."
+
+#: ../../ReviewLogs.rst:110
+msgid ":term:`Minutes<Result>`"
+msgstr ":term:`Minuten<Ergebnis>`"
+
+#: ../../ReviewLogs.rst:111
+msgid "Minutes of the meeting."
+msgstr "Protokoll der Sitzung."
+
+#: ../../ReviewLogs.rst:123
+msgid "**\\* Steering**"
+msgstr "**\\* Steering**"
+
+#: ../../ReviewLogs.rst:125
+msgid "Retrieving the agenda of a meeting from the description of its type"
+msgstr "Abrufen der Tagesordnung einer Sitzung aus der Beschreibung ihrer Art"
+
+#: ../../ReviewLogs.rst:137
+msgid "Periodic meetings"
+msgstr "Periodische Treffen"
+
+#: ../../ReviewLogs.rst:148
+msgid "Periodic meeting process"
+msgstr "Periodischer Besprechungsprozess"
+
+#: ../../ReviewLogs.rst:154
+msgid "On each update of a periodic meeting, meetings are re-evaluated."
+msgstr "Bei jeder Aktualisierung einer periodischen Besprechung werden die Besprechungen neu bewertet."
+
+#: ../../ReviewLogs.rst:155
+msgid "This may lead to deletion of some meetings."
+msgstr "Dies kann zur Löschung einiger Besprechungen führen."
+
+#: ../../ReviewLogs.rst:159
+msgid "Attendees assignment"
+msgstr "Teilnehmerzuordnung"
+
+#: ../../ReviewLogs.rst:160
+msgid "Attendees can be defined on a periodic meeting."
+msgstr "Teilnehmer können auf einer periodischen Besprechung definiert werden."
+
+#: ../../ReviewLogs.rst:162
+msgid "They will be copied on the elementary meetings."
+msgstr "Sie werden auf die elementaren Treffen kopiert."
+
+#: ../../ReviewLogs.rst:164
+msgid "So left work will always be set to zero on periodic meetings."
+msgstr "So wird die linke Arbeit bei periodischen Treffen immer auf Null gesetzt."
+
+#: ../../ReviewLogs.rst:188
+msgid "Unique Id for the periodic meeting."
+msgstr "Eindeutige Id für die periodische Besprechung."
+
+#: ../../ReviewLogs.rst:217
+msgid "Flag to indicate that periodic meeting is archived."
+msgstr "Kennzeichen, dass periodische Besprechung archiviert wird."
+
+#: ../../ReviewLogs.rst:220
+msgid "Section: Periodicity"
+msgstr "Sektion: Periodizität"
+
+#: ../../ReviewLogs.rst:229
+msgid "**Period**"
+msgstr "**Periode**"
+
+#: ../../ReviewLogs.rst:231
+msgid "Time"
+msgstr "Zeit"
+
+#: ../../ReviewLogs.rst:232
+msgid "Start and end time for all the meetings."
+msgstr "Start- und Endzeit für alle Meetings."
+
+#: ../../ReviewLogs.rst:233
+msgid "**Periodicity**"
+msgstr "**Periodizität**"
+
+#: ../../ReviewLogs.rst:234
+msgid "Frequency of the meeting, on proposed bases (daily, weekly monthly)."
+msgstr "Häufigkeit des Treffens, auf Basis der vorgeschlagenen Basis (täglich, wöchentlich, monatlich)"
+
+#: ../../ReviewLogs.rst:235
+msgid "Only on open days"
+msgstr "Nur an Tagen der offenen Tür"
+
+#: ../../ReviewLogs.rst:236
+msgid "Specify that meetings will not be set on off days."
+msgstr "Geben Sie an, dass Besprechungen nicht an freien Tagen stattfinden."
+
+#: ../../ReviewLogs.rst:242
+msgid "Several periodicity is proposed:"
+msgstr "Mehrere Periodizitäten werden vorgeschlagen:"
+
+#: ../../ReviewLogs.rst:244
+msgid "Every day"
+msgstr "Jeden Tag"
+
+#: ../../ReviewLogs.rst:245
+msgid "Same day every week"
+msgstr "Jede Woche derselbe Tag"
+
+#: ../../ReviewLogs.rst:246
+msgid "Same day every mouth"
+msgstr "Jeden Monat am selben Tag"
+
+#: ../../ReviewLogs.rst:247
+msgid "Same week every mounth"
+msgstr "Jeden Monat dieselbe Woche"
+
+#: ../../ReviewLogs.rst:259
+msgid "Attendees section"
+msgstr "Teilnehmerbereich"
+
+#: ../../ReviewLogs.rst:261
+msgid "This section allows to define the list of attendees to the meeting."
+msgstr "Dieser Abschnitt erlaubt es, die Liste der Teilnehmer der Besprechung zu definieren."
+
+#: ../../ReviewLogs.rst:264
+msgid "Attendee list"
+msgstr "Teilnehmerlist"
+
+#: ../../ReviewLogs.rst:265
+msgid "Meeting is a task you can assign project resources."
+msgstr "Besprechung ist eine Aufgabe, der Sie Projektressourcen zuweisen können."
+
+#: ../../ReviewLogs.rst:272
+msgid "Other attendees"
+msgstr "Andere Besucher"
+
+#: ../../ReviewLogs.rst:278
+msgid "Just separate attendees with commas or semicolons."
+msgstr "Teilnehmer einfach durch Kommas oder Semikolons trennen."
+
+#: ../../ReviewLogs.rst:296
+msgid "Decisions"
+msgstr "Entscheidungen"
+
+#: ../../ReviewLogs.rst:319
+msgid "Unique Id for the decision."
+msgstr "Eindeutige Id für die Entscheidung."
+
+#: ../../ReviewLogs.rst:320 ../../ReviewLogs.rst:412 ../../ReviewLogs.rst:496
+#: ../../ReviewLogs.rst:593
+msgid "**Name**"
+msgstr "**Name**"
+
+#: ../../ReviewLogs.rst:321
+msgid "Short description of the decision."
+msgstr "Kurzbeschreibung der Entscheidung."
+
+#: ../../ReviewLogs.rst:322
+msgid "**Decision type**"
+msgstr "**Entscheidungsart**"
+
+#: ../../ReviewLogs.rst:323
+msgid "Type of decision."
+msgstr "Art der Entscheidung."
+
+#: ../../ReviewLogs.rst:325
+msgid "The project concerned by the decision."
+msgstr "Das von der Entscheidung betroffene Projekt."
+
+#: ../../ReviewLogs.rst:327
+msgid "Complete description of the decision."
+msgstr "Vollständige Beschreibung der Entscheidung."
+
+#: ../../ReviewLogs.rst:332 ../../ReviewLogs.rst:516 ../../ReviewLogs.rst:614
+msgid "Section: Validation"
+msgstr "Sektion: Validierung"
+
+#: ../../ReviewLogs.rst:342 ../../ReviewLogs.rst:438
+msgid "Actual :term:`status` of the decision."
+msgstr "Tatsächlicher :term:`Status` der Entscheidung."
+
+#: ../../ReviewLogs.rst:343
+msgid "Decision date"
+msgstr "Datum der Entscheidun"
+
+#: ../../ReviewLogs.rst:344
+msgid "Date of the decision."
+msgstr "Datum der Entscheidung."
+
+#: ../../ReviewLogs.rst:345
+msgid "Origin"
+msgstr "Herkunft"
+
+#: ../../ReviewLogs.rst:346
+msgid "Origin of the decision."
+msgstr "Ursprung der Entscheidung."
+
+#: ../../ReviewLogs.rst:347
+msgid ":term:`Accountable<result>`"
+msgstr ":term:`Verrechenbares<Ergebnis>`"
+
+#: ../../ReviewLogs.rst:348
+msgid "Resource accountable for the decision."
+msgstr "Ressource, die für die Entscheidung verantwortlich ist."
+
+#: ../../ReviewLogs.rst:350
+msgid "Flag to indicate that decision is archived."
+msgstr "Kennzeichen, um anzuzeigen, dass die Entscheidung archiviert ist."
+
+#: ../../ReviewLogs.rst:352
+msgid "Flag to indicate that decision is cancelled."
+msgstr "Flagge, um anzuzeigen, dass die Entscheidung aufgehoben ist."
+
+#: ../../ReviewLogs.rst:362
+msgid "The person who took the decision."
+msgstr "Die Person, die die Entscheidung getroffen hat."
+
+#: ../../ReviewLogs.rst:373
+msgid "Questions"
+msgstr "Fragen"
+
+#: ../../ReviewLogs.rst:375
+msgid "Question are stored to keep track of important questions and answers."
+msgstr "Fragen werden gespeichert, um wichtige Fragen und Antworten zu verfolgen."
+
+#: ../../ReviewLogs.rst:388
+msgid "Monitoring indicator"
+msgstr "Üœberwachungsindikator"
+
+#: ../../ReviewLogs.rst:389
+msgid "Possibility to define indicators to follow the respect of dates values."
+msgstr "Möglichkeit, Indikatoren zu definieren, um die Einhaltung von Datumswerten zu überwachen."
+
+#: ../../ReviewLogs.rst:411
+msgid "Unique Id for the question."
+msgstr "Eindeutige Id für die Frage."
+
+#: ../../ReviewLogs.rst:413
+msgid "Short description of the question."
+msgstr "Kurzbeschreibung der Frage."
+
+#: ../../ReviewLogs.rst:414
+msgid "**Question type**"
+msgstr "**Fragetyp**"
+
+#: ../../ReviewLogs.rst:415
+msgid "Type of question."
+msgstr "Art der Frage."
+
+#: ../../ReviewLogs.rst:417
+msgid "The project concerned by the question."
+msgstr "Das von der Frage betroffene Projekt."
+
+#: ../../ReviewLogs.rst:419
+msgid "Complete description of the question."
+msgstr "Vollständige Beschreibung der Frage."
+
+#: ../../ReviewLogs.rst:428
+msgid "Section: Answer"
+msgstr "Sektion: Antwort"
+
+#: ../../ReviewLogs.rst:440
+msgid "Resource who is responsible for the follow-up of the question."
+msgstr "Ressource, die für die Weiterverfolgung der Frage verantwortlich ist."
+
+#: ../../ReviewLogs.rst:441
+msgid "Initial due date"
+msgstr "Erstes Fälligkeitsdatum"
+
+#: ../../ReviewLogs.rst:442
+msgid "Initially expected date for the answer to the question."
+msgstr "Ursprünglich erwartetes Datum für die Antwort auf die Frage."
+
+#: ../../ReviewLogs.rst:443
+msgid "Planned due date"
+msgstr "Geplante Fälligkeit"
+
+#: ../../ReviewLogs.rst:444
+msgid "Updated expected date for the answer to the question."
+msgstr "Erwartetes Datum für die Antwort auf die Frage aktualisiert."
+
+#: ../../ReviewLogs.rst:445
+msgid "Replier"
+msgstr "Replikator"
+
+#: ../../ReviewLogs.rst:446
+msgid "Name of the person who provided the answer."
+msgstr "Name der Person, die die Antwort gegeben hat."
+
+#: ../../ReviewLogs.rst:448
+msgid "Flag to indicate that question has been taken into account."
+msgstr "Kennzeichen, um anzuzeigen, dass die Frage berücksichtigt wurde."
+
+#: ../../ReviewLogs.rst:450
+msgid "Flag to indicate that question has been answered."
+msgstr "Flagge, um anzuzeigen, dass die Frage beantwortet wurde."
+
+#: ../../ReviewLogs.rst:452
+msgid "Flag to indicate that question is archived."
+msgstr "Kennzeichen, dass die Frage archiviert ist."
+
+#: ../../ReviewLogs.rst:454
+msgid "Flag to indicate that question is cancelled."
+msgstr "Flagge, um anzuzeigen, dass die Frage abgebrochen wurde."
+
+#: ../../ReviewLogs.rst:455
+msgid ":term:`Response<Result>`"
+msgstr ":term:`Antwort<Ergebnis>`"
+
+#: ../../ReviewLogs.rst:456
+msgid "Complete description of the answer to the question."
+msgstr "Vollständige Beschreibung der Antwort auf die Frage."
+
+#: ../../ReviewLogs.rst:470
+msgid "Deliverables"
+msgstr "Lieferumfang"
+
+#: ../../ReviewLogs.rst:472
+msgid "This section allows to define the list of deliverables items."
+msgstr "Dieser Abschnitt erlaubt es, die Liste der Liefergegenstände zu definieren."
+
+#: ../../ReviewLogs.rst:474
+msgid "This will provide an easy way to organize your due to customers."
+msgstr "Das wird Ihnen eine einfache Möglichkeit bieten, Ihre Verpflichtungen gegenüber Kunden zu organisieren."
+
+#: ../../ReviewLogs.rst:476
+msgid "In fact, you can keep track of every deliverables."
+msgstr "Tatsächlich können Sie alle Ergebnisse verfolgen."
+
+#: ../../ReviewLogs.rst:478
+msgid "Deliverables links with Milestones."
+msgstr "Deliverables links with Milestones."
+
+#: ../../ReviewLogs.rst:495
+msgid "Unique Id for the KPI."
+msgstr "Eindeutige Id for the KPI."
+
+#: ../../ReviewLogs.rst:497
+msgid "name of the deliverable."
+msgstr "Name des Liefergegenstandes."
+
+#: ../../ReviewLogs.rst:498
+msgid "IdDeliverableType"
+msgstr "IdDeliverableType"
+
+#: ../../ReviewLogs.rst:499
+msgid "id of the Deliverable Type."
+msgstr "id of the Deliverable Type."
+
+#: ../../ReviewLogs.rst:500
+msgid "IdProject"
+msgstr "IdProject"
+
+#: ../../ReviewLogs.rst:501
+msgid "id of the Project."
+msgstr "id of the Project."
+
+#: ../../ReviewLogs.rst:502
+msgid "externalReference"
+msgstr "externalReference"
+
+#: ../../ReviewLogs.rst:503 ../../ReviewLogs.rst:600
+msgid "name of the external reference."
+msgstr "Name der externen Referenz."
+
+#: ../../ReviewLogs.rst:505
+msgid "Complete description of the deliverable."
+msgstr "Vollständige Beschreibung des Liefergegenstandes."
+
+#: ../../ReviewLogs.rst:511 ../../ReviewLogs.rst:560
+msgid "See: :ref:`kpi-definitions`"
+msgstr "Siehe: :ref:`kpi-definitions`"
+
+#: ../../ReviewLogs.rst:524
+msgid "Validation"
+msgstr "Gültigkeitserklärung"
+
+#: ../../ReviewLogs.rst:525
+msgid "Delivery statu"
+msgstr "Auslieferungsstatut"
+
+#: ../../ReviewLogs.rst:526 ../../ReviewLogs.rst:624
+msgid "Actual :term:`status` of the delivery."
+msgstr "Aktueller :term:`Status` der Lieferung."
+
+#: ../../ReviewLogs.rst:527
+msgid "Deliverable"
+msgstr "Lieferbar"
+
+#: ../../ReviewLogs.rst:528
+msgid "Weight of the quality of the deliverable."
+msgstr "Gewicht der Qualität des Liefergegenstandes."
+
+#: ../../ReviewLogs.rst:529
+msgid "Responsible"
+msgstr "Verantwortlich"
+
+#: ../../ReviewLogs.rst:530
+msgid "to name"
+msgstr "zu benennen"
+
+#: ../../ReviewLogs.rst:531
+msgid "due date"
+msgstr "Fälligkeitsdatu"
+
+#: ../../ReviewLogs.rst:532
+msgid "as planned"
+msgstr "wie geplant"
+
+#: ../../ReviewLogs.rst:534
+msgid "Box to indicate that delivery is archived."
+msgstr "Box, um anzuzeigen, dass die Lieferung archiviert ist."
+
+#: ../../ReviewLogs.rst:543
+msgid "Incomings"
+msgstr "Einkünfte"
+
+#: ../../ReviewLogs.rst:549
+msgid "Incomings links with Milestones."
+msgstr "Zahlungseingänge mit Meilensteinen verbunden."
+
+#: ../../ReviewLogs.rst:571
+msgid "Deliveries"
+msgstr "Lieferungen"
+
+#: ../../ReviewLogs.rst:573
+msgid "Deliveries items are stored to keep track of deliveries."
+msgstr "Lieferungen werden gespeichert, um die Lieferungen zu verfolgen."
+
+#: ../../ReviewLogs.rst:575
+msgid "Added list of deliverables integrated in delivery."
+msgstr "Liste der in die Lieferung integrierten Leistungen hinzugefügt."
+
+#: ../../ReviewLogs.rst:579
+msgid "Automatic dispatch of delivery status to deliverables."
+msgstr "Automatischer Versand des Lieferstatus an Liefergegenstände."
+
+#: ../../ReviewLogs.rst:592
+msgid "Unique Id for the delivery."
+msgstr "Eindeutige Id für die Lieferung."
+
+#: ../../ReviewLogs.rst:594
+msgid "Short description of the delivery."
+msgstr "Kurzbeschreibung der Lieferung."
+
+#: ../../ReviewLogs.rst:595
+msgid "**Deliverable type**"
+msgstr "**Lieferbare Ausführung**"
+
+#: ../../ReviewLogs.rst:596
+msgid "Type of deliverable."
+msgstr "Art der Lieferung."
+
+#: ../../ReviewLogs.rst:598
+msgid "The project concerned by the delivery."
+msgstr "Das von der Lieferung betroffene Projekt."
+
+#: ../../ReviewLogs.rst:599
+msgid "ExternalReference"
+msgstr "ExterneReferenz"
+
+#: ../../ReviewLogs.rst:602
+msgid "Description of the delivery."
+msgstr "Beschreibung der Lieferung."
+
+#: ../../ReviewLogs.rst:608
+msgid ":ref:`Deliverables`"
+msgstr ":ref:`Deliverables`"
+
+#: ../../ReviewLogs.rst:623
+msgid "Delivery status"
+msgstr "Auslieferungszustand"
+
+#: ../../ReviewLogs.rst:625
+msgid "Resource"
+msgstr "Ressource"
+
+#: ../../ReviewLogs.rst:626
+msgid "resource of the delivery."
+msgstr "Ressource der Lieferung."
+
+#: ../../ReviewLogs.rst:627
+msgid "Planned date"
+msgstr "Geplanter Termin"
+
+#: ../../ReviewLogs.rst:628
+msgid "Expected date of delivery."
+msgstr "Erwartetes Lieferdatum."
+
+#: ../../ReviewLogs.rst:629
+msgid "Real date"
+msgstr "Echtes Datum"
+
+#: ../../ReviewLogs.rst:630
+msgid "Effective delivery date."
+msgstr "Gültiges Lieferdatum."
+
+#: ../../ReviewLogs.rst:631
+msgid "Validation date"
+msgstr "Datum der Gültigkeitserklärun"
+
+#: ../../ReviewLogs.rst:632
+msgid "validate the delivery date."
+msgstr "bestätigt den Liefertermin."
+
+#: ../../ReviewLogs.rst:634
+msgid "Flag to indicate that delivery is archived."
+msgstr "Kennzeichen, dass die Lieferung archiviert ist."

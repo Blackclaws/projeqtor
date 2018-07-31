@@ -147,9 +147,7 @@ Global parameters screen allows configuration of application settings.
 
     * Allows to set number of hours per day.
 
-.. rubric:: Section: Real work allocation
-
-    .. index:: ! Real work allocation (Behavior)
+.. index:: ! Real work allocation (Behavior)
 
 .. _realWorkAllocation-section:
 
@@ -212,7 +210,8 @@ Global parameters screen allows configuration of application settings.
     * If no, the successor can start the same day.
     
 .. rubric:: Section: Tickets
- .. compound:: **Only responsible works on ticket**
+
+.. compound:: **Only responsible works on ticket**
 
     * Only responsible can enter some real work on the ticket.
 
@@ -223,7 +222,7 @@ Global parameters screen allows configuration of application settings.
  .. compound:: **Limit planning activity to those whit flag**
     * Display planning activity selected for the ticket
 
- .. compound:: **Enable to filter ticket reports by priority **
+ .. compound:: **Enable to filter ticket reports by priority**
     * Can display tickets on Report screen by level of priority
 
  .. compound:: **Display ticket at customer level**
@@ -237,7 +236,7 @@ Global parameters screen allows configuration of application settings.
     
 .. rubric:: Section: Organization
 
- .. compound:: **Use budget feature for organizations**
+.. compound:: **Use budget feature for organizations**
 
     *If yes, can display and work on budget for an organization.
 

@@ -1,0 +1,668 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2018, ProjeQtOr
+# This file is distributed under the same license as the ProjeQtOr Bedienhandbuch Deutsch package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"POT-Creation-Date: \n"
+"PO-Revision-Date: \n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=ISO-8859-1\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: de\n"
+"X-Generator: Poedit 2.0.8\n"
+
+#: ../../ListsOfTypes.rst:14
+msgid "Types restrictions"
+msgstr "Typen Einschränkungen"
+
+#: ../../ListsOfTypes.rst:18
+msgid "Restrictions can be defined for a project, a project type or a profile."
+msgstr "Einschränkungen können für ein Projekt, einen Projekttyp oder ein Profil definiert werden."
+
+#: ../../ListsOfTypes.rst:20
+msgid "Types restrictions section on Project screen."
+msgstr "Typenbeschränkungen auf dem Projektbildschirm."
+
+#: ../../ListsOfTypes.rst:27
+msgid "Type restriction management"
+msgstr "Verwaltung von Typenbeschränkungen"
+
+#: ../../ListsOfTypes.rst:28
+msgid "Click on \\\"Restrict types\\\" button to display the dialog box."
+msgstr "Klicken Sie auf die Schaltfläche \\\"Typen einschränken\\\", um das Dialogfeld anzuzeigen."
+
+#: ../../ListsOfTypes.rst:39
+msgid "Displays element type names where a restriction is applied"
+msgstr "Zeigt Elementtypnamen an, bei denen eine Einschränkung angewendet wird"
+
+#: ../../ListsOfTypes.rst:56
+msgid "Projects types"
+msgstr "Arten von Projekten"
+
+#: ../../ListsOfTypes.rst:58
+msgid "Project type is a way to define common behavior on group of projects."
+msgstr "Projekttyp ist eine Möglichkeit, allgemeines Verhalten in einer Gruppe von Projekten zu definieren."
+
+#: ../../ListsOfTypes.rst:62
+msgid "Code of the project type"
+msgstr "Code des Projekttyps"
+
+#: ../../ListsOfTypes.rst:65
+msgid "Some important behavior will depend on code of the project type."
+msgstr "Einige wichtige Verhaltensweisen hängen vom Code des Projekttyps ab."
+
+#: ../../ListsOfTypes.rst:67
+msgid "**OPE** : Operational project"
+msgstr "**OPE** : Operatives Projekt"
+
+#: ../../ListsOfTypes.rst:69
+msgid "Most common project to follow activity."
+msgstr "Häufigstes zu verfolgendes Projekt."
+
+#: ../../ListsOfTypes.rst:73
+msgid "All new types are created with **OPE** code."
+msgstr "Alle neuen Typen werden mit **OPE**-Code erstellt."
+
+#: ../../ListsOfTypes.rst:75
+msgid "**ADM** : Administrative project"
+msgstr "**ADM** : Verwaltungsprojekt"
+
+#: ../../ListsOfTypes.rst:81
+msgid "**TMP** : Template project"
+msgstr "**TMP** : Template-Projekt"
+
+#: ../../ListsOfTypes.rst:83
+msgid "These projects will not be used to follow some work."
+msgstr "Diese Projekte werden nicht dazu benutzt, irgendeiner Arbeit zu folgen."
+
+#: ../../ListsOfTypes.rst:89 ../../ListsOfTypes.rst:139
+#: ../../ListsOfTypes.rst:181 ../../ListsOfTypes.rst:228
+#: ../../ListsOfTypes.rst:273 ../../ListsOfTypes.rst:318
+#: ../../ListsOfTypes.rst:361 ../../ListsOfTypes.rst:403
+#: ../../ListsOfTypes.rst:505 ../../ListsOfTypes.rst:545
+#: ../../ListsOfTypes.rst:589 ../../ListsOfTypes.rst:632
+#: ../../ListsOfTypes.rst:678 ../../ListsOfTypes.rst:720
+#: ../../ListsOfTypes.rst:767 ../../ListsOfTypes.rst:810
+#: ../../ListsOfTypes.rst:856 ../../ListsOfTypes.rst:898
+#: ../../ListsOfTypes.rst:941 ../../ListsOfTypes.rst:1027
+#: ../../ListsOfTypes.rst:1069 ../../ListsOfTypes.rst:1114
+#: ../../ListsOfTypes.rst:1158 ../../ListsOfTypes.rst:1195
+#: ../../ListsOfTypes.rst:1238 ../../ListsOfTypes.rst:1278
+msgid ":ref:`Behavior <behavior-section>`"
+msgstr ":ref:`Behavior <behavior-section>`"
+
+#: ../../ListsOfTypes.rst:90
+msgid ":ref:`Types restrictions<type-restriction-section>`"
+msgstr ":ref:`Types restrictions<type-restriction-section>`"
+
+#: ../../ListsOfTypes.rst:93 ../../ListsOfTypes.rst:142
+#: ../../ListsOfTypes.rst:184 ../../ListsOfTypes.rst:231
+#: ../../ListsOfTypes.rst:276 ../../ListsOfTypes.rst:321
+#: ../../ListsOfTypes.rst:364 ../../ListsOfTypes.rst:406
+#: ../../ListsOfTypes.rst:445 ../../ListsOfTypes.rst:508
+#: ../../ListsOfTypes.rst:548 ../../ListsOfTypes.rst:592
+#: ../../ListsOfTypes.rst:635 ../../ListsOfTypes.rst:681
+#: ../../ListsOfTypes.rst:723 ../../ListsOfTypes.rst:770
+#: ../../ListsOfTypes.rst:813 ../../ListsOfTypes.rst:859
+#: ../../ListsOfTypes.rst:901 ../../ListsOfTypes.rst:944
+#: ../../ListsOfTypes.rst:990 ../../ListsOfTypes.rst:1030
+#: ../../ListsOfTypes.rst:1072 ../../ListsOfTypes.rst:1117
+#: ../../ListsOfTypes.rst:1161 ../../ListsOfTypes.rst:1198
+#: ../../ListsOfTypes.rst:1241 ../../ListsOfTypes.rst:1281
+msgid "Section: Description"
+msgstr "Sektion: Beschreibung"
+
+#: ../../ListsOfTypes.rst:100 ../../ListsOfTypes.rst:149
+#: ../../ListsOfTypes.rst:191 ../../ListsOfTypes.rst:238
+#: ../../ListsOfTypes.rst:283 ../../ListsOfTypes.rst:328
+#: ../../ListsOfTypes.rst:371 ../../ListsOfTypes.rst:413
+#: ../../ListsOfTypes.rst:452 ../../ListsOfTypes.rst:483
+#: ../../ListsOfTypes.rst:515 ../../ListsOfTypes.rst:555
+#: ../../ListsOfTypes.rst:599 ../../ListsOfTypes.rst:642
+#: ../../ListsOfTypes.rst:688 ../../ListsOfTypes.rst:730
+#: ../../ListsOfTypes.rst:777 ../../ListsOfTypes.rst:820
+#: ../../ListsOfTypes.rst:866 ../../ListsOfTypes.rst:908
+#: ../../ListsOfTypes.rst:951 ../../ListsOfTypes.rst:997
+#: ../../ListsOfTypes.rst:1037 ../../ListsOfTypes.rst:1079
+#: ../../ListsOfTypes.rst:1124 ../../ListsOfTypes.rst:1168
+#: ../../ListsOfTypes.rst:1205 ../../ListsOfTypes.rst:1248
+#: ../../ListsOfTypes.rst:1288
+msgid "Field"
+msgstr "Feld"
+
+#: ../../ListsOfTypes.rst:101 ../../ListsOfTypes.rst:116
+#: ../../ListsOfTypes.rst:150 ../../ListsOfTypes.rst:163
+#: ../../ListsOfTypes.rst:192 ../../ListsOfTypes.rst:207
+#: ../../ListsOfTypes.rst:239 ../../ListsOfTypes.rst:254
+#: ../../ListsOfTypes.rst:284 ../../ListsOfTypes.rst:297
+#: ../../ListsOfTypes.rst:329 ../../ListsOfTypes.rst:342
+#: ../../ListsOfTypes.rst:372 ../../ListsOfTypes.rst:383
+#: ../../ListsOfTypes.rst:414 ../../ListsOfTypes.rst:425
+#: ../../ListsOfTypes.rst:453 ../../ListsOfTypes.rst:464
+#: ../../ListsOfTypes.rst:484 ../../ListsOfTypes.rst:516
+#: ../../ListsOfTypes.rst:529 ../../ListsOfTypes.rst:556
+#: ../../ListsOfTypes.rst:567 ../../ListsOfTypes.rst:600
+#: ../../ListsOfTypes.rst:613 ../../ListsOfTypes.rst:643
+#: ../../ListsOfTypes.rst:656 ../../ListsOfTypes.rst:689
+#: ../../ListsOfTypes.rst:702 ../../ListsOfTypes.rst:731
+#: ../../ListsOfTypes.rst:744 ../../ListsOfTypes.rst:778
+#: ../../ListsOfTypes.rst:791 ../../ListsOfTypes.rst:821
+#: ../../ListsOfTypes.rst:834 ../../ListsOfTypes.rst:867
+#: ../../ListsOfTypes.rst:880 ../../ListsOfTypes.rst:909
+#: ../../ListsOfTypes.rst:920 ../../ListsOfTypes.rst:952
+#: ../../ListsOfTypes.rst:965 ../../ListsOfTypes.rst:998
+#: ../../ListsOfTypes.rst:1003 ../../ListsOfTypes.rst:1038
+#: ../../ListsOfTypes.rst:1051 ../../ListsOfTypes.rst:1080
+#: ../../ListsOfTypes.rst:1093 ../../ListsOfTypes.rst:1125
+#: ../../ListsOfTypes.rst:1140 ../../ListsOfTypes.rst:1169
+#: ../../ListsOfTypes.rst:1178 ../../ListsOfTypes.rst:1206
+#: ../../ListsOfTypes.rst:1215 ../../ListsOfTypes.rst:1249
+#: ../../ListsOfTypes.rst:1260 ../../ListsOfTypes.rst:1289
+#: ../../ListsOfTypes.rst:1300
+msgid "Description"
+msgstr "Beschreibung"
+
+#: ../../ListsOfTypes.rst:102 ../../ListsOfTypes.rst:151
+#: ../../ListsOfTypes.rst:193 ../../ListsOfTypes.rst:240
+#: ../../ListsOfTypes.rst:285 ../../ListsOfTypes.rst:330
+#: ../../ListsOfTypes.rst:373 ../../ListsOfTypes.rst:415
+#: ../../ListsOfTypes.rst:454 ../../ListsOfTypes.rst:517
+#: ../../ListsOfTypes.rst:557 ../../ListsOfTypes.rst:601
+#: ../../ListsOfTypes.rst:644 ../../ListsOfTypes.rst:690
+#: ../../ListsOfTypes.rst:732 ../../ListsOfTypes.rst:779
+#: ../../ListsOfTypes.rst:822 ../../ListsOfTypes.rst:868
+#: ../../ListsOfTypes.rst:910 ../../ListsOfTypes.rst:953
+#: ../../ListsOfTypes.rst:999 ../../ListsOfTypes.rst:1039
+#: ../../ListsOfTypes.rst:1081 ../../ListsOfTypes.rst:1126
+#: ../../ListsOfTypes.rst:1170 ../../ListsOfTypes.rst:1207
+#: ../../ListsOfTypes.rst:1250 ../../ListsOfTypes.rst:1290
+msgid ":term:`Id`"
+msgstr ":term:`Id`"
+
+#: ../../ListsOfTypes.rst:103 ../../ListsOfTypes.rst:152
+#: ../../ListsOfTypes.rst:194 ../../ListsOfTypes.rst:241
+#: ../../ListsOfTypes.rst:286 ../../ListsOfTypes.rst:331
+#: ../../ListsOfTypes.rst:374 ../../ListsOfTypes.rst:416
+#: ../../ListsOfTypes.rst:455 ../../ListsOfTypes.rst:518
+#: ../../ListsOfTypes.rst:558 ../../ListsOfTypes.rst:602
+#: ../../ListsOfTypes.rst:645 ../../ListsOfTypes.rst:691
+#: ../../ListsOfTypes.rst:733 ../../ListsOfTypes.rst:780
+#: ../../ListsOfTypes.rst:823 ../../ListsOfTypes.rst:869
+#: ../../ListsOfTypes.rst:911 ../../ListsOfTypes.rst:954
+#: ../../ListsOfTypes.rst:1000 ../../ListsOfTypes.rst:1040
+#: ../../ListsOfTypes.rst:1082 ../../ListsOfTypes.rst:1127
+#: ../../ListsOfTypes.rst:1171 ../../ListsOfTypes.rst:1208
+#: ../../ListsOfTypes.rst:1251 ../../ListsOfTypes.rst:1291
+msgid "Unique Id for the type."
+msgstr "Eindeutige Id für den Typ."
+
+#: ../../ListsOfTypes.rst:104 ../../ListsOfTypes.rst:153
+#: ../../ListsOfTypes.rst:195 ../../ListsOfTypes.rst:242
+#: ../../ListsOfTypes.rst:287 ../../ListsOfTypes.rst:332
+#: ../../ListsOfTypes.rst:375 ../../ListsOfTypes.rst:417
+#: ../../ListsOfTypes.rst:456 ../../ListsOfTypes.rst:519
+#: ../../ListsOfTypes.rst:559 ../../ListsOfTypes.rst:603
+#: ../../ListsOfTypes.rst:646 ../../ListsOfTypes.rst:692
+#: ../../ListsOfTypes.rst:734 ../../ListsOfTypes.rst:781
+#: ../../ListsOfTypes.rst:824 ../../ListsOfTypes.rst:870
+#: ../../ListsOfTypes.rst:912 ../../ListsOfTypes.rst:955
+#: ../../ListsOfTypes.rst:1001 ../../ListsOfTypes.rst:1041
+#: ../../ListsOfTypes.rst:1083 ../../ListsOfTypes.rst:1128
+#: ../../ListsOfTypes.rst:1172 ../../ListsOfTypes.rst:1209
+#: ../../ListsOfTypes.rst:1252 ../../ListsOfTypes.rst:1292
+msgid "**Name**"
+msgstr "**Name**"
+
+#: ../../ListsOfTypes.rst:105 ../../ListsOfTypes.rst:154
+#: ../../ListsOfTypes.rst:196 ../../ListsOfTypes.rst:243
+#: ../../ListsOfTypes.rst:288 ../../ListsOfTypes.rst:333
+#: ../../ListsOfTypes.rst:376 ../../ListsOfTypes.rst:418
+#: ../../ListsOfTypes.rst:457 ../../ListsOfTypes.rst:520
+#: ../../ListsOfTypes.rst:560 ../../ListsOfTypes.rst:604
+#: ../../ListsOfTypes.rst:647 ../../ListsOfTypes.rst:693
+#: ../../ListsOfTypes.rst:735 ../../ListsOfTypes.rst:782
+#: ../../ListsOfTypes.rst:825 ../../ListsOfTypes.rst:871
+#: ../../ListsOfTypes.rst:913 ../../ListsOfTypes.rst:956
+#: ../../ListsOfTypes.rst:1002 ../../ListsOfTypes.rst:1042
+#: ../../ListsOfTypes.rst:1084 ../../ListsOfTypes.rst:1129
+#: ../../ListsOfTypes.rst:1173 ../../ListsOfTypes.rst:1210
+#: ../../ListsOfTypes.rst:1253 ../../ListsOfTypes.rst:1293
+msgid "Name of the type."
+msgstr "Name des Typs."
+
+#: ../../ListsOfTypes.rst:106 ../../ListsOfTypes.rst:155
+#: ../../ListsOfTypes.rst:197 ../../ListsOfTypes.rst:244
+#: ../../ListsOfTypes.rst:289 ../../ListsOfTypes.rst:334
+#: ../../ListsOfTypes.rst:521 ../../ListsOfTypes.rst:605
+#: ../../ListsOfTypes.rst:648 ../../ListsOfTypes.rst:694
+#: ../../ListsOfTypes.rst:736 ../../ListsOfTypes.rst:783
+#: ../../ListsOfTypes.rst:826 ../../ListsOfTypes.rst:872
+#: ../../ListsOfTypes.rst:957 ../../ListsOfTypes.rst:1043
+#: ../../ListsOfTypes.rst:1085 ../../ListsOfTypes.rst:1130
+#: ../../ListsOfTypes.rst:1254 ../../ListsOfTypes.rst:1294
+msgid "Code"
+msgstr "Code"
+
+#: ../../ListsOfTypes.rst:107
+msgid ":term:`Code of the project type`."
+msgstr ":term:`Code des Projekttyps`."
+
+#: ../../ListsOfTypes.rst:108 ../../ListsOfTypes.rst:157
+#: ../../ListsOfTypes.rst:199 ../../ListsOfTypes.rst:246
+#: ../../ListsOfTypes.rst:291 ../../ListsOfTypes.rst:336
+#: ../../ListsOfTypes.rst:377 ../../ListsOfTypes.rst:419
+#: ../../ListsOfTypes.rst:523 ../../ListsOfTypes.rst:561
+#: ../../ListsOfTypes.rst:607 ../../ListsOfTypes.rst:650
+#: ../../ListsOfTypes.rst:696 ../../ListsOfTypes.rst:738
+#: ../../ListsOfTypes.rst:785 ../../ListsOfTypes.rst:828
+#: ../../ListsOfTypes.rst:874 ../../ListsOfTypes.rst:959
+#: ../../ListsOfTypes.rst:1045 ../../ListsOfTypes.rst:1087
+#: ../../ListsOfTypes.rst:1132
+msgid "**Workflow**"
+msgstr "**Arbeitsablauf**"
+
+#: ../../ListsOfTypes.rst:110 ../../ListsOfTypes.rst:159
+#: ../../ListsOfTypes.rst:203 ../../ListsOfTypes.rst:250
+#: ../../ListsOfTypes.rst:293 ../../ListsOfTypes.rst:338
+#: ../../ListsOfTypes.rst:379 ../../ListsOfTypes.rst:421
+#: ../../ListsOfTypes.rst:458 ../../ListsOfTypes.rst:525
+#: ../../ListsOfTypes.rst:563 ../../ListsOfTypes.rst:609
+#: ../../ListsOfTypes.rst:652 ../../ListsOfTypes.rst:698
+#: ../../ListsOfTypes.rst:740 ../../ListsOfTypes.rst:787
+#: ../../ListsOfTypes.rst:830 ../../ListsOfTypes.rst:876
+#: ../../ListsOfTypes.rst:916 ../../ListsOfTypes.rst:961
+#: ../../ListsOfTypes.rst:1047 ../../ListsOfTypes.rst:1089
+#: ../../ListsOfTypes.rst:1136 ../../ListsOfTypes.rst:1174
+#: ../../ListsOfTypes.rst:1211 ../../ListsOfTypes.rst:1256
+#: ../../ListsOfTypes.rst:1296
+msgid "Sort order"
+msgstr "Sortierung"
+
+#: ../../ListsOfTypes.rst:111 ../../ListsOfTypes.rst:160
+#: ../../ListsOfTypes.rst:204 ../../ListsOfTypes.rst:251
+#: ../../ListsOfTypes.rst:294 ../../ListsOfTypes.rst:339
+#: ../../ListsOfTypes.rst:380 ../../ListsOfTypes.rst:422
+#: ../../ListsOfTypes.rst:459 ../../ListsOfTypes.rst:526
+#: ../../ListsOfTypes.rst:564 ../../ListsOfTypes.rst:610
+#: ../../ListsOfTypes.rst:653 ../../ListsOfTypes.rst:699
+#: ../../ListsOfTypes.rst:741 ../../ListsOfTypes.rst:788
+#: ../../ListsOfTypes.rst:831 ../../ListsOfTypes.rst:877
+#: ../../ListsOfTypes.rst:917 ../../ListsOfTypes.rst:962
+#: ../../ListsOfTypes.rst:1048 ../../ListsOfTypes.rst:1090
+#: ../../ListsOfTypes.rst:1137 ../../ListsOfTypes.rst:1175
+#: ../../ListsOfTypes.rst:1212 ../../ListsOfTypes.rst:1257
+#: ../../ListsOfTypes.rst:1297
+msgid "Number to define order of display in lists."
+msgstr "Nummer zur Festlegung der Reihenfolge der Anzeige in Listen."
+
+#: ../../ListsOfTypes.rst:112
+msgid "Billing type"
+msgstr "Fakturierungsart"
+
+#: ../../ListsOfTypes.rst:113 ../../ListsOfTypes.rst:114
+#: ../../ListsOfTypes.rst:161 ../../ListsOfTypes.rst:205
+#: ../../ListsOfTypes.rst:252 ../../ListsOfTypes.rst:295
+#: ../../ListsOfTypes.rst:340 ../../ListsOfTypes.rst:381
+#: ../../ListsOfTypes.rst:423 ../../ListsOfTypes.rst:462
+#: ../../ListsOfTypes.rst:527 ../../ListsOfTypes.rst:565
+#: ../../ListsOfTypes.rst:611 ../../ListsOfTypes.rst:654
+#: ../../ListsOfTypes.rst:700 ../../ListsOfTypes.rst:742
+#: ../../ListsOfTypes.rst:789 ../../ListsOfTypes.rst:832
+#: ../../ListsOfTypes.rst:878 ../../ListsOfTypes.rst:918
+#: ../../ListsOfTypes.rst:963 ../../ListsOfTypes.rst:1049
+#: ../../ListsOfTypes.rst:1091 ../../ListsOfTypes.rst:1138
+#: ../../ListsOfTypes.rst:1176 ../../ListsOfTypes.rst:1213
+#: ../../ListsOfTypes.rst:1258 ../../ListsOfTypes.rst:1298
+msgid ":term:`Closed`"
+msgstr ":term:`Geschlossen`"
+
+#: ../../ListsOfTypes.rst:115 ../../ListsOfTypes.rst:162
+#: ../../ListsOfTypes.rst:206 ../../ListsOfTypes.rst:253
+#: ../../ListsOfTypes.rst:296 ../../ListsOfTypes.rst:341
+#: ../../ListsOfTypes.rst:382 ../../ListsOfTypes.rst:424
+#: ../../ListsOfTypes.rst:463 ../../ListsOfTypes.rst:528
+#: ../../ListsOfTypes.rst:566 ../../ListsOfTypes.rst:612
+#: ../../ListsOfTypes.rst:655 ../../ListsOfTypes.rst:701
+#: ../../ListsOfTypes.rst:743 ../../ListsOfTypes.rst:790
+#: ../../ListsOfTypes.rst:833 ../../ListsOfTypes.rst:879
+#: ../../ListsOfTypes.rst:919 ../../ListsOfTypes.rst:964
+#: ../../ListsOfTypes.rst:1050 ../../ListsOfTypes.rst:1092
+#: ../../ListsOfTypes.rst:1139 ../../ListsOfTypes.rst:1177
+#: ../../ListsOfTypes.rst:1214 ../../ListsOfTypes.rst:1259
+#: ../../ListsOfTypes.rst:1299
+msgid "Box checked indicates the type is archived."
+msgstr "Box checked zeigt an, dass der Typ archiviert ist."
+
+#: ../../ListsOfTypes.rst:117 ../../ListsOfTypes.rst:164
+#: ../../ListsOfTypes.rst:208 ../../ListsOfTypes.rst:255
+#: ../../ListsOfTypes.rst:298 ../../ListsOfTypes.rst:343
+#: ../../ListsOfTypes.rst:384 ../../ListsOfTypes.rst:426
+#: ../../ListsOfTypes.rst:465 ../../ListsOfTypes.rst:530
+#: ../../ListsOfTypes.rst:568 ../../ListsOfTypes.rst:614
+#: ../../ListsOfTypes.rst:657 ../../ListsOfTypes.rst:703
+#: ../../ListsOfTypes.rst:745 ../../ListsOfTypes.rst:792
+#: ../../ListsOfTypes.rst:835 ../../ListsOfTypes.rst:881
+#: ../../ListsOfTypes.rst:921 ../../ListsOfTypes.rst:966
+#: ../../ListsOfTypes.rst:1004 ../../ListsOfTypes.rst:1052
+#: ../../ListsOfTypes.rst:1094 ../../ListsOfTypes.rst:1141
+#: ../../ListsOfTypes.rst:1179 ../../ListsOfTypes.rst:1216
+#: ../../ListsOfTypes.rst:1261 ../../ListsOfTypes.rst:1301
+msgid "Description of the type."
+msgstr "Beschreibung des Typs."
+
+#: ../../ListsOfTypes.rst:119 ../../ListsOfTypes.rst:166
+#: ../../ListsOfTypes.rst:210 ../../ListsOfTypes.rst:257
+#: ../../ListsOfTypes.rst:300 ../../ListsOfTypes.rst:345
+#: ../../ListsOfTypes.rst:386 ../../ListsOfTypes.rst:428
+#: ../../ListsOfTypes.rst:467 ../../ListsOfTypes.rst:532
+#: ../../ListsOfTypes.rst:570 ../../ListsOfTypes.rst:616
+#: ../../ListsOfTypes.rst:659 ../../ListsOfTypes.rst:705
+#: ../../ListsOfTypes.rst:747 ../../ListsOfTypes.rst:794
+#: ../../ListsOfTypes.rst:837 ../../ListsOfTypes.rst:883
+#: ../../ListsOfTypes.rst:923 ../../ListsOfTypes.rst:968
+#: ../../ListsOfTypes.rst:1010 ../../ListsOfTypes.rst:1054
+#: ../../ListsOfTypes.rst:1096 ../../ListsOfTypes.rst:1143
+#: ../../ListsOfTypes.rst:1181 ../../ListsOfTypes.rst:1218
+#: ../../ListsOfTypes.rst:1263 ../../ListsOfTypes.rst:1303
+msgid "**\\* Required field**"
+msgstr "**Erforderliches Feld**"
+
+#: ../../ListsOfTypes.rst:133
+msgid "Tickets types"
+msgstr "Ticket-Arten"
+
+#: ../../ListsOfTypes.rst:135
+msgid "Ticket type is a way to define common behavior on group of tickets."
+msgstr "Tickettyp ist eine Möglichkeit, allgemeines Verhalten für eine Gruppe von Tickets zu definieren."
+
+#: ../../ListsOfTypes.rst:156 ../../ListsOfTypes.rst:198
+#: ../../ListsOfTypes.rst:245 ../../ListsOfTypes.rst:290
+#: ../../ListsOfTypes.rst:335 ../../ListsOfTypes.rst:522
+#: ../../ListsOfTypes.rst:606 ../../ListsOfTypes.rst:649
+#: ../../ListsOfTypes.rst:695 ../../ListsOfTypes.rst:737
+#: ../../ListsOfTypes.rst:784 ../../ListsOfTypes.rst:827
+#: ../../ListsOfTypes.rst:873 ../../ListsOfTypes.rst:958
+#: ../../ListsOfTypes.rst:1044 ../../ListsOfTypes.rst:1086
+#: ../../ListsOfTypes.rst:1131 ../../ListsOfTypes.rst:1255
+#: ../../ListsOfTypes.rst:1295
+msgid "Code of the type."
+msgstr "Code des Typs."
+
+#: ../../ListsOfTypes.rst:175
+msgid "Activities types"
+msgstr "Typische Aktivitäten"
+
+#: ../../ListsOfTypes.rst:201 ../../ListsOfTypes.rst:248
+#: ../../ListsOfTypes.rst:1134
+msgid "**Default planning mode**"
+msgstr "**Standard-Planungsmodus**"
+
+#: ../../ListsOfTypes.rst:202 ../../ListsOfTypes.rst:249
+#: ../../ListsOfTypes.rst:1135
+msgid "Default planning mode for type."
+msgstr "Standard-Planungsmodus für Typ."
+
+#: ../../ListsOfTypes.rst:222
+msgid "Milestones types"
+msgstr "Meilensteine Typen"
+
+#: ../../ListsOfTypes.rst:267
+msgid "Quotations types"
+msgstr "Typische Angebote"
+
+#: ../../ListsOfTypes.rst:312
+msgid "Orders types"
+msgstr "Musterbestellungen"
+
+#: ../../ListsOfTypes.rst:355
+msgid "Individual expenses types"
+msgstr "Einzelne Spesenarten"
+
+#: ../../ListsOfTypes.rst:397
+msgid "Project expenses types"
+msgstr "Projektausgabenarten"
+
+#: ../../ListsOfTypes.rst:439
+msgid "Expenses details types"
+msgstr "Aufwandsarten"
+
+#: ../../ListsOfTypes.rst:460
+msgid "Value / unit"
+msgstr "Wert / Einheit"
+
+#: ../../ListsOfTypes.rst:461
+msgid "Define calculation mode for the detail type."
+msgstr "Berechnungsmodus für den Detailtyp definieren."
+
+#: ../../ListsOfTypes.rst:471
+msgid "If unit is set and not value, this line will be imputable."
+msgstr "Wenn Einheit und nicht Wert eingestellt ist, ist diese Zeile zurechenbar."
+
+#: ../../ListsOfTypes.rst:472
+msgid "If both unit and value are set, the line will be read only."
+msgstr "Wenn sowohl Einheit als auch Wert eingestellt sind, wird die Zeile nur gelesen."
+
+#: ../../ListsOfTypes.rst:476
+msgid "Section: Scope"
+msgstr "Sektion: Geltungsbereich"
+
+#: ../../ListsOfTypes.rst:485
+msgid "Individual expense"
+msgstr "Individueller Aufwand"
+
+#: ../../ListsOfTypes.rst:486
+msgid "Details type of individual expense."
+msgstr "Details zur Art des individuellen Aufwands."
+
+#: ../../ListsOfTypes.rst:487
+msgid "Project expense"
+msgstr "Projektaufwendungen"
+
+#: ../../ListsOfTypes.rst:488
+msgid "Details type of project expense."
+msgstr "Details Art der Projektkosten."
+
+#: ../../ListsOfTypes.rst:499
+msgid "Bills types"
+msgstr "Rechnungsarten"
+
+#: ../../ListsOfTypes.rst:501
+msgid "Bill type is a way to define common behavior on group of bills."
+msgstr "Rechnungsart ist ein Weg, um allgemeines Verhalten auf einer Gruppe von Rechnungen zu definieren."
+
+#: ../../ListsOfTypes.rst:539
+msgid "Payments types"
+msgstr "Zahlungsarten"
+
+#: ../../ListsOfTypes.rst:541
+msgid "Payment type is a way to define common behavior on group of payments."
+msgstr "Zahlungsart ist eine Möglichkeit, ein gemeinsames Verhalten für eine Gruppe von Zahlungen zu definieren."
+
+#: ../../ListsOfTypes.rst:583
+msgid "Risks types"
+msgstr "Risikoarten"
+
+#: ../../ListsOfTypes.rst:585
+msgid "Risk type is a way to define common behavior on group of risks."
+msgstr "Risikoart ist ein Weg, um ein gemeinsames Verhalten für eine Gruppe von Risiken zu definieren."
+
+#: ../../ListsOfTypes.rst:626
+msgid "Opportunities types"
+msgstr "Arten von Chancen"
+
+#: ../../ListsOfTypes.rst:672
+msgid "Actions types"
+msgstr "Aktionstypen"
+
+#: ../../ListsOfTypes.rst:674
+msgid "Action type is a way to define common behavior on group of actions."
+msgstr "Aktionstyp ist eine Möglichkeit, allgemeines Verhalten für eine Gruppe von Aktionen zu definieren."
+
+#: ../../ListsOfTypes.rst:714
+msgid "Issues types"
+msgstr "Ausgabenarten"
+
+#: ../../ListsOfTypes.rst:716
+msgid "Issue type is a way to define common behavior on group of issues."
+msgstr "Issue-Typ ist ein Weg, um ein gemeinsames Verhalten bei einer Gruppe von Issues zu definieren."
+
+#: ../../ListsOfTypes.rst:758
+msgid "Meetings types"
+msgstr "Besprechungsarten"
+
+#: ../../ListsOfTypes.rst:760
+msgid "Meeting type is a way to define common behavior on group of meetings."
+msgstr "Besprechungstyp ist ein Weg, um ein gemeinsames Verhalten in einer Gruppe von Besprechungen zu definieren."
+
+#: ../../ListsOfTypes.rst:763
+msgid "Meeting type is also used for periodic meetings definition."
+msgstr "Besprechungstyp wird auch für die Definition periodischer Besprechungen verwendet."
+
+#: ../../ListsOfTypes.rst:804
+msgid "Decisions types"
+msgstr "Entscheidungsarten"
+
+#: ../../ListsOfTypes.rst:806
+msgid "Decision type is a way to define common behavior on group of decisions."
+msgstr "Entscheidungstyp ist ein Weg, um ein gemeinsames Verhalten für eine Gruppe von Entscheidungen zu definieren."
+
+#: ../../ListsOfTypes.rst:850
+msgid "Questions types"
+msgstr "Fragentypen"
+
+#: ../../ListsOfTypes.rst:852
+msgid "Question type is a way to define common behavior on group of questions."
+msgstr "Fragetyp ist eine Möglichkeit, allgemeines Verhalten bei Fragengruppen zu definieren."
+
+#: ../../ListsOfTypes.rst:892
+msgid "Messages types"
+msgstr "Nachrichtentypen"
+
+#: ../../ListsOfTypes.rst:914
+msgid "Color"
+msgstr "Farbe"
+
+#: ../../ListsOfTypes.rst:915
+msgid "Display color for messages of this type."
+msgstr "Anzeigefarbe für Nachrichten dieses Typs."
+
+#: ../../ListsOfTypes.rst:935
+msgid "Documents types"
+msgstr "Arten von Dokumenten"
+
+#: ../../ListsOfTypes.rst:937
+msgid "Document type is a way to define common behavior on group of documents."
+msgstr "Dokumenttyp ist ein Weg, um ein gemeinsames Verhalten für eine Gruppe von Dokumenten zu definieren."
+
+#: ../../ListsOfTypes.rst:977
+msgid "Contexts types"
+msgstr "Kontexte Typen"
+
+#: ../../ListsOfTypes.rst:985
+msgid "Only the name of the context types can be changed."
+msgstr "Nur der Name der Kontexttypen kann geändert werden."
+
+#: ../../ListsOfTypes.rst:986
+msgid "No new context type can be added."
+msgstr "Es kann kein neuer Kontexttyp hinzugefügt werden."
+
+#: ../../ListsOfTypes.rst:987
+msgid "No context type can be deleted."
+msgstr "Kein Kontexttyp kann gelöscht werden."
+
+#: ../../ListsOfTypes.rst:1021
+msgid "Requirements types"
+msgstr "Anforderungsarten"
+
+#: ../../ListsOfTypes.rst:1063
+msgid "Test cases types"
+msgstr "Testfälle Typen"
+
+#: ../../ListsOfTypes.rst:1108
+msgid "Test sessions types"
+msgstr "Arten von Testsitzungen"
+
+#: ../../ListsOfTypes.rst:1152
+msgid "Customers types"
+msgstr "Kundentypen"
+
+#: ../../ListsOfTypes.rst:1189
+msgid "Providers types"
+msgstr "Anbieter-Typen"
+
+#: ../../ListsOfTypes.rst:1191
+msgid "Provider type is a way to define different kinds of providers."
+msgstr "Providertyp ist eine Möglichkeit, verschiedene Arten von Providern zu definieren."
+
+#: ../../ListsOfTypes.rst:1232
+msgid "Products types"
+msgstr "Produkte-Type"
+
+#: ../../ListsOfTypes.rst:1234
+msgid "Product type is a way to define common behavior to group of product."
+msgstr "Produkttyp ist eine Möglichkeit, das gemeinsame Verhalten einer Produktgruppe zu definieren."
+
+#: ../../ListsOfTypes.rst:1272
+msgid "Components types"
+msgstr "Bauelemente-Type"
+
+#: ../../ListsOfTypes.rst:1314
+msgid "Behavior section"
+msgstr "Abschnitt Verhalten"
+
+#: ../../ListsOfTypes.rst:1316
+msgid "This section is common to several element types."
+msgstr "Dieser Abschnitt ist mehreren Elementtypen gemeinsam."
+
+#: ../../ListsOfTypes.rst:1318
+msgid "Allows to determine some GUI behavior, according to element types."
+msgstr "Ermöglicht die Bestimmung des GUI-Verhaltens nach Elementtypen."
+
+#: ../../ListsOfTypes.rst:1322
+msgid "Depending on the element type the following fields can be displayed."
+msgstr "Je nach Elementtyp können folgende Felder angezeigt werden."
+
+#: ../../ListsOfTypes.rst:1326
+msgid "Description or Comments"
+msgstr "Beschreibung oder Kommentare"
+
+#: ../../ListsOfTypes.rst:1327
+msgid "Box checked indicates the field, \\\":term:`Description`\\\" is mandatory."
+msgstr "Box angekreuzt zeigt an, dass das Feld \\\":term:`Beschreibung`\\\" obligatorisch ist."
+
+#: ../../ListsOfTypes.rst:1330
+msgid "Responsible"
+msgstr "Verantwortlich"
+
+#: ../../ListsOfTypes.rst:1334
+msgid "Result"
+msgstr "Ergebnis"
+
+#: ../../ListsOfTypes.rst:1338
+msgid "Flag status"
+msgstr "Flaggenstatus"
+
+#: ../../ListsOfTypes.rst:1339
+msgid "Fields: Lock handled, Lock done, Lock closed and Lock cancelled"
+msgstr "Felder: Lock handled, Lock done, Lock closed und Lock cancelled"
+
+#: ../../ListsOfTypes.rst:1344
+msgid "Ticket type"
+msgstr "Ticketart"
+
+#: ../../ListsOfTypes.rst:1347
+msgid "Resolution"
+msgstr "Resolution"
+
+#: ../../ListsOfTypes.rst:1351
+msgid "Lock solved"
+msgstr "Schloss gelöst"
+
+#: ../../ListsOfTypes.rst:1352
+msgid "Box checked indicates the fieldâ€š \\\"Solved\\\" is read only."
+msgstr "Feld angekreuzt zeigt an, dass das Feld \\\"Gelöst\\\" schreibgeschützt ist."

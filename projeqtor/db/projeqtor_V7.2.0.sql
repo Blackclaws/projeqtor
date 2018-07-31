@@ -203,9 +203,33 @@ CREATE TABLE `${prefix}globalview` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+-- ==================================================================
+-- Global Planning
+-- ==================================================================
+
+INSERT INTO `${prefix}menu` (`id`,`name`, `idMenu`, `type`, `sortOrder`, `level`, `idle`, `menuClass`) VALUES
+(196,'menuGlobalPlanning', 7, 'item', 125, null, 0, 'Work');
+INSERT INTO `${prefix}habilitation` (`idProfile`, `idMenu`, `allowAccess`) VALUES 
+(1,196,1),
+(2,196,1),
+(3,196,1),
+(4,196,1);
+INSERT INTO `${prefix}accessright` (`idProfile`, `idMenu`, `idAccessProfile`) VALUES 
+(1,196, 8),
+(2,196, 2),
+(3,196, 7),
+(4,196, 7);
+
+-- ==================================================================
+-- Misc
+-- ==================================================================
+
 UPDATE `${prefix}menu`set menuClass=REPLACE(menuClass,'Meeting','Review') WHERE menuClass LIKE '%Meeting%';
 
 ALTER TABLE `${prefix}activity`
 ADD `idMilestone` int(12) UNSIGNED DEFAULT NULL;
 
 UPDATE `${prefix}menu` SET menuClass='Work Configuration EnvironmentalParameter' WHERE id in (86,87,141,142,179);
+
+UPDATE `${prefix}parameter` set parameterValue='CK' where parameterValue='Dojo';
+UPDATE `${prefix}parameter` set parameterValue='CKInline' where parameterValue='DojoInline';

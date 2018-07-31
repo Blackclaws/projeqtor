@@ -1,0 +1,74 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2018, ProjeQtOr
+# This file is distributed under the same license as the ProjeQtOr Bedienhandbuch Deutsch package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: ProjeQtOr Bedienhandbuch Deutsch 7.2\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2018-07-03 14:34+0200\n"
+"PO-Revision-Date: 2018-07-16 12:39+0200\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 2.0.8\n"
+"Last-Translator: \n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"Language: de\n"
+
+#: ../../ActivityStream.rst:14
+msgid "Activity Stream"
+msgstr "Aktivitätsfluss"
+
+#: ../../ActivityStream.rst:16
+msgid "This screen is devoted to display notes."
+msgstr "Dieser Bildschirm ist der Anzeige von Notizen gewidmet."
+
+#: ../../ActivityStream.rst:18
+msgid "To default you will see all visible notes for each items."
+msgstr "Standardmäßig sehen Sie alle sichtbaren Notizen zu jedem Element."
+
+#: ../../ActivityStream.rst:20
+msgid "There are filters to refine the search."
+msgstr "Es gibt Filter, um die Suche zu verfeinern."
+
+#: ../../ActivityStream.rst:29
+msgid "Click on |buttonCollapseClose|  to hide note comment."
+msgstr "Klicken Sie auf |buttonCollapseClose|, um den Kommentar auszublenden."
+
+#: ../../ActivityStream.rst:30
+msgid "Click on |buttonCollapseOpen|  to display note comment."
+msgstr ""
+"Klicken Sie auf |buttonCollapseOpen|, um den Notizkommentar anzuzeigen."
+
+#: ../../ActivityStream.rst:37
+msgid "Chat"
+msgstr "Chat"
+
+#: ../../ActivityStream.rst:39
+msgid "Display of notes on right part of screen."
+msgstr "Anzeige der Notizen im rechten Teil des Bildschirms."
+
+#: ../../ActivityStream.rst:41
+msgid "The chat displays notes on the selected item."
+msgstr "Der Chat zeigt Notizen zu dem ausgewählten Element an."
+
+#: ../../ActivityStream.rst:43
+msgid "Possibility to quickly add note, write your text and press 'Enter' key."
+msgstr ""
+"Möglichkeit, schnell Notizen hinzuzufügen, Ihren Text zu schreiben und die "
+"Taste „Enter“ zu drücken."
+
+#: ../../ActivityStream.rst:45
+msgid ""
+"You can change the visibility of the note if you click on the bottom right "
+"corner."
+msgstr ""
+"Sie können die Sichtbarkeit der Notiz ändern, wenn Sie auf die untere rechte "
+"Ecke klicken."
+
+#: ../../ActivityStream.rst:47
+msgid "Click on |iconHideStream|  to hide or display the chat."
+msgstr "Klicken Sie auf |iconHideStream|, um den Chat ein- oder auszublenden."
