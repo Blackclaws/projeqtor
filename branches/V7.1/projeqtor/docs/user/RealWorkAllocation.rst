@@ -174,7 +174,8 @@ The list displays the assigned tasks for the resource.
       
 .. figure:: /images/GUI/left_click_note.png
 
- .. compound:: **D - Progress data**
+
+.. compound:: **D - Progress data**
 
     * **Planned dates**: Planned start and end dates.
     * **Assigned**: Planned work assigned to the resource.
@@ -184,10 +185,11 @@ The list displays the assigned tasks for the resource.
 
 .. note:: Total of days
 
-  .. figure:: /images/GUI/screenshot126.png
-       :alt: The last column is the sum for all days.
+.. figure:: /images/GUI/screenshot126.png
+   :alt: The last column is the sum for all days.
+ 
         
-      * On the last column is the sum for all days of the week. It is a synthesis displayed for each project and globally for the whole week.
+* On the last column is the sum for all days of the week. It is a synthesis displayed for each project and globally for the whole week.
       
 .. raw:: latex
 
@@ -209,8 +211,8 @@ Selection timesheet
 * Users can only select themselves as a resource.
 
 
-* Access to other resources timesheet depending on access rights, then user can select other resources timesheets. 
-Clicking on the checkbox below allows to select only resources allocated to the selected project on the list roll displayed. 
+* | Access to other resources timesheet depending on access rights, then user can select other resources timesheets. 
+  | Clicking on the checkbox below allows to select only resources allocated to the selected project on the list roll displayed. 
 
 .. figure:: /images/GUI/screenshot.128.png
 

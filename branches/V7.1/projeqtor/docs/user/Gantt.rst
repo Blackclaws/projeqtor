@@ -9,11 +9,6 @@
 Gantt charts
 ============
 
-.. contents:: Gantt charts
-   :depth: 1
-   :local: 
-   :backlinks: top
-
 .. index:: ! Gantt chart (Planning)
 
 .. _gantt-planning:
