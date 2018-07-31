@@ -1,0 +1,132 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2018, ProjeQtOr
+# This file is distributed under the same license as the ProjeQtOr Bedienhandbuch Deutsch package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: ProjeQtOr Bedienhandbuch Deutsch 7.2\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2018-07-03 14:34+0200\n"
+"PO-Revision-Date: 2018-07-16 11:54+0200\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 2.0.8\n"
+"Last-Translator: \n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"Language: de\n"
+
+#: ../../Report.rst:13
+msgid "Reports"
+msgstr "Berichte"
+
+#: ../../Report.rst:15
+msgid "A list of reports is available in different categories."
+msgstr "Eine Liste der Berichte ist in verschiedenen Kategorien verfügbar."
+
+#: ../../Report.rst:17
+msgid "Select a category |one|, corresponding reports list |two| will appear."
+msgstr ""
+"Wählen Sie eine Kategorie |one|, die entsprechende Berichtsliste |two| "
+"erscheint."
+
+#: ../../Report.rst:18
+msgid ""
+"Select a report in the list, this will display specific parameters |three| "
+"for the report."
+msgstr ""
+"Wählen Sie einen Bericht in der Liste aus, um bestimmte Parameter |three| "
+"für den Bericht anzuzeigen."
+
+#: ../../Report.rst:19
+msgid "Update the parameters to get the information you need."
+msgstr ""
+"Aktualisieren Sie die Parameter, um die gewünschten Informationen zu "
+"erhalten."
+
+#: ../../Report.rst:20
+msgid "Click on a button to produce the report. |four|"
+msgstr ""
+"Klicken Sie auf eine Schaltfläche, um den Bericht zu erstellen. |four|"
+
+#: ../../Report.rst:21
+msgid "Click on the arrow to return to the category list. |five|"
+msgstr ""
+"Klicken Sie auf den Pfeil, um zur Kategorienliste zurückzukehren. |five|"
+
+#: ../../Report.rst:32
+msgid "Buttons"
+msgstr "Tasten"
+
+#: ../../Report.rst:33
+msgid "Click on |buttonIconDisplay| to display the report."
+msgstr "Klicken Sie auf |buttonIconDisplay|, um den Bericht anzuzeigen."
+
+#: ../../Report.rst:34
+msgid "Click on |buttonIconPrint| to get a printable version of the report."
+msgstr ""
+"Klicken Sie auf |buttonIconPrint|, um eine druckbare Version des Berichts "
+"zu erhalten."
+
+#: ../../Report.rst:35
+msgid "Click on |buttonIconPdf| to export the report as PDF format."
+msgstr ""
+"Klicken Sie auf |buttonIconPdf|, um den Bericht als PDF zu exportieren."
+
+#: ../../Report.rst:36
+msgid "Click on |buttonIconToday| to display this report on the Today screen."
+msgstr ""
+"Klicken Sie auf |buttonIconToday|, um diesen Bericht auf dem Heute-"
+"Bildschirm anzuzeigen."
+
+#: ../../Report.rst:37
+msgid ""
+"Click on |buttonIconReportFavorite| to define this report as favorite. This "
+"report will be available in your favorite reports list."
+msgstr ""
+"Klicken Sie auf |buttonIconReportFavorite|, um diesen Bericht als Favoriten "
+"zu definieren. Dieser Bericht ist in Ihrer Favoritenliste verfügbar."
+
+#: ../../Report.rst:46
+msgid "Favorite reports"
+msgstr "Bevorzugte Berichte"
+
+#: ../../Report.rst:48
+msgid ""
+"Move your cursor over the reports menu icon (in the top bar) to show the "
+"popup menu that contains your favorite reports."
+msgstr ""
+"Favoriten Bewegen Sie den Cursor über das Berichtsmenü (in der oberen "
+"Leiste), um das Popup-Menü mit Ihren Lieblingsberichten anzuzeigen."
+
+#: ../../Report.rst:56
+msgid "**Popup menu management**"
+msgstr "**Popup-Menü-Verwaltung**"
+
+#: ../../Report.rst:58
+msgid ""
+"Allows to reorder reports displayed with drag & drop feature. Using the "
+"selector area button icon drag |buttonIconDrag|."
+msgstr ""
+"Ermöglicht die Neuanordnung von Berichten, die per Drag & Drop angezeigt "
+"werden. Mit dem Auswahlbereich-Symbol ziehen Sie |buttonIconDrag|."
+
+#: ../../Report.rst:59
+msgid "Click on |buttonIconDelete| to remove the report from the list."
+msgstr ""
+"Klicken Sie auf |buttonIconDelete|, um den Bericht aus der Liste zu "
+"entfernen."
+
+#: ../../Report.rst:63
+msgid "Direct display"
+msgstr "Direkte Anzeige"
+
+#: ../../Report.rst:64
+msgid ""
+"Select a report to display (in print mode), without leaving the current "
+"screen."
+msgstr ""
+"Wählen Sie einen Bericht aus, der angezeigt werden soll (im Druckmodus), "
+"ohne das aktuelle Bild zu verlassen."

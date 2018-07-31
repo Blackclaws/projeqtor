@@ -1,0 +1,173 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2018, ProjeQtOr
+# This file is distributed under the same license as the ProjeQtOr Bedienhandbuch Deutsch package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"POT-Creation-Date: \n"
+"PO-Revision-Date: \n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=ISO-8859-1\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: de\n"
+"X-Generator: Poedit 2.0.8\n"
+
+#: ../../Glossary.rst:4
+msgid "Glossary"
+msgstr "Glossar"
+
+#: ../../Glossary.rst:7
+msgid "Closed"
+msgstr "Geschlossen"
+
+#: ../../Glossary.rst:10
+msgid "Flag to indicate that item is archived."
+msgstr "Kennzeichen, um anzuzeigen, dass das Objekt archiviert ist."
+
+#: ../../Glossary.rst:12
+msgid "Description"
+msgstr "Beschreibung"
+
+#: ../../Glossary.rst:15
+msgid "This field allows to define a description on an item."
+msgstr "Dieses Feld erlaubt es, eine Beschreibung für einen Artikel zu definieren."
+
+#: ../../Glossary.rst:16
+msgid "Depending on the element type, name of field can be different."
+msgstr "Je nach Elementtyp kann der Feldname unterschiedlich sein."
+
+#: ../../Glossary.rst:18 ../../Glossary.rst:78
+msgid "GUI behavior"
+msgstr "GUI-Verhalten"
+
+#: ../../Glossary.rst:20
+msgid "It is possible to define that description field is mandatory."
+msgstr "Es ist möglich zu definieren, dass das Beschreibungsfeld obligatorisch ist."
+
+#: ../../Glossary.rst:22 ../../Glossary.rst:82
+msgid "More detail, see: :ref:`behavior-section`."
+msgstr "Mehr dazu, siehe: :ref:`behavior-section`."
+
+#: ../../Glossary.rst:23
+msgid "Done"
+msgstr "Erledigt"
+
+#: ../../Glossary.rst:26
+msgid "Flag to indicate that item has been done."
+msgstr "Flagge, um anzuzeigen, dass der Artikel fertig ist."
+
+#: ../../Glossary.rst:27
+msgid "Date of done is saved."
+msgstr "Datum der Fertigstellung wird gespeichert."
+
+#: ../../Glossary.rst:28
+msgid "External reference"
+msgstr "Externe Referenz"
+
+#: ../../Glossary.rst:31
+msgid "This field allows fill free input."
+msgstr "Dieses Feld erlaubt eine freie Eingabe."
+
+#: ../../Glossary.rst:32
+msgid "It uses to refer information from an external source."
+msgstr "Es verwendet, um Informationen von einer externen Quelle zu beziehen."
+
+#: ../../Glossary.rst:35
+msgid "More detail, see: **Administration guide**."
+msgstr "Mehr Details, siehe: **Administrationshandbuch**."
+
+#: ../../Glossary.rst:36
+msgid "Handled"
+msgstr "Bearbeitet"
+
+#: ../../Glossary.rst:39
+msgid "Flag to indicate that item has been taken into account."
+msgstr "Kennzeichen, das angibt, dass der Artikel berücksichtigt wurde."
+
+#: ../../Glossary.rst:40
+msgid "Date of handling is saved."
+msgstr "Datum der Bearbeitung wird gespeichert."
+
+#: ../../Glossary.rst:41
+msgid "This generally means that responsible has been named."
+msgstr "Das bedeutet in der Regel, dass der Verantwortliche genannt wurde."
+
+#: ../../Glossary.rst:42
+msgid "Id"
+msgstr "Id"
+
+#: ../../Glossary.rst:45
+msgid "Every item has a unique Id, automatically generated on creation."
+msgstr "Jeder Artikel hat eine eindeutige ID, die bei der Erstellung automatisch generiert wird."
+
+#: ../../Glossary.rst:48
+msgid "Origin"
+msgstr "Herkunft"
+
+#: ../../Glossary.rst:51
+msgid "Determines the element of origin."
+msgstr "Bestimmt das Ursprungselement."
+
+#: ../../Glossary.rst:53
+msgid "More detail, see : :ref:`Origin field<origin-field>`."
+msgstr "Mehr Details, siehe: :ref:`Origin field<origin-field>`."
+
+#: ../../Glossary.rst:54
+msgid "Status"
+msgstr "Status"
+
+#: ../../Glossary.rst:57
+msgid "The status determines the life cycle of items."
+msgstr "Der Status bestimmt den Lebenszyklus von Gegenständen."
+
+#: ../../Glossary.rst:58
+msgid "It defines the progress of the treatment of the item."
+msgstr "Es definiert den Fortschritt der Behandlung des Artikels."
+
+#: ../../Glossary.rst:59
+msgid "Item is linked to a element type, element type is linked to a workflow."
+msgstr "Item ist mit einer Elementart verknüpft, Elementart mit einem Workflow."
+
+#: ../../Glossary.rst:62
+msgid "Accelerator button"
+msgstr "Beschleuniger-Taste"
+
+#: ../../Glossary.rst:64
+msgid "This button allows to skip to the next status."
+msgstr "Mit dieser Schaltfläche können Sie zum nächsten Status springen."
+
+#: ../../Glossary.rst:66
+msgid "Reference"
+msgstr "Referenz"
+
+#: ../../Glossary.rst:69
+msgid "Reference is displayed after id, automatically generated on creation."
+msgstr "Referenz wird nach der ID angezeigt, die beim Anlegen automatisch generiert wird."
+
+#: ../../Glossary.rst:72
+msgid "Result"
+msgstr "Ergebnis"
+
+#: ../../Glossary.rst:75
+msgid "A result is a description of the treatment of an item."
+msgstr "Ein Ergebnis ist eine Beschreibung der Behandlung eines Artikels."
+
+#: ../../Glossary.rst:80
+msgid "It is possible to define that result field is mandatory on done status."
+msgstr "Es ist möglich, zu definieren, dass das Ergebnisfeld bei erledigtem Status obligatorisch ist."
+
+#: ../../Glossary.rst:83
+msgid "WBS"
+msgstr "PSP"
+
+#: ../../Glossary.rst:86
+msgid "Work Breakdown Structure."
+msgstr "Projektstrukturplan."
+
+#: ../../Glossary.rst:87
+msgid "Hierarchical position of the element in the global planning."
+msgstr "Hierarchische Position des Elements in der globalen Planung."

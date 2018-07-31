@@ -24,7 +24,7 @@ if (! $comboDetail and ! $user->_arrayFilters) {
 $idFilter=RequestHandler::getId('idFilter',true);
 $filterObjectClass=RequestHandler::getValue('filterObjectClass',true);
 if (!isset($objectClass) or !$objectClass) $objectClass=$filterObjectClass;
-if ($objectClass=='Planning') $objectClass='Activity';
+if ($objectClass=='Planning' or $objectClass=='GlobalPlanning') $objectClass='Activity';
 Security::checkValidClass($objectClass);
 
 $nbDynamicFilterClauses=RequestHandler::getNumeric('nbDynamicFilterClauses',true);

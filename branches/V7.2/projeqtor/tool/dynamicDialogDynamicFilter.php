@@ -16,7 +16,7 @@ $filter=new Filter($idFilter);
 $filterObjectClass=RequestHandler::getValue('filterObjectClass');
 if (!$filterObjectClass) $filterObjectClass=$filter->refType;
 $objectClass=$filterObjectClass;
-if ($objectClass=='Planning') $objectClass='Activity';
+if ($objectClass=='Planning' or $objectClass=='Planning') $objectClass='Activity';
 Security::checkValidClass($objectClass);
 ?>
 <table xstyle="border: 1px solid grey;">

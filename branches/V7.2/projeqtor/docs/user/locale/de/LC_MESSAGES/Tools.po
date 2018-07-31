@@ -1,0 +1,413 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2018, ProjeQtOr
+# This file is distributed under the same license as the ProjeQtOr Bedienhandbuch Deutsch package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"POT-Creation-Date: \n"
+"PO-Revision-Date: \n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: de\n"
+"X-Generator: Poedit 2.0.8\n"
+
+#: ../../Tools.rst:10
+msgid "Emails sent"
+msgstr "E-Mails versendet"
+
+#: ../../Tools.rst:12
+msgid "Users can have a look at the list of the automatic emails sent."
+msgstr "Benutzer können sich die Liste der automatisch versendeten E-Mails ansehen."
+
+#: ../../Tools.rst:22
+msgid "Alerts"
+msgstr "Alerts\" (Warnungen"
+
+#: ../../Tools.rst:24
+msgid "Users can have a look at the alerts sent."
+msgstr "Benutzer können sich die gesendeten Alerts ansehen."
+
+#: ../../Tools.rst:33
+msgid "Alert screen"
+msgstr "Alarmbildschirm"
+
+#: ../../Tools.rst:38
+msgid "The button is available if the user alert is not tagged \\\"read\\\" yet."
+msgstr "Die Schaltfläche ist verfügbar, wenn der Benutzer-Alarm noch nicht als \\\"lesen\\\" gekennzeichnet ist."
+
+#: ../../Tools.rst:52
+msgid "Messages"
+msgstr "Nachrichten"
+
+#: ../../Tools.rst:57
+msgid ":ref:`profiles-definition`"
+msgstr ":ref:`profiles-definition`"
+
+#: ../../Tools.rst:61
+msgid "Optionally, the message can be shown on login screen."
+msgstr "Optional kann die Nachricht auf dem Anmeldebildschirm angezeigt werden."
+
+#: ../../Tools.rst:63
+msgid "You can limit the display by profile, project and user."
+msgstr "Sie können die Anzeige nach Profil, Projekt und Benutzer einschränken."
+
+#: ../../Tools.rst:65
+msgid "The message will be displayed in a color depending on the message type."
+msgstr "Die Nachricht wird je nach Nachrichtentyp farbig dargestellt."
+
+#: ../../Tools.rst:69
+msgid "Section: Description"
+msgstr "Sektion: Beschreibung"
+
+#: ../../Tools.rst:72
+msgid "Message description section fields"
+msgstr "Felder im Abschnitt Nachrichtenbeschreibung"
+
+#: ../../Tools.rst:76 ../../Tools.rst:105
+msgid "Field"
+msgstr "Feld"
+
+#: ../../Tools.rst:77 ../../Tools.rst:106
+msgid "Description"
+msgstr "Beschreibung"
+
+#: ../../Tools.rst:78
+msgid ":term:`Id`"
+msgstr ":term:`Id`"
+
+#: ../../Tools.rst:79
+msgid "Unique Id for the message."
+msgstr "Eindeutige Id für die Nachricht."
+
+#: ../../Tools.rst:80
+msgid "**Title**"
+msgstr "**Titel**"
+
+#: ../../Tools.rst:81
+msgid "Header of the message."
+msgstr "Kopf der Nachricht."
+
+#: ../../Tools.rst:82
+msgid "**Message type**"
+msgstr "**Nachrichtentyp**"
+
+#: ../../Tools.rst:83
+msgid "Type of message."
+msgstr "Art der Nachricht."
+
+#: ../../Tools.rst:84
+msgid "Profile"
+msgstr "Profil\" (englisch"
+
+#: ../../Tools.rst:85
+msgid "The message is limited to users with this profile."
+msgstr "Die Nachricht ist auf Benutzer mit diesem Profil beschränkt."
+
+#: ../../Tools.rst:86
+msgid "Project"
+msgstr "Projekt"
+
+#: ../../Tools.rst:87
+msgid "The message is limited to resources allocated to the project."
+msgstr "Die Nachricht ist auf die dem Projekt zugewiesenen Ressourcen beschränkt."
+
+#: ../../Tools.rst:88
+msgid "User"
+msgstr "User\" (Benutzer"
+
+#: ../../Tools.rst:89
+msgid "The message is limited to this user."
+msgstr "Die Nachricht ist auf diesen Benutzer beschränkt."
+
+#: ../../Tools.rst:90
+msgid "Show on login screen"
+msgstr "Auf Login-Bildschirm anzeigen"
+
+#: ../../Tools.rst:91
+msgid "Show this message on login screen."
+msgstr "Diese Meldung auf dem Anmeldebildschirm anzeigen."
+
+#: ../../Tools.rst:92
+msgid ":term:`Closed`"
+msgstr ":term:`Geschlossen`"
+
+#: ../../Tools.rst:93
+msgid "Flag to indicate that the message is archived."
+msgstr "Flag, um anzuzeigen, dass die Nachricht archiviert wurde."
+
+#: ../../Tools.rst:95
+msgid "**\\* Required field**"
+msgstr "**\\* Pflichtfeld**"
+
+#: ../../Tools.rst:98
+msgid "Section: Message"
+msgstr "Sektion: Nachricht"
+
+#: ../../Tools.rst:101
+msgid "Message message section fields"
+msgstr "Felder im Nachrichtenbereich"
+
+#: ../../Tools.rst:107
+msgid ":term:`Message<Description>`"
+msgstr ":term:`Nachricht<Beschreibung>`"
+
+#: ../../Tools.rst:108
+msgid "Complete text of the message."
+msgstr "Vollständiger Text der Nachricht."
+
+#: ../../Tools.rst:122
+msgid "Import data"
+msgstr "Daten importieren"
+
+#: ../../Tools.rst:124
+msgid "Imports data from CSV or XLSX files."
+msgstr "Importiert Daten aus CSV- oder XLSX-Dateien."
+
+#: ../../Tools.rst:128
+msgid "How to do"
+msgstr "Wie geht's"
+
+#: ../../Tools.rst:129
+msgid "Select the element type from the list."
+msgstr "Wählen Sie den Elementtyp aus der Liste aus."
+
+#: ../../Tools.rst:130
+msgid "Select file format (CSV or XLSX)."
+msgstr "Dateiformat auswählen (CSV oder XLSX)."
+
+#: ../../Tools.rst:131
+msgid "Select the file."
+msgstr "Datei auswählen."
+
+#: ../../Tools.rst:132
+msgid "Click on **Import data** button to start importing."
+msgstr "Klicken Sie auf die Schaltfläche **Daten importieren**, um den Import zu starten."
+
+#: ../../Tools.rst:135
+msgid "Report of the import"
+msgstr "Bericht des Imports"
+
+#: ../../Tools.rst:139
+msgid "Import users"
+msgstr "Benutzer importieren"
+
+#: ../../Tools.rst:148
+msgid "So be sure to keep an operational admin access."
+msgstr "Achten Sie also darauf, dass Sie einen funktionierenden Admin-Zugang haben."
+
+#: ../../Tools.rst:151
+msgid "Importing document versions"
+msgstr "Dokumentversionen importieren"
+
+#: ../../Tools.rst:154
+msgid "Two ways to import document versions:"
+msgstr "Zwei Möglichkeiten, Dokumentversionen zu importieren:"
+
+#: ../../Tools.rst:154
+msgid "by describing only the version, with its standard fields."
+msgstr "indem sie nur die Version mit ihren Standardfeldern beschreibt."
+
+#: ../../Tools.rst:157
+msgid "CSV import"
+msgstr "CSV-Import"
+
+#: ../../Tools.rst:160
+msgid "The CSV import file may also include :"
+msgstr "Die CSV-Importdatei kann auch enthalten:"
+
+#: ../../Tools.rst:172 ../../Tools.rst:290
+msgid "File format"
+msgstr "Dateiforma"
+
+#: ../../Tools.rst:174
+msgid "The content of the imported file must fit the element type description."
+msgstr "Der Inhalt der importierten Datei muss der Beschreibung des Elementtyps entsprechen."
+
+#: ../../Tools.rst:179
+msgid "Names of columns"
+msgstr "Namen der Spalten"
+
+#: ../../Tools.rst:180
+msgid "The first line of the file must contain the name of the fields."
+msgstr "Die erste Zeile der Datei muss den Namen der Felder enthalten."
+
+#: ../../Tools.rst:184
+msgid "Names of columns can contain spaces (to have better readability)."
+msgstr "Spaltennamen können Leerzeichen enthalten (zur besseren Lesbarkeit)."
+
+#: ../../Tools.rst:185
+msgid "The spaces will be removed to get the name of the column."
+msgstr "Die Leerzeichen werden entfernt, um den Namen der Spalte zu erhalten."
+
+#: ../../Tools.rst:189
+msgid "Look into the model class. The names are the same."
+msgstr "Blick in die Modellklasse. Die Namen sind die gleichen."
+
+#: ../../Tools.rst:192
+msgid "Date format"
+msgstr "Datums-Forma"
+
+#: ../../Tools.rst:193
+msgid "Dates are expected in format âYYYY-MM-DDâ."
+msgstr "Termine werden im Format \"YYYYY-MM-DD\" erwartet."
+
+#: ../../Tools.rst:202
+msgid "Data import process"
+msgstr "Datenimportprozess"
+
+#: ../../Tools.rst:207
+msgid "Column Id"
+msgstr "Spalte Id"
+
+#: ../../Tools.rst:208
+msgid "You may or may not add an \"id\" column in the file."
+msgstr "Du kannst oder auch nicht, eine \"id\"-Spalte in die Datei einfügen."
+
+#: ../../Tools.rst:210
+msgid "**Column \"id\" exists and \"id\" is set in a line**"
+msgstr "**Column \"id\" exists and \"id\" is set in a line**"
+
+#: ../../Tools.rst:214
+msgid "**Column \"id\" does not exist or if \"id\" is not set in a line**"
+msgstr "**Spalte „id“ existiert nicht oder wenn „id“ nicht in einer Zeile gesetzt ist.**"
+
+#: ../../Tools.rst:216
+msgid "The import will create a new element from the data."
+msgstr "Der Import erzeugt ein neues Element aus den Daten."
+
+#: ../../Tools.rst:219
+msgid "Linked tables"
+msgstr "Verknüpfte Tabellen"
+
+#: ../../Tools.rst:222
+msgid "**Numeric value**"
+msgstr "**Numerischer Wert**"
+
+#: ../../Tools.rst:226
+msgid "**Non numeric value**"
+msgstr "**Nicht numerischer Wert**"
+
+#: ../../Tools.rst:231
+msgid "**Columns with no data**"
+msgstr "**Spalten ohne Daten**"
+
+#: ../../Tools.rst:232
+msgid "In any case, columns with no data will not be updated."
+msgstr "In jedem Fall werden Spalten ohne Daten nicht aktualisiert."
+
+#: ../../Tools.rst:233
+msgid "Then you can update only one field on an element."
+msgstr "Dann können Sie nur ein Feld auf einem Element aktualisieren."
+
+#: ../../Tools.rst:236
+msgid "**Clear data**"
+msgstr "**Daten löschen**"
+
+#: ../../Tools.rst:237
+msgid "To clear a data, enter the value \"NULL\" (not case sensitive)."
+msgstr "Um Daten zu löschen, geben Sie den Wert \"NULL\" ein. (Groß-/Kleinschreibung wird nicht beachtet)."
+
+#: ../../Tools.rst:241
+msgid "Planning elements"
+msgstr "Planungselement"
+
+#: ../../Tools.rst:243
+msgid "The data of this table can be inserted into the import file."
+msgstr "Die Daten dieser Tabelle können in die Importdatei eingefügt werden."
+
+#: ../../Tools.rst:253
+msgid "Automatic import"
+msgstr "Automatisch importiere"
+
+#: ../../Tools.rst:255
+msgid "Imports can be automated."
+msgstr "Importe können automatisiert werden."
+
+#: ../../Tools.rst:257
+msgid "Files placed on a defined directory will automatically be imported."
+msgstr "Dateien in einem definierten Verzeichnis werden automatisch importiert."
+
+#: ../../Tools.rst:262
+msgid "Background task must be started by :ref:`admin-console` screen."
+msgstr "Hintergrundaufgabe muss mit :ref:`admin-console` gestartet werden."
+
+#: ../../Tools.rst:267
+msgid "The files must respect some basic rules."
+msgstr "Die Dateien müssen einige Grundregeln beachten."
+
+#: ../../Tools.rst:270
+msgid "File name format"
+msgstr "Format des Dateinamens"
+
+#: ../../Tools.rst:271
+msgid "File name format is : \"Class\"_\"Timestamp\".\"ext\""
+msgstr "Dateinamensformat ist :  \"Klasse \"_ \"Zeitstempel \".\"ext \""
+
+#: ../../Tools.rst:272
+msgid "Example of import file name: Ticket_20131231_235959.csv"
+msgstr "Beispiel für einen Importdateinamen: Ticket_2013121231_235959.csv"
+
+#: ../../Tools.rst:274
+msgid "**Class**"
+msgstr "**Klasse**"
+
+#: ../../Tools.rst:276
+msgid "The type of item to be imported (Ticket, Activity, Question, â¦)."
+msgstr "Die Art des zu importierenden Artikels (Ticket, Aktivität, Frage, ...)."
+
+#: ../../Tools.rst:278
+msgid "**Timestamp**"
+msgstr "**Zeitstempel**"
+
+#: ../../Tools.rst:280
+msgid "Timestamp defined to be able to store several files in the directory."
+msgstr "Zeitstempel definiert, um mehrere Dateien im Verzeichnis speichern zu können."
+
+#: ../../Tools.rst:281
+msgid "Format is free."
+msgstr "Format ist frei."
+
+#: ../../Tools.rst:282
+msgid "The recommended format is âYYYYMMDD_HHMMSSâ."
+msgstr "Das empfohlene Format ist \"YYYYYMMDDD_HHMMSS\"."
+
+#: ../../Tools.rst:284
+msgid "**Ext**"
+msgstr "**Ext**"
+
+#: ../../Tools.rst:286
+msgid "File extension, representing its format."
+msgstr "Dateiendung, die ihr Format repräsentiert."
+
+#: ../../Tools.rst:287
+msgid "Valid extensions are CSV and XLSX."
+msgstr "Gültige Erweiterungen sind CSV und XLSX."
+
+#: ../../Tools.rst:291
+msgid "The files must follow the ProjeQtOr :ref:`file-format`."
+msgstr "Die Dateien müssen dem ProjeQtOr :ref:`file-format` folgen."
+
+#: ../../Tools.rst:292
+msgid "Files must be full and consistent."
+msgstr "Dateien müssen vollständig und konsistent sein."
+
+#: ../../Tools.rst:296
+msgid "The files should not be directly created in the import folder."
+msgstr "Die Dateien sollten nicht direkt im Importordner erstellt werden."
+
+#: ../../Tools.rst:297
+msgid "They must be created in a temporary folder and moved afterwards."
+msgstr "Sie müssen in einem temporären Ordner erstellt und anschließend verschoben werden."
+
+#: ../../Tools.rst:302
+msgid "Import process"
+msgstr "Vorgang importiere"
+
+#: ../../Tools.rst:305
+msgid "You can get the result as a log file and/or email summary."
+msgstr "Sie können das Ergebnis als Log-Datei und/oder E-Mail-Zusammenfassung erhalten."

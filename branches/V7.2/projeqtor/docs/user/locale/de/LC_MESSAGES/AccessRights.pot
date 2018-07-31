@@ -1,0 +1,623 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2018, ProjeQtOr
+# This file is distributed under the same license as the ProjeQtOr Bedienhandbuch Deutsch package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: ProjeQtOr Bedienhandbuch Deutsch 7.2\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2018-07-03 14:34+0200\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: ../../AccessRights.rst:12
+msgid "Profiles"
+msgstr ""
+
+#: ../../AccessRights.rst:16
+msgid ":ref:`profiles-definition`"
+msgstr ""
+
+#: ../../AccessRights.rst:18
+msgid "The profile is an entitlement group, each with specific access rights to the database."
+msgstr ""
+
+#: ../../AccessRights.rst:20
+msgid "So, each user is linked to a profile which defines the data he can see and possibly manage."
+msgstr ""
+
+#: ../../AccessRights.rst:24
+msgid "Display format"
+msgstr ""
+
+#: ../../AccessRights.rst:25
+msgid "In the next screens, the name of profiles is displayed in columns."
+msgstr ""
+
+#: ../../AccessRights.rst:26
+msgid "Access rights and options are displayed in rows."
+msgstr ""
+
+#: ../../AccessRights.rst:27
+msgid "This display format allows to manage easily authorizations for each profile."
+msgstr ""
+
+#: ../../AccessRights.rst:38
+#: ../../AccessRights.rst:118
+msgid "Value of Field \"Name\""
+msgstr ""
+
+#: ../../AccessRights.rst:39
+msgid "The value of field \"Name\" is not the name displayed, but it is a code in the translation table."
+msgstr ""
+
+#: ../../AccessRights.rst:40
+#: ../../AccessRights.rst:120
+#: ../../AccessRights.rst:387
+msgid "The name displayed at right of the field is the translated name."
+msgstr ""
+
+#: ../../AccessRights.rst:41
+#: ../../AccessRights.rst:121
+msgid "See: :ref:`translatable-name`."
+msgstr ""
+
+#: ../../AccessRights.rst:45
+#: ../../AccessRights.rst:125
+msgid "The value of field \"Name\" must be a significant name and must not contain spaces or special characters."
+msgstr ""
+
+#: ../../AccessRights.rst:46
+msgid "Ideally, the value of the field should start with \"profile\" (to be easily identified in the translation table)."
+msgstr ""
+
+#: ../../AccessRights.rst:57
+msgid ":ref:`Types restrictions<type-restriction-section>`"
+msgstr ""
+
+#: ../../AccessRights.rst:61
+#: ../../AccessRights.rst:132
+msgid "Section: Description"
+msgstr ""
+
+#: ../../AccessRights.rst:68
+#: ../../AccessRights.rst:139
+msgid "Field"
+msgstr ""
+
+#: ../../AccessRights.rst:69
+#: ../../AccessRights.rst:80
+#: ../../AccessRights.rst:140
+#: ../../AccessRights.rst:157
+msgid "Description"
+msgstr ""
+
+#: ../../AccessRights.rst:70
+#: ../../AccessRights.rst:141
+msgid ":term:`Id`"
+msgstr ""
+
+#: ../../AccessRights.rst:71
+msgid "Unique Id for the profile."
+msgstr ""
+
+#: ../../AccessRights.rst:72
+msgid "Name"
+msgstr ""
+
+#: ../../AccessRights.rst:73
+msgid "Name of the profile."
+msgstr ""
+
+#: ../../AccessRights.rst:74
+msgid "Profile code"
+msgstr ""
+
+#: ../../AccessRights.rst:75
+msgid "A code that may be internally used when generating emails and alerts."
+msgstr ""
+
+#: ../../AccessRights.rst:76
+#: ../../AccessRights.rst:153
+msgid "Sort order"
+msgstr ""
+
+#: ../../AccessRights.rst:77
+msgid "Number to define order of display in lists."
+msgstr ""
+
+#: ../../AccessRights.rst:78
+#: ../../AccessRights.rst:155
+msgid ":term:`Closed`"
+msgstr ""
+
+#: ../../AccessRights.rst:79
+msgid "Flag to indicate that profile is archived."
+msgstr ""
+
+#: ../../AccessRights.rst:81
+msgid "Complete description of the profile."
+msgstr ""
+
+#: ../../AccessRights.rst:85
+msgid "ADM:  will designate administrator."
+msgstr ""
+
+#: ../../AccessRights.rst:86
+msgid "PL: will designate project leader."
+msgstr ""
+
+#: ../../AccessRights.rst:99
+msgid "Access modes"
+msgstr ""
+
+#: ../../AccessRights.rst:101
+msgid "The access mode defines a combination of rights to read, created, update or delete items. (CRUD RIGHTS)"
+msgstr ""
+
+#: ../../AccessRights.rst:103
+msgid "Each access is defined as scope of visible and/or updatable, that can be, by kind of elements:"
+msgstr ""
+
+#: ../../AccessRights.rst:105
+msgid "**No element:** No element is visible and updatable."
+msgstr ""
+
+#: ../../AccessRights.rst:106
+msgid "**Own elements:** Only the elements created by the user."
+msgstr ""
+
+#: ../../AccessRights.rst:107
+msgid "**Elements he is responsible for:** Only the elements the user is responsible for."
+msgstr ""
+
+#: ../../AccessRights.rst:108
+msgid "**Elements of own project:** Only the elements of the projects the user/resource is allocated to."
+msgstr ""
+
+#: ../../AccessRights.rst:109
+msgid "**All elements on all projects:** All elements, whatever the project."
+msgstr ""
+
+#: ../../AccessRights.rst:119
+msgid "The value of field \"Name\"  is not the name displayed, but it is a code in the translation table."
+msgstr ""
+
+#: ../../AccessRights.rst:126
+msgid "Ideally, the value of the field should start with \"accessProfile\" (to be easily identified in the translation table)."
+msgstr ""
+
+#: ../../AccessRights.rst:142
+msgid "Unique Id for the access mode."
+msgstr ""
+
+#: ../../AccessRights.rst:143
+msgid "**Name**"
+msgstr ""
+
+#: ../../AccessRights.rst:144
+msgid "Name of the access mode."
+msgstr ""
+
+#: ../../AccessRights.rst:145
+msgid "**Read rights**"
+msgstr ""
+
+#: ../../AccessRights.rst:146
+msgid "Scope of visible items"
+msgstr ""
+
+#: ../../AccessRights.rst:147
+msgid "**Create rights**"
+msgstr ""
+
+#: ../../AccessRights.rst:148
+msgid "Scope of possibility to create items."
+msgstr ""
+
+#: ../../AccessRights.rst:149
+msgid "**Update rights**"
+msgstr ""
+
+#: ../../AccessRights.rst:150
+msgid "Scope of updatable items."
+msgstr ""
+
+#: ../../AccessRights.rst:151
+msgid "**Delete rights**"
+msgstr ""
+
+#: ../../AccessRights.rst:152
+msgid "Scope of deletable items."
+msgstr ""
+
+#: ../../AccessRights.rst:154
+msgid "Number to define order of display in lists"
+msgstr ""
+
+#: ../../AccessRights.rst:156
+msgid "Flag to indicate that access mode is archived."
+msgstr ""
+
+#: ../../AccessRights.rst:158
+msgid "Complete description of the access mode."
+msgstr ""
+
+#: ../../AccessRights.rst:160
+msgid "**\\* Required field**"
+msgstr ""
+
+#: ../../AccessRights.rst:173
+msgid "Access to forms"
+msgstr ""
+
+#: ../../AccessRights.rst:175
+msgid "This table is used to define the access to the selected screen for each profile."
+msgstr ""
+
+#: ../../AccessRights.rst:177
+msgid "Users belonging to one profile can see the corresponding screen if authorized or not."
+msgstr ""
+
+#: ../../AccessRights.rst:180
+#: ../../AccessRights.rst:202
+#: ../../AccessRights.rst:226
+#: ../../AccessRights.rst:249
+#: ../../AccessRights.rst:272
+msgid "How to do"
+msgstr ""
+
+#: ../../AccessRights.rst:181
+msgid "Screens are grouped as seen therefore in the menu."
+msgstr ""
+
+#: ../../AccessRights.rst:182
+msgid "Click on checkbox to permit or revoke access to the screen for a profile."
+msgstr ""
+
+#: ../../AccessRights.rst:188
+msgid "Access to forms screen"
+msgstr ""
+
+#: ../../AccessRights.rst:195
+msgid "Access to reports"
+msgstr ""
+
+#: ../../AccessRights.rst:197
+msgid "This screen allows to define report access for each profile."
+msgstr ""
+
+#: ../../AccessRights.rst:199
+msgid "Users belonging to a profile can see the corresponding report in the report list."
+msgstr ""
+
+#: ../../AccessRights.rst:203
+msgid "Reports are grouped by report categories."
+msgstr ""
+
+#: ../../AccessRights.rst:204
+msgid "Click on checkbox to permit or revoke access to the report  for a profile."
+msgstr ""
+
+#: ../../AccessRights.rst:210
+msgid "Access to reports screen"
+msgstr ""
+
+#: ../../AccessRights.rst:217
+msgid "Access to data (project dependant)"
+msgstr ""
+
+#: ../../AccessRights.rst:219
+msgid "This screen allows to set element access mode for each profile."
+msgstr ""
+
+#: ../../AccessRights.rst:221
+msgid "Allows to define scope of visibility  and/or updating of data in elements for users and resources."
+msgstr ""
+
+#: ../../AccessRights.rst:223
+msgid "This screen is only for the elements reliant on a project."
+msgstr ""
+
+#: ../../AccessRights.rst:227
+msgid "For each element, selected the access mode granted to a profile."
+msgstr ""
+
+#: ../../AccessRights.rst:233
+msgid "Access to data (Project dependant) screen"
+msgstr ""
+
+#: ../../AccessRights.rst:240
+msgid "Access to data (not project dependant)"
+msgstr ""
+
+#: ../../AccessRights.rst:242
+msgid "This screen allows to set for each profile, elements access rights."
+msgstr ""
+
+#: ../../AccessRights.rst:244
+msgid "Allows to grant access rights (read only or write) to users, to data on specific elements."
+msgstr ""
+
+#: ../../AccessRights.rst:246
+msgid "This screen is only for the elements not reliant on a project."
+msgstr ""
+
+#: ../../AccessRights.rst:250
+msgid "For each element, select the access rights granted to a profile."
+msgstr ""
+
+#: ../../AccessRights.rst:256
+msgid "Access to data (Not project dependant) screen"
+msgstr ""
+
+#: ../../AccessRights.rst:263
+msgid "Specific access"
+msgstr ""
+
+#: ../../AccessRights.rst:265
+msgid "This screen groups specific functionalities options."
+msgstr ""
+
+#: ../../AccessRights.rst:267
+msgid "Users belonging to a profile can have access to the application specific functions."
+msgstr ""
+
+#: ../../AccessRights.rst:269
+msgid "Depending on options of functionality, allows to grant access rights, to define data visibility  or to enable or disable option."
+msgstr ""
+
+#: ../../AccessRights.rst:273
+msgid "For each option, select the access granted to a profile."
+msgstr ""
+
+#: ../../AccessRights.rst:279
+msgid "Specific access screen"
+msgstr ""
+
+#: ../../AccessRights.rst:285
+msgid "Section: Access to resource data"
+msgstr ""
+
+#: ../../AccessRights.rst:286
+msgid "This section allows to:"
+msgstr ""
+
+#: ../../AccessRights.rst:288
+msgid "Defines who will be able to see and update “real work” for other users."
+msgstr ""
+
+#: ../../AccessRights.rst:289
+msgid "Defines who can validate weekly work for resource."
+msgstr ""
+
+#: ../../AccessRights.rst:290
+msgid "Defines who have access on diary for resources."
+msgstr ""
+
+#: ../../AccessRights.rst:291
+msgid "Defines who, as a resource, can subscribe to survey for users."
+msgstr ""
+
+#: ../../AccessRights.rst:293
+msgid "Validate real work"
+msgstr ""
+
+#: ../../AccessRights.rst:295
+msgid "In most cases, it is devoted to project leader."
+msgstr ""
+
+#: ../../AccessRights.rst:298
+msgid "Section: Work and Cost visibility"
+msgstr ""
+
+#: ../../AccessRights.rst:299
+msgid "This section defines for each profile the scope of visibility of work and cost data."
+msgstr ""
+
+#: ../../AccessRights.rst:302
+msgid "Section: Assignment management"
+msgstr ""
+
+#: ../../AccessRights.rst:303
+msgid "This section defines the visibility and the possibility to edit assignments (on activities or else)."
+msgstr ""
+
+#: ../../AccessRights.rst:308
+msgid "Section: Display specific buttons"
+msgstr ""
+
+#: ../../AccessRights.rst:309
+msgid "This section defines whether some button will be displayed or not."
+msgstr ""
+
+#: ../../AccessRights.rst:311
+msgid "**Display of combo detail button**"
+msgstr ""
+
+#: ../../AccessRights.rst:313
+msgid "This option defines for each profile whether the button |buttonIconSearch| will be displayed or not, facing every combo list box."
+msgstr ""
+
+#: ../../AccessRights.rst:314
+msgid "Through this button, it is possible to select an item and create a new item."
+msgstr ""
+
+#: ../../AccessRights.rst:315
+msgid "This button may also be hidden depending on access rights (if the user has no read access to corresponding elements)."
+msgstr ""
+
+#: ../../AccessRights.rst:317
+msgid "**Access to checklist**"
+msgstr ""
+
+#: ../../AccessRights.rst:319
+msgid "Defines visibility or not to the checklist (if defined)."
+msgstr ""
+
+#: ../../AccessRights.rst:321
+msgid "**Access to jobs lists**"
+msgstr ""
+
+#: ../../AccessRights.rst:323
+msgid "Defines visibility or not to the jobs lists (if defined)."
+msgstr ""
+
+#: ../../AccessRights.rst:325
+msgid "**Multiple update**"
+msgstr ""
+
+#: ../../AccessRights.rst:327
+msgid "Defines the possibility or not  to change one or more criteria for one or more selected rows at a time"
+msgstr ""
+
+#: ../../AccessRights.rst:331
+msgid "Section: Planning access rights"
+msgstr ""
+
+#: ../../AccessRights.rst:332
+msgid "This section defines access to planning functionality."
+msgstr ""
+
+#: ../../AccessRights.rst:334
+msgid "**Calculate planning**"
+msgstr ""
+
+#: ../../AccessRights.rst:336
+msgid "This option defines for each profile the ability to calculate planning or not."
+msgstr ""
+
+#: ../../AccessRights.rst:338
+msgid "**Access to resource planning of others**"
+msgstr ""
+
+#: ../../AccessRights.rst:340
+msgid "This option defines for each profile the ability to see the resource planning of others."
+msgstr ""
+
+#: ../../AccessRights.rst:342
+msgid "**Change validated data**"
+msgstr ""
+
+#: ../../AccessRights.rst:344
+msgid "This option defines for each profile the ability to change the validated data or not on details area."
+msgstr ""
+
+#: ../../AccessRights.rst:347
+msgid "Section: Unlock items"
+msgstr ""
+
+#: ../../AccessRights.rst:348
+msgid "This section defines for each profile the ability to unlock any document or requirement."
+msgstr ""
+
+#: ../../AccessRights.rst:349
+msgid "Otherwise, each user can only unlock the documents and requirements locked by himself."
+msgstr ""
+
+#: ../../AccessRights.rst:352
+msgid "Section: Reports"
+msgstr ""
+
+#: ../../AccessRights.rst:353
+msgid "This section defines for each profile the ability to change the resource parameter in reports."
+msgstr ""
+
+#: ../../AccessRights.rst:356
+msgid "Section: Specific update rights"
+msgstr ""
+
+#: ../../AccessRights.rst:357
+msgid "Defines for each profile the ability to force delete items."
+msgstr ""
+
+#: ../../AccessRights.rst:358
+msgid "Defines for each profile the ability to force close items."
+msgstr ""
+
+#: ../../AccessRights.rst:359
+msgid "Defines for each profile the ability to update creation information."
+msgstr ""
+
+#: ../../AccessRights.rst:360
+msgid "Defines for each profile the ability to mention or not the components on a ticket."
+msgstr ""
+
+#: ../../AccessRights.rst:364
+msgid "Section: Limit visibilty to resources"
+msgstr ""
+
+#: ../../AccessRights.rst:365
+msgid "By profil, allows to restrict or not the number of resources displayed, by organizations or own team, on resource lists."
+msgstr ""
+
+#: ../../AccessRights.rst:366
+msgid "By profil, allows to restrict or not the number of resources displayed, by organizations or own team, on resource screen."
+msgstr ""
+
+#: ../../AccessRights.rst:369
+msgid "Section: Limit visibility to organizations"
+msgstr ""
+
+#: ../../AccessRights.rst:370
+msgid "By profil, allows to restrict or not the number of organizations displayed, by organizations or own organization, on organization lists."
+msgstr ""
+
+#: ../../AccessRights.rst:371
+msgid "By profil, allows to restrict or not the number of organizations displayed, by organizations or own organization, on organization screen."
+msgstr ""
+
+#: ../../AccessRights.rst:381
+msgid "Translatable name"
+msgstr ""
+
+#: ../../AccessRights.rst:383
+msgid "For profiles and access modes, the value of field \"Name\" is translatable."
+msgstr ""
+
+#: ../../AccessRights.rst:385
+msgid "The field \"Name\" in screens :ref:`profile` and :ref:`access-mode` is not the name displayed, but it is a code in the translation table."
+msgstr ""
+
+#: ../../AccessRights.rst:389
+msgid "The translated name depends on user language selected in :ref:`User parameters<display-parameters>` screen."
+msgstr ""
+
+#: ../../AccessRights.rst:393
+msgid "If translated name is displayed between [], then the value of field \"Name\" is not found in the translation table."
+msgstr ""
+
+#: ../../AccessRights.rst:396
+msgid "Translation table files"
+msgstr ""
+
+#: ../../AccessRights.rst:397
+msgid "In ProjeQtOr, a translation table file is defined for each available language."
+msgstr ""
+
+#: ../../AccessRights.rst:398
+msgid "The files are named \"lang.js\" and are localized in a directory named with ISO language code."
+msgstr ""
+
+#: ../../AccessRights.rst:400
+msgid "For instance: ../tool/i18n/nls/fr/lang.js."
+msgstr ""
+
+#: ../../AccessRights.rst:404
+msgid "How to modify the translation file?"
+msgstr ""
+
+#: ../../AccessRights.rst:405
+msgid "You can edit  file \"lang.js\" to add translation of new value or to modify the existing value translation."
+msgstr ""
+
+#: ../../AccessRights.rst:406
+msgid "Or, you can download Excel file named \"lang.xls\", available on ProjeQtOr site. You can modify the translation tables of all languages and produce  files \"lang.js\"."
+msgstr ""
+

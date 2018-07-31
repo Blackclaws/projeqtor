@@ -9,6 +9,7 @@ set PROJECT=ProjeQtOrUserGuide
 set BUILDDIR=_build
 set ALLSPHINXOPTS=-a -d %BUILDDIR%/doctrees %SPHINXOPTS% .
 set I18NSPHINXOPTS=%SPHINXOPTS% .
+
 if NOT "%PAPER%" == "" (
 	set ALLSPHINXOPTS=-D latex_paper_size=%PAPER% %ALLSPHINXOPTS%
 	set I18NSPHINXOPTS=-D latex_paper_size=%PAPER% %I18NSPHINXOPTS%
@@ -62,15 +63,16 @@ if errorlevel 9009 (
 )
 
 if "%1" == "html" (
+  echo.Generating %2 html manual
 	%SPHINXBUILD% -b html %ALLSPHINXOPTS% %BUILDDIR%/html
 	if errorlevel 1 exit /b 1
 	echo.
-	echo.Build finished. The HTML pages are in %BUILDDIR%/html.
+	echo.Build finished to %BUILDDIR%/html.
 	echo.
-	echo.Copy generated html to html_en
-	del /S /Q html_en > %BUILDDIR%/html/result.txt
-	xcopy /S /E /I %BUILDDIR%\html .\html_en > %BUILDDIR%/html/result.txt
-	echo.Files copied.
+	echo.Copy generated html to html_%2
+	del /S /Q html_%2 > %BUILDDIR%/html/result.txt
+	xcopy /S /E /I %BUILDDIR%\html .\html_%2 > %BUILDDIR%/html/result.txt
+	echo.Files copied to html_%2.
 	goto end
 )
 
@@ -152,13 +154,19 @@ if "%1" == "latex" (
 )
 
 if "%1" == "latexpdf" (
+  echo.Generating %2 html manual
+  del /Q %BUILDDIR%\latex\%PROJECT%.aux > %BUILDDIR%/html/result.txt
 	%SPHINXBUILD% -b latex %ALLSPHINXOPTS% %BUILDDIR%/latex
 	cd %BUILDDIR%/latex
 	REM make all-pdf
 	pdflatex.exe %PROJECT%.tex
 	cd ../..
 	echo.
-	echo.Build finished; the PDF files are in %BUILDDIR%/latex.
+	echo.Build finished to %BUILDDIR%\latex.
+	echo.Copy generated .pdf file to pdf directory
+  del /S /Q html_%2 > %BUILDDIR%/html/result.txt
+  copy %BUILDDIR%\latex\%PROJECT%.pdf  pdf\%PROJECT%_%2.pdf
+  echo.Files copied to pdf\%PROJECT%_%2.pdf.
 	goto end
 )
 

@@ -1,0 +1,225 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2018, ProjeQtOr
+# This file is distributed under the same license as the ProjeQtOr Bedienhandbuch Deutsch package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: ProjeQtOr Bedienhandbuch Deutsch 7.2\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2018-07-03 14:34+0200\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: ../../Glossary.rst:4
+msgid "Glossary"
+msgstr ""
+
+#: ../../Glossary.rst:7
+msgid "Closed"
+msgstr ""
+
+#: ../../Glossary.rst:10
+msgid "Flag to indicate that item is archived."
+msgstr ""
+
+#: ../../Glossary.rst:11
+msgid "Item will not appear in lists any more, unless “show closed” is checked."
+msgstr ""
+
+#: ../../Glossary.rst:12
+msgid "Description"
+msgstr ""
+
+#: ../../Glossary.rst:15
+msgid "This field allows to define a description on an item."
+msgstr ""
+
+#: ../../Glossary.rst:16
+msgid "Depending on the element type, name of field can be different."
+msgstr ""
+
+#: ../../Glossary.rst:18
+#: ../../Glossary.rst:78
+msgid "GUI behavior"
+msgstr ""
+
+#: ../../Glossary.rst:20
+msgid "It is possible to define that description field is mandatory."
+msgstr ""
+
+#: ../../Glossary.rst:21
+#: ../../Glossary.rst:81
+msgid "The element type screens allow to set this parameter to several elements."
+msgstr ""
+
+#: ../../Glossary.rst:22
+#: ../../Glossary.rst:82
+msgid "More detail, see: :ref:`behavior-section`."
+msgstr ""
+
+#: ../../Glossary.rst:23
+msgid "Done"
+msgstr ""
+
+#: ../../Glossary.rst:26
+msgid "Flag to indicate that item has been done."
+msgstr ""
+
+#: ../../Glossary.rst:27
+msgid "Date of done is saved."
+msgstr ""
+
+#: ../../Glossary.rst:28
+msgid "External reference"
+msgstr ""
+
+#: ../../Glossary.rst:31
+msgid "This field allows fill free input."
+msgstr ""
+
+#: ../../Glossary.rst:32
+msgid "It uses to refer information from an external source."
+msgstr ""
+
+#: ../../Glossary.rst:33
+msgid "External reference value can be put in email message with **externalReference** special field."
+msgstr ""
+
+#: ../../Glossary.rst:35
+msgid "More detail, see: **Administration guide**."
+msgstr ""
+
+#: ../../Glossary.rst:36
+msgid "Handled"
+msgstr ""
+
+#: ../../Glossary.rst:39
+msgid "Flag to indicate that item has been taken into account."
+msgstr ""
+
+#: ../../Glossary.rst:40
+msgid "Date of handling is saved."
+msgstr ""
+
+#: ../../Glossary.rst:41
+msgid "This generally means that responsible has been named."
+msgstr ""
+
+#: ../../Glossary.rst:42
+msgid "Id"
+msgstr ""
+
+#: ../../Glossary.rst:45
+msgid "Every item has a unique Id, automatically generated on creation."
+msgstr ""
+
+#: ../../Glossary.rst:46
+msgid "Id is chronologically allocated, for all kind of items (Activity, Ticket)."
+msgstr ""
+
+#: ../../Glossary.rst:47
+msgid "Id is shared for all projects and all types (i.e. incident) of the same kind items (i.e. Ticket)."
+msgstr ""
+
+#: ../../Glossary.rst:48
+msgid "Origin"
+msgstr ""
+
+#: ../../Glossary.rst:51
+msgid "Determines the element of origin."
+msgstr ""
+
+#: ../../Glossary.rst:52
+msgid "The origin is used to keep track of events (ex.: order from quote, action from meeting)."
+msgstr ""
+
+#: ../../Glossary.rst:53
+msgid "More detail, see : :ref:`Origin field<origin-field>`."
+msgstr ""
+
+#: ../../Glossary.rst:54
+msgid "Status"
+msgstr ""
+
+#: ../../Glossary.rst:57
+msgid "The status determines the life cycle of items."
+msgstr ""
+
+#: ../../Glossary.rst:58
+msgid "It defines the progress of the treatment of the item."
+msgstr ""
+
+#: ../../Glossary.rst:59
+msgid "Item is linked to a element type, element type is linked to a workflow."
+msgstr ""
+
+#: ../../Glossary.rst:60
+msgid "A workflow defines the possibility to go from one status to another one, more detail, see: :ref:`workflow`."
+msgstr ""
+
+#: ../../Glossary.rst:62
+msgid "Accelerator button"
+msgstr ""
+
+#: ../../Glossary.rst:64
+msgid "This button allows to skip to the next status."
+msgstr ""
+
+#: ../../Glossary.rst:65
+msgid "More detail, see: :ref:`Move to next status button<moveToNextStatus-button>`."
+msgstr ""
+
+#: ../../Glossary.rst:66
+msgid "Reference"
+msgstr ""
+
+#: ../../Glossary.rst:69
+msgid "Reference is displayed after id, automatically generated on creation."
+msgstr ""
+
+#: ../../Glossary.rst:70
+msgid "Reference depends on defined format, see under \"Format for reference numbering\" section in :ref:`global-parameters` screen."
+msgstr ""
+
+#: ../../Glossary.rst:71
+msgid "Default format defines a specific numbering format that can provide unique numbering sequence for each project and/or each type of items."
+msgstr ""
+
+#: ../../Glossary.rst:72
+msgid "Result"
+msgstr ""
+
+#: ../../Glossary.rst:75
+msgid "A result is a description of the treatment of an item."
+msgstr ""
+
+#: ../../Glossary.rst:76
+msgid "Usually, the result is set when the status of the item is :term:`done<Done status>`."
+msgstr ""
+
+#: ../../Glossary.rst:80
+msgid "It is possible to define that result field is mandatory on done status."
+msgstr ""
+
+#: ../../Glossary.rst:83
+msgid "WBS"
+msgstr ""
+
+#: ../../Glossary.rst:86
+msgid "Work Breakdown Structure."
+msgstr ""
+
+#: ../../Glossary.rst:87
+msgid "Hierarchical position of the element in the global planning."
+msgstr ""
+
+#: ../../Glossary.rst:88
+msgid "WBS also defines the index of an item in the WBS structure. This index is calculated like paragraphs in a word document."
+msgstr ""
+

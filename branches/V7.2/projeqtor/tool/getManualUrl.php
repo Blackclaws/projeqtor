@@ -12,6 +12,7 @@ $userLink['DashboardTicket']='TicketDashBoard.html';
 $userLink['Planning']='Gantt.html#planning';
 $userLink['PortfolioPlanning']='Gantt.html#projects-portfolio';
 $userLink['ResourcePlanning']='Gantt.html#resource-planning';
+$userLink['GlobalPlanning']='Gantt.html#global-planning';
 $userLink['Diary']='Diary.html';
 $userLink['Report']='Report.html';
 $userLink['Document']='Document.html';

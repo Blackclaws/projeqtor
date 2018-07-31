@@ -352,24 +352,51 @@
        ============================================================================================== --> 
   <target name="_sphinxBuildUserManual_HTML_windows">
     <echo>Build HTML User Manual.</echo>
-      <exec dir="../docs/user" executable="cmd" >
-        <arg line="/c make.bat html"/>
-      </exec>
+    <exec dir="../docs/user" executable="cmd" >
+      <arg line="/c make.bat html en"/>
+    </exec>
   </target>
+
+  <target name="_sphinxBuildUserManual_HTML_windows_fr">
+    <echo>Build HTML User Manual For Translations.</echo>
+    <exec dir="../docs/user" executable="cmd" >
+      <env key="SPHINXOPTS" value="-D language=fr" />
+      <arg line="/c make.bat html fr"/>
+    </exec>
+  </target>
+    
+  <target name="_sphinxBuildUserManual_HTML_windows_de">
+    <echo>Build HTML User Manual For Translations.</echo>
+    <exec dir="../docs/user" executable="cmd" >
+      <env key="SPHINXOPTS" value="-D language=de" />
+      <arg line="/c make.bat html de"/>
+    </exec>
+  </target>
+  
   <target name="_sphinxBuildUserManual_PDF_windows">
     <echo>Build PDF User Manual.</echo>
-      <exec dir="../docs/user" executable="cmd" >
-        <arg line="/c make.bat latexpdf"/>
-      </exec>
+    <exec dir="../docs/user" executable="cmd" >
+      <arg line="/c make.bat latexpdf en"/>
+    </exec>
   </target>
+
+  <target name="_sphinxBuildUserManual_PDF_windows_de">
+    <echo>Build HTML User Manual For Translations.</echo>
+    <exec dir="../docs/user" executable="cmd" >
+      <env key="SPHINXOPTS" value="-D language=de" />
+      <arg line="/c make.bat latexpdf de"/>
+    </exec>
+  </target>
+  
   <target name="_sphinxBuildTechnicalManual_HTML_windows">
-      <echo>Build HTML User Manual.</echo>
+      <echo>Build HTML Technical Guide.</echo>
         <exec dir="../docs/technical" executable="cmd" >
           <arg line="/c make.bat html"/>
         </exec>
   </target>
+
   <target name="_sphinxBuildTechnicalManual_PDF_windows">
-      <echo>Build HTML User Manual.</echo>
+      <echo>Build PDF Technical Guide.</echo>
         <exec dir="../docs/technical" executable="cmd" >
           <arg line="/c make.bat latexpdf"/>
         </exec>
