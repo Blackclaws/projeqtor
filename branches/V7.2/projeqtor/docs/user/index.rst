@@ -42,7 +42,6 @@ Whatever your choice of the method, you can use ProjeQtOr.
 What's New in this user guide version?
 ======================================
 
-
 This section summarizes significant changes made in the user guide document for this version.
 
 To see complete list of changes made to software, visit the ProjeQtOr web site.
