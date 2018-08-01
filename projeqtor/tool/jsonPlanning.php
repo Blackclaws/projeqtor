@@ -36,6 +36,9 @@
   SqlElement::$_cachedQuery['Activity']=array();
   SqlElement::$_cachedQuery['Resource']=array();
   SqlElement::$_cachedQuery['PlanningElement']=array();
+  
+  $global=RequestHandler::getBoolean('global');
+
   $objectClass='PlanningElement';
   $columnsDescription=Parameter::getPlanningColumnDescription();
   $obj=new $objectClass();
@@ -168,7 +171,8 @@
   	$queryWhere.='( ('.getAccesRestrictionClause('Project',$table).')';
   	$queryWhere.=' OR ('.getAccesRestrictionClause('Milestone',$table,$showIdleProjects).') )';
   } else {
-    $queryWhere.=getAccesRestrictionClause('Activity',$table,$showIdleProjects);
+    if ($global) $queryWhere.="(1=1)"; // on GlobalPlanning, restriction on acces is applied on query in the FROM 
+    else $queryWhere.=getAccesRestrictionClause('Activity',$table,$showIdleProjects);
   }
   if ( array_key_exists('report',$_REQUEST) ) {
     if (array_key_exists('idProject',$_REQUEST) and $_REQUEST['idProject']!=' ') {
@@ -183,10 +187,14 @@
   $queryWhere.= ($queryWhere=='')?'':' and ';
   $queryWhere.=  $table . ".idProject not in " . Project::getAdminitrativeProjectList() ;
 
+  
   $querySelect .= $table . ".* ";
-  $queryFrom .= $table;
-
   $queryOrderBy .= $table . ".wbsSortable ";
+  if ($global) {
+    $queryFrom .= GlobalPlanningElement::getTableNameQuery() .' as '. $table;
+  } else {
+    $queryFrom .= $table;
+  }
 
   $showMilestone=false;
   if ($portfolio) {
@@ -229,9 +237,6 @@
    }
   }
   
-  debugLog($_REQUEST);
-  $global=RequestHandler::getBoolean('global');
-  
   // Apply restrictions on Filter
   $act=new Activity();
   $pe=new PlanningElement();
@@ -271,10 +276,10 @@
   
   // constitute query and execute
   $queryWhere=($queryWhere=='')?' 1=1':$queryWhere;
-  $query='select ' . $querySelect
-       . ' from ' . $queryFrom
-       . ' where ' . $queryWhere
-       . ' order by ' . $queryOrderBy;
+  $query='SELECT ' . $querySelect
+       . "\n FROM " . $queryFrom
+       . "\n WHERE " . $queryWhere
+       . "\n ORDER BY " . $queryOrderBy;
   $result=Sql::query($query);
   if (isset($debugJsonQuery) and $debugJsonQuery) { // Trace in configured to
      debugTraceLog("jsonPlanning: ".$query); // Trace query
@@ -301,6 +306,9 @@
     }
   } else {
     // return result in json format
+    $na=Parameter::getUserParameter('notApplicableValue');
+    $na=trim($na,"'");
+    if (!$na) $na=null;
     $arrayObj=array();
     $d=new Dependency();
     echo '{"identifier":"id",' ;
@@ -335,22 +343,28 @@
           $line["plannedduration"]=$line["validatedduration"];
           $line["plannedenddate"]=addWorkDaysToDate($line["plannedstartdate"], $line["validatedduration"]);
         }
-        $line["validatedworkdisplay"]=Work::displayWorkWithUnit($line["validatedwork"]);
-        $line["assignedworkdisplay"]=Work::displayWorkWithUnit($line["assignedwork"]);
-        $line["realworkdisplay"]=Work::displayWorkWithUnit($line["realwork"]);
-        $line["leftworkdisplay"]=Work::displayWorkWithUnit($line["leftwork"]);
-        $line["plannedworkdisplay"]=Work::displayWorkWithUnit($line["plannedwork"]);
-        $line["validatedcostdisplay"]=htmlDisplayCurrency($line["validatedcost"],true);
-        $line["assignedcostdisplay"]=htmlDisplayCurrency($line["assignedcost"],true);
-        $line["realcostdisplay"]=htmlDisplayCurrency($line["realcost"],true);
-        $line["leftcostdisplay"]=htmlDisplayCurrency($line["leftcost"],true);
-        $line["plannedcostdisplay"]=htmlDisplayCurrency($line["plannedcost"],true);
+        $line["validatedworkdisplay"]=($line["validatedwork"]==$na)?$na:Work::displayWorkWithUnit($line["validatedwork"]);
+        $line["assignedworkdisplay"]=($line["assignedwork"]==$na)?$na:Work::displayWorkWithUnit($line["assignedwork"]);
+        $line["realworkdisplay"]=($line["realwork"]==$na)?$na:Work::displayWorkWithUnit($line["realwork"]);
+        $line["leftworkdisplay"]=($line["leftwork"]==$na)?$na:Work::displayWorkWithUnit($line["leftwork"]);
+        $line["plannedworkdisplay"]=($line["plannedwork"]==$na)?$na:Work::displayWorkWithUnit($line["plannedwork"]);
+        $line["validatedcostdisplay"]=($line["validatedcost"]==$na)?$na:htmlDisplayCurrency($line["validatedcost"],true);
+        $line["assignedcostdisplay"]=($line["assignedcost"]==$na)?$na:htmlDisplayCurrency($line["assignedcost"],true);
+        $line["realcostdisplay"]=($line["realcost"]==$na)?$na:htmlDisplayCurrency($line["realcost"],true);
+        $line["leftcostdisplay"]=($line["leftcost"]==$na)?$na:htmlDisplayCurrency($line["leftcost"],true);
+        $line["plannedcostdisplay"]=($line["plannedcost"]==$na)?$na:htmlDisplayCurrency($line["plannedcost"],true);
         if ($columnsDescription['IdStatus']['show']==1 or $columnsDescription['Type']['show']==1) {
-          $ref=$line['reftype'];
-          $type='id'.$ref.'Type';
-          $item=new $ref($line['refid'],true);
-          $line["status"]=(property_exists($item,'idStatus'))?SqlList::getNameFromId('Status',$item->idStatus):null;
-          $line["type"]=(property_exists($item,$type))?SqlList::getNameFromId('Type',$item->$type):null;
+          if (isset($line["idstatus"]) and isset($line["idtype"]) and $line["idstatus"]) {
+            debugLog($line['reftype'].' #'.$line['refid']);
+            $line["status"]=SqlList::getNameFromId('Status',$line["idstatus"]);
+            $line["type"]=SqlList::getNameFromId('Type',$line["idtype"]);
+          } else {
+            $ref=$line['reftype'];
+            $type='id'.$ref.'Type';
+            $item=new $ref($line['refid'],true);
+            $line["status"]=(property_exists($item,'idStatus'))?SqlList::getNameFromId('Status',$item->idStatus):null;
+            $line["type"]=(property_exists($item,$type))?SqlList::getNameFromId('Type',$item->$type):null;
+          }
         }
         $line["planningmode"]=SqlList::getNameFromId('PlanningMode',$line['idplanningmode']);
         if ($line["reftype"]=="Project") {
@@ -400,7 +414,12 @@
         if ($line['reftype']!='Project' and $line['reftype']!='Fixed' and $line['reftype']!='Construction' and $line['reftype']!='Replan') {
           $arrayResource=array();
           // if ($showResource) { //
-          if (1) { // Must always retreive resource to display value in column, even if not displayed 
+          if (isset($line['idresource']) and $line['idresource'] ) {
+            $ass=new Assignment();
+            $ass->idResource=$line['idresource'];
+            $assList=array($line['idresource']=>$ass);
+            $resp=$line['idresource'];
+          } else { // Must always retreive resource to display value in column, even if not displayed
           	$crit=array('refType'=>$line['reftype'], 'refId'=>$line['refid']);
             $ass=new Assignment();
             $assList=$ass->getSqlElementsFromCriteria($crit,false); 
@@ -417,25 +436,25 @@
   	        if ($objElt) {
   	          $resp=SqlList::getFieldFromId($line['reftype'], $line['refid'], 'idResource');
   	        }
-  	        foreach ($assList as $ass) {       	
-  	        	$res=new ResourceAll($ass->idResource,true);
-  	        	if (! isset($arrayResource[$res->id])) {
-    	        	$display=($displayResource=='NO')?null:$res->$displayResource;
-    	        	if ($displayResource=='initials' and ! $display) {
-    	        	  //$encoding=mb_detect_encoding($res->name, 'ISO-8859-1, UTF-8');
-    	        	  //$display=$encoding;
-    	        	  $words=mb_split(' ',str_replace(array('"',"'"), ' ', $res->name));
-    	        	  $display='';
-    	        	  foreach ($words as $word) {
-    	        	    $display.=(mb_substr($word,0,1,'UTF-8'));
-    	        	  }
-    	        	}
-    	        	if ($display)	{
-    	        	  $arrayResource[$res->id]=htmlEncode($display);
-    	        	  if ($resp and $resp==$res->id ) {
-    	        		  $arrayResource[$res->id]='<b>'.htmlEncode($display).'</b>';
-    	        	  }
-    	        	}
+          }
+	        foreach ($assList as $ass) {       	
+	        	$res=new ResourceAll($ass->idResource,true);
+	        	if (! isset($arrayResource[$res->id])) {
+  	        	$display=($displayResource=='NO')?null:$res->$displayResource;
+  	        	if ($displayResource=='initials' and ! $display) {
+  	        	  //$encoding=mb_detect_encoding($res->name, 'ISO-8859-1, UTF-8');
+  	        	  //$display=$encoding;
+  	        	  $words=mb_split(' ',str_replace(array('"',"'"), ' ', $res->name));
+  	        	  $display='';
+  	        	  foreach ($words as $word) {
+  	        	    $display.=(mb_substr($word,0,1,'UTF-8'));
+  	        	  }
+  	        	}
+  	        	if ($display)	{
+  	        	  $arrayResource[$res->id]=htmlEncode($display);
+  	        	  if ($resp and $resp==$res->id ) {
+  	        		  $arrayResource[$res->id]='<b>'.htmlEncode($display).'</b>';
+  	        	  }
   	        	}
   	        }
           }
