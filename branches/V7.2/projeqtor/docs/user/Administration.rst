@@ -238,7 +238,7 @@ Global parameters screen allows configuration of application settings.
 
 .. compound:: **Use budget feature for organizations**
 
-    *If yes, can display and work on budget for an organization.
+    * If yes, can display and work on budget for an organization.
 
 
 
@@ -298,10 +298,67 @@ Global parameters screen allows configuration of application settings.
  * if yes : allow to define additional restrictions of types on each projet type additionally to restrictions defined eventually at each project type level by the Administrator.
 
  
+
+
 .. rubric:: GENERAL SECTION 3 : Display
 .. rubric:: Section: Display
+  * Transition between screen changes in flash or fade mode.
+
+.. rubric:: Max items to display in Today list
+ * Limit this list. items are generally ordered by issue date increasing
+
+.. rubric:: Quick filtering by status
+ * Display one button. Allow to filter on lists the element by status checking boxes. Refresh to make appear on boxe a new state just created on list .
+
+
+
 .. rubric:: Section: Localization
+
+.. rubric:: Currency
+ * Choose your symbol displayed on each monetary boxe
+
+.. rubric:: Currency position for cost display
+ * Symbol sets  before or after each monetary boxe
+
 .. rubric:: Section: Default values for user parameters
+
+
+.. rubric:: Default language
+ * choose among 19 languages / easy come back with translation in target language
+
+.. rubric:: Default theme
+ * choose among various
+
+.. rubric:: Fist page
+ * Display your favorite screen like the first one after connexion
+
+.. rubric:: Icone size in menu
+ * Choose
+
+.. rubric:: Display of the upper menu
+ * Icones are hidden or no.
+
+.. rubric:: Display of the left menu
+ * Appears by icones or in wide mode
+
+.. rubric:: Display history
+ * no
+ * yes, yes with work indicated ( on the bottom of the page )
+ * on request ( through a specific button )  
+ 
+.. rubric:: Editor for rich text
+ * Choose
+
+.. rubric:: Activate the spell checker in CK editor
+ * yes or no 
+
+.. rubric:: Not applicable value
+ * Choose the symbol meaning that is not an applicable value to be displayed on column.
+
+ .. rubric:: Restric project list
+  * When creating an element, name of the project stays like than the one selected at the selector or on contrary offers choice on global list of projects
+
+
 .. rubric:: GENERAL SECTION 4 : Miscellaneous
 .. rubric:: Section: Format for reference numbering
 * Allows to define reference formats for items of element, documents and bills.
