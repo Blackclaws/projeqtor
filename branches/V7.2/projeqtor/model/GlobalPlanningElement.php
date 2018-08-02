@@ -82,6 +82,7 @@ class GlobalPlanningElement extends SqlElement {
   public $idType;
   public $idStatus;
   public $idResource;
+  public $isGlobal=1;
   // public $validatedStartFraction;
   // public $plannedStartFraction;
   // public $validatedEndFraction;
@@ -93,7 +94,7 @@ class GlobalPlanningElement extends SqlElement {
   // public $_workVisibility;
   // public $_costVisibility;
   
-  public $_global=true;
+  
   
   // Define the layout that will be used for lists
   private static $_layout='
@@ -206,7 +207,7 @@ class GlobalPlanningElement extends SqlElement {
       initialWork,validatedWork,assignedWork,plannedWork,leftWork,realWork,
       validatedCost,assignedCost,plannedCost,leftCost,realCost,
       progress,expectedProgress,wbs,wbsSortable,isOnCriticalPath,notPlannedWork, needReplan,
-      null as idType, null as idStatus, null as idResource 
+      null as idType, null as idStatus, null as idResource, 0 as isGlobal 
     FROM $peTable";
     $query.="\n    WHERE ".getAccesRestrictionClause('Activity',$peTable,$showIdleProjects);
         //validatedStartFraction,plannedStartFraction,validatedEndFraction,plannedEndFraction,validatedCalculated,validatedExpenseCalculated,latestStartDate,latestEndDate,
@@ -224,6 +225,7 @@ class GlobalPlanningElement extends SqlElement {
         $query.=", ";
         if ($fld=='priority' or $fld=='initialStartDate' or $fld=='initialEndDate' or $fld=='initialDuration' or $fld=='initialWork' or $fld=='validatedCost' or $fld=='progress') $query.="\n      ";
         if ($fld=='refType') $query.="'$class'";
+        else if ($fld=='isGlobal') $query.="1";
         else if ($fld=='refId') $query.="$table.id";
         else if ($fld=='refName') $query.="$table.name";
         else if ($fld=='topId') $query.="null";
@@ -235,7 +237,7 @@ class GlobalPlanningElement extends SqlElement {
         else if ($fld=='wbs' or $fld=='wbsSortable') $query.="concat(pe.$fld,'._#',$table.id)";
         else if (isset($convert[$fld])) {
           if ($convert[$fld]=='null') $query.='null';
-          else if (strpos($convert[$fld],'.')!==null or strpos($convert[$fld],"'")!==null) $query.=$convert[$fld];
+          else if (strpos($convert[$fld],'.')!==false or strpos($convert[$fld],"'")!==false) $query.=$convert[$fld];
           else $query.="$table.".$convert[$fld];
         }
         else $query.="$na";
@@ -282,19 +284,26 @@ class GlobalPlanningElement extends SqlElement {
       validatedCost,assignedCost,plannedCost,leftCost,realCost,
       progress,expectedProgress,wbs,wbsSortable,isOnCriticalPath,notPlannedWork, needReplan 
        */
-      'Ticket'=>array('plannedStartDate'=>'initialDueDateTime','realStartDate'=>'handledDateTime',
+      'Ticket'=>array('plannedStartDate'=>'actualDueDateTime','realStartDate'=>'handledDateTime',
                       'validatedEndDate'=>'initialDueDateTime','plannedEndDate'=>'actualDueDateTime','realEndDate'=>'doneDateTime',
-                      'validatedWork'=>"we.plannedWork",'assignedWork'=>"we.plannedWork",'plannedWork'=>"we.plannedWork",'leftWork'=>"we.leftWork",'realWork'=>"we.realWork",
+                      'validatedWork'=>"we.plannedWork",'plannedWork'=>"we.plannedWork",'leftWork'=>"we.leftWork",'realWork'=>"we.realWork",
+                      //'assignedWork'=>"we.plannedWork",
                      ),
-      'Action'=>array('plannedStartDate'=>'initialDueDate','realStartDate'=>'handledDate',
-                      'validatedEndDate'=>'initialDueDate','plannedEndDate'=>'actualDueDate','realEndDate'=>'doneDate',
-                      //'validatedWork'=>"null",'assignedWork'=>"null",'plannedWork'=>"null",'leftWork'=>"null",'realWork'=>"null",
-                      //'validatedCost'=>"null",'assignedCost'=>"null",'plannedCost'=>"null",'leftCost'=>"null",'realCost'=>"null"
+      'Action'=>array('plannedStartDate'=>'actualDueDate','realStartDate'=>'handledDate',
+                      'validatedEndDate'=>'initialDueDate','plannedEndDate'=>'actualDueDate','realEndDate'=>'doneDate'
                      ),
-      'Risk'=>array(),
-      'Opportunity'=>array(),
-      'Issue'=>array(),
-      'Decision'=>array(),
+      'Risk'=>array('plannedStartDate'=>'actualEndDate', 'realStartDate'=>'handledDate',
+                    'validatedEndDate'=>'initialEndDate','plannedEndDate'=>'actualEndDate','realEndDate'=>'doneDate'
+                    ),
+      'Opportunity'=>array('plannedStartDate'=>'actualEndDate','realStartDate'=>'handledDate',
+                      'validatedEndDate'=>'initialEndDate','plannedEndDate'=>'actualEndDate','realEndDate'=>'doneDate'
+                     ),
+      'Issue'=>array('plannedStartDate'=>'actualEndDate','realStartDate'=>'handledDate',
+                      'validatedEndDate'=>'initialEndDate','plannedEndDate'=>'actualEndDate','realEndDate'=>'doneDate'
+                     ),
+      'Decision'=>array('plannedStartDate'=>'decisionDate','realStartDate'=>'decisionDate',
+                      'validatedEndDate'=>'decisionDate','plannedEndDate'=>'decisionDate','realEndDate'=>'decisionDate'
+                     ),
       'Question'=>array(),
       'Delivery'=>array()
   );

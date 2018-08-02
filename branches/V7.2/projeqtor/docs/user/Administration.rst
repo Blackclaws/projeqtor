@@ -301,65 +301,81 @@ Global parameters screen allows configuration of application settings.
 
 
 .. rubric:: GENERAL SECTION 3 : Display
+
 .. rubric:: Section: Display
+
   * Transition between screen changes in flash or fade mode.
 
 .. rubric:: Max items to display in Today list
+
  * Limit this list. items are generally ordered by issue date increasing
 
+
 .. rubric:: Quick filtering by status
+
  * Display one button. Allow to filter on lists the element by status checking boxes. Refresh to make appear on boxe a new state just created on list .
-
-
 
 .. rubric:: Section: Localization
 
 .. rubric:: Currency
+
  * Choose your symbol displayed on each monetary boxe
 
 .. rubric:: Currency position for cost display
+
  * Symbol sets  before or after each monetary boxe
 
 .. rubric:: Section: Default values for user parameters
 
-
 .. rubric:: Default language
+
  * choose among 19 languages / easy come back with translation in target language
 
 .. rubric:: Default theme
+
  * choose among various
 
 .. rubric:: Fist page
+
  * Display your favorite screen like the first one after connexion
 
 .. rubric:: Icone size in menu
+
  * Choose
 
 .. rubric:: Display of the upper menu
+
  * Icones are hidden or no.
 
 .. rubric:: Display of the left menu
+
  * Appears by icones or in wide mode
 
 .. rubric:: Display history
+
  * no
  * yes, yes with work indicated ( on the bottom of the page )
  * on request ( through a specific button )  
  
 .. rubric:: Editor for rich text
+
  * Choose
 
 .. rubric:: Activate the spell checker in CK editor
+
  * yes or no 
 
 .. rubric:: Not applicable value
+
  * Choose the symbol meaning that is not an applicable value to be displayed on column.
 
  .. rubric:: Restric project list
+
   * When creating an element, name of the project stays like than the one selected at the selector or on contrary offers choice on global list of projects
 
 
 .. rubric:: GENERAL SECTION 4 : Miscellaneous
+
 .. rubric:: Section: Format for reference numbering
 * Allows to define reference formats for items of element, documents and bills.
   * Prefix : can contain {PROJ} for project code, {TYPE} for type code, {YEAR} for current year and {MONTH} for current month.
@@ -517,143 +533,4 @@ Definition of directories and other parameters used for Documents management.
   
      If values are incorrect, the application will not work any more, and you'll have to manually fix parameters in the database.  
     
- 666666666666666666666666666666666666666666666666666666666666666666666666666666666666666 
-.. compound:: **Print Gantt with 'old style' format**
-
-    * Propose possibility to display “old style” Gantt.
-    * May cause performance issues, but could fix some display issue on browsers.
-
-
-
-.. compound:: **Apply strict mode for dependencies**
-
-    * Defines if a task can begin the same day as the preceding one.
  
- 
-
-  
-  
-
-
-.. _responsible-section:
-
-.. rubric:: Section: Responsible
-
-* Behavior about management of responsible, including automatic initialization of responsible.
-
- .. compound:: **Auto set responsible if single resource**
-
-    * Automatically set responsible if not set and only one resource if allocated to the project.
-
- .. compound:: **Auto set responsible if needed**
-
-    * Automatically set responsible to current resource if not set and the responsible is required (depending on status).
-
-
-
-
-
-
-.. _global-display-section:
-
-.. rubric:: Section: Display
-
-* Selection of graphic interface behavior and generic display parameter for users.
-
-* Icon size are default : user can overwrite these values
-
-
-
-
------------------------
-
-.. _automated-service:
-
-.. rubric:: Section: Management of automated service (CRON)
-
-
-
-
-
-
-.. _automatic-import:
-
-.. rubric:: Automatic import
-
-.. topic:: Field: Automatic import cron delay
-
-   *
-
-.. topic:: Field: Directory of automated integration files
-
-   *
-
-.. topic:: Field: Log destination
-
-   * 
-
-.. topic:: Field: Mailing list for logs
-
-   *
-
-------------------------
-
-.. index:: ! Email (Parameters)
-
-.. rubric:: Section: Emailing
-
-Parameters to allow the application to send emails.
-
-.. rubric:: Section: SSL connection to database
-
-
-
-
-.. index:: ! Email (Formatted message)
-
-.. _mail-titles:
-
-.. rubric:: Section: Mail titles
-
-* Parameters to define title of email depending on event (1).
-
-(see: :ref:`administration-special-field-label`)
-
-.. raw:: latex
-
-    \newpage
-
-.. index:: ! Special fields
-
-.. _administration-special-field-label:
-
-Special fields
-""""""""""""""
-
-Special fields can be used in the title and body mail to be replaced by item values :
-
-* ${dbName} : the display name of the instance
-* ${id} : id of the item
-* ${item} : the class of the item (for instance "Ticket") 
-* ${name} : name of the item
-* ${status} : the current status of the item
-* ${project} : the name of the project of the item
-* ${type} : the type of the item
-* ${reference} : the reference of the item
-* ${externalReference} : the :term:`external reference` of the item
-* ${issuer} : the name of the issuer of the item
-* ${responsible}  : the name of the responsible for the item
-* ${sender} : the name of the sender of email
-* ${sponsor} : the name of the project sponsor
-* ${projectCode} : the project code
-* ${contractCode} : the contact code of project
-* ${customer} : Customer of project 
-* ${url} : the URL for direct access to the item
-* ${login} the user name
-* ${password} the user password
-* ${adminMail} the email of administrator
-
-
-
-
-

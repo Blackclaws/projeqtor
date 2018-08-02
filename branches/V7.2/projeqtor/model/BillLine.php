@@ -50,6 +50,8 @@ class BillLine extends SqlElement {
   public $billingType;
   public $idCatalog;
   public $numberDays;
+  public $idBillLine;
+  public $rate;
   
   public $_noHistory=true; // Will never save history for this object
   

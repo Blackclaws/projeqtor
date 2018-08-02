@@ -977,7 +977,17 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false, $pare
       drawDependenciesFromObject($val, $obj, $depType);
     } else if ($col=='_ResourceCost') { // Display ResourceCost
       drawResourceCostFromObject($val, $obj, false);
-    } else if ($col=='_DocumentVersion') { // Display ResourceCost
+    } else if ($col=='_BillLineTerm') {
+      $prevSection=$section;
+      $section="BillLineTerm";
+      $colSpanSection='_'.lcfirst($section).'_colSpan';
+      if (property_exists($obj, $colSpanSection)) {
+        $colSpan=$obj->$colSpanSection;
+      }
+      $widthPct=setWidthPct($displayWidth, $print, $printWidth, $obj, "2");
+      startTitlePane($classObj, $section, $collapsedList, $widthPct, $print, $outMode, $prevSection, $nbCol, count($val), $included, $obj);
+      drawBillLinesProviderTerms($obj, false);
+    } else if ($col=='_DocumentVersion') { // Display 
       drawDocumentVersionFromObject($val, $obj, false);
     } else if ($col=='_ExpenseDetail') { // Display ExpenseDetail
       if ($obj->getFieldAttributes($col)!='hidden') {
@@ -3576,6 +3586,80 @@ function drawBillLinesFromObject($obj, $refresh=false) {
   }
 }
 
+function drawBillLinesProviderTerms($obj, $refresh=false) {
+  global $cr, $print, $user, $browserLocale, $widthPct;
+  // $canUpdate=securityGetAccessRightYesNo('menu' . get_class($obj), 'update', $obj)=="YES";
+  if ($obj->idle==1) {
+    $canUpdate=false;
+  }
+  $lock=false;
+  if (isset($obj->_BillLineTerm)) {
+    $lines=$obj->_BillLineTerm;
+  } else {
+    $lines=array();
+  }
+  if (!$print) {
+    echo '<input type="hidden" id="billLineIdle" value="'.htmlEncode($obj->idle).'" />';
+    if ($refresh) echo '<table width="100%">';
+  }
+  echo '<tr>';
+  echo '  <td class="noteHeader" style="width:5%">'.i18n('colId').'</td>';
+  echo '  <td class="noteHeader" style="width:5%">'.i18n('colLineNumber').'</td>';
+  echo '  <td class="noteHeader" style="width:20%">'.i18n('colDescription').'</td>';
+  echo '  <td class="noteHeader" style="width:20%">'.i18n('colDetail').'</td>';
+  echo '  <td class="noteHeader" style="width:10%">'.i18n('colInitialAmount').'</td>';
+  echo '  <td class="noteHeader" style="width:8%">'.i18n('colRate').'</td>';
+  echo '  <td class="noteHeader" style="width:8%">'.i18n('colTermAmount').'</td>';
+  echo '  <td class="noteHeader" style="width:8%">'.i18n('colDiscount').'</td>';
+  echo '  <td class="noteHeader" style="width:8%">'.i18n('colTaxAmount').'</td>';
+  echo '  <td class="noteHeader" style="width:8%">'.i18n('colFullAmount').'</td>';
+  echo '</tr>';
+
+  $fmt=new NumberFormatter52($browserLocale, NumberFormatter52::INTEGER);
+  $fmtd=new NumberFormatter52($browserLocale, NumberFormatter52::DECIMAL);
+  $lines=array_reverse($lines);
+  if(isset($obj->idProviderOrder)){
+    $providerOrder = new ProviderOrder($obj->idProviderOrder);
+    $discountRate = $providerOrder->discountRate;
+  }
+  foreach ($lines as $line) {
+    $billLine = new BillLine($line->idBillLine);
+    $unit=new MeasureUnit($line->idMeasureUnit);
+    echo '<tr>';
+    echo '<td class="noteData" style="width:5%">#'.htmlEncode($line->id).'</td>';
+    echo '<td class="noteData" style="width:5%">'.htmlEncode($billLine->line).'</td>';
+    echo '<td class="noteData" style="width:20%">'.htmlEncode($billLine->description, 'withBR');
+    if (!$print) {
+      echo '<input type="hidden" id="billLineDescription_'.htmlEncode($line->id).'" value="'.htmlEncode($line->description).'" />';
+    }
+    echo '</td>';
+    echo '<td class="noteData" style="width:20%">'.htmlEncode($billLine->detail, 'withBR');
+    if (!$print) {
+      echo '<input type="hidden" id="billLineDetail_'.htmlEncode($line->id).'" value="'.htmlEncode($line->detail).'" />';
+    }
+    echo '</td>';
+    echo '<td class="noteData" style="width:10%">'.htmlDisplayCurrency($billLine->amount).'</td>';
+    echo '<td class="noteData" style="width:8%">'.htmlDisplayPct($line->rate).'</td>';
+    echo '<td class="noteData" style="width:8%">'.htmlDisplayCurrency($line->price).'</td>';
+    echo '<td class="noteData" style="width:8%">'.htmlDisplayCurrency($line->price*$discountRate/100).'</td>';
+    echo '<td class="noteData" style="width:8%">'.htmlDisplayCurrency($line->price*$obj->taxPct/100).'</td>';
+    echo '<td class="noteData" style="width:8%">'.htmlDisplayCurrency(($line->price)-($line->price*$discountRate/100)+($line->price*$obj->taxPct/100)).'</td>';
+    echo '</tr>';
+  }
+  echo '<tr>';
+  if (!$print) {
+    echo '<td class="noteDataClosetable">&nbsp;</td>';
+  }
+  echo '<td class="noteDataClosetable">&nbsp;</td>';
+  echo '<td class="noteDataClosetable">&nbsp;</td>';
+  echo '<td class="noteDataClosetable">&nbsp;</td>';
+  echo '<td class="noteDataClosetable">&nbsp;</td>';
+  echo '</tr>';
+  if (!$print) {
+    if ($refresh) echo '</table>';
+  }
+}
+
 function drawChecklistDefinitionLinesFromObject($obj, $refresh=false) {
   global $cr, $print, $user, $browserLocale, $outMode;
   $canUpdate=securityGetAccessRightYesNo('menu'.get_class($obj), 'update', $obj)=="YES";
@@ -5461,7 +5545,30 @@ function drawProviderTermFromObject($list, $obj, $type, $refresh=false) {
   echo '<tr><td colspan=2 style="width:100%;"><table style="width:100%;">';
   echo '<tr>';
   echo '<td class="assignHeader" style="width:15%">';
-  echo  '<a onClick="addProviderTerm(\''.get_class($obj).'\',\''.$type.'\',\''.$idProviderOrder.'\');" title="'.i18n('addProviderTerm').'" /> '.formatSmallButton('Add').'</a>';
+  
+  $provTerm = new ProviderTerm();
+  $billLine = new BillLine();
+  $critArray = array("idProviderOrder"=>$obj->id);
+  $listProvTerm = $provTerm->getSqlElementsFromCriteria($critArray);
+  $test = false;
+  $y = 0;
+  foreach ($listProvTerm as $prov){
+     $y = 1;
+      $critArray2 = array("refType"=>"ProviderTerm","refId"=>$prov->id);
+      $cpt = $billLine->countSqlElementsFromCriteria($critArray2);
+      if($cpt != 0){
+        $test = true;
+      }
+     
+  }
+  if($test != true or $y == 0 ){
+    $isLineProviderTerm = false;
+    echo  '<a onClick="addProviderTerm(\''.get_class($obj).'\',\''.$type.'\',\''.$idProviderOrder.'\',\'false\');" title="'.i18n('addProviderTerm').'" /> '.formatSmallButton('Add').'</a>';
+  }
+  if($y == 0 or $test == true ){
+    $isLineProviderTerm = true;
+    echo  '<a onClick="addProviderTerm(\''.get_class($obj).'\',\''.$type.'\',\''.$idProviderOrder.'\',\'true\');" title="'.i18n('addProviderTermLine').'" /> '.formatSmallButton('Split').'</a>';
+  }
   echo '</td>';
   echo '<td class="assignHeader" style="width:10%">'.i18n('colId').'</td>';
   echo '<td class="assignHeader" style="width:25%">'.i18n('colStatusDateTime').'</td>';
@@ -5493,7 +5600,7 @@ function drawProviderTermFromObject($list, $obj, $type, $refresh=false) {
       if (!$print) {
         echo '<td class="assignData'.$idleClass.'" style="text-align:center;white-space: nowrap;">';
         if ($canUpdate and !$print) {
-          echo '  <a onClick="editProviderTerm();" '.'title="'.i18n('editProviderTerm').'" > '.formatSmallButton('Edit').'</a>';
+          echo '  <a onClick="editProviderTerm(\''.$obj->id.'\',\''.$isLineProviderTerm.'\',\''.$term->id.'\',\''.$term->name.'\',\''.$term->date.'\',\''.$term->taxPct.'\',\''.$obj->discountRate.'\',\''.$term->untaxedAmount.'\',\''.$term->taxAmount.'\',\''.$term->fullAmount.'\');" '.'title="'.i18n('editProviderTerm').'" > '.formatSmallButton('Edit').'</a>';
         }
         if ($canDelete and !$print) {
           echo '  <a onClick="removeProviderTerm('."'".htmlEncode($term->id)."'".');" '.'title="'.i18n('removeProviderTerm').'" > '.formatSmallButton('Remove').'</a>';
@@ -6081,6 +6188,7 @@ function endBuffering($prevSection, $included) {
       'attachment'=>array('2'=>'bottom', '3'=>'extra'),
       'attendees'=>array('2'=>'right', '3'=>'extra'),
       'billline'=>array('2'=>'bottom', '3'=>'bottom'),
+      'billlineterm'=>array('2'=>'bottom', '3'=>'bottom'),
       'calendar'=>array('2'=>'bottom', '3'=>'bottom'),
       'description'=>array('2'=>'left', '3'=>'left'),
       'evaluation'=>array('2'=>'left', '3'=>'extra'),
@@ -6108,7 +6216,7 @@ function endBuffering($prevSection, $included) {
       'progress'=>array('2'=>'right', '3'=>'extra'),
       'progress_left'=>array('2'=>'left', '3'=>'extra'),
       'productcomponent'=>array('2'=>'left', '3'=>'extra'),
-     // 'providerterm'=>array('2'=>'right', '3'=>'right'),
+      'providerterm'=>array('2'=>'right', '3'=>'extra'),
       'receivers'=>array('3'=>'bottom', '3'=>'extra'),
       'resourcesofobject'=>array('2'=>'bottom', '3'=>'extra'),
       'resourcecost'=>array('2'=>'right', '3'=>'extra'),

@@ -5137,6 +5137,44 @@ function changeStatusNotification(objId, objStatusId) {
 //=============================================================================
 
 //gautier #providerTerm
+function editProviderTerm(idProviderOrder,isLine,id,name,date,tax,discount,untaxed,taxAmount,fullAmount) {
+  affectationLoad=true;
+  if (checkFormChangeInProgress()) {
+    showAlert(i18n('alertOngoingChange'));
+    return;
+  }
+  var callBack = function () {
+    if(name){
+      dijit.byId("providerTermName").set('value', name);
+    }
+    if (date) {
+      dijit.byId("providerTermDate").set('value', date);
+    }
+    if (tax) {
+      dijit.byId("providerTermTax").set('value', tax);
+    }
+    if (discount) {
+      dijit.byId("providerTermDiscount").set('value', discount);
+    }
+    if (untaxed) {
+      dijit.byId("providerTermUntaxedAmount").set('value', untaxed);
+    }
+    if (taxAmount) {
+      dijit.byId("providerTermTaxAmount").set('value', taxAmount);
+    } 
+    if (fullAmount) {
+      dijit.byId("providerTermFullAmount").set('value', fullAmount);
+    } 
+    dijit.byId("dialogProviderTerm").show();
+    setTimeout("affectationLoad=false", 500);
+  };
+  var params="&id="+id;
+      params+="&idProviderOrderEdit="+idProviderOrder;
+      params+="&isLineMulti="+isLine;
+      params+="&mode=edit";
+  loadDialog('dialogProviderTerm',callBack,false,params);
+}
+
 function removeProviderTerm(id) {
   if (checkFormChangeInProgress()) {
     showAlert(i18n('alertOngoingChange'));
@@ -5150,7 +5188,7 @@ function removeProviderTerm(id) {
     showConfirm(msg, actionOK);
 }
 
-function addProviderTerm(objectClass, type, idProviderOrder) {
+function addProviderTerm(objectClass, type, idProviderOrder, isLine) {
   var callBack = function () {
     affectationLoad=true;
     dijit.byId("dialogProviderTerm").show();
@@ -5158,11 +5196,110 @@ function addProviderTerm(objectClass, type, idProviderOrder) {
   };
   var params="&idProviderOrder="+idProviderOrder;
   params+="&type="+type;
+  params+="&isLine="+isLine;
   params+="&mode=add";
   loadDialog('dialogProviderTerm',callBack,false,params);
 }
 
+function saveProviderTerm() {
+  var formVar=dijit.byId('providerTermForm');
+  if (formVar.validate()) {
+    loadContent("../tool/saveProviderTerm.php", "resultDiv", "providerTermForm", true, 'providerTerm');
+    dijit.byId('dialogProviderTerm').hide();
+  } else {
+    showAlert(i18n("alertInvalidForm"));
+  }
+}
 
+var cancelRecursiveChange_OnGoingChange = false;
+function providerTermLine(totalUntaxedAmount){
+  if (cancelRecursiveChange_OnGoingChange)
+    return;
+  cancelRecursiveChange_OnGoingChange = true;
+  var totalUntaxedAmountValue = totalUntaxedAmount;
+  var untaxedAmount = dijit.byId("providerTermUntaxedAmount").get("value");
+  if (!untaxedAmount)
+    untaxedAmount = 0;
+  var taxPct = dijit.byId("providerTermTax").get("value");
+  if (!taxPct)
+    taxPct = 0;
+  // Calculated values
+  var taxAmount = Math.round(untaxedAmount * taxPct) / 100;
+  var fullAmount = taxAmount + untaxedAmount;
+  var percent = Math.round(untaxedAmount*100/totalUntaxedAmountValue);
+  // Set values to fields
+  dijit.byId("providerTermPercent").set('value', percent);
+  dijit.byId("providerTermTaxAmount").set('value', taxAmount);
+  dijit.byId("providerTermFullAmount").set('value', fullAmount);
+  cancelRecursiveChange_OnGoingChange = false;
+}
+function providerTermLinePercent(totalUntaxedAmount){
+  if (cancelRecursiveChange_OnGoingChange)
+    return;
+  cancelRecursiveChange_OnGoingChange = true;
+  var totalUntaxedAmountValue = totalUntaxedAmount;
+  var percent = dijit.byId("providerTermPercent").get("value");
+  var taxPct = dijit.byId("providerTermTax").get("value");
+  if (!taxPct)
+    taxPct = 0;
+  // Calculated values
+  var untaxedAmount = percent*totalUntaxedAmountValue/100;
+  var taxAmount = Math.round(untaxedAmount * taxPct) / 100;
+  var fullAmount = taxAmount + untaxedAmount;
+  // Set values to fields
+  dijit.byId("providerTermUntaxedAmount").set('value', untaxedAmount);
+  dijit.byId("providerTermTaxAmount").set('value', taxAmount);
+  dijit.byId("providerTermFullAmount").set('value', fullAmount);
+  cancelRecursiveChange_OnGoingChange = false;
+}
+
+function providerTermLineBillLine(id){
+  if (cancelRecursiveChange_OnGoingChange)
+    return;
+  cancelRecursiveChange_OnGoingChange = true;
+  var totalUntaxedAmountValue = dijit.byId("providerTermBillLineUntaxed"+id).get("value");
+  var untaxedAmount = dijit.byId("providerTermUntaxedAmount"+id).get("value");
+  var discount = dijit.byId("providerTermDiscount").get("value");
+  if (!untaxedAmount)
+    untaxedAmount = 0;
+  var taxPct = dijit.byId("providerTermTax").get("value");
+  if (!taxPct)
+    taxPct = 0;
+  // Calculated values
+  var discountBill = (untaxedAmount * discount / 100);
+  var taxAmount = Math.round((untaxedAmount-discountBill)* taxPct) / 100;
+  var fullAmount = untaxedAmount - discountBill + taxAmount;
+  var percent = Math.round(untaxedAmount*100/totalUntaxedAmountValue);
+  // Set values to fields
+  dijit.byId("providerTermDiscountAmount"+id).set('value', discountBill);
+  dijit.byId("providerTermPercent"+id).set('value', percent);
+  dijit.byId("providerTermTaxAmount"+id).set('value', taxAmount);
+  dijit.byId("providerTermFullAmount"+id).set('value', fullAmount);
+  cancelRecursiveChange_OnGoingChange = false;
+}
+
+function providerTermLinePercentBilleLine(id){
+  if (cancelRecursiveChange_OnGoingChange)
+    return;
+  cancelRecursiveChange_OnGoingChange = true;
+  var totalUntaxedAmountValue = dijit.byId("providerTermBillLineUntaxed"+id).get("value");
+  var percent = dijit.byId("providerTermPercent"+id).get("value");
+  var taxPct = dijit.byId("providerTermTax").get("value");
+  var discount = dijit.byId("providerTermDiscount").get("value");
+  if (!taxPct)
+    taxPct = 0;
+  // Calculated values
+  var untaxedAmount = percent*totalUntaxedAmountValue/100;
+  var discountBill = (untaxedAmount * discount / 100);
+  var taxAmount = Math.round((untaxedAmount-discountBill)* taxPct) / 100;
+  var fullAmount = untaxedAmount - discountBill + taxAmount;
+  // Set values to fields
+  dijit.byId("providerTermUntaxedAmount"+id).set('value', untaxedAmount);
+  dijit.byId("providerTermDiscountAmount"+id).set('value', discountBill);
+  dijit.byId("providerTermTaxAmount"+id).set('value', taxAmount);
+  dijit.byId("providerTermFullAmount"+id).set('value', fullAmount);
+  cancelRecursiveChange_OnGoingChange = false;
+}
 // =============================================================================
 // = Affectation
 // =============================================================================
