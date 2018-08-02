@@ -332,6 +332,7 @@ abstract class SqlElement {
           "VersionProject" => "cascade", 
           "Work" => "control"), 
       "Provider" => array("ProjectExpense" => "controlStrict", "Tender" => "ControlStrict"), 
+      "ProviderTerm" => array("BillLine" => "cascade"),
       "Quality" => array("Project" => "controlStrict"), 
       "Question" => array("Link" => "cascade"), 
       "QuestionType" => array("Question" => "controlStrict"), 

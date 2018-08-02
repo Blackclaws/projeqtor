@@ -156,8 +156,14 @@ INSERT INTO `${prefix}type` (`scope`, `name`, `sortOrder`, `idle`, `color`, idWo
 
 INSERT INTO `${prefix}copyable` (`id`,`name`, `idle`, `sortOrder`,`idDefaultCopyable`) VALUES 
 (23,'ProviderOrder', '0', '121','24'),
-(24,'ProviderBill', '0', '122',NULL);
+(24,'ProviderBill', '0', '122',NULL),
+(25,'ProviderTerm', '0', '123',NULL);
+
 UPDATE `${prefix}copyable` SET idDefaultCopyable=23 WHERE id=16;
+
+ALTER TABLE `${prefix}billLine`
+ADD `idBillLine` int(12)  DEFAULT NULL,
+ADD `rate` DECIMAL(5,2)  DEFAULT NULL;
 
 -- ==================================================================
 -- Global views
