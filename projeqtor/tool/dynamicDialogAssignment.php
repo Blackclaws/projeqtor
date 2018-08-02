@@ -373,7 +373,7 @@ $resource=new ResourceAll($idResource);
               </button>
             </td>
             <td colspan="5" style="text-align:right">
-            <?php echo i18n('paramWorkUnit').'&nbsp;=&nbsp;'.Work::getWorkUnit();?> 
+            <?php echo i18n('paramWorkUnit').'&nbsp;=&nbsp;'.i18n(Work::getWorkUnit());?> 
             </td>
           </tr> 
            <tr><td colspan="5">&nbsp;</td></tr>
