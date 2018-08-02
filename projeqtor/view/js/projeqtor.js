@@ -2574,11 +2574,15 @@ function drawGantt() {
       var realWork = parseFloat(item.realwork);
       var plannedWork = parseFloat(item.plannedwork);
       var progress = 0;
-      if (plannedWork > 0) {
-        progress = Math.round(100 * realWork / plannedWork);
+      if (item.isglobal && item.isglobal==1 && item.progress) { 
+        progress=item.progress;
       } else {
-        if (item.done == 1) {
-          progress = 100;
+        if (plannedWork > 0) {
+          progress = Math.round(100 * realWork / plannedWork);
+        } else {
+          if (item.done == 1) {
+            progress = 100;
+          }
         }
       }
       // pGroup : is the task a group one ?

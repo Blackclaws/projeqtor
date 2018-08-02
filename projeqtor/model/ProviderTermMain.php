@@ -48,6 +48,8 @@ class ProviderTermMain extends SqlElement {
   public $_Note=array();
   public $_sec_Link;
   public $_Link=array();
+  public $_BillLineTerm=array();
+  public $_BillLineTerm_colSpan="2";
   
   public $_nbColMax=3;
   // Define the layout that will be used for lists
@@ -75,6 +77,13 @@ class ProviderTermMain extends SqlElement {
    */ 
   function __construct($id = NULL, $withoutDependentObjects=false) {
     parent::__construct($id,$withoutDependentObjects);
+    if ($this->idProviderOrder) {
+      self::$_fieldsAttributes['untaxedAmount']='readonly';
+      self::$_fieldsAttributes['taxPct']='readonly';
+      self::$_fieldsAttributes['idProviderOrder']='readonly';
+    }
+    self::$_fieldsAttributes['taxAmount']='readonly';
+    self::$_fieldsAttributes['fullAmount']='readonly';
   }
 
   
@@ -164,5 +173,8 @@ class ProviderTermMain extends SqlElement {
 		return $result;
 	}
 	
+  public function copyTo($newClass, $newType, $newName, $setOrigin, $withNotes, $withAttachments, $withLinks, $withAssignments = false, $withAffectations = false, $toProject = NULL, $toActivity = NULL, $copyToWithResult = false,$copyToWithVersionProjects=false) {
+    return parent::copyTo($newClass, $newType, $newName, $setOrigin, $withNotes, null, $withLinks);
+  }
 }
 ?>

@@ -25,23 +25,60 @@
  *** DO NOT REMOVE THIS NOTICE ************************************************/
 include_once ("../tool/projeqtor.php");
 $keyDownEventScript=NumberFormatter52::getKeyDownEvent();
+$currency=Parameter::getGlobalParameter('currency');
+$currencyPosition=Parameter::getGlobalParameter('currencyPosition');
+
 $mode = RequestHandler::getValue('mode',false,null);
+$isLineMulti = RequestHandler::getValue('isLineMulti',false,null);
+$idProviderOrderEdit=RequestHandler::getId('idProviderOrderEdit',false,null);
 $idProviderOrder=RequestHandler::getValue('idProviderOrder',false,null);
+if($idProviderOrder==null){
+  $idProviderOrder = $idProviderOrderEdit;
+}
 $idProviderTerm=RequestHandler::getValue('id',false,null);
 $line="";
+
 if($idProviderTerm){
   $line=new ProviderTerm($idProviderTerm);
 }
+
+$providerOrder = new ProviderOrder($idProviderOrder);
+
+$isLine = RequestHandler::getValue('isLine');
+if(isset ($isLineMulti)){
+  if($isLineMulti == false){
+    $isLine = true;
+  }else{
+    $isLine = false;
+  }
+}
+
 ?>
   <table>
     <tr>
       <td>
-       <form dojoType="dijit.form.Form" id='affectationResourceTeamForm' name='providerTermForm' onSubmit="return false;">
+       <form dojoType="dijit.form.Form" id='providerTermForm' name='providerTermForm' onSubmit="return false;">
         <input id="mode" name="mode" type="hidden" value="<?php echo $mode;?>" />
+        <input id="providerOrderProject" name="providerOrderProject" type="hidden" value="<?php echo $providerOrder->idProject;?>" />
+        <input id="providerOrderId" name="providerOrderId" type="hidden" value="<?php echo $providerOrder->id;?>" />
+        <input id="providerOrderIsLine" name="providerOrderIsLine" type="hidden" value="<?php echo $isLine;?>" />
          <table>
-           <tr>
+          <tr>
+             <td class="dialogLabel" >
+              <label for="providerTermName" ><?php echo i18n("colName");?>&nbsp;:&nbsp;</label>
+             </td>
+             <td>
+              <textarea dojoType="dijit.form.Textarea" 
+	          id="providerTermName" name="providerTermName"
+	          style="width: 250px;"
+	          maxlength="100"
+	          class="input"><?php echo $providerOrder->name;?></textarea>
+	         </td>
+	        </tr>
+	        
+          <tr>
             <td class="dialogLabel" >
-               <label for="providerTermDate" ><?php echo i18n("colStartDate");?>&nbsp;:&nbsp;</label>
+               <label for="providerTermDate" ><?php echo i18n("colDate");?>&nbsp;:&nbsp;</label>
             </td>
             <td>
                <div id="providerTermDate" name="providerTermDate"
@@ -51,11 +88,275 @@ if($idProviderTerm){
                 type="text" maxlength="10"  style="width:100px; text-align: center;" class="input"
                 missingMessage="<?php echo i18n('messageMandatory',array('colDate'));?>" 
                 invalidMessage="<?php echo i18n('messageMandatory',array('colDate'));?>" 
-                value="<?php if($line){echo $line->startDate;}?>">
-                
+                value="">
                </div>
             </td>
-           </tr>
+          </tr>
+          
+          <tr>
+            <td class="dialogLabel" >
+              <label for="providerTermTax" ><?php echo i18n("colTaxPct");?>&nbsp;:&nbsp;</label>
+           </td>
+           <td>
+               <input dojoType="dijit.form.NumberTextBox" 
+                id="providerTermTax" name="providerTermTax"
+                readonly 
+                style="width:100px;"
+                value="<?php echo $providerOrder->taxPct;?>"
+                class="input">
+               </input> 
+               <?php  echo '%';?>
+           </td>
+           <td class="dialogLabel" >
+              <label for="providerTermDiscount" ><?php echo i18n("colDiscount");?>&nbsp;:&nbsp;</label>
+           </td>
+           <td>
+               <input dojoType="dijit.form.NumberTextBox" 
+                id="providerTermDiscount" name="providerTermDiscount"
+                readonly 
+                style="width:100px;"
+                value="<?php echo $providerOrder->discountRate;?>"
+                class="input">
+               </input> 
+               <?php  echo '%';?>
+           </td>
+           
+          </tr>
+          </table>
+          <?php if($isLine=='false'){ 
+              $maxValue = $providerOrder->totalUntaxedAmount;
+              $providerTerm = new ProviderTerm();
+              $termList=$providerTerm->getSqlElementsFromCriteria(array("idProviderOrder"=>$providerOrder->id));
+              foreach ($termList as $term) {
+                $maxValue -= $term->untaxedAmount ;
+              }
+              $percent = (100*$maxValue/$providerOrder->totalUntaxedAmount);
+              $taxAmount = ($maxValue*$providerOrder->taxPct)/100;
+              $totalFullAmount = $maxValue+$taxAmount;
+          ?>
+          <table>  
+          <tr>
+           <td class="dialogLabel" >
+            <label for="providerTermUntaxedAmount" ><?php echo i18n("colUntaxedAmount");?>&nbsp;:&nbsp;</label>
+           </td>
+           <td>
+            <?php if ($currencyPosition=='before') echo $currency;?>
+            <div dojoType="dijit.form.NumberTextBox" 
+              id="providerTermUntaxedAmount" name="providerTermUntaxedAmount"
+              style="width: 100px;"
+              constraints="{max:<?php echo $maxValue ;?>}"
+              onChange="providerTermLine(<?php echo $providerOrder->totalUntaxedAmount; ?>);"
+              value="<?php if($providerOrder->totalUntaxedAmount){echo $maxValue;}?>" 
+              class="input"
+              <?php echo $keyDownEventScript;?>
+            </div>
+            <?php if ($currencyPosition=='after') echo $currency;?>
+           </td>
+          
+          <td class="dialogLabel" >
+            <label for="providerTermPercent" ><?php echo i18n("colRate");?>&nbsp;:&nbsp;</label>
+           </td>
+           <td>
+            <div dojoType="dijit.form.NumberTextBox" 
+              id="providerTermPercent" name="providerTermPercent"
+              style="width: 100px;"
+              constraints="{max:<?php echo $percent ;?>}"
+              onChange="providerTermLinePercent(<?php echo $providerOrder->totalUntaxedAmount; ?>);"
+              value="<?php echo $percent;?>" 
+              class="input"
+              <?php echo $keyDownEventScript;?>
+            </div>
+            <?php echo '%';?>
+           </td>
+          
+         <td class="dialogLabel" >
+               <label for="providerTermTaxdAmount" ><?php echo i18n("colTaxAmount");?>&nbsp;:&nbsp;</label>
+         </td>
+         <td>
+             <?php if ($currencyPosition=='before') echo $currency;?>
+               <input dojoType="dijit.form.NumberTextBox" 
+                id="providerTermTaxAmount" name="providerTermTaxAmount"
+                readonly 
+                style="width:100px;"
+                value="<?php echo $taxAmount;?>" 
+                class="input"  >  
+               </input> 
+               <?php if ($currencyPosition=='after') echo $currency;?>
+          </td>
+          
+          <td class="dialogLabel" >
+               <label for="providerTermFullAmount" ><?php echo i18n("colFullAmount");?>&nbsp;:&nbsp;</label>
+             </td>
+             <td>
+             <?php if ($currencyPosition=='before') echo $currency;?>
+               <input dojoType="dijit.form.NumberTextBox" 
+                id="providerTermFullAmount" name="providerTermFullAmount"
+                readonly 
+                style="width:100px;"
+                value="<?php echo $totalFullAmount; ?>" 
+                class="input">  
+               </input> 
+               <?php if ($currencyPosition=='after') echo $currency;?>
+          </td>
+	        </tr>
+	        
+	         <?php 
+           }else{ 
+	           $billLine = new BillLine();
+	           $billLineList=$billLine->getSqlElementsFromCriteria(array("refType"=>"ProviderOrder","refId"=>$providerOrder->id));
+	           $i = 1;
+	           $style = 'text-align:center';
+	         ?> 
+	          <table>
+	           <tr >
+	            <td class="assignHeader" >
+                <label  style="width:50px;<?php echo $style; ?>">  <?php echo i18n("colLineNumber");?></label>
+              </td>
+             <td class="assignHeader" >
+              <label  style="width:180px;<?php echo $style; ?>"><?php echo i18n("colDescription");?></label>
+             </td>
+             <td class="assignHeader" >
+              <label style="width:180px;<?php echo $style; ?>" ><?php echo i18n("colDetail");?></label>
+             </td>
+              <td class="assignHeader" >
+               <label style="width:115px;<?php echo $style; ?>"><?php echo i18n("colUntaxedAmount");?></label>
+              </td>
+              <td class="assignHeader" >
+                <label style="width:55px;<?php echo $style; ?>"><?php echo i18n("colRate");?></label>
+              </td>
+              <td class="assignHeader" >
+                <label style="width:115px;<?php echo $style; ?>"><?php echo i18n("colUntaxedAmount");?></label>
+              </td>
+              <td class="assignHeader" >
+                <label style="width:115px;<?php echo $style; ?>"><?php echo i18n("colDiscount");?></label>
+              </td>
+              <td class="assignHeader" >
+               <label style="width:115px;<?php echo $style; ?>"><?php echo i18n("colTaxAmount");?></label>
+              </td>
+              <td class="assignHeader" >
+               <label style="width:115px;<?php echo $style;?> "><?php echo i18n("colFullAmount");?></label>
+              </td>
+             </tr>
+	           <?php 
+	           $style2 = 'border-left:1px solid black;border-bottom:1px solid black;';
+	           foreach ($billLineList as $bill) {  ?>
+              <input id="providerOrderBillLineId<?php echo $i;?>" name="providerOrderBillLineId<?php echo $i;?>" type="hidden" value="<?php echo $bill->id;?>" />
+              <?php 
+                $i++; 
+                $maxValue = $bill->amount;
+                $billLine2 = new BillLine();
+                $critArray = array("refType"=>"ProviderTerm","idBillLine"=>$bill->id);
+                $billLineList2=$billLine2->getSqlElementsFromCriteria($critArray);
+                foreach ($billLineList2 as $bill2){
+                  $maxValue -= $bill2->price;
+                }
+                if($maxValue==0){
+                  continue;
+                }
+                $discount = 0;
+                $percent = (100*$maxValue/$bill->amount);
+                if($providerOrder->discountRate > 0){
+                  $discount = ($maxValue*$providerOrder->discountRate/100);
+                }
+                $taxAmount = (($maxValue-$discount)*$providerOrder->taxPct)/100;
+                $totalFullAmount = $maxValue - $discount +$taxAmount;
+              ?>
+               <tr>
+                 <td style="width:50px; <?php echo $style2;?> ">
+  		            <input dojoType="dijit.form.NumberTextBox" 
+  			           id="providerTermBillLineLine<?php echo $bill->line;?>" name="providerTermBillLineLine<?php echo $bill->line;?>"
+  			           style="width:40px;"
+  			           class="input" readonly
+  			           value="<?php echo $bill->line;?>" />
+  		           </td>
+                 <td style="<?php echo $style2;?> ">
+                  <textarea dojoType="dijit.form.Textarea" 
+        	         id="billLineDescription<?php echo $bill->line;?>" name="billLineDescription<?php echo $bill->line;?>"
+        	         style="width: 180px;"
+        	         maxlength="200" readonly
+        	         class="input"><?php echo $bill->description;?></textarea>
+    	           </td>
+                 <td style="<?php echo $style2;?> ">
+                  <textarea dojoType="dijit.form.Textarea" 
+      	           id="billLineDetail<?php echo $bill->line;?>" name="billLineDetail<?php echo $bill->line;?>"
+      	           style="width: 180px;"
+      	           maxlength="200" readonly
+      	           class="input"><?php echo $bill->detail;?></textarea>  
+      	         </td> 
+                 <td style="<?php echo $style2;?> ">
+                  <?php if ($currencyPosition=='before') echo $currency;?>
+                  <div dojoType="dijit.form.NumberTextBox" 
+                    id="providerTermBillLineUntaxed<?php echo $bill->line;?>" name="providerTermBillLineUntaxed<?php echo $bill->line;?>"
+                    style="width: 100px;"
+                    value="<?php echo $bill->amount ;?>" 
+                    class="input"
+                    readonly
+                    <?php echo $keyDownEventScript;?>
+                  </div>
+                  <?php if ($currencyPosition=='after') echo $currency;?>
+                 </td>
+                 <td style="<?php echo $style2;?> ">
+                  <div dojoType="dijit.form.NumberTextBox" 
+                    id="providerTermPercent<?php echo $bill->line;?>" name="providerTermPercent<?php echo $bill->line;?>"
+                    style="width:35px;"
+                    constraints="{max:<?php echo $percent ;?>}"
+                    value="<?php echo $percent;?>" 
+                     onChange="providerTermLinePercentBilleLine(<?php echo $bill->line; ?>);"
+                    class="input"
+                    <?php echo $keyDownEventScript;?>
+                  </div>
+                  <?php echo '%';?>
+                 </td>
+                 <td style="<?php echo $style2;?> ">
+                  <?php if ($currencyPosition=='before') echo $currency;?>
+                  <div dojoType="dijit.form.NumberTextBox" 
+                    id="providerTermUntaxedAmount<?php echo $bill->line;?>" name="providerTermUntaxedAmount<?php echo $bill->line;?>"
+                    style="width: 100px;"
+                    constraints="{max:<?php echo $maxValue ;?>}"
+                    value="<?php echo $maxValue;?>" 
+                    class="input"
+                    onChange="providerTermLineBillLine(<?php echo $bill->line; ?>);"
+                    <?php echo $keyDownEventScript;?>
+                  </div>
+                  <?php if ($currencyPosition=='after') echo $currency;?>
+                 </td>
+              <td style="<?php echo $style2;?> ">
+               <?php if ($currencyPosition=='before') echo $currency;?>
+                 <input dojoType="dijit.form.NumberTextBox" 
+                  id="providerTermDiscountAmount<?php echo $bill->line;?>" name="providerTermDiscountAmount<?php echo $bill->line;?>"
+                  readonly 
+                  style="width:100px;"
+                  value="<?php echo $discount;?>" 
+                  class="input"  >  
+                 </input> 
+               <?php if ($currencyPosition=='after') echo $currency;?>
+              </td>         
+             <td style="<?php echo $style2;?> ">
+                 <?php if ($currencyPosition=='before') echo $currency;?>
+                   <input dojoType="dijit.form.NumberTextBox" 
+                    id="providerTermTaxAmount<?php echo $bill->line;?>" name="providerTermTaxAmount<?php echo $bill->line;?>"
+                    readonly 
+                    style="width:100px;"
+                    value="<?php echo $taxAmount;?>" 
+                    class="input"  >  
+                   </input> 
+                   <?php if ($currencyPosition=='after') echo $currency;?>
+              </td>
+             <td style="<?php echo $style2;?>  border-right:1px solid black;">
+             <?php if ($currencyPosition=='before') echo $currency;?>
+               <input dojoType="dijit.form.NumberTextBox" 
+                id="providerTermFullAmount<?php echo $bill->line;?>" name="providerTermFullAmount<?php echo $bill->line;?>"
+                readonly 
+                style="width:100px;"
+                value="<?php echo $totalFullAmount; ?>" 
+                class="input">  
+               </input> 
+               <?php if ($currencyPosition=='after') echo $currency;?>
+          </td>
+                 
+                 </tr>
+      	   <?php }
+      	        } ?>
          </table>
         </form>
       </td>

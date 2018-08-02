@@ -143,6 +143,13 @@ class ProviderOrderMain extends SqlElement {
     if (count($this->_BillLine)) {
       self::$_fieldsAttributes['untaxedAmount']='readonly';
     }
+    $term=new ProviderTerm();
+    $critArray=array('idProviderOrder'=>$this->id);
+    $cpt=$term->countSqlElementsFromCriteria($critArray, false);
+    if ($cpt > 0 ) {
+      self::$_fieldsAttributes['discountAmount']='readonly';
+      self::$_fieldsAttributes['discountRate']='readonly';
+    }
   }
   
   /** ==========================================================================

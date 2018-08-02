@@ -189,6 +189,7 @@ JSGantt.TaskItem = function(pID, pName, pStart, pEnd, pColor,
   var vBaseBottomStart=new Date(); ;
   var vBaseBottomEnd=new Date(); ;
   var vIsOnCriticalPath=pIsOnCriticalPath;
+  var vGlobal='notSet';
   
   vStart = JSGantt.parseDateStr(pStart,g.getDateInputFormat());
   vEnd   = JSGantt.parseDateStr(pEnd,g.getDateInputFormat());
@@ -298,6 +299,18 @@ JSGantt.TaskItem = function(pID, pName, pStart, pEnd, pColor,
   this.getVisible  = function(){ return vVisible; };
   this.getScope    = function(){ return vScope; };
   this.getClass    = function(){ return vClass; };
+  this.getGlobal   = function() {
+    if (vGlobal=='notSet') {  
+      var cls=this.getClass();
+      if (cls=='Action' || cls=='Decision' || cls=='Delivery' || cls=='Issue' || cls=='Opportunity'
+      || cls=='Question' || cls=='Risk' || cls=='Ticket') {
+        vGlobal=true;  
+      } else { 
+        vGlobal=false;  
+      }
+    } 
+    return vGlobal;
+  }
   this.setDepend   = function(pDepend){ vDepend = pDepend;};
   this.setStart    = function(pStart){ vStart = pStart;};
   this.setEnd      = function(pEnd)  { vEnd   = pEnd;  };
@@ -1380,14 +1393,16 @@ JSGantt.GanttChart =  function(pGanttVar, pDiv, pFormat) {
               + '</div>';
             }
             vIsOnCriticalPath=vTaskList[i].getIsOnCriticalPath();
-            vRightTable += '<div id=' + vBardivName + ' class="barDivTask" style="'
-                + ' border-bottom: 2px solid #' + vTaskList[i].getColor() + ';'
-	            + ' left:' + vBarLeft + 'px; height:11px; '
+            vRightTable += '<div id=' + vBardivName + ' class="barDivTask" style="';
+            if (! vTaskList[i].getGlobal() )
+              vRightTable += ' border-bottom: 2px solid #' + vTaskList[i].getColor() + ';';
+            vRightTable += ' left:' + vBarLeft + 'px; height:11px; '
 	            + ' width:' + vBarWidth + 'px" '
 	            + ' oncontextmenu="'+vTaskList[i].getContextMenu()+';return false;" '
 	            +'>';         
+            console.log(vTaskList[i].getID()+" "+vTaskList[i].getCompStr());
             vRightTable += ' <div class="ganttTaskrowBarComplete"  '
-            	+ ' style="width:' + vTaskList[i].getCompStr() + '; cursor: pointer;"'
+            	+ ' style="width:' + vTaskList[i].getCompStr() + '; cursor: pointer;'+((vTaskList[i].getGlobal)?'opacity:0.2;':'')+'"'
       		    + ' onmousedown=JSGantt.startLink('+i+'); '
               + ' onmouseup=JSGantt.endLink('+i+'); '
               + ' onMouseover=JSGantt.enterBarLink('+i+'); '
@@ -1396,21 +1411,36 @@ JSGantt.GanttChart =  function(pGanttVar, pDiv, pFormat) {
             	+ ' onclick=JSGantt.taskLink("' + vTaskList[i].getLink() + '");>'
                 + ' </div>'; 
   	        if (Date.parse(vMaxDate)>=Date.parse(vTaskList[i].getStart())) {
-  	        	var tmpColor=vTaskList[i].getColor();
+  	        	var tmpColor=' #'+vTaskList[i].getColor();
   	        	if (g.getSplitted()) {
-  	        		tmpColor='999999';
+  	        		tmpColor='#999999';
   	        		vBarWidth=vBarWidthReal;
+  	        	}
+              var imgColor='grey';
+              var imgStaturate=1;
+  	        	if (vTaskList[i].getGlobal()) {
+  	        	  tmpColor='transparent';
+  	        	  if (vTaskList[i].getColor()=='BB5050') {
+  	        	    imgColor='red';
+  	        	    imgStaturate='2';
+  	        	  } else if (vTaskList[i].getColor()=='50BB50') {
+  	        	    imgColor='green';
+  	        	    imgStaturate='4';
+  	        	  }
   	        	}
   	        	vIsOnCriticalPath=vTaskList[i].getIsOnCriticalPath();
   	        	vRightTable += '<div id=taskbar_' + vID + ' title="' + vTaskList[i].getName() + ' : ' + vDateRowStr + vBaselineTopTitle + vBaselineBottomTitle + '" '
-  	            + ' class="ganttTaskrowBar" style="background-color:'+((vIsOnCriticalPath=='1')?vCriticalPathColor:'#'+tmpColor) + '; '
-  	            + ' width:' + vBarWidth + 'px;'+ ((vIsOnCriticalPath=='1')?' border-bottom: 5px solid #'+tmpColor+';border-top: 5px solid #'+tmpColor+';height:3px;':'')+'" ' 
+  	            + ' class="ganttTaskrowBar" style="position:relative;background-color:'+((vIsOnCriticalPath=='1')?vCriticalPathColor:tmpColor)+'; '
+  	            + ' width:' + vBarWidth + 'px;'+ ((vIsOnCriticalPath=='1')?' border-bottom: 5px solid '+tmpColor+';border-top: 5px solid '+tmpColor+';height:3px;':'')+'" ' 
         		    + ' onmousedown=JSGantt.startLink('+i+'); '
                 + ' onmouseup=JSGantt.endLink('+i+'); '
                 + ' onMouseover=JSGantt.enterBarLink('+i+'); '
                 + ' onMouseout=JSGantt.exitBarLink('+i+'); '
                 + ' oncontextmenu="'+vTaskList[i].getContextMenu()+';return false;" '
   	            + ' onclick=JSGantt.taskLink("' + vTaskList[i].getLink() + '"); >';
+  	        	  if (vTaskList[i].getGlobal()) {
+  	        	    vRightTable +='<img src="../view/css/customIcons/'+imgColor+'/icon'+vTaskList[i].getClass()+'.png" style="filter:saturate('+imgStaturate+');width:16px;height:16px;z-index:13;position:absolute;right:2px;" />';
+  	        	  }
   	            vRightTable += ' </div>';	        	
   	        	if (g.getSplitted()) {
   	        		vRightTable +='<div class="ganttTaskrowBar"  title="' + vTaskList[i].getName() + ' : ' + vDateRowStr + vBaselineTopTitle + vBaselineBottomTitle + '" '
