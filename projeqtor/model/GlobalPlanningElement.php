@@ -194,6 +194,9 @@ class GlobalPlanningElement extends SqlElement {
     if (!$na) $na='null';
     $pe=new PlanningElement();
     $peTable=$pe->getDatabaseTableName();
+    $pex=new PlanningElementExtension();
+    $pexTable=$pex->getDatabaseTableName();
+    $pexRef=PlanningElementExtension::$_startId;
     $we=new WorkElement();
     $weTable=$we->getDatabaseTableName();
     $itemsToDisplay=Parameter::getUserParameter('globalPlanningSelectedItems');
@@ -219,7 +222,7 @@ class GlobalPlanningElement extends SqlElement {
       $table=$clsObj->getDatabaseTableName();
       $convert=self::$_globalizables[$class];
       $query.="\n  UNION ";
-      $query.="\n    SELECT concat('$class',$table.id) as id";
+      $query.="\n    SELECT coalesce(pex.id+$pexRef,concat('$class',$table.id)) as id";
       foreach ($obj as $fld=>$val) {
         if (substr($fld,0,1)=='_' or $fld=='id') continue;        
         $query.=", ";
@@ -243,7 +246,8 @@ class GlobalPlanningElement extends SqlElement {
         else $query.="$na";
         $query.=" as $fld";
       }
-      $query.="\n    FROM $table LEFT JOIN $peTable AS pe ON pe.refType='Project' and pe.refId=$table.idProject";
+      $query.="\n    FROM $table LEFT JOIN $peTable AS pe ON pe.refType='Project' and pe.refId=$table.idProject ";
+      $query.="LEFT JOIN $pexTable as pex ON pex.refType='$class' and pex.refId=$table.id ";
       if (property_exists($clsObj, 'WorkElement')) {
         $query.="\n        LEFT JOIN $weTable AS we ON we.refType='$class' AND we.refId=$table.id ";
       }
@@ -286,7 +290,7 @@ class GlobalPlanningElement extends SqlElement {
        */
       'Ticket'=>array('plannedStartDate'=>'actualDueDateTime','realStartDate'=>'handledDateTime',
                       'validatedEndDate'=>'initialDueDateTime','plannedEndDate'=>'actualDueDateTime','realEndDate'=>'doneDateTime',
-                      'validatedWork'=>"we.plannedWork",'plannedWork'=>"we.plannedWork",'leftWork'=>"we.leftWork",'realWork'=>"we.realWork",
+                      'validatedWork'=>"we.plannedWork",'plannedWork'=>"we.leftWork+we.realWork",'leftWork'=>"we.leftWork",'realWork'=>"we.realWork",
                       //'assignedWork'=>"we.plannedWork",
                      ),
       'Action'=>array('plannedStartDate'=>'actualDueDate','realStartDate'=>'handledDate',
@@ -304,8 +308,12 @@ class GlobalPlanningElement extends SqlElement {
       'Decision'=>array('plannedStartDate'=>'decisionDate','realStartDate'=>'decisionDate',
                       'validatedEndDate'=>'decisionDate','plannedEndDate'=>'decisionDate','realEndDate'=>'decisionDate'
                      ),
-      'Question'=>array(),
-      'Delivery'=>array()
+      'Question'=>array('plannedStartDate'=>'actualDueDate','realStartDate'=>'handledDate',
+                      'validatedEndDate'=>'initialDueDate','plannedEndDate'=>'actualDueDate','realEndDate'=>'doneDate'
+                     ),
+      'Delivery'=>array('plannedStartDate'=>'initialDate','realStartDate'=>'handledDateTime',
+                        'validatedEndDate'=>'initialDate','plannedEndDate'=>'plannedDate','realEndDate'=>'realDate'
+                     )
   );
 
   public static function drawGlobalizableList() {

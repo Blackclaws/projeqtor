@@ -335,43 +335,56 @@
         $nbFields=0;
         $idPe="";
         // NEW
-        if (isset($line['isglobal']) and $line['isglobal']==1 and trim($line['realstartdate']) and $line['progress']==$na) {
-          $pStart="";
-          $pStart=(trim($line['initialstartdate'])!="" and $line['initialstartdate']!=$na)?$line['initialstartdate']:$pStart;
-          $pStart=(trim($line['validatedstartdate'])!="" and $line['validatedstartdate']!=$na)?$line['validatedstartdate']:$pStart;
-          $pStart=(trim($line['plannedstartdate'])!="" and $line['plannedstartdate']!=$na)?$line['plannedstartdate']:$pStart;
-          $pStart=(trim($line['realstartdate'] and $line['realstartdate']!=$na)!="")?$line['realstartdate']:$pStart;
-          if (trim($line['plannedstartdate'])!="" and $line['plannedstartdate']!=$na 
-          and trim($line['realstartdate'])!="" and $line['realstartdate']!=$na
-          and $line['plannedstartdate']<$line['realstartdate'] ) {
-            $pStart=$line['plannedstartdate'];
-          }
-          $pEnd="";
-          $pEnd=(trim($line['initialenddate'])!="" and $line['initialenddate']!=$na)?$line['initialenddate']:$pEnd;
-          $pEnd=(trim($line['validatedenddate'])!="" and $line['validatedenddate']!=$na)?$line['validatedenddate']:$pEnd;
-          $pEnd=(trim($line['plannedenddate'])!="" and $line['plannedenddate']!=$na)?$line['plannedenddate']:$pEnd;
-          $pEnd=(trim($line['realenddate'])!="" and $line['realenddate']!=$na)?$line['realenddate']:$pEnd;
-          //if ($pEnd=="") {$pEnd=date('Y-m-d');}
-          if ($line['reftype']=='Milestone') {
-            $pStart=$pEnd;
-          }
-          $pStart=substr($pStart,0,10);
-          $pEnd=substr($pEnd,0,10);
-          if (trim($line['realenddate'])!="" and $line['realenddate']!=$na) {
-            $line['progress']='100';
-          } else if ($pStart==$pEnd) {
-            $line['progress']='50';
-          } else {
-            $taskLength=dayDiffDates($pStart,$pEnd)+1;
-            if ($taskLength>0) {
-              $progressLength=dayDiffDates($pStart,date('Y-m-d'))+1;
-              $line['progress']=round($progressLength/$taskLength*100,0);
+        if (isset($line['isglobal']) and $line['isglobal']==1 and $line['progress']==$na) {
+          if ($line['reftype']=='Ticket' and $line['validatedwork']>0 and $line['realwork']>0) {// Ticket by work
+            if (trim($line['realenddate'])!="" and $line['realenddate']!=$na and $line['leftwork']==0) {
+              $line['progress']='100';
             } else {
-              $line['progress']='50';
+              $line['progress']=round(100*$line['realwork']/$line['validatedwork'],0);
             }
+          } else if (trim($line['realstartdate'])) { // is started, so try and get progress from duration 
+            $pStart="";
+            $pStart=(trim($line['initialstartdate'])!="" and $line['initialstartdate']!=$na)?$line['initialstartdate']:$pStart;
+            $pStart=(trim($line['validatedstartdate'])!="" and $line['validatedstartdate']!=$na)?$line['validatedstartdate']:$pStart;
+            $pStart=(trim($line['plannedstartdate'])!="" and $line['plannedstartdate']!=$na)?$line['plannedstartdate']:$pStart;
+            $pStart=(trim($line['realstartdate'] and $line['realstartdate']!=$na)!="")?$line['realstartdate']:$pStart;
+            if (trim($line['plannedstartdate'])!="" and $line['plannedstartdate']!=$na 
+            and trim($line['realstartdate'])!="" and $line['realstartdate']!=$na
+            and $line['plannedstartdate']<$line['realstartdate'] ) {
+              $pStart=$line['plannedstartdate'];
+            }
+            $pEnd="";
+            $pEnd=(trim($line['initialenddate'])!="" and $line['initialenddate']!=$na)?$line['initialenddate']:$pEnd;
+            $pEnd=(trim($line['validatedenddate'])!="" and $line['validatedenddate']!=$na)?$line['validatedenddate']:$pEnd;
+            $pEnd=(trim($line['plannedenddate'])!="" and $line['plannedenddate']!=$na)?$line['plannedenddate']:$pEnd;
+            $pEnd=(trim($line['realenddate'])!="" and $line['realenddate']!=$na)?$line['realenddate']:$pEnd;
+            //if ($pEnd=="") {$pEnd=date('Y-m-d');}
+            if ($line['reftype']=='Milestone') {
+              $pStart=$pEnd;
+            }
+            $pStart=substr($pStart,0,10);
+            $pEnd=substr($pEnd,0,10);
+            if ($line['reftype']=='Decision') {
+              if ($line['done']==1) $line['progress']='100';
+              else $line['progress']='0';
+            } else if (trim($line['realenddate'])!="" and $line['realenddate']!=$na) {
+              $line['progress']='100';
+            } else if ($pStart==$pEnd) {
+              $line['progress']='50';
+            } else {
+              $taskLength=dayDiffDates($pStart,$pEnd)+1;
+              if ($taskLength>0) {
+                $progressLength=dayDiffDates($pStart,date('Y-m-d'))+1;
+                $line['progress']=round($progressLength/$taskLength*100,0);
+              } else {
+                $line['progress']='50';
+              }
+            }
+          } else {
+            $line['progress']='0';
           }
-        }
-        if ($line["plannedwork"]>0 and $line["leftwork"]==0 and $line["elementary"]==1) {
+          debugLog($line['reftype'].' #'.$line['refid'].' =>'.$line['progress'].'% =>realEndDate='.$line['realenddate']);
+        } else if ($line["plannedwork"]>0 and $line["leftwork"]==0 and $line["elementary"]==1 ) {
         	$line["plannedstartdate"]='';
         	$line["plannedenddate"]='';
         }

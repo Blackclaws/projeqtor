@@ -226,6 +226,22 @@ INSERT INTO `${prefix}accessright` (`idProfile`, `idMenu`, `idAccessProfile`) VA
 (3,196, 7),
 (4,196, 7);
 
+CREATE TABLE `${prefix}planningelementextension` (
+  `id` int(12) unsigned NOT NULL AUTO_INCREMENT,
+  `refType` varchar(100) DEFAULT NULL,
+  `refId` int(12) unsigned DEFAULT NULL,
+  `topId` int(12) unsigned DEFAULT NULL,
+  `topRefType` varchar(100) DEFAULT NULL,
+  `topRefId` int(12) unsigned DEFAULT NULL,
+  `wbs` varchar(100) DEFAULT NULL,
+  `wbsSortable` varchar(400) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=innoDB DEFAULT CHARSET=utf8 ;
+
+CREATE INDEX planningelementextensionReference ON `${prefix}planningelementextension` (refType,refId);
+CREATE INDEX planningelementextensionTopReference ON `${prefix}planningelementextension` (topRefType,topRefId);
+CREATE INDEX planningelementextensionWbsSortable ON `${prefix}planningelementextension` (wbsSortable);
+
 -- ==================================================================
 -- Misc
 -- ==================================================================

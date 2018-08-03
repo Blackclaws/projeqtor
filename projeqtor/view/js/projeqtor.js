@@ -2573,7 +2573,9 @@ function drawGantt() {
       //
       var realWork = parseFloat(item.realwork);
       var plannedWork = parseFloat(item.plannedwork);
+      var validatedWork = parseFloat(item.validatedwork);
       var progress = 0;
+      console.log(item.reftype+" #"+item.refid+" => validatedWork="+item.validatedWork+" => progress="+item.progress);
       if (item.isglobal && item.isglobal==1 && item.progress) { 
         progress=item.progress;
       } else {
