@@ -76,6 +76,17 @@ class Dependency extends SqlElement {
     $result="";
     $this->predecessorRefId=intval($this->predecessorRefId);
     $this->successorRefId=intval($this->successorRefId);
+    $old=$this->getOld();
+    if (!$old->id) { // On creation, for pseudo PE, insert elements
+      $pex=PlanningElementExtension::checkInsert($this->predecessorRefType,$this->predecessorRefId);
+      if ($pex and $pex->id) {
+        $this->predecessorId=$pex->getFakeId();
+      }
+      $pex=PlanningElementExtension::checkInsert($this->successorRefType,$this->successorRefId);
+      if ($pex and $pex->id) {
+        $this->successorId=$pex->getFakeId();
+      }
+    }
     // control duplicate
     $crit=array('successorRefType'=>$this->successorRefType, 'successorRefId'=>$this->successorRefId,
                 'predecessorRefType'=>$this->predecessorRefType, 'predecessorRefId'=>$this->predecessorRefId);
