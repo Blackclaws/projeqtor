@@ -2522,6 +2522,7 @@ function drawGantt() {
   // g.AddTaskItem(new JSGantt.TaskItem( 0, 'project', '', '', 'ff0000', '',
   // 0, '', '10', 1, '', 1, '' , 'test'));
   if (g && jsonData) {
+    console.log(jsonData.innerHTML);
     var store = eval('(' + jsonData.innerHTML + ')');
     var items = store.items;
     // var arrayKeys=new Array();
