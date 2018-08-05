@@ -1035,12 +1035,20 @@ class PlanningElement extends SqlElement {
     $dep=new Dependency();
     $depList=$dep->getSqlElementsFromCriteria($crit, false);
     foreach ($depList as $dep) {
-      $elt=new PlanningElement($dep->successorId);
+      $elt=new GlobalPlanningElement($dep->successorId);
       if ($elt->id and ! array_key_exists('#' . $elt->id, $result)) {
         $result['#' . $elt->id]=$elt;
         $resultSuccessor=$elt->getSuccessorItemsArray();
         $result=array_merge($result,$resultSuccessor);
-      }
+      } 
+//       else {
+//         $elt=new PlanningElementExtended($dep->successorId);
+//         if ($elt->id and ! array_key_exists('#' . $elt->id, $result)) {
+//           $result['#' . $elt->id]=$elt;
+//           $resultSuccessor=$elt->getSuccessorItemsArray();
+//           $result=array_merge($result,$resultSuccessor);
+//         }
+//       }
     }
     return $result;
   }
