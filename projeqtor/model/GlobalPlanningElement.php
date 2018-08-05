@@ -31,9 +31,6 @@ require_once('_securityCheck.php');
 class GlobalPlanningElement extends SqlElement {
 
   // List of fields that will be exposed in general user interface
-  
-
-  
   public $id;
   public $idProject;
   public $refType;
@@ -120,8 +117,31 @@ class GlobalPlanningElement extends SqlElement {
    * @return void
    */ 
   function __construct($id = NULL, $withoutDependentObjects=false) {
-    parent::__construct($id,$withoutDependentObjects);
-    if ($withoutDependentObjects) return;
+    if ($id) {
+      $pe=new PlanningElement($id,true);
+      if ($pe->id) { 
+        foreach ($this as $fld=>$val) {
+          if (property_exists($pe, $fld)) $this->$fld=$pe->$fld;
+        }
+        debugLog("gpe with id $id is pe for $this->refType #$this->refId");
+        debugLog($this);
+        return;
+      }
+    }
+    $id-=PlanningElementExtension::$_startId;
+    if ($id) {
+      $pex=new PlanningElementExtension($id,true);
+      if ($pex->id) {
+        $gpe=self::getSingleGlobalPlanningElement($pex->refType, $pex->refId);
+        foreach ($this as $fld=>$val) {
+          if (property_exists($gpe, $fld)) $this->$fld=$gpe->$fld;
+        }
+        $this->id=$this->id+PlanningElementExtension::$_startId;
+        debugLog("gpe with id $id is pex for $this->refType #$this->refId");
+        debugLog($this);
+        return;  
+      }
+    }
   }
 
    /** ==========================================================================
@@ -186,7 +206,7 @@ class GlobalPlanningElement extends SqlElement {
    * Return the specific databaseTableName
    * @return the databaseTableName
    */
-  public static function getTableNameQuery() {
+  public static function getTableNameQuery($limitToClass=null) {
     global $showIdleProjects;
     $paramDbPrefix=Parameter::getGlobalParameter('paramDbPrefix');
     $obj=new GlobalPlanningElement();
@@ -213,10 +233,14 @@ class GlobalPlanningElement extends SqlElement {
       null as idType, null as idStatus, null as idResource, 0 as isGlobal 
     FROM $peTable";
     $query.="\n    WHERE ".getAccesRestrictionClause('Activity',$peTable,$showIdleProjects);
+    if ($limitToClass) $query/=" and 1=0";
         //validatedStartFraction,plannedStartFraction,validatedEndFraction,plannedEndFraction,validatedCalculated,validatedExpenseCalculated,latestStartDate,latestEndDate,
     foreach (self::getGlobalizables() as $class=>$className) {
       if ($itemsToDisplay and $itemsToDisplay!=' ' and !in_array($class,$itemsToDisplayArray)) {
         continue;
+      }
+      if ($limitToClass and $class!=$limitToClass) {
+        continue; 
       }
       $clsObj=new $class();
       $table=$clsObj->getDatabaseTableName();
@@ -327,6 +351,31 @@ class GlobalPlanningElement extends SqlElement {
       echo "  <option value='$class'>$className</option>";
     }
     echo '</select>';
+  }
+  
+  public static function getSingleGlobalPlanningElement($refType, $refId) {
+    $query ="SELECT * FROM ".self::getTableNameQuery($refType)." WHERE refType='$refType' and refId=$refId";
+    $result=Sql::query($query);
+    $line = Sql::fetchLine($result); // 1 line only expected
+    $gpe=new GlobalPlanningElement();
+    foreach($gpe as $fld=>$val) {
+      if (isset($line[$fld])) {
+        $gpe->$fld=$line[$fld];
+      } else if (isset($line[strtolower($fld)])) { // for PostGres
+        $gpe->$fld=$line[strtolower($fld)];
+      }
+    }
+    return $gpe;
+    
+  }
+  
+  // For dep
+  public function getSuccessorItemsArray() {
+    $pe=new PlanningElement();
+    $pe->id=$this->id;
+    $pe->refType=$this->refType;
+    $pe->refOd=$this->refId;
+    return $pe->getSuccessorItemsArray();
   }
   
 }
