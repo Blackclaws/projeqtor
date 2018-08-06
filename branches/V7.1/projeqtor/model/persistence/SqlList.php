@@ -247,8 +247,9 @@ class SqlList {
         foreach ($val as $k => $v) {
           $val[$k] = Sql::str($v);
         }
+        if (count($val)==0) $val[0]=0;
         $query .= ' and ' . $obj->getDatabaseTableName() . '.' . $obj->getDatabaseColumnName($col) . ' IN (' . implode(',', $val) . ')';
-        } else {
+      } else {
         if ($val==null or $val=='') {
           $query .= ' and ' . $obj->getDatabaseTableName() . '.' . $obj->getDatabaseColumnName($col) . " is null";
         } else {
