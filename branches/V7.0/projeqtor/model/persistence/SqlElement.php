@@ -3250,7 +3250,13 @@ abstract class SqlElement {
    * @return string the name of the data table
    */
   public function getDatabaseTableName() {
-    return $this->getStaticDatabaseTableName ();
+    if (substr(get_class($this),-4)=='Main') {
+      $notMain=substr(get_class($this),0,-4);
+      $obj=new $notMain();
+      return $obj->getDatabaseTableName();
+    } else {
+      return $this->getStaticDatabaseTableName ();
+    }
   }
 
   /**
