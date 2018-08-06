@@ -5137,13 +5137,17 @@ function changeStatusNotification(objId, objStatusId) {
 //=============================================================================
 
 //gautier #providerTerm
-function editProviderTerm(idProviderOrder,isLine,id,name,date,tax,discount,untaxed,taxAmount,fullAmount) {
+function editProviderTerm(idProviderOrder,isLine,id,name,date,tax,discount,untaxed,taxAmount,fullAmount,totalUntaxed) {
   affectationLoad=true;
   if (checkFormChangeInProgress()) {
     showAlert(i18n('alertOngoingChange'));
     return;
   }
+  var percent = untaxed *100/ totalUntaxed;
+  
   var callBack = function () {
+    
+    
     if(name){
       dijit.byId("providerTermName").set('value', name);
     }
@@ -5156,15 +5160,19 @@ function editProviderTerm(idProviderOrder,isLine,id,name,date,tax,discount,untax
     if (discount) {
       dijit.byId("providerTermDiscount").set('value', discount);
     }
-    if (untaxed) {
-      dijit.byId("providerTermUntaxedAmount").set('value', untaxed);
+    if( isLine == 'false'){
+      dijit.byId("providerTermPercent").set('value', percent);
+      
+      if (untaxed) {
+        dijit.byId("providerTermUntaxedAmount").set('value', untaxed);
+      }
+      if (taxAmount) {
+        dijit.byId("providerTermTaxAmount").set('value', taxAmount);
+      } 
+      if (fullAmount) {
+        dijit.byId("providerTermFullAmount").set('value', fullAmount);
+      } 
     }
-    if (taxAmount) {
-      dijit.byId("providerTermTaxAmount").set('value', taxAmount);
-    } 
-    if (fullAmount) {
-      dijit.byId("providerTermFullAmount").set('value', fullAmount);
-    } 
     dijit.byId("dialogProviderTerm").show();
     setTimeout("affectationLoad=false", 500);
   };
