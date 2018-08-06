@@ -299,6 +299,7 @@ function foreignKeyOnlyAlias($field) {
  * @return boolean : true if field passed in parameter is a foreign Key
   */
 function isForeignKey($field, $class) {
+    $field=foreignKeyWithoutAlias($field); // Will allow to have xxxx__idYyyy, not only idXxxx_idYyyy
     if (substr($field,0,2)=='id' and 
         strlen($field)>2 and 
         $field!='idle' and

@@ -310,6 +310,7 @@
     $na=trim($na,"'");
     if (!$na) $na=null;
     $arrayObj=array();
+    $rootWbsArray=array();
     $d=new Dependency();
     echo '{"identifier":"id",' ;
     echo ' "items":[';
@@ -383,7 +384,21 @@
           } else {
             $line['progress']='0';
           }
-          debugLog($line['reftype'].' #'.$line['refid'].' =>'.$line['progress'].'% =>realEndDate='.$line['realenddate']);
+          if (strpos($line['wbs'],'._#')!==false) {
+            $rootWbs=substr($line['wbs'],0,strpos($line['wbs'],'._#'));
+            if (! isset($rootWbsArray[$rootWbs])) {
+              $rootWbsSortable=formatSortableWbs($rootWbs);
+              $pe=SqlElement::getSingleSqlElementFromCriteria('PlanningElement', array('wbsSortable'=>$rootWbsSortable));
+              $topId=$pe->id;
+              $max=substr($pe->getMaxValueFromCriteria('wbsSortable',array('topId'=>$topId)),-3);
+              $rootWbsArray[$rootWbs]=array('topId'=>$topId,'val'=>$max);
+            }
+            $rootWbsArray[$rootWbs]['val']+=1;
+            $wbsVal=$rootWbsArray[$rootWbs]['val'];
+            $line['wbs']=$rootWbs.'.'.$wbsVal;
+            $line['wbssortable']=formatSortableWbs($line['wbs']);
+            $line['topid']= $rootWbsArray[$rootWbs]['topId'];
+          }
         } else if ($line["plannedwork"]>0 and $line["leftwork"]==0 and $line["elementary"]==1 ) {
         	$line["plannedstartdate"]='';
         	$line["plannedenddate"]='';
