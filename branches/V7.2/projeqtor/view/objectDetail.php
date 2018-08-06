@@ -5600,7 +5600,7 @@ function drawProviderTermFromObject($list, $obj, $type, $refresh=false) {
       if (!$print) {
         echo '<td class="assignData'.$idleClass.'" style="text-align:center;white-space: nowrap;">';
         if ($canUpdate and !$print) {
-          echo '  <a onClick="editProviderTerm(\''.$obj->id.'\',\''.$isLineProviderTerm.'\',\''.$term->id.'\',\''.$term->name.'\',\''.$term->date.'\',\''.$term->taxPct.'\',\''.$obj->discountRate.'\',\''.$term->untaxedAmount.'\',\''.$term->taxAmount.'\',\''.$term->fullAmount.'\');" '.'title="'.i18n('editProviderTerm').'" > '.formatSmallButton('Edit').'</a>';
+          echo '  <a onClick="editProviderTerm(\''.$obj->id.'\',\''.$isLineProviderTerm.'\',\''.$term->id.'\',\''.$term->name.'\',\''.$term->date.'\',\''.htmlDisplayNumericWithoutTrailingZeros($term->taxPct).'\',\''.htmlDisplayNumericWithoutTrailingZeros($obj->discountRate).'\',\''.$term->untaxedAmount.'\',\''.$term->taxAmount.'\',\''.$term->fullAmount.'\',\''.$obj->totalUntaxedAmount.'\');" '.'title="'.i18n('editProviderTerm').'" > '.formatSmallButton('Edit').'</a>';
         }
         if ($canDelete and !$print) {
           echo '  <a onClick="removeProviderTerm('."'".htmlEncode($term->id)."'".');" '.'title="'.i18n('removeProviderTerm').'" > '.formatSmallButton('Remove').'</a>';
@@ -5614,7 +5614,7 @@ function drawProviderTermFromObject($list, $obj, $type, $refresh=false) {
       }
       echo  '<td class="assignData'.$idleClass.'" align="center"'.$goto.'>'.htmlEncode($term->id).'</td>';
       echo  '<td class="assignData'.$idleClass.'" align="center" style="white-space: nowrap;">'.htmlFormatDate($term->date).'</td>';
-      echo  '<td class="assignData'.$idleClass.'" align="center" style="white-space: nowrap;">'.htmlEncode($term->fullAmount).'</td>';
+      echo  '<td class="assignData'.$idleClass.'" align="center" style="white-space: nowrap;">'.htmlDisplayNumericWithoutTrailingZeros(htmlEncode($term->fullAmount)).'</td>';
       echo  '<td class="assignData'.$idleClass.'" align="center" style="white-space: nowrap;">'.htmlFormatDate($term->idProviderBill).'</td>';
       echo '</tr>';
     

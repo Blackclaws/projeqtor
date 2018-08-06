@@ -43,11 +43,68 @@ Sql::beginTransaction();
 $result = "";
 
 if($mode == 'edit'){
+  if ($isLine == 1){
+  $untaxedAmount = RequestHandler::getNumeric('providerTermUntaxedAmount');
+  $taxAmount = RequestHandler::getNumeric('providerTermTaxAmount');
+  $fullAmount = RequestHandler::getNumeric('providerTermFullAmount');
+    $providerTerm=new ProviderTerm($idProviderTerm);
+    $providerTerm->idProject = $idProject;
+    $providerTerm->idProviderOrder = $idProviderOrder;
+    $providerTerm->date = $date;
+    $providerTerm->name = $name;
+    $providerTerm->untaxedAmount = $untaxedAmount;
+    $providerTerm->taxPct = $taxPct;
+    $providerTerm->taxAmount = $taxAmount;
+    $providerTerm->fullAmount = $fullAmount;
+    $res=$providerTerm->save();
+ }else{
+   $providerTerm=new ProviderTerm($idProviderTerm);
+   $providerTerm->idProject = $idProject;
+   $providerTerm->idProviderOrder = $idProviderOrder;
+   $providerTerm->date = $date;
+   $providerTerm->name = $name;
+   $providerTerm->taxPct = $taxPct;
+   
+   $billLine = new BillLine();
+   $critArray = array("refType"=>"ProviderOrder","refId"=>$idProviderOrder);
+   $number=$billLine->countSqlElementsFromCriteria($critArray);
+   
+   $providerTerm->untaxedAmount = 0;
+   $providerTerm->taxAmount = 0;
+   $providerTerm->fullAmount =0;
+   
+   for($i=1;$i<=$number;$i++){
+     $untaxedAmount = RequestHandler::getNumeric('providerTermUntaxedAmount'.$i);
+     $taxAmount = RequestHandler::getNumeric('providerTermTaxAmount'.$i);
+     $fullAmount = RequestHandler::getNumeric('providerTermFullAmount'.$i);
+     $discount = RequestHandler::getNumeric('providerTermDiscountAmount'.$i);
+     $providerTerm->untaxedAmount += ($untaxedAmount-$discount);
+     $providerTerm->taxAmount += $taxAmount;
+     $providerTerm->fullAmount += $fullAmount;
+   }
+   $res=$providerTerm->save();
 
-//   $idProviderTerm = RequestHandler::getId('idAffectation');
-//   $providerTerm=new ProviderTerm($idProviderTerm);
-//  $result=$providerTerm->save();
-
+   $billLine = new BillLine();
+   $critArray = array("refType"=>"ProviderTerm","refId"=>$providerTerm->id);
+   $listBillLineList=$billLine->getSqlElementsFromCriteria($critArray);
+   $tab = array();
+   $i = 1;
+   foreach ($listBillLineList as $list){
+     $tab[$i] = $list->id;
+     $i++;
+   }
+     for($i=1;$i<=$number;$i++){
+       $rate = RequestHandler::getValue('providerTermPercent'.$i);
+       $idBillLine = RequestHandler::getId('providerOrderBillLineId'.$i);
+       $newBillLine = new BillLine($tab[$i]);
+       $newBillLine->refType = "ProviderTerm";
+       $newBillLine->refId = $providerTerm->id;
+       $newBillLine->idBillLine = $idBillLine;
+       $newBillLine->rate = $rate;
+       $newBillLine->price = RequestHandler::getNumeric('providerTermUntaxedAmount'.$i);
+       $newBillLine->save();
+     }
+ }
 }else{
 
   if ($isLine ==  'false'){
@@ -99,10 +156,10 @@ if($mode == 'edit'){
       $newBillLine->save();
     }
   }
-  
-  if (!$result) {
-    $result=$res;
-  }
+}
+
+if (!$result) {
+  $result=$res;
 }
 // Message of correct saving
 displayLastOperationStatus($result);

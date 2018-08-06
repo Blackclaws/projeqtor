@@ -52,7 +52,6 @@ if(isset ($isLineMulti)){
     $isLine = false;
   }
 }
-
 ?>
   <table>
     <tr>
@@ -62,6 +61,7 @@ if(isset ($isLineMulti)){
         <input id="providerOrderProject" name="providerOrderProject" type="hidden" value="<?php echo $providerOrder->idProject;?>" />
         <input id="providerOrderId" name="providerOrderId" type="hidden" value="<?php echo $providerOrder->id;?>" />
         <input id="providerOrderIsLine" name="providerOrderIsLine" type="hidden" value="<?php echo $isLine;?>" />
+        <?php if($mode=='edit'){ ?>  <input id="idProviderTerm" name="idProviderTerm" type="hidden" value="<?php echo $idProviderTerm;?>" />  <?php } ?>
          <table>
           <tr>
              <td class="dialogLabel" >
@@ -130,9 +130,20 @@ if(isset ($isLineMulti)){
               foreach ($termList as $term) {
                 $maxValue -= $term->untaxedAmount ;
               }
+              if($mode == 'edit'){
+                $providerTermEdit = new ProviderTerm($idProviderTerm);    
+                $NewMaxValue = $maxValue+$providerTermEdit->untaxedAmount;
+              }
               $percent = (100*$maxValue/$providerOrder->totalUntaxedAmount);
               $taxAmount = ($maxValue*$providerOrder->taxPct)/100;
               $totalFullAmount = $maxValue+$taxAmount;
+              if($mode == 'edit'){
+                $MaxPercent = $percent;
+                $percent = (100*$providerTermEdit->untaxedAmount/$providerOrder->totalUntaxedAmount);
+                $MaxPercent += $percent;
+                $taxAmount = ($providerTermEdit->untaxedAmount*$providerOrder->taxPct)/100;
+                $totalFullAmount = $providerTermEdit->untaxedAmount+$taxAmount;
+              }
           ?>
           <table>  
           <tr>
@@ -144,9 +155,9 @@ if(isset ($isLineMulti)){
             <div dojoType="dijit.form.NumberTextBox" 
               id="providerTermUntaxedAmount" name="providerTermUntaxedAmount"
               style="width: 100px;"
-              constraints="{max:<?php echo $maxValue ;?>}"
+              constraints="{max:<?php if($mode=='edit'){echo $NewMaxValue;}else{ echo $maxValue ;}?>}"
               onChange="providerTermLine(<?php echo $providerOrder->totalUntaxedAmount; ?>);"
-              value="<?php if($providerOrder->totalUntaxedAmount){echo $maxValue;}?>" 
+              value="<?php if($mode=='edit'){echo $providerTermEdit->untaxedAmount ;}else { if($providerOrder->totalUntaxedAmount){echo $maxValue;}}?>" 
               class="input"
               <?php echo $keyDownEventScript;?>
             </div>
@@ -160,7 +171,7 @@ if(isset ($isLineMulti)){
             <div dojoType="dijit.form.NumberTextBox" 
               id="providerTermPercent" name="providerTermPercent"
               style="width: 100px;"
-              constraints="{max:<?php echo $percent ;?>}"
+              constraints="{max:<?php if($mode=='edit'){echo $MaxPercent;}else{echo $percent;}?>}"
               onChange="providerTermLinePercent(<?php echo $providerOrder->totalUntaxedAmount; ?>);"
               value="<?php echo $percent;?>" 
               class="input"
@@ -250,8 +261,10 @@ if(isset ($isLineMulti)){
                 foreach ($billLineList2 as $bill2){
                   $maxValue -= $bill2->price;
                 }
-                if($maxValue==0){
-                  continue;
+                if($mode != 'edit'){
+                  if($maxValue==0){
+                    continue;
+                  }
                 }
                 $discount = 0;
                 $percent = (100*$maxValue/$bill->amount);
@@ -260,6 +273,24 @@ if(isset ($isLineMulti)){
                 }
                 $taxAmount = (($maxValue-$discount)*$providerOrder->taxPct)/100;
                 $totalFullAmount = $maxValue - $discount +$taxAmount;
+                
+                if($mode == 'edit'){
+                  $discount = 0;
+                  $billLine3 = new BillLine();
+                  $critArray = array("refType"=>"ProviderTerm","idBillLine"=>$bill->id , "refId"=>$idProviderTerm);
+                  $billLineList3=$billLine2->getSqlElementsFromCriteria($critArray);
+                  foreach ($billLineList3 as $billLineTerm){
+                    $newPercent = $percent;
+                    $percent = $billLineTerm->rate;
+                    $newPercent +=$percent; 
+                    if($providerOrder->discountRate > 0){
+                      $discount = ($billLineTerm->price*$providerOrder->discountRate/100);
+                    }
+                    $taxAmount = (($billLineTerm->price-$discount)*$providerOrder->taxPct)/100;
+                    $totalFullAmount = $billLineTerm->price - $discount +$taxAmount;
+                    $newMaxValue = $billLineTerm->price+$maxValue;
+                  }
+                }
               ?>
                <tr>
                  <td style="width:50px; <?php echo $style2;?> ">
@@ -299,7 +330,11 @@ if(isset ($isLineMulti)){
                   <div dojoType="dijit.form.NumberTextBox" 
                     id="providerTermPercent<?php echo $bill->line;?>" name="providerTermPercent<?php echo $bill->line;?>"
                     style="width:35px;"
-                    constraints="{max:<?php echo $percent ;?>}"
+                    constraints="{max:<?php if($mode=='edit'){
+                                              echo $newPercent;
+                                            }else{
+                                              echo $percent;}?>
+                                  }"
                     value="<?php echo $percent;?>" 
                      onChange="providerTermLinePercentBilleLine(<?php echo $bill->line; ?>);"
                     class="input"
@@ -312,8 +347,14 @@ if(isset ($isLineMulti)){
                   <div dojoType="dijit.form.NumberTextBox" 
                     id="providerTermUntaxedAmount<?php echo $bill->line;?>" name="providerTermUntaxedAmount<?php echo $bill->line;?>"
                     style="width: 100px;"
-                    constraints="{max:<?php echo $maxValue ;?>}"
-                    value="<?php echo $maxValue;?>" 
+                    constraints="{max:<?php if($mode=='edit'){
+                                              echo $newMaxValue;
+                                            }else{
+                                              echo $maxValue;}?>}"
+                    value="<?php if($mode=='edit'){
+                                  echo $billLineTerm->price;
+                                 }else{
+                                  echo $maxValue;}?>" 
                     class="input"
                     onChange="providerTermLineBillLine(<?php echo $bill->line; ?>);"
                     <?php echo $keyDownEventScript;?>
