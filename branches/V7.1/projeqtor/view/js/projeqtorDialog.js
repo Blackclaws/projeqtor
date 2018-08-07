@@ -7375,8 +7375,7 @@ function showBigImage(objectClass, objectId, node, title, hideImage, nocache) {
   var height=node.getBoundingClientRect().height;
   var width=node.getBoundingClientRect().width;
   if (!objectClass && !objectId) top+=15;
-  if (!height)
-    height=40;
+  if (!height) height=40;
   if (objectClass == 'Affectable' || objectClass == 'Resource'
       || objectClass == 'User' || objectClass == 'Contact') {
     imageUrl="../files/thumbs/Affectable_" + objectId + "/thumb80.png";
@@ -7396,7 +7395,7 @@ function showBigImage(objectClass, objectId, node, title, hideImage, nocache) {
       alone='Alone';
     }
     if (title) {
-      htmlPhoto+='<div class="thumbBigImageTitle' + alone + '">' + title
+      htmlPhoto+='<div id="centerThumb80TitleContainer" class="thumbBigImageTitle' + alone + '">' + title
           + '</div>';
     }
     var topPx=(top - 40 + (height / 2)) + "px";
@@ -7408,7 +7407,17 @@ function showBigImage(objectClass, objectId, node, title, hideImage, nocache) {
     centerThumb80.style.top=topPx;
     centerThumb80.style.left=leftPx;
     centerThumb80.style.display="block";
+    var titleDivRect=dojo.byId('centerThumb80TitleContainer').getBoundingClientRect();
+    var globalDivRect=document.documentElement.getBoundingClientRect();
+    console.log("top="+titleDivRect.top+" height="+titleDivRect.height);
+    if (titleDivRect.top+titleDivRect.height+50>globalDivRect.height) {
+      var newTop=globalDivRect.height-titleDivRect.height-50;
+      if (newTop<0) newTop=0;
+      console.log("newTop="+newTop);
+      centerThumb80.style.top=newTop+'px';
+    }
   }
+  
 }
 function hideBigImage(objectClass, objectId) {
   var centerThumb80=dojo.byId("centerThumb80");
