@@ -123,8 +123,6 @@ class GlobalPlanningElement extends SqlElement {
         foreach ($this as $fld=>$val) {
           if (property_exists($pe, $fld)) $this->$fld=$pe->$fld;
         }
-        debugLog("gpe with id $id is pe for $this->refType #$this->refId");
-        debugLog($this);
         return;
       }
     }
@@ -136,9 +134,7 @@ class GlobalPlanningElement extends SqlElement {
         foreach ($this as $fld=>$val) {
           if (property_exists($gpe, $fld)) $this->$fld=$gpe->$fld;
         }
-        $this->id=$this->id+PlanningElementExtension::$_startId;
-        debugLog("gpe with id $id is pex for $this->refType #$this->refId");
-        debugLog($this);
+        //$this->id=$id+PlanningElementExtension::$_startId;
         return;  
       }
     }
@@ -222,6 +218,7 @@ class GlobalPlanningElement extends SqlElement {
     $itemsToDisplay=Parameter::getUserParameter('globalPlanningSelectedItems');
     $itemsToDisplayArray=explode(',', $itemsToDisplay);
     if (count($itemsToDisplayArray)==0 or (count($itemsToDisplayArray)==1 and $itemsToDisplayArray[0]=='none')) return $pe->getDatabaseTableName();
+    $excludedProjectsListClause="idProject not in ".transformValueListIntoInClause(SqlList::getListWithCrit("Project", array('excludeFromGlobalPlanning'=>'1'),"id"));
     $query="\n  ( SELECT id,idProject,refType,refId,refName,topId,topRefType,topRefId,
       priority,elementary,idle,done,cancelled,idPlanningMode,idBill,
       initialStartDate,validatedStartDate,plannedStartDate,realStartDate,
@@ -233,7 +230,7 @@ class GlobalPlanningElement extends SqlElement {
       null as idType, null as idStatus, null as idResource, 0 as isGlobal 
     FROM $peTable";
     $query.="\n    WHERE ".getAccesRestrictionClause('Activity',$peTable,$showIdleProjects);
-    if ($limitToClass) $query/=" and 1=0";
+    if ($limitToClass) $query.=" and 1=0";
         //validatedStartFraction,plannedStartFraction,validatedEndFraction,plannedEndFraction,validatedCalculated,validatedExpenseCalculated,latestStartDate,latestEndDate,
     foreach (self::getGlobalizables() as $class=>$className) {
       if ($itemsToDisplay and $itemsToDisplay!=' ' and !in_array($class,$itemsToDisplayArray)) {
@@ -276,16 +273,13 @@ class GlobalPlanningElement extends SqlElement {
         $query.="\n        LEFT JOIN $weTable AS we ON we.refType='$class' AND we.refId=$table.id ";
       }
       // Add control rights
-//       $clause=getAccesRestrictionClause($class,$table, false);
-//       if ($class=='Project') {
-//          $query.=" WHERE (".$clause." or ".$table.".codeType='TMP' )"; // Templates projects are always visible in projects list
-//       } else {
-//         $query.=" WHERE ".$clause;
-//       }
-//       $crit=$clsObj->getDatabaseCriteria();
-//       foreach ($crit as $col => $val) {
-//         $query.= " and $table.".$clsObj->getDatabaseColumnName($col)."=".Sql::str($val);
-//       }
+      $clause=getAccesRestrictionClause($class,$table, false);
+      $query.=" WHERE ".$clause;
+      $crit=$clsObj->getDatabaseCriteria();
+      foreach ($crit as $col => $val) {
+        $query.= " and $table.".$clsObj->getDatabaseColumnName($col)."=".Sql::str($val);
+      }
+      $query.="and $table.$excludedProjectsListClause";
     }
     $query.=')';
     return $query;
@@ -354,7 +348,7 @@ class GlobalPlanningElement extends SqlElement {
   }
   
   public static function getSingleGlobalPlanningElement($refType, $refId) {
-    $query ="SELECT * FROM ".self::getTableNameQuery($refType)." WHERE refType='$refType' and refId=$refId";
+    $query ="SELECT * FROM ".self::getTableNameQuery($refType)." AS globalPeTable WHERE globalPeTable.refType='$refType' and globalPeTable.refId=$refId";
     $result=Sql::query($query);
     $line = Sql::fetchLine($result); // 1 line only expected
     $gpe=new GlobalPlanningElement();
@@ -376,6 +370,13 @@ class GlobalPlanningElement extends SqlElement {
     $pe->refType=$this->refType;
     $pe->refOd=$this->refId;
     return $pe->getSuccessorItemsArray();
+  }
+  public function getPredecessorItemsArray() {
+    $pe=new PlanningElement();
+    $pe->id=$this->id;
+    $pe->refType=$this->refType;
+    $pe->refOd=$this->refId;
+    return $pe->getPredecessorItemsArray();
   }
   
 }

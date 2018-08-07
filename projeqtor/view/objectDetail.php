@@ -5402,7 +5402,7 @@ function drawAffectationsResourceTeamFromObject($list, $obj, $type, $refresh=fal
   $lstPluginEvt=Plugin::getEventScripts('list', $pluginObjectClass);
   foreach ($lstPluginEvt as $script) {
     require $script; // execute code
-  }
+  } 
   $listTemp=$tableObject;
   $list=array();
   foreach ($listTemp as $aff) {
@@ -5483,11 +5483,11 @@ function drawAffectationsResourceTeamFromObject($list, $obj, $type, $refresh=fal
           echo '  <a onClick="editAffectationResourceTeam('."'".htmlEncode($aff->id)."'".",'".get_class($obj)."'".",'".$type."'".",'".htmlEncode($aff->idResource)."'".",'".htmlEncode($aff->rate)."'".",'".htmlEncode($aff->idle)."'".",'".$aff->startDate."'".",'".htmlEncode($aff->endDate)."'".');" '.'title="'.i18n('editAffectation').'" > '.formatSmallButton('Edit').'</a>';
         }
         if ($canDelete and !$print) {
-          echo '  <a onClick="removeAffectationResourceTeam('."'".htmlEncode($aff->id)."'".');" '.'title="'.i18n('removeAffectation').'" > '.formatSmallButton('Remove').'</a>';
+          echo '  <a onClick="removeAffectationResourceTeam('."'".htmlEncode($aff->id)."'".',\''.$aff->idResource.'\');" '.'title="'.i18n('removeAffectation').'" > '.formatSmallButton('Remove').'</a>';
         }
         echo '</td>';
       }
-      echo '<td class="assignData'.$idleClass.'" align="center">'.htmlEncode($aff->id).'</td>';
+      echo '<td class="assignData'.$idleClass.'" align="center">'.htmlEncode($aff->idResource).'</td>';
 
       echo '<td class="assignData'.$idleClass.'" align="left"'.$goto.'>';
       if ($aff->description and !$print) {
@@ -5803,30 +5803,39 @@ function drawAffectationsFromObject($list, $obj, $type, $refresh=false) {
     $res=new Resource($aff->idResource);
     $isResource=($res->id)?true:false;
     $goto="";
+    $idToShow=$aff->id;
+    $classToShow='Affectation';
     if ($type=='Project') {
       $name=$aff->name;
       if (!$print and securityCheckDisplayMenu(null, 'Project') and securityGetAccessRightYesNo('menuProject', 'read', '')=="YES") {
         $goto=' onClick="gotoElement(\'Project\',\''.htmlEncode($aff->idProject).'\');" style="cursor: pointer;" ';
       }
+      $idToShow=$aff->idProject;
+      $classToShow='Project';
     } else {
       $name=$aff->name;
       $typeAffectable=$type;
       #resourceTeam 
+      $idToShow=$aff->idResource;
+      $classToShow='Resource';
       if($typeAffectable=='ResourceAll'){
         $resource=new ResourceAll($aff->idResource);
         if($resource->isResourceTeam){
           if(securityCheckDisplayMenu(null, 'ResourceTeam') and securityGetAccessRightYesNo('menuResourceTeam', 'read', '')=="YES"){
             $goto=' onClick="gotoElement(\'ResourceTeam\',\''.htmlEncode($aff->idResource).'\');" style="cursor: pointer;" ';
           }
+          $classToShow='ResourceTeam';
         }else{
           if (!$print and $isResource and securityCheckDisplayMenu(null, 'Resource') and securityGetAccessRightYesNo('menuResource', 'read', '')=="YES") {
             $goto=' onClick="gotoElement(\'Resource\',\''.htmlEncode($aff->idResource).'\');" style="cursor: pointer;" ';
           }
+          $classToShow='Resource';
         }
       }else{
         if (!$print and securityCheckDisplayMenu(null, $typeAffectable) and securityGetAccessRightYesNo('menu'.$typeAffectable, 'read', '')=="YES") {
           $goto=' onClick="gotoElement(\''.$typeAffectable.'\',\''.htmlEncode($aff->idResource).'\');" style="cursor: pointer;" ';
         }
+        $classToShow=$typeAffectable;
       }
      
     }
@@ -5838,7 +5847,7 @@ function drawAffectationsFromObject($list, $obj, $type, $refresh=false) {
           echo '  <a onClick="editAffectation('."'".htmlEncode($aff->id)."'".",'".get_class($obj)."'".",'".$type."'".",'".htmlEncode($aff->idResource)."'".",'".htmlEncode($aff->idProject)."'".",'".htmlEncode($aff->rate)."'".",'".htmlEncode($aff->idle)."'".",'".$aff->startDate."'".",'".htmlEncode($aff->endDate)."'".','.htmlEncode($aff->idProfile).');" '.'title="'.i18n('editAffectation').'" > '.formatSmallButton('Edit').'</a>';
         }
         if ($canDelete and !$print) {
-          echo '  <a onClick="removeAffectation('."'".htmlEncode($aff->id)."'".','.(($aff->idResource==getSessionUser()->id)?'1':'0').');" '.'title="'.i18n('removeAffectation').'" > '.formatSmallButton('Remove').'</a>';
+          echo '  <a onClick="removeAffectation(\''.htmlEncode($aff->id).'\','.(($aff->idResource==getSessionUser()->id)?'1':'0').',\''.$classToShow.'\',\''.$idToShow.'\');" '.'title="'.i18n('removeAffectation').'" > '.formatSmallButton('Remove').'</a>';
         }
         if ($canUpdate and !$print and $isResource and !$aff->idle) {
           echo '  <a onClick="replaceAffectation('."'".htmlEncode($aff->id)."'".",'".get_class($obj)."'".",'".$type."'".",'".htmlEncode($aff->idResource)."'".",'".htmlEncode($aff->idProject)."'".",'".htmlEncode($aff->rate)."'".",'".htmlEncode($aff->idle)."'".",'".$aff->startDate."'".",'".htmlEncode($aff->endDate)."'".','.htmlEncode($aff->idProfile).');" '.'title="'.i18n('replaceAffectation').'" > '.formatSmallButton('SwitchUser').'</a>';
@@ -5852,7 +5861,7 @@ function drawAffectationsFromObject($list, $obj, $type, $refresh=false) {
         
         echo '</td>';
       }
-      echo '<td class="assignData'.$idleClass.'" align="center">'.htmlEncode($aff->id).'</td>';
+      echo '<td class="assignData'.$idleClass.'" align="center">'.htmlEncode($idToShow).'</td>';
       /*
        * if ($idProj) {
        * echo '<td class="assignData' . $idleClass . '" align="left"' . $goto . '>' . htmlEncode($name) . '</td>';

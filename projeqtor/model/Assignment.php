@@ -138,6 +138,12 @@ class Assignment extends SqlElement {
     
     $this->plannedWork = $this->realWork + $this->leftWork;
     
+    if ($this->refType=='Meeting' and ! $this->plannedStartDate) {
+      $meeting=new $this->refType($this->refId);
+      $this->plannedStartDate=$meeting->meetingDate;
+      $this->plannedEndDate=$meeting->meetingDate;
+    }
+    
     $r=new ResourceAll($this->idResource);
     $this->isResourceTeam=$r->isResourceTeam; // Store isResourceTeam from Resource for convenient use
       
