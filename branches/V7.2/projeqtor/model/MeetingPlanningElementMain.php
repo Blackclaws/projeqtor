@@ -344,7 +344,11 @@ class MeetingPlanningElementMain extends PlanningElement {
   	}
   	if ($this->refType=='Meeting') {
   	  $this->validatedStartDate=$meeting->meetingDate;
+  	  $this->plannedStartDate=$meeting->meetingDate;
+  	  if ($this->realStartDate) $this->realStartDate=$meeting->meetingDate;
   	  $this->validatedEndDate=$meeting->meetingDate;
+  	  $this->plannedEndDate=$meeting->meetingDate;
+  	  if ($this->realStartDate) $this->realEndDate=$meeting->meetingDate;    
   	} else if ($this->refType=='PeriodicMeeting') {
       $this->validatedStartDate=$meeting->periodicityStartDate;
     }
