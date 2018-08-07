@@ -978,7 +978,7 @@ class PlanningElement extends SqlElement {
     $dep=new Dependency();
     $depList=$dep->getSqlElementsFromCriteria($crit, false);
     foreach ($depList as $dep) {
-      $elt=new PlanningElement($dep->predecessorId);
+      $elt=new GlobalPlanningElement($dep->predecessorId);
       if ($elt->id and ! array_key_exists('#' . $elt->id, $result)) {
         $result['#' . $elt->id]=$elt;
         $resultPredecessor=$elt->getPredecessorItemsArray();

@@ -242,16 +242,38 @@ CREATE INDEX planningelementextensionReference ON `${prefix}planningelementexten
 CREATE INDEX planningelementextensionTopReference ON `${prefix}planningelementextension` (topRefType,topRefId);
 CREATE INDEX planningelementextensionWbsSortable ON `${prefix}planningelementextension` (wbsSortable);
 
+ALTER TABLE `${prefix}project`
+ADD `excludeFromGlobalPlanning` int(1) UNSIGNED DEFAULT 0;
+
 -- ==================================================================
 -- Misc
 -- ==================================================================
 
+-- change caption for Meeting menu context
 UPDATE `${prefix}menu`set menuClass=REPLACE(menuClass,'Meeting','Review') WHERE menuClass LIKE '%Meeting%';
 
+-- manage milestones on activities
 ALTER TABLE `${prefix}activity`
 ADD `idMilestone` int(12) UNSIGNED DEFAULT NULL;
 
+-- manage new configuration menu context
 UPDATE `${prefix}menu` SET menuClass='Work Configuration EnvironmentalParameter' WHERE id in (86,87,141,142,179);
 
+-- remove dojo editor
 UPDATE `${prefix}parameter` set parameterValue='CK' where parameterValue='Dojo';
 UPDATE `${prefix}parameter` set parameterValue='CKInline' where parameterValue='DojoInline';
+
+--- ==================================================================
+--- Fix
+--- ==================================================================
+
+update `${prefix}planningelement` set plannedStartDate=(select meetingDate from `${prefix}meeting` as meet where meet.id=refId) where refType = "Meeting";
+update `${prefix}planningelement` set plannedEndDate=(select meetingDate from `${prefix}meeting` as meet where meet.id=refId) where refType = "Meeting";
+update `${prefix}planningelement` set validatedStartDate=(select meetingDate from `${prefix}meeting` as meet where meet.id=refId) where refType = "Meeting";
+update `${prefix}planningelement` set validatedEndDate=(select meetingDate from `${prefix}meeting` as meet where meet.id=refId) where refType = "Meeting";
+
+update `${prefix}planningelement` set realStartDate=(select meetingDate from `${prefix}meeting` as meet where meet.id=refId and meet.handled=1) where refType = "Meeting";
+update `${prefix}planningelement` set realEndDate=(select meetingDate from `${prefix}meeting` as meet where meet.id=refId and meet.done=1) where refType = "Meeting";
+
+update `${prefix}assignment` set plannedStartDate=(select meetingDate from `${prefix}meeting` as meet where meet.id=refId) where refType = "Meeting";
+update `${prefix}assignment` set plannedEndDate=(select meetingDate from `${prefix}meeting` as meet where meet.id=refId) where refType = "Meeting";

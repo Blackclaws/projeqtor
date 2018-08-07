@@ -69,7 +69,11 @@ class ProjectMain extends SqlElement {
   public $idTrend;
   public $idOverallProgress;
   public $fixPlanning;
+  public $_lib_helpFixPlanning;
   public $isUnderConstruction;
+  public $_lib_helpUnderConstruction;
+  public $excludeFromGlobalPlanning;
+  public $_lib_helpExcludeFromGlobalPlanning;
   public $handled;
   public $handledDate;
   public $done;
@@ -122,6 +126,12 @@ class ProjectMain extends SqlElement {
     <th field="done" width="5%" formatter="booleanFormatter" >${done}</th>
     <th field="idle" width="5%" formatter="booleanFormatter" >${idle}</th>
     ';
+  
+  private static $_fieldsTooltip = array(
+      "fixPlanning"=> "tooltipFixPlanning",
+      "isUnderConstruction" => "tooltipUnderConstruction",
+      "excludeFromGlobalPlanning" => "tooltipExcludeFromGlobalPlanning",
+  );
 // Removed in 1.2.0 
 //     <th field="wbs" from="ProjectPlanningElement" width="5%" >${wbs}</th>
 // Removed in 2.0.1
@@ -140,7 +150,10 @@ class ProjectMain extends SqlElement {
                                   "idleDate"=>"nobr",
                                   "cancelled"=>"nobr",
                                   "organizationInherited"=>"hidden",
-                                  "organizationElementary"=>"hidden"
+                                  "organizationElementary"=>"hidden",
+                                  "fixPlanning"=>"nobr",
+                                  "underConstruction"=>"nobr",
+                                  "excludeFromGlobalPlanning"=>"nobr"
   );   
  
   private static $_colCaptionTransposition = array('idResource'=>'manager',
@@ -165,7 +178,7 @@ class ProjectMain extends SqlElement {
       unset($this->_spe_restrictTypes);
     }
   	parent::__construct($id,$withoutDependentObjects);
-  	if(SqlList::getFieldFromId("Status", $this->idStatus, "setHandledStatus")!=0)self::$_fieldsAttributes["isUnderConstruction"]="readonly";
+  	if(SqlList::getFieldFromId("Status", $this->idStatus, "setHandledStatus")!=0)self::$_fieldsAttributes["isUnderConstruction"]="readonly,nobr";
   }
 
    /** ==========================================================================
@@ -817,6 +830,7 @@ scriptLog("Project($this->id)->drawSubProjects(selectField=$selectField, recursi
    */
   public function control(){
     $result="";
+    $old=$this->getOld();
     if ($this->id and $this->id==$this->idProject) {
       $result.='<br/>' . i18n('errorHierarchicLoop');
     } else if ($this->ProjectPlanningElement and $this->ProjectPlanningElement->id){
@@ -833,6 +847,20 @@ scriptLog("Project($this->id)->drawSubProjects(selectField=$selectField, recursi
       }
     }
     
+    if ($this->id and $this->excludeFromGlobalPlanning==1 and $old->excludeFromGlobalPlanning==0) {
+      $pe=new PlanningElement();
+      $peTable=$pe->getDatabaseTableName();
+      $pexStart=PlanningElementExtension::$_startId;
+      $dep=new Dependency();
+      $depTable=$dep->getDatabaseTableName();
+      $where=" idProject=$this->id and exists (select 'x' from $depTable dep "
+          ." where (dep.predecessorId=$peTable.id and dep.successorId>$pexStart) or (dep.predecessorId>$pexStart and dep.successorId=$peTable.id)"
+          .")";
+      $cpt=$pe->countSqlElementsFromCriteria(null,$where);
+      if ($cpt>0) {
+        $result.='<br/>' .i18n('cannotExclureFromGlobalPlanning',array($cpt));
+      }
+    }
     $defaultControl=parent::control();
     if ($defaultControl!='OK') {
       $result.=$defaultControl;
@@ -967,6 +995,9 @@ scriptLog("Project($this->id)->drawSubProjects(selectField=$selectField, recursi
         }
       }
     }
+  }
+  protected function getStaticFieldsTooltip() {
+    return self::$_fieldsTooltip;
   }
 }
 ?>
