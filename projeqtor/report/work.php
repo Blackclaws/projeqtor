@@ -171,30 +171,66 @@ foreach ($lstWork as $work) {
 
 if (checkNoData($result)) exit;
 // title
-$colWidth=round(80/count($projects));
-echo '<table style="width:95%;" align="center">';
-echo '<tr>';
-echo '<td style="width:10%" class="reportTableHeader" rowspan="2">' . i18n('Resource') . '</td>';
-echo '<td style="width:80%" colspan="' . count($projects) . '" class="reportTableHeader">' . i18n('Project') . '</td>';
-echo '<td style="width:10%" class="reportTableHeader" rowspan="2">' . i18n('sum') . '</td>';
-echo '</tr><tr>';
 $newProject=array();
 foreach ($projects as $id=>$name) {
   $newProject[SqlList::getFieldFromId('Project', $id, 'sortOrder').'-'.$id]=$name;
 }
+
 $projects=$newProject;
 ksort($projects);
 foreach ($projects as $id=>$name) {
   $idExplo=explode('-',$id);
   $id=$idExplo[1];
-  echo '<td style="width:'.$colWidth.'%" class="reportTableColumnHeader">' . htmlEncode($name) . '</td>';
   $sumProj[$id]=0;  
 }
 
+asort($resources);
+foreach ($resources as $idR=>$nameR) {
+  if ($paramTeam) {
+    $res=new Resource($idR);
+  }
+  if (!$paramTeam or $res->idTeam==$paramTeam) {
+    foreach ($projects as $idP=>$nameP) {
+      $idExplo=explode('-',$idP);
+      $idP=$idExplo[1];
+      if (array_key_exists($idR, $result)) {
+        if (array_key_exists($idP, $result[$idR])) {
+          $val=$result[$idR][$idP];
+          $sumProj[$idP]+=$val;
+        }
+      }
+    }
+  }
+}
+$nbProj=0;
+
+foreach ($projects as $id=>$name) {
+  $idExplo=explode('-',$id);
+  $id=$idExplo[1];
+  if($sumProj[$id] != 0)
+    $nbProj+=1;
+}
+if($nbProj != 0)
+$colWidth=round(80/$nbProj);
+else
+$colWidth=round(80/1);
+
+echo '<table style="width:95%;" align="center">';
+echo '<tr>';
+echo '<td style="width:10%" class="reportTableHeader" rowspan="2">' . i18n('Resource') . '</td>';
+echo '<td style="width:80%" colspan="' . $nbProj . '" class="reportTableHeader">' . i18n('Project') . '</td>';
+echo '<td style="width:10%" class="reportTableHeader" rowspan="2">' . i18n('sum') . '</td>';
+echo '</tr><tr>';
+
+foreach ($projects as $id=>$name) {
+  $idExplo=explode('-',$id);
+  $id=$idExplo[1];
+  if($sumProj[$id] != 0)
+  echo '<td style="width:'.$colWidth.'%" class="reportTableColumnHeader">' . htmlEncode($name) . '</td>';
+}
 echo '</tr>';
 
 $sum=0;
-asort($resources);
 foreach ($resources as $idR=>$nameR) {
 	if ($paramTeam) {
 		$res=new Resource($idR);
@@ -203,28 +239,34 @@ foreach ($resources as $idR=>$nameR) {
 		$sumRes=0;
 	  echo '<tr><td style="width:10%" class="reportTableLineHeader">' . htmlEncode($nameR) . '</td>';
 	  foreach ($projects as $idP=>$nameP) {
+	    
       $idExplo=explode('-',$idP);
       $idP=$idExplo[1];
+    if($sumProj[$idP] != 0){
 	    echo '<td style="width:' . $colWidth . '%" class="reportTableData">';
 	    if (array_key_exists($idR, $result)) {
 	      if (array_key_exists($idP, $result[$idR])) {
 	        $val=$result[$idR][$idP];
 	        echo Work::displayWorkWithUnit($val);
-	        $sumProj[$idP]+=$val; 
 	        $sumRes+=$val; 
 	        $sum+=$val;
 	      } 
 	    }
 	    echo '</td>';
 	  }
-	  echo '<td style="width:10%" class="reportTableColumnHeader">' . Work::displayWorkWithUnit($sumRes) . '</td>';
+  }
+	  echo '<td style="width:20%" class="reportTableColumnHeader">' . Work::displayWorkWithUnit($sumRes) . '</td>';
 	  echo '</tr>';
   }
 }
 echo '<tr><td class="reportTableHeader">' . i18n('sum') . '</td>';
+if ($nbProj == 0)
+   echo '<td class="reportTableHeader">' . "" . '</td>';
+
 foreach ($projects as $id=>$name) {
   $idExplo=explode('-',$id);
   $id=$idExplo[1];
+  if($sumProj[$id] != 0)
   echo '<td class="reportTableColumnHeader">' . Work::displayWorkWithUnit($sumProj[$id]) . '</td>';
 }
 echo '<td class="reportTableHeader">' . Work::displayWorkWithUnit($sum) . '</td></tr>';
