@@ -247,6 +247,13 @@ function refreshJsonPlanning() {
     url += "showMilestone=" + dijit.byId('listShowMilestone').get("value");
     param = true;
   }
+  if (dijit.byId('listShowNullAssignment')) {
+	  if (dojo.byId('listShowNullAssignment').checked) {
+	    url += (param) ? "&" : "?";
+	    url += "listShowNullAssignment=true";
+	    param = true;
+	  }
+	} 
   loadContent(url, "planningJsonData", 'listForm', false);
 }
 

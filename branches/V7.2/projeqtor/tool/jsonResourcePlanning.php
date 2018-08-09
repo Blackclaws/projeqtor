@@ -141,8 +141,14 @@ if ( array_key_exists('showProject',$_REQUEST) ) {
   $showProject=true;
 }
 
-$queryWhere.= ($queryWhere=='')?'':' and ';
-$queryWhere.=' ass.plannedWork>0 ';
+$showNullAssignment=RequestHandler::getBoolean('listShowNullAssignment');  
+
+ if (! $showNullAssignment) {
+   $queryWhere.= ($queryWhere=='')?'':' and ';
+   $queryWhere.=' ass.plannedWork>0 ';
+ }
+// else $queryWhere.=' ass.plannedWork>0 ';
+ 
 if (!$seeAllResource) {
   $queryWhere.= ($queryWhere=='')?'':' and ';
   $queryWhere.=' ass.idResource='.$user->id;
@@ -190,6 +196,7 @@ if ($selectTeam) {
 } else {
   $teamMembers=null;
 }
+
 foreach ($allowedResource as $resId=>$resName) {
   if ($selectResource and $selectResource!=$resId) {
     unset($allowedResource[$resId]);
@@ -268,7 +275,7 @@ if (Sql::$lastQueryNbRows == 0) {
   $idProj='';
   $keyRes="";
   $idRes='';
-  $cptLine=0;
+  $cptLine=0; 
 	while ($line = Sql::fetchLine($result)) {
 		$line=array_change_key_case($line,CASE_LOWER);
 		if (! isset($allowedResource[$line['idresource']])) continue;

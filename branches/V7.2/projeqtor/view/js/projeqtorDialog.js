@@ -520,7 +520,7 @@ function showDetailOrigin() {
   }
 }
 
-function showDetail(comboName, canCreate, objectClass, multiSelect, objectId) {
+function showDetail(comboName, canCreate, objectClass, multiSelect, objectId, forceSearch) {
   var contentWidget=dijit.byId("comboDetailResult");
   
   dojo.byId("canCreateDetail").value=canCreate;
@@ -540,6 +540,7 @@ function showDetail(comboName, canCreate, objectClass, multiSelect, objectId) {
   } else if(dojo.byId(comboName)) {
     val=dojo.byId(comboName).value;
   }
+  if (forceSearch) val=null; // will force search
   if (objectId) {
     if (objectId=='new') {
       cl=objectClass;
@@ -559,7 +560,7 @@ function showDetail(comboName, canCreate, objectClass, multiSelect, objectId) {
       gotoDetailItem(objectClass,objectId);
     }
     
-  } else if (!val || val == "" || val == " ") {
+  } else if (!val || val == "" || val == " " || val == "*") {
     cl=objectClass;
     window.frames['comboDetailFrame'].document.body.innerHTML='<i>'
         + i18n("messagePreview") + '</i>';
@@ -647,12 +648,7 @@ function selectDetailItem(selectedValue, lastSavedName) {
       critVal=prj.get("value");
     }
   }
-  //CHANGE qCazelles - Correction GANTT - Ticket #100
-  //Old
-  //if (comboName != 'idStatus' && comboName != 'idProject') { 
-  //New
-  if (comboName != 'idStatus' && comboName != 'idProject' && comboName != 'versionsPlanningDetail') { 
-  //END CHANGE qCazelles - Correction GANTT - Ticket #100
+  if (comboName != 'idStatus'  && comboName != 'versionsPlanningDetail') { 
     if (combo) {
       refreshList('id' + comboClass, crit, critVal, idFldVal, comboName);
     } else {
@@ -6525,6 +6521,10 @@ function checkAlert() {
 }
 function checkAlertRetour(data) {
   if (data) {
+    console.log("checkAlertToDisplay returns "+data);
+    if (data.indexOf('name="lastOperation" value="testConnection"')>0 && data.indexOf('name="lastOperationStatus" value="ERROR"')>0) {
+      showDisconnectedMessage(data);
+    }
     var reminderDiv=dojo.byId('reminderDiv');
     var dialogReminder=dojo.byId('dialogReminder');
     reminderDiv.innerHTML=data;
@@ -6581,6 +6581,10 @@ function checkAlertRetour(data) {
       checkAlertDisplayQuick=true;
     }
   }
+}
+function showDisconnectedMessage(data) {
+  dojo.byId('disconnectionMessageText').innerHTML=data;
+  dojo.byId('disconnectionMessage').style.display='block';
 }
 function setAlertReadMessage() {
   // alertDisplayed=false;

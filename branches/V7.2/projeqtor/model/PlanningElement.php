@@ -1434,7 +1434,7 @@ class PlanningElement extends SqlElement {
         if (array_key_exists('#'.$pe->topId, $result)) {
           $parent=$result['#'.$pe->topId];
         } else {
-          $parent=new PlanningElement($pe->topId,true);
+          $parent=new GlobalPlanningElement($pe->topId,true);
           $parent->_parentList=array();
           $parent->_predecessorList=array();
           $parent->_predecessorListWithParent=array();
@@ -1456,13 +1456,38 @@ class PlanningElement extends SqlElement {
       $pe->_profile=$profile;
       $result[$id]=$pe;
     }
+    // In the end and GlobalItems that have dependencies on Project
+    $where="topRefType='Project' and topRefId IN ".transformListIntoInClause($listProjectsPriority);
+    $pex=new PlanningElementExtension();
+    $pexList=$pex->getSqlElementsFromCriteria(null,null,$where);
+    foreach ($pexList as $pex) {
+      $id='#'.$pex->getFakeId();
+      if (!isset($result[$id])) {
+        $gpe=new GlobalPlanningElement($pex->getFakeId());
+        $gpe->_parentList=array();
+        $gpe->_predecessorList=array();
+        $gpe->_predecessorListWithParent=array();
+        $gpe->_noPlan=false;
+        $gpe->_childList=array();
+        $gpe->_profile='FDUR';
+        $gpe->id=$pex->getFakeId();
+        $result[$id]=$gpe;
+        $idList[$gpe->id]=$gpe->id;
+      } else {
+        $gpe=$result[$id];
+        $gpe->_noPlan=false;
+        $gpe->_profile='FDUR';
+        $result[$id]=$gpe;
+      }
+    }
+    
     $reverse=array_reverse($result, true);
     foreach ($reverse as $id=>$pe) {
       if ($pe->topId) {
         if (array_key_exists('#'.$pe->topId, $result)) {
           $parent=$result['#'.$pe->topId];
         } else {
-          $parent=new PlanningElement($pe->topId,true);
+          $parent=new GlobalPlanningElement($pe->topId,true);
           $parent->_parentList=array();
           $parent->_predecessorList=array();
           $parent->_predecessorListWithParent=array();
@@ -1480,6 +1505,7 @@ class PlanningElement extends SqlElement {
     }
     // Predecessors
     $crit='successorId in (0,' . implode(',',$idList) . ')';
+    debugLog($crit);
     $dep=new Dependency();
     
     $depList=$dep->getSqlElementsFromCriteria(null, false, $crit);
@@ -1492,7 +1518,7 @@ class PlanningElement extends SqlElement {
       //$lstPrec["#".$dep->predecessorId]=$dep->predecessorId;
       $lstPrec["#".$dep->predecessorId]=array("delay"=>$dep->dependencyDelay, "type"=>$dep->dependencyType);  // #77 : store delay of dependency
       if (! array_key_exists("#".$dep->predecessorId, $result)) {
-      	$parent=new PlanningElement($dep->predecessorId,true);
+      	$parent=new GlobalPlanningElement($dep->predecessorId,true);
         $parent->_parentList=array();
         $parent->_predecessorList=array();
         $parent->_predecessorListWithParent=array();
