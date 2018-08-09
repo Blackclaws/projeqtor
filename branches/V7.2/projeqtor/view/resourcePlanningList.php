@@ -73,6 +73,7 @@ $saveShowClosed=Parameter::getUserParameter('planningShowClosed');
 //$saveShowProjectObj=SqlElement::getSingleSqlElementFromCriteria('Parameter',array('idUser'=>$user->id,'idProject'=>null,'parameterCode'=>'planningShowProject'));
 //$saveShowProject=$saveShowProjectObj->parameterValue;
 $saveShowProject=Parameter::getUserParameter('planningShowProject');
+$saveShowNullAssignment=Parameter::getUserParameter('listShowNullAssignment');
 if ($saveShowClosed) {
   $_REQUEST['idle']=true;
 }
@@ -298,8 +299,17 @@ if (RequestHandler::isCodeSet('destinationWidth')) {
 		              </div>&nbsp;
 		              </td></tr>
 		              <tr>
-		              <td>&nbsp;</td>
-		              <td>&nbsp;</td>
+		              <td style="min-width:80px;"><?php echo i18n("labelShowAssignmentWithoutWork");?></td>
+		              <td>
+                  <div title="<?php echo i18n('titleShowAssignmentWithoutWork')?>" dojoType="dijit.form.CheckBox" 
+                    type="checkbox" id="listShowNullAssignment" name="listShowNullAssignment" class="whiteCheck"
+                    <?php if ($saveShowNullAssignment=='1') { echo ' checked="checked" '; }?> >
+                    <script type="dojo/method" event="onChange" >
+                      saveUserParameter('listShowNullAssignment',((this.checked)?'1':'0'));
+                      refreshJsonPlanning();
+                    </script>
+                  </div>&nbsp;
+                  </td>
 		              <td>
 		              <?php echo i18n("labelShowIdle");?>
                   </td><td>

@@ -112,6 +112,27 @@ class PlanningElementExtension   extends SqlElement {
     return $pex;
   }
   
+  public static function checkDelete($type, $id) {
+    // TODO clean unsuefull PEX table lines
+    $where="(predecessorRefType='$type' and predecessorRefId=$id) or (successorRefType='$type' and successorRefId=$id)";
+    $dep=new Dependency();
+    $cpt=$dep->countSqlElementsFromCriteria(null,$where);
+    if ($cpt==0) {
+      $pex=SqlElement::getSingleSqlElementFromCriteria('PlanningElementExtension', array('refType'=>$type,'refId'=>$id));
+      if ($pex->id) $pex->delete();
+    }
+  }
+  
+  public function save() {
+    if (!$this->topRefType or !$this->topRefId) {
+      $type=$this->refType;
+      $item=new $type($this->refId);
+      $this->topRefType='Project';
+      $this->topRefId=$item->idProject;
+    } 
+    return parent::save();
+  }
+  
   public function getFakeId() {
     if (! $this->id) return null;
     return self::$_startId + $this->id;

@@ -48,12 +48,18 @@ class GlobalPlanningElement extends SqlElement {
   public $idBill;
   public $initialStartDate;
   public $validatedStartDate;
+  public $validatedStartFraction;
   public $plannedStartDate;
+  public $plannedStartFraction;
   public $realStartDate;
   public $initialEndDate;
   public $validatedEndDate;
+  public $validatedEndFraction;
   public $plannedEndDate;
+  public $plannedEndFraction;
   public $realEndDate;
+  public $latestStartDate;
+  public $latestEndDate;
   public $initialDuration;
   public $validatedDuration;
   public $plannedDuration;
@@ -80,14 +86,8 @@ class GlobalPlanningElement extends SqlElement {
   public $idStatus;
   public $idResource;
   public $isGlobal=1;
-  // public $validatedStartFraction;
-  // public $plannedStartFraction;
-  // public $validatedEndFraction;
-  // public $plannedEndFraction;
   // public $validatedCalculated;
   // public $validatedExpenseCalculated;
-  // public $latestStartDate;
-  // public $latestEndDate;
   // public $_workVisibility;
   // public $_costVisibility;
   
@@ -120,9 +120,10 @@ class GlobalPlanningElement extends SqlElement {
     if ($id) {
       $pe=new PlanningElement($id,true);
       if ($pe->id) { 
-        foreach ($this as $fld=>$val) {
-          if (property_exists($pe, $fld)) $this->$fld=$pe->$fld;
+        foreach ($pe as $fld=>$val) { // Must list all pe fields to retreive even fields not in GlobalPE 
+          $this->$fld=$pe->$fld;
         }
+        $this->isGlobal=0;
         return;
       }
     }
@@ -134,6 +135,7 @@ class GlobalPlanningElement extends SqlElement {
         foreach ($this as $fld=>$val) {
           if (property_exists($gpe, $fld)) $this->$fld=$gpe->$fld;
         }
+        $this->isGlobal=1;
         //$this->id=$id+PlanningElementExtension::$_startId;
         return;  
       }
@@ -197,6 +199,31 @@ class GlobalPlanningElement extends SqlElement {
     $colScript = parent::getValidationScript($colName);
     return $colScript;
   }
+  
+  // SPECIFIC
+  
+  public function simpleSave() {
+    if ($this->isGlobal==0) { // Should not be used
+      $pe=new PlanningElement();
+      foreach ($pe as $fld=>$val) {
+         $pe->$fld=$this->$fld;
+      }
+      return $pe->simpleSave();
+    } else {
+      debugLog("save for refType=$this->refType #$this->refId : plannedEndDate=$this->plannedEndDate");
+      $class=$this->refType;
+      $item=new $class($this->refId);
+      $globalizableItem=self::$_globalizables[$class];
+      if (isset($globalizableItem['plannedEndDate'])) {
+        debugLog("   OK, save");
+        $endName=$globalizableItem['plannedEndDate'];
+        $item->$endName=$this->plannedEndDate;
+      } 
+      $result=$item->save();
+      debugLog("   ".$result);
+      return $result;
+    }
+  }
     
   /** ========================================================================
    * Return the specific databaseTableName
@@ -219,18 +246,21 @@ class GlobalPlanningElement extends SqlElement {
     $itemsToDisplayArray=explode(',', $itemsToDisplay);
     if (count($itemsToDisplayArray)==0 or (count($itemsToDisplayArray)==1 and $itemsToDisplayArray[0]=='none')) return $pe->getDatabaseTableName();
     $excludedProjectsListClause="idProject not in ".transformValueListIntoInClause(SqlList::getListWithCrit("Project", array('excludeFromGlobalPlanning'=>'1'),"id"));
-    $query="\n  ( SELECT id,idProject,refType,refId,refName,topId,topRefType,topRefId,
-      priority,elementary,idle,done,cancelled,idPlanningMode,idBill,
-      initialStartDate,validatedStartDate,plannedStartDate,realStartDate,
-      initialEndDate,validatedEndDate,plannedEndDate,realEndDate,
-      initialDuration,validatedDuration,plannedDuration,realDuration,
-      initialWork,validatedWork,assignedWork,plannedWork,leftWork,realWork,
-      validatedCost,assignedCost,plannedCost,leftCost,realCost,
-      progress,expectedProgress,wbs,wbsSortable,isOnCriticalPath,notPlannedWork, needReplan,
-      null as idType, null as idStatus, null as idResource, 0 as isGlobal 
-    FROM $peTable";
-    $query.="\n    WHERE ".getAccesRestrictionClause('Activity',$peTable,$showIdleProjects);
-    if ($limitToClass) $query.=" and 1=0";
+    $query="\n  ( ";
+    if (!$limitToClass) {
+      $query.="SELECT id,idProject,refType,refId,refName,topId,topRefType,topRefId,
+        priority,elementary,idle,done,cancelled,idPlanningMode,idBill,
+        initialStartDate,validatedStartDate,validatedStartFraction,plannedStartDate,plannedStartFraction,realStartDate,
+        initialEndDate,validatedEndDate,validatedEndFraction,plannedEndDate,plannedEndFraction,realEndDate,
+        latestStartDate,latestEndDate,
+        initialDuration,validatedDuration,plannedDuration,realDuration,
+        initialWork,validatedWork,assignedWork,plannedWork,leftWork,realWork,
+        validatedCost,assignedCost,plannedCost,leftCost,realCost,
+        progress,expectedProgress,wbs,wbsSortable,isOnCriticalPath,notPlannedWork, needReplan,
+        null as idType, null as idStatus, null as idResource, 0 as isGlobal 
+      FROM $peTable";
+      $query.="\n    WHERE ".getAccesRestrictionClause('Activity',$peTable,$showIdleProjects);
+    }
         //validatedStartFraction,plannedStartFraction,validatedEndFraction,plannedEndFraction,validatedCalculated,validatedExpenseCalculated,latestStartDate,latestEndDate,
     foreach (self::getGlobalizables() as $class=>$className) {
       if ($itemsToDisplay and $itemsToDisplay!=' ' and !in_array($class,$itemsToDisplayArray)) {
@@ -242,7 +272,7 @@ class GlobalPlanningElement extends SqlElement {
       $clsObj=new $class();
       $table=$clsObj->getDatabaseTableName();
       $convert=self::$_globalizables[$class];
-      $query.="\n  UNION ";
+      if (!$limitToClass) {$query.="\n  UNION ";}
       $query.="\n    SELECT coalesce(pex.id+$pexRef,concat('$class',$table.id)) as id";
       foreach ($obj as $fld=>$val) {
         if (substr($fld,0,1)=='_' or $fld=='id') continue;        
@@ -250,9 +280,13 @@ class GlobalPlanningElement extends SqlElement {
         if ($fld=='priority' or $fld=='initialStartDate' or $fld=='initialEndDate' or $fld=='initialDuration' or $fld=='initialWork' or $fld=='validatedCost' or $fld=='progress') $query.="\n      ";
         if ($fld=='refType') $query.="'$class'";
         else if ($fld=='isGlobal') $query.="1";
+        else if ($fld=='plannedStartFraction' or $fld=='validatedStartFraction') $query.="0";
+        else if ($fld=='plannedEndFraction' or $fld=='validatedEndFraction') $query.="1";
         else if ($fld=='refId') $query.="$table.id";
         else if ($fld=='refName') $query.="$table.name";
         else if ($fld=='topId') $query.="null";
+        else if ($fld=='idPlanningMode') $query.="8";
+        else if ($fld=='validatedDuration') $query.="1";
         else if ($fld=='topRefType') $query.="'Project'";
         else if ($fld=='topRefId') $query.="$table.idProject";
         else if ($fld=='elementary') $query.="1";
@@ -282,6 +316,7 @@ class GlobalPlanningElement extends SqlElement {
       $query.="and $table.$excludedProjectsListClause";
     }
     $query.=')';
+    debugLog($query);
     return $query;
   }
   
@@ -329,8 +364,9 @@ class GlobalPlanningElement extends SqlElement {
       'Question'=>array('plannedStartDate'=>'actualDueDate','realStartDate'=>'handledDate',
                       'validatedEndDate'=>'initialDueDate','plannedEndDate'=>'actualDueDate','realEndDate'=>'doneDate'
                      ),
-      'Delivery'=>array('plannedStartDate'=>'initialDate','realStartDate'=>'handledDateTime',
-                        'validatedEndDate'=>'initialDate','plannedEndDate'=>'plannedDate','realEndDate'=>'realDate'
+      'Delivery'=>array('validatedEndDate'=>'initialDate',
+                        'plannedStartDate'=>'plannedDate','plannedEndDate'=>'plannedDate',
+                        'realStartDate'=>'handledDateTime','realEndDate'=>'realDate'
                      )
   );
 

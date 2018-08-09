@@ -101,6 +101,13 @@ $hideIdSearch=false;
 $hideShowIdleSearch=false;
 $hideEisSearch=false;
 $referenceWidth=50;
+//debugLog(RequestHandler::dump());
+if ($comboDetail) {
+  $screenWidth=getSessionValue('screenWidth',$displayWidthList);
+  $displayWidthList=round($screenWidth*0.55,0)+150;
+  debugLog("screenWidth=$screenWidth");
+  debugLog("displayWidthList=$displayWidthList");
+}
 if ($displayWidthList<1400) {
   $referenceWidth=40;
   if ($displayWidthList<1250) {
@@ -123,10 +130,18 @@ if ($displayWidthList<1400) {
     }
   }
 }
+if ($comboDetail) $referenceWidth-=5;
+
 $iconClassName=((SqlElement::is_subclass_of($objectClass, 'PlgCustomList'))?'ListOfValues':$objectClass);
+
+$allProjectsChecked=false;
+if (RequestHandler::getValue('objectClass')=='Project' and RequestHandler::getValue('mode')=='search') {
+  $allProjectsChecked=true;
+}
+
 ?>
 <div dojoType="dojo.data.ItemFileReadStore" id="objectStore" jsId="objectStore" clearOnClose="true"
-  url="../tool/jsonQuery.php?objectClass=<?php echo $objectClass;?><?php echo ($comboDetail)?'&comboDetail=true':'';?><?php echo ($showIdle)?'&idle=true':'';?>" >
+  url="../tool/jsonQuery.php?objectClass=<?php echo $objectClass;?><?php echo ($comboDetail)?'&comboDetail=true':'';?><?php echo ($showIdle)?'&idle=true':'';?><?php echo ($allProjectsChecked)?'&showAllProjects=on':'';?>" >
 </div>
 <div dojoType="dijit.layout.BorderContainer">
 <div dojoType="dijit.layout.ContentPane" region="top" id="listHeaderDiv">
@@ -298,13 +313,8 @@ $iconClassName=((SqlElement::is_subclass_of($objectClass, 'PlgCustomList'))?'Lis
               </td>
               <td style="width:10px;text-align: center; align: center;white-space:nowrap;">&nbsp;
                 <div title="<?php echo i18n('showAllProjects')?>" dojoType="dijit.form.CheckBox" type="checkbox" class="whiteCheck"
-                  id="showAllProjects" name="showAllProjects">
+                  id="showAllProjects" name="showAllProjects" <?php if ($allProjectsChecked) echo "checked=ckecked"?>>
                   <script type="dojo/method" event="onChange" >
-                    /*if (this.get('value') == false){
-	                   return setSelectedProject('<?php echo $proj;?>');
-                    }else {
-                     return setSelectedProject('*');
-                    }*/
                     refreshJsonList('<?php echo $objectClass;?>');
                   </script>
                 </div>&nbsp;
