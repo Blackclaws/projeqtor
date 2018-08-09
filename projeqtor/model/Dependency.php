@@ -246,6 +246,9 @@ class Dependency extends SqlElement {
     if ($peS->idProject!=$peP->idProject) {
       Project::setNeedReplan($peS->idProject);
     }
+    PlanningElementExtension::checkDelete($this->predecessorRefType,$this->predecessorRefId);
+    PlanningElementExtension::checkDelete($this->successorRefType,$this->successorRefId);
+    
     return $result;
   }
   

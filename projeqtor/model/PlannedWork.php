@@ -206,6 +206,8 @@ class PlannedWork extends GeneralWork {
     $listProjectsPriority=$fullListPlan['_listProjectsPriority'];
     unset($fullListPlan['_listProjectsPriority']);
     $listPlan=self::sortPlanningElements($fullListPlan, $listProjectsPriority);
+    debugLog("===== ITEMS TO PLAN =====");
+    foreach($listPlan as $id=>$pl) debugLog("PLAN : $id for $pl->refType #$pl->refId");
     $resources=array();
     $a=new Assignment();
     $topList=array();
@@ -262,10 +264,13 @@ class PlannedWork extends GeneralWork {
     $arrayNotPlanned=array();
     $arrayWarning=array();
 //-- Treat each PlanningElement ---------------------------------------------------------------------------------------------------
+    debugLog("=== PLAN EACH ITEM ===");
     foreach ($listPlan as $plan) {
+      debugLog("PLAN FOR $plan->refType #$plan->refId");
       if (! $plan->id) {
         continue;
       }
+      debugLog("PLAN FOR $plan->refType #$plan->refId step 1");
     	$plan=$fullListPlan['#'.$plan->id];
       //-- Determine planning profile
       if ($plan->idle) {
@@ -273,9 +278,12 @@ class PlannedWork extends GeneralWork {
       	$fullListPlan=self::storeListPlan($fullListPlan,$plan);
       	continue;
       }
+      debugLog("PLAN FOR $plan->refType #$plan->refId step 2");
       if (isset($plan->_noPlan) and $plan->_noPlan) {
+        debugLog("  _noPlan='$plan->_noPlan'");
       	continue;
       }
+      debugLog("PLAN FOR $plan->refType #$plan->refId step 3");
       $startPlan=$startDate;
       $startFraction=0;
       $endPlan=null;
@@ -284,6 +292,7 @@ class PlannedWork extends GeneralWork {
       if ($profile=="ASAP" and $plan->assignedWork==0 and $plan->leftWork==0 and $plan->validatedDuration>0) {
         $profile="FDUR";
       }
+      debugLog(" Profile for $plan->refType #$plan->refId = $profile");
       if ($profile=="REGUL" or $profile=="FULL" 
        or $profile=="HALF" or $profile=="QUART") { // Regular planning
         $startPlan=$plan->validatedStartDate;

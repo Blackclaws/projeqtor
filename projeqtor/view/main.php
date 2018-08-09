@@ -564,6 +564,9 @@ $keyDownEventScript=NumberFormatter52::getKeyDownEvent();
 <div id="mainDiv" style="visibility: hidden;">
   <div id="wait" >
   </div>
+  <div id="disconnectionMessage" style="display:none;z-index:999;text-align:center;position:fixed;width:300px;left:50%;top:10px;margin-left:-150px">
+    <div id="disconnectionMessageText" style="text-align:center;cursor:pointer;" onClick="quitConfirmed = true;window.location = '../index.php';"></div>
+  </div>
   <div dojoType="dijit/ProgressBar" id="downloadProgress" data-dojo-props="maximum:1">
   </div>
   <?php $leftWidth=Parameter::getUserParameter('contentPaneLeftDivWidth');
