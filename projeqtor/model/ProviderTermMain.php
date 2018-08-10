@@ -77,13 +77,6 @@ class ProviderTermMain extends SqlElement {
    */ 
   function __construct($id = NULL, $withoutDependentObjects=false) {
     parent::__construct($id,$withoutDependentObjects);
-    if ($this->idProviderOrder) {
-      self::$_fieldsAttributes['untaxedAmount']='readonly';
-      self::$_fieldsAttributes['taxPct']='readonly';
-      self::$_fieldsAttributes['idProviderOrder']='readonly';
-    }
-    self::$_fieldsAttributes['taxAmount']='readonly';
-    self::$_fieldsAttributes['fullAmount']='readonly';
   }
 
   
@@ -176,5 +169,19 @@ class ProviderTermMain extends SqlElement {
   public function copyTo($newClass, $newType, $newName, $setOrigin, $withNotes, $withAttachments, $withLinks, $withAssignments = false, $withAffectations = false, $toProject = NULL, $toActivity = NULL, $copyToWithResult = false,$copyToWithVersionProjects=false) {
     return parent::copyTo($newClass, $newType, $newName, $setOrigin, $withNotes, null, $withLinks);
   }
+  
+  public function setAttributes() {
+    if($this->idProviderOrder or $this->idProviderBill){
+      self::$_fieldsAttributes["idProject"]='readonly';
+    }
+    if ($this->idProviderOrder) {
+      self::$_fieldsAttributes['untaxedAmount']='readonly';
+      self::$_fieldsAttributes['taxPct']='readonly';
+      self::$_fieldsAttributes['idProviderOrder']='readonly';
+    }
+    self::$_fieldsAttributes['taxAmount']='readonly';
+    self::$_fieldsAttributes['fullAmount']='readonly';
+  }
+  
 }
 ?>

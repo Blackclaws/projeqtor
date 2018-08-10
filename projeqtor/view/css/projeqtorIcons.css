@@ -998,6 +998,32 @@
 .iconSize22 { background-repeat: no-repeat; width: 22px; height: 22px; background-size: 22px 22px;}
 .iconSize16 { background-repeat: no-repeat; width: 16px; height: 16px; background-size: 16px 16px; }
 
+/* B */
+
+.iconBudget { background-image: url(images/iconBudget.png); }
+.ProjeQtOrFlatBlue .iconBudget { background-image: url(customIcons/blue/iconBudget.png); }
+.ProjeQtOrFlatRed .iconBudget { background-image: url(customIcons/red/iconBudget.png); }
+.ProjeQtOrFlatGreen .iconBudget { background-image: url(customIcons/green/iconBudget.png); }
+.ProjeQtOrFlatGrey .iconBudget { background-image: url(customIcons/grey/iconBudget.png); }
+
+.iconBudgetCategory { background-image: url(images/iconBudgetCategory.png); }
+.ProjeQtOrFlatBlue .iconBudgetCategory { background-image: url(customIcons/blue/iconBudgetCategory.png); }
+.ProjeQtOrFlatRed .iconBudgetCategory { background-image: url(customIcons/red/iconBudgetCategory.png); }
+.ProjeQtOrFlatGreen .iconBudgetCategory { background-image: url(customIcons/green/iconBudgetCategory.png); }
+.ProjeQtOrFlatGrey .iconBudgetCategory { background-image: url(customIcons/grey/iconBudgetCategory.png); }
+
+.iconBudgetOrientation { background-image: url(images/iconBudgetOrientation.png); }
+.ProjeQtOrFlatBlue .iconBudgetOrientation { background-image: url(customIcons/blue/iconBudgetOrientation.png); }
+.ProjeQtOrFlatRed .iconBudgetOrientation { background-image: url(customIcons/red/iconBudgetOrientation.png); }
+.ProjeQtOrFlatGreen .iconBudgetOrientation { background-image: url(customIcons/green/iconBudgetOrientation.png); }
+.ProjeQtOrFlatGrey .iconBudgetOrientation { background-image: url(customIcons/grey/iconBudgetOrientation.png); }
+
+.iconBudgetType { background-image: url(images/iconBudgetType.png); }
+.ProjeQtOrFlatBlue .iconBudgetType { background-image: url(customIcons/blue/iconBudgetType.png); }
+.ProjeQtOrFlatRed .iconBudgetType { background-image: url(customIcons/red/iconBudgetType.png); }
+.ProjeQtOrFlatGreen .iconBudgetType { background-image: url(customIcons/green/iconBudgetType.png); }
+.ProjeQtOrFlatGrey .iconBudgetType { background-image: url(customIcons/grey/iconBudgetType.png); }
+
 /* G */
 
 .iconGlobalPlanning { background-image: url(images/iconGlobalPlanning.png); }
@@ -1011,6 +1037,8 @@
 .ProjeQtOrFlatRed .iconGlobalView { background-image: url(customIcons/red/iconGlobalView.png); }
 .ProjeQtOrFlatGreen .iconGlobalView { background-image: url(customIcons/green/iconGlobalView.png); }
 .ProjeQtOrFlatGrey .iconGlobalView { background-image: url(customIcons/grey/iconGlobalView.png); }
+
+/* P */
 
 .iconProviderBill { background-image: url(images/iconProviderBill.png); }
 .ProjeQtOrFlatBlue .iconProviderBill { background-image: url(customIcons/blue/iconProviderBill.png); }

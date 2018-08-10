@@ -297,22 +297,22 @@ if(isset ($isLineMulti)){
   		            <input dojoType="dijit.form.NumberTextBox" 
   			           id="providerTermBillLineLine<?php echo $bill->line;?>" name="providerTermBillLineLine<?php echo $bill->line;?>"
   			           style="width:40px;"
-  			           class="input" readonly
+  			           class="display"
   			           value="<?php echo $bill->line;?>" />
   		           </td>
                  <td style="<?php echo $style2;?> ">
                   <textarea dojoType="dijit.form.Textarea" 
         	         id="billLineDescription<?php echo $bill->line;?>" name="billLineDescription<?php echo $bill->line;?>"
         	         style="width: 180px;"
-        	         maxlength="200" readonly
-        	         class="input"><?php echo $bill->description;?></textarea>
+        	         maxlength="200" class="display"
+        	         ><?php echo $bill->description;?></textarea>
     	           </td>
                  <td style="<?php echo $style2;?> ">
                   <textarea dojoType="dijit.form.Textarea" 
       	           id="billLineDetail<?php echo $bill->line;?>" name="billLineDetail<?php echo $bill->line;?>"
       	           style="width: 180px;"
-      	           maxlength="200" readonly
-      	           class="input"><?php echo $bill->detail;?></textarea>  
+      	           maxlength="200" class="display"
+      	           ><?php echo $bill->detail;?></textarea>  
       	         </td> 
                  <td style="<?php echo $style2;?> ">
                   <?php if ($currencyPosition=='before') echo $currency;?>
@@ -320,8 +320,7 @@ if(isset ($isLineMulti)){
                     id="providerTermBillLineUntaxed<?php echo $bill->line;?>" name="providerTermBillLineUntaxed<?php echo $bill->line;?>"
                     style="width: 100px;"
                     value="<?php echo $bill->amount ;?>" 
-                    class="input"
-                    readonly
+                    class="display"
                     <?php echo $keyDownEventScript;?>
                   </div>
                   <?php if ($currencyPosition=='after') echo $currency;?>
@@ -365,10 +364,9 @@ if(isset ($isLineMulti)){
                <?php if ($currencyPosition=='before') echo $currency;?>
                  <input dojoType="dijit.form.NumberTextBox" 
                   id="providerTermDiscountAmount<?php echo $bill->line;?>" name="providerTermDiscountAmount<?php echo $bill->line;?>"
-                  readonly 
                   style="width:100px;"
                   value="<?php echo $discount;?>" 
-                  class="input"  >  
+                  class="display"  >  
                  </input> 
                <?php if ($currencyPosition=='after') echo $currency;?>
               </td>         
@@ -376,10 +374,10 @@ if(isset ($isLineMulti)){
                  <?php if ($currencyPosition=='before') echo $currency;?>
                    <input dojoType="dijit.form.NumberTextBox" 
                     id="providerTermTaxAmount<?php echo $bill->line;?>" name="providerTermTaxAmount<?php echo $bill->line;?>"
-                    readonly 
+                    class="display"
                     style="width:100px;"
                     value="<?php echo $taxAmount;?>" 
-                    class="input"  >  
+                     >  
                    </input> 
                    <?php if ($currencyPosition=='after') echo $currency;?>
               </td>
@@ -387,10 +385,10 @@ if(isset ($isLineMulti)){
              <?php if ($currencyPosition=='before') echo $currency;?>
                <input dojoType="dijit.form.NumberTextBox" 
                 id="providerTermFullAmount<?php echo $bill->line;?>" name="providerTermFullAmount<?php echo $bill->line;?>"
-                readonly 
+                class="display"
                 style="width:100px;"
                 value="<?php echo $totalFullAmount; ?>" 
-                class="input">  
+                >  
                </input> 
                <?php if ($currencyPosition=='after') echo $currency;?>
           </td>

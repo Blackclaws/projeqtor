@@ -97,7 +97,9 @@ if($copyType=="copyObjectTo"){
                 id="copyToType" name="copyToType" required
                 class="input">
                 <?php ($copyToClass=="PeriodicMeeting")?$colName='idMeetingType':$colName='id'.$copyToClass.'Type';
-                      htmlDrawOptionForReference($colName, (($copyToClass==$objectClass)?$toCopy->$colName:null), null, true);?>
+                      if($copyToClass!="ProviderTerm"){
+                      htmlDrawOptionForReference($colName, (($copyToClass==$objectClass)?$toCopy->$colName:null), null, true); }
+                ?>
                </select>
              </td>
            </tr>
