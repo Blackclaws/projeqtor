@@ -36,6 +36,7 @@ class ProjectExpenseMain extends Expense {
   public $reference; 
   public $name;
   public $idProjectExpenseType;
+  public $idBudgetItem;
   public $idProject;
   public $idUser;
   public $idProvider;

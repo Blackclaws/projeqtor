@@ -53,7 +53,6 @@ $divDescriptionStyle='';
 $divQuantityStyle='';
 $divUnitStyle='';
 $divExtraStyle='display:none;';
-
 $billingType='M';
 if (array_key_exists("billingType", $_REQUEST)) {
   $billingType=$_REQUEST["billingType"];
@@ -114,6 +113,25 @@ if ($line->line) {
   $cpt=$line->countSqlElementsFromCriteria(array('refType'=>$refType, 'refId'=>$refId));
   $numLine=$cpt+1;
 }
+if ($billingType == 'M' and $refType == 'ProviderOrder' and $line->id ) {
+  $providerTerm = new ProviderTerm();
+  $listProvTerm = $providerTerm->getSqlElementsFromCriteria(array("idProviderOrder"=>$obj->id));
+  $billLineTerm = new BillLine();
+  $hide = false;
+  foreach ($listProvTerm as $providerTerms){
+    $billLineList=$billLineTerm->getSqlElementsFromCriteria(array("refType"=>"ProviderTerm","refId"=>$providerTerms->id));
+    foreach ($billLineList as $billLineNew){
+      if($billLineNew->idBillLine == $line->id and $billLineNew->rate > 0){
+        $hide = true;
+      }
+    }
+  }
+  if($hide == true){
+   $readOnly['price']=true;
+   $readOnly['quantity']=true;
+  }
+}
+
 ?>
   <table>
     <tr>
@@ -309,17 +327,19 @@ if ($line->line) {
 	          </div>
 	          <?php if ($currencyPosition=='after') echo $currency;?>
 	          </td>
-	          <td><div style="display:inline;<?php echo $divUnitStyle;?>">&nbsp;/&nbsp;
+	          <td>
+	           <div style="display:inline;<?php echo $divUnitStyle;?>">&nbsp;/&nbsp;
                     <select dojoType="dijit.form.FilteringSelect" 
-                    <?php echo autoOpenFilteringSelect();?>
-                    id="billLineUnit" name="billLineUnit" 
-                    onChange="billLineUpdateNumberDays();"
-                    style="width: 100px;"
-                    <?php if (isset($readOnly['unit'])) echo " readonly ";?>
-                    class="input" value="<?php if ($line->idMeasureUnit) echo $line->idMeasureUnit; else echo ' ';?>" >
+                      <?php echo autoOpenFilteringSelect();?>
+                      id="billLineUnit" name="billLineUnit" 
+                      onChange="billLineUpdateNumberDays();"
+                      style="width: 100px;"
+                      <?php if (isset($readOnly['unit'])) echo " readonly ";?>
+                      class="input" value="<?php if ($line->idMeasureUnit) echo $line->idMeasureUnit; else echo ' ';?>" >
                       <?php htmlDrawOptionForReference('idMeasureUnit', null, null, false);?>
                     </select>
-            </div></td>
+            </div>
+           </td>
 	        </tr>
 	      </table>	      
          <div style="<?php echo $divQuantityStyle;?>">

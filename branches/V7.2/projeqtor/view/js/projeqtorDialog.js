@@ -496,6 +496,21 @@ function showDetailLink() {
     showInfo(i18n('messageMandatory', new Array(i18n('linkType'))));
   }
 }
+//gautier #providerTerm
+function showDetailProviderTerm() {
+  var linkType=dijit.byId('linkRef2TypeProviderTerm').get("value");
+  if (linkType) {
+    var linkable=linkableArray[linkType];
+    var canCreate=0;
+    if (canCreateArray[linkable] == "YES") {
+      canCreate=1;
+    }
+    showDetail('linkRef2IdProviderTerm', canCreate, ProviderTerm, true);
+
+  } else {
+    showInfo(i18n('messageMandatory', new Array(i18n('linkTypeProviderTerm'))));
+  }
+}
 
 function showDetailApprover() {
   var canCreate=0;
@@ -5192,6 +5207,19 @@ function removeProviderTerm(id) {
     showConfirm(msg, actionOK);
 }
 
+function removeProviderTermFromBill(id,idProviderBill) {
+  if (checkFormChangeInProgress()) {
+    showAlert(i18n('alertOngoingChange'));
+    return;
+  }
+  actionOK=function() {
+    loadContent("../tool/removeProviderTerm.php?providerTermId="+id+"&isProviderBill=true", "resultDiv",
+        null, true, 'providerTerm');
+  };
+    msg=i18n('confirmDeleteProviderTerm', new Array(id));
+    showConfirm(msg, actionOK);
+}
+
 function addProviderTerm(objectClass, type, idProviderOrder, isLine) {
   var callBack = function () {
     affectationLoad=true;
@@ -5304,6 +5332,27 @@ function providerTermLinePercentBilleLine(id){
   dijit.byId("providerTermFullAmount"+id).set('value', fullAmount);
   cancelRecursiveChange_OnGoingChange = false;
 }
+
+function addProviderTermFromProviderBill() {
+  if (checkFormChangeInProgress()) {
+    showAlert(i18n('alertOngoingChange'));
+    return;
+  }
+  var params="&providerBillId="+dijit.byId('id').get('value');
+  loadDialog('dialogProviderTermFromProviderBill', null, true, params);
+}
+
+
+function saveProviderTermFromProviderBill() {
+  var formVar=dijit.byId('providerTermFromProviderBillForm');
+  if (formVar.validate()) {
+    loadContent("../tool/saveProviderTermFromProviderBill.php", "resultDiv", "providerTermFromProviderBillForm", true,'ProviderTerm');
+    dijit.byId('dialogProviderTermFromProviderBill').hide();
+  } else {
+    showAlert(i18n("alertInvalidForm"));
+  }
+}
+
 // =============================================================================
 // = Affectation
 // =============================================================================

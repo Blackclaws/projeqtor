@@ -79,6 +79,8 @@ class ProviderBillMain extends SqlElement {
   public $_lib_cancelled;
   public $comment;
   //link
+  public $_sec_ProviderTerm;
+  public $_ProviderTerm=array();
   public $_sec_Link;
   public $_Link=array();
   public $_Attachment=array();
@@ -136,9 +138,6 @@ class ProviderBillMain extends SqlElement {
    */
   function __construct($id = NULL, $withoutDependentObjects=false) {
     parent::__construct($id,$withoutDependentObjects);
-    if (count($this->_BillLine)) {
-      self::$_fieldsAttributes['untaxedAmount']='readonly';
-    }
   }
   
   /** ==========================================================================
@@ -227,11 +226,32 @@ class ProviderBillMain extends SqlElement {
       }
       $this->untaxedAmount=$amount;
     }
+//     $this->fullAmount=$this->untaxedAmount*(1+$this->taxPct/100);
+//     $this->taxAmount=$this->fullAmount-$this->untaxedAmount;
+//     $this->totalUntaxedAmount=$this->untaxedAmount-$this->discountAmount;
+//     $this->totalFullAmount=$this->totalUntaxedAmount*(1+$this->taxPct/100);
+//     $this->totalTaxAmount=$this->totalFullAmount-$this->totalUntaxedAmount;
+    
+    $providerTerm=new ProviderTerm();
+    $crit = array("idProviderBill"=> $this->id);
+    $providerTermList = $providerTerm->getSqlElementsFromCriteria($crit,false);
+    if (count($providerTermList)>0) {
+      if(!isset($amount)){
+        $amount = 0;
+      }
+      foreach ($providerTermList as $line) {
+        $amount+=$line->untaxedAmount;
+      }
+      $this->untaxedAmount=$amount;
+    }
     $this->fullAmount=$this->untaxedAmount*(1+$this->taxPct/100);
     $this->taxAmount=$this->fullAmount-$this->untaxedAmount;
     $this->totalUntaxedAmount=$this->untaxedAmount-$this->discountAmount;
     $this->totalFullAmount=$this->totalUntaxedAmount*(1+$this->taxPct/100);
     $this->totalTaxAmount=$this->totalFullAmount-$this->totalUntaxedAmount;
+    
+    parent::simpleSave();
+    
     
     parent::simpleSave();
     return $result;
@@ -283,5 +303,10 @@ class ProviderBillMain extends SqlElement {
     return $colScript;
   }
   
+  public function setAttributes() {
+    if (count($this->_BillLine)) {
+      self::$_fieldsAttributes['untaxedAmount']='readonly';
+    }
+  }
 }
 ?>
