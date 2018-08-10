@@ -166,6 +166,114 @@ ADD `idBillLine` int(12)  DEFAULT NULL,
 ADD `rate` DECIMAL(5,2)  DEFAULT NULL;
 
 -- ==================================================================
+-- Budget
+-- ==================================================================
+CREATE TABLE `${prefix}budget` (
+  `id` int(12) unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(200) DEFAULT NULL,
+  `idBudgetType` int(12) unsigned DEFAULT NULL,
+  `idBudgetOrientation` int(12) unsigned DEFAULT NULL,
+  `idBudgetCategory` int(12) unsigned DEFAULT NULL,
+  `idUser` int(12) unsigned DEFAULT NULL,
+  `creationDate` datetime DEFAULT NULL,
+  `articleNumber` VARCHAR(100) DEFAULT NULL,
+  `idOrganization` int(12) unsigned DEFAULT NULL,
+  `idClient` int(12) unsigned DEFAULT NULL,
+  `clientCode` VARCHAR(100) DEFAULT NULL,
+  `idBudget` int(12) unsigned DEFAULT NULL,
+  `idSponsor` int(12) unsigned DEFAULT NULL,
+  `idResource` int(12) unsigned DEFAULT NULL,
+  `color` VARCHAR(7) DEFAULT NULL,
+  `description` mediumtext DEFAULT NULL,
+  `idStatus` int(12) unsigned DEFAULT NULL,
+  `isUnderConstruction` int(1) unsigned DEFAULT '1',
+  `handled` int(1) unsigned DEFAULT '1',
+  `handledDate` date DEFAULT NULL,
+  `done` int(1) unsigned DEFAULT '0',
+  `doneDate` date DEFAULT NULL,
+  `idle` int(1) unsigned DEFAULT '0',
+  `idleDate` date DEFAULT NULL,
+  `cancelled` int(1) unsigned DEFAULT '0',
+  `bbs` varchar(1000) DEFAULT NULL,
+  `bbsSortable` varchar(4000) DEFAULT NULL,
+  `plannedAmount` decimal(14,2) UNSIGNED,
+  `initialAmount` decimal(14,2) UNSIGNED,
+  `update1Amount` decimal(14,2) UNSIGNED,
+  `update2Amount` decimal(14,2) UNSIGNED,
+  `update3Amount` decimal(14,2),
+  `update4Amount` decimal(14,2),
+  `actualAmount` decimal(14,2) UNSIGNED,
+  `actualSubAmount` decimal(14,2) UNSIGNED,
+  `usedAmount` decimal(14,2) UNSIGNED,
+  `availableAmount` decimal(14,2) UNSIGNED,
+  `billedAmount` decimal(14,2) UNSIGNED,
+  `leftAmount` decimal(14,2) UNSIGNED,
+  `plannedFullAmount` decimal(14,2) UNSIGNED,
+  `initialFullAmount` decimal(14,2) UNSIGNED,
+  `update1FullAmount` decimal(14,2) UNSIGNED,
+  `update2FullAmount` decimal(14,2) UNSIGNED,
+  `update3FullAmount` decimal(14,2),
+  `update4FullAmount` decimal(14,2),
+  `actualFullAmount` decimal(14,2) UNSIGNED,
+  `actualSubFullAmount` decimal(14,2) UNSIGNED,
+  `usedFullAmount` decimal(14,2) UNSIGNED,
+  `availableFullAmount` decimal(14,2) UNSIGNED,
+  `billedFullAmount` decimal(14,2) UNSIGNED,
+  `leftFullAmount` decimal(14,2) UNSIGNED,
+  `elementary` int(1) unsigned DEFAULT '1',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+CREATE INDEX `budgetBudgetType` ON `${prefix}budget` (idBudgetType);
+CREATE INDEX `budgetBudget` ON `${prefix}budget` (idBudget);
+
+ALTER TABLE `${prefix}expense`
+ADD `idBudgetItem` int(12) unsigned DEFAULT NULL;
+CREATE INDEX expenseBudget ON `${prefix}expense` (idBudgetItem);
+
+INSERT INTO `${prefix}type` (`scope`, `name`, `sortOrder`, `idle`) VALUES 
+('Budget', 'Initial',10,0),
+('Budget', 'Additional',20,0);
+
+CREATE TABLE `${prefix}budgetcategory` (
+  `id` int(12) unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(100) DEFAULT NULL,
+  `sortOrder` int(3) unsigned DEFAULT NULL,
+  `idle` int(1) unsigned DEFAULT '0',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+INSERT INTO `${prefix}budgetcategory` (`name`, `sortOrder`, `idle`) VALUES 
+('Information Technology',10,0),
+('Human Resources',20,0),
+('Financials',30,0),
+('Management',40,0);
+
+CREATE TABLE `${prefix}budgetorientation` (
+  `id` int(12) unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(100) DEFAULT NULL,
+  `sortOrder` int(3) unsigned DEFAULT NULL,
+  `idle` int(1) unsigned DEFAULT '0',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+INSERT INTO `${prefix}budgetorientation` (`name`, `sortOrder`, `idle`) VALUES 
+('Operation',10,0),
+('Transformation',20,0);
+
+
+INSERT INTO `${prefix}menu` (`id`,`name`, `idMenu`, `type`, `sortOrder`, `level`, `idle`, `menuClass`) VALUES
+(197,'menuBudget', 151, 'object', 203, 'ReadWriteEnvironment', 0, 'Financial'),
+(198,'menuBudgetType', 79, 'object', 824, 'ReadWriteType', 0, 'Type'),
+(199,'menuBudgetOrientation', 36, 'object', 789, 'ReadWriteList', 0, 'ListOfValues'),
+(200,'menuBudgetCategory', 36, 'object', 789, 'ReadWriteList', 0, 'ListOfValues');
+
+INSERT INTO `${prefix}habilitation` (`idProfile`, `idMenu`, `allowAccess`) VALUES
+(1, 197, 1),
+(1, 198, 1),
+(1, 199, 1),
+(1, 200, 1);
+
+-- ==================================================================
 -- Global views
 -- ==================================================================
 

@@ -52,7 +52,7 @@ class OrganizationBudgetElementMain extends BudgetElement {
   public $totalBudgetCost;
 
   public $_tab_5_3_smallLabel = array('work','cost','expense','totalCost','reassessed',
-                                      'budget','daughters','projects');
+                                      'colIdBudget','daughters','projects');
   // Fields of Budget Element issued of database fields
   // Budget Elements Row
   public $_byMet_budgetWork;

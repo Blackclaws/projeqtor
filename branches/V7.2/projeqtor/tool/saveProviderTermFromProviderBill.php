@@ -1,4 +1,4 @@
-<?php
+<?PHP
 /*** COPYRIGHT NOTICE *********************************************************
  *
  * Copyright 2009-2017 ProjeQtOr - Pascal BERNARD - support@projeqtor.org
@@ -25,21 +25,15 @@
  *** DO NOT REMOVE THIS NOTICE ************************************************/
 
 /** ===========================================================================
- * Delete the current object : call corresponding method in SqlElement Class
+ * Get the list of objects, in Json format, to display the grid list
  */
-
-require_once "../tool/projeqtor.php";
-
-$idProviderTerm = RequestHandler::getId('providerTermId');
-$isProviderBill = RequestHandler::getValue('isProviderBill');
+require_once "../tool/projeqtor.php"; 
+$idProviderTerm = RequestHandler::getValue('linkRef2TypeProviderTerm');
+$idProviderBill=RequestHandler::getId('ProviderBillId');
+$prT = new ProviderTerm($idProviderTerm);
 Sql::beginTransaction();
-$obj = new ProviderTerm($idProviderTerm);
-if($isProviderBill){
-  $obj->idProviderBill = NULL;
-  $result=$obj->save();
-}else{
-  $result=$obj->delete();
-}
+$prT->idProviderBill = $idProviderBill;
+$result = $prT->save();
 // Message of correct saving
 displayLastOperationStatus($result);
 ?>

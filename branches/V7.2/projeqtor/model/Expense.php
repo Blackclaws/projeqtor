@@ -34,6 +34,7 @@ class Expense extends SqlElement {
   public $_sec_description;
   public $id;    // redefine $id to specify its visible place 
   public $idProject;
+  public $idBudgetItem;
   public $idResource;
   public $idUser;
   //public $idExpenseType;
@@ -43,8 +44,12 @@ class Expense extends SqlElement {
   public $idStatus;  
   public $expensePlannedDate;
   public $plannedAmount;
+  public $plannedTaxAmount;
+  public $plannedFullAmount;
   public $expenseRealDate;
   public $realAmount;
+  public $realTaxAmount;
+  public $realFullAmount;
   public $day;
   public $week;
   public $month;
@@ -203,6 +208,11 @@ class Expense extends SqlElement {
     
     $pe=SqlElement::getSingleSqlElementFromCriteria('ProjectPlanningElement', array('refType'=>'Project','refId'=>$this->idProject));
     $pe->updateExpense();
+    
+    if ($this->idBudgetItem) {
+      $item=new Budget($this->idBudgetItem);
+      $item->save();
+    }
     return $result;
   }
   

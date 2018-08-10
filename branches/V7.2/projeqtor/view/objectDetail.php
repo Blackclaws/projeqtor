@@ -995,6 +995,8 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false, $pare
       }
     } else if (substr($col, 0, 12)=='_TestCaseRun') { // Display TestCaseRun
       drawTestCaseRunFromObject($val, $obj);
+    } else if (substr($col, 0, 13)=='_ProviderTerm') {
+        drawProviderTermFromProviderBill($val, $obj);
     } else if (substr($col, 0, 11)=='_Attachment' and !$comboDetail) {
       if (!isset($isAttachmentEnabled)) {
         $isAttachmentEnabled=true; // allow attachment
@@ -3545,8 +3547,25 @@ function drawBillLinesFromObject($obj, $refresh=false) {
       if ($lock==0) {
         echo ' <a onClick="editBillLine('.htmlEncode($line->id).',\''.htmlEncode(($line->billingType)?$line->billingType:$billingType).'\');" ';
         echo '  title="'.i18n('editLine').'" > '.formatSmallButton('Edit').'</a>';
-        echo ' <a onClick="removeBillLine('.htmlEncode($line->id).');"'.' ';
-        echo '  title="'.i18n('removeLine').'" > '.formatSmallButton('Remove').'</a>';
+        if(get_class($obj)=='ProviderOrder'){
+          $providerTerm = new ProviderTerm();
+          $listProvTerm = $providerTerm->getSqlElementsFromCriteria(array("idProviderOrder"=>$obj->id));
+          $billLineTerm = new BillLine();
+          $hide = false;
+          foreach ($listProvTerm as $providerTerms){
+            $billLineList=$billLineTerm->getSqlElementsFromCriteria(array("refType"=>"ProviderTerm","refId"=>$providerTerms->id));
+            if($billLineList){
+              $hide = true;
+            }
+          }
+         if($hide == false){          
+          echo ' <a onClick="removeBillLine('.htmlEncode($line->id).');"'.' ';
+          echo '  title="'.i18n('removeLine').'" > '.formatSmallButton('Remove').'</a>';
+         }
+        }else{
+          echo ' <a onClick="removeBillLine('.htmlEncode($line->id).');"'.' ';
+          echo '  title="'.i18n('removeLine').'" > '.formatSmallButton('Remove').'</a>';
+        }
       }
       echo '</td>';
     }
@@ -5561,13 +5580,20 @@ function drawProviderTermFromObject($list, $obj, $type, $refresh=false) {
       }
      
   }
-  if($test != true or $y == 0 ){
-    $isLineProviderTerm = false;
-    echo  '<a onClick="addProviderTerm(\''.get_class($obj).'\',\''.$type.'\',\''.$idProviderOrder.'\',\'false\');" title="'.i18n('addProviderTerm').'" /> '.formatSmallButton('Add').'</a>';
-  }
-  if($y == 0 or $test == true ){
-    $isLineProviderTerm = true;
-    echo  '<a onClick="addProviderTerm(\''.get_class($obj).'\',\''.$type.'\',\''.$idProviderOrder.'\',\'true\');" title="'.i18n('addProviderTermLine').'" /> '.formatSmallButton('Split').'</a>';
+  $isLineProviderTerm = 'test';
+  if($obj->totalUntaxedAmount != 0){
+    if($test != true or $y == 0 ){
+      $isLineProviderTerm = false;
+      echo  '<a onClick="addProviderTerm(\''.get_class($obj).'\',\''.$type.'\',\''.$idProviderOrder.'\',\'false\');" title="'.i18n('addProviderTerm').'" /> '.formatSmallButton('Add').'</a>';
+    }
+    $billLineO = new BillLine();
+    $billLineList=$billLineO->getSqlElementsFromCriteria(array("refType"=>"ProviderOrder","refId"=>$obj->id));
+    if($billLineList){
+      if($y == 0 or $test == true ){
+        $isLineProviderTerm = true;
+        echo  '<a onClick="addProviderTerm(\''.get_class($obj).'\',\''.$type.'\',\''.$idProviderOrder.'\',\'true\');" title="'.i18n('addProviderTermLine').'" /> '.formatSmallButton('Split').'</a>';
+      }
+    }
   }
   echo '</td>';
   echo '<td class="assignHeader" style="width:10%">'.i18n('colId').'</td>';
@@ -5595,7 +5621,11 @@ function drawProviderTermFromObject($list, $obj, $type, $refresh=false) {
     if (!$print and securityCheckDisplayMenu(null, $typeAffectable) and securityGetAccessRightYesNo('menu'.$typeAffectable, 'read', '')=="YES") {
       $goto=' onClick="gotoElement(\''.$typeAffectable.'\',\''.htmlEncode($term->id).'\');" style="cursor: pointer;" ';
     }
-    
+    $goto2="";
+    $typeAffectable2='ProviderBill';
+    if (!$print and securityCheckDisplayMenu(null, $typeAffectable2) and securityGetAccessRightYesNo('menu'.$typeAffectable2, 'read', '')=="YES") {
+      $goto2=' onClick="gotoElement(\''.$typeAffectable2.'\',\''.htmlEncode($term->idProviderBill).'\');" style="cursor: pointer;" ';
+    }
       echo '<tr>';
       if (!$print) {
         echo '<td class="assignData'.$idleClass.'" style="text-align:center;white-space: nowrap;">';
@@ -5612,10 +5642,10 @@ function drawProviderTermFromObject($list, $obj, $type, $refresh=false) {
           }
         echo '</td>';
       }
-      echo  '<td class="assignData'.$idleClass.'" align="center"'.$goto.'>'.htmlEncode($term->id).'</td>';
+      echo  '<td class="assignData'.$idleClass.'" align="center"'.$goto.'>#'.htmlEncode($term->id).'</td>';
       echo  '<td class="assignData'.$idleClass.'" align="center" style="white-space: nowrap;">'.htmlFormatDate($term->date).'</td>';
-      echo  '<td class="assignData'.$idleClass.'" align="center" style="white-space: nowrap;">'.htmlDisplayNumericWithoutTrailingZeros(htmlEncode($term->fullAmount)).'</td>';
-      echo  '<td class="assignData'.$idleClass.'" align="center" style="white-space: nowrap;">'.htmlFormatDate($term->idProviderBill).'</td>';
+      echo  '<td class="assignData'.$idleClass.'" align="center" style="white-space: nowrap;">'.htmlDisplayCurrency($term->fullAmount).'</td>';
+      echo  '<td class="assignData'.$idleClass.'" align="center"'.$goto2.' style="white-space: nowrap;">#'.htmlFormatDate($term->idProviderBill).'</td>';
       echo '</tr>';
     
   }
@@ -6036,6 +6066,65 @@ function drawTestCaseRunFromObject($list, $obj, $refresh=false) {
   }
   echo '</table>';
   echo '</td></tr>';
+}
+//gautier #providerTerm
+function drawProviderTermFromProviderBill($list, $obj, $refresh=false) {
+  global $cr, $print, $user, $browserLocale, $comboDetail;
+  if ($comboDetail) {
+    return;
+  }
+  $class=get_class($obj);
+  
+  $canCreate=securityGetAccessRightYesNo('menu'.$class, 'update', $obj)=="YES";
+  $canDelete=$canCreate;
+  if ($obj->idle==1) {
+    $canCreate=false;
+    $canDelete=false;
+  }
+ echo '<tr><td colspan="2" style="width:100%;">';
+ echo '<table style="width:100%;">';
+ echo  '<tr>';
+  if (!$print and $class=='ProviderBill') {
+    echo '<td class="assignHeader" style="width:10%;">';
+    if ($obj->id!=null and !$print and $canCreate and !$obj->idle) {
+      //echo '<a onClick="addProviderTerm();" title="'.i18n('addProviderTerm').'" > '.formatSmallButton('Add').'</a>';
+      $depType = 'ProviderTerm';
+      echo '<a onClick="addProviderTermFromProviderBill();" title="'.i18n('addDependency'.$depType).'"> '.formatSmallButton('Add').'</a>';
+    }
+    echo '</td>';
+  }
+  echo '<td class="assignHeader" colspan="1" style="width:5%">'.i18n('colId').'</td>';
+  echo '<td class="assignHeader" colspan="1" style="width:20%">'.i18n('colDate').'</td>';
+  echo '<td class="assignHeader" colspan="1" style="width:40%">'.i18n('colAmount').'</td>';
+  echo '<td class="assignHeader" colspan="1" style="width:20%">'.i18n('colIdProviderOrder').'</td>';
+  
+  foreach ($list as $prT) {
+    $goto="";
+    $typeAffectable='ProviderOrder';
+    if (!$print and securityCheckDisplayMenu(null, $typeAffectable) and securityGetAccessRightYesNo('menu'.$typeAffectable, 'read', '')=="YES") {
+      $goto=' onClick="gotoElement(\''.$typeAffectable.'\',\''.htmlEncode($prT->idProviderOrder).'\');" style="cursor: pointer;" ';
+    }
+    $goto2="";
+    $typeAffectable2='ProviderTerm';
+    if (!$print and securityCheckDisplayMenu(null, $typeAffectable2) and securityGetAccessRightYesNo('menu'.$typeAffectable2, 'read', '')=="YES") {
+      $goto2=' onClick="gotoElement(\''.$typeAffectable2.'\',\''.htmlEncode($prT->id).'\');" style="cursor: pointer;" ';
+    }
+    echo '<tr>';
+    echo '  <td class="assignData" align="center" style="width:10%">';
+    if ($canDelete) {
+      echo '    <a onClick="removeProviderTermFromBill('."'".htmlEncode($prT->id)."'".');" '.'title="'.i18n('removeProviderTerm').'" > '.formatSmallButton('Remove').'</a>';
+    }
+    echo'   </td>';
+    echo '  <td class="assignData" align="center"'.$goto2.' style="width:5%">#'.htmlEncode($prT->id).'</td>';
+    echo '  <td class="assignData" align="center" style="width:20%">'.htmlFormatDate($prT->date).'</td>';
+    echo '  <td class="assignData" align="center" style="width:40%">'.htmlDisplayCurrency($prT->fullAmount,true).'</td>';
+    echo '  <td class="assignData" align="center"'.$goto.' style="width:20%">#'.htmlEncode($prT->idProviderOrder).'</td>';
+    echo '</tr>';
+  }
+  
+ echo '</tr>';
+ echo '</table>';
+ echo '</td></tr>';
 }
 
 function drawOtherVersionFromObject($otherVersion, $obj, $type) {

@@ -1,4 +1,4 @@
-<?php
+<?php 
 /*** COPYRIGHT NOTICE *********************************************************
  *
  * Copyright 2009-2017 ProjeQtOr - Pascal BERNARD - support@projeqtor.org
@@ -24,22 +24,29 @@
  *     
  *** DO NOT REMOVE THIS NOTICE ************************************************/
 
-/** ===========================================================================
- * Delete the current object : call corresponding method in SqlElement Class
- */
+/** ============================================================================
+ * Action is establised during meeting, to define an action to be followed.
+ */ 
+require_once('_securityCheck.php'); 
+class Budget extends BudgetMain {
 
-require_once "../tool/projeqtor.php";
-
-$idProviderTerm = RequestHandler::getId('providerTermId');
-$isProviderBill = RequestHandler::getValue('isProviderBill');
-Sql::beginTransaction();
-$obj = new ProviderTerm($idProviderTerm);
-if($isProviderBill){
-  $obj->idProviderBill = NULL;
-  $result=$obj->save();
-}else{
-  $result=$obj->delete();
-}
-// Message of correct saving
-displayLastOperationStatus($result);
-?>
+	/** ==========================================================================
+	 * Constructor
+	 * @param $id the id of the object in the database (null if not stored yet)
+	 * @return void
+	 */
+	function __construct($id = NULL, $withoutDependentObjects=false) {
+		parent::__construct($id,$withoutDependentObjects);
+	}
+	
+	/** ==========================================================================
+	 * Destructor
+	 * @return void
+	 */
+	function __destruct() {
+		parent::__destruct();
+	}
+	
+	
+	}
+	?>
