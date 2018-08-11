@@ -4189,6 +4189,7 @@ function ckEditorReplaceEditor(editorName, numEditor) {
 }
 function CKeEnd(CkHeight,numEditor) {
   if (doNotTriggerResize) return;
+  if (! dojo.byId('ckeditorObj'+numEditor)) return;
   var ckeObj = dojo.byId('ckeditorObj'+numEditor).value;
   ckeObj = 'ckeditorHeight'+ckeObj;
   saveDataToSession(ckeObj,CkHeight,true);
