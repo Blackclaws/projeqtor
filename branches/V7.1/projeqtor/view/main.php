@@ -56,8 +56,7 @@ SqlElement::$_cachedQuery['Project']=array();
 SqlElement::$_cachedQuery['ProjectPlanningElement']=array();
 SqlElement::$_cachedQuery['PlanningElement']=array();
 $keyDownEventScript=NumberFormatter52::getKeyDownEvent();
-?> 
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" 
+?><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" 
   "http://www.w3.org/TR/html4/strict.dtd">
 <html>
 <head>   
@@ -1259,7 +1258,7 @@ $keyDownEventScript=NumberFormatter52::getKeyDownEvent();
                <table><tr><td>
                <div id="dialogOtherClientList" dojoType="dijit.layout.ContentPane" region="center">
                  
-                 <select id="otherClientIdClient" size="14"" name="otherClientIdClient[]" multiple
+                 <select id="otherClientIdClient" size="14" name="otherClientIdClient[]" multiple
                   onchange="selectOtherClientItem();"  ondblclick="saveOtherClient();"
                   class="selectList" >
                  </select>
