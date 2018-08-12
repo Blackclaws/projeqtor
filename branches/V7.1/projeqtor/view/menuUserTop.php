@@ -96,7 +96,7 @@ $showUserParameters=securityCheckDisplayMenu($menu->id,substr($menu->name,4));
   <tr style="height:40px">
     <td <?php if ($showUserParameters) echo'rowspan="2"';?> style="white-space:nowrap;vertical-align:middle;text-align:center;position:relative;"><?php if ($imgUrl) { echo '<img style="border-radius:40px;height:80px" src="'.$imgUrl.'" />'; } else { ?>
             <div style="overflow-x:hidden;position: relative; width:80px;height:80px;border-radius:40px; border: 1px solid grey;color: grey;font-size:80%; text-align:center;cursor: pointer;" 
-              onClick="addAttachment('file');" title="<?php echo i18n('addPhoto');?> "></br> </br></br><?php echo i18n('addPhoto');?> </div> 
+              onClick="addAttachment('file');" title="<?php echo i18n('addPhoto');?> "><br/> <br/><br/><?php echo i18n('addPhoto');?> </div> 
    <?php } ?></td>
     <td>
       <div class="pseudoButton disconnectTextClass" style="width:120px;" title="<?php echo i18n('disconnectMessage');?>" onclick="disconnect(true);">
