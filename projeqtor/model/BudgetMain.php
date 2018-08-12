@@ -68,7 +68,7 @@ class BudgetMain extends SqlElement {
   public $budgetEndDate;
   public $bbs;
   public $bbsSortable;
-  public $_tab_2_11=array('HT','TTC','planned','initial','update1','update2','update3','transfered','actual','sub','engaged','available','billed','left');
+  public $_tab_2_12=array('HT','TTC','planned','initial','update1','update2','update3','transfered','actual','sub','engaged','available','billed','left');
   public $plannedAmount;
   public $plannedFullAmount;
   public $initialAmount;
@@ -159,7 +159,7 @@ class BudgetMain extends SqlElement {
   function __construct($id = NULL, $withoutDependentObjects=false) {
   	parent::__construct($id,$withoutDependentObjects);
   	if (!$this->id) {
-  	  $year=(date(md)<'0701')?date('Y'):date('Y')+1;
+  	  $year=(date('md')<'0701')?date('Y'):date('Y')+1;
   	  $this->budgetStartDate=$year.'-01-01';
   	  $this->budgetEndDate=$year.'-12-31';
   	}
@@ -404,7 +404,7 @@ scriptLog("Budget($this->id)->drawSubBudgets(selectField=$selectField, recursive
 //       }
 //     }
 //     $result .='</table>';
-    return $result;
+//    return $result;
   }
 
   public function drawBudgetsList($critArray) {
@@ -430,12 +430,12 @@ scriptLog("Budget($this->id)->drawSubBudgets(selectField=$selectField, recursive
     if(SqlList::getFieldFromId("Status", $this->idStatus, "setHandledStatus")!=0) {
       $this->isUnderConstruction=0;
     } 
-    $this->actualAmount=$this->initialV1Amount
+    $this->actualAmount=$this->initialAmount
                            +$this->update1Amount
                            +$this->update2Amount
                            +$this->update3Amount
                            +$this->update4Amount;
-    $this->actualFullAmount=$this->initialAmount
+    $this->actualFullAmount=$this->initialFullAmount
                             +$this->update1FullAmount
                             +$this->update2FullAmount
                             +$this->update3FullAmount
@@ -444,8 +444,8 @@ scriptLog("Budget($this->id)->drawSubBudgets(selectField=$selectField, recursive
     $this->usedFullAmount=0;
     $this->billedAmount=0;
     $this->billedFullAmount=0;
-    $this->subAmount=0;
-    $this->subFullAmount=0;
+    $this->actualSubAmount=0;
+    $this->actualSubFullAmount=0;
     if ($this->elementary) {
       $exp=new Expense();
       $expList=$exp->getSqlElementsFromCriteria(array('idBudgetItem'=>$this->id));
@@ -459,8 +459,8 @@ scriptLog("Budget($this->id)->drawSubBudgets(selectField=$selectField, recursive
       $bud=new Budget();
       $budList=$bud->getSqlElementsFromCriteria(array('idBudget'=>$this->id));
       foreach ($budList as $bud) {
-        $this->subAmount+=$bud->actualAmount;
-        $this->subFullAmount+=$bud->actualFullAmount;
+        $this->actualSubAmount+=$bud->actualAmount;
+        $this->actualSubFullAmount+=$bud->actualFullAmount;
         $this->usedAmount+=$bud->usedAmount;
         $this->usedFullAmount+=$bud->usedFullAmount;
         $this->billedAmount+=$bud->billedAmount;
@@ -468,9 +468,9 @@ scriptLog("Budget($this->id)->drawSubBudgets(selectField=$selectField, recursive
       }
     }
     $this->availableAmount=$this->actualAmount-$this->usedAmount;
-    $this->availableFullAmount=$this->actualFllAmount-$this->usedFullAmount;
-    $this->leftAmount=$this->actualAmount-$this->realAmount;
-    $this->leftFullAmount=$this->actualFllAmount-$this->realFullAmount;
+    $this->availableFullAmount=$this->actualFullAmount-$this->usedFullAmount;
+    $this->leftAmount=$this->actualAmount-$this->billedAmount;
+    $this->leftFullAmount=$this->actualFullAmount-$this->billedFullAmount;
     
     // CALCULATE WBS
     $result = parent::save();
