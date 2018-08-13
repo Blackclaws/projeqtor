@@ -233,9 +233,9 @@ ALTER TABLE `${prefix}expense`
 ADD `idBudgetItem` int(12) unsigned DEFAULT NULL;
 CREATE INDEX expenseBudget ON `${prefix}expense` (idBudgetItem);
 
-INSERT INTO `${prefix}type` (`scope`, `name`, `sortOrder`, `idle`) VALUES 
-('Budget', 'Initial',10,0),
-('Budget', 'Additional',20,0);
+INSERT INTO `${prefix}type` (`scope`, `name`, `sortOrder`, `idWorkflow`, `idle`) VALUES 
+('Budget', 'Initial',10,1, 0),
+('Budget', 'Additional',20,1 ,0);
 
 CREATE TABLE `${prefix}budgetcategory` (
   `id` int(12) unsigned NOT NULL AUTO_INCREMENT,

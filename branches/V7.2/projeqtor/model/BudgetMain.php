@@ -52,7 +52,7 @@ class BudgetMain extends SqlElement {
   public $description;
   public $_sec_Treatment;
   public $idStatus;
-  public $isUnderConstruction;
+  public $isUnderConstruction=1;
   public $handled;
   public $handledDate;
   public $done;
@@ -64,11 +64,12 @@ class BudgetMain extends SqlElement {
   public $_sec_subBudgets;
   public $_spe_subBudgets;
   public $_sec_Progress;
+  public $_tab_2_1=array('startDate','endDate','budgetDates');
   public $budgetStartDate;
   public $budgetEndDate;
   public $bbs;
   public $bbsSortable;
-  public $_tab_2_12=array('HT','TTC','planned','initial','update1','update2','update3','transfered','actual','sub','engaged','available','billed','left');
+  public $_tab_2_12=array('untaxedAmount','fullAmount','estimateAmount','initialAmount','update1Amount','update2Amount','update3Amount','update4Amount','updatedAmount','subBudgetsAmount','engagedAmount','availableAmount','billedAmount','leftAmount');
   public $plannedAmount;
   public $plannedFullAmount;
   public $initialAmount;
@@ -105,15 +106,15 @@ class BudgetMain extends SqlElement {
   private static $_layout='
     <th field="id" formatter="numericFormatter" width="5%" ># ${id}</th>
     <th field="bbsSortable" formatter="sortableFormatter" width="5%" >${bbs}</th>
-    <th field="name" width="20%" >${BudgetName}</th>
-    <th field="nameOrientation" width="10%" >${idOrientation}</th>
-    <th field="nameBudgetType" width="10%" >${type}</th>
+    <th field="name" width="20%" >${name}</th>
+    <th field="nameBudgetOrientation" width="10%" >${idBudgetOrientation}</th>
+    <th field="nameBudgetType" width="10%" >${idBudgetType}</th>
     <th field="articleNumber" width="10%" >${articleNumber}</th>
-    <th field="actualAmount" width="8%" formatter="costFormatter">${actual}</th>
-    <th field="usedAmount" width="8%" formatter="costFormatter">${used}</th>
-    <th field="availableAmount" width="8%" formatter="costFormatter">${available}</th>
-    <th field="billedAmount" width="8%" formatter="costFormatter">${billed}</th>
-    <th field="leftAmount" width="8%" formatter="costFormatter">${left}</th>
+    <th field="actualAmount" width="8%" formatter="costFormatter">${updatedAmount}</th>
+    <th field="usedAmount" width="8%" formatter="costFormatter">${engagedAmount}</th>
+  <th field="availableAmount" width="8%" formatter="costFormatter">${availableAmount}</th>
+    <th field="billedAmount" width="8%" formatter="costFormatter">${billedAmount}</th>
+    <th field="leftAmount" width="8%" formatter="costFormatter">${leftAmount}</th>
     ';
   
   private static $_fieldsTooltip = array(
@@ -148,8 +149,12 @@ class BudgetMain extends SqlElement {
  
   private static $_colCaptionTransposition = array('idResource'=>'manager',
    'idBudget'=> 'isSubBudget',
-   'idBudgetType'=>'type',
-   'idUser'=>'issuer');
+   'done'=>'approved',
+   'doneDate'=>'dateApproved',
+   'idUser'=>'issuer',
+  		'plannedAmount'=>'estimateAmount',
+  		'plannedFullAmount'=>'estimateFullAmount'
+  );
   
    /** ==========================================================================
    * Constructor
@@ -210,93 +215,43 @@ class BudgetMain extends SqlElement {
    */
   public function getValidationScript($colName) {
     $colScript = parent::getValidationScript($colName);
-
-//     if ($colName=="idle") {   
-//       $colScript .= '<script type="dojo/connect" event="onChange" >';
-//       $colScript .= '  if (this.checked) { ';
-//       $colScript .= '    if (dijit.byId("idleDate").get("value")==null) {';
-//       $colScript .= '      var curDate = new Date();';
-//       $colScript .= '      dijit.byId("idleDate").set("value", curDate); ';
-//       $colScript .= '    }';
-//       $colScript .= '    if (! dijit.byId("done").get("checked")) {';
-//       $colScript .= '      dijit.byId("done").set("checked", true);';
-//       $colScript .= '    }';  
-//       $colScript .= '  } else {';
-//       $colScript .= '    dijit.byId("idleDate").set("value", null); ';
-//       $colScript .= '  } '; 
-//       $colScript .= '  formChanged();';
-//       $colScript .= '</script>';
-//     } else if ($colName=="done") {   
-//       $colScript .= '<script type="dojo/connect" event="onChange" >';
-//       $colScript .= '  if (this.checked) { ';
-//       $colScript .= '    if (dijit.byId("doneDate").get("value")==null) {';
-//       $colScript .= '      var curDate = new Date();';
-//       $colScript .= '      dijit.byId("doneDate").set("value", curDate); ';
-//       $colScript .= '    }';
-//       $colScript .= '  } else {';
-//       $colScript .= '    dijit.byId("doneDate").set("value", null); ';
-//       $colScript .= '    if (dijit.byId("idle").get("checked")) {';
-//       $colScript .= '      dijit.byId("idle").set("checked", false);';
-//       $colScript .= '    }'; 
-//       $colScript .= '  } '; 
-//       $colScript .= '  formChanged();';
-//       $colScript .= '</script>';
-//     } else if ($colName=="idStatus") {
-//       $colScript .= '<script type="dojo/connect" event="onChange" >';
-//       $colScript .= htmlGetJsTable('Status', 'setIdleStatus', 'tabStatusIdle');
-//       $colScript .= htmlGetJsTable('Status', 'setDoneStatus', 'tabStatusDone');
-//       $colScript .= '  var setIdle=0;';
-//       $colScript .= '  var filterStatusIdle=dojo.filter(tabStatusIdle, function(item){return item.id==dijit.byId("idStatus").value;});';
-//       $colScript .= '  dojo.forEach(filterStatusIdle, function(item, i) {setIdle=item.setIdleStatus;});';
-//       $colScript .= '  if (setIdle==1) {';
-//       $colScript .= '    dijit.byId("idle").set("checked", true);';
-//       $colScript .= '  } else {';
-//       $colScript .= '    dijit.byId("idle").set("checked", false);';
-//       $colScript .= '  }';
-//       $colScript .= '  var setDone=0;';
-//       $colScript .= '  var filterStatusDone=dojo.filter(tabStatusDone, function(item){return item.id==dijit.byId("idStatus").value;});';
-//       $colScript .= '  dojo.forEach(filterStatusDone, function(item, i) {setDone=item.setDoneStatus;});';
-//       $colScript .= '  if (setDone==1) {';
-//       $colScript .= '    dijit.byId("done").set("checked", true);';
-//       $colScript .= '  } else {';
-//       $colScript .= '    dijit.byId("done").set("checked", false);';
-//       $colScript .= '  }';
-//       $colScript .= '  formChanged();';
-//       $colScript .= '</script>';     
-//     } 
-    
+    if (substr($colName,-6)=='Amount') {
+    	$colScript .= '<script type="dojo/connect" event="onChange" >';
+    	$colScript.="    var actual=0;";  
+    	$colScript.="    if (dijit.byId('initialAmount').get('value')) actual+=dijit.byId('initialAmount').get('value');";
+    	$colScript.="    if (dijit.byId('update1Amount').get('value')) actual+=dijit.byId('update1Amount').get('value');";
+    	$colScript.="    if (dijit.byId('update2Amount').get('value')) actual+=dijit.byId('update2Amount').get('value');";
+    	$colScript.="    if (dijit.byId('update3Amount').get('value')) actual+=dijit.byId('update3Amount').get('value');";
+    	$colScript.="    if (dijit.byId('update4Amount').get('value')) actual+=dijit.byId('update4Amount').get('value');";
+    	$colScript.="    dijit.byId('actualAmount').set('value',actual);";
+    	$colScript.="    var available=actual;";
+    	$colScript.="    if (dijit.byId('usedAmount').get('value')) available-=dijit.byId('usedAmount').get('value');";
+    	$colScript.="    dijit.byId('availableAmount').set('value',available);";
+    	$colScript.="    var left=actual;";
+    	$colScript.="    if (dijit.byId('billedAmount').get('value')) left+=dijit.byId('billedAmount').get('value');";
+    	$colScript.="    dijit.byId('leftAmount').set('value',left);";
+    	$colScript.="    var actualFull=0;";
+    	$colScript.="    if (dijit.byId('initialFullAmount').get('value')) actualFull+=dijit.byId('initialFullAmount').get('value');";
+    	$colScript.="    if (dijit.byId('update1FullAmount').get('value')) actualFull+=dijit.byId('update1FullAmount').get('value');";
+    	$colScript.="    if (dijit.byId('update2FullAmount').get('value')) actualFull+=dijit.byId('update2FullAmount').get('value');";
+    	$colScript.="    if (dijit.byId('update3FullAmount').get('value')) actualFull+=dijit.byId('update3FullAmount').get('value');";
+    	$colScript.="    if (dijit.byId('update4FullAmount').get('value')) actualFull+=dijit.byId('update4FullAmount').get('value');";
+    	$colScript.="    dijit.byId('actualFullAmount').set('value',actualFull);";
+    	$colScript.="    var availableFull=actualFull;";
+    	$colScript.="    if (dijit.byId('usedFullAmount').get('value')) availableFull-=dijit.byId('usedFullAmount').get('value');";
+    	$colScript.="    dijit.byId('availableFullAmount').set('value',availableFull);";
+    	$colScript.="    var leftFull=actualFull;";
+    	$colScript.="    if (dijit.byId('billedFullAmount').get('value')) left+=dijit.byId('billedFullAmount').get('value');";
+    	$colScript.="    dijit.byId('leftFullAmount').set('value',leftFull);";
+    	$colScript .= '  formChanged();';
+    	$colScript .= '</script>';
+    }
     return $colScript;
   }
   
 // ============================================================================**********
 // MISCELLANOUS FUNCTIONS
 // ============================================================================**********
-  
-  /** ==========================================================================
-   * Retrieves the hierarchic sub-Budgets of the current Budget
-   * @return an array of Budgets as sub-Budgets
-   */
-  public function getSubBudgets($limitToActiveBudgets=false, $withoutDependantElement=false) {
-//     if ($this->id==null or $this->id=='') {
-//       return array();
-//     }
-//     $crit=array();
-//     if ($this->id=='*') {
-//       $crit['idBudget']='';
-//     } else {
-//       $crit['idBudget']=$this->id;
-//     }
-
-//     if ($limitToActiveBudgets) {
-//       $crit['idle']='0';
-//     }
-//     $sorted=SqlList::getListWithCrit('Budget',$crit,'name');
-//     $subBudgets=array();
-//     foreach($sorted as $id=>$name) {
-//       $subBudgets[$id]=new Budget($id, $withoutDependantElement);
-//     }
-//     return $subBudgets;
-  }
 
   /** =========================================================================
    * Draw a specific item for the current class.
@@ -305,12 +260,11 @@ class BudgetMain extends SqlElement {
    * @return an html string able to display a specific item
    *  must be redefined in the inherited class
    */
-  public function drawSpecificItem($item){
-//scriptLog("Budget($this->id)->drawSpecificItem($item)");  	
+  public function drawSpecificItem($item){ 	
     $result="";
     if ($item=='subBudgets') {
       $result .="<table><tr><td class='label' valign='top'><label>" . i18n('subBudgets') . "&nbsp;:&nbsp;</label>";
-      $result .="</td><td>";
+      $result .="</td><td style='padding-top:7px;'>";
       if ($this->id) {
         $result .= $this->drawSubBudgets();
       }
@@ -325,99 +279,31 @@ class BudgetMain extends SqlElement {
    * @return string the html table for the given level of subBudgets
    *  must be redefined in the inherited class
    */  
-  public function drawSubBudgets($selectField=null, $recursiveCall=false, $limitToUserBudgets=false, $limitToActiveBudgets=false) {
-scriptLog("Budget($this->id)->drawSubBudgets(selectField=$selectField, recursiveCall=$recursiveCall, limitToUserBudgets=$limitToUserBudgets, limitToActiveBudgets=$limitToActiveBudgets)");
-//     global $outMode;
-//   	self::$_drawSubBudgetsDone[$this->id]=$this->name;
-//     if ($limitToUserBudgets) {
-//       $user=getSessionUser();
-//       if (! $user->_accessControlVisibility) {
-//         $user->getAccessControlRights(); // Force setup of accessControlVisibility
-//       }
-//       if ($user->_accessControlVisibility != 'ALL') {      
-//         $visibleBudgetsList=$user->getHierarchicalViewOfVisibleBudgets($limitToActiveBudgets);
-//       } else {
-//       	$visibleBudgetsList=array();
-//       }
-//       $reachableBudgetsList=$user->getVisibleBudgets($limitToActiveBudgets);
-//     } else {  
-//       $visibleBudgetsList=array();
-//       $reachableBudgetsList=array();
-//     }  
-//     $result="";
-//     $clickEvent=' onClick=""';
-//     if ($outMode=='html' or $outMode=='pdf') $clickEvent='';
-//     if ($limitToUserBudgets and $user->_accessControlVisibility != 'ALL' and ! $recursiveCall) {
-//     	$subList=array();
-//     	foreach($visibleBudgetsList as $idP=>$nameP) {
-//     		$split=explode('#',$nameP);
-//     		if (strpos($split[0],'.')==0) {
-//     			$subList[substr($idP,1)]=str_replace('&sharp;','#',$split[1]);
-//     		}
-//     	}
-//     } else {
-//   	  $subList=$this->getSubBudgetsList($limitToActiveBudgets,true);
-//     }
-//     if ($selectField!=null and ! $recursiveCall) { 
-//       $result .= '<table ><tr><td>';
-//       $clickEvent=' onClick=\'setSelectedBudget("*", "<i>' . i18n('allBudgets') . '</i>", "' . $selectField . '");\' ';
-//       if ($outMode=='html' or $outMode=='pdf') $clickEvent='';
-//       $result .= '<div ' . $clickEvent . ' class="'.(($outMode=='html' or $outMode=='pdf')?'':'menuTree').'" style="width:100%;">';
-//       $result .= '<i>' . i18n('allBudgets') . '</i>';
-//       $result .= '</div></td></tr></table>';
-//     }
-//     $result .='<table style="width: 100%;" >';
-//     if (count($subList)>0) {
-//       foreach ($subList as $idPrj=>$namePrj) {
-//         $showLine=true;
-//         $reachLine=true;
-//         if (array_key_exists($idPrj,self::$_drawSubBudgetsDone)) {
-//         	$showLine=false;
-//         }
-//         if ($limitToUserBudgets) {
-//           if ($user->_accessControlVisibility != 'ALL') {
-//             if (! array_key_exists('#' . $idPrj,$visibleBudgetsList)) {
-//               $showLine=false;
-//             }
-//             if (! array_key_exists($idPrj,$reachableBudgetsList)) {
-//               $reachLine=false;
-//             }
-//           }  
-//         }
-//         if ($showLine) {
-//         	$prj=new Budget($idPrj);
-//           $result .='<tr><td valign="top" width="20px"><img src="css/images/iconList16.png" height="16px" /></td>';
-//           if ($selectField==null) {
-//             $result .= '<td class="'.(($outMode=='html' or $outMode=='pdf')?'':'display').'"  NOWRAP>' . (($outMode=='html' or $outMode=='pdf')?htmlEncode($prj->name):htmlDrawLink($prj));
-//           } else if (! $reachLine) {
-//             $result .= '<td style="#AAAAAA;" NOWRAP><div class="'.(($outMode=='html' or $outMode=='pdf')?'':'display').'" style="width: 100%;">' . htmlEncode($prj->name) . '</div>';
-//           } else {
-//             $clickEvent=' onClick=\'setSelectedBudget("' . htmlEncode($prj->id) . '", "' . htmlEncode($prj->name,'parameter') . '", "' . $selectField . '");\' ';
-//             if ($outMode=='html' or $outMode=='pdf') $clickEvent='';
-//             $result .= '<td><div ' . $clickEvent . ' class="'.(($outMode=='html' or $outMode=='pdf')?'':'menuTree').'" style="width:100%;color:black">';
-//             $result .= htmlEncode($prj->name);
-//             $result .= '</div>';
-//           }
-//           $result .= $prj->drawSubBudgets($selectField,true,$limitToUserBudgets,$limitToActiveBudgets);
-//           $result .= '</td></tr>';
-//         }
-//       }
-//     }
-//     $result .='</table>';
-//    return $result;
-  }
-
-  public function drawBudgetsList($critArray) {
-//scriptLog("Budget($this->id)->drawBudgetsList(implode('|',$critArray))");  	
-//     $result="<table>";
-//     $prjList=$this->getSqlElementsFromCriteria($critArray, false);
-//     foreach ($prjList as $prj) {
-//       $result.= '<tr><td valign="top" width="20px"><img src="css/images/iconList16.png" height="16px" /></td><td>';
-//       $result.=htmlDrawLink($prj);
-//       $result.= '</td></tr>';
-//     }
-//     $result .="</table>";
-//     return $result; 
+  public function drawSubBudgets($recursiveCall=false) {
+  	debugLog("sub budget for #$this->id");
+    global $outMode;
+    $result="";
+    
+ 	  $subList=SqlList::getListWithCrit('Budget',array('idBudget'=>$this->id));
+ 	  debugLog($subList);
+    $result .='<table style="width: 100%;" >';
+    if (count($subList)>0) {
+      foreach ($subList as $idBdg=>$nameBdg) {
+      	$bdg=new Budget($idBdg,true);
+        $result .='<tr><td valign="top" width="20px"><img src="css/images/iconList16.png" height="16px" /></td>';
+        //$result .= '<td style="#AAAAAA;" NOWRAP><div class="'.(($outMode=='html' or $outMode=='pdf')?'':'display').'" style="width: 100%;">' . htmlEncode($bdg->name) . '</div>';
+        $clickEvent=' onClick=\'gotoElement("Budget","' . htmlEncode($bdg->id) . '");\' ';
+        if ($outMode=='html' or $outMode=='pdf') $clickEvent='';
+        $result .= '<td><div ' . $clickEvent . ' class="'.(($outMode=='html' or $outMode=='pdf')?'':'menuTree').'" style="width:100%;color:black">';
+        $result .= htmlEncode($bdg->name);
+        if ($bdg->actualAmount) $result.='<div style="float:right">&nbsp;&nbsp;&nbsp;<i>('.htmlDisplayCurrency($bdg->actualAmount).')</i></div>';
+        $result .= '</div>';
+        $result .= $bdg->drawSubBudgets(true);
+        $result .= '</td></tr>';
+      }
+    }
+    $result .='</table>';
+   return $result;
   }
   
    /**=========================================================================
@@ -446,6 +332,17 @@ scriptLog("Budget($this->id)->drawSubBudgets(selectField=$selectField, recursive
     $this->billedFullAmount=0;
     $this->actualSubAmount=0;
     $this->actualSubFullAmount=0;
+    $bud=new Budget();
+    $budList=$bud->getSqlElementsFromCriteria(array('idBudget'=>$this->id));
+    foreach ($budList as $bud) {
+      $this->actualSubAmount+=$bud->actualAmount;
+      $this->actualSubFullAmount+=$bud->actualFullAmount;
+      $this->usedAmount+=$bud->usedAmount;
+      $this->usedFullAmount+=$bud->usedFullAmount;
+      $this->billedAmount+=$bud->billedAmount;
+      $this->billedFullAmount+=$bud->billedFullAmount;
+    }
+    $this->elementary=(count($budList)==0)?1:0;
     if ($this->elementary) {
       $exp=new Expense();
       $expList=$exp->getSqlElementsFromCriteria(array('idBudgetItem'=>$this->id));
@@ -454,17 +351,6 @@ scriptLog("Budget($this->id)->drawSubBudgets(selectField=$selectField, recursive
         $this->usedFullAmount+=$exp->plannedFullAmount;
         $this->billedAmount+=$exp->realAmount;
         $this->billedFullAmount+=$exp->realFullAmount;
-      }
-    } else {
-      $bud=new Budget();
-      $budList=$bud->getSqlElementsFromCriteria(array('idBudget'=>$this->id));
-      foreach ($budList as $bud) {
-        $this->actualSubAmount+=$bud->actualAmount;
-        $this->actualSubFullAmount+=$bud->actualFullAmount;
-        $this->usedAmount+=$bud->usedAmount;
-        $this->usedFullAmount+=$bud->usedFullAmount;
-        $this->billedAmount+=$bud->billedAmount;
-        $this->billedFullAmount+=$bud->billedFullAmount;
       }
     }
     $this->availableAmount=$this->actualAmount-$this->usedAmount;
