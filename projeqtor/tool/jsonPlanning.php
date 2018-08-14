@@ -318,7 +318,6 @@
     	$collapsedList=Collapsed::getCollaspedList();
     	$topProjectArray=array();
       while ($line = Sql::fetchLine($result)) {
-        debugLog($line);
       	$line=array_change_key_case($line,CASE_LOWER);
       	if ($applyFilter and !isset($arrayRestrictWbs[$line['wbssortable']])) continue; // Filter applied and item is not selected and not a parent of selected
       	if ($line['id'] and !$line['refname']) { // If refName not set, delete corresponding PE (results from incorrect delete
@@ -338,7 +337,6 @@
         $idPe="";
         // NEW
         if (isset($line['isglobal']) and $line['isglobal']==1 and $line['progress']==$na) {
-          //debugLog($line);
           if ($line['reftype']=='Ticket' and $line['validatedwork']>0 and $line['realwork']>0) {// Ticket by work
             if (trim($line['realenddate'])!="" and $line['realenddate']!=$na and $line['leftwork']==0) {
               $line['progress']='100';

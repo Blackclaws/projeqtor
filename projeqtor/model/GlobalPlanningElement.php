@@ -210,17 +210,14 @@ class GlobalPlanningElement extends SqlElement {
       }
       return $pe->simpleSave();
     } else {
-      debugLog("save for refType=$this->refType #$this->refId : plannedEndDate=$this->plannedEndDate");
       $class=$this->refType;
       $item=new $class($this->refId);
       $globalizableItem=self::$_globalizables[$class];
       if (isset($globalizableItem['plannedEndDate'])) {
-        debugLog("   OK, save");
         $endName=$globalizableItem['plannedEndDate'];
         $item->$endName=$this->plannedEndDate;
       } 
       $result=$item->save();
-      debugLog("   ".$result);
       return $result;
     }
   }
@@ -316,7 +313,6 @@ class GlobalPlanningElement extends SqlElement {
       $query.="and $table.$excludedProjectsListClause";
     }
     $query.=')';
-    debugLog($query);
     return $query;
   }
   

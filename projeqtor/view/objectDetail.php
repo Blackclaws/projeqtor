@@ -1877,8 +1877,7 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false, $pare
           // BEGIN - REPLACE BY TABARY - POSSIBILITY TO HAVE X TIMES IDXXXX IN SAME OBJECT
           $colWithoutAlias=foreignKeyWithoutAlias($col);
           $idMenu='menu'.substr($colWithoutAlias, 2);
-          $comboClass=substr($colWithoutAlias, 2);
-          
+          $comboClass=substr($colWithoutAlias, 2);          
           // $idMenu='menu' . substr($col, 2);
           // $comboClass=substr($col, 2);
           // END - REPLACE BY TABARY - POSSIBILITY TO HAVE X TIMES IDXXXX IN SAME OBJECT
@@ -1939,6 +1938,10 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false, $pare
             $displayComboButtonCol=false;
             $displayDirectAccessButton=false;
           }
+        }
+        if ($obj->isAttributeSetToField($col, 'canSearchForAll') ) {
+          $displayComboButtonCol='force';
+          //$displayDirectAccessButton=false;
         }
         if ($col=='idProfile' and !$obj->id and !$val and ($classObj=='Resource' or $classObj=='User')) { // set default
           $val=Parameter::getGlobalParameter('defaultProfile');
@@ -2036,26 +2039,12 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false, $pare
           if ($col=='idType') {
             $critFld='scope';
             $critVal=SqlList::getNameFromId('Mailable', $obj->idMailable, false);
-          }  // BEGIN add Gmartin Ticket #157
-else if ($col=='idEmailTemplate') {
+            // BEGIN add Gmartin Ticket #157
+          } else if ($col=='idEmailTemplate') {
             $critFld[]='idMailable';
             $critVal[]=$obj->idMailable;
             $critFld[]='idType';
             $critVal[]=$obj->idType;
-            /*
-             * if (! isset ( $obj->idMailable )) {
-             * $list = SqlList::getList ( 'Mailable' );
-             * if (is_array ( $list )) {
-             * foreach ( $list as $key => $mailbl ) {
-             * $critFld [] = 'idMailable';
-             * $critVal [] = $key;
-             * }
-             * }
-             * } else {
-             * $critFld [] = 'idMailable';
-             * $critVal [] = $obj->idMailable;
-             * }
-             */
           }
         }
         if (get_class($obj)=='EmailTemplate') {
@@ -2088,7 +2077,11 @@ else if ($col=='idEmailTemplate') {
           }
         }
         if ($displayComboButtonCol) {
-          $fieldWidth-=50;
+          if ($displayDirectAccessButton) {
+            $fieldWidth-=50;
+          } else {
+            $fieldWidth-=30;
+          }
         } else if ($displayDirectAccessButton) {
           $fieldWidth-=30;
         }
@@ -2158,7 +2151,7 @@ else if ($col=='idEmailTemplate') {
         }
         echo $colScript;
         echo '</select>';
-        if ($displayDirectAccessButton or $displayComboButtonCol) {
+        if ($displayDirectAccessButton) {
           echo '<div id="'.$col.'ButtonGoto" ';
           echo ' title="'.i18n('showDirectAccess').'" style="float:right;margin-right:3px;'.$specificStyleWithoutCustom.'"';
           echo ' class="roundedButton  generalColClass '.$col.'Class">';
@@ -2173,7 +2166,7 @@ else if ($col=='idEmailTemplate') {
           echo ' title="'.i18n('showDetail').'" style="float:right;margin-right:3px;'.$specificStyleWithoutCustom.'"';
           echo ' class="roundedButton generalColClass '.$col.'Class">';
           echo '<div class="iconView" ';
-          echo ' onclick="showDetail(\''.$col.'\','.(($canCreateCol)?1:0).',\''.$comboClass.'\')"';
+          echo ' onclick="showDetail(\''.$col.'\','.(($canCreateCol)?1:0).',\''.$comboClass.'\',false,null,'.(($obj->isAttributeSetToField($col,'canSearchForAll'))?'true':'false').')"';
           echo '></div>';
           echo '</div>';
         }
@@ -2276,6 +2269,7 @@ else if ($col=='idEmailTemplate') {
         // Draw a number field ================================================ NUMBER
         $colScript=($outMode!='pdf')?NumberFormatter52::completeKeyDownEvent($colScript):'';
         $isCost=false;
+        $isAmount=false; // Amount will have 2 decimals
         $isWork=false;
         $isDuration=false;
         $isPercent=false;
@@ -2290,6 +2284,9 @@ else if ($col=='idEmailTemplate') {
         if ($dataType=='decimal' and (substr($col, -4, 4)=='Cost' or substr($col, -6, 6)=='Amount' or $col=='amount')) {
           $isCost=true;
           $fieldWidth=$smallWidth;
+          if (substr($col, -6, 6)=='Amount' or $col=='amount') {
+            $isAmount=true;
+          }
         }
         if ($dataType=='decimal' and (substr($col, -4, 4)=='Work')) {
           $isWork=true;
@@ -2307,49 +2304,23 @@ else if ($col=='idEmailTemplate') {
             $fieldWidth=$smallWidth;
           }
           // END ADD BY Marc TABARY - 2017-03-01 - DIM CORRECT Pct
-        }
-        //gautier #3251
-        if (($isCost or $isWork or $isDuration or $isPercent) and $internalTable!=0 and $displayWidth<1600) {
-          if($isCost and $displayWidth>1500){
-            $fieldWidth-=5;
-          }else{
-            $fieldWidth-=12;
-          }
-        }
-        if($isCost){
-          if($displayWidth>1600 and $displayWidth<1700 ){
-            $fieldWidth+=7;
-          }
-          if($displayWidth>1700 and $displayWidth<1800 ){
-            $fieldWidth+=14;
-          }
-          if($displayWidth>1800){
-            $fieldWidth+=22;
-          }
-        }
-        
-        $paramMaxNbcol=Parameter::getUserParameter('maxColumns');
-        if($paramMaxNbcol== 3 and $isCost and $displayWidth < 1350){
-          if($displayWidth > 1000){
-            $fieldWidth+=10;
-          }
-          if($displayWidth > 1100){
-            $fieldWidth+=10;
-          }
-          if($displayWidth > 1200){
-            $fieldWidth+=10;
-          }
-          if($displayWidth > 1300){
-            $fieldWidth+=10;
-          }
-        }
-        
-        if($paramMaxNbcol == 2 or $paramMaxNbcol == 1 ){
-          if($isCost and  $displayWidth > 1150){
-            $fieldWidth+=30;
+        }        
+        if ($isCost) {
+          $possibleWidth=intval($widthPct)-80;
+          if ($internalTable) {
+            $possibleWidth=round($possibleWidth/$internalTableCols,0)-12;
           } 
+          $expected=100;
+          if ($isAmount) $expected+=20;
+          if ($possibleWidth>$expected) {
+            $fieldWidth=$expected;
+          } else {
+            $fieldWidth=$possibleWidth;
+          }
         }
-        //end  #3251
+        if (($isWork or $isDuration or $isPercent) and $internalTable!=0 and $displayWidth<1600) {
+          $fieldWidth-=12;
+        }
         $spl=explode(',', $dataLength);
         $dec=0;
         if (count($spl)>1) {
@@ -2395,7 +2366,13 @@ else if ($col=='idEmailTemplate') {
             }
           }
         } else {
-          $negative=(($isCost or $isWork) and $val<0)?'background-color: #FFAAAA !important;':'';
+          $negative=(($isCost or $isWork) and $val<0)?'color: #AA0000 !important;':'';
+        }
+        if ($col=='actualSubAmount' and property_exists($obj, 'actualAmount')) {
+          if ($obj->actualSubAmount>$obj->actualAmount) $negative='background-color: #FFAAAA !important;';
+        }
+        if ($col=='actualSubFullAmount' and property_exists($obj, 'actualFullAmount')) {
+          if ($obj->actualSubFullAmount>$obj->actualFullAmount) $negative='background-color: #FFAAAA !important;';
         }
         // END ADD BY Marc TABARY - 2017-03-01 - COLOR PERCENT WITH ATTRIBUTE 'alertOverXXXwarningOverXXXokUnderXXX'
         // COMMENT BY Marc TABARY - 2017-03-01 - COLOR PERCENT WITH ATTRIBUTE 'alertOverXXXwarningOverXXXokUnderXXX'
@@ -2424,7 +2401,9 @@ else if ($col=='idEmailTemplate') {
           // COMMENT BY Marc TABARY - 2017-03-06 - PATTERN FOR YEAR
           // if ($max) {
           // END COMMENT BY Marc TABARY - 2017-03-06 - PATTERN FOR YEAR
-          echo ' constraints="{min:-'.$max.',max:'.$max.'}" ';
+          echo ' constraints="{min:-'.$max.',max:'.$max.(($isAmount)?',places:2':'').'}" ';
+        } else if ($isAmount) {
+          echo ' constraints="{places:2}" ';
         }
         echo ' class="input '.(($isRequired)?'required':'').' generalColClass '.$notReadonlyClass.$notRequiredClass.$col.'Class" ';
         // echo ' layoutAlign ="right" ';
@@ -6313,14 +6292,17 @@ function endBuffering($prevSection, $included) {
       'projectsofobject'=>array('2'=>'bottom', '3'=>'extra'),
       'progress'=>array('2'=>'right', '3'=>'extra'),
       'progress_left'=>array('2'=>'left', '3'=>'extra'),
+      'progress_center'=>array('2'=>'right', '3'=>'right'),
       'productcomponent'=>array('2'=>'left', '3'=>'extra'),
       'providerterm'=>array('2'=>'right', '3'=>'extra'),
       'receivers'=>array('3'=>'bottom', '3'=>'extra'),
       'resourcesofobject'=>array('2'=>'bottom', '3'=>'extra'),
       'resourcecost'=>array('2'=>'right', '3'=>'extra'),
+      'subbudgets'=>array('2'=>'right', '3'=>'extra'),
       'submissions'=>array('2'=>'right', '3'=>'extra'),
       'successor'=>array('2'=>'bottom', '3'=>'bottom'),
-      'target'=>array('3'=>'bottom', '3'=>'extra'),
+      'target'=>array('2'=>'bottom', '3'=>'extra'),
+      'treatment_right'=>array('2'=>'right', '3'=>'extra'),
       'testcaselist'=>array('2'=>'bottom', '3'=>'extra'),
       'testcaserun'=>array('2'=>'bottom', '3'=>'bottom'),
       'testcaserunsummary'=>array('2'=>'left', '3'=>'extra'),

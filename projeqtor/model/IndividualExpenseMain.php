@@ -36,7 +36,6 @@ class IndividualExpenseMain extends Expense {
   public $reference; 
   public $name;
   public $idIndividualExpenseType;
-  public $idBudgetItem;
   public $idProject;
   public $idResource;
   public $idUser;
@@ -44,11 +43,12 @@ class IndividualExpenseMain extends Expense {
   public $_sec_treatment;
   public $idStatus;  
   public $idResponsible;
-  public $_tab_2_2_smallLabel = array('fullAmountShort','paymentDateShort', 'planned', 'real');
+  public $_tab_2_2 = array('fullAmount','paymentDateShort', 'plannedAmount', 'realAmount');
   public $plannedAmount;
   public $expensePlannedDate;
   public $realAmount;
   public $expenseRealDate;
+  public $idBudgetItem;
   public $paymentDone;
   public $idle;
   public $cancelled;
@@ -87,7 +87,8 @@ class IndividualExpenseMain extends Expense {
                                   "month"=>"hidden",
                                   "year"=>"hidden",
                                   "idle"=>"nobr",
-                                  "cancelled"=>"nobr"
+                                  "cancelled"=>"nobr",
+                                  "idBudgetItem"=>"canSearchForAll"
   );  
   
   private static $_colCaptionTransposition = array('idIndividualExpenseType'=>'type',
