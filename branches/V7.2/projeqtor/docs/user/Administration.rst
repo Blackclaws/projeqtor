@@ -147,7 +147,9 @@ Global parameters screen allows configuration of application settings.
 
     * Allows to set number of hours per day.
 
-.. index:: ! Real work allocation (Behavior)
+.. rubric:: Section: Real work allocation
+
+    .. index:: ! Real work allocation (Behavior)
 
 .. _realWorkAllocation-section:
 
@@ -203,15 +205,15 @@ Global parameters screen allows configuration of application settings.
     * Defines maximum number of projects to display.
     * To avoid performance issues.
 
-
   .. compound:: **Apply strict mode for dependencies**
+    Defines if a task can begin the same day as the preceding one.
 
     * If yes, the successor should begin the next day 
     * If no, the successor can start the same day.
     
 .. rubric:: Section: Tickets
 
-.. compound:: **Only responsible works on ticket**
+ .. compound:: **Only responsible works on ticket**
 
     * Only responsible can enter some real work on the ticket.
 
@@ -222,7 +224,7 @@ Global parameters screen allows configuration of application settings.
  .. compound:: **Limit planning activity to those whit flag**
     * Display planning activity selected for the ticket
 
- .. compound:: **Enable to filter ticket reports by priority**
+ .. compound:: **Enable to filter ticket reports by priority **
     * Can display tickets on Report screen by level of priority
 
  .. compound:: **Display ticket at customer level**
@@ -236,11 +238,9 @@ Global parameters screen allows configuration of application settings.
     
 .. rubric:: Section: Organization
 
-.. compound:: **Use budget feature for organizations**
+ .. compound:: **Use budget feature for organizations**
 
-    * If yes, can display and work on budget for an organization.
-
-
+    *If yes, can display and work on budget for an organization.
 
 .. rubric:: Section: Automation
 
@@ -252,7 +252,9 @@ Global parameters screen allows configuration of application settings.
       * **Always** : Values are replaced on activities and project.(erase parents)
       * **Only is set** : Replaces values ( excepted if set by null or stay not indicated,do not erase parents)
 
- .. compound:: **Auto set Responsible if single resource**
+
+ .. compound:: **Auto set Responsible if single resource** :  
+Behavior about management of responsible, including automatic initialization of responsible.
 
     * Automatically set Responsible if not set and by the only one resource allocated to the project 
 
@@ -280,7 +282,6 @@ Global parameters screen allows configuration of application settings.
  .. compound:: ** Auto set parent activity status**
  * Auto set status of parent activity from the status of children activity. 
 
-
 .. rubric:: Section: Milestones
 
  .. compound:: ** Manage target milestone**
@@ -296,85 +297,67 @@ Global parameters screen allows configuration of application settings.
 
  .. compound:: ** Allow type restriction on project**
  * if yes : allow to define additional restrictions of types on each projet type additionally to restrictions defined eventually at each project type level by the Administrator.
-
  
-
-
 .. rubric:: GENERAL SECTION 3 : Display
 
-.. rubric:: Section: Display
+* Selection of graphic interface behavior and generic display parameter for users.
 
-  * Transition between screen changes in flash or fade mode.
+.. rubric:: Section: Display
+ * transition between screen changes in flash or fade mode.
 
 .. rubric:: Max items to display in Today list
-
- * Limit this list. items are generally ordered by issue date increasing
-
+ * limit this list. items are generally ordered by issue date increasing
 
 .. rubric:: Quick filtering by status
-
  * Display one button. Allow to filter on lists the element by status checking boxes. Refresh to make appear on boxe a new state just created on list .
 
 .. rubric:: Section: Localization
 
 .. rubric:: Currency
-
  * Choose your symbol displayed on each monetary boxe
 
 .. rubric:: Currency position for cost display
-
  * Symbol sets  before or after each monetary boxe
 
 .. rubric:: Section: Default values for user parameters
 
-.. rubric:: Default language
 
+.. rubric:: Default language
  * choose among 19 languages / easy come back with translation in target language
 
 .. rubric:: Default theme
-
  * choose among various
 
 .. rubric:: Fist page
-
  * Display your favorite screen like the first one after connexion
 
 .. rubric:: Icone size in menu
-
- * Choose
+ * Icon size are default : user can overwrite these values
 
 .. rubric:: Display of the upper menu
-
  * Icones are hidden or no.
 
 .. rubric:: Display of the left menu
-
  * Appears by icones or in wide mode
 
 .. rubric:: Display history
-
  * no
  * yes, yes with work indicated ( on the bottom of the page )
  * on request ( through a specific button )  
  
 .. rubric:: Editor for rich text
-
  * Choose
 
 .. rubric:: Activate the spell checker in CK editor
-
  * yes or no 
 
 .. rubric:: Not applicable value
-
  * Choose the symbol meaning that is not an applicable value to be displayed on column.
 
  .. rubric:: Restric project list
+ * When creating an element, name of the project stays like than the one selected at the selector or on contrary offers choice on global list of projects
 
-  * When creating an element, name of the project stays like than the one selected at the selector or on contrary offers choice on global list of projects
-
-
-.. rubric:: GENERAL SECTION 4 : Miscellaneous
+.. rubric:: GENERAL SECTION 4 : References
 
 .. rubric:: Section: Format for reference numbering
 * Allows to define reference formats for items of element, documents and bills.
@@ -386,12 +369,31 @@ Global parameters screen allows configuration of application settings.
 * Suffix : can contain {VERS} for version name.
     
 .. rubric:: Section: Bill reference format
+
 .. rubric:: Section: Product and Component
 
-.. rubric:: GENERAL SECTION 5 : Mailing
+.. rubric:: GENERAL SECTION 5 : Configuration
+
+.. rubric:: GENERAL SECTION 6 : Mailing
 
 .. rubric:: Section: Emailing
+
+Parameters to allow the application to send emails.
+
 .. rubric:: Section: Mail titles
+
+* Parameters to define title of email depending on event (1).
+
+(see: :ref:`administration-special-field-label`)
+
+.. raw:: latex
+
+    \newpage
+
+.. index:: ! Special fields
+
+.. _administration-special-field-label:
+
 .. rubric:: Section: Automatic emails grouping
 
 E-mail sending delay: possibility not to send emails in a row, but to delay them to send only one message if several changes generating an emails send are made in a short time.
@@ -486,8 +488,8 @@ Parameters for the “Cron” process.
       * Select how send alert to team manager
 .. rubric:: Section: Automatic planning calculation
 
-
 .. rubric:: GENERAL SECTION 8 : System
+
 .. rubric:: Section: Files and directories
 Definition of directories and other parameters used for Files management.
 
@@ -534,3 +536,75 @@ Definition of directories and other parameters used for Documents management.
      If values are incorrect, the application will not work any more, and you'll have to manually fix parameters in the database.  
     
  
+
+
+
+
+
+
+
+
+
+-----------------------
+
+.. _automated-service:
+
+.. rubric:: Section: Management of automated service (CRON)
+
+
+
+
+
+
+.. _automatic-import:
+
+.. rubric:: Automatic import
+
+.. topic:: Field: Automatic import cron delay
+
+   *
+
+.. topic:: Field: Directory of automated integration files
+
+   *
+
+.. topic:: Field: Log destination
+
+   * 
+
+.. topic:: Field: Mailing list for logs
+
+   *
+
+------------------------
+
+Special fields
+""""""""""""""
+
+Special fields can be used in the title and body mail to be replaced by item values :
+
+* ${dbName} : the display name of the instance
+* ${id} : id of the item
+* ${item} : the class of the item (for instance "Ticket") 
+* ${name} : name of the item
+* ${status} : the current status of the item
+* ${project} : the name of the project of the item
+* ${type} : the type of the item
+* ${reference} : the reference of the item
+* ${externalReference} : the :term:`external reference` of the item
+* ${issuer} : the name of the issuer of the item
+* ${responsible}  : the name of the responsible for the item
+* ${sender} : the name of the sender of email
+* ${sponsor} : the name of the project sponsor
+* ${projectCode} : the project code
+* ${contractCode} : the contact code of project
+* ${customer} : Customer of project 
+* ${url} : the URL for direct access to the item
+* ${login} the user name
+* ${password} the user password
+* ${adminMail} the email of administrator
+
+
+
+
+

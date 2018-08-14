@@ -101,12 +101,9 @@ $hideIdSearch=false;
 $hideShowIdleSearch=false;
 $hideEisSearch=false;
 $referenceWidth=50;
-//debugLog(RequestHandler::dump());
 if ($comboDetail) {
   $screenWidth=getSessionValue('screenWidth',$displayWidthList);
   $displayWidthList=round($screenWidth*0.55,0)+150;
-  debugLog("screenWidth=$screenWidth");
-  debugLog("displayWidthList=$displayWidthList");
 }
 if ($displayWidthList<1400) {
   $referenceWidth=40;

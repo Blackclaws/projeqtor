@@ -1505,7 +1505,6 @@ class PlanningElement extends SqlElement {
     }
     // Predecessors
     $crit='successorId in (0,' . implode(',',$idList) . ')';
-    debugLog($crit);
     $dep=new Dependency();
     
     $depList=$dep->getSqlElementsFromCriteria(null, false, $crit);

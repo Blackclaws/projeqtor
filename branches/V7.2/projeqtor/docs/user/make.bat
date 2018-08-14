@@ -73,6 +73,10 @@ if "%1" == "html" (
 	del /S /Q html_%2 > %BUILDDIR%/html/result.txt
 	xcopy /S /E /I %BUILDDIR%\html .\html_%2 > %BUILDDIR%/html/result.txt
 	echo.Files copied to html_%2.
+	if "%2" == "en" (
+	  echo.Regenerate po files.
+	  sphinx-intl update -p de
+	)
 	goto end
 )
 
