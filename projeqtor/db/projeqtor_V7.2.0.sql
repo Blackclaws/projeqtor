@@ -356,6 +356,11 @@ CREATE INDEX planningelementextensionWbsSortable ON `${prefix}planningelementext
 ALTER TABLE `${prefix}project`
 ADD `excludeFromGlobalPlanning` int(1) UNSIGNED DEFAULT 0;
 
+ALTER TABLE `${prefix}planningelementbaseline`
+ADD `isGlobal` int(1) UNSIGNED DEFAULT 0,
+ADD `idType` int(12) unsigned DEFAULT NULL,
+ADD `idStatus` int(12) unsigned DEFAULT NULL,
+ADD `idResource` int(12) unsigned DEFAULT NULL;
 -- ==================================================================
 -- Misc
 -- ==================================================================

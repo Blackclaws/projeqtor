@@ -2237,7 +2237,9 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false, $pare
         }
       } else if (strpos($obj->getFieldAttributes($col), 'display')!==false) {
         echo '<div ';
-        echo ' class="display generalColClass input'.$col.'Class" style="'.$specificStyle.'width: '.$fieldWidth.'px;"';
+        //echo ' class="display generalColClass input'.$col.'Class" style="'.$specificStyle.'width: '.$fieldWidth.'px;"';
+        echo ' class="display generalColClass input'.$col.'Class" style="'.$specificStyle.'"';
+        if ($col=="wbs") echo ' title="'.htmlEncode($val).'"';
         echo ' >';
         if (strpos($obj->getFieldAttributes($col), 'html')!==false) {
           echo $val;

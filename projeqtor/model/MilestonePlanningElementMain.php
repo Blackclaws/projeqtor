@@ -41,10 +41,10 @@ class MilestonePlanningElementMain extends PlanningElement {
   public $realEndDate;
   public $latestEndDate;
   public $initialEndDate;
-  public $_tab_3_1_smallLabel = array('', '', '','wbs');
-  public $wbs;
-  public $_label_planning;
+  public $_tab_3_1_smallLabel = array('', '', '','planning');
   public $idMilestonePlanningMode;
+  public $_label_wbs;
+  public $wbs;
   public $wbsSortable;
   public $topId;
   public $topRefType;

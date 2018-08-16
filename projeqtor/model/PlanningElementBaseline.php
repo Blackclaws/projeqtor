@@ -31,6 +31,7 @@ require_once('_securityCheck.php');
 class PlanningElementBaseline extends PlanningElement {
  
   public $idBaseline;
+  public $isGlobal;
   public $_noHistory;
   
   private static $_fieldsAttributes=array();
