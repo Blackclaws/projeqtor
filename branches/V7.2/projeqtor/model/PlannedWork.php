@@ -296,6 +296,15 @@ class PlannedWork extends GeneralWork {
       	//if ($plan->validatedStartDate) {   
       	//  $startPlan=$plan->validatedStartDate;
       	//}
+        if (isset($plan->isGlobal) and $plan->isGlobal and count($plan->_directPredecessorList)==0 )  {
+          if ($plan->plannedEndDate>$startDate and !$plan->realEndDate) {
+            $startPlan=$plan->plannedEndDate;
+          } else if (! $plan->plannedEndDate and $plan->validatedEndDate>$startDate) {
+            $startPlan=$plan->validatedEndDate;
+          }
+        } else if (count($plan->_directPredecessorList)==0 and $plan->validatedStartDate>$startDate and ! $plan->realStartDate and $plan->validatedStartDate) {
+          $startPlan=$plan->validatedStartDate;
+        }
         $step=1;
       } else if ($profile=="ASAP" or $profile=="GROUP") { // As soon as possible
         //$startPlan=$plan->validatedStartDate;
@@ -307,7 +316,8 @@ class PlannedWork extends GeneralWork {
           $endPlan=$startDate;
           $step=-1;         
       } else if ($profile=="FLOAT") { // Floating milestone
-        $startPlan=$startDate;
+        if (count($plan->_predecessorListWithParent)==0 and $plan->validatedEndDate>$startDate and !$plan->realEndDate) $startPlan=$plan->validatedEndDate; 
+        else $startPlan=$startDate;
         $endPlan=null;
         $step=1;
       } else if ($profile=="FIXED") { // Fixed milestone

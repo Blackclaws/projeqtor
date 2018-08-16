@@ -87,7 +87,11 @@ class Baseline extends SqlElement {
   }
   
   public function copyItem($itemFrom) {
-    $objFrom=new $itemFrom();
+    if ($itemFrom=='PlanningElement') {
+      $objFrom=new GlobalPlanningElement();
+    } else {
+      $objFrom=new $itemFrom();
+    }
     $tableFrom=$objFrom->getDatabaseTableName();
     $itemTo=$itemFrom.'Baseline';
     $objTo=new $itemTo();
@@ -103,7 +107,7 @@ class Baseline extends SqlElement {
     $idBaseline=$this->id;
     $proj=new Project($this->idProject,true);
     $query="INSERT INTO $tableTo ($colList idBaseline)\n"
-        ."SELECT $colList $idBaseline FROM $tableFrom \n"
+        ."SELECT $colList $idBaseline FROM $tableFrom as $itemFrom \n"
         ." where idProject in ".transformListIntoInClause($proj->getRecursiveSubProjectsFlatList(true, true));
     $res=SqlDirectElement::execute($query);
     if ($itemFrom=='PlannedWork') { // Also include existing real work

@@ -260,7 +260,7 @@ class GlobalPlanningElement extends SqlElement {
     }
         //validatedStartFraction,plannedStartFraction,validatedEndFraction,plannedEndFraction,validatedCalculated,validatedExpenseCalculated,latestStartDate,latestEndDate,
     foreach (self::getGlobalizables() as $class=>$className) {
-      if ($itemsToDisplay and $itemsToDisplay!=' ' and !in_array($class,$itemsToDisplayArray)) {
+      if ($itemsToDisplay and $itemsToDisplay!=' ' and !in_array($class,$itemsToDisplayArray) and !$limitToClass) {
         continue;
       }
       if ($limitToClass and $class!=$limitToClass) {
@@ -316,6 +316,9 @@ class GlobalPlanningElement extends SqlElement {
     return $query;
   }
   
+  public function getDatabaseTableName() {
+     return self::getTableNameQuery();
+  }
   public static function getGlobalizables() {
     $result=array();
     foreach (self::$_globalizables as $key=>$val) {
