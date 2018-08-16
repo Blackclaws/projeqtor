@@ -1555,10 +1555,10 @@ class PlanningElement extends SqlElement {
       	  }
       	}
       }
-      if (! $pe->realStartDate and ! (isset($pe->_noPlan) and $pe->_noPlan)) {
+      if (! $pe->realStartDate and ! (isset($pe->_noPlan) and $pe->_noPlan) and ! (isset($pe->isGlobal) and $pe->isGlobal) ) {
         $pe->plannedStartDate=null;
       }
-      if (! $pe->realEndDate and ! (isset($pe->_noPlan) and $pe->_noPlan)) {
+      if (! $pe->realEndDate and ! (isset($pe->_noPlan) and $pe->_noPlan) and ! (isset($pe->isGlobal) and $pe->isGlobal)) {
         $pe->plannedEndDate=null;
       }
       $result[$id]=$pe;

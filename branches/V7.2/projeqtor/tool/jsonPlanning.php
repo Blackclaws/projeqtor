@@ -337,12 +337,26 @@
         $idPe="";
         // NEW
         if (isset($line['isglobal']) and $line['isglobal']==1 and $line['progress']==$na) {
+          // If real is set, start must be lower...
+          if (trim($line['realenddate']) and $line['realenddate']!=$na) {
+            if (trim($line['realstartdate']) and $line['realstartdate']!=$na and $line['realstartdate']>$line['realenddate']) {
+              $line['realstartdate']=$line['realenddate'];
+            }
+            if (trim($line['plannedstartdate']) and $line['plannedstartdate']!=$na and $line['plannedstartdate']>$line['realenddate']) {
+              $line['plannedstartdate']=$line['realenddate'];
+            }
+            if (trim($line['plannedenddate']) and $line['plannedenddate']!=$na and $line['plannedenddate']>$line['realenddate']) {
+              $line['plannedenddate']=$line['realenddate'];
+            }
+          }
           if ($line['reftype']=='Ticket' and $line['validatedwork']>0 and $line['realwork']>0) {// Ticket by work
             if (trim($line['realenddate'])!="" and $line['realenddate']!=$na and $line['leftwork']==0) {
               $line['progress']='100';
             } else {
               $line['progress']=round(100*$line['realwork']/$line['validatedwork'],0);
             }
+          } else if (trim($line['realenddate']) and $line['realenddate']!=$na) { // is started, so try and get progress from duration
+            $line['progress']='100';
           } else if (trim($line['realstartdate']) and $line['realstartdate']!=$na) { // is started, so try and get progress from duration 
             $pStart="";
             $pStart=(trim($line['initialstartdate'])!="" and $line['initialstartdate']!=$na)?$line['initialstartdate']:$pStart;

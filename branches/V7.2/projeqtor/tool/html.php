@@ -46,6 +46,12 @@ function htmlDrawOptionForReference($col, $selection, $obj=null, $required=false
 // BEGIN - ADD BY TABARY - POSSIBILITY TO HAVE AT X TIMES SAME idXXXX IN THE SAME OBJECT
     $col = foreignKeyWithoutAlias($col);
 // END - ADD BY TABARY - POSSIBILITY TO HAVE AT X TIMES SAME idXXXX IN THE SAME OBJECT
+  $critArray=array();
+  if (is_array($critFld) and is_array($critVal) and count($critFld)==count($critVal)) {
+    foreach($critFld as $id=>$fld) {
+      $critArray[$critFld[$id]]=$critVal[$id];
+    }
+  } 
     
   if (is_array($critFld)) {
 	  foreach ($critFld as $tempId=>$tempCrt) {
@@ -145,7 +151,8 @@ function htmlDrawOptionForReference($col, $selection, $obj=null, $required=false
   } else if ($critFld and ! (($col=='idProduct' or $col=='idProductOrComponent' or $col=='idComponent') and $critFld=='idProject') ) {
     // Limit on criteria : this is main case for criteria selection
     // but not for Product and Component depending on Project (will be managed with restriction table)
-    $critArray=array($critFld=>$critVal);
+    if (count($critArray)==0) $critArray=array($critFld=>$critVal);
+    
     $limitPlanning=Parameter::getGlobalParameter('limitPlanningActivity');
     $class=null;
     if($obj!=null){
