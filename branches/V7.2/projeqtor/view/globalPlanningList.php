@@ -234,7 +234,7 @@ if (RequestHandler::isCodeSet('destinationWidth')) {
       if ($ganttPlanningPrintOldStyle=='YES') {?>
 	                        showPrint("../tool/jsonPlanning.php?global=true", 'planning');
 <?php } else { ?>
-                          showPrint("planningPrint.php?global=true", 'planning');
+                          showPrint("planningPrint.php&global=true", 'planning');
 <?php }?>                          
                           </script>
                         </button>

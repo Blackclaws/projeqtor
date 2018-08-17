@@ -171,6 +171,7 @@ class ProductMain extends ProductOrComponent {
    */
   public function drawSpecificItem($item){
     global $print, $showClosedItems;
+    if (! $print) $print=RequestHandler::getBoolean('print');
     $result="";
     if ($item=='versions' or $item=='versionsWithProjects') {
     	$page="objectDetail";

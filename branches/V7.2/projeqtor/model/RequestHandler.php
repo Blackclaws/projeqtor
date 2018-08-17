@@ -110,7 +110,7 @@ abstract class RequestHandler {
   }
   public static function getBoolean($code) {
     $val=self::getValue($code,false,null);
-    if (!$val or $val=='off') return false;
+    if (!$val or $val=='off' or $val=='false') return false;
     else return true;
   }
   // debug log to keep

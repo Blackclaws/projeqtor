@@ -3588,15 +3588,27 @@ function drawBillLinesFromObject($obj, $refresh=false) {
 
 function drawBillLinesProviderTerms($obj, $refresh=false) {
   global $cr, $print, $user, $browserLocale, $widthPct;
-  // $canUpdate=securityGetAccessRightYesNo('menu' . get_class($obj), 'update', $obj)=="YES";
-  if ($obj->idle==1) {
-    $canUpdate=false;
-  }
-  $lock=false;
-  if (isset($obj->_BillLineTerm)) {
-    $lines=$obj->_BillLineTerm;
-  } else {
+  if(get_class($obj)=='ProviderBill'){
+    $providerTerm = new ProviderTerm();
+    $listProvTerm = $providerTerm->getSqlElementsFromCriteria(array("idProviderBill"=>$obj->id));
     $lines=array();
+    $i = 0;
+    foreach ($listProvTerm as $term){
+      $providerTerm = new ProviderTerm($term->id);
+      if($providerTerm->idProviderOrder){
+        $providerOrder = new ProviderOrder($providerTerm->idProviderOrder);
+        $discountRate[$i] = $providerOrder->discountRate;
+      }
+      $i++;
+      array_push($lines,$providerTerm->_BillLineTerm);
+    }
+  }else{
+    if (isset($obj->_BillLineTerm)) {
+      $providerBill = new ProviderBill($obj->idProviderBill);
+      $lines=$obj->_BillLineTerm;
+    } else {
+      $lines=array();
+    }
   }
   if (!$print) {
     echo '<input type="hidden" id="billLineIdle" value="'.htmlEncode($obj->idle).'" />';
@@ -3617,35 +3629,78 @@ function drawBillLinesProviderTerms($obj, $refresh=false) {
 
   $fmt=new NumberFormatter52($browserLocale, NumberFormatter52::INTEGER);
   $fmtd=new NumberFormatter52($browserLocale, NumberFormatter52::DECIMAL);
-  $lines=array_reverse($lines);
-  if(isset($obj->idProviderOrder)){
-    $providerOrder = new ProviderOrder($obj->idProviderOrder);
-    $discountRate = $providerOrder->discountRate;
-  }
-  foreach ($lines as $line) {
-    $billLine = new BillLine($line->idBillLine);
-    $unit=new MeasureUnit($line->idMeasureUnit);
-    echo '<tr>';
-    echo '<td class="noteData" style="width:5%">#'.htmlEncode($line->id).'</td>';
-    echo '<td class="noteData" style="width:5%">'.htmlEncode($billLine->line).'</td>';
-    echo '<td class="noteData" style="width:20%">'.htmlEncode($billLine->description, 'withBR');
-    if (!$print) {
-      echo '<input type="hidden" id="billLineDescription_'.htmlEncode($line->id).'" value="'.htmlEncode($line->description).'" />';
+  if(get_class($obj)!='ProviderBill'){
+    $lines=array_reverse($lines);
+    if(isset($obj->idProviderOrder)){
+      $providerOrder = new ProviderOrder($obj->idProviderOrder);
+      $discountRate = $providerOrder->discountRate;
     }
-    echo '</td>';
-    echo '<td class="noteData" style="width:20%">'.htmlEncode($billLine->detail, 'withBR');
-    if (!$print) {
-      echo '<input type="hidden" id="billLineDetail_'.htmlEncode($line->id).'" value="'.htmlEncode($line->detail).'" />';
-    }
-    echo '</td>';
-    echo '<td class="noteData" style="width:10%">'.htmlDisplayCurrency($billLine->amount).'</td>';
-    echo '<td class="noteData" style="width:8%">'.htmlDisplayPct($line->rate).'</td>';
-    echo '<td class="noteData" style="width:8%">'.htmlDisplayCurrency($line->price).'</td>';
-    echo '<td class="noteData" style="width:8%">'.htmlDisplayCurrency($line->price*$discountRate/100).'</td>';
-    echo '<td class="noteData" style="width:8%">'.htmlDisplayCurrency($line->price*$obj->taxPct/100).'</td>';
-    echo '<td class="noteData" style="width:8%">'.htmlDisplayCurrency(($line->price)-($line->price*$discountRate/100)+($line->price*$obj->taxPct/100)).'</td>';
-    echo '</tr>';
   }
+  if(get_class($obj)=='ProviderBill'){
+    $i = 0;
+    foreach ($lines as $line) {
+      foreach ($line as $linee){
+      $billLine = new BillLine($linee->idBillLine);
+      $unit=new MeasureUnit($linee->idMeasureUnit);
+      echo '<tr>';
+      echo '<td class="noteData" style="width:5%">#'.htmlEncode($linee->id).'</td>';
+      echo '<td class="noteData" style="width:5%">'.htmlEncode($billLine->line).'</td>';
+      echo '<td class="noteData" style="width:20%">'.htmlEncode($billLine->description, 'withBR');
+      if (!$print) {
+        echo '<input type="hidden" id="billLineDescription_'.htmlEncode($linee->id).'" value="'.htmlEncode($linee->description).'" />';
+      }
+      echo '</td>';
+      echo '<td class="noteData" style="width:20%">'.htmlEncode($billLine->detail, 'withBR');
+      if (!$print) {
+        echo '<input type="hidden" id="billLineDetail_'.htmlEncode($linee->id).'" value="'.htmlEncode($linee->detail).'" />';
+      }
+      echo '</td>';
+      echo '<td class="noteData" style="width:10%">'.htmlDisplayCurrency($billLine->amount).'</td>';
+      echo '<td class="noteData" style="width:8%">'.htmlDisplayPct($linee->rate).'</td>';
+      echo '<td class="noteData" style="width:8%">'.htmlDisplayCurrency($linee->price).'</td>';
+      if(get_class($obj)=='ProviderBill'){
+        echo '<td class="noteData" style="width:8%">'.htmlDisplayCurrency($linee->price*$discountRate[$i]/100).'</td>';
+      }else{
+        echo '<td class="noteData" style="width:8%">'.htmlDisplayCurrency($linee->price*$discountRate/100).'</td>';
+      }
+      echo '<td class="noteData" style="width:8%">'.htmlDisplayCurrency($linee->price*$obj->taxPct/100).'</td>';
+      if(get_class($obj)=='ProviderBill'){
+        echo '<td class="noteData" style="width:8%">'.htmlDisplayCurrency(($linee->price)-($linee->price*$discountRate[$i]/100)+($linee->price*$obj->taxPct/100)).'</td>';
+      }else{
+        echo '<td class="noteData" style="width:8%">'.htmlDisplayCurrency(($linee->price)-($linee->price*$discountRate/100)+($linee->price*$obj->taxPct/100)).'</td>';
+      }
+      echo '</tr>';
+      }
+    $i++;
+    }
+  }else{
+    foreach ($lines as $linee){
+      $billLine = new BillLine($linee->idBillLine);
+      $unit=new MeasureUnit($linee->idMeasureUnit);
+      echo '<tr>';
+      echo '<td class="noteData" style="width:5%">#'.htmlEncode($linee->id).'</td>';
+      echo '<td class="noteData" style="width:5%">'.htmlEncode($billLine->line).'</td>';
+      echo '<td class="noteData" style="width:20%">'.htmlEncode($billLine->description, 'withBR');
+      if (!$print) {
+        echo '<input type="hidden" id="billLineDescription_'.htmlEncode($linee->id).'" value="'.htmlEncode($linee->description).'" />';
+      }
+      echo '</td>';
+      echo '<td class="noteData" style="width:20%">'.htmlEncode($billLine->detail, 'withBR');
+      if (!$print) {
+        echo '<input type="hidden" id="billLineDetail_'.htmlEncode($linee->id).'" value="'.htmlEncode($linee->detail).'" />';
+      }
+      echo '</td>';
+      echo '<td class="noteData" style="width:10%">'.htmlDisplayCurrency($billLine->amount).'</td>';
+      echo '<td class="noteData" style="width:8%">'.htmlDisplayPct($linee->rate).'</td>';
+      echo '<td class="noteData" style="width:8%">'.htmlDisplayCurrency($linee->price).'</td>';
+      echo '<td class="noteData" style="width:8%">'.htmlDisplayCurrency($linee->price*$discountRate/100).'</td>';
+      echo '<td class="noteData" style="width:8%">'.htmlDisplayCurrency($linee->price*$obj->taxPct/100).'</td>';
+      echo '<td class="noteData" style="width:8%">'.htmlDisplayCurrency(($linee->price)-($linee->price*$discountRate/100)+($linee->price*$obj->taxPct/100)).'</td>';
+      echo '</tr>';
+      $newRefId=$linee->refId;
+    }
+  }
+  
   echo '<tr>';
   if (!$print) {
     echo '<td class="noteDataClosetable">&nbsp;</td>';
@@ -5626,7 +5681,11 @@ function drawProviderTermFromObject($list, $obj, $type, $refresh=false) {
       echo  '<td class="assignData'.$idleClass.'" align="center"'.$goto.'>#'.htmlEncode($term->id).'</td>';
       echo  '<td class="assignData'.$idleClass.'" align="center" style="white-space: nowrap;">'.htmlFormatDate($term->date).'</td>';
       echo  '<td class="assignData'.$idleClass.'" align="center" style="white-space: nowrap;">'.htmlDisplayCurrency($term->fullAmount).'</td>';
-      echo  '<td class="assignData'.$idleClass.'" align="center"'.$goto2.' style="white-space: nowrap;">#'.htmlFormatDate($term->idProviderBill).'</td>';
+      if($term->idProviderBill){
+        echo  '<td class="assignData'.$idleClass.'" align="center"'.$goto2.' style="white-space: nowrap;">#'.htmlEncode($term->idProviderBill).'</td>';
+      }else{
+        echo  '<td class="assignData'.$idleClass.'" align="center"'.$goto2.' style="white-space: nowrap;"></td>';
+      }
       echo '</tr>';
     
   }
@@ -6068,7 +6127,6 @@ function drawProviderTermFromProviderBill($list, $obj, $refresh=false) {
   if (!$print and $class=='ProviderBill') {
     echo '<td class="assignHeader" style="width:10%;">';
     if ($obj->id!=null and !$print and $canCreate and !$obj->idle) {
-      //echo '<a onClick="addProviderTerm();" title="'.i18n('addProviderTerm').'" > '.formatSmallButton('Add').'</a>';
       $depType = 'ProviderTerm';
       echo '<a onClick="addProviderTermFromProviderBill();" title="'.i18n('addDependency'.$depType).'"> '.formatSmallButton('Add').'</a>';
     }
@@ -6099,7 +6157,11 @@ function drawProviderTermFromProviderBill($list, $obj, $refresh=false) {
     echo '  <td class="assignData" align="center"'.$goto2.' style="width:5%">#'.htmlEncode($prT->id).'</td>';
     echo '  <td class="assignData" align="center" style="width:20%">'.htmlFormatDate($prT->date).'</td>';
     echo '  <td class="assignData" align="center" style="width:40%">'.htmlDisplayCurrency($prT->fullAmount,true).'</td>';
-    echo '  <td class="assignData" align="center"'.$goto.' style="width:20%">#'.htmlEncode($prT->idProviderOrder).'</td>';
+    if($prT->idProviderOrder){
+      echo '  <td class="assignData" align="center"'.$goto.' style="width:20%">#'.htmlEncode($prT->idProviderOrder).'</td>';
+    }else{
+      echo '  <td class="assignData" align="center"'.$goto.' style="width:20%"></td>';
+    }
     echo '</tr>';
   }
   

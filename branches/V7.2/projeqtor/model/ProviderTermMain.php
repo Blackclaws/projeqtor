@@ -39,7 +39,7 @@ class ProviderTermMain extends SqlElement {
   public $idProviderBill;
   public $idle;
   public $_sec_Price;
-  public $_tab_4_1 = array('untaxedAmountShort', 'tax', '', 'fullAmountShort','initial');
+  public $_tab_4_1_smallLabel = array('untaxedAmountShort', 'tax', '', 'fullAmountShort','initial');
   public $untaxedAmount;
   public $taxPct;
   public $taxAmount;
