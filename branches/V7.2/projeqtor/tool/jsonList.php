@@ -32,6 +32,7 @@
  */
 require_once "../tool/projeqtor.php";
 // scriptLog(' ->/tool/jsonList.php');
+debugLog($_REQUEST);
 $type = $_REQUEST ['listType']; // Note: checked against constant values.
 if (isset ( $_REQUEST ['critField'] )) {
   $field = $_REQUEST ['critField'];
@@ -313,6 +314,8 @@ if ($type == 'empty') {
       // }
     } else {
       // END ADD qCazelles
+      debugLog("SqlList::getListWithCrit ( $class, crit, 'name', null, $showIdle );");
+      debugLog($crit);
       $list = SqlList::getListWithCrit ( $class, $crit, 'name', null, $showIdle );
       // Begin add gmartin /handle emailTemplates Ticket #157 - FIXED PBE
       if ($dataType=='idEmailTemplate' and isset ( $_REQUEST ['critField'] ) and isset ( $_REQUEST ['critValue'] ) ) {
@@ -335,6 +338,7 @@ if ($type == 'empty') {
     }
     // ADD BY Marc TABARY - 2017-02-22 - RESOURCE VISIBILITY (list teamOrga)
   }
+  debugLog($list);
   if ($critField == 'scope' and $dataType = 'idEvent') {
     if (SqlElement::class_exists ( $critValue )) {
       // $objVal=new $critVal();
@@ -398,6 +402,7 @@ if ($type == 'empty') {
   if ($dataType=='idTargetProductVersion' or $dataType=='idProductVersion' or $dataType=='idOriginProductVersion') {
     // Must restrict to versions visible to user
     $restrictArray=getSessionUser()->getVisibleVersions();
+    debugLog($restrictArray);
     $list=array_intersect_key($list, $restrictArray);
   }
   if ($dataType=='idProduct') {

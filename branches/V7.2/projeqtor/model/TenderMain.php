@@ -54,7 +54,7 @@ class TenderMain extends SqlElement {
   public $expectedTenderDateTime;
   public $receptionDateTime;
   public $offerValidityEndDate;
-  public $_tab_4_3 = array('untaxedAmountShort', 'tax', '', 'fullAmountShort','initial','discount', 'countTotal');
+  public $_tab_4_3_smallLabel = array('untaxedAmount', 'tax', 'taxAmount', 'fullAmount','initial','discount', 'countTotal');
   //init
   public $untaxedAmount;
   public $taxPct;

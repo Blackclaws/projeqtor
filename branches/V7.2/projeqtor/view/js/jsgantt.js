@@ -639,7 +639,6 @@ JSGantt.GanttChart =  function(pGanttVar, pDiv, pFormat) {
     for(var i = 0; i < vList.length; i++) {
       vDepend = vList[i].getDepend();
       if(vDepend) {
-        console.log();
         var vDependStr = vDepend + '';
         var vDepList = vDependStr.split(',');
         var n = vDepList.length;
@@ -1428,7 +1427,6 @@ JSGantt.GanttChart =  function(pGanttVar, pDiv, pFormat) {
   	        	    imgStaturate='4';
   	        	  }
   	        	}
-  	        	console.log(vTaskList[i].getName()+' - global='+vTaskList[i].getGlobal()+'color='+vTaskList[i].getColor()+'=>'+imgColor);
   	        	vIsOnCriticalPath=vTaskList[i].getIsOnCriticalPath();
   	        	vRightTable += '<div id=taskbar_'+vID+' title="' + vTaskList[i].getName() + ' : ' + vDateRowStr + vBaselineTopTitle + vBaselineBottomTitle + '" '
   	            + ' class="ganttTaskrowBar" style="position:relative;background-color:'+((vIsOnCriticalPath=='1')?vCriticalPathColor:tmpColor)+'; '

@@ -409,9 +409,11 @@
     <?php }
     //if (array_key_exists('planning',$_REQUEST) and array_key_exists('planningType',$_REQUEST) and $_REQUEST['planningType']=='Planning') {
     ?>
-    <?php if (array_key_exists('planning',$_REQUEST) and array_key_exists('planningType',$_REQUEST) and $_REQUEST['planningType']=='Planning') {organizeButtons(2);}?>
-    <span id="indentButtonDiv" class="statusBar" style="display:inline-block;height:32px; width:72px;">
-     <button id="indentDecreaseButton" dojoType="dijit.form.Button" showlabel="false"
+    <?php 
+    $isGlobal=GlobalPlanningElement::isGlobalizable($class);
+    if (RequestHandler::isCodeSet('planning') and RequestHandler::isCodeSet('planningType') and RequestHandler::getValue('planningType')=='Planning') {organizeButtons(2);}?>
+    <span id="indentButtonDiv" class="statusBar" style="display:<?php echo ($isGlobal)?'none':'inline-block';?>;height:32px; width:72px;">
+     <button id="indentDecreaseButton" dojoType="dijit.form.Button" showlabel="false" 
         title="<?php echo i18n('indentDecreaseButton');?>"
         iconClass="dijitButtonIcon dijitButtonIconDecrease" class="statusBar detailButton">
         <script type="dojo/connect" event="onClick" args="evt">

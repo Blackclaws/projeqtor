@@ -64,6 +64,7 @@ $listCtrlDate=$base->getSqlElementsFromCriteria($crit);
       <td width="100%">
        <form dojoType="dijit.form.Form" id='dialogPlanBaselineForm' name='dialogPlanBaselineForm' onSubmit="return false;">
          <input type="hidden" name="idBaselinePlanBaseline" value="<?php echo $currentBaseline->id;?>" /> 
+         <input type="hidden" name="isGlobalPlanning" id="isGlobalPlanning" value="false" />
          <table width="100%" >
            <tr>
              <td class="dialogLabel"  >

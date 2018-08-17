@@ -130,9 +130,9 @@ use Spipu\Html2Pdf\Html2Pdf;
       ?>
       var printInNewWindow=<?php echo (getPrintInNewWindow())?'true':'false';?>;
       if (printInNewWindow) {
-        objTop=window.opener;
+        var objTop=window.opener;
       } else {
-    	  objTop=top;
+    	  var objTop=top;
       }
       objTop.hideWait();
       objTop.window.document.title="<?php echo getPrintTitle();?>";

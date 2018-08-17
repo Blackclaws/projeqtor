@@ -956,8 +956,7 @@ function checkDestination(destination) {
   if (dojo.byId('indentButtonDiv')) {
     if (dijit.byId('objectGrid')) {
       dojo.byId('indentButtonDiv').style.display = 'none';
-    } else if (dojo.byId('objectClassManual')
-        && dojo.byId('objectClassManual').value != 'Planning') {
+    } else if (dojo.byId('objectClassManual') && (dojo.byId('objectClassManual').value != 'Planning' && dojo.byId('objectClassManual').value != 'GlobalPlanning')) {
       dojo.byId('indentButtonDiv').style.display = 'none';
     }
   }
@@ -2529,7 +2528,6 @@ function drawGantt() {
   // g.AddTaskItem(new JSGantt.TaskItem( 0, 'project', '', '', 'ff0000', '',
   // 0, '', '10', 1, '', 1, '' , 'test'));
   if (g && jsonData) {
-    console.log(jsonData.innerHTML);
     var store = eval('(' + jsonData.innerHTML + ')');
     var items = store.items;
     // var arrayKeys=new Array();
@@ -2583,7 +2581,6 @@ function drawGantt() {
       var plannedWork = parseFloat(item.plannedwork);
       var validatedWork = parseFloat(item.validatedwork);
       var progress = 0;
-      console.log(item.reftype+" #"+item.refid+" => validatedWork="+item.validatedWork+" => progress="+item.progress);
       if (item.isglobal && item.isglobal==1 && item.progress) { 
         progress=item.progress;
       } else {

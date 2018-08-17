@@ -127,8 +127,8 @@ class GlobalPlanningElement extends SqlElement {
         return;
       }
     }
-    $id-=PlanningElementExtension::$_startId;
     if ($id) {
+      $id-=PlanningElementExtension::$_startId;
       $pex=new PlanningElementExtension($id,true);
       if ($pex->id) {
         $gpe=self::getSingleGlobalPlanningElement($pex->refType, $pex->refId);
@@ -221,6 +221,14 @@ class GlobalPlanningElement extends SqlElement {
       return $result;
     }
   }
+  public function saveWbs() {
+    if ($this->isGlobal==0) { // Should not be used
+      $pe=new PlanningElement($this->id);
+      $pe->save();
+    } else {
+      $pex=PlanningElementExtension::checkInsert($this->refType, $this->refId,$this->wbs,$this->wbsSortable);      
+    }
+  }
     
   /** ========================================================================
    * Return the specific databaseTableName
@@ -270,7 +278,7 @@ class GlobalPlanningElement extends SqlElement {
       $table=$clsObj->getDatabaseTableName();
       $convert=self::$_globalizables[$class];
       if (!$limitToClass) {$query.="\n  UNION ";}
-      $query.="\n    SELECT coalesce(pex.id+$pexRef,concat('$class',$table.id)) as id";
+      $query.="\n    SELECT coalesce(pex.id+$pexRef,concat('$class','_',$table.id)) as id";
       foreach ($obj as $fld=>$val) {
         if (substr($fld,0,1)=='_' or $fld=='id') continue;        
         $query.=", ";
@@ -289,7 +297,7 @@ class GlobalPlanningElement extends SqlElement {
         else if ($fld=='elementary') $query.="1";
         else if ($fld=='idProject' or $fld=='idle' or $fld=='done' or $fld=='cancelled' or $fld=='idStatus' or $fld=='idResource') $query.="$table.$fld";
         else if ($fld=='idType') $query.="$table.id".$class."Type";
-        else if ($fld=='wbs' or $fld=='wbsSortable') $query.="concat(pe.$fld,'._#',$table.id)";
+        else if ($fld=='wbs' or $fld=='wbsSortable') $query.="coalesce(pex.$fld,concat(pe.$fld,'._#',$table.id))";
         else if (isset($convert[$fld])) {
           if ($convert[$fld]=='null') $query.='null';
           else if (strpos($convert[$fld],'.')!==false or strpos($convert[$fld],"'")!==false) $query.=$convert[$fld];
@@ -329,6 +337,65 @@ class GlobalPlanningElement extends SqlElement {
     ksort($result);
     $result=array_flip($result);
     return $result;
+  }
+  public static function isGlobalizable($class) {
+    if (isset(self::$_globalizables[$class])) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+  
+  public function moveTo($destId,$mode,$recursive=false) {
+    $status="WARNING";
+    $result="";
+    $returnValue="";
+    $task=null;
+    $changeParent=false;
+    
+    if (is_numeric($this->id) and $this->id < PlanningElementExtension::$_startId) {
+      $pe=new PlanningElement($this->id);
+      return $pe->moveTo($destId,$mode,$recursive);
+    }
+  
+    // Here we are on GlobalPE that is not PE
+    $checkClass=get_class($this);
+    if (SqlElement::is_a($this, 'GlobalPlanningElement')) {
+      $checkClass=$this->refType;
+    }
+    $right=securityGetAccessRightYesNo('menu' . $checkClass, 'update', $this);
+    if ($right!='YES') {
+      $returnValue=i18n('errorUpdateRights');
+      $returnValue .= '<input type="hidden" id="lastOperation" value="move" />';
+      $returnValue .= '<input type="hidden" id="lastOperationStatus" value="INVALID" />';
+      $returnValue .= '<input type="hidden" id="lastPlanStatus" value="OK" />';
+      return $returnValue;
+    }    
+    $dest=self::getTaskFromPlanningId($destId);
+     
+    $targetWbs=$dest->wbs;
+    $targetWbsSortable=$dest->wbsSortable;
+    if (substr($targetWbs,-3)=='._#') {
+      // Move before or after another non planable item
+      $returnValue=i18n('moveCancelled'); // TODO : move
+    } else {
+      $rootWbs=substr($targetWbs,0,strrpos($targetWbs, '.'));
+      $this->wbs=$rootWbs.'._#';
+      if ($mode=='before') {
+        $index=intval(substr($targetWbsSortable,-3)); // Get indice of predecessor       
+        $this->wbsSortable=substr($targetWbsSortable,0,-3).formatSortableWbs($index-1).'.999.500';
+      } else {
+        $this->wbsSortable=$targetWbsSortable.'.999.500';
+      }
+      $this->saveWbs();
+      $returnValue=i18n('moveDone');
+      $status="OK";
+    }
+  
+    $returnValue .= '<input type="hidden" id="lastOperation" value="move" />';
+    $returnValue .= '<input type="hidden" id="lastOperationStatus" value="' . $status . '" />';
+    $returnValue .= '<input type="hidden" id="lastPlanStatus" value="OK" />'; // Must send OK to refresh planning (and revert move)
+    return $returnValue;
   }
   
   static protected $_globalizables=array(
@@ -395,7 +462,21 @@ class GlobalPlanningElement extends SqlElement {
       }
     }
     return $gpe;
-    
+  }
+  public static function getTaskFromPlanningId($id) {
+    if (! is_numeric($id) or $id>PlanningElementExtension::$_startId) {
+      if (is_numeric($id)) {
+        $task=new GlobalPlanningElement($id);
+      } else {
+        $split=explode('_',$id);
+        $refId=intval($split[1]);
+        $refType=$split[0];
+        $task=GlobalPlanningElement::getSingleGlobalPlanningElement($refType, $refId);
+      }
+    } else {
+      $task=new PlanningElement($id);
+    }
+    return $task;
   }
   
   // For dep

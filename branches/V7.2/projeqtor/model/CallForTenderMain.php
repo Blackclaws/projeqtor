@@ -364,7 +364,7 @@ class CallForTenderMain extends SqlElement {
       echo '<td class="noteData" style="text-align:center">' . htmlFormatDate($tender->expectedTenderDateTime) . '</td>';
       echo '<td class="noteData" style="text-align:center">' . htmlFormatDate($tender->receptionDateTime) . '</td>';
       echo '<td class="noteData" style="text-align:center">' . (($tender->evaluationValue===null)?'':htmlDisplayNumericWithoutTrailingZeros($tender->evaluationValue)) 
-        . '<br/><span style="white-space:nowrap;font-size:90%;color:#555555"><i>'.htmlDisplayCurrency(($tender->plannedAmount)?$tender->plannedAmount:$tender->initialAmount,true).'</i></span>' 
+        . '<br/><span style="white-space:nowrap;font-size:90%;color:#555555"><i>'.htmlDisplayCurrency(($tender->totalUntaxedAmount)?$tender->totalUntaxedAmount:$tender->untaxedAmount,true).'</i></span>' 
         . '</td>';
       echo '</tr>';
     }

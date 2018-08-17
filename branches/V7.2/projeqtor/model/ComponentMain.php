@@ -175,6 +175,7 @@ class ComponentMain extends ProductOrComponent {
    */
   public function drawSpecificItem($item){
   	global $print, $showClosedItems;
+  	if (! $print) $print=RequestHandler::getBoolean('print');
   	$result="";
     if ($item=='versions' or $item=='versionsWithProjects') {
     	$showClosedVersions=(Parameter::getUserParameter('showClosedVersions')!='0')?true:false;
@@ -191,7 +192,7 @@ class ComponentMain extends ProductOrComponent {
       	$result .= $vers->drawVersionsList($crit,($item=='versionsWithProjects')?true:false);
       }
       $result .="</td></tr>";
-      if (!$print) {
+      if (! $print) {
       	$result.='<tr>';
       	$result.='<td style="white-space:nowrap;padding-right:10px;"><label for="showClosedVersions" style="width:250px">'.i18n('labelShowIdle').'&nbsp;</label>';
       	$result.='<div id="showClosedVersions" dojoType="dijit.form.CheckBox" type="checkbox" '.(($showClosedVersions)?'checked':'').' >';

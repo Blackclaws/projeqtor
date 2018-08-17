@@ -24,8 +24,14 @@
  *     
  *** DO NOT REMOVE THIS NOTICE ************************************************/
 $providerBillId = RequestHandler::getId('providerBillId');
+$provBill = new ProviderBill($providerBillId);
 $obj=new ProviderTerm();
-$critFld = "idProviderBill = 'NULL'";
+$critFld ='idProviderBill';
+$critVal = null;
+if($provBill->taxPct > 0 ){
+  $critFld=array($critFld, 'taxPct');
+  $critVal=array($critVal, $provBill->taxPct);
+}
 ?>
   <table>
     <tr>
@@ -41,7 +47,7 @@ $critFld = "idProviderBill = 'NULL'";
                <select dojoType="dijit.form.FilteringSelect" id="linkRef2TypeProviderTerm" name="linkRef2TypeProviderTerm"
                <?php echo autoOpenFilteringSelect();?>
                 class="input" value="">
-                 <?php htmlDrawOptionForReference('idProviderTerm', null, $obj, true,$critFld );?>
+                 <?php htmlDrawOptionForReference('idProviderTerm', null, $obj, true,$critFld,$critVal);?>
                </select>
              </td>
            </tr>

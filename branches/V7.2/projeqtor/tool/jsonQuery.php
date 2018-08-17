@@ -503,6 +503,9 @@
     } else if ( property_exists($objectClass,'wbsSortable')) {
       $queryOrderBy .= ($queryOrderBy=='')?'':', ';
       $queryOrderBy .= " " . $table . "." . $obj->getDatabaseColumnName('wbsSortable');
+    } else if ( property_exists($objectClass,'bbsSortable')) {
+      $queryOrderBy .= ($queryOrderBy=='')?'':', ';
+      $queryOrderBy .= " " . $table . "." . $obj->getDatabaseColumnName('bbsSortable');
     } else if (property_exists($objectClass,'sortOrder')) {
       $queryOrderBy .= ($queryOrderBy=='')?'':', ';
       $queryOrderBy .= " " . $table . "." . $obj->getDatabaseColumnName('sortOrder');
