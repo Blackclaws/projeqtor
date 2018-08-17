@@ -404,12 +404,14 @@
               $rootWbsSortable=formatSortableWbs($rootWbs);
               $pe=SqlElement::getSingleSqlElementFromCriteria('PlanningElement', array('wbsSortable'=>$rootWbsSortable));
               $topId=$pe->id;
-              $max=substr($pe->getMaxValueFromCriteria('wbsSortable',array('topId'=>$topId)),-3);
-              $rootWbsArray[$rootWbs]=array('topId'=>$topId,'val'=>$max);
+              //$max=substr($pe->getMaxValueFromCriteria('wbsSortable',array('topId'=>$topId)),-3);
+              //$rootWbsArray[$rootWbs]=array('topId'=>$topId,'val'=>$max);
+              $rootWbsArray[$rootWbs]=array('topId'=>$topId,'val'=>0);
             }
             $rootWbsArray[$rootWbs]['val']+=1;
             $wbsVal=$rootWbsArray[$rootWbs]['val'];
-            $line['wbs']=$rootWbs.'.'.$wbsVal;
+            $line['wbs']=$rootWbs.'._'.$wbsVal;
+            $line['wbs']=""; // Hide WBS
             $line['wbssortable']=formatSortableWbs($line['wbs']);
             $line['topid']= $rootWbsArray[$rootWbs]['topId'];
           }

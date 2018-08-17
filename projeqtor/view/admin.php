@@ -297,7 +297,7 @@
              id="<?php echo $titlePane;?>" 
              onHide="saveCollapsed('<?php echo $titlePane;?>');"
              onShow="saveExpanded('<?php echo $titlePane;?>');"
-             title="<?php echo i18n('manageConnections');?>">
+             title="<?php echo i18n('consistencyCheckSection');?>">
             <table style="width:100%;">
               <tr>
                 <td width="200px" class="label"><?php echo i18n("runConsistencyCheck"). "&nbsp;:&nbsp;";?></td>

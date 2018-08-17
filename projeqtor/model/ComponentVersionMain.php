@@ -149,6 +149,23 @@ class ComponentVersionMain extends Version {
 
   public function setAttributes() {
     $paramNameAutoformat=Parameter::getGlobalParameter('versionNameAutoformat');
+    if ($this->id and $this->isStarted) {
+      self::$_fieldsAttributes["initialStartDate"]='readonly';
+      self::$_fieldsAttributes["plannedStartDate"]='readonly';
+      self::$_fieldsAttributes["realStartDate"]='readonly';
+    }
+    if ($this->id and $this->isDelivered) {
+      self::$_fieldsAttributes["initialDeliveryDate"]='readonly';
+      self::$_fieldsAttributes["plannedDeliveryDate"]='readonly';
+      self::$_fieldsAttributes["realDeliveryDate"]='readonly';
+      self::$_fieldsAttributes["isStarted"]='readonly';
+    }
+    if ($this->id and $this->isEis) {
+      self::$_fieldsAttributes["initialEisDate"]='readonly';
+      self::$_fieldsAttributes["plannedEisDate"]='readonly';
+      self::$_fieldsAttributes["realEisDate"]='readonly';
+      self::$_fieldsAttributes["isDelivered"]='readonly';
+    }
     if ($paramNameAutoformat=='YES') {
       self::$_fieldsAttributes['name']='readonly';
       self::$_fieldsAttributes['versionNumber']='required';
@@ -174,24 +191,6 @@ class ComponentVersionMain extends Version {
     if (Parameter::getGlobalParameter('displayListOfActivity') != 'YES') {
       self::$_fieldsAttributes["_sec_Activity"]='hidden';
       self::$_fieldsAttributes["_spe_activity"]='hidden';
-    }
-    
-    if ($this->id and $this->isStarted) {
-      self::$_fieldsAttributes["initialStartDate"]='readonly';
-      self::$_fieldsAttributes["plannedStartDate"]='readonly';
-      self::$_fieldsAttributes["realStartDate"]='readonly';
-    }
-    if ($this->id and $this->isDelivered) {
-      self::$_fieldsAttributes["initialDeliveryDate"]='readonly';
-      self::$_fieldsAttributes["plannedDeliveryDate"]='readonly';
-      self::$_fieldsAttributes["realDeliveryDate"]='readonly';
-      self::$_fieldsAttributes["isStarted"]='readonly';
-    }
-    if ($this->id and $this->isEis) {
-      self::$_fieldsAttributes["initialEisDate"]='readonly';
-      self::$_fieldsAttributes["plannedEisDate"]='readonly';
-      self::$_fieldsAttributes["realEisDate"]='readonly';
-      self::$_fieldsAttributes["isDelivered"]='readonly';
     }
   }
 // ============================================================================**********

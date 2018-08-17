@@ -86,10 +86,11 @@ if (isset($rightWidth)) {
   }
 } else {
   $detailRightDivWidth=Parameter::getUserParameter('contentPaneRightDetailDivWidth'.$objectClass);
+  if (!$detailRightDivWidth) $detailRightDivWidth=0;
   if($detailRightDivWidth or $detailRightDivWidth==="0"){
     $rightWidthVal=$detailRightDivWidth;
   } else {
-    $rightWidth=15/100*$displayWidthList;
+    $rightWidth=0;//15/100*$displayWidthList;
   }
 }
 $displayWidthList-=$rightWidthVal;

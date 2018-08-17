@@ -87,7 +87,7 @@ class Baseline extends SqlElement {
   }
   
   public function copyItem($itemFrom) {
-    if ($itemFrom=='PlanningElement') {
+    if ($itemFrom=='PlanningElement' and RequestHandler::getBoolean('isGlobalPlanning')) {
       $objFrom=new GlobalPlanningElement();
     } else {
       $objFrom=new $itemFrom();

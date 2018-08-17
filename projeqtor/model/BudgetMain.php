@@ -399,9 +399,7 @@ class BudgetMain extends SqlElement {
       $parent=new Budget($old->idBudget);
       $parent->save();
     }
-    debugLog("current bbs is '$this->bbs' parent from $old->idBudget to $this->idBudget");
     if (!$this->bbs or !$old->id or $old->idBudget!=$this->idBudget) {
-      debugLog("CALCULATE BBS");
       $parent=new Budget($this->idBudget);
       $parent->regenerateBbsLevel();
       $parent=new Budget($old->idBudget);
@@ -418,7 +416,6 @@ class BudgetMain extends SqlElement {
   }
 
   public function regenerateBbsLevel() {
-    debugLog("REGENERATE BBS FOR LEVEL OF PARENT $this->id");
     $bbs=$this->bbs;
     if ($bbs) $bbs.='.';
     else $bbs='';

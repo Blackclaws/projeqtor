@@ -239,7 +239,8 @@ function percentFormatter(value) {
 
 function percentSimpleFormatter(value) {
   if (value) {
-    return value+"&nbsp;%";
+    var result = dojo.number.format(Math.round(value * 100) / 100).replace(/^0+/g, '');
+    return  '<div style="width:100%;text-align:center;">'+result+'&nbsp;%</div>';
   } else {
     return '';
   }

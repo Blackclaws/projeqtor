@@ -1069,7 +1069,7 @@ class PlanningElement extends SqlElement {
       $returnValue=i18n('errorUpdateRights');
       $returnValue .= '<input type="hidden" id="lastOperation" value="move" />';
       $returnValue .= '<input type="hidden" id="lastOperationStatus" value="INVALID" />';
-      $returnValue .= '<input type="hidden" id="lastPlanStatus" value="INVALID" />';
+      $returnValue .= '<input type="hidden" id="lastPlanStatus" value="OK" />';
       return $returnValue;
     }
     

@@ -53,17 +53,25 @@ if ($mode=='after') {
   $arrayFrom=array_reverse($arrayFrom);
 }
   
+$needRefreshInserted=false;
 Sql::beginTransaction();
-
 foreach ($arrayFrom as $from) {
   $idFrom=substr($from, 6); // validated to be numeric value in SqlElement base constructor
   $idTo=substr($to, 6); // validated to be numeric value in SqlElement base constructor
-  $task=new PlanningElement($idFrom);
-  $result=$task->moveTo($idTo,$mode);
-  if (getLastOperationStatus($result)!='OK') break;
-  //$result.=" " . $idFrom . '->' . $idTo .'(' . $mode . ')';
-  if ($task->refType=='Project') {
+  if (! is_numeric($idTo) or $idTo>PlanningElementExtension::$_startId) {
+    $returnValue=i18n('moveCancelledNotPlanned');
+    $returnValue .= '<input type="hidden" id="lastOperation" value="move" />';
+    $returnValue .= '<input type="hidden" id="lastOperationStatus" value="INVALID" />';
+    $returnValue .= '<input type="hidden" id="lastPlanStatus" value="OK" />';
+    $result=$returnValue;
+  } else {
+    $task=GlobalPlanningElement::getTaskFromPlanningId($idFrom);
+    $result=$task->moveTo($idTo,$mode);
+  }
+  if (getLastOperationStatus($result)!='OK') break; // Stop loop of moves
+  if ($task->refType=='Project' and ! $needRefreshInserted) {
     echo '<input type="hidden" id="needProjectListRefresh" value="true" />';
+    $needRefreshInserted=true;
   }
 }
 displayLastOperationStatus($result);

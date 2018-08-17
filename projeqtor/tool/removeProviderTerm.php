@@ -35,8 +35,13 @@ $isProviderBill = RequestHandler::getValue('isProviderBill');
 Sql::beginTransaction();
 $obj = new ProviderTerm($idProviderTerm);
 if($isProviderBill){
+  $providerBill = new ProviderBill($obj->idProviderBill);
   $obj->idProviderBill = NULL;
+  $providerBill->untaxedAmount -= $obj->untaxedAmount;
+  $providerBill->taxAmount -= $obj->taxAmount;
+  $providerBill->fullAmount -= $obj->fullAmount;
   $result=$obj->save();
+  $providerBill->save();
 }else{
   $result=$obj->delete();
 }

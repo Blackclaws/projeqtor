@@ -34,6 +34,9 @@ $prT = new ProviderTerm($idProviderTerm);
 Sql::beginTransaction();
 $prT->idProviderBill = $idProviderBill;
 $result = $prT->save();
+$providerBill = new ProviderBill($idProviderBill);
+$providerBill->taxPct = $prT->taxPct;
+$providerBill->save();
 // Message of correct saving
 displayLastOperationStatus($result);
 ?>
