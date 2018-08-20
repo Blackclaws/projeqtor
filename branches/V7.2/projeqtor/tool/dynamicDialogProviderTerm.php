@@ -216,36 +216,35 @@ if(isset ($isLineMulti)){
 	           $billLine = new BillLine();
 	           $billLineList=$billLine->getSqlElementsFromCriteria(array("refType"=>"ProviderOrder","refId"=>$providerOrder->id));
 	           $i = 1;
-	           $style = 'text-align:center';
 	         ?> 
 	          <table>
 	           <tr >
-	            <td class="assignHeader" >
-                <label  style="width:50px;<?php echo $style; ?>">  <?php echo i18n("colLineNumber");?></label>
+	            <td class="assignHeader"  style="width:50px;" >
+                <?php echo i18n("colLineNumber");?>
               </td>
-             <td class="assignHeader" >
-              <label  style="width:180px;<?php echo $style; ?>"><?php echo i18n("colDescription");?></label>
-             </td>
-             <td class="assignHeader" >
-              <label style="width:180px;<?php echo $style; ?>" ><?php echo i18n("colDetail");?></label>
-             </td>
-              <td class="assignHeader" >
-               <label style="width:115px;<?php echo $style; ?>"><?php echo i18n("colUntaxedAmount");?></label>
+              <td class="assignHeader" style="width:180px;" >
+                <?php echo i18n("colDescription");?>
               </td>
-              <td class="assignHeader" >
-                <label style="width:55px;<?php echo $style; ?>"><?php echo i18n("colRate");?></label>
+              <td class="linkHeader"   style="width:180px;">
+                <?php echo i18n("colDetail");?>
               </td>
-              <td class="assignHeader" >
-                <label style="width:115px;<?php echo $style; ?>"><?php echo i18n("colUntaxedAmount");?></label>
+              <td class="assignHeader" style="width:115px;" >
+                <?php echo i18n("colUntaxedAmount");?></label>
               </td>
-              <td class="assignHeader" >
-                <label style="width:115px;<?php echo $style; ?>"><?php echo i18n("colDiscount");?></label>
+              <td class="assignHeader" style="width:55px;">
+                <?php echo i18n("colRate");?>
               </td>
-              <td class="assignHeader" >
-               <label style="width:115px;<?php echo $style; ?>"><?php echo i18n("colTaxAmount");?></label>
+              <td class="assignHeader" style="width:115px;">
+                <?php echo i18n("colUntaxedAmount");?>
               </td>
-              <td class="assignHeader" >
-               <label style="width:115px;<?php echo $style;?> "><?php echo i18n("colFullAmount");?></label>
+              <td class="assignHeader" style="width:115px;">
+               <?php echo i18n("colDiscount");?>
+              </td>
+              <td class="assignHeader" "style="width:115px;">
+               <?php echo i18n("colTaxAmount");?>
+              </td>
+              <td class="assignHeader" style="width:115px;">
+               <?php echo i18n("colFullAmount");?>
               </td>
              </tr>
 	           <?php 

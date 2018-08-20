@@ -3789,6 +3789,8 @@ function getListForSpecificRights($specific,$includePool=false){
   } else if (($user->allSpecificRightsForProfilesOneOnlyValue($specific,'OWN')
       or $user->allSpecificRightsForProfilesOneOnlyValue($specific,'RES')) and $user->isResource ) {
     $table=array($user->id=>SqlList::getNameFromId('Affectable', $user->id));
+  } else if ( $user->allSpecificRightsForProfilesOneOnlyValue($specific,'TEAM') ) {
+    $table=$user->getManagedTeamResources(true,'list');  
   } else  {
     $table=array();
     $fullTable=SqlList::getList(($includePool)?'ResourceAll':'Resource');
