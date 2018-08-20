@@ -323,7 +323,7 @@
         $canSubscribeForHimself=true;
 		    $crit=array('scope' => 'subscription','idProfile' => getSessionUser()->idProfile);
 		    $habilitation=SqlElement::getSingleSqlElementFromCriteria('HabilitationOther', $crit);
-		    $scope=new AccessScope($habilitation->rightAccess, true);
+		    $scope=new AccessScopeSpecific($habilitation->rightAccess, true);
 		    if (! $scope->accessCode or $scope->accessCode == 'NO' ) {
 		      $canSubscribeForOthers=false;
 		      $canSubscribeForHimself=false;

@@ -361,6 +361,27 @@ ADD `isGlobal` int(1) UNSIGNED DEFAULT 0,
 ADD `idType` int(12) unsigned DEFAULT NULL,
 ADD `idStatus` int(12) unsigned DEFAULT NULL,
 ADD `idResource` int(12) unsigned DEFAULT NULL;
+
+-- ==================================================================
+-- Validation of timesheet for team
+-- ==================================================================
+
+CREATE TABLE `${prefix}accessscopespecific` (
+  `id` int(12) unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(100) DEFAULT NULL,
+  `accessCode` varchar(5) DEFAULT NULL,
+  `sortOrder` int(3) unsigned DEFAULT NULL,
+  `idle` int(1) unsigned DEFAULT '0',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 ;
+
+INSERT INTO `${prefix}accessscopespecific` (`id`, `name`, `accessCode`, `sortOrder`, `idle`) VALUES
+(1, 'accessScopeSpecificNo', 'NO', 100, 0),
+(2, 'accessScopeSpecificOwn', 'OWN', 200, 0),
+(3, 'accessScopeSpecificProject', 'PRO', 300, 0),
+(4, 'accessScopeSpecificAll', 'ALL', 400, 0),
+(6, 'accessScopeSpecificTeam', 'TEAM', 350, 0);
+
 -- ==================================================================
 -- Misc
 -- ==================================================================
@@ -378,6 +399,9 @@ UPDATE `${prefix}menu` SET menuClass='Work Configuration EnvironmentalParameter'
 -- remove dojo editor
 UPDATE `${prefix}parameter` set parameterValue='CK' where parameterValue='Dojo';
 UPDATE `${prefix}parameter` set parameterValue='CKInline' where parameterValue='DojoInline';
+
+-- Event for any status change 
+INSERT INTO `${prefix}event`(`id`, `name`, `idle`, `sortOrder`) VALUES (14,'statusChange',0,100);
 
 --- ==================================================================
 --- Fix

@@ -28,21 +28,16 @@
  * Profile defines right to the application or to a project.
  */ 
 require_once('_securityCheck.php');
-class AccessScopeSpecific extends AccessScope {
+class AccessScopeSpecific extends SqlElement {
 
   // extends SqlElement, so has $id
   public $id;    // redefine $id to specify its visiblez place 
   public $name;
-  public $nameNonSpecific;
   public $accessCode;
-  public $isSpecific;
   public $sortOrder=0;
   public $idle;
   
   public $_isNameTranslatable = true;
-  private static $_databaseCriteria = array('isSpecific'=>'1');
-  private static $_databaseTableName = 'accessscope';
-  private static $_databaseColumnName = array('name'=>'nameSpecific','nameNonSpecific'=>'name');
 
   /** ==========================================================================
    * Constructor
@@ -66,28 +61,5 @@ class AccessScopeSpecific extends AccessScope {
   // GET STATIC DATA FUNCTIONS
   // ============================================================================**********
   
-  
-  /** ========================================================================
-   * Return the specific database criteria
-   * @return the databaseTableName
-   */
-  protected function getStaticDatabaseCriteria() {
-  	return self::$_databaseCriteria;
-  }
-  /** ========================================================================
-   * Return the specific databaseTableName
-   * @return the databaseTableName
-   */
-  protected function getStaticDatabaseTableName() {
-  	$paramDbPrefix=Parameter::getGlobalParameter('paramDbPrefix');
-  	return $paramDbPrefix . self::$_databaseTableName;
-  }
-  /** ========================================================================
-   * Return the specific databaseTableName
-   * @return the databaseTableName
-   */
-  protected function getStaticDatabaseColumnName() {
-    return self::$_databaseColumnName;
-  }
 }
 ?>

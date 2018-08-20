@@ -34,6 +34,7 @@ scriptLog('   ->/view/dynamicSubscriptionForOhter.php');
 $objectClass=RequestHandler::getClass('objectClass',true); 
 $objectId=RequestHandler::getId('objectId',true);
 
+$user=getSessionUser();
 $res=new Affectable();
 $scope=Affectable::getVisibilityScope();
 $crit="idle=0";
@@ -48,6 +49,7 @@ $sub=new Subscription();
 $crit=array("refType"=>$objectClass,"refId"=>$objectId);
 $lstSub=$sub->getSqlElementsFromCriteria($crit,false,null,null,false);
 
+$object=new $objectClass($objectId);
 
 if (sessionValueExists('screenHeight') and getSessionValue('screenHeight')) {
 	$showHeight = round(getSessionValue('screenHeight') * 0.4)."px";
@@ -65,9 +67,14 @@ foreach ($lstSub as $idSub=>$sub) {
   unset($lstSub[$idSub]);
 }
 
-$crit=array('scope' => 'subscription','idProfile' => getSessionUser()->idProfile);
+// Should be done depending on profile on corresponding project
+//$object=new $objectClass($objectId);
+//$profile=$user->getProfile($object);
+$profile=getSessionUser()->idProfile; // as of today, only take into account default profile
+
+$crit=array('scope' => 'subscription','idProfile' => $profile);
 $habilitation=SqlElement::getSingleSqlElementFromCriteria('HabilitationOther', $crit);
-$scope=new AccessScope($habilitation->rightAccess, true);
+$scope=new AccessScopeSpecific($habilitation->rightAccess, true);
 if (! $scope->accessCode or $scope->accessCode == 'NO') {
 	$lstRes=array(); // No access to this feature ;)
 	$lstSub=array(); // No access to this feature ;)
@@ -100,6 +107,26 @@ if (! $scope->accessCode or $scope->accessCode == 'NO') {
 			}
 		}
 	}
+} else if ($scope->accessCode == 'TEAM') {
+	$lstRes=$user->getManagedTeamResources(true);
+	$fullTable=SqlList::getList('Resource');
+	foreach ($lstSub as $id=>$sub) {
+	  $sub->_readOnly=true; // Add readonly
+		$lstSub[$id]=$sub;
+	}
+	foreach ( $lstRes as $id => $res ) {
+		$key=$id;
+		if (isset($lstSub[$key])) {
+			$sub=$lstSub[$key];
+			if (isset($sub->_readOnly)) {
+				unset($sub->_readOnly);
+				$lstSub[$key]=$sub;
+			}
+			unset($lstRes[$key]);
+		}
+	}
+} else {
+  traceHack("unknown access code '$scope->accessCode'");
 }
 
 uasort($lstRes,'Affectable::sort');
