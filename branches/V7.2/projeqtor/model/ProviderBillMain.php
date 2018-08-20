@@ -49,7 +49,7 @@ class ProviderBillMain extends SqlElement {
   public $idStatus;
   public $idResource;
   public $idContact;
-   public $_tab_4_3 = array('untaxedAmountShort', 'tax', '', 'fullAmountShort','initial','discount', 'countTotal');
+   public $_tab_4_3_smallLabel = array('untaxedAmountShort', 'tax', '', 'fullAmountShort','initial','discount', 'countTotal');
   //init
   public $untaxedAmount;
   public $taxPct;
@@ -263,7 +263,6 @@ class ProviderBillMain extends SqlElement {
   }
   
   public function copyTo($newClass, $newType, $newName, $setOrigin, $withNotes, $withAttachments, $withLinks, $withAssignments = false, $withAffectations = false, $toProject = NULL, $toActivity = NULL, $copyToWithResult = false,$copyToWithVersionProjects=false) {
-
     return parent::copyTo($newClass, $newType, $newName, $setOrigin, $withNotes, $withAttachments, $withLinks);
   }
   // ============================================================================**********
@@ -304,5 +303,6 @@ class ProviderBillMain extends SqlElement {
       self::$_fieldsAttributes['untaxedAmount']='readonly';
     }
   }
+
 }
 ?>

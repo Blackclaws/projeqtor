@@ -4567,7 +4567,8 @@ abstract class SqlElement {
       $crit = "idle='0'";
       $crit .= " and idMailable='" . $mailable->id . "' and ( false ";
       if ($statusChange and property_exists ( $this, 'idStatus' ) and trim ( $this->idStatus )) {
-        $crit .= "  or idStatus='" . $this->idStatus . "' ";
+        $any = SqlElement::getSingleSqlElementFromCriteria('Event', array('name'=>'statusChange'));
+        $crit .= "  or idStatus='" . $this->idStatus . "' or idEvent='".$any->id."' ";
       }
       if ($responsibleChange) {
         $crit .= " or idEvent='1' ";

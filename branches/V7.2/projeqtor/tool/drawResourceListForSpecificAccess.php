@@ -40,7 +40,6 @@ if (! $user->isResource) {
 }
 if (!isset($includePool)) $includePool=false;
 $table = getListForSpecificRights($specific,$includePool);
-
 $selectedProject=getSessionValue('project');
 if ($selectedProject and $selectedProject!='*' and (isset($limitResourceByProj) and $limitResourceByProj=='on') ) {
   $restrictTableProjectSelected=array();

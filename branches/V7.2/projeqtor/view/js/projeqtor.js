@@ -626,6 +626,7 @@ function loadContent(page, destination, formName, isResultMessage,
   if (!(contentNode && contentWidget)) {
     consoleTraceLog(i18n("errorLoadContent", new Array(page, destination,
         formName, isResultMessage, destination)));
+    hideWait();
     return;
   }
   if (contentNode && page.indexOf("destinationWidth=")<0) {
@@ -659,11 +660,34 @@ function loadContent(page, destination, formName, isResultMessage,
   if (!silent) showWait();
   // NB : IE Issue (<IE8) must not fade load
   // send Ajax request
+    // add to url main parameters of call to loadContent 
+    page += ((page.indexOf("?") > 0) ? "&" : "?") + "xhrPostDestination="+destination+"&xhrPostIsResultMessage="+isResultMessage+"&xhrPostValidationType="+validationType;
+    // add a Timestamp to url
+    page += '&xhrPostTimestamp='+Date.now();
     dojo.xhrPost({
         url : page,
         form : dojo.byId(formName),
         handleAs : "text",
-        load : function(data, args) {          
+        load : function(data, args) {       
+          console.log(args['url']);
+          console.log(args);
+          var sourceUrl=args['url'];
+          if (sourceUrl && sourceUrl!='undefined' && sourceUrl.indexOf('xhrPostDestination=')>0) {
+            var xhrPostArgsString=sourceUrl.substr(sourceUrl.indexOf('xhrPostDestination='));
+            var xhrPostParams=xhrPostArgsString.split('&');
+            for (var i=0; i<xhrPostParams.length;i++) {
+              var str=xhrPostParams[i];
+              var callParam=str.split('=');
+              if (callParam[0]=='xhrPostDestination') {
+                if (callParam[1] && callParam[1]!='undefined') destination=callParam[1];
+              } else if (callParam[0]=='xhrPostIsResultMessage') {
+                if (callParam[1] && callParam[1]!='undefined') isResultMessage=(callParam[1]=='true' || callParam[1]==true)?true:false;
+              } else if (callParam[0]=='xhrPostValidationType') {
+                if (callParam[1] && callParam[1]!='undefined') validationType=callParam[1];
+              }
+            }
+          }
+          // retreive parameters of loadContent from url
           var debugTemp = (new Date()).getTime();
           var contentNode = dojo.byId(destination);
           var contentWidget = dijit.byId(destination);
@@ -680,6 +704,7 @@ function loadContent(page, destination, formName, isResultMessage,
             if (loadContentRetryArray[callKey]!==undefined) {
               loadContentRetryArray.splice(callKey, 1);
             }
+            hideWait();
             return;
           }
           if (dijit.byId('planResultDiv')) {
@@ -878,6 +903,7 @@ function loadContent(page, destination, formName, isResultMessage,
           if (loadContentRetryArray[callKey]!==undefined) {
             retries=loadContentRetryArray[callKey];
           }
+          console.warn(error);
           if (!silent) hideWait();
           finaliseButtonDisplay();
           //formChanged();
@@ -888,7 +914,8 @@ function loadContent(page, destination, formName, isResultMessage,
             enableWidget('saveButton');
             enableWidget('undoButton');
             console.warn(i18n("errorXhrPost", new Array(page, destination,formName, isResultMessage, error)));
-            showError(i18n('errorXhrPostMessage'));
+            hideWait();
+            showError(i18n('errorXhrPostMessage')); console.log("TO REMOVE");
           }
         }
       });

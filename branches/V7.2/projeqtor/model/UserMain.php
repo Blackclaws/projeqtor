@@ -487,7 +487,31 @@ class UserMain extends SqlElement {
     }
     return $result;
   }
-
+  /** =========================================================================
+   * Get the list of all teams the resource is manager of
+   * @return a list of projects (id=>name)
+   */
+  public function getManagedTeams($limitToActiveTeams=true) {
+    $team=new Team();
+    $crit=array('idResource'=>$this->id);
+    if ($limitToActiveTeams) $crit['idle']='0';
+    $list=SqlList::getListWithCrit('Team', $crit);
+    return $list;
+  }
+  public function getManagedTeamResources($limitToActiveTeams=true,$returnAs='object') {
+    $crit='idTeam in ' . transformListIntoInClause($this->getManagedTeams(true));
+    $res=new Resource();
+    $lstRes=$res->getSqlElementsFromCriteria(null, false, $crit, null, true, true);
+    if ($returnAs=='list') {
+      $result=array();
+      foreach ($lstRes as $res) {
+        $result[$res->id]=$res->name;
+      }
+    } else {
+      $result=$lstRes;    }
+    return $result;
+  }
+  
   /** =========================================================================
    * Get the list of all projects where affected profile is different from main profile
    * @return a list of projects (idProject=>idProfile)
@@ -1504,7 +1528,7 @@ debugTraceLog("User->authenticate('$paramlogin', '$parampassword')" );
         $scope=new ListYesNo($habilitation->rightAccess);
         $code=$scope->code;
       } else {
-        $scope=new AccessScope($habilitation->rightAccess);
+        $scope=new AccessScopeSpecific($habilitation->rightAccess);
         $code=$scope->accessCode;
       }
       if (!isset($result[$code])) $result[$code]=array();
@@ -1519,6 +1543,8 @@ debugTraceLog("User->authenticate('$paramlogin', '$parampassword')" );
   
   public function allSpecificRightsForProfilesOneOnlyValue($specific,$value) {
     $list=$this->getAllSpecificRightsForProfiles($specific);
+    debugLog("allSpecificRightsForProfilesOneOnlyValue($specific,$value)");
+    debugLog($list);
     foreach ($list as $val=>$lstProf) {
       if ($val!=$value) return false;
     }
