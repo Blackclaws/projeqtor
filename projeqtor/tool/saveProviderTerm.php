@@ -51,7 +51,7 @@ if($mode == 'edit'){
     $providerTerm->idProject = $idProject;
     $providerTerm->idProviderOrder = $idProviderOrder;
     $providerTerm->date = $date;
-    $providerTerm->name = $name.' '.$date;
+    $providerTerm->name = $name;
     $providerTerm->untaxedAmount = $untaxedAmount;
     $providerTerm->taxPct = $taxPct;
     $providerTerm->taxAmount = $taxAmount;
@@ -62,7 +62,7 @@ if($mode == 'edit'){
    $providerTerm->idProject = $idProject;
    $providerTerm->idProviderOrder = $idProviderOrder;
    $providerTerm->date = $date;
-   $providerTerm->name = $name.' '.$date;
+   $providerTerm->name = $name;
    $providerTerm->taxPct = $taxPct;
    
    $billLine = new BillLine();

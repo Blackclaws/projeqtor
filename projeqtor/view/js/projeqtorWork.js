@@ -460,6 +460,7 @@ function enterRealAsPlanned(nbDays){
   var cptUpdates=0;
   var nblines = dojo.byId("nbLines").value;
   for (line=1;line<=nblines;line++) {
+    if (dojo.byId('locked_'+line) && dojo.byId('locked_'+line).value=='1') continue;
     for (day=1; day<=nbDays; day++) { 
       var workValue = dijit.byId('workValue_' + line + '_' + day);
       var plannedValue = dojo.byId('plannedValue_' + line + '_' + day);

@@ -39,7 +39,7 @@ CREATE TABLE `${prefix}providerOrder` (
   `deliveryDelay` varchar(100) DEFAULT NULL,
   `deliveryExpectedDate` date DEFAULT NULL,
   `deliveryDoneDate` date DEFAULT NULL,
-  `deliveryValitedDate` date DEFAULT NULL,
+  `deliveryValidationDate` date DEFAULT NULL,
   `paymentCondition` varchar(100) DEFAULT NULL,
   `comment` mediumtext DEFAULT NULL,
   `handled` int(1) unsigned DEFAULT '0',
@@ -97,6 +97,12 @@ CREATE TABLE `${prefix}providerBill` (
   `handledDate` date DEFAULT NULL,
   `doneDate` date DEFAULT NULL,
   `idleDate` date DEFAULT NULL,
+  `paymentDone` int(1) unsigned DEFAULT 0,
+  `paymentDate` date DEFAULT NULL,
+  `paymentAmount` DECIMAL(11,2) UNSIGNED,
+  `idPaymentDelay` int(12) unsigned DEFAULT NULL,
+  `paymentDueDate` date DEFAULT NULL,
+  `paymentsCount` int(3) default 0,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -119,26 +125,50 @@ CREATE INDEX providerTermProject ON `${prefix}providerTerm` (idProject);
 CREATE INDEX providerTermOrder ON `${prefix}providerTerm` (idProviderOrder);
 CREATE INDEX providerTermBill ON `${prefix}providerTerm` (idProviderBill);
 
+
+CREATE TABLE `${prefix}providerPayment` (
+  `id` int(12) unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(100),
+  `idProviderBill` int(12) unsigned DEFAULT NULL,
+  `paymentDate` date,
+  `idPaymentMode` int(12) unsigned DEFAULT NULL,
+  `idle` int(1) DEFAULT 0,
+  `idPaymentType` int(12) unsigned DEFAULT NULL,
+  `paymentAmount`  DECIMAL(11,2) UNSIGNED,
+  `paymentFeeAmount`  DECIMAL(11,2) UNSIGNED,
+  `paymentCreditAmount` DECIMAL(11,2) UNSIGNED,
+  `description` mediumtext,
+  `idUser` int(12) unsigned DEFAULT NULL,
+  `creationDate` date,
+  `referenceProviderBill` varchar(100) DEFAULT NULL,
+  `idProvider` int(12) unsigned DEFAULT NULL,
+  `providerBillAmount` DECIMAL(11,2) UNSIGNED,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 ;
+
 INSERT INTO `${prefix}menu` (`id`,`name`, `idMenu`, `type`, `sortOrder`, `level`, `idle`, `menuClass`) VALUES
 (190,'menuProviderOrderType', 79, 'object', 826, 'Project', 0, 'Type '),
 (191,'menuProviderOrder', 151, 'object', 207, 'Project', 0, 'Financial '),
 (193,'menuProviderBillType', 79, 'object', 826, 'Project', 0, 'Type '),
 (194,'menuProviderBill', 151, 'object', 209, 'Project', 0, 'Financial '),
-(195,'menuProviderTerm', 151, 'object', 208, 'Project', 0, 'Financial ');
+(195,'menuProviderTerm', 151, 'object', 208, 'Project', 0, 'Financial '),
+(201,'menuProviderPayment', 151, 'object', 210, 'Project', 0, 'Financial ');
 
 INSERT INTO `${prefix}habilitation` (`idProfile`, `idMenu`, `allowAccess`) VALUES
 (1, 190, 1),
 (1, 191, 1),
 (1, 193, 1),
 (1, 194, 1),
-(1, 195, 1);
+(1, 195, 1),
+(1, 201, 1);
 
 INSERT INTO `${prefix}accessright` (`idProfile`, `idMenu`, `idAccessProfile`) VALUES
 (1,190,8),
 (1,191,8),
 (1,193,8),
 (1,194,8),
-(1,195,8);
+(1,195,8),
+(1,201,8);
 
 ALTER TABLE `${prefix}tender`
 CHANGE `initialAmount` `untaxedAmount` DECIMAL(11,2) UNSIGNED NULL DEFAULT NULL,
@@ -150,9 +180,9 @@ CHANGE `plannedFullAmount` `totalFullAmount` DECIMAL(11,2) UNSIGNED NULL DEFAULT
 ADD `discountAmount` DECIMAL(11,2),
 ADD `discountRate`   DECIMAL(5,2);
 
-INSERT INTO `${prefix}type` (`scope`, `name`, `sortOrder`, `idle`, `color`, idWorkflow) VALUES
-('ProviderOrder', 'Product', 10, 0, NULL, 1),
-('ProviderOrder', 'Service', 20, 0, NULL, 1);
+INSERT INTO `${prefix}type` (`scope`, `name`, `sortOrder`, `idle`, `color`, idWorkflow, isHandledStatus, isDoneStatus, isIdleStatus, isCancelledStatus) VALUES
+('ProviderOrder', 'Product', 10, 0, NULL, 1, 1, 1, 1, 1),
+('ProviderOrder', 'Service', 20, 0, NULL, 1, 1, 1, 1, 1);
 
 INSERT INTO `${prefix}copyable` (`id`,`name`, `idle`, `sortOrder`,`idDefaultCopyable`) VALUES 
 (23,'ProviderOrder', '0', '121','24'),

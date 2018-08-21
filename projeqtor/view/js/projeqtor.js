@@ -3532,6 +3532,22 @@ function updateCommandTotal() {
   cancelRecursiveChange_OnGoingChange = false;
 }
 //gautier
+function providerPaymentIdProviderBill() {
+  var idBill=dijit.byId("idProviderBill").get("value");
+  url='../tool/getSingleData.php?dataType=providerPayment&idBill='
+    + idBill;
+  dojo.xhrGet({
+    url : url,
+    handleAs : "text",
+    load : function(data) {
+      if(data){
+        console.log(data);
+        dijit.byId("paymentAmount").set("value",data);
+      }
+    }
+  });
+}
+
 function updateFinancialTotal() {
   if (cancelRecursiveChange_OnGoingChange)
     return;

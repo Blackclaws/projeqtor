@@ -146,6 +146,11 @@
       $r=new Catalog($idCat);
       $catalog_array = "$r->description#!#!#!#!#!#$r->detail#!#!#!#!#!#$r->nomenclature#!#!#!#!#!#$r->unitCost#!#!#!#!#!#$r->idMeasureUnit#!#!#!#!#!#$r->specification#!#!#!#!#!#$r->quantity";
       echo $catalog_array;
+    }else if($type=='providerPayment'){
+      $idBill=RequestHandler::getValue('idBill');
+      $bill = new ProviderBill($idBill);
+      $totalFullAmount = $bill->totalFullAmount;
+      echo str_replace('.', ',', $totalFullAmount);
     } else {
       debugTraceLog("Unknown type '$type'");          
       echo '';

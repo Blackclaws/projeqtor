@@ -51,6 +51,18 @@ if (! array_key_exists('resource',$_REQUEST)) {
 }
 $resource=$_REQUEST['resource'];
 
+$user=getSessionUser();
+
+if ($action=='validate' or $action=='unvalidate') {
+  if (! ImputationLine::getValidationRight($resource)) {
+    throwError('invalid rights to valid work');
+  }
+}
+if ($action=='submit' or $action=='unsubmit') {
+  if ($user->id!=$resource) {
+    throwError('invalid rights to submit work');
+  }
+}
 Sql::beginTransaction();
 // get the modifications (from request)
 $period=new WorkPeriod();
@@ -65,12 +77,14 @@ if ($action=='submit') {
 } if ($action=='validate') {
   $period->validated=1;
   $period->validatedDate=date('Y-m-d H:i:s');
-  $user=getSessionUser();
   $period->idLocker=$user->id;
 } if ($action=='unvalidate') {
 	$period->validated=0;		
   $period->validatedDate=null;
 }
+
+
+
 $result=$period->save();
 
 // Message of correct saving
