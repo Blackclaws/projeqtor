@@ -5635,7 +5635,7 @@ function drawProviderTermFromObject($list, $obj, $type, $refresh=false) {
   echo '<table style="width:100%">';
   echo '<tr><td colspan=2 style="width:100%;"><table style="width:100%;">';
   echo '<tr>';
-  echo '<td class="assignHeader" style="width:15%">';
+  echo '<td class="assignHeader" style="width:10%">';
   
   $provTerm = new ProviderTerm();
   $billLine = new BillLine();
@@ -5669,9 +5669,9 @@ function drawProviderTermFromObject($list, $obj, $type, $refresh=false) {
   }
   echo '</td>';
   echo '<td class="assignHeader" style="width:10%">'.i18n('colId').'</td>';
-  echo '<td class="assignHeader" style="width:25%">'.i18n('colStatusDateTime').'</td>';
-  echo '<td class="assignHeader" style="width:25%">'.i18n('colValidatedAmount2').'</td>';
-  echo '<td class="assignHeader" style="width:25%">'.i18n('colIdProviderBill').'</td>';
+  echo '<td class="assignHeader" style="width:15%">'.i18n('colStatusDateTime').'</td>';
+  echo '<td class="assignHeader" style="width:20%">'.i18n('colValidatedAmount2').'</td>';
+  echo '<td class="assignHeader" style="width:55%">'.i18n('colIdProviderBill').'</td>';
 
   echo '</tr>';
   foreach ($list as $term) {
@@ -5719,9 +5719,9 @@ function drawProviderTermFromObject($list, $obj, $type, $refresh=false) {
           }
         echo '</td>';
       }
-      echo  '<td class="assignData'.$idleClass.'" align="center"'.$goto.'>#'.htmlEncode($term->id).'</td>';
-      echo  '<td class="assignData'.$idleClass.'" align="center" style="white-space: nowrap;">'.htmlFormatDate($term->date).'</td>';
-      echo  '<td class="assignData'.$idleClass.'" align="center" style="white-space: nowrap;">'.htmlDisplayCurrency($term->fullAmount).'</td>';
+      echo  '<td class="assignData'.$idleClass.'" align="center" '.$goto.'>#'.htmlEncode($term->id).'</td>';
+      echo  '<td class="assignData'.$idleClass.'" align="center" '.$goto.' style="white-space: nowrap;">'.htmlFormatDate($term->date).'</td>';
+      echo  '<td class="assignData'.$idleClass.'" align="center" '.$goto.' style="white-space: nowrap;">'.htmlDisplayCurrency($term->fullAmount).'</td>';
       if($term->idProviderBill){
         echo  '<td class="assignData'.$idleClass.'" align="center"'.$goto2.' style="white-space: nowrap;">#'.htmlEncode($term->idProviderBill).'</td>';
       }else{

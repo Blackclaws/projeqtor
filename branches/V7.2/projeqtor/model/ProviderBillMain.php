@@ -68,7 +68,6 @@ class ProviderBillMain extends SqlElement {
   public $paymentCondition;
   public $expectedPaymentDate;
   public $lastPaymentDate;
-  public $paymentAmount;
   public $handled;
   public $handledDate;
   public $done;
@@ -77,6 +76,12 @@ class ProviderBillMain extends SqlElement {
   public $idleDate;
   public $cancelled;
   public $_lib_cancelled;
+  public $_tab_3_1_smallLabel = array('date', 'amount', 'paymentComplete', 'payment');
+  public $paymentDate;
+  public $paymentAmount;
+  public $paymentDone;
+  public $_spe_paymentsList;
+  public $paymentsCount;
   public $comment;
   //link
   public $_sec_ProviderTerm;
@@ -125,11 +130,13 @@ class ProviderBillMain extends SqlElement {
       "initialPricePerDayAmount"=>"hidden",
       "addPricePerDayAmount"=>"hidden",
       "validatedPricePerDayAmount"=>"hidden",
+      'paymentDueDate'=>'readonly',
+      'paymentsCount'=>'hidden',
       "idProject"=>"required");
  
   
   private static $_colCaptionTransposition = array('idResource'=> 'responsible');
-  
+  public $_calculateForColumn=array("name"=>"concat(coalesce(reference,''),' - ',name,' (',coalesce(totalFullAmount,0),')')");
   private static $_databaseColumnName = array();
   /** ==========================================================================
    * Constructor
@@ -294,6 +301,33 @@ class ProviderBillMain extends SqlElement {
     return $colScript;
   }
   
+  
+  public function drawSpecificItem($item){
+    global $print,$displayWidth;
+    $labelWidth=175; // To be changed if changes in css file (label and .label)
+    $largeWidth=( (intval($displayWidth)+30) / 2) - $labelWidth;
+    $result="";
+    if ($item=='paymentsList') {
+      if (!$this->id) return '';
+      $pay=new ProviderPayment();
+      $payList=$pay->getSqlElementsFromCriteria(array('idProviderBill'=>$this->id));
+      //$result.='</td><td>';
+      $result.='<div style="position:relative;top:-22px;left:317px;">';
+      $result.='<table>';
+      foreach ($payList as $pay) {
+        $result.='<tr class="noteHeader pointer" onClick="gotoElement(\'ProviderPayment\','.htmlEncode($pay->id).');">';
+        $result.='<td style="padding:0px 5px">';
+        $result.= formatSmallButton('Payment');
+        $result.='</td>';
+        $result.='<td >#'.htmlEncode($pay->id).'</td><td>&nbsp;&nbsp;&nbsp;</td>';
+        $result.='<td style="padding:0px 5px;text-align:left">'.htmlEncode($pay->name).'</td></tr>';
+      }
+      $result.='</table>';
+      $result.='</div>';
+      return $result;
+    }
+  }
+  
   public function setAttributes() {
     if (count($this->_BillLine)) {
       self::$_fieldsAttributes['untaxedAmount']='readonly';
@@ -301,6 +335,34 @@ class ProviderBillMain extends SqlElement {
     if (count($this->_ProviderTerm)) {
       self::$_fieldsAttributes['taxPct']='readonly';
       self::$_fieldsAttributes['untaxedAmount']='readonly';
+    }
+  }
+  
+  public function retreivePayments($save=true) {
+    $pay=new ProviderPayment();
+    if ($this->id) {
+      $payList=$pay->getSqlElementsFromCriteria(array('idProviderBill'=>$this->id));
+    } else {
+      $payList=array();
+    }
+    if (count($payList)==0 or $this->id==null) {
+      $this->paymentsCount=0;
+      if ($save) {
+        $this->simpleSave();
+      }
+      return;
+    }
+    $this->paymentsCount=count($payList);
+    $this->paymentAmount=0;
+    $this->paymentDate='';
+    $this->paymentDone=0;
+    foreach ($payList as $pay) {
+      $this->paymentAmount+=$pay->paymentAmount;
+      if ($pay->paymentDate>$this->paymentDate) $this->paymentDate=$pay->paymentDate;
+    }
+    if ($this->paymentAmount>=$this->fullAmount and $this->fullAmount>0) $this->paymentDone=1;
+    if ($save) {
+      $this->simpleSave();
     }
   }
 

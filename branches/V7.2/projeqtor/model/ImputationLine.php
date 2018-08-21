@@ -474,28 +474,7 @@ class ImputationLine {
     $crit=array('periodRange'=>$rangeType, 'periodValue'=>$rangeValue, 'idResource'=>$resourceId);
     $period=SqlElement::getSingleSqlElementFromCriteria('WorkPeriod', $crit);
     $user=getSessionUser();
-    $canValidate=false;
-    $crit=array('scope'=>'workValid', 'idProfile'=>$user->idProfile);
-    $habilitation=SqlElement::getSingleSqlElementFromCriteria('HabilitationOther', $crit);
-    $scope=new AccessScope($habilitation->rightAccess, true);
-    if ($scope->accessCode=='NO') {
-      $canValidate=false;
-    } else if ($scope->accessCode=='ALL') {
-      $canValidate=true;
-    } else if (($scope->accessCode=='OWN' or $scope->accessCode=='RES') and $user->isResource and $resourceId==$user->id) {
-      $canValidate=true;
-    } else if ($scope->accessCode=='PRO') {
-      $crit='idProject in '.transformListIntoInClause($user->getVisibleProjects());
-      $aff=new Affectation();
-      $lstAff=$aff->getSqlElementsFromCriteria(null, false, $crit, null, true, true);
-      $fullTable=SqlList::getList('Resource');
-      foreach ($lstAff as $id=>$aff) {
-        if ($aff->idResource==$resourceId) {
-          $canValidate=true;
-          continue;
-        }
-      }
-    }
+    $canValidate=self::getValidationRight($resourceId);
     $locked=false;
     $oldValues="";
     $nameWidth=220;
@@ -1227,6 +1206,35 @@ class ImputationLine {
     }
     return $finalResult;
   }
-
+  
+  public static function getValidationRight($resourceId) {
+    $user=getSessionUser();
+    $canValidate=false;
+    $crit=array('scope'=>'workValid', 'idProfile'=>$user->idProfile);
+    $habilitation=SqlElement::getSingleSqlElementFromCriteria('HabilitationOther', $crit);
+    $scope=new AccessScopeSpecific($habilitation->rightAccess, true);
+    if ($scope->accessCode=='NO') {
+      $canValidate=false;
+    } else if ($scope->accessCode=='ALL') {
+      $canValidate=true;
+    } else if (($scope->accessCode=='OWN' or $scope->accessCode=='RES') and $user->isResource and $resourceId==$user->id) {
+      $canValidate=true;
+    } else if (($scope->accessCode=='TEAM')) {
+      $validableResources=$user->getManagedTeamResources(true,'list');
+      $canValidate=(isset($validableResources[$resourceId]))?true:false;
+    } else if ($scope->accessCode=='PRO') {
+      $crit='idProject in '.transformListIntoInClause($user->getVisibleProjects());
+      $aff=new Affectation();
+      $lstAff=$aff->getSqlElementsFromCriteria(null, false, $crit, null, true, true);
+      $fullTable=SqlList::getList('Resource');
+      foreach ($lstAff as $id=>$aff) {
+        if ($aff->idResource==$resourceId) {
+          $canValidate=true;
+          continue;
+        }
+      }
+    }
+    return $canValidate;
+  }
 }
 ?>
