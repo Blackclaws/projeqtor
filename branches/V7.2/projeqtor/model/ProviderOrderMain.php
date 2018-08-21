@@ -49,7 +49,7 @@ class ProviderOrderMain extends SqlElement {
   public $idStatus;
   public $idResource;
   public $idContact;
-   public $_tab_4_3_smallLabel = array('untaxedAmountShort', 'tax', '', 'fullAmountShort','initial','discount', 'countTotal');
+   public $_tab_4_3_smallLabel = array('untaxedAmount', 'taxPct', 'taxAmount', 'fullAmount','initial','discount', 'countTotal');
   //init
   public $untaxedAmount;
   public $taxPct;
@@ -67,10 +67,10 @@ class ProviderOrderMain extends SqlElement {
   public $totalFullAmount;
   public $paymentCondition;
   public $deliveryDelay;
-  public $_tab_3_1 = array('expectedDate','doneDate','validatedDate','dateDelivery');
+  public $_tab_3_1 = array('plannedDate','realDate','validationDate','versionDeliveryDate');
   public $deliveryExpectedDate;
   public $deliveryDoneDate;
-  public $deliveryValitedDate;
+  public $deliveryValidationDate;
   public $handled;
   public $handledDate;
   public $done;
@@ -101,15 +101,15 @@ class ProviderOrderMain extends SqlElement {
     <th field="colorNameStatus" width="9%" formatter="colorNameFormatter">${idStatus}</th>
     <th field="nameResource" formatter="thumbName22" width="8%" >${responsible}</th>
     <th field="deliveryExpectedDate" width="8%" formatter="dateFormatter" >${deliveryExpectedDate}</th>
-    <th field="untaxedAmount" width="7%" formatter="amountFormatter">${untaxedAmount}</th>
-    <th field="totalUntaxedAmount" width="7%" formatter="amountFormatter">${totalUntaxedAmount}</th>
+    <th field="untaxedAmount" width="7%" formatter="costFormatter">${untaxedAmount}</th>
+    <th field="totalUntaxedAmount" width="7%" formatter="costFormatter">${totalUntaxedAmount}</th>
     <th field="handled" width="4%" formatter="booleanFormatter" >${handled}</th>
     <th field="done" width="4%" formatter="booleanFormatter" >${done}</th>
     <th field="idle" width="4%" formatter="booleanFormatter" >${idle}</th>   ';
   
   private static $_fieldsAttributes=array("id"=>"nobr", "reference"=>"readonly",
       "name"=>"required",
-      "idCommandType"=>"required",
+      "idProviderOrderType"=>"required",
       "handled"=>"nobr",
       "done"=>"nobr",
       "idle"=>"nobr",
