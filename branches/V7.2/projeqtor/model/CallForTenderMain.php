@@ -93,7 +93,7 @@ class CallForTenderMain extends SqlElement {
     ';
 
   private static $_fieldsAttributes=array("id"=>"nobr", "reference"=>"readonly",
-                                  "idProject"=>"",
+                                  "idProject"=>"required",
                                   "name"=>"required",
                                   "idCallForTenderType"=>"required",
                                   "idStatus"=>"required",

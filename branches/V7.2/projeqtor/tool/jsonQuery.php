@@ -215,7 +215,9 @@
           } else if ($objectClass=='Work') {
              $queryWhere.="1=1";
           } else if ($objectClass=='Document') {
-          	$queryWhere.= "(" . $table . ".idProject in " . getVisibleProjectsList(! $showIdleProjects) . " or " . $table . ".idProject is null)";
+            $app=new Approver();
+            $appTable=$app->getDatabaseTableName();
+          	$queryWhere.= "(" . $table . ".idProject in " . getVisibleProjectsList(! $showIdleProjects) . " or " . $table . ".idProject is null or exists (select 'x' from $appTable app where app.refType='Document' and app.refId=$table.id and app.idAffectable=$user->id ))";
           } else if ($obj->isAttributeSetToField('idProject','required') ){
             $queryWhere.= $table . ".idProject in " . getVisibleProjectsList(! $showIdleProjects) ;
           } else {
@@ -234,6 +236,10 @@
         $queryWhere.= $clause;
         if ($objectClass=='Project') {
           $queryWhere.= " or $table.codeType='TMP' "; // Templates projects are always visible in projects list
+        } else if ($objectClass=='Document' and getSessionValue('project')=='*' or $showAllProjects) {
+          $app=new Approver();
+          $appTable=$app->getDatabaseTableName();
+          $queryWhere.= "or exists (select 'x' from $appTable app where app.refType='Document' and app.refId=$table.id and app.idAffectable=$user->id )";
         }
         $queryWhere.= ')';
       }

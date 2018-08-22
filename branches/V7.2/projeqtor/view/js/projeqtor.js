@@ -661,7 +661,9 @@ function loadContent(page, destination, formName, isResultMessage,
   // NB : IE Issue (<IE8) must not fade load
   // send Ajax request
     // add to url main parameters of call to loadContent 
-    page += ((page.indexOf("?") > 0) ? "&" : "?") + "xhrPostDestination="+destination+"&xhrPostIsResultMessage="+isResultMessage+"&xhrPostValidationType="+validationType;
+    page += ((page.indexOf("?") > 0) ? "&" : "?") + "xhrPostDestination="+((destination)?destination:'')
+                                                  + "&xhrPostIsResultMessage="+((isResultMessage)?'true':'false')
+                                                  + "&xhrPostValidationType="+((validationType)?validationType:'');
     // add a Timestamp to url
     page += '&xhrPostTimestamp='+Date.now();
     dojo.xhrPost({
@@ -669,8 +671,6 @@ function loadContent(page, destination, formName, isResultMessage,
         form : dojo.byId(formName),
         handleAs : "text",
         load : function(data, args) {       
-          console.log(args['url']);
-          console.log(args);
           var sourceUrl=args['url'];
           if (sourceUrl && sourceUrl!='undefined' && sourceUrl.indexOf('xhrPostDestination=')>0) {
             var xhrPostArgsString=sourceUrl.substr(sourceUrl.indexOf('xhrPostDestination='));
@@ -678,12 +678,12 @@ function loadContent(page, destination, formName, isResultMessage,
             for (var i=0; i<xhrPostParams.length;i++) {
               var str=xhrPostParams[i];
               var callParam=str.split('=');
-              if (callParam[0]=='xhrPostDestination') {
-                if (callParam[1] && callParam[1]!='undefined') destination=callParam[1];
+              if (callParam[0]=='xhrPostDestination' ) {
+                destination=(callParam[1] && callParam[1]!='undefined')?callParam[1]:'';
               } else if (callParam[0]=='xhrPostIsResultMessage') {
-                if (callParam[1] && callParam[1]!='undefined') isResultMessage=(callParam[1]=='true' || callParam[1]==true)?true:false;
+                isResultMessage=(callParam[1] && callParam[1]!='undefined' && callParam[1]=='true')?true:false;
               } else if (callParam[0]=='xhrPostValidationType') {
-                if (callParam[1] && callParam[1]!='undefined') validationType=callParam[1];
+                validationType=(callParam[1] && callParam[1]!='undefined')?callParam[1]:'';
               }
             }
           }
@@ -915,7 +915,7 @@ function loadContent(page, destination, formName, isResultMessage,
             enableWidget('undoButton');
             console.warn(i18n("errorXhrPost", new Array(page, destination,formName, isResultMessage, error)));
             hideWait();
-            showError(i18n('errorXhrPostMessage')); console.log("TO REMOVE");
+            //showError(i18n('errorXhrPostMessage'));
           }
         }
       });
@@ -1111,8 +1111,7 @@ function finalizeMessageDisplay(destination, validationType) {
   var lastOperation = dojo.byId('lastOperation');
   var needProjectListRefresh = false;
   // scpecific Plan return
-  if (destination == "planResultDiv"
-      && (!validationType || validationType == 'dependency')) {
+  if (destination == "planResultDiv" && (! validationType || validationType=='dependency')) {
     if (dojo.byId('lastPlanStatus')) {
       lastOperationStatus = dojo.byId('lastPlanStatus');
       lastOperation = "plan";
@@ -3541,7 +3540,6 @@ function providerPaymentIdProviderBill() {
     handleAs : "text",
     load : function(data) {
       if(data){
-        console.log(data);
         dijit.byId("paymentAmount").set("value",data);
       }
     }
@@ -3562,9 +3560,9 @@ function updateFinancialTotal() {
   var discount=dijit.byId("discountAmount").get("value");
   var rate=dijit.byId("discountRate").get("value");
   if (!isNaN(discount)) {
-    var rateNew=Math.round(100*discount)/untaxedAmount;
+    var rateNew=Math.round(10000*discount/untaxedAmount)/100;
     if (!isNaN(rate)) {
-      if(Math.round(rate)!= Math.round(rateNew)){
+      if(Math.round(rate*100)!= Math.round(rateNew*100)){
         dijit.byId("discountRate").set("value",rateNew);
       }
     }else{

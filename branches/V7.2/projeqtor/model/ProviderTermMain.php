@@ -45,13 +45,14 @@ class ProviderTermMain extends SqlElement {
   public $taxAmount;
   public $fullAmount;
   public $date;
+  public $idProjectExpense;
   public $_Note=array();
   public $_sec_Link;
   public $_Link=array();
   public $_BillLineTerm=array();
   public $_BillLineTerm_colSpan="2";
-  
   public $_nbColMax=3;
+  
   // Define the layout that will be used for lists
   private static $_layout='
     <th field="id" formatter="numericFormatter" width="5%"># ${id}</th>
@@ -64,6 +65,7 @@ class ProviderTermMain extends SqlElement {
   private static $_fieldsAttributes=array("name"=>"required",
                                           "idProject"=>"required",
                                           "date"=>"required",
+                                          "idProjectExpense"=>"hidden",
   								                        "idProviderBill"=>"display,readonly"
   );  
   
