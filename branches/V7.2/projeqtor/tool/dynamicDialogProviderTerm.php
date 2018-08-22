@@ -68,11 +68,12 @@ if(isset ($isLineMulti)){
               <label for="providerTermName" ><?php echo i18n("colName");?>&nbsp;:&nbsp;</label>
              </td>
              <td>
-              <textarea dojoType="dijit.form.Textarea" 
+              <input dojoType="dijit.form.TextBox" 
 	          id="providerTermName" name="providerTermName"
-	          style="width: 250px;"
+	          style="width: 400px;"
 	          maxlength="100"
-	          class="input"><?php echo $providerOrder->name;?></textarea>
+	          <?php $name=($line and $line->name)?$line->name:$providerOrder->name;?>
+	          class="input" value="<?php echo $name;?>" />
 	         </td>
 	        </tr>
 	        
@@ -106,9 +107,12 @@ if(isset ($isLineMulti)){
                 class="input">
                </input> 
                <?php  echo '%';?>
+               <?php  echo ' ('.i18n('labelFromOrder').')';?>
            </td>
+         <tr>
+         </tr>
            <td class="dialogLabel" >
-              <label for="providerTermDiscount" ><?php echo i18n("colDiscount");?>&nbsp;:&nbsp;</label>
+              <label for="providerTermDiscount" ><?php echo i18n("colDiscountRate");?>&nbsp;:&nbsp;</label>
            </td>
            <td>
                <input dojoType="dijit.form.NumberTextBox" 
@@ -119,6 +123,7 @@ if(isset ($isLineMulti)){
                 class="input">
                </input> 
                <?php  echo '%';?>
+               <?php  echo ' ('.i18n('labelFromOrder').')';?>
            </td>
            
           </tr>
@@ -218,6 +223,10 @@ if(isset ($isLineMulti)){
 	           $i = 1;
 	         ?> 
 	          <table>
+	           <tr>
+	             <td class="assignHeader" colspan="4"><?php echo i18n('labelBillLinesFromOrder');?></td>
+	             <td class="assignHeader" colspan="5"><?php echo i18n('labelPartToTerm');?></td>
+	           </tr >
 	           <tr >
 	            <td class="assignHeader"  style="width:50px;" >
                 <?php echo i18n("colLineNumber");?>
