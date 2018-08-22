@@ -65,6 +65,7 @@ class ProviderOrderMain extends SqlElement {
   public $_void_2;
   public $totalTaxAmount;
   public $totalFullAmount;
+  public $idProjectExpense;
   public $paymentCondition;
   public $deliveryDelay;
   public $_tab_3_1 = array('plannedDate','realDate','validationDate','versionDeliveryDate');

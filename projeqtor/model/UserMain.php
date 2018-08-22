@@ -1543,8 +1543,6 @@ debugTraceLog("User->authenticate('$paramlogin', '$parampassword')" );
   
   public function allSpecificRightsForProfilesOneOnlyValue($specific,$value) {
     $list=$this->getAllSpecificRightsForProfiles($specific);
-    debugLog("allSpecificRightsForProfilesOneOnlyValue($specific,$value)");
-    debugLog($list);
     foreach ($list as $val=>$lstProf) {
       if ($val!=$value) return false;
     }

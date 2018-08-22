@@ -713,24 +713,25 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false, $pare
       $internalTableRowsCaptions=array_slice($val, $internalTableCols);
       $internalTableCurrentRow=0;
       $colWidth=($detailWidth)/$nbCol;
-      if (SqlElement::is_subclass_of($obj, 'PlanningElement') and $internalTableRows>=3) {
-        for ($i=0; $i<$internalTableRows; $i++) {
-          $testRowCaption=strtolower($internalTableRowsCaptions[$i]);
-          if ($workVisibility=='NO' and substr($testRowCaption, -4)=='work') {
-            $internalTableRowsCaptions[$i]='';
-          }
-          if ($costVisibility=='NO' and (substr($testRowCaption, -4)=='cost' or substr($testRowCaption, -7)=='expense')) {
-            $internalTableRowsCaptions[$i]='';
-          }
-          if ($costVisibility!='ALL' and substr($testRowCaption, 0, 13)=='reserveamount') {
-            $internalTableRowsCaptions[$i]='';
-          }
-        }
-        if ($workVisibility!='ALL' and $costVisibility!='ALL') {
-          $val[2]='';
-          $val[5]='';
-        }
-      }
+// #3538 - This part is no use any more since genericity of display of headers
+//       if (SqlElement::is_subclass_of($obj, 'PlanningElement') and $internalTableRows>3) {
+//         for ($i=0; $i<$internalTableRows; $i++) {
+//           $testRowCaption=strtolower($internalTableRowsCaptions[$i]);
+//           if ($workVisibility=='NO' and substr($testRowCaption, -4)=='work') {
+//             $internalTableRowsCaptions[$i]='';
+//           }
+//           if ($costVisibility=='NO' and (substr($testRowCaption, -4)=='cost' or substr($testRowCaption, -7)=='expense')) {
+//             $internalTableRowsCaptions[$i]='';
+//           }
+//           if ($costVisibility!='ALL' and substr($testRowCaption, 0, 13)=='reserveamount') {
+//             $internalTableRowsCaptions[$i]='';
+//           }
+//         }
+//         if ($workVisibility!='ALL' and $costVisibility!='ALL') {
+//           $val[2]='';
+//           $val[5]='';
+//         }
+//       }
       echo '</table><table id="'.$col.'" class="detail">';
       echo '<tr class="detail">';
       echo '<td class="detail"></td>'; // Empty label, to have column header in front of columns

@@ -34,7 +34,7 @@ class ProviderPaymentMain extends SqlElement {
   public $_sec_Description;
   public $id;    // redefine $id to specify its visible place 
   public $name;
-  public $idPaymentType;
+  public $idProviderPaymentType;
   public $description;
   public $idUser;
   public $creationDate;
@@ -57,7 +57,7 @@ class ProviderPaymentMain extends SqlElement {
   // Define the layout that will be used for lists
   private static $_layout='
     <th field="id" formatter="numericFormatter" width="5%"># ${id}</th>
-    <th field="namePaymentType" width="10%" >${idPaymentType}</th>
+    <th field="nameProviderPaymentType" width="10%" >${idProviderPaymentType}</th>
     <th field="name" width="20%">${name}</th>
     <th field="namePaymentMode" width="10%" >${idPaymentMode}</th>
     <th field="paymentDate" formatter="dateFormatter" width="10%" >${paymentDate}</th>
@@ -68,7 +68,7 @@ class ProviderPaymentMain extends SqlElement {
     ';
 
   private static $_fieldsAttributes=array("name"=>"required",
-      "idPaymentType"=>"required",
+      "idProviderPaymentType"=>"required",
       "paymentDate"=>"required",
       "idPaymentMode"=>"required",
       "paymentDate"=>"required",

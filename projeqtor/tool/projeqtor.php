@@ -2651,6 +2651,12 @@ function securityGetAccessRightYesNo($menuName, $accessType, $obj = null, $user 
       }
     }
   }
+  // Give read access to approvers
+  if ($accessRight=='NO' and $accessType=='read' and $class=='Document' and $obj and $obj->id) {
+    $app=new Approver();
+    $cpt=$app->countSqlElementsFromCriteria(array('refType'=>'Document', 'refId'=>$obj->id, 'idAffectable'=>$user->id));
+    if ($cpt>0) $accessRight='YES';
+  }
   return $accessRight;
 }
 
