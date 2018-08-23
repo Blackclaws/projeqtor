@@ -89,9 +89,9 @@ $idProduct=$vers->idProduct;
 									<script type="dojo/connect" event="onChange" args="evt">
                    dijit.byId('versionProjectVersion').set('value',null);
                    if (trim(this.value)) {
-                    refreshList('idProductVersion', 'idProduct', this.value, null, 'versionProjectVersion', true);
+                    refreshList('idProductVersion', 'idProduct', this.value, null, 'versionProjectVersion', true,null,null,'ProjectVersion'); // Set object class to ProjectVersion to list all versions
                    } else {
-                    refreshList('idProductVersion', null, null, null, 'versionProjectVersion', true);
+                    refreshList('idProductVersion', null, null, null, 'versionProjectVersion', true,null,null,'ProjectVersion'); // Set object class to ProjectVersion to list all versions
                    }
                 </script>
                  <?php htmlDrawOptionForReference('idProduct', $idProduct, null, false);?>
@@ -115,7 +115,7 @@ $idProduct=$vers->idProduct;
 								id="versionProjectVersion" name="versionProjectVersion"
 								<?php if ($idVersion) echo ' readonly="readonly" ';?>
 								class="input" value="<?php echo $idVersion;?>" required="required">
-                 <?php htmlDrawOptionForReference('idVersion', $idVersion, null, true);?>
+                 <?php htmlDrawOptionForReference('idProductVersion', $idVersion, null, true);?>
                </select>
                <?php if (!$idVersion) {?>
 								<button id="versionProjectVersionDetailButton"
