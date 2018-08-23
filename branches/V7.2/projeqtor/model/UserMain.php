@@ -763,6 +763,7 @@ class UserMain extends SqlElement {
         ."(select existV.id from ".$v->getDatabaseTableName()." existV, ".$vp->getDatabaseTableName()." existVP "
             ."where existV.id=existVP.idVersion and existVP.idProject in ".transformListIntoInClause($prjList)
             .")";
+    if (securityGetAccessRight('menuProject', 'read')=='ALL') $clauseWhere="1=1"; // Can see all projects, so can see all versions
     $versList=$v->getSqlElementsFromCriteria(null,false,$clauseWhere);
     foreach ($versList as $vers) {
       $result[$vers->id]=$vers->name;

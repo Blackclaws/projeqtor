@@ -131,7 +131,7 @@
     </div> 
   </td>
   <td style="width:8%; text-align:right;"  >
-      <div style="width:<?php echo (property_exists($obj, 'idStatus') and $displayWidthButton>=1000)?'250':'120';?>px;margin-right:16px;" id="buttonDivCreationInfo"><?php include_once '../tool/getObjectCreationInfo.php';?></div>
+      <div style="width:<?php echo (property_exists($obj, 'idStatus') and $displayWidthButton>=1000)?'252':'122';?>px;margin-right:16px;" id="buttonDivCreationInfo"><?php include_once '../tool/getObjectCreationInfo.php';?></div>
   </td>
   <td style="width:2%;">
     &nbsp;

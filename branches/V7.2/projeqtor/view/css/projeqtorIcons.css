@@ -1069,3 +1069,9 @@
 .ProjeQtOrFlatRed .iconButtonProviderPayment16 { background-image: url(customIcons/red/iconProviderPayment.png); background-repeat: no-repeat; width: 16px; height: 16px; background-size: 16px 16px;}
 .ProjeQtOrFlatGreen .iconButtonProviderPayment16 { background-image: url(customIcons/green/iconProviderPayment.png); background-repeat: no-repeat; width: 16px; height: 16px; background-size: 16px 16px;}
 .ProjeQtOrFlatGrey .iconButtonProviderPayment16 { background-image: url(customIcons/grey/iconProviderPayment.png); background-repeat: no-repeat; width: 16px; height: 16px; background-size: 16px 16px;}
+
+.iconProviderPaymentType { background-image: url(images/iconProviderPaymentType.png); }
+.ProjeQtOrFlatBlue .iconProviderPaymentType { background-image: url(customIcons/blue/iconProviderPaymentType.png); }
+.ProjeQtOrFlatRed .iconProviderPaymentType { background-image: url(customIcons/red/iconProviderPaymentType.png); }
+.ProjeQtOrFlatGreen .iconProviderPaymentType { background-image: url(customIcons/green/iconProviderPaymentType.png); }
+.ProjeQtOrFlatGrey .iconProviderPaymentType { background-image: url(customIcons/grey/iconProviderPaymentType.png); }
