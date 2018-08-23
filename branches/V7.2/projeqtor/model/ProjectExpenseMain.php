@@ -56,7 +56,7 @@ class ProjectExpenseMain extends Expense {
   public $idle;
   public $cancelled;
   public $_lib_cancelled;
-  public $_tab_5_2_smallLabel = array('untaxedAmount', 'tax', '', 'fullAmount','paymentDateShort', 'planned', 'real');
+  public $_tab_5_2_smallLabel = array('untaxedAmountShort', 'taxPct', 'tax', 'fullAmountShort','date', 'planned', 'real');
   public $plannedAmount;
   public $taxPct;
   public $plannedTaxAmount;
@@ -104,8 +104,8 @@ class ProjectExpenseMain extends Expense {
                                   "year"=>"hidden",
                                   "idle"=>"nobr",
                                   "cancelled"=>"nobr",
-                                  "plannedTaxAmount"=>"calculated,readonly",
-                                  "realTaxAmount"=>"calculated,readonly",
+                                  "plannedTaxAmount"=>"readonly",
+                                  "realTaxAmount"=>"readonly",
                                   "idBudgetItem"=>"canSearchForAll"
   );  
   
@@ -136,12 +136,6 @@ class ProjectExpenseMain extends Expense {
     if (count($this->getExpenseDetail())>0) {
       self::$_fieldsAttributes['realAmount']="readonly";
       self::$_fieldsAttributes['realFullAmount']="readonly";
-    }
-    if ($this->realFullAmount>0) {
-      $this->realTaxAmount=$this->realFullAmount-$this->realAmount;
-    }
-    if ($this->plannedFullAmount>0) {
-      $this->plannedTaxAmount=$this->plannedFullAmount-$this->plannedAmount;
     }
   }
 

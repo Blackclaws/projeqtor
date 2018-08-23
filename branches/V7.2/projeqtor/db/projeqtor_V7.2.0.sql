@@ -202,9 +202,9 @@ ADD `discountFrom`   varchar(10);
 INSERT INTO `${prefix}type` (`scope`, `name`, `sortOrder`, `idle`, `color`, idWorkflow, lockHandled, lockDone, lockIdle, lockCancelled) VALUES
 ('ProviderOrder', 'Product', 10, 0, NULL, 1, 1, 1, 1, 1),
 ('ProviderOrder', 'Service', 20, 0, NULL, 1, 1, 1, 1, 1),
-('ProviderBill','Partial bill',10,1,100, 1, 1, 1, 1, 1),
-('ProviderBill','Final bill',20,1,200, 1, 1, 1, 1, 1),
-('ProviderBill','Complete bill',30,1,300, 1, 1, 1, 1, 1),
+('ProviderBill','Partial bill',10,0,NULL, 1, 1, 1, 1, 1),
+('ProviderBill','Final bill',20,0,NULL, 1, 1, 1, 1, 1),
+('ProviderBill','Complete bill',30,0,NULL, 1, 1, 1, 1, 1),
 ('ProviderPayment', 'event payment', 10, 0, NULL, 8, 1, 1, 1, 1),
 ('ProviderPayment', 'partial payment', 20, 0, NULL, 8, 1, 1, 1, 1),
 ('ProviderPayment', 'final payment', 30, 0, NULL, 8, 1, 1, 1, 1);
@@ -220,6 +220,14 @@ UPDATE `${prefix}copyable` SET idDefaultCopyable=23 WHERE id=16;
 ALTER TABLE `${prefix}billLine`
 ADD `idBillLine` int(12)  DEFAULT NULL,
 ADD `rate` DECIMAL(5,2)  DEFAULT NULL;
+
+ALTER TABLE `${prefix}expense`
+ADD `plannedTaxAmount` DECIMAL(11,2) UNSIGNED NULL DEFAULT NULL,
+ADD `realTaxAmount` DECIMAL(11,2) UNSIGNED NULL DEFAULT NULL;
+
+UPDATE `${prefix}expense` SET 
+plannedTaxAmount=plannedFullAmount-plannedAmount,
+realTaxAmount=realFullAmount-realAmount;
 
 -- ==================================================================
 -- Budget
@@ -457,7 +465,7 @@ UPDATE `${prefix}parameter` set parameterValue='CK' where parameterValue='Dojo';
 UPDATE `${prefix}parameter` set parameterValue='CKInline' where parameterValue='DojoInline';
 
 -- Event for any status change 
-INSERT INTO `${prefix}event`(`id`, `name`, `idle`, `sortOrder`) VALUES (14,'statusChange',0,100);
+INSERT INTO `${prefix}event` (`id`, `name`, `idle`, `sortOrder`) VALUES (14,'statusChange',0,100);
 
 --- ==================================================================
 --- Fix
