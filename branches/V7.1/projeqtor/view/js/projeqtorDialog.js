@@ -7409,11 +7409,9 @@ function showBigImage(objectClass, objectId, node, title, hideImage, nocache) {
     centerThumb80.style.display="block";
     var titleDivRect=dojo.byId('centerThumb80TitleContainer').getBoundingClientRect();
     var globalDivRect=document.documentElement.getBoundingClientRect();
-    console.log("top="+titleDivRect.top+" height="+titleDivRect.height);
     if (titleDivRect.top+titleDivRect.height+50>globalDivRect.height) {
       var newTop=globalDivRect.height-titleDivRect.height-50;
       if (newTop<0) newTop=0;
-      console.log("newTop="+newTop);
       centerThumb80.style.top=newTop+'px';
     }
   }
