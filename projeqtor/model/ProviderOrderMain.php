@@ -300,7 +300,12 @@ class ProviderOrderMain extends SqlElement {
       $colScript .= '  }';
       $colScript .= '  formChanged();';
       $colScript .= '</script>';
-    }
+    } else if ($colName=="idProject") {
+    	$colScript .= '<script type="dojo/connect" event="onChange" >';
+    	$colScript .= '  refreshList("idProjectExpense", "idProject", this.value, null, null, false);';
+    	$colScript .= '  formChanged();';
+    	$colScript .= '</script>';
+    }   
     return $colScript;
   }
   
