@@ -392,9 +392,12 @@ if ($type == 'empty') {} else if ($type == 'object') { // ======================
    * }
    */
   if ($dataType=='idTargetProductVersion' or $dataType=='idProductVersion' or $dataType=='idOriginProductVersion') {
-    // Must restrict to versions visible to user
-    $restrictArray=getSessionUser()->getVisibleVersions();
-    $list=array_intersect_key($list, $restrictArray);
+    $objectClass=RequestHandler::getValue('objectClass',false,null);
+    if ($objectClass!='ProjectVersion') {
+      // Must restrict to versions visible to user
+      $restrictArray=getSessionUser()->getVisibleVersions();
+      $list=array_intersect_key($list, $restrictArray);
+    }
   }
   if ($dataType=='idProduct') {
     // Must restrict to products visible to user
