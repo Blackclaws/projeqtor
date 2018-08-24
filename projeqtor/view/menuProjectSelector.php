@@ -133,6 +133,5 @@ name="projectSelectorFiletering"
 	</div>
 <?php } else  {
   ?>
-
 ERROR : Unknown display mode
 <?php }?>

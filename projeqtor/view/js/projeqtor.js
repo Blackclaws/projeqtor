@@ -3540,7 +3540,21 @@ function providerPaymentIdProviderBill() {
     handleAs : "text",
     load : function(data) {
       if(data){
-        dijit.byId("paymentAmount").set("value",data);
+        dijit.byId("paymentAmount").set("value",dojo.number.format(data));
+      }
+    }
+  });
+}
+function providerPaymentIdProviderTerm() {
+  var idTerm=dijit.byId("idProviderTerm").get("value");
+  url='../tool/getSingleData.php?dataType=providerPayment&idTerm='
+    + idTerm;
+  dojo.xhrGet({
+    url : url,
+    handleAs : "text",
+    load : function(data) {
+      if(data){
+        dijit.byId("paymentAmount").set("value",dojo.number.format(data));
       }
     }
   });

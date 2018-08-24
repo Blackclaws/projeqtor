@@ -2870,7 +2870,24 @@ function addMonthsToDate($date, $months) {
   $tDate = explode ( "-", $date );
   return date ( "Y-m-d", mktime ( 0, 0, 0, $tDate [1] + $months, $tDate [2], $tDate [0] ) );
 }
-
+function sameDayOfNextMonths($date,$day) {
+  if (!$date) return addMonthsToDate(date('Y-m-d'),$months);
+  $tDate = explode ( "-", $date );
+  $newYear=$tDate [0];
+  $newMonth=$tDate[1]+1;
+  if ($newMonth>12) {
+    $newMonth='1';
+    $newYear+=1;
+  }  
+  if (strlen($newMonth)<2) $newMonth='0'.$newMonth;  
+  $lastDayOfMonth=date('t',strtotime("$newYear-$newMonth-01"));
+  if ($day=='last' or $day>$lastDayOfMonth) {
+    $newDay=$lastDayOfMonth;
+  } else {
+    $newDay=$day;
+  }
+  return "$newYear-$newMonth-$newDay";
+}
 /**
  * ============================================================================
  * Calculate new date after adding some weeks

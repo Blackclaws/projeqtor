@@ -66,6 +66,7 @@ class ProviderOrderMain extends SqlElement {
   public $totalTaxAmount;
   public $totalFullAmount;
   public $idProjectExpense;
+  public $_button_generateProjectExpense;
   public $paymentCondition;
   public $deliveryDelay;
   public $_tab_3_1 = array('plannedDate','realDate','validationDate','versionDeliveryDate');
@@ -187,11 +188,74 @@ class ProviderOrderMain extends SqlElement {
     return self::$_databaseColumnName;
   }
   
+  public function delete() {
+    $result=parent::delete();
+    if (getLastOperationStatus($result)=='OK') {
+      $term=new ProviderTerm();
+      $termList=$term->getSqlElementsFromCriteria(array("idProviderOrder"=>$this->id));
+      foreach($termList as $term) {
+        $term->idProviderOrder=null;
+        $term->save();
+      }
+    }
+    return ($result);
+  }
   public function save() {
    if (trim($this->idProvider)) {
       $provider=new Provider($this->idProvider);
       if ($provider->taxPct!='' and !$this->taxPct) {
         $this->taxPct=$provider->taxPct;
+      }
+    }
+    //generate project expense
+    if(RequestHandler::getBoolean('generateProjectExpenseButton')){
+      $canCreate=securityGetAccessRightYesNo('menuProjectExpense', 'create')=="YES";
+      if($canCreate){
+        $projExpense = new ProjectExpense();
+        $projExpense->name = $this->name;
+        $projExpense->idProject = $this->idProject;
+        $projExpense->taxPct = $this->taxPct;
+        $projExpense->realAmount = $this->totalUntaxedAmount;
+        $projExpense->realTaxAmount = $this->totalTaxAmount;
+        $projExpense->realFullAmount = $this->totalFullAmount;
+        if($this->deliveryDoneDate){
+          $projExpense->expenseRealDate = $this->deliveryDoneDate;
+        }else if($this->deliveryExpectedDate){
+          $projExpense->expenseRealDate = $this->deliveryExpectedDate;
+        }else{
+          $currentDate = new DateTime();
+          $theCurrentDate = $currentDate->format('Y-m-d');
+          $projExpense->expenseRealDate = $theCurrentDate;
+        }
+        $projExpense->save();
+        $this->idProjectExpense = $projExpense->id;
+      }
+    }
+    //convert project expense  to bill lines
+    if($this->idProjectExpense){
+      $billLine = new BillLine();
+      $critArray=array('refType'=>'ProviderOrder','refId'=>$this->id);
+      $cptBillLine=$billLine->countSqlElementsFromCriteria($critArray, false);
+      if ($cptBillLine < 1) {
+        $term=new ProviderTerm();
+        $critArray=array('idProviderOrder'=>$this->id);
+        $cpt=$term->countSqlElementsFromCriteria($critArray, false);
+        if ($cpt < 1 ) {
+          $expD = new ExpenseDetail();
+          $critArray=array('idExpense'=>$this->idProjectExpense);
+          $listExpD = $expD->getSqlElementsFromCriteria($critArray);
+          $number = 1;
+          foreach ($listExpD as $exp){
+            $billLine = new BillLine();
+            $billLine->line = $number;
+            $billLine->refType = 'ProviderOrder';
+            $billLine->refId = $this->id;
+            $billLine->price = $exp->amount;
+            $billLine->quantity = 1;
+            $billLine->save();
+            $number++;
+          }
+        }
       }
     }
     // Update amounts
@@ -234,7 +298,7 @@ class ProviderOrderMain extends SqlElement {
     $this->totalUntaxedAmount=$this->untaxedAmount-$this->discountAmount;
     $this->totalFullAmount=$this->totalUntaxedAmount*(1+$this->taxPct/100);
     $this->totalTaxAmount=$this->totalFullAmount-$this->totalUntaxedAmount;
-    
+
     parent::simpleSave();
     return $result;
   }
@@ -271,8 +335,13 @@ class ProviderOrderMain extends SqlElement {
       $critArray=array('idProviderOrder'=>(($this->id)?$this->id:'0'));
       $termList=$term->getSqlElementsFromCriteria($critArray, false);
       drawProviderTermFromObject($termList, $this, 'ProviderTerm', false);
-      return $result;
+    } else if ($item=='generateProjectExpense') {
+        echo '<div id="' . $item . 'Button" name="' . $item . 'Button" ';
+        echo ' title="' . i18n('generateProjectExpense') . '" class="greyCheck generalColClass _button_generateProjectExpenseClass" ';
+        echo ' dojoType="dijit.form.CheckBox"  type="checkbox" >';
+        echo '</div> ';
     } 
+    return $result;
   }
   
   // ============================================================================**********
@@ -305,13 +374,22 @@ class ProviderOrderMain extends SqlElement {
     	$colScript .= '  refreshList("idProjectExpense", "idProject", this.value, null, null, false);';
     	$colScript .= '  formChanged();';
     	$colScript .= '</script>';
-    }   
+    }else if ($colName=="idProjectExpense") {
+    	$colScript .= '<script type="dojo/connect" event="onChange" >';
+    	$colScript .= ' var idExpense=dijit.byId("idProjectExpense").get("value");';
+    	$colScript .= 'if(idExpense != " "){ ';
+    	$colScript .= '  dojo.query("._button_generateProjectExpenseClass").style("display", "none"); }else{ dojo.query("._button_generateProjectExpenseClass").style("display", "block"); }';
+    	$colScript .= '</script>';
+    }
     return $colScript;
   }
   
   public function setAttributes() {
     if (count($this->_BillLine)) {
       self::$_fieldsAttributes['untaxedAmount']='readonly';
+    }
+    if($this->idProjectExpense){
+      self::$_fieldsAttributes['_button_generateProjectExpense']='hidden';
     }
     $term=new ProviderTerm();
     $critArray=array('idProviderOrder'=>$this->id);

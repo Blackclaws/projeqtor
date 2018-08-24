@@ -63,7 +63,7 @@ if(isset ($isLineMulti)){
         <input id="providerOrderIsLine" name="providerOrderIsLine" type="hidden" value="<?php echo $isLine;?>" />
         <?php if($mode=='edit'){ ?>  <input id="idProviderTerm" name="idProviderTerm" type="hidden" value="<?php echo $idProviderTerm;?>" />  <?php } ?>
          <table>
-          <tr>
+           <tr>
              <td class="dialogLabel" >
               <label for="providerTermName" ><?php echo i18n("colName");?>&nbsp;:&nbsp;</label>
              </td>
@@ -73,7 +73,7 @@ if(isset ($isLineMulti)){
 	          style="width: 400px;"
 	          maxlength="100"
 	          <?php $name=($line and $line->name)?$line->name:$providerOrder->name;?>
-	          class="input" value="<?php echo $name;?>" />
+	          class="input required" value="<?php echo $name;?>" />
 	         </td>
 	        </tr>
 	        
@@ -85,15 +85,65 @@ if(isset ($isLineMulti)){
                <div id="providerTermDate" name="providerTermDate"
                 dojoType="dijit.form.DateTextBox" required="true" hasDownArrow="false"   
                 constraints="{datePattern:browserLocaleDateFormatJs}"
+                onChange="providerTermLineChangeNumber();"
                 <?php if (isset($readOnly['startDate'])) echo " readonly ";?>
-                type="text" maxlength="10"  style="width:100px; text-align: center;" class="input"
+                type="text" maxlength="10"  style="width:100px; text-align: center;" class="input required"
                 missingMessage="<?php echo i18n('messageMandatory',array('colDate'));?>" 
                 invalidMessage="<?php echo i18n('messageMandatory',array('colDate'));?>" 
                 value="">
                </div>
             </td>
           </tr>
-          
+          <tr>
+            <td class="dialogLabel" >
+              <label for="providerTermOrderUntaxedAmount" ><?php echo i18n("colUntaxedAmount");?>&nbsp;:&nbsp;</label>
+            </td>
+            <td>
+            <?php if ($currencyPosition=='before') echo $currency;?>
+              <input dojoType="dijit.form.NumberTextBox" 
+                    id="providerTermOrderUntaxedAmountInit" name="providerTermOrderUntaxedAmountInit"
+                    readonly constraints="{places:2}"
+                    style="width:100px;"
+                    value="<?php echo $providerOrder->untaxedAmount;?>"
+                    class="input">
+              </input> 
+              <?php if ($currencyPosition=='after') echo $currency;?>
+              <?php  echo ' ('.i18n("colUntaxedAmount")." ".i18n('labelFromOrder').')';?>
+            </td>
+          </tr>
+           <tr>
+           <td class="dialogLabel" >
+              <label for="providerTermDiscount" ><?php echo i18n("colDiscountRate");?>&nbsp;:&nbsp;</label>
+           </td>
+           <td>
+               <input dojoType="dijit.form.NumberTextBox" 
+                id="providerTermDiscount" name="providerTermDiscount"
+                readonly 
+                style="width:100px;"
+                value="<?php echo $providerOrder->discountRate;?>"
+                class="input">
+               </input> 
+               <?php  echo '%';?>
+               <?php  echo ' ('.i18n("colDiscountRate")." ".i18n('labelFromOrder').')';?>
+           </td>
+          </tr>
+          <tr>
+            <td class="dialogLabel" >
+              <label for="providerTermOrderUntaxedAmount" ><?php echo i18n("colTotalUntaxedAmount");?>&nbsp;:&nbsp;</label>
+            </td>
+            <td>
+            <?php if ($currencyPosition=='before') echo $currency;?>
+              <input dojoType="dijit.form.NumberTextBox" 
+                    id="providerTermOrderUntaxedAmount" name="providerTermOrderUntaxedAmount"
+                    readonly constraints="{places:2}"
+                    style="width:100px;"
+                    value="<?php echo $providerOrder->totalUntaxedAmount;?>"
+                    class="input">
+              </input> 
+              <?php if ($currencyPosition=='after') echo $currency;?>
+              <?php  echo ' ('.i18n("colTotalUntaxedAmount")." ".i18n('labelFromOrder').')';?>
+            </td>
+          </tr>
           <tr>
             <td class="dialogLabel" >
               <label for="providerTermTax" ><?php echo i18n("colTaxPct");?>&nbsp;:&nbsp;</label>
@@ -107,60 +157,105 @@ if(isset ($isLineMulti)){
                 class="input">
                </input> 
                <?php  echo '%';?>
-               <?php  echo ' ('.i18n('labelFromOrder').')';?>
+               <?php  echo ' ('.i18n("colTaxPct")." ".i18n('labelFromOrder').')';?>
            </td>
-         <tr>
          </tr>
-           <td class="dialogLabel" >
-              <label for="providerTermDiscount" ><?php echo i18n("colDiscountRate");?>&nbsp;:&nbsp;</label>
-           </td>
-           <td>
-               <input dojoType="dijit.form.NumberTextBox" 
-                id="providerTermDiscount" name="providerTermDiscount"
-                readonly 
-                style="width:100px;"
-                value="<?php echo $providerOrder->discountRate;?>"
-                class="input">
-               </input> 
-               <?php  echo '%';?>
-               <?php  echo ' ('.i18n('labelFromOrder').')';?>
-           </td>
-           
-          </tr>
-          </table>
-          <?php if($isLine=='false'){ 
-              $maxValue = $providerOrder->totalUntaxedAmount;
-              $providerTerm = new ProviderTerm();
-              $termList=$providerTerm->getSqlElementsFromCriteria(array("idProviderOrder"=>$providerOrder->id));
-              foreach ($termList as $term) {
-                $maxValue -= $term->untaxedAmount ;
-              }
-              if($mode == 'edit'){
-                $providerTermEdit = new ProviderTerm($idProviderTerm);    
-                $NewMaxValue = $maxValue+$providerTermEdit->untaxedAmount;
-              }
-              $percent = (100*$maxValue/$providerOrder->totalUntaxedAmount);
-              $taxAmount = ($maxValue*$providerOrder->taxPct)/100;
-              $totalFullAmount = $maxValue+$taxAmount;
-              if($mode == 'edit'){
-                $MaxPercent = $percent;
-                $percent = (100*$providerTermEdit->untaxedAmount/$providerOrder->totalUntaxedAmount);
-                $MaxPercent += $percent;
-                $taxAmount = ($providerTermEdit->untaxedAmount*$providerOrder->taxPct)/100;
-                $totalFullAmount = $providerTermEdit->untaxedAmount+$taxAmount;
-              }
-          ?>
-          <table>  
           <tr>
-           <td class="dialogLabel" >
-            <label for="providerTermUntaxedAmount" ><?php echo i18n("colUntaxedAmount");?>&nbsp;:&nbsp;</label>
+            <td class="dialogLabel" >
+              <label for="providerTermOrderFullAmount" ><?php echo i18n("colTotalFullAmount");?>&nbsp;:&nbsp;</label>
+            </td>
+            <td>
+              <?php if ($currencyPosition=='before') echo $currency;?>
+              <input dojoType="dijit.form.NumberTextBox" 
+                    id="providerTermOrderFullAmount" name="providerTermOrderFullAmount"
+                    readonly  constraints="{places:2}"
+                    style="width:100px;"
+                    value="<?php echo $providerOrder->totalFullAmount;?>"
+                    class="input">
+              </input> 
+                   <?php if ($currencyPosition=='after') echo $currency;?>
+                   <?php  echo ' ('.i18n("colTotalFullAmount")." ".i18n('labelFromOrder').')';?>
+            </td>
+          </tr>
+          <?php 
+          $maxValue = $providerOrder->totalUntaxedAmount;
+          $alreadyOnTerms=0;
+          $alreadyOnTermsHT=0;
+          $providerTerm = new ProviderTerm();
+          $termList=$providerTerm->getSqlElementsFromCriteria(array("idProviderOrder"=>$providerOrder->id));
+          foreach ($termList as $term) {
+            $maxValue -= $term->untaxedAmount ;
+            $alreadyOnTerms+=$term->fullAmount;
+            $alreadyOnTermsHT+=$term->untaxedAmount;
+          }
+          if($mode == 'edit'){
+            $providerTermEdit = new ProviderTerm($idProviderTerm);    
+            $NewMaxValue = $maxValue+$providerTermEdit->untaxedAmount;
+          }
+          $percent = (100*$maxValue/$providerOrder->totalUntaxedAmount);
+          $taxAmount = ($maxValue*$providerOrder->taxPct)/100;
+          $totalFullAmount = $maxValue+$taxAmount;
+          if($mode == 'edit'){
+            $MaxPercent = $percent;
+            $percent = (100*$providerTermEdit->untaxedAmount/$providerOrder->totalUntaxedAmount);
+            $MaxPercent += $percent;
+            $taxAmount = $providerTermEdit->taxAmount;
+            $totalFullAmount = $providerTermEdit->untaxedAmount+$taxAmount;
+          }?>
+          <?php if ($mode!='edit') {?>
+             <tr>
+              <td class="dialogLabel" >
+                <label for="providerTermSum" ><?php echo i18n("fullAmountOfTerms");?>&nbsp;:&nbsp;</label>
+              </td>
+              <td>
+                <?php if ($currencyPosition=='before') echo $currency;?>
+                <input dojoType="dijit.form.NumberTextBox" 
+                      id="" name=""
+                      readonly  constraints="{places:2}"
+                      style="width:100px;"
+                      value="<?php echo $alreadyOnTerms?>"
+                      class="input">
+                </input> 
+                <?php if ($currencyPosition=='after') echo $currency;?>
+                <?php  echo ' ('.i18n("labelFullAmountOfTerms").')';?>
+              </td>
+            </tr>
+          <?php }?>
+          </table>
+          <?php 
+          if($isLine=='false'){
+          ?> 
+          <br/>
+          <table style="<?php if ($alreadyOnTerms>=$totalFullAmount or $alreadyOnTermsHT>=$providerOrder->totalUntaxedAmount) echo 'display:none;';?>">
+          <tr>
+            <td colspan="5" class="assignHeader"><?php echo i18n("colTermDetail");?></td>
+          
+          </tr>
+          <tr>
+            <td class="assignHeader" style="<?php if ($mode=='edit') echo 'display:none;';?>"><?php echo i18n("colNumberOfTerms");?></td>
+            <td class="assignHeader"><?php echo i18n("colUntaxedAmount");?></td>
+            <td class="assignHeader" ><?php echo i18n("colRate");?></td>
+            <td class="assignHeader" ><?php echo i18n("colTaxAmount");?></td>
+            <td class="assignHeader" ><?php echo i18n("colFullAmount");?></td>
+          </tr>
+          <tr>
+           <td class="assignData" style="text-align:center;<?php if ($mode=='edit') echo 'display:none;';?>"> 
+             <div dojoType="dijit.form.NumberTextBox" 
+                id="providerTermNumberOfTerms" name="providerTermNumberOfTerms"
+                constraints="{min:0,max:999,places:0}"
+                style="width:50px;<?php if ($mode=='edit') echo 'display:none;';?>"
+                value="1" 
+                <?php if ($alreadyOnTerms>0) echo 'readonly';?>
+                <?php if ($mode!='edit') echo 'onChange="providerTermLineChangeNumber();"';?>
+                class="input">
+               </div> 
            </td>
-           <td>
+           <td class="assignData">
             <?php if ($currencyPosition=='before') echo $currency;?>
             <div dojoType="dijit.form.NumberTextBox" 
               id="providerTermUntaxedAmount" name="providerTermUntaxedAmount"
               style="width: 100px;"
-              constraints="{max:<?php if($mode=='edit'){echo $NewMaxValue;}else{ echo $maxValue ;}?>}"
+              constraints="{max:<?php if($mode=='edit'){echo $NewMaxValue;}else{ echo $maxValue ;}?>,places:2}"
               onChange="providerTermLine(<?php echo $providerOrder->totalUntaxedAmount; ?>);"
               value="<?php if($mode=='edit'){echo $providerTermEdit->untaxedAmount ;}else { if($providerOrder->totalUntaxedAmount){echo $maxValue;}}?>" 
               class="input"
@@ -168,15 +263,11 @@ if(isset ($isLineMulti)){
             </div>
             <?php if ($currencyPosition=='after') echo $currency;?>
            </td>
-          
-          <td class="dialogLabel" >
-            <label for="providerTermPercent" ><?php echo i18n("colRate");?>&nbsp;:&nbsp;</label>
-           </td>
-           <td>
+           <td class="assignData">
             <div dojoType="dijit.form.NumberTextBox" 
               id="providerTermPercent" name="providerTermPercent"
               style="width: 100px;"
-              constraints="{max:<?php if($mode=='edit'){echo $MaxPercent;}else{echo $percent;}?>}"
+              constraints="{max:<?php if($mode=='edit'){echo $MaxPercent+0.01;}else{echo $percent+0.01;}?>}"
               onChange="providerTermLinePercent(<?php echo $providerOrder->totalUntaxedAmount; ?>);"
               value="<?php echo $percent;?>" 
               class="input"
@@ -184,30 +275,22 @@ if(isset ($isLineMulti)){
             </div>
             <?php echo '%';?>
            </td>
-          
-         <td class="dialogLabel" >
-               <label for="providerTermTaxdAmount" ><?php echo i18n("colTaxAmount");?>&nbsp;:&nbsp;</label>
-         </td>
-         <td>
+           <td class="assignData">
              <?php if ($currencyPosition=='before') echo $currency;?>
                <input dojoType="dijit.form.NumberTextBox" 
                 id="providerTermTaxAmount" name="providerTermTaxAmount"
-                readonly 
+                readonly  constraints="{places:2}"
                 style="width:100px;"
                 value="<?php echo $taxAmount;?>" 
                 class="input"  >  
                </input> 
                <?php if ($currencyPosition=='after') echo $currency;?>
-          </td>
-          
-          <td class="dialogLabel" >
-               <label for="providerTermFullAmount" ><?php echo i18n("colFullAmount");?>&nbsp;:&nbsp;</label>
-             </td>
-             <td>
+            </td>
+            <td class="assignData">
              <?php if ($currencyPosition=='before') echo $currency;?>
                <input dojoType="dijit.form.NumberTextBox" 
                 id="providerTermFullAmount" name="providerTermFullAmount"
-                readonly 
+                readonly constraints="{places:2}"
                 style="width:100px;"
                 value="<?php echo $totalFullAmount; ?>" 
                 class="input">  
@@ -215,6 +298,7 @@ if(isset ($isLineMulti)){
                <?php if ($currencyPosition=='after') echo $currency;?>
           </td>
 	        </tr>
+	        <tr><td colspan="5" style="text-align:center"><div id="labelRegularTerms"></div></td></tr>
 	        
 	         <?php 
            }else{ 
@@ -222,6 +306,7 @@ if(isset ($isLineMulti)){
 	           $billLineList=$billLine->getSqlElementsFromCriteria(array("refType"=>"ProviderOrder","refId"=>$providerOrder->id));
 	           $i = 1;
 	         ?> 
+	          <br/>
 	          <table>
 	           <tr>
 	             <td class="assignHeader" colspan="4"><?php echo i18n('labelBillLinesFromOrder');?></td>
@@ -340,8 +425,7 @@ if(isset ($isLineMulti)){
                     constraints="{max:<?php if($mode=='edit'){
                                               echo $newPercent;
                                             }else{
-                                              echo $percent;}?>
-                                  }"
+                                              echo $percent;}?>}"
                     value="<?php echo $percent;?>" 
                      onChange="providerTermLinePercentBilleLine(<?php echo $bill->line; ?>);"
                     class="input"
@@ -408,6 +492,7 @@ if(isset ($isLineMulti)){
         </form>
       </td>
     </tr>
+    <tr><td>&nbsp;</td></tr>
     <tr>
       <td align="center">
         <input type="hidden" id="providerTermAction">
