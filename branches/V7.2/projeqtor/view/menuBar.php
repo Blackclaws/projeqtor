@@ -249,9 +249,11 @@
               selected=previousSelectedProject;
               selectedName=previousSelectedProjectName;
             }
+            console.log("selected="+selected+" "+selectedName);
+            console.log("previous selected="+previousSelectedProject+" "+previousSelectedProjectName);
             if (selected) {
               if (dijit.byId("projectSelectorFiletering")) {
-                if (!previousSelectedProject || previousSelectedProject!=selected) {
+                if (! previousSelectedProject || previousSelectedProject!=selected) {
                   previousSelectedProject=dijit.byId("projectSelectorFiletering").get("value");
                   previousSelectedProjectName=dijit.byId("projectSelectorFiletering").get("displayedValue");
                 } else {
@@ -260,7 +262,7 @@
                 }
                 dijit.byId("projectSelectorFiletering").set("value",selected);
               } else {
-                if (!previousSelectedProject || previousSelectedProject!=selected) {
+                if (! previousSelectedProject || previousSelectedProject!=selected) {
                   previousSelectedProject=currentSelectedProject;
                   previousSelectedProjectName=dijit.byId('selectedProject').get("label");
                 } else {

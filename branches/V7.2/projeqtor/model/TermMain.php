@@ -40,7 +40,7 @@ class TermMain extends SqlElement {
   public $creationDate;
   public $idle;
   public $_sec_Price;
-  public $_tab_3_2 = array('real', 'validated', 'planned', 'amount', 'date');
+  public $_tab_3_2_smallLabel = array('real', 'validated', 'planned', 'amount', 'date');
   public $amount;
   public $validatedAmount; 
   public $plannedAmount;

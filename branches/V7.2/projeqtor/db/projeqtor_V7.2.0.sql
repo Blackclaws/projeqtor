@@ -140,6 +140,7 @@ CREATE TABLE `${prefix}providerpayment` (
   `id` int(12) unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(100),
   `idProviderBill` int(12) unsigned DEFAULT NULL,
+  `idProviderTerm` int(12) unsigned DEFAULT NULL,
   `paymentDate` date,
   `idPaymentMode` int(12) unsigned DEFAULT NULL,
   `idle` int(1) DEFAULT 0,

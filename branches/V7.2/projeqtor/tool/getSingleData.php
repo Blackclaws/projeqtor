@@ -147,10 +147,19 @@
       $catalog_array = "$r->description#!#!#!#!#!#$r->detail#!#!#!#!#!#$r->nomenclature#!#!#!#!#!#$r->unitCost#!#!#!#!#!#$r->idMeasureUnit#!#!#!#!#!#$r->specification#!#!#!#!#!#$r->quantity";
       echo $catalog_array;
     }else if($type=='providerPayment'){
-      $idBill=RequestHandler::getValue('idBill');
-      $bill = new ProviderBill($idBill);
-      $totalFullAmount = $bill->totalFullAmount;
-      echo str_replace('.', ',', $totalFullAmount);
+      $idBill=trim(RequestHandler::getValue('idBill'));
+      $idTerm=trim(RequestHandler::getValue('idTerm'));
+      debugLog("bill='$idBill', term='$idTerm'");
+      if ($idBill) {
+        $bill=new ProviderBill($idBill);
+        $totalFullAmount = $bill->totalFullAmount;
+        echo $totalFullAmount;
+        //echo str_replace('.', ',', $totalFullAmount);
+      } else if ($idTerm) {
+        $term = new ProviderTerm($idTerm);
+        $fullAmount = $term->fullAmount;
+        echo $fullAmount;
+      }
     } else {
       debugTraceLog("Unknown type '$type'");          
       echo '';

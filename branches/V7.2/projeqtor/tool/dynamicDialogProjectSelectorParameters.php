@@ -96,7 +96,9 @@ if (sessionValueExists('projectSelectorDisplayMode')) {
      </button>
 	  </td>
     <td align="center">
-     
     </td>
+	</tr>
+	<tr>
+	<td colspan="2" style="text-align:center;color:#a0a0a0;"><br/><?php echo i18n("helpRefreshList");?></td>
 	</tr>
 </table>
