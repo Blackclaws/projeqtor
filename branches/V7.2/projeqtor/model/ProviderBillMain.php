@@ -66,6 +66,7 @@ class ProviderBillMain extends SqlElement {
   public $totalTaxAmount;
   public $totalFullAmount;
   public $idProjectExpense;
+  public $_button_generateProjectExpense;
   public $paymentCondition;
   public $expectedPaymentDate;
   public $lastPaymentDate;
@@ -224,6 +225,56 @@ class ProviderBillMain extends SqlElement {
     }
     $result=parent::save();
     
+    //generate project expense
+    if(RequestHandler::getBoolean('generateProjectExpenseButton')){
+      $canCreate=securityGetAccessRightYesNo('menuProjectExpense', 'create')=="YES";
+      if($canCreate){
+        $projExpense = new ProjectExpense();
+        $projExpense->name = $this->name;
+        $projExpense->idProject = $this->idProject;
+        $projExpense->taxPct = $this->taxPct;
+        $projExpense->realAmount = $this->totalUntaxedAmount;
+        $projExpense->realTaxAmount = $this->totalTaxAmount;
+        $projExpense->realFullAmount = $this->totalFullAmount;
+        if($this->date){
+          $projExpense->expenseRealDate = $this->date;
+        }else{
+          $currentDate = new DateTime();
+          $theCurrentDate = $currentDate->format('Y-m-d');
+          $projExpense->expenseRealDate = $theCurrentDate;
+        }
+        $projExpense->save();
+        $this->idProjectExpense = $projExpense->id;
+      }
+    }
+    //convert project expense  to bill lines
+    if($this->idProjectExpense){
+      $billLine = new BillLine();
+      $critArray=array('refType'=>'ProviderBill','refId'=>$this->id);
+      $cptBillLine=$billLine->countSqlElementsFromCriteria($critArray, false);
+      if ($cptBillLine < 1) {
+        $term=new ProviderTerm();
+        $critArray=array('idProviderBill'=>$this->id);
+        $cpt=$term->countSqlElementsFromCriteria($critArray, false);
+        if ($cpt < 1 ) {
+          $expD = new ExpenseDetail();
+          $critArray=array('idExpense'=>$this->idProjectExpense);
+          $listExpD = $expD->getSqlElementsFromCriteria($critArray);
+          $number = 1;
+          foreach ($listExpD as $exp){
+            $billLine = new BillLine();
+            $billLine->line = $number;
+            $billLine->refType = 'ProviderBill';
+            $billLine->refId = $this->id;
+            $billLine->price = $exp->amount;
+            $billLine->quantity = 1;
+            $billLine->save();
+            $number++;
+          }
+        }
+      }
+    }
+    
     $billLine=new BillLine();
     $crit = array("refType"=> "ProviderBill", "refId"=>$this->id);
     $billLineList = $billLine->getSqlElementsFromCriteria($crit,false);
@@ -307,6 +358,12 @@ class ProviderBillMain extends SqlElement {
       $colScript .= '  refreshList("idProjectExpense", "idProject", this.value, null, null, false);';
       $colScript .= '  formChanged();';
       $colScript .= '</script>';
+    }else if ($colName=="idProjectExpense") {
+      $colScript .= '<script type="dojo/connect" event="onChange" >';
+      $colScript .= ' var idExpense=dijit.byId("idProjectExpense").get("value");';
+      $colScript .= 'if(idExpense != " "){ ';
+      $colScript .= '  dojo.query("._button_generateProjectExpenseClass").style("display", "none"); }else{ dojo.query("._button_generateProjectExpenseClass").style("display", "block"); }';
+      $colScript .= '</script>';
     }
     return $colScript;
   }
@@ -334,8 +391,13 @@ class ProviderBillMain extends SqlElement {
       }
       $result.='</table>';
       $result.='</div>';
-      return $result;
-    }
+    } else if ($item=='generateProjectExpense') {
+        echo '<div id="' . $item . 'Button" name="' . $item . 'Button" ';
+        echo ' title="' . i18n('generateProjectExpense') . '" class="greyCheck generalColClass _button_generateProjectExpenseClass" ';
+        echo ' dojoType="dijit.form.CheckBox"  type="checkbox" >';
+        echo '</div> ';
+    } 
+    return $result;
   }
   
   public function setAttributes() {
@@ -354,6 +416,9 @@ class ProviderBillMain extends SqlElement {
       self::$_fieldsAttributes['paymentDate']='readonly';
       self::$_fieldsAttributes['paymentAmount']='readonly';
       self::$_fieldsAttributes['paymentDone']='readonly';
+    }
+    if($this->idProjectExpense){
+      self::$_fieldsAttributes['_button_generateProjectExpense']='hidden';
     }
   }
   

@@ -3671,6 +3671,7 @@ function drawBillLinesProviderTerms($obj, $refresh=false) {
 
   $fmt=new NumberFormatter52($browserLocale, NumberFormatter52::INTEGER);
   $fmtd=new NumberFormatter52($browserLocale, NumberFormatter52::DECIMAL);
+  $discountRate=null;
   if(get_class($obj)!='ProviderBill'){
     $lines=array_reverse($lines);
     if(isset($obj->idProviderOrder)){
@@ -5634,7 +5635,7 @@ function drawProviderTermFromObject($list, $obj, $type, $refresh=false) {
   }
   
   echo '<table style="width:100%">';
-  echo '<tr><td colspan=2 style="width:100%;"><table style="width:100%;">';
+  //echo '<tr><td colspan=2 style="width:100%;"><table style="width:100%;">';
   echo '<tr>';
   echo '<td class="assignHeader" style="width:10%">';
   
@@ -5657,14 +5658,14 @@ function drawProviderTermFromObject($list, $obj, $type, $refresh=false) {
   if($obj->totalUntaxedAmount != 0){
     if($test != true or $y == 0 ){
       $isLineProviderTerm = false;
-      echo  '<a onClick="addProviderTerm(\''.get_class($obj).'\',\''.$type.'\',\''.$idProviderOrder.'\',\'false\');" title="'.i18n('addProviderTerm').'" /> '.formatSmallButton('Add').'</a>';
+      echo  '<a onClick="addProviderTerm(\''.get_class($obj).'\',\''.$type.'\',\''.$idProviderOrder.'\',\'false\');" title="'.i18n('addProviderTerm').'" > '.formatSmallButton('Add').'</a>';
     }
     $billLineO = new BillLine();
     $billLineList=$billLineO->getSqlElementsFromCriteria(array("refType"=>"ProviderOrder","refId"=>$obj->id));
     if($billLineList){
       if($y == 0 or $test == true ){
         $isLineProviderTerm = true;
-        echo  '<a onClick="addProviderTerm(\''.get_class($obj).'\',\''.$type.'\',\''.$idProviderOrder.'\',\'true\');" title="'.i18n('addProviderTermLine').'" /> '.formatSmallButton('Split').'</a>';
+        echo  '<a onClick="addProviderTerm(\''.get_class($obj).'\',\''.$type.'\',\''.$idProviderOrder.'\',\'true\');" title="'.i18n('addProviderTermLine').'" > '.formatSmallButton('Split').'</a>';
       }
     }
   }
@@ -5673,7 +5674,7 @@ function drawProviderTermFromObject($list, $obj, $type, $refresh=false) {
   echo '<td class="assignHeader" style="width:15%">'.i18n('colStatusDateTime').'</td>';
   echo '<td class="assignHeader" style="width:20%">'.i18n('colValidatedAmount2').'</td>';
   echo '<td class="assignHeader" style="width:55%">'.i18n('colIdProviderBill').'</td>';
-
+  $sumTermAmount=0;
   echo '</tr>';
   foreach ($list as $term) {
     $canUpdate=securityGetAccessRightYesNo('menuProvideTerm', 'update', $term)=="YES";
@@ -5722,16 +5723,33 @@ function drawProviderTermFromObject($list, $obj, $type, $refresh=false) {
       }
       echo  '<td class="assignData'.$idleClass.'" align="center" '.$goto.'>#'.htmlEncode($term->id).'</td>';
       echo  '<td class="assignData'.$idleClass.'" align="center" '.$goto.' style="white-space: nowrap;">'.htmlFormatDate($term->date).'</td>';
-      echo  '<td class="assignData'.$idleClass.'" align="center" '.$goto.' style="white-space: nowrap;">'.htmlDisplayCurrency($term->fullAmount).'</td>';
+      echo  '<td class="assignData'.$idleClass.'" align="right" '.$goto.' style="white-space: nowrap;">'.htmlDisplayCurrency($term->fullAmount).'</td>';
+      $sumTermAmount+=$term->fullAmount;
       if($term->idProviderBill){
-        echo  '<td class="assignData'.$idleClass.'" align="center"'.$goto2.' style="white-space: nowrap;">#'.htmlEncode($term->idProviderBill).'</td>';
+        $bill=new ProviderBill($term->idProviderBill);
+        $objStatus=new Status($bill->idStatus);
+        echo  '<td class="assignData'.$idleClass.'" align="center" '.$goto2.' style="white-space:nowrap; padding:0px !important;" >';
+        echo '<table style="width:100%;padding:0;marin:0;"><tr>';
+        echo '<td class="" style="width:10%">#'.htmlEncode($term->idProviderBill).'</td>';
+        echo '<td class="" style="width:40%">'.htmlEncode($bill->externalReference).'</td>';
+        echo '<td class="" style="width:50%">'.colorNameFormatter($objStatus->name."#split#".$objStatus->color).'</td>';
+        echo '</tr></table>';
+        echo '</td>';
       }else{
         echo  '<td class="assignData'.$idleClass.'" align="center"'.$goto2.' style="white-space: nowrap;"></td>';
       }
       echo '</tr>';
     
   }
-  echo '</table></td></tr>';
+  // Summ for terms
+  if (count($list)>0) {
+    echo '<tr>'; 
+    echo '<td colspan="'.(($print)?'2':'3').'" class="assignHeader" style="text-align:right">'.i18n('sum').'&nbsp;</td>';
+    echo '<td class="assignData" style="font-weight:bold;vertical-align:middle;" align="right">'.htmlDisplayCurrency($sumTermAmount).'</td>';
+    echo '<td class="assignHeader" >&nbsp;</td>';
+    echo '</tr>';
+  }
+  //echo '</table></td></tr>';
   echo '</table>';
 }
 

@@ -44,6 +44,7 @@ class ProviderPaymentMain extends SqlElement {
   public $paymentAmount;
   public $paymentFeeAmount;
   public $paymentCreditAmount;
+  public $idProviderTerm;
   public $idProviderBill;
   public $referenceProviderBill;
   public $idProvider;
@@ -204,14 +205,24 @@ class ProviderPaymentMain extends SqlElement {
       $colScript .= '  dijit.byId("paymentCreditAmount").set("value",amount-feeAmount);';
       $colScript .= '  formChanged();';
       $colScript .= '</script>';
-    }
-    if($colName=="idProviderBill"){
+    } else if($colName=="idProviderBill"){
       $colScript .= '<script type="dojo/connect" event="onChange" >';
       $colScript .= '  var bill=dijit.byId("idProviderBill").get("value");';
       $colScript .= ' if(bill){ ';
       $colScript .= '  var amount=dijit.byId("paymentAmount").get("value");';
-      $colScript .= ' if(!amount){ ';
-      $colScript .= '  providerPaymentIdProviderBill();';
+      $colScript .= '  var term=dijit.byId("idProviderTerm").get("value");';
+      $colScript .= '  if(!amount && !term){ ';
+      $colScript .= '    providerPaymentIdProviderBill();';
+      $colScript .= '  } }';
+      $colScript .= '  formChanged();';
+      $colScript .= '</script>';
+    } else if($colName=="idProviderTerm"){
+      $colScript .= '<script type="dojo/connect" event="onChange" >';
+      $colScript .= ' var term=dijit.byId("idProviderTerm").get("value");';
+      $colScript .= ' if(term){ ';
+      $colScript .= '  var amount=dijit.byId("paymentAmount").get("value");';
+      $colScript .= '  if(!amount){ ';
+      $colScript .= '    providerPaymentIdProviderTerm();';
       $colScript .= '  } }';
       $colScript .= '  formChanged();';
       $colScript .= '</script>';

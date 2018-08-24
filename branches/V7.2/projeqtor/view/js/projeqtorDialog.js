@@ -5159,8 +5159,8 @@ function editProviderTerm(idProviderOrder,isLine,id,name,date,tax,discount,untax
     showAlert(i18n('alertOngoingChange'));
     return;
   }
-  var percent = untaxed *100/ totalUntaxed;
-  
+  //var percent = Math.round(untaxed*100000/totalUntaxed)/1000;
+  var percent = untaxed*100/totalUntaxed;
   var callBack = function () {
     
     
@@ -5263,7 +5263,8 @@ function providerTermLine(totalUntaxedAmount){
   // Calculated values
   var taxAmount = Math.round(untaxedAmount * taxPct) / 100;
   var fullAmount = taxAmount + untaxedAmount;
-  var percent = Math.round(untaxedAmount*100/totalUntaxedAmountValue);
+  //var percent = Math.round(untaxedAmount*100000/totalUntaxedAmountValue)/1000;
+  var percent = untaxedAmount*100/totalUntaxedAmountValue;
   // Set values to fields
   dijit.byId("providerTermPercent").set('value', percent);
   dijit.byId("providerTermTaxAmount").set('value', taxAmount);
@@ -5306,7 +5307,8 @@ function providerTermLineBillLine(id){
   var discountBill = (untaxedAmount * discount / 100);
   var taxAmount = Math.round((untaxedAmount-discountBill)* taxPct) / 100;
   var fullAmount = untaxedAmount - discountBill + taxAmount;
-  var percent = Math.round(untaxedAmount*100/totalUntaxedAmountValue);
+  //var percent = Math.round(untaxedAmount*100000/totalUntaxedAmountValue)/1000;
+  var percent = untaxedAmount*100/totalUntaxedAmountValue;
   // Set values to fields
   dijit.byId("providerTermDiscountAmount"+id).set('value', discountBill);
   dijit.byId("providerTermPercent"+id).set('value', percent);
@@ -5358,6 +5360,40 @@ function saveProviderTermFromProviderBill() {
   }
 }
 
+function providerTermLineChangeNumber(){
+  if (!dijit.byId('providerTermNumberOfTerms')) return;
+  var number=dijit.byId('providerTermNumberOfTerms').get("value");
+  if (! number || number<=0) return;
+  //dijit.byId('providerTermPercent').set('value',100/number);
+  
+  if (number>1) {
+    cancelRecursiveChange_OnGoingChange=true;
+    dijit.byId('providerTermUntaxedAmount').set('value',dijit.byId('providerTermOrderUntaxedAmount').get('value')/number);
+    dijit.byId('providerTermPercent').set('value',100/number);
+    dijit.byId('providerTermFullAmount').set('value',dijit.byId('providerTermOrderFullAmount').get('value')/number);
+    dijit.byId('providerTermTaxAmount').set('value',dijit.byId('providerTermFullAmount').get('value')-dijit.byId('providerTermUntaxedAmount').get('value'));
+    lockWidget('providerTermPercent');
+    lockWidget('providerTermUntaxedAmount');
+    var termDate=dijit.byId('providerTermDate').get('value');
+    if (! termDate) {
+      dojo.byId('labelRegularTerms').innerHTML='<br/>'+'<span style="color:red">'+i18n('messageMandatory',new Array(i18n('colDate')))+'</span>';
+    } else {
+      var termDay=termDate.getDate();
+      var lastDayOfMonth = (new Date(termDate.getFullYear(), termDate.getMonth()+1, 0)).getDate();
+      if (termDay==lastDayOfMonth ) {
+        termDay=i18n('colLastDay');
+      }
+      var startDate=dateFormatter(formatDate(termDate));
+      dojo.byId('labelRegularTerms').innerHTML='<br/>'+i18n('labelRegularTerms',new Array(number,termDay,startDate));
+    }
+    setTimeout("cancelRecursiveChange_OnGoingChange=false;",20);
+  } else {
+    //dijit.byId('providerTermPercent').set('value',100);
+    unlockWidget('providerTermPercent');
+    unlockWidget('providerTermUntaxedAmount');
+    dojo.byId('labelRegularTerms').innerHTML="";
+  }
+}
 // =============================================================================
 // = Affectation
 // =============================================================================

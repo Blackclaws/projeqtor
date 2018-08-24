@@ -24,135 +24,161 @@
  *     
  *** DO NOT REMOVE THIS NOTICE ************************************************/
 
-/** ===========================================================================
+/**
+ * ===========================================================================
  * Save a note : call corresponding method in SqlElement Class
  * The new values are fetched in $_REQUEST
  */
 require_once "../tool/projeqtor.php";
 scriptLog('   ->/tool/saveProviderTerm.php');
 
-$mode = RequestHandler::getValue('mode');
-$idProviderOrder = RequestHandler::getId('providerOrderId');
-$idProject = RequestHandler::getId('providerOrderProject');
-$isLine = RequestHandler::getValue('providerOrderIsLine');
-$idProviderTerm = RequestHandler::getId('idProviderTerm');
-$date = RequestHandler::getDatetime('providerTermDate');
-$name = RequestHandler::getValue('providerTermName');
-$taxPct = RequestHandler::getNumeric('providerTermTax');
+$mode=RequestHandler::getValue('mode');
+$idProviderOrder=RequestHandler::getId('providerOrderId');
+$idProject=RequestHandler::getId('providerOrderProject');
+$isLine=RequestHandler::getValue('providerOrderIsLine');
+$idProviderTerm=RequestHandler::getId('idProviderTerm');
+$date=RequestHandler::getDatetime('providerTermDate');
+$name=RequestHandler::getValue('providerTermName');
+$taxPct=RequestHandler::getNumeric('providerTermTax');
 Sql::beginTransaction();
-$result = "";
+$result="";
 
-if($mode == 'edit'){
-  if ($isLine == 1){
-  $untaxedAmount = RequestHandler::getNumeric('providerTermUntaxedAmount');
-  $taxAmount = RequestHandler::getNumeric('providerTermTaxAmount');
-  $fullAmount = RequestHandler::getNumeric('providerTermFullAmount');
+debugLog("isLine=$isLine");
+if ($mode=='edit') {
+  if ($isLine==1) {
+    debugLog("in isLine==1");
+    $untaxedAmount=RequestHandler::getNumeric('providerTermUntaxedAmount');
+    $taxAmount=RequestHandler::getNumeric('providerTermTaxAmount');
+    $fullAmount=RequestHandler::getNumeric('providerTermFullAmount');
     $providerTerm=new ProviderTerm($idProviderTerm);
-    $providerTerm->idProject = $idProject;
-    $providerTerm->idProviderOrder = $idProviderOrder;
-    $providerTerm->date = $date;
-    $providerTerm->name = $name;
-    $providerTerm->untaxedAmount = $untaxedAmount;
-    $providerTerm->taxPct = $taxPct;
-    $providerTerm->taxAmount = $taxAmount;
-    $providerTerm->fullAmount = $fullAmount;
+    $providerTerm->idProject=$idProject;
+    $providerTerm->idProviderOrder=$idProviderOrder;
+    $providerTerm->date=$date;
+    $providerTerm->name=$name;
+    $providerTerm->untaxedAmount=$untaxedAmount;
+    $providerTerm->taxPct=$taxPct;
+    $providerTerm->taxAmount=$taxAmount;
+    $providerTerm->fullAmount=$fullAmount;
     $res=$providerTerm->save();
- }else{
-   $providerTerm=new ProviderTerm($idProviderTerm);
-   $providerTerm->idProject = $idProject;
-   $providerTerm->idProviderOrder = $idProviderOrder;
-   $providerTerm->date = $date;
-   $providerTerm->name = $name;
-   $providerTerm->taxPct = $taxPct;
-   
-   $billLine = new BillLine();
-   $critArray = array("refType"=>"ProviderOrder","refId"=>$idProviderOrder);
-   $number=$billLine->countSqlElementsFromCriteria($critArray);
-   
-   $providerTerm->untaxedAmount = 0;
-   $providerTerm->taxAmount = 0;
-   $providerTerm->fullAmount =0;
-   
-   for($i=1;$i<=$number;$i++){
-     $untaxedAmount = RequestHandler::getNumeric('providerTermUntaxedAmount'.$i);
-     $taxAmount = RequestHandler::getNumeric('providerTermTaxAmount'.$i);
-     $fullAmount = RequestHandler::getNumeric('providerTermFullAmount'.$i);
-     $discount = RequestHandler::getNumeric('providerTermDiscountAmount'.$i);
-     $providerTerm->untaxedAmount += ($untaxedAmount-$discount);
-     $providerTerm->taxAmount += $taxAmount;
-     $providerTerm->fullAmount += $fullAmount;
-   }
-   $res=$providerTerm->save();
-
-   $billLine = new BillLine();
-   $critArray = array("refType"=>"ProviderTerm","refId"=>$providerTerm->id);
-   $listBillLineList=$billLine->getSqlElementsFromCriteria($critArray);
-   $tab = array();
-   $i = 1;
-   foreach ($listBillLineList as $list){
-     $tab[$i] = $list->id;
-     $i++;
-   }
-     for($i=1;$i<=$number;$i++){
-       $rate = RequestHandler::getValue('providerTermPercent'.$i);
-       $idBillLine = RequestHandler::getId('providerOrderBillLineId'.$i);
-       $newBillLine = new BillLine($tab[$i]);
-       $newBillLine->refType = "ProviderTerm";
-       $newBillLine->refId = $providerTerm->id;
-       $newBillLine->idBillLine = $idBillLine;
-       $newBillLine->rate = $rate;
-       $newBillLine->price = RequestHandler::getNumeric('providerTermUntaxedAmount'.$i);
-       $newBillLine->save();
-     }
- }
-}else{
-
-  if ($isLine ==  'false'){
-    $untaxedAmount = RequestHandler::getNumeric('providerTermUntaxedAmount');
-    $taxAmount = RequestHandler::getNumeric('providerTermTaxAmount');
-    $fullAmount = RequestHandler::getNumeric('providerTermFullAmount');
+  } else {
+    $providerTerm=new ProviderTerm($idProviderTerm);
+    $providerTerm->idProject=$idProject;
+    $providerTerm->idProviderOrder=$idProviderOrder;
+    $providerTerm->date=$date;
+    $providerTerm->name=$name;
+    $providerTerm->taxPct=$taxPct;
     
-    $providerTerm=new ProviderTerm();
-    $providerTerm->idProject = $idProject;
-    $providerTerm->idProviderOrder = $idProviderOrder;
-    $providerTerm->date = $date;
-    $providerTerm->name = $name.' '.$date;
-    $providerTerm->untaxedAmount = $untaxedAmount;
-    $providerTerm->taxPct = $taxPct;
-    $providerTerm->taxAmount = $taxAmount;
-    $providerTerm->fullAmount = $fullAmount;
-    $res=$providerTerm->save();
-    
-  }else{
-    $providerTerm=new ProviderTerm();
-    $providerTerm->idProject = $idProject;
-    $providerTerm->idProviderOrder = $idProviderOrder;
-    $providerTerm->date = $date;
-    $providerTerm->name = $name.' '.$date;
-    $providerTerm->taxPct = $taxPct;
-    
-    $billLine = new BillLine();
-    $critArray = array("refType"=>"ProviderOrder","refId"=>$idProviderOrder);
+    $billLine=new BillLine();
+    $critArray=array("refType"=>"ProviderOrder", "refId"=>$idProviderOrder);
     $number=$billLine->countSqlElementsFromCriteria($critArray);
-    for($i=1;$i<=$number;$i++){
-      $untaxedAmount = RequestHandler::getNumeric('providerTermUntaxedAmount'.$i);
-      $taxAmount = RequestHandler::getNumeric('providerTermTaxAmount'.$i);
-      $fullAmount = RequestHandler::getNumeric('providerTermFullAmount'.$i);
-      $discount = RequestHandler::getNumeric('providerTermDiscountAmount'.$i);
-      $providerTerm->untaxedAmount += ($untaxedAmount-$discount); 
-      $providerTerm->taxAmount += $taxAmount;
-      $providerTerm->fullAmount += $fullAmount;
+    
+    $providerTerm->untaxedAmount=0;
+    $providerTerm->taxAmount=0;
+    $providerTerm->fullAmount=0;
+    
+    for ($i=1; $i<=$number; $i++) {
+      $untaxedAmount=RequestHandler::getNumeric('providerTermUntaxedAmount'.$i);
+      $taxAmount=RequestHandler::getNumeric('providerTermTaxAmount'.$i);
+      $fullAmount=RequestHandler::getNumeric('providerTermFullAmount'.$i);
+      $discount=RequestHandler::getNumeric('providerTermDiscountAmount'.$i);
+      $providerTerm->untaxedAmount+=($untaxedAmount-$discount);
+      $providerTerm->taxAmount+=$taxAmount;
+      $providerTerm->fullAmount+=$fullAmount;
     }
     $res=$providerTerm->save();
-    for($i=1;$i<=$number;$i++){
-      $rate = RequestHandler::getValue('providerTermPercent'.$i);
-      $idBillLine = RequestHandler::getId('providerOrderBillLineId'.$i);
-      $newBillLine = new BillLine();
-      $newBillLine->refType = "ProviderTerm";
-      $newBillLine->refId = $providerTerm->id;
-      $newBillLine->idBillLine = $idBillLine;
-      $newBillLine->rate = $rate;
-      $newBillLine->price = RequestHandler::getNumeric('providerTermUntaxedAmount'.$i);
+    
+    $billLine=new BillLine();
+    $critArray=array("refType"=>"ProviderTerm", "refId"=>$providerTerm->id);
+    $listBillLineList=$billLine->getSqlElementsFromCriteria($critArray);
+    $tab=array();
+    $i=1;
+    foreach ($listBillLineList as $list) {
+      $tab[$i]=$list->id;
+      $i++;
+    }
+    for ($i=1; $i<=$number; $i++) {
+      $rate=RequestHandler::getValue('providerTermPercent'.$i);
+      $idBillLine=RequestHandler::getId('providerOrderBillLineId'.$i);
+      $newBillLine=new BillLine($tab[$i]);
+      $newBillLine->refType="ProviderTerm";
+      $newBillLine->refId=$providerTerm->id;
+      $newBillLine->idBillLine=$idBillLine;
+      $newBillLine->rate=$rate;
+      $newBillLine->price=RequestHandler::getNumeric('providerTermUntaxedAmount'.$i);
+      $newBillLine->save();
+    }
+  }
+} else {
+  if ($isLine=='false') {
+    $order=new ProviderOrder($idProviderOrder);
+    $totalUntaxedAmount=$order->totalUntaxedAmount;
+    $totalFullAmount=$order->totalFullAmount;
+    $numberOfTerms=RequestHandler::getValue('providerTermNumberOfTerms');
+    if (!$numberOfTerms or !is_numeric($numberOfTerms)) $numberOfTerms=1;
+    
+    $untaxedAmount=round(RequestHandler::getNumeric('providerTermUntaxedAmount'),2);
+    $taxAmount=round(RequestHandler::getNumeric('providerTermTaxAmount'),2);
+    $fullAmount=round(RequestHandler::getNumeric('providerTermFullAmount'),2);
+    
+    $lastDayOfMonth=date('t',strtotime(substr($date,0,7).'-01'));
+    $dayOfDate=substr($date,-2);
+    $isLastDay=($lastDayOfMonth==$dayOfDate)?true:false;
+    $day=($isLastDay)?'last':$dayOfDate;
+    
+    for ($nb=1;$nb<=$numberOfTerms;$nb++) {
+      $providerTerm=new ProviderTerm();
+      $providerTerm->idProject=$idProject;
+      $providerTerm->idProviderOrder=$idProviderOrder;
+      $providerTerm->date=$date;  
+      $providerTerm->name=$name.' '.$date;
+      if ($nb==$numberOfTerms and $numberOfTerms>1) {
+        $untaxedAmount=round($totalUntaxedAmount,2);// avoid roundings
+        //To get Full amount correct
+        //$fullAmount=$totalFullAmount; 
+        //$taxAmount=$fullAmount-$untaxedAmount; 
+        //To get untaxed and tax amount correct
+        $taxAmount=round($untaxedAmount*$taxPct/100,2); 
+        $fullAmount=$untaxedAmount+$taxAmount;
+      }
+      $providerTerm->untaxedAmount=$untaxedAmount;
+      $providerTerm->taxPct=$taxPct;
+      $providerTerm->taxAmount=$taxAmount;
+      $providerTerm->fullAmount=$fullAmount;
+      $res=$providerTerm->save();
+      $totalUntaxedAmount-=$untaxedAmount;
+      $totalFullAmount-=$fullAmount;
+      $date=sameDayOfNextMonths($date, $day);
+    }
+  } else {
+    $providerTerm=new ProviderTerm();
+    $providerTerm->idProject=$idProject;
+    $providerTerm->idProviderOrder=$idProviderOrder;
+    $providerTerm->date=$date;
+    $providerTerm->name=$name.' '.$date;
+    $providerTerm->taxPct=$taxPct;
+    
+    $billLine=new BillLine();
+    $critArray=array("refType"=>"ProviderOrder", "refId"=>$idProviderOrder);
+    $number=$billLine->countSqlElementsFromCriteria($critArray);
+    for ($i=1; $i<=$number; $i++) {
+      $untaxedAmount=RequestHandler::getNumeric('providerTermUntaxedAmount'.$i);
+      $taxAmount=RequestHandler::getNumeric('providerTermTaxAmount'.$i);
+      $fullAmount=RequestHandler::getNumeric('providerTermFullAmount'.$i);
+      $discount=RequestHandler::getNumeric('providerTermDiscountAmount'.$i);
+      $providerTerm->untaxedAmount+=($untaxedAmount-$discount);
+      $providerTerm->taxAmount+=$taxAmount;
+      $providerTerm->fullAmount+=$fullAmount;
+    }
+    $res=$providerTerm->save();
+    for ($i=1; $i<=$number; $i++) {
+      $rate=RequestHandler::getValue('providerTermPercent'.$i);
+      $idBillLine=RequestHandler::getId('providerOrderBillLineId'.$i);
+      $newBillLine=new BillLine();
+      $newBillLine->refType="ProviderTerm";
+      $newBillLine->refId=$providerTerm->id;
+      $newBillLine->idBillLine=$idBillLine;
+      $newBillLine->rate=$rate;
+      $newBillLine->price=RequestHandler::getNumeric('providerTermUntaxedAmount'.$i);
       $newBillLine->save();
     }
   }
