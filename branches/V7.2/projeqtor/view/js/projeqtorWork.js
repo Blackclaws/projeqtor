@@ -340,6 +340,8 @@ function dispatchWorkValueChange(rowId, colId) {
     classTotalWork='displayTransparent imputation';
   }
   dijit.byId('totalWork').set("class",classTotalWork);
+  var classCurrentInput="input imputation"+((dijit.byId('workValue_'+rowId+'_'+colId).get("value")>0)?' imputationHasValue':'');
+  dijit.byId('workValue_'+rowId+'_'+colId).set("class",classCurrentInput)
   if ((oldReal==0 && newReal>0) || (oldLeft>0 && newLeft==0) || (newReal<oldReal) ) {
     var url= '../tool/checkStatusChange.php';
     url+='?newReal='+newReal;
