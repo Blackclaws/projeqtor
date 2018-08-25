@@ -1275,6 +1275,9 @@ label, .label, .smallLabel {
   color : #ff0000;
   font-weight: normal;
 }
+.imputationHasValue{
+	background: #ffffaa;
+}
 
 .parametersButton {
   width:35px; 

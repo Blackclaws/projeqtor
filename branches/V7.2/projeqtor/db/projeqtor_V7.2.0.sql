@@ -129,6 +129,8 @@ CREATE TABLE `${prefix}providerterm` (
   `fullAmount` decimal(11,2) UNSIGNED,
   `date` date DEFAULT NULL,
   `idProjectExpense` int(12) UNSIGNED DEFAULT NULL,
+  `isBilled` int(1) unsigned DEFAULT NULL,
+  `isPaid` int(1) unsigned DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=innoDB DEFAULT CHARSET=utf8 ;
 
@@ -227,8 +229,17 @@ ADD `plannedTaxAmount` DECIMAL(11,2) UNSIGNED NULL DEFAULT NULL,
 ADD `realTaxAmount` DECIMAL(11,2) UNSIGNED NULL DEFAULT NULL;
 
 UPDATE `${prefix}expense` SET 
-plannedTaxAmount=plannedFullAmount-plannedAmount,
-realTaxAmount=realFullAmount-realAmount;
+plannedFullAmount=plannedAmount 
+WHERE plannedFullAmount is null or plannedFullAmount<plannedAmount and plannedAmount is not null;
+UPDATE `${prefix}expense` SET 
+realFullAmount=realAmount 
+WHERE realFullAmount is null or realFullAmount<realAmount and realAmount is not null;
+UPDATE `${prefix}expense` SET 
+plannedTaxAmount=plannedFullAmount-plannedAmount 
+WHERE plannedFullAmount is not null and plannedAmount is not null;
+UPDATE `${prefix}expense` SET 
+realTaxAmount=realFullAmount-realAmount
+WHERE realFullAmount is not null and realAmount is not null;
 
 -- ==================================================================
 -- Budget
@@ -472,13 +483,13 @@ INSERT INTO `${prefix}event` (`id`, `name`, `idle`, `sortOrder`) VALUES (14,'sta
 --- Fix
 --- ==================================================================
 
-update `${prefix}planningelement` set plannedStartDate=(select meetingDate from `${prefix}meeting` as meet where meet.id=refId) where refType = "Meeting";
-update `${prefix}planningelement` set plannedEndDate=(select meetingDate from `${prefix}meeting` as meet where meet.id=refId) where refType = "Meeting";
-update `${prefix}planningelement` set validatedStartDate=(select meetingDate from `${prefix}meeting` as meet where meet.id=refId) where refType = "Meeting";
-update `${prefix}planningelement` set validatedEndDate=(select meetingDate from `${prefix}meeting` as meet where meet.id=refId) where refType = "Meeting";
+UPDATE `${prefix}planningelement` SET plannedStartDate=(select meetingDate from `${prefix}meeting` as meet where meet.id=refId) where refType = "Meeting";
+UPDATE `${prefix}planningelement` SET plannedEndDate=(select meetingDate from `${prefix}meeting` as meet where meet.id=refId) where refType = "Meeting";
+UPDATE `${prefix}planningelement` SET validatedStartDate=(select meetingDate from `${prefix}meeting` as meet where meet.id=refId) where refType = "Meeting";
+UPDATE `${prefix}planningelement` SET validatedEndDate=(select meetingDate from `${prefix}meeting` as meet where meet.id=refId) where refType = "Meeting";
 
-update `${prefix}planningelement` set realStartDate=(select meetingDate from `${prefix}meeting` as meet where meet.id=refId and meet.handled=1) where refType = "Meeting";
-update `${prefix}planningelement` set realEndDate=(select meetingDate from `${prefix}meeting` as meet where meet.id=refId and meet.done=1) where refType = "Meeting";
+UPDATE `${prefix}planningelement` SET realStartDate=(select meetingDate from `${prefix}meeting` as meet where meet.id=refId and meet.handled=1) where refType = "Meeting";
+UPDATE `${prefix}planningelement` SET realEndDate=(select meetingDate from `${prefix}meeting` as meet where meet.id=refId and meet.done=1) where refType = "Meeting";
 
-update `${prefix}assignment` set plannedStartDate=(select meetingDate from `${prefix}meeting` as meet where meet.id=refId) where refType = "Meeting";
-update `${prefix}assignment` set plannedEndDate=(select meetingDate from `${prefix}meeting` as meet where meet.id=refId) where refType = "Meeting";
+UPDATE `${prefix}assignment` SET plannedStartDate=(select meetingDate from `${prefix}meeting` as meet where meet.id=refId) where refType = "Meeting";
+UPDATE `${prefix}assignment` SET plannedEndDate=(select meetingDate from `${prefix}meeting` as meet where meet.id=refId) where refType = "Meeting";

@@ -45,6 +45,8 @@ class ProviderTermMain extends SqlElement {
   public $taxAmount;
   public $fullAmount;
   public $date;
+  public $isBilled;
+  public $isPaid;
   public $idProjectExpense;
   public $_Note=array();
   public $_sec_Link;

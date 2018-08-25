@@ -886,10 +886,14 @@ class ImputationLine {
                 echo htmlDisplayNumericWithoutTrailingZeros(Work::displayImputation($line->arrayPlannedWork[$i]->work));
                 echo '</div>';
               }
+              $colorStyle="";
+              $colorClass="";
+              if ($line->idle or $line->locked) $colorStyle="color:#A0A0A0;";
+              else if ($valWork>0) $colorClass="imputationHasValue";
               echo '<div type="text" idProject="'.$line->idProject.'" dojoType="dijit.form.NumberTextBox" ';
               echo ' constraints="{min:0}"';
-              echo '  style="width: 45px; text-align: center; '.(($line->idle or $line->locked)?'color:#A0A0A0; xbackground: #EEEEEE;':'').' " ';
-              echo ' trim="true" maxlength="4" class="input imputation" ';
+              echo '  style="width: 45px; text-align: center;'.$colorStyle.'" ';
+              echo ' trim="true" maxlength="4" class="input imputation '.$colorClass.'" ';
               echo ' id="workValue_'.$nbLine.'_'.$i.'"';
               echo ' name="workValue_'.$i.'[]"';
               echo ' value="'.Work::displayImputation($valWork).'" ';
