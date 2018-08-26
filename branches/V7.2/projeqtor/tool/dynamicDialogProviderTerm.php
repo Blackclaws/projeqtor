@@ -32,6 +32,7 @@ $mode = RequestHandler::getValue('mode',false,null);
 $isLineMulti = RequestHandler::getValue('isLineMulti',false,null);
 $idProviderOrderEdit=RequestHandler::getId('idProviderOrderEdit',false,null);
 $idProviderOrder=RequestHandler::getValue('idProviderOrder',false,null);
+$objectClass=RequestHandler::getValue('objectClass',false,null);
 if($idProviderOrder==null){
   $idProviderOrder = $idProviderOrderEdit;
 }
@@ -41,8 +42,14 @@ $line="";
 if($idProviderTerm){
   $line=new ProviderTerm($idProviderTerm);
 }
-
-$providerOrder = new ProviderOrder($idProviderOrder);
+if ($objectClass && $objectClass=='ProviderBill') {
+  $providerOrder = new ProviderBill($idProviderOrder);
+  $labelFrom="labelFromBill";
+} else {
+  $objectClass='ProviderOrder';
+  $providerOrder = new ProviderOrder($idProviderOrder);
+  $labelFrom="labelFromOrder";
+}
 
 $isLine = RequestHandler::getValue('isLine');
 if(isset ($isLineMulti)){
@@ -58,6 +65,7 @@ if(isset ($isLineMulti)){
       <td>
        <form dojoType="dijit.form.Form" id='providerTermForm' name='providerTermForm' onSubmit="return false;">
         <input id="mode" name="mode" type="hidden" value="<?php echo $mode;?>" />
+        <input id="providerTermObjectClass" name="providerTermObjectClass" type="hidden" value="<?php echo $objectClass;?>" />
         <input id="providerOrderProject" name="providerOrderProject" type="hidden" value="<?php echo $providerOrder->idProject;?>" />
         <input id="providerOrderId" name="providerOrderId" type="hidden" value="<?php echo $providerOrder->id;?>" />
         <input id="providerOrderIsLine" name="providerOrderIsLine" type="hidden" value="<?php echo $isLine;?>" />
@@ -108,7 +116,7 @@ if(isset ($isLineMulti)){
                     class="input">
               </input> 
               <?php if ($currencyPosition=='after') echo $currency;?>
-              <?php  echo ' ('.i18n("colUntaxedAmount")." ".i18n('labelFromOrder').')';?>
+              <?php  echo ' ('.i18n("colUntaxedAmount")." ".i18n($labelFrom).')';?>
             </td>
           </tr>
            <tr>
@@ -124,7 +132,7 @@ if(isset ($isLineMulti)){
                 class="input">
                </input> 
                <?php  echo '%';?>
-               <?php  echo ' ('.i18n("colDiscountRate")." ".i18n('labelFromOrder').')';?>
+               <?php  echo ' ('.i18n("colDiscountRate")." ".i18n($labelFrom).')';?>
            </td>
           </tr>
           <tr>
@@ -141,7 +149,7 @@ if(isset ($isLineMulti)){
                     class="input">
               </input> 
               <?php if ($currencyPosition=='after') echo $currency;?>
-              <?php  echo ' ('.i18n("colTotalUntaxedAmount")." ".i18n('labelFromOrder').')';?>
+              <?php  echo ' ('.i18n("colTotalUntaxedAmount")." ".i18n($labelFrom).')';?>
             </td>
           </tr>
           <tr>
@@ -157,7 +165,7 @@ if(isset ($isLineMulti)){
                 class="input">
                </input> 
                <?php  echo '%';?>
-               <?php  echo ' ('.i18n("colTaxPct")." ".i18n('labelFromOrder').')';?>
+               <?php  echo ' ('.i18n("colTaxPct")." ".i18n($labelFrom).')';?>
            </td>
          </tr>
           <tr>
@@ -174,7 +182,7 @@ if(isset ($isLineMulti)){
                     class="input">
               </input> 
                    <?php if ($currencyPosition=='after') echo $currency;?>
-                   <?php  echo ' ('.i18n("colTotalFullAmount")." ".i18n('labelFromOrder').')';?>
+                   <?php  echo ' ('.i18n("colTotalFullAmount")." ".i18n($labelFrom).')';?>
             </td>
           </tr>
           <?php 
@@ -182,7 +190,7 @@ if(isset ($isLineMulti)){
           $alreadyOnTerms=0;
           $alreadyOnTermsHT=0;
           $providerTerm = new ProviderTerm();
-          $termList=$providerTerm->getSqlElementsFromCriteria(array("idProviderOrder"=>$providerOrder->id));
+          $termList=$providerTerm->getSqlElementsFromCriteria(array("id".$objectClass=>$providerOrder->id));
           foreach ($termList as $term) {
             $maxValue -= $term->untaxedAmount ;
             $alreadyOnTerms+=$term->fullAmount;
@@ -226,7 +234,7 @@ if(isset ($isLineMulti)){
           if($isLine=='false'){
           ?> 
           <br/>
-          <table style="<?php if ($alreadyOnTerms>=$totalFullAmount or $alreadyOnTermsHT>=$providerOrder->totalUntaxedAmount) echo 'display:none;';?>">
+          <table style="<?php if ($mode!='edit' and ($alreadyOnTerms>=$totalFullAmount or $alreadyOnTermsHT>=$providerOrder->totalUntaxedAmount)) echo 'display:none;';?>">
           <tr>
             <td colspan="5" class="assignHeader"><?php echo i18n("colTermDetail");?></td>
           
@@ -303,7 +311,7 @@ if(isset ($isLineMulti)){
 	         <?php 
            }else{ 
 	           $billLine = new BillLine();
-	           $billLineList=$billLine->getSqlElementsFromCriteria(array("refType"=>"ProviderOrder","refId"=>$providerOrder->id));
+	           $billLineList=$billLine->getSqlElementsFromCriteria(array("refType"=>$objectClass,"refId"=>$providerOrder->id));
 	           $i = 1;
 	         ?> 
 	          <br/>

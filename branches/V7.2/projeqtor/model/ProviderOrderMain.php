@@ -49,6 +49,20 @@ class ProviderOrderMain extends SqlElement {
   public $idStatus;
   public $idResource;
   public $idContact;
+  public $paymentCondition;
+  public $deliveryDelay;
+  public $_tab_3_1 = array('plannedDate','realDate','validationDate','versionDeliveryDate');
+  public $deliveryExpectedDate;
+  public $deliveryDoneDate;
+  public $deliveryValidationDate;
+  public $handled;
+  public $handledDate;
+  public $done;
+  public $doneDate;
+  public $idle;
+  public $idleDate;
+  public $cancelled;
+  public $_lib_cancelled;
    public $_tab_4_3_smallLabel = array('untaxedAmount', 'taxPct', 'taxAmount', 'fullAmount','initial','discount', 'countTotal');
   //init
   public $untaxedAmount;
@@ -67,20 +81,6 @@ class ProviderOrderMain extends SqlElement {
   public $totalFullAmount;
   public $idProjectExpense;
   public $_button_generateProjectExpense;
-  public $paymentCondition;
-  public $deliveryDelay;
-  public $_tab_3_1 = array('plannedDate','realDate','validationDate','versionDeliveryDate');
-  public $deliveryExpectedDate;
-  public $deliveryDoneDate;
-  public $deliveryValidationDate;
-  public $handled;
-  public $handledDate;
-  public $done;
-  public $doneDate;
-  public $idle;
-  public $idleDate;
-  public $cancelled;
-  public $_lib_cancelled;
   public $comment;
   public $_BillLine=array();
   public $_BillLine_colSpan="2";
@@ -212,6 +212,12 @@ class ProviderOrderMain extends SqlElement {
       $canCreate=securityGetAccessRightYesNo('menuProjectExpense', 'create')=="YES";
       if($canCreate){
         $projExpense = new ProjectExpense();
+        $lstType=SqlList::getList('ProjectExpenseType');
+        reset($lstType);
+        $projExpense->idProjectExpenseType=key($lstType);
+        $lstStatus=SqlList::getList('Status');
+        reset($lstStatus);
+        $projExpense->idStatus=key($lstStatus);
         $projExpense->name = $this->name;
         $projExpense->idProject = $this->idProject;
         $projExpense->taxPct = $this->taxPct;
@@ -317,7 +323,19 @@ class ProviderOrderMain extends SqlElement {
   }
   
   public function copyTo($newClass, $newType, $newName, $setOrigin, $withNotes, $withAttachments, $withLinks, $withAssignments = false, $withAffectations = false, $toProject = NULL, $toActivity = NULL, $copyToWithResult = false,$copyToWithVersionProjects=false) {
-    return parent::copyTo($newClass, $newType, $newName, $setOrigin, $withNotes, $withAttachments, $withLinks);
+    $result=parent::copyTo($newClass, $newType, $newName, $setOrigin, $withNotes, $withAttachments, $withLinks);
+    if ($newClass=='ProviderBill') {
+      $term=new ProviderTerm();
+      $termList=$term->getSqlElementsFromCriteria(array('idProviderOrder'=>$this->id));
+      foreach($termList as $term) {
+        if (! $term->isBilled) {
+          $term->idProviderBill=$result->id;
+          $term->isBilled=1;
+          $term->save();
+        }
+      }
+    }
+    return $result;
   }
   
   /** =========================================================================
@@ -395,6 +413,12 @@ class ProviderOrderMain extends SqlElement {
     $critArray=array('idProviderOrder'=>$this->id);
     $cpt=$term->countSqlElementsFromCriteria($critArray, false);
     if ($cpt > 0 ) {
+      self::$_fieldsAttributes['discountAmount']='readonly';
+      self::$_fieldsAttributes['discountRate']='readonly';
+    }
+    if ($this->done) {
+      self::$_fieldsAttributes['untaxedAmount']='readonly';
+      self::$_fieldsAttributes['taxPct']='readonly';
       self::$_fieldsAttributes['discountAmount']='readonly';
       self::$_fieldsAttributes['discountRate']='readonly';
     }

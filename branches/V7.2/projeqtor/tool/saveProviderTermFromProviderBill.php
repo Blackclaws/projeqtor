@@ -28,15 +28,25 @@
  * Get the list of objects, in Json format, to display the grid list
  */
 require_once "../tool/projeqtor.php"; 
-$idProviderTerm = RequestHandler::getValue('linkRef2TypeProviderTerm');
+$idProviderTermList = RequestHandler::getValue('linkProviderTerm');
 $idProviderBill=RequestHandler::getId('ProviderBillId');
-$prT = new ProviderTerm($idProviderTerm);
 Sql::beginTransaction();
-$prT->idProviderBill = $idProviderBill;
-$result = $prT->save();
-$providerBill = new ProviderBill($idProviderBill);
-$providerBill->taxPct = $prT->taxPct;
-$providerBill->save();
+if (!$idProviderTermList or count($idProviderTermList)==0) {
+  displayLastOperationStatus("");
+  exit;
+}
+foreach ($idProviderTermList as $idProviderTerm) {
+  $prT = new ProviderTerm($idProviderTerm);
+  $prT->idProviderBill = $idProviderBill;
+  $result = $prT->save();
+  $lastStatus=getLastOperationStatus($result);
+  if ($lastStatus!='OK' and $lastStatus!='NO_CHANGE') {
+    break;
+  }
+  //$providerBill = new ProviderBill($idProviderBill);
+  //$providerBill->taxPct = $prT->taxPct;
+  //$providerBill->save();
+}
 // Message of correct saving
 displayLastOperationStatus($result);
 ?>

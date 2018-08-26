@@ -65,6 +65,7 @@
 
 .iconMenuBarCustom16 { background-image: url(images/iconMenuBarCustom16.png);  background-repeat: no-repeat; width: 16px; height: 16px; background-size: 16px 16px; }
 .iconMenuBarCustom22 { background-image: url(images/iconMenuBarCustom22.png);  background-repeat: no-repeat; width: 22px; height: 22px; background-size: 22px 22px; }
+.iconButtonMark24 { background-image: url(images/iconMark.png);  background-repeat: no-repeat; width: 24px; height: 24px; background-size: 24px 24px;}
 .iconButtonMark16 { background-image: url(images/iconMark.png);  background-repeat: no-repeat; width: 16px; height: 16px; background-size: 16px 16px;}
 
 
@@ -158,6 +159,7 @@
 .iconButtonSubscribe16 { background-image: url(images/iconSubscribe.png);  background-repeat: no-repeat; width: 16px; height: 16px; background-size: 16px 16px;}
 .iconArrowShowHideMenu16 { background-image: url(images/iconArrowShowHideMenu.png);  background-repeat: no-repeat; width: 16px; height: 16px; background-size: 8px 16px !important;}
 .iconButtonListApprover16 { background-image: url(images/iconButtonListApprover.png);  background-repeat: no-repeat; width: 16px; height: 16px; background-size: 16px 16px;}
+.iconButtonList16 { background-image: url(images/iconButtonList.png);  background-repeat: no-repeat; width: 16px; height: 16px; background-size: 16px 16px;}
 .iconButtonRefresh32 { background-image: url(images/iconRefresh.png);  background-repeat: no-repeat; width: 32px; height: 32px; background-size: 32px 32px;}
 
 .iconButtonPassed16 { background-image: url(images/iconPassed16.png);  background-repeat: no-repeat; width: 16px; height: 16px; }
