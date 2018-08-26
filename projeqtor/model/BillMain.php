@@ -436,15 +436,15 @@ class BillMain extends SqlElement {
       $pay=new Payment();
       $payList=$pay->getSqlElementsFromCriteria(array('idBill'=>$this->id));
       //$result.='</td><td>';
-      $result.='<div style="position:relative;top:-22px;left:317px;">';
-      $result.='<table>';
+      $result.='<div style="position:relative;top:0px;left:80px;width:350px; ">';
+      $result.='<table style="width:100%">';
       foreach ($payList as $pay) {
         $result.='<tr class="noteHeader pointer" onClick="gotoElement(\'Payment\','.htmlEncode($pay->id).');">';
-        $result.='<td style="padding:0px 5px">';
+        $result.='<td style="padding:0px 5px; width:20px;">';
         $result.= formatSmallButton('Payment');
         $result.='</td>';
-        $result.='<td >#'.htmlEncode($pay->id).'</td><td>&nbsp;&nbsp;&nbsp;</td>';
-        $result.='<td style="padding:0px 5px;text-align:left">'.htmlEncode($pay->name).'</td></tr>';
+        $result.='<td style="width:30px">#'.htmlEncode($pay->id).'</td><td>&nbsp;&nbsp;&nbsp;</td>';
+        $result.='<td style="padding:0px 5px;text-align:left;width:300px">'.htmlEncode($pay->name).'</td></tr>';
       }
       $result.='</table>';
       $result.='</div>';

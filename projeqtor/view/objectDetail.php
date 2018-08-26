@@ -42,7 +42,7 @@ if (!isset($comboDetail)) {
 $collapsedList=Collapsed::getCollaspedList();
 $readOnly=false;
 if (false===function_exists('lcfirst')) {
-  
+
   function lcfirst($str) {
     $str[0]=strtolower($str[0]);
     return (string)$str;
@@ -69,13 +69,13 @@ if ($noselect) {
 } else {
   $objId=$_REQUEST['objectId'];
   if ($objClass=='GlobalView') {
-    $expl=explode('|',$objId);
+    $expl=explode('|', $objId);
     $objClass=$expl[0];
     $objId=$expl[1];
   }
   $obj=new $objClass($objId);
   $profile=getSessionUser()->getProfile($obj);
-  //gautier   
+  // gautier
   if ($objClass=='Resource' and $obj->isResourceTeam) {
     $objClass='ResourceTeam';
     $obj=new ResourceTeam($objId);
@@ -209,41 +209,42 @@ if (array_key_exists('refresh', $_REQUEST)) {
 }
 ?>
 <div <?php echo ($print)?'x':'';?>
-	dojoType="dijit.layout.BorderContainer">
+  dojoType="dijit.layout.BorderContainer">
   <?php
   if (!$refresh and !$print) {
     ?>
   <div id="buttonDiv" dojoType="dijit.layout.ContentPane" region="top"
-		style="z-index: 3; height: 35px; position: relative; overflow: visible !important;">
-		<div id="resultDiv" dojoType="dijit.layout.ContentPane" region="top"
-			style="display: none; z-index: 99999;"></div>
+    style="z-index: 3; height: 35px; position: relative; overflow: visible !important;">
+    <div id="resultDiv" dojoType="dijit.layout.ContentPane" region="top"
+      style="display: none; z-index: 99999;"></div>
 		<?php  include 'objectButtons.php'; ?>
 		<div id="detailBarShow" class="dijitAccordionTitle"
-			onMouseover="hideList('mouse');" onClick="hideList('click');"
-			<?php if (RequestHandler::isCodeSet('switchedMode') and RequestHandler::getValue('switchedMode')=='on') echo ' style="display:block;"'?>>
-			<div id="detailBarIcon" align="center"></div>
-		</div>
-	</div>
-	<div id="formDiv" dojoType="dijit.layout.ContentPane" region="center">
+      onMouseover="hideList('mouse');" onClick="hideList('click');"
+      <?php if (RequestHandler::isCodeSet('switchedMode') and RequestHandler::getValue('switchedMode')=='on') echo ' style="display:block;"'?>>
+      <div id="detailBarIcon" align="center"></div>
+    </div>
+  </div>
+  <div id="formDiv" dojoType="dijit.layout.ContentPane" region="center">
 
 	<?php
   }
   if (!$print) {
     ?>  
 <form dojoType="dijit.form.Form" id="objectForm" jsId="objectForm"
-			name="objectForm" encType="multipart/form-data" action="" method="">
-			<script type="dojo/method" event="onShow">
+      name="objectForm" encType="multipart/form-data" action=""
+      method="">
+      <script type="dojo/method" event="onShow">
         if (dijit.byId('name')) dijit.byId('name').focus();
       </script>
-			<script type="dojo/method" event="onSubmit">
+      <script type="dojo/method" event="onSubmit">
         // Don't do anything on submit, just cancel : no button is default => must click
 		    //submitForm("../tool/saveObject.php","resultDiv", "objectForm", true);
 		    return false;        
         </script>
-			<div style="width: 100%; height: 100%;">
-				<div id="detailFormDiv" dojoType="dijit.layout.ContentPane"
-					region="top" style="width: 100%; height: 100%;"
-					onmouseout="hideGraphStatus();">
+      <div style="width: 100%; height: 100%;">
+        <div id="detailFormDiv" dojoType="dijit.layout.ContentPane"
+          region="top" style="width: 100%; height: 100%;"
+          onmouseout="hideGraphStatus();">
           <?php
   }
   $noData=htmlGetNoDataMessage($objClass);
@@ -289,8 +290,8 @@ if (array_key_exists('refresh', $_REQUEST)) {
   if (!$print) {
     ?> 
   </div>
-			</div>
-		</form>
+      </div>
+    </form>
   <?php
   }
   $widthPct=setWidthPct($displayWidth, $print, $printWidth, $obj, "2");
@@ -298,13 +299,13 @@ if (array_key_exists('refresh', $_REQUEST)) {
     ?> <br />
   <?php if ($print) {?>
 <table width="<?php echo $printWidth;?>px;">
-			<tr>
-				<td class="section"><?php echo i18n('sectionChecklistLines');?></td>
-			</tr>
-			<tr>
-				<td><?php drawChecklistDefinitionLinesFromObject($obj);?></td>
-			</tr>
-		</table>
+      <tr>
+        <td class="section"><?php echo i18n('sectionChecklistLines');?></td>
+      </tr>
+      <tr>
+        <td><?php drawChecklistDefinitionLinesFromObject($obj);?></td>
+      </tr>
+    </table>
   <?php
     } else {
       $titlePane=$objClass."_checklistDefinitionLine";
@@ -323,13 +324,13 @@ if (array_key_exists('refresh', $_REQUEST)) {
     ?> <br />
   <?php if ($print) {?>
   <table width="<?php echo $printWidth;?>px;">
-			<tr>
-				<td class="section"><?php echo i18n('sectionJoblist');?></td>
-			</tr>
-			<tr>
-				<td><?php drawJobDefinitionFromObject($obj);?></td>
-			</tr>
-		</table>
+      <tr>
+        <td class="section"><?php echo i18n('sectionJoblist');?></td>
+      </tr>
+      <tr>
+        <td><?php drawJobDefinitionFromObject($obj);?></td>
+      </tr>
+    </table>
   <?php
     } else {
       $titlePane=$objClass."_jobDefinition";
@@ -360,10 +361,10 @@ if (array_key_exists('refresh', $_REQUEST)) {
     if ($print) {
       ?>
 <table width="<?php echo $printWidth;?>px;">
-			<tr>
-				<td class="section"><?php echo i18n('elementHistoty');?></td>
-			</tr>
-		</table>
+      <tr>
+        <td class="section"><?php echo i18n('elementHistoty');?></td>
+      </tr>
+    </table>
 <?php drawHistoryFromObjects();?> <?php
     } else {
       $titlePane=$objClass."_history";
@@ -375,7 +376,7 @@ if (array_key_exists('refresh', $_REQUEST)) {
        onHide="saveCollapsed('<?php echo $titlePane;?>');"
        onShow="saveExpanded('<?php echo $titlePane;?>');" ><?php drawHistoryFromObjects();?>
 </div>
-		<br />
+    <br />
 <?php }?> <?php
   } else if (!$print) {
     $titlePane=$objClass."_history";
@@ -410,9 +411,7 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false, $pare
   $ckEditorNumber=0; // Will be used only if getEditor=="CK" for CKEditor
   
   if (property_exists($obj, '_sec_Assignment')) {
-    $habil=SqlElement::getSingleSqlElementFromCriteria('HabilitationOther', array(
-        'idProfile'=>$profile, 
-        'scope'=>'assignmentView'));
+    $habil=SqlElement::getSingleSqlElementFromCriteria('HabilitationOther', array('idProfile'=>$profile, 'scope'=>'assignmentView'));
     if ($habil and $habil->rightAccess!=1) {
       unset($obj->_sec_Assignment);
     }
@@ -453,7 +452,7 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false, $pare
     $extName="_detail";
   }
   $detailWidth=null; // Default detail div width
-                       // Check screen resolution, to determine max field width (largeWidth)
+                     // Check screen resolution, to determine max field width (largeWidth)
   if (array_key_exists('destinationWidth', $_REQUEST)) {
     $detailWidth=$_REQUEST['destinationWidth'];
   } else {
@@ -651,7 +650,7 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false, $pare
     // - the x column headers
     // - the y line headers
     
-    //gautier #3251
+    // gautier #3251
     if (substr($col, 0, 4)=='_tab') {
       // BEGIN - ADD BY TABARY - FORCE HEADER TAB VISIBLE
       $forceHeader=$obj->isAttributeSetToField($col, "forceHeader");
@@ -709,29 +708,29 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false, $pare
       // unset($val[4]);
       // unset($val[5]);
       // }
-      // END ADD qCazelles - dateComposition   
+      // END ADD qCazelles - dateComposition
       $internalTableRowsCaptions=array_slice($val, $internalTableCols);
       $internalTableCurrentRow=0;
       $colWidth=($detailWidth)/$nbCol;
-// #3538 - This part is no use any more since genericity of display of headers
-//       if (SqlElement::is_subclass_of($obj, 'PlanningElement') and $internalTableRows>3) {
-//         for ($i=0; $i<$internalTableRows; $i++) {
-//           $testRowCaption=strtolower($internalTableRowsCaptions[$i]);
-//           if ($workVisibility=='NO' and substr($testRowCaption, -4)=='work') {
-//             $internalTableRowsCaptions[$i]='';
-//           }
-//           if ($costVisibility=='NO' and (substr($testRowCaption, -4)=='cost' or substr($testRowCaption, -7)=='expense')) {
-//             $internalTableRowsCaptions[$i]='';
-//           }
-//           if ($costVisibility!='ALL' and substr($testRowCaption, 0, 13)=='reserveamount') {
-//             $internalTableRowsCaptions[$i]='';
-//           }
-//         }
-//         if ($workVisibility!='ALL' and $costVisibility!='ALL') {
-//           $val[2]='';
-//           $val[5]='';
-//         }
-//       }
+      // #3538 - This part is no use any more since genericity of display of headers
+      // if (SqlElement::is_subclass_of($obj, 'PlanningElement') and $internalTableRows>3) {
+      // for ($i=0; $i<$internalTableRows; $i++) {
+      // $testRowCaption=strtolower($internalTableRowsCaptions[$i]);
+      // if ($workVisibility=='NO' and substr($testRowCaption, -4)=='work') {
+      // $internalTableRowsCaptions[$i]='';
+      // }
+      // if ($costVisibility=='NO' and (substr($testRowCaption, -4)=='cost' or substr($testRowCaption, -7)=='expense')) {
+      // $internalTableRowsCaptions[$i]='';
+      // }
+      // if ($costVisibility!='ALL' and substr($testRowCaption, 0, 13)=='reserveamount') {
+      // $internalTableRowsCaptions[$i]='';
+      // }
+      // }
+      // if ($workVisibility!='ALL' and $costVisibility!='ALL') {
+      // $val[2]='';
+      // $val[5]='';
+      // }
+      // }
       echo '</table><table id="'.$col.'" class="detail">';
       echo '<tr class="detail">';
       echo '<td class="detail"></td>'; // Empty label, to have column header in front of columns
@@ -744,7 +743,7 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false, $pare
         $minWidth=75;
       }
       for ($i=0; $i<$internalTableCols; $i++) { // draw table headers
-     // echo '<td class="detail" style="min-width:75px;' . $internalTableBorderTitle . '">';
+                                                // echo '<td class="detail" style="min-width:75px;' . $internalTableBorderTitle . '">';
         echo '<td class="detail" style="min-width:'.$minWidth.'px;'.$internalTableBorderTitle.'">';
         if ($arrTab['cols'][$i]==0) {
           echo '<div class=""></div>';
@@ -830,11 +829,11 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false, $pare
         }
         $aff=new Affectation();
         $cpt=$aff->countSqlElementsFromCriteria($crit);
-      } else if ($section == 'affectationsResourceTeam') {
+      } else if ($section=='affectationsResourceTeam') {
         $crit=array('idResourceTeam'=>$obj->id);
         $aff=new ResourceTeamAffectation();
         $cpt=$aff->countSqlElementsFromCriteria($crit);
-      } else if ($section == 'affectationResourceTeamResource') {
+      } else if ($section=='affectationResourceTeamResource') {
         $crit=array('idResource'=>$obj->id);
         $aff=new ResourceTeamAffectation();
         $cpt=$aff->countSqlElementsFromCriteria($crit);
@@ -883,9 +882,8 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false, $pare
     } else if ($col=='_spe_tickets' and !$obj->isAttributeSetTofield($col, 'hidden')) {
       drawTicketsList($obj);
       // END ADD qCazelles - Manage ticket at customer level - Ticket #87
-    }
-      // Add mOlives - ticket 215 - 09/05/2018
-    else if ($col=='_spe_activity' and !$obj->isAttributeSetTofield($col, 'hidden')){
+    }     // Add mOlives - ticket 215 - 09/05/2018
+    else if ($col=='_spe_activity' and !$obj->isAttributeSetTofield($col, 'hidden')) {
       drawActivityList($obj);
       // End mOlives - ticket 215 - 09/05/2018
     } else if (substr($col, 0, 5)=='_spe_') { // if field is _spe_xxxx, draw the specific item xxx
@@ -979,15 +977,26 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false, $pare
     } else if ($col=='_ResourceCost') { // Display ResourceCost
       drawResourceCostFromObject($val, $obj, false);
     } else if ($col=='_BillLineTerm') {
-      if(get_class($obj)=='ProviderBill'){
-        $providerTerm = new ProviderTerm();
-        $listProvTerm = $providerTerm->getSqlElementsFromCriteria(array("idProviderBill"=>$obj->id));
+      if (get_class($obj)=='ProviderBill') {
+        $providerTerm=new ProviderTerm();
+        $listProvTerm=$providerTerm->getSqlElementsFromCriteria(array("idProviderBill"=>$obj->id));
         $lines=array();
-        foreach ($listProvTerm as $term){
-          $providerTerm = new ProviderTerm($term->id);
-          array_push($lines,$providerTerm->_BillLineTerm);
+        foreach ($listProvTerm as $term) {
+          $providerTerm=new ProviderTerm($term->id);
+          array_push($lines, $providerTerm->_BillLineTerm);
         }
-      if($lines){
+        if ($lines) {
+          $prevSection=$section;
+          $section="BillLineTerm";
+          $colSpanSection='_'.lcfirst($section).'_colSpan';
+          if (property_exists($obj, $colSpanSection)) {
+            $colSpan=$obj->$colSpanSection;
+          }
+          $widthPct=setWidthPct($displayWidth, $print, $printWidth, $obj, "2");
+          startTitlePane($classObj, $section, $collapsedList, $widthPct, $print, $outMode, $prevSection, $nbCol, count($val), $included, $obj);
+          drawBillLinesProviderTerms($obj, false);
+        }
+      } else {
         $prevSection=$section;
         $section="BillLineTerm";
         $colSpanSection='_'.lcfirst($section).'_colSpan';
@@ -998,18 +1007,7 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false, $pare
         startTitlePane($classObj, $section, $collapsedList, $widthPct, $print, $outMode, $prevSection, $nbCol, count($val), $included, $obj);
         drawBillLinesProviderTerms($obj, false);
       }
-     }else{
-       $prevSection=$section;
-       $section="BillLineTerm";
-       $colSpanSection='_'.lcfirst($section).'_colSpan';
-       if (property_exists($obj, $colSpanSection)) {
-         $colSpan=$obj->$colSpanSection;
-       }
-       $widthPct=setWidthPct($displayWidth, $print, $printWidth, $obj, "2");
-       startTitlePane($classObj, $section, $collapsedList, $widthPct, $print, $outMode, $prevSection, $nbCol, count($val), $included, $obj);
-       drawBillLinesProviderTerms($obj, false);
-     }
-    } else if ($col=='_DocumentVersion') { // Display 
+    } else if ($col=='_DocumentVersion') { // Display
       drawDocumentVersionFromObject($val, $obj, false);
     } else if ($col=='_ExpenseDetail') { // Display ExpenseDetail
       if ($obj->getFieldAttributes($col)!='hidden') {
@@ -1018,7 +1016,7 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false, $pare
     } else if (substr($col, 0, 12)=='_TestCaseRun') { // Display TestCaseRun
       drawTestCaseRunFromObject($val, $obj);
     } else if (substr($col, 0, 13)=='_ProviderTerm') {
-        drawProviderTermFromProviderBill($val, $obj);
+      drawProviderTermFromProviderBill($val, $obj);
     } else if (substr($col, 0, 11)=='_Attachment' and !$comboDetail) {
       if (!isset($isAttachmentEnabled)) {
         $isAttachmentEnabled=true; // allow attachment
@@ -1058,15 +1056,15 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false, $pare
       startTitlePane($classObj, $section, $collapsedList, $widthPct, $print, $outMode, $prevSection, $nbCol, $cpt, $included, $obj);
       drawNotesFromObject($obj, false);
     } else if ($col=='_BillLine') {
-      if(get_class($obj)=='ProviderBill'){
-        $providerTerm = new ProviderTerm();
-        $listProvTerm = $providerTerm->getSqlElementsFromCriteria(array("idProviderBill"=>$obj->id));
+      if (get_class($obj)=='ProviderBill') {
+        $providerTerm=new ProviderTerm();
+        $listProvTerm=$providerTerm->getSqlElementsFromCriteria(array("idProviderBill"=>$obj->id));
         $lines=array();
-        foreach ($listProvTerm as $term){
-          $providerTerm = new ProviderTerm($term->id);
-          array_push($lines,$providerTerm->_BillLineTerm);
+        foreach ($listProvTerm as $term) {
+          $providerTerm=new ProviderTerm($term->id);
+          array_push($lines, $providerTerm->_BillLineTerm);
         }
-        if(!$lines){
+        if (!$lines) {
           $prevSection=$section;
           $section="BillLine";
           $colSpanSection='_'.lcfirst($section).'_colSpan';
@@ -1077,7 +1075,7 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false, $pare
           startTitlePane($classObj, $section, $collapsedList, $widthPct, $print, $outMode, $prevSection, $nbCol, count($val), $included, $obj);
           drawBillLinesFromObject($obj, false);
         }
-      }else{
+      } else {
         $prevSection=$section;
         $section="BillLine";
         $colSpanSection='_'.lcfirst($section).'_colSpan';
@@ -1098,11 +1096,11 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false, $pare
       drawObjectLinkedByIdToObject($obj, substr($col, 1), false);
       // END ADD BY Marc TABARY - 2017-02-23 - DRAW LIST OF OBJECTS LINKED BY ID TO MAIN OBJECT
     } else if (substr($col, 0, 1)=='_' and //
-                                             // CHANGE BY Marc TABARY - 2017-02-28 - DATA CONSTRUCTED BY FUNCTION
+                                           // CHANGE BY Marc TABARY - 2017-02-28 - DATA CONSTRUCTED BY FUNCTION
     substr($col, 0, 6)!='_void_' and substr($col, 0, 7)!='_label_' and substr($col, 0, 8)!='_button_' and substr($col, 0, 7)!='_byMet_') { // field not to be displayed
-                                         // Old
-                                         // substr($col, 0, 6) != '_void_' and substr($col, 0, 7) != '_label_' and substr($col, 0, 8) != '_button_') { // field not to be displayed
-                                         // END CHANGE BY Marc TABARY - 2017-02-28 - DATA CONSTRUCTED BY FUNCTION //
+                                                                                                                                             // Old
+                                                                                                                                             // substr($col, 0, 6) != '_void_' and substr($col, 0, 7) != '_label_' and substr($col, 0, 8) != '_button_') { // field not to be displayed
+                                                                                                                                             // END CHANGE BY Marc TABARY - 2017-02-28 - DATA CONSTRUCTED BY FUNCTION //
     } else {
       $attributes='';
       // ADD BY Marc TABARY - 2017-03-02 - DRAW SPINNER
@@ -1427,7 +1425,7 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false, $pare
           // if () {
           drawTableFromObject($val, true, $readOnly, !$visibileSubObject);
           $hide=true; // to avoid display of an extra field for the object and an additional carriage return
-                          // }
+                        // }
         }
         // }
       } else if (is_array($val)) {
@@ -1859,7 +1857,7 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false, $pare
           $val=date("H:i");
         }
         $fmtDT=($classObj=="Audit"&&strlen($val)>5&&strpos($attributes, 'readonly')!==false)?'text':'time'; // valTime=substr($valTime,0,5);
-                                                                                                                      // BEGIN - ADD BY TABARY - TOOLTIP
+                                                                                                            // BEGIN - ADD BY TABARY - TOOLTIP
         echo htmlDisplayTooltip($toolTip, $col, $print, $outMode);
         // END - ADD BY TABARY - TOOLTIP
         echo '<div dojoType="dijit.form.'.(($fmtDT=='time')?'Time':'').'TextBox" ';
@@ -1919,7 +1917,7 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false, $pare
           // BEGIN - REPLACE BY TABARY - POSSIBILITY TO HAVE X TIMES IDXXXX IN SAME OBJECT
           $colWithoutAlias=foreignKeyWithoutAlias($col);
           $idMenu='menu'.substr($colWithoutAlias, 2);
-          $comboClass=substr($colWithoutAlias, 2);          
+          $comboClass=substr($colWithoutAlias, 2);
           // $idMenu='menu' . substr($col, 2);
           // $comboClass=substr($col, 2);
           // END - REPLACE BY TABARY - POSSIBILITY TO HAVE X TIMES IDXXXX IN SAME OBJECT
@@ -1981,9 +1979,9 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false, $pare
             $displayDirectAccessButton=false;
           }
         }
-        if ($obj->isAttributeSetToField($col, 'canSearchForAll') ) {
+        if ($obj->isAttributeSetToField($col, 'canSearchForAll')) {
           $displayComboButtonCol='force';
-          //$displayDirectAccessButton=false;
+          // $displayDirectAccessButton=false;
         }
         if ($col=='idProfile' and !$obj->id and !$val and ($classObj=='Resource' or $classObj=='User')) { // set default
           $val=Parameter::getGlobalParameter('defaultProfile');
@@ -2140,7 +2138,7 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false, $pare
         }
         $hasOtherClient=false;
         $otherClient='';
-        if ( $col=='idClient' ) {
+        if ($col=='idClient') {
           $otherClient='_OtherClient';
           if (isset($obj->$otherClient) and !$obj->isAttributeSetToField($col, 'hidden') and !$obj->isAttributeSetToField($col, 'readonly') and !$readOnly and !$hide and $canUpdate and !$obj->idle) {
             $hasOtherClient=true;
@@ -2208,7 +2206,7 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false, $pare
           echo ' title="'.i18n('showDetail').'" style="float:right;margin-right:3px;'.$specificStyleWithoutCustom.'"';
           echo ' class="roundedButton generalColClass '.$col.'Class">';
           echo '<div class="iconView" ';
-          echo ' onclick="showDetail(\''.$col.'\','.(($canCreateCol)?1:0).',\''.$comboClass.'\',false,null,'.(($obj->isAttributeSetToField($col,'canSearchForAll'))?'true':'false').')"';
+          echo ' onclick="showDetail(\''.$col.'\','.(($canCreateCol)?1:0).',\''.$comboClass.'\',false,null,'.(($obj->isAttributeSetToField($col, 'canSearchForAll'))?'true':'false').')"';
           echo '></div>';
           echo '</div>';
         }
@@ -2279,7 +2277,7 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false, $pare
         }
       } else if (strpos($obj->getFieldAttributes($col), 'display')!==false) {
         echo '<div ';
-        //echo ' class="display generalColClass input'.$col.'Class" style="'.$specificStyle.'width: '.$fieldWidth.'px;"';
+        // echo ' class="display generalColClass input'.$col.'Class" style="'.$specificStyle.'width: '.$fieldWidth.'px;"';
         echo ' class="display generalColClass input'.$col.'Class" style="'.$specificStyle.'"';
         if ($col=="wbs") echo ' title="'.htmlEncode($val).'"';
         echo ' >';
@@ -2348,12 +2346,12 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false, $pare
             $fieldWidth=$smallWidth;
           }
           // END ADD BY Marc TABARY - 2017-03-01 - DIM CORRECT Pct
-        }        
+        }
         if ($isCost) {
           $possibleWidth=intval($widthPct)-80;
           if ($internalTable) {
-            $possibleWidth=round($possibleWidth/$internalTableCols,0)-12;
-          } 
+            $possibleWidth=round($possibleWidth/$internalTableCols, 0)-12;
+          }
           $expected=100;
           if ($isAmount) $expected+=20;
           if ($possibleWidth>$expected) {
@@ -2431,7 +2429,7 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false, $pare
         // BEGIN - ADD BY TABARY - TOOLTIP
         echo htmlDisplayTooltip($toolTip, $col, $print, $outMode);
         // END - ADD BY TABARY - TOOLTIP
-        //gautier #work
+        // gautier #work
         echo '<div dojoType="dijit.form.NumberTextBox" ';
         echo $name;
         echo $attributes;
@@ -2584,7 +2582,7 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false, $pare
             echo ",'|', 'indent', 'outdent', 'justifyLeft', 'justifyCenter', 'justifyRight', 'justifyFull'";
             echo ",'|','insertOrderedList','insertUnorderedList','|']";
             echo ',onKeyDown:function(event){onKeyDownFunction(event,\''.$fieldId.'\',this);}'; // hard coding default event
-                                                                                                    // echo ',onBlur:function(event){top.editorBlur(\'' . $fieldId . '\',this)}'; // hard coding default event
+                                                                                                // echo ',onBlur:function(event){top.editorBlur(\'' . $fieldId . '\',this)}'; // hard coding default event
             echo ",extraPlugins:['dijit._editor.plugins.AlwaysShowToolbar','foreColor','hiliteColor'";
             // Full screen mode disabled : sets many issues on some keys : tab, esc or ctrl+S, ...
             echo ",'|','print'";
@@ -2782,7 +2780,7 @@ function startTitlePane($classObj, $section, $collapsedList, $widthPct, $print, 
     }
     $attrs=splitCssAttributes($labelStyle);
     $fontSize=(isset($attrs['font-size']))?intval($attrs['font-size']):'';
-    //gautier #resourceTeam
+    // gautier #resourceTeam
     echo '<div dojoType="dijit.TitlePane" title="'.i18n('section'.ucfirst($sectionName)).(($nbBadge!==null)?'<div id=\''.$section.'Badge\' class=\'sectionBadge\'>'.$nbBadge.'</div>':'').'"';
     echo ' open="'.(array_key_exists($titlePane, $collapsedList)?'false':'true').'" ';
     echo ' id="'.$titlePane.'" ';
@@ -2809,7 +2807,7 @@ function startTitlePane($classObj, $section, $collapsedList, $widthPct, $print, 
       echo '</tr>';
       echo '</table>';
     }
-    echo '<table class="detail" style="width:'.$widthPct.';'.$display.'" >'; 
+    echo '<table class="detail" style="width:'.$widthPct.';'.$display.'" >';
   }
 }
 
@@ -2925,8 +2923,8 @@ function drawOrigin($list, $refType, $refId, $obj, $col, $print) {
     if (!$print and $canUpdate) {
       echo '<a onClick="removeOrigin(\''.$obj->$col->id.'\',\''.$refType.'\',\''.$refId.'\');" title="'.i18n('removeOrigin').'" > '.formatSmallButton('Remove').'</a>';
     }
-    echo '</td><td width="5%" xclass="noteData" xvalign="top" style="white-space:nowrap">';
-    echo '&nbsp;&nbsp;'.i18n($refType).'&nbsp;#'.$refId.'&nbsp;:&nbsp;';
+    echo '</td><td width="30%" xclass="noteData" xvalign="top" style="xwhite-space:nowrap;padding:0px 5px;max-width:200px">';
+    echo i18n($refType).'&nbsp;#'.$refId.'';
     
     foreach ($list as $origin) {
       // $origObj=null;
@@ -3065,15 +3063,15 @@ function drawHistoryFromObjects($refresh=false) {
     if ($hist->isWorkHistory and !$showWorkHistory) {
       $hide=true;
     }
-    if (substr($hist->colName,0,6)=='|Note|' or substr($hist->colName,0,12)=='|Attachment|' ) {
-      $expl=explode('|',$hist->colName);
+    if (substr($hist->colName, 0, 6)=='|Note|' or substr($hist->colName, 0, 12)=='|Attachment|') {
+      $expl=explode('|', $hist->colName);
       if (count($expl)==3) {
         $clSub=$expl[1];
         $idSub=$expl[2];
         $sub=new $clSub($idSub);
-        if (property_exists($sub,'idPrivacy') and $sub->idPrivacy==3 and $sub->idUser!=getCurrentUserId()) {
+        if (property_exists($sub, 'idPrivacy') and $sub->idPrivacy==3 and $sub->idUser!=getCurrentUserId()) {
           $hide=true;
-        } else if (property_exists($sub,'idPrivacy') and $sub->idPrivacy==2 and property_exists($sub,'idTeam') and $sub->idTeam!=getSessionUser()->idTeam) {
+        } else if (property_exists($sub, 'idPrivacy') and $sub->idPrivacy==2 and property_exists($sub, 'idTeam') and $sub->idTeam!=getSessionUser()->idTeam) {
           $hide=true;
         }
       }
@@ -3311,7 +3309,7 @@ function drawObjectLinkedByIdToObject($obj, $objLinkedByIdObject='', $refresh=fa
  * =====================================================================================
  * Draw section of Notification for the object passed in parameter
  * --------------------------------------------------------------------------------------
- * 
+ *
  * @global type $print
  * @global type $comboDetail
  * @param object $obj
@@ -3338,8 +3336,7 @@ function drawNotificationsLinkedToObject($obj, $unreadOnly=true, $refresh=false)
   $idStatusNotification=1;
   
   // The notifiable's id
-  $idNotificationObjClass=SqlElement::getSingleSqlElementFromCriteria("Notifiable", array(
-      "notifiableItem"=>$notificationObjClass))->id;
+  $idNotificationObjClass=SqlElement::getSingleSqlElementFromCriteria("Notifiable", array("notifiableItem"=>$notificationObjClass))->id;
   
   // The connected user
   $userId=getSessionUser()->id;
@@ -3554,7 +3551,7 @@ function drawBillLinesFromObject($obj, $refresh=false) {
   echo '<td class="noteHeader" style="width:10%">'.i18n('colUnitPrice').'</td>';
   echo '<td class="noteHeader" style="width:10%">'.i18n('colQuantity').'</td>';
   echo '<td class="noteHeader" style="width:10%">'.strtolower(i18n('sum')).'</td>';
-  if(get_class($obj)!='Tender' and get_class($obj)!='ProviderOrder' and get_class($obj)!='ProviderBill'){
+  if (get_class($obj)!='Tender' and get_class($obj)!='ProviderOrder' and get_class($obj)!='ProviderBill') {
     echo '<td class="noteHeader" style="width:15%">'.i18n('colDays').'</td>';
   }
   echo '</tr>';
@@ -3570,22 +3567,22 @@ function drawBillLinesFromObject($obj, $refresh=false) {
       if ($lock==0) {
         echo ' <a onClick="editBillLine('.htmlEncode($line->id).',\''.htmlEncode(($line->billingType)?$line->billingType:$billingType).'\');" ';
         echo '  title="'.i18n('editLine').'" > '.formatSmallButton('Edit').'</a>';
-        if(get_class($obj)=='ProviderOrder'){
-          $providerTerm = new ProviderTerm();
-          $listProvTerm = $providerTerm->getSqlElementsFromCriteria(array("idProviderOrder"=>$obj->id));
-          $billLineTerm = new BillLine();
-          $hide = false;
-          foreach ($listProvTerm as $providerTerms){
-            $billLineList=$billLineTerm->getSqlElementsFromCriteria(array("refType"=>"ProviderTerm","refId"=>$providerTerms->id));
-            if($billLineList){
-              $hide = true;
+        if (get_class($obj)=='ProviderOrder') {
+          $providerTerm=new ProviderTerm();
+          $listProvTerm=$providerTerm->getSqlElementsFromCriteria(array("idProviderOrder"=>$obj->id));
+          $billLineTerm=new BillLine();
+          $hide=false;
+          foreach ($listProvTerm as $providerTerms) {
+            $billLineList=$billLineTerm->getSqlElementsFromCriteria(array("refType"=>"ProviderTerm", "refId"=>$providerTerms->id));
+            if ($billLineList) {
+              $hide=true;
             }
           }
-         if($hide == false){          
-          echo ' <a onClick="removeBillLine('.htmlEncode($line->id).');"'.' ';
-          echo '  title="'.i18n('removeLine').'" > '.formatSmallButton('Remove').'</a>';
-         }
-        }else{
+          if ($hide==false) {
+            echo ' <a onClick="removeBillLine('.htmlEncode($line->id).');"'.' ';
+            echo '  title="'.i18n('removeLine').'" > '.formatSmallButton('Remove').'</a>';
+          }
+        } else {
           echo ' <a onClick="removeBillLine('.htmlEncode($line->id).');"'.' ';
           echo '  title="'.i18n('removeLine').'" > '.formatSmallButton('Remove').'</a>';
         }
@@ -3609,7 +3606,7 @@ function drawBillLinesFromObject($obj, $refresh=false) {
     $unitQuantity=($unit->name)?' '.(($line->quantity>1)?$unit->pluralName:$unit->name):'';
     echo '<td class="noteData" style="width:10%">'.htmlDisplayNumericWithoutTrailingZeros($line->quantity).$unitQuantity.'</td>';
     echo '<td class="noteData" style="width:10%">'.htmlDisplayCurrency($line->amount).'</td>';
-    if(get_class($obj)!='Tender' and get_class($obj)!='ProviderOrder' and get_class($obj)!='ProviderBill'){
+    if (get_class($obj)!='Tender' and get_class($obj)!='ProviderOrder' and get_class($obj)!='ProviderBill') {
       echo '<td class="noteData" style="width:15%">'.htmlDisplayNumericWithoutTrailingZeros($line->numberDays).'</td>';
     }
     echo '</tr>';
@@ -3630,23 +3627,23 @@ function drawBillLinesFromObject($obj, $refresh=false) {
 
 function drawBillLinesProviderTerms($obj, $refresh=false) {
   global $cr, $print, $user, $browserLocale, $widthPct;
-  if(get_class($obj)=='ProviderBill'){
-    $providerTerm = new ProviderTerm();
-    $listProvTerm = $providerTerm->getSqlElementsFromCriteria(array("idProviderBill"=>$obj->id));
+  if (get_class($obj)=='ProviderBill') {
+    $providerTerm=new ProviderTerm();
+    $listProvTerm=$providerTerm->getSqlElementsFromCriteria(array("idProviderBill"=>$obj->id));
     $lines=array();
-    $i = 0;
-    foreach ($listProvTerm as $term){
-      $providerTerm = new ProviderTerm($term->id);
-      if($providerTerm->idProviderOrder){
-        $providerOrder = new ProviderOrder($providerTerm->idProviderOrder);
-        $discountRate[$i] = $providerOrder->discountRate;
+    $i=0;
+    foreach ($listProvTerm as $term) {
+      $providerTerm=new ProviderTerm($term->id);
+      if ($providerTerm->idProviderOrder) {
+        $providerOrder=new ProviderOrder($providerTerm->idProviderOrder);
+        $discountRate[$i]=$providerOrder->discountRate;
       }
       $i++;
-      array_push($lines,$providerTerm->_BillLineTerm);
+      array_push($lines, $providerTerm->_BillLineTerm);
     }
-  }else{
+  } else {
     if (isset($obj->_BillLineTerm)) {
-      $providerBill = new ProviderBill($obj->idProviderBill);
+      $providerBill=new ProviderBill($obj->idProviderBill);
       $lines=$obj->_BillLineTerm;
     } else {
       $lines=array();
@@ -3668,52 +3665,52 @@ function drawBillLinesProviderTerms($obj, $refresh=false) {
   echo '  <td class="noteHeader" style="width:8%">'.i18n('colTaxAmount').'</td>';
   echo '  <td class="noteHeader" style="width:8%">'.i18n('colFullAmount').'</td>';
   echo '</tr>';
-
+  
   $fmt=new NumberFormatter52($browserLocale, NumberFormatter52::INTEGER);
   $fmtd=new NumberFormatter52($browserLocale, NumberFormatter52::DECIMAL);
   $discountRate=null;
-  if(get_class($obj)!='ProviderBill'){
+  if (get_class($obj)!='ProviderBill') {
     $lines=array_reverse($lines);
-    if(isset($obj->idProviderOrder)){
-      $providerOrder = new ProviderOrder($obj->idProviderOrder);
-      $discountRate = $providerOrder->discountRate;
+    if (isset($obj->idProviderOrder)) {
+      $providerOrder=new ProviderOrder($obj->idProviderOrder);
+      $discountRate=$providerOrder->discountRate;
     }
   }
-  if(get_class($obj)=='ProviderBill'){
-    $i = 0;
+  if (get_class($obj)=='ProviderBill') {
+    $i=0;
     foreach ($lines as $line) {
-      foreach ($line as $linee){
-      $billLine = new BillLine($linee->idBillLine);
-      $unit=new MeasureUnit($linee->idMeasureUnit);
-      if($linee->rate == 0){
-        continue;
+      foreach ($line as $linee) {
+        $billLine=new BillLine($linee->idBillLine);
+        $unit=new MeasureUnit($linee->idMeasureUnit);
+        if ($linee->rate==0) {
+          continue;
+        }
+        echo '<tr>';
+        echo '<td class="noteData" style="width:5%">#'.htmlEncode($linee->id).'</td>';
+        echo '<td class="noteData" style="width:5%">'.htmlEncode($billLine->line).'</td>';
+        echo '<td class="noteData" style="width:20%">'.htmlEncode($billLine->description, 'withBR');
+        if (!$print) {
+          echo '<input type="hidden" id="billLineDescription_'.htmlEncode($linee->id).'" value="'.htmlEncode($linee->description).'" />';
+        }
+        echo '</td>';
+        echo '<td class="noteData" style="width:20%">'.htmlEncode($billLine->detail, 'withBR');
+        if (!$print) {
+          echo '<input type="hidden" id="billLineDetail_'.htmlEncode($linee->id).'" value="'.htmlEncode($linee->detail).'" />';
+        }
+        echo '</td>';
+        echo '<td class="noteData" style="width:10%">'.htmlDisplayCurrency($billLine->amount).'</td>';
+        echo '<td class="noteData" style="width:8%">'.htmlDisplayPct($linee->rate).'</td>';
+        echo '<td class="noteData" style="width:8%">'.htmlDisplayCurrency($linee->price).'</td>';
+        echo '<td class="noteData" style="width:8%">'.htmlDisplayCurrency($linee->price*$discountRate[$i]/100).'</td>';
+        echo '<td class="noteData" style="width:8%">'.htmlDisplayCurrency((($linee->price)-($linee->price*$discountRate[$i]/100))*$obj->taxPct/100).'</td>';
+        echo '<td class="noteData" style="width:8%">'.htmlDisplayCurrency((($linee->price)-($linee->price*$discountRate[$i]/100))*$obj->taxPct/100+($linee->price-($linee->price*$discountRate[$i]/100))).'</td>';
+        echo '</tr>';
       }
-      echo '<tr>';
-      echo '<td class="noteData" style="width:5%">#'.htmlEncode($linee->id).'</td>';
-      echo '<td class="noteData" style="width:5%">'.htmlEncode($billLine->line).'</td>';
-      echo '<td class="noteData" style="width:20%">'.htmlEncode($billLine->description, 'withBR');
-      if (!$print) {
-        echo '<input type="hidden" id="billLineDescription_'.htmlEncode($linee->id).'" value="'.htmlEncode($linee->description).'" />';
-      }
-      echo '</td>';
-      echo '<td class="noteData" style="width:20%">'.htmlEncode($billLine->detail, 'withBR');
-      if (!$print) {
-        echo '<input type="hidden" id="billLineDetail_'.htmlEncode($linee->id).'" value="'.htmlEncode($linee->detail).'" />';
-      }
-      echo '</td>';
-      echo '<td class="noteData" style="width:10%">'.htmlDisplayCurrency($billLine->amount).'</td>';
-      echo '<td class="noteData" style="width:8%">'.htmlDisplayPct($linee->rate).'</td>';
-      echo '<td class="noteData" style="width:8%">'.htmlDisplayCurrency($linee->price).'</td>';
-      echo '<td class="noteData" style="width:8%">'.htmlDisplayCurrency($linee->price*$discountRate[$i]/100).'</td>';
-      echo '<td class="noteData" style="width:8%">'.htmlDisplayCurrency((($linee->price)-($linee->price*$discountRate[$i]/100))*$obj->taxPct/100).'</td>';
-      echo '<td class="noteData" style="width:8%">'.htmlDisplayCurrency((($linee->price)-($linee->price*$discountRate[$i]/100))*$obj->taxPct/100+($linee->price-($linee->price*$discountRate[$i]/100))).'</td>';
-      echo '</tr>';
-      }
-    $i++;
+      $i++;
     }
-  }else{
-    foreach ($lines as $linee){
-      $billLine = new BillLine($linee->idBillLine);
+  } else {
+    foreach ($lines as $linee) {
+      $billLine=new BillLine($linee->idBillLine);
       $unit=new MeasureUnit($linee->idMeasureUnit);
       echo '<tr>';
       echo '<td class="noteData" style="width:5%">#'.htmlEncode($linee->id).'</td>';
@@ -3889,7 +3886,7 @@ function drawAttachmentsFromObject($obj, $refresh=false) {
         echo '<div style="float:left;cursor:pointer" onClick="showLink(\''.htmlEncode(urldecode($attachment->link)).'\');">';
         echo '<img src="../view/img/mime/html.png" title="'.htmlEncode($attachment->link).'" />';
         echo '</div>';
-      } else{
+      } else {
         echo htmlGetMimeType($attachment->mimeType, $attachment->fileName, $attachment->id);
       }
       echo '</td><td class="attachmentData" style="border-left:none;width:'.(($print)?'90':'80').'%" >';
@@ -4241,7 +4238,7 @@ function drawLanguageSection($obj, $refresh=false) {
   $scope=get_class($obj);
   if ($scope=='Product' or $scope=='Component') {
     $crit['idProduct']=$obj->id;
-   // $crit['scope']=$scope; // useless because an idProduct can't be the same for Component and Product
+    // $crit['scope']=$scope; // useless because an idProduct can't be the same for Component and Product
     $langClass='ProductLanguage';
   } else if (get_class($obj)=='ProductVersion' or get_class($obj)=='ComponentVersion') {
     $crit['idVersion']=$obj->id;
@@ -4274,7 +4271,6 @@ function drawLanguageSection($obj, $refresh=false) {
   echo '<td class="linkHeader" style="width:'.(($print)?'20':'15').'%">'.i18n($listClass).'</td>';
   echo '<td class="linkHeader" style="width:80%">'.i18n('colName').'</td>';
   echo '</tr>';
-
   
   foreach ($list as $lang) { // $lang is ProductLanguage
     $langObj=new Language($lang->idLanguage);
@@ -4428,13 +4424,11 @@ function drawTicketsList($obj, $refresh=false) {
       $clauseWhere='1=0';
     }
     $ticket=new Ticket();
-    if (property_exists('Ticket','idClient')) {      
+    if (property_exists('Ticket', 'idClient')) {
       $clauseWhere='idle=0 and (idClient='.Sql::fmtId($obj->id).' ';
-      if (property_exists('Ticket','_OtherClient')) {
+      if (property_exists('Ticket', '_OtherClient')) {
         $otherclient=new OtherClient();
-        $clauseWhere.=" or exists (select 'x' from ".$otherclient->getDatabaseTableName()." other "
-            ." where other.refType='Ticket' and other.refId=".$ticket->getDatabaseTableName().".id and other.idClient=".Sql::fmtId($obj->id)
-            .")";
+        $clauseWhere.=" or exists (select 'x' from ".$otherclient->getDatabaseTableName()." other "." where other.refType='Ticket' and other.refId=".$ticket->getDatabaseTableName().".id and other.idClient=".Sql::fmtId($obj->id).")";
       }
       $clauseWhere.=')';
     }
@@ -4507,34 +4501,33 @@ function drawActivityList($obj, $refresh=false) {
   if (!isset($list)) $list=array();
   $showClosedActivity=Parameter::getUserParameter('showClosedActivity');
   foreach ($list as $activity) {
-    if ( $showClosedActivity == 1  or ( $showClosedActivity == 0 and $activity->idle == 0)){
-    $canGoto=(securityCheckDisplayMenu(null, $listClass) and securityGetAccessRightYesNo('menu'.$listClass, 'read', $activity)=="YES")?true:false;
-    echo '<tr>';
-    $classCompName=i18n($listClass);
-    echo '<td class="linkData" style="white-space:nowrap;width:'.(($print)?'20':'15').'%"><table><tr><td>'.formatIcon($listClass, 16).'</td><td style="vertical-align:top">&nbsp;'.'#'.$activity->id.'</td></tr></table>';
-    echo '</td>';
-    $goto="";
-    if (!$print and $canGoto) {
-      $goto=' onClick="gotoElement('."'".$listClass."','".htmlEncode($activity->id)."'".');" style="cursor: pointer;" ';
+    if ($showClosedActivity==1 or ($showClosedActivity==0 and $activity->idle==0)) {
+      $canGoto=(securityCheckDisplayMenu(null, $listClass) and securityGetAccessRightYesNo('menu'.$listClass, 'read', $activity)=="YES")?true:false;
+      echo '<tr>';
+      $classCompName=i18n($listClass);
+      echo '<td class="linkData" style="white-space:nowrap;width:'.(($print)?'20':'15').'%"><table><tr><td>'.formatIcon($listClass, 16).'</td><td style="vertical-align:top">&nbsp;'.'#'.$activity->id.'</td></tr></table>';
+      echo '</td>';
+      $goto="";
+      if (!$print and $canGoto) {
+        $goto=' onClick="gotoElement('."'".$listClass."','".htmlEncode($activity->id)."'".');" style="cursor: pointer;" ';
+      }
+      echo '<td class="linkData" '.$goto.' style="position:relative;">';
+      echo htmlEncode($activity->name);
+      echo '</td><td class="linkData">';
+      $pe=new PlanningElement();
+      $crit=array('refId'=>$activity->id);
+      $arrayActivity=$pe->getSqlElementsFromCriteria($crit);
+      $act=reset($arrayActivity);
+      $activityProgress=$act->progress;
+      
+      echo progressFormatter($activityProgress, null);
+      echo '</td><td class="linkData">';
+      
+      echo colorNameFormatter(SqlList::getNameFromId('Status', $activity->idStatus)."#split#".SqlList::getFieldFromId('Status', $activity->idStatus, 'color')).'</td>';
+      echo '</td>';
+      echo '</tr>';
     }
-    echo '<td class="linkData" '.$goto.' style="position:relative;">';
-    echo htmlEncode($activity->name);
-    echo '</td><td class="linkData">';    
-    $pe = new PlanningElement();
-    $crit = array('refId'=>$activity->id);
-    $arrayActivity = $pe->getSqlElementsFromCriteria($crit);
-    $act=reset($arrayActivity);
-    $activityProgress = $act->progress;
-    
-    echo progressFormatter($activityProgress,null);
-    echo '</td><td class="linkData">';
-    
-    echo colorNameFormatter(SqlList::getNameFromId('Status', $activity->idStatus)."#split#".SqlList::getFieldFromId('Status', $activity->idStatus, 'color')).'</td>';
-    echo '</td>';
-    echo '</tr>';
   }
-  }
-  
   
   echo '</table>';
   if (!$refresh) echo '</td></tr>';
@@ -4543,7 +4536,6 @@ function drawActivityList($obj, $refresh=false) {
   }
 }
 // END mOlives - ticket 215 - 09/05/2018
-
 function drawVersionStructureFromObject($obj, $refresh=false, $way, $item) {
   $crit=array();
   if ($way=='composition') {
@@ -4553,21 +4545,21 @@ function drawVersionStructureFromObject($obj, $refresh=false, $way, $item) {
   } else {
     errorLog("unknown way=$way in drawVersionStructureFromObject()");
   }
-  $pcs = new ProductVersionStructure ();
-  $list = $pcs->getSqlElementsFromCriteria ( $crit );
-  //ADD qCazelles - Sort version composition-structure - Ticket 142
-  if (Parameter::getGlobalParameter('sortCompositionStructure') == 'YES') {
-    if ($way == 'composition') {
-    	SqlElement::$_cachedQuery['ComponentVersion']=array(); // PBE : performance improvments
-    	SqlElement::$_cachedQuery['ComponentVersionType']=array(); // PBE : performance improvments
+  $pcs=new ProductVersionStructure();
+  $list=$pcs->getSqlElementsFromCriteria($crit);
+  // ADD qCazelles - Sort version composition-structure - Ticket 142
+  if (Parameter::getGlobalParameter('sortCompositionStructure')=='YES') {
+    if ($way=='composition') {
+      SqlElement::$_cachedQuery['ComponentVersion']=array(); // PBE : performance improvments
+      SqlElement::$_cachedQuery['ComponentVersionType']=array(); // PBE : performance improvments
       usort($list, "ProductVersionStructure::sortComponentVersionListOnType");
-    } else if ($way == 'structure') {
-    	SqlElement::$_cachedQuery['Version']=array(); // PBE : performance improvments
-    	SqlElement::$_cachedQuery['Type']=array(); // PBE : performance improvments
+    } else if ($way=='structure') {
+      SqlElement::$_cachedQuery['Version']=array(); // PBE : performance improvments
+      SqlElement::$_cachedQuery['Type']=array(); // PBE : performance improvments
       usort($list, "ProductVersionStructure::sortVersionListOnType");
     }
   }
-  //END ADD qCazelles - Sort version composition-structure - Ticket 142
+  // END ADD qCazelles - Sort version composition-structure - Ticket 142
   global $cr, $print, $user, $comboDetail;
   if ($comboDetail) {
     return;
@@ -4643,24 +4635,24 @@ function drawVersionStructureFromObject($obj, $refresh=false, $way, $item) {
         $deliveryDate=$compObj->initialDeliveryDate;
       }
       
-      $errorDatesDelivery = false;
-      if ($way == 'composition') {
-        //CHANGE qCazelles - Correction red dates - Ticket 186
-        //Old
-        //if (isset ( $deliveryDate ) and $obj->plannedDeliveryDate and $obj->plannedDeliveryDate < $deliveryDate) {
-        //New
-        if (isset ( $deliveryDate ) and (($obj->isDelivered and $obj->realDeliveryDate < $deliveryDate) or (!$obj->isDelivered and $obj->plannedDeliveryDate and $obj->plannedDeliveryDate < $deliveryDate))) {
-        //END CHANGE qCazelles - Correction red dates - Ticket 186
-          $errorDatesDelivery = true;
+      $errorDatesDelivery=false;
+      if ($way=='composition') {
+        // CHANGE qCazelles - Correction red dates - Ticket 186
+        // Old
+        // if (isset ( $deliveryDate ) and $obj->plannedDeliveryDate and $obj->plannedDeliveryDate < $deliveryDate) {
+        // New
+        if (isset($deliveryDate) and (($obj->isDelivered and $obj->realDeliveryDate<$deliveryDate) or (!$obj->isDelivered and $obj->plannedDeliveryDate and $obj->plannedDeliveryDate<$deliveryDate))) {
+          // END CHANGE qCazelles - Correction red dates - Ticket 186
+          $errorDatesDelivery=true;
         }
-      } elseif ($way == 'structure') {
-        //CHANGE qCazelles - Correction red dates - Ticket 186
-        //Old
-        //if (isset ( $deliveryDate ) and $obj->plannedDeliveryDate and $obj->plannedDeliveryDate > $deliveryDate) {
-        //New
-        if (isset ( $deliveryDate ) and (($obj->isDelivered and $obj->realDeliveryDate > $deliveryDate) or (!$obj->isDelivered and $obj->plannedDeliveryDate and $obj->plannedDeliveryDate > $deliveryDate))) {
-        //END CHANGE qCazelles - Correction red dates - Ticket 186
-          $errorDatesDelivery = true;
+      } elseif ($way=='structure') {
+        // CHANGE qCazelles - Correction red dates - Ticket 186
+        // Old
+        // if (isset ( $deliveryDate ) and $obj->plannedDeliveryDate and $obj->plannedDeliveryDate > $deliveryDate) {
+        // New
+        if (isset($deliveryDate) and (($obj->isDelivered and $obj->realDeliveryDate>$deliveryDate) or (!$obj->isDelivered and $obj->plannedDeliveryDate and $obj->plannedDeliveryDate>$deliveryDate))) {
+          // END CHANGE qCazelles - Correction red dates - Ticket 186
+          $errorDatesDelivery=true;
         }
       }
       
@@ -4969,9 +4961,9 @@ function drawDependenciesFromObject($list, $obj, $depType, $refresh=false) {
     }
     echo '>'.htmlEncode($depObj->name);
     // //KEVIN TICKET #2038
-    $titleType=(substr($dep->dependencyType,0,1)=='E')?i18n('colEnd'):i18n('colStart');
+    $titleType=(substr($dep->dependencyType, 0, 1)=='E')?i18n('colEnd'):i18n('colStart');
     $titleType.='-';
-    $titleType.=(substr($dep->dependencyType,-1)=='E')?i18n('colEnd'):i18n('colStart');
+    $titleType.=(substr($dep->dependencyType, -1)=='E')?i18n('colEnd'):i18n('colStart');
     echo '<img style="float:right;margin: 0px 2px;" title="'.$titleType.'" src="../view/css/images/dependency_'.$dep->dependencyType.'.png"/>';
     if ($dep->dependencyDelay!=0 and $canEdit) {
       echo '<span style="float:right;background-color:#FFF8DC; color:#696969; border:1px solid #A9A9A9;" title="'.i18n("colDependencyDelay").'">&nbsp;'.htmlEncode($dep->dependencyDelay).'&nbsp;'.i18n('shortDay').'&nbsp;</span>';
@@ -5083,13 +5075,13 @@ function drawAssignmentsFromObject($list, $obj, $refresh=false) {
     echo '<table width="100%"><tr>';
     $goto="";
     $resource=new ResourceAll($assignment->idResource);
-    if($resource->isResourceTeam){
-      if(securityCheckDisplayMenu(null, 'ResourceTeam') and securityGetAccessRightYesNo('menuResourceTeam', 'read', '')=="YES"){
-       $goto=' onClick="gotoElement(\'ResourceTeam\',\''.htmlEncode($assignment->idResource).'\');" style="cursor: pointer;" ';
+    if ($resource->isResourceTeam) {
+      if (securityCheckDisplayMenu(null, 'ResourceTeam') and securityGetAccessRightYesNo('menuResourceTeam', 'read', '')=="YES") {
+        $goto=' onClick="gotoElement(\'ResourceTeam\',\''.htmlEncode($assignment->idResource).'\');" style="cursor: pointer;" ';
       }
-    }else{
+    } else {
       if (!$print and $isResource and securityCheckDisplayMenu(null, 'Resource') and securityGetAccessRightYesNo('menuResource', 'read', '')=="YES") {
-          $goto=' onClick="gotoElement(\'Resource\',\''.htmlEncode($assignment->idResource).'\');" style="cursor: pointer;" ';
+        $goto=' onClick="gotoElement(\'Resource\',\''.htmlEncode($assignment->idResource).'\');" style="cursor: pointer;" ';
       }
     }
     echo '<td '.$goto.'>'.$resName;
@@ -5111,21 +5103,21 @@ function drawAssignmentsFromObject($list, $obj, $refresh=false) {
       echo '<a style="float:right; vertical-align:middle;"> '.formatIcon('Favorite', 16, i18n('mandatoryAttendant')).'</a>';
       echo '</td>';
     }
-    //resourceTeam
-    if($resource->isResourceTeam){
+    // resourceTeam
+    if ($resource->isResourceTeam) {
       echo '<td>';
       echo '<a style="float:right; vertical-align:middle;"> '.formatIcon('Team', 16, i18n('ResourceTeam')).'</a>';
       echo '</td>';
     }
     echo '</tr></table>';
     echo '</td>';
-    //gautier #resourceTeam
-   
-    if($resource->isResourceTeam){
+    // gautier #resourceTeam
+    
+    if ($resource->isResourceTeam) {
       echo '<td class="assignData" align="center" style="width:15%;vertical-align:middle;text-align:center;">'.htmlDisplayNumericWithoutTrailingZeros($assignment->capacity).' '.i18n('unitCapacity').'</td>';
-    }else{
+    } else {
       echo '<td class="assignData" align="center" style="width:15%;vertical-align:middle;text-align:center;">'.htmlEncode($assignment->rate).' '.i18n('percent').'</td>';
-    }   
+    }
     if ($workVisible) {
       $keyDownEventScript=NumberFormatter52::getKeyDownEvent();
       // echo '<td class="assignData" align="right" style="vertical-align:middle">'
@@ -5341,9 +5333,9 @@ function drawVersionProjectsFromObject($list, $obj, $refresh=false) {
   echo '</tr>';
   if (get_class($obj)=='Project') {
     SqlElement::$_cachedQuery['Version']=array(); // PBE : performance improvments
-    //ADD qCazelles - Sorting Project versions list - Ticket 182
-    usort ($list, "ProductVersionStructure::sortVersionList");
-    //END ADD qCazelles - Sorting Project versions list - Ticket 182
+                                                  // ADD qCazelles - Sorting Project versions list - Ticket 182
+    usort($list, "ProductVersionStructure::sortVersionList");
+    // END ADD qCazelles - Sorting Project versions list - Ticket 182
   }
   foreach ($list as $vp) {
     $vers=new Version($vp->idVersion);
@@ -5487,7 +5479,7 @@ function drawProductProjectsFromObject($list, $obj, $refresh=false) {
   }
   echo '</table></td></tr>';
 }
-//gautier #resourceTeam
+// gautier #resourceTeam
 function drawAffectationsResourceTeamFromObject($list, $obj, $type, $refresh=false) {
   global $cr, $print, $user, $browserLocale, $comboDetail;
   $pluginObjectClass='Affectation';
@@ -5495,13 +5487,13 @@ function drawAffectationsResourceTeamFromObject($list, $obj, $type, $refresh=fal
   $lstPluginEvt=Plugin::getEventScripts('list', $pluginObjectClass);
   foreach ($lstPluginEvt as $script) {
     require $script; // execute code
-  } 
+  }
   $listTemp=$tableObject;
   $list=array();
   foreach ($listTemp as $aff) {
-      $name=SqlList::getNameFromId('Resource', $aff->idResource);
-      $aff->name=$name;
-      $list[$name.'#'.$aff->id]=$aff;
+    $name=SqlList::getNameFromId('Resource', $aff->idResource);
+    $aff->name=$name;
+    $list[$name.'#'.$aff->id]=$aff;
   }
   ksort($list);
   if ($comboDetail) {
@@ -5523,11 +5515,11 @@ function drawAffectationsResourceTeamFromObject($list, $obj, $type, $refresh=fal
     $canCreate=false;
     $canDelete=false;
   }
-
+  
   echo '<table style="width:100%">';
   echo '<tr><td colspan=2 style="width:100%;"><table style="width:100%;">';
   echo '<tr>';
-  if (get_class($obj)=='Resource' or get_class($obj)=='ResourceTeam' ) {
+  if (get_class($obj)=='Resource' or get_class($obj)=='ResourceTeam') {
     $idRess=$obj->id;
   } else {
     $idRess=null;
@@ -5535,7 +5527,7 @@ function drawAffectationsResourceTeamFromObject($list, $obj, $type, $refresh=fal
   if (!$print) {
     echo '<td class="assignHeader" style="width:15%">';
     if ($obj->id!=null and !$print and $canCreate and !$obj->idle) {
-        echo '<a onClick="addAffectationResourceTeam(\''.get_class($obj).'\',\''.$type.'\',\''.$idRess.'\');" title="'.i18n('addAffectation').'" /> '.formatSmallButton('Add').'</a>';
+      echo '<a onClick="addAffectationResourceTeam(\''.get_class($obj).'\',\''.$type.'\',\''.$idRess.'\');" title="'.i18n('addAffectation').'" /> '.formatSmallButton('Add').'</a>';
     }
     echo '</td>';
   }
@@ -5565,9 +5557,9 @@ function drawAffectationsResourceTeamFromObject($list, $obj, $type, $refresh=fal
     $goto="";
     $name=$aff->name;
     $typeAffectable='Resource';
-      if (!$print and securityCheckDisplayMenu(null, $typeAffectable) and securityGetAccessRightYesNo('menu'.$typeAffectable, 'read', '')=="YES") {
-        $goto=' onClick="gotoElement(\''.$typeAffectable.'\',\''.htmlEncode($aff->idResource).'\');" style="cursor: pointer;" ';
-      }
+    if (!$print and securityCheckDisplayMenu(null, $typeAffectable) and securityGetAccessRightYesNo('menu'.$typeAffectable, 'read', '')=="YES") {
+      $goto=' onClick="gotoElement(\''.$typeAffectable.'\',\''.htmlEncode($aff->idResource).'\');" style="cursor: pointer;" ';
+    }
     if ($aff->idResource!=$name and trim($name)) {
       echo '<tr>';
       if (!$print) {
@@ -5581,7 +5573,7 @@ function drawAffectationsResourceTeamFromObject($list, $obj, $type, $refresh=fal
         echo '</td>';
       }
       echo '<td class="assignData'.$idleClass.'" align="center">'.htmlEncode($aff->idResource).'</td>';
-
+      
       echo '<td class="assignData'.$idleClass.'" align="left"'.$goto.'>';
       if ($aff->description and !$print) {
         echo '<div style="float:right">'.formatCommentThumb($aff->description).'</div>';
@@ -5598,7 +5590,7 @@ function drawAffectationsResourceTeamFromObject($list, $obj, $type, $refresh=fal
   echo '</table>';
 }
 
-//gautier #ProviderTerm
+// gautier #ProviderTerm
 function drawProviderTermFromObject($list, $obj, $type, $refresh=false) {
   global $cr, $print, $user, $browserLocale, $comboDetail;
   $pluginObjectClass='ProviderTerm';
@@ -5635,37 +5627,36 @@ function drawProviderTermFromObject($list, $obj, $type, $refresh=false) {
   }
   
   echo '<table style="width:100%">';
-  //echo '<tr><td colspan=2 style="width:100%;"><table style="width:100%;">';
+  // echo '<tr><td colspan=2 style="width:100%;"><table style="width:100%;">';
   echo '<tr>';
   echo '<td class="assignHeader" style="width:10%">';
   
-  $provTerm = new ProviderTerm();
-  $billLine = new BillLine();
-  $critArray = array("idProviderOrder"=>$obj->id);
-  $listProvTerm = $provTerm->getSqlElementsFromCriteria($critArray);
-  $test = false;
-  $y = 0;
-  foreach ($listProvTerm as $prov){
-     $y = 1;
-      $critArray2 = array("refType"=>"ProviderTerm","refId"=>$prov->id);
-      $cpt = $billLine->countSqlElementsFromCriteria($critArray2);
-      if($cpt != 0){
-        $test = true;
-      }
-     
-  }
-  $isLineProviderTerm = 'test';
-  if($obj->totalUntaxedAmount != 0){
-    if($test != true or $y == 0 ){
-      $isLineProviderTerm = false;
-      echo  '<a onClick="addProviderTerm(\''.get_class($obj).'\',\''.$type.'\',\''.$idProviderOrder.'\',\'false\');" title="'.i18n('addProviderTerm').'" > '.formatSmallButton('Add').'</a>';
+  $provTerm=new ProviderTerm();
+  $billLine=new BillLine();
+  $critArray=array("idProviderOrder"=>$obj->id);
+  $listProvTerm=$provTerm->getSqlElementsFromCriteria($critArray);
+  $test=false;
+  $y=0;
+  foreach ($listProvTerm as $prov) {
+    $y=1;
+    $critArray2=array("refType"=>"ProviderTerm", "refId"=>$prov->id);
+    $cpt=$billLine->countSqlElementsFromCriteria($critArray2);
+    if ($cpt!=0) {
+      $test=true;
     }
-    $billLineO = new BillLine();
-    $billLineList=$billLineO->getSqlElementsFromCriteria(array("refType"=>"ProviderOrder","refId"=>$obj->id));
-    if($billLineList){
-      if($y == 0 or $test == true ){
-        $isLineProviderTerm = true;
-        echo  '<a onClick="addProviderTerm(\''.get_class($obj).'\',\''.$type.'\',\''.$idProviderOrder.'\',\'true\');" title="'.i18n('addProviderTermLine').'" > '.formatSmallButton('Split').'</a>';
+  }
+  $isLineProviderTerm='test';
+  if ($obj->totalUntaxedAmount!=0) {
+    if ($test!=true or $y==0) {
+      $isLineProviderTerm=false;
+      echo '<a onClick="addProviderTerm(\''.get_class($obj).'\',\''.$type.'\',\''.$idProviderOrder.'\',\'false\');" title="'.i18n('addProviderTerm').'" > '.formatSmallButton('Add').'</a>';
+    }
+    $billLineO=new BillLine();
+    $billLineList=$billLineO->getSqlElementsFromCriteria(array("refType"=>"ProviderOrder", "refId"=>$obj->id));
+    if ($billLineList) {
+      if ($y==0 or $test==true) {
+        $isLineProviderTerm=true;
+        echo '<a onClick="addProviderTerm(\''.get_class($obj).'\',\''.$type.'\',\''.$idProviderOrder.'\',\'true\');" title="'.i18n('addProviderTermLine').'" > '.formatSmallButton('Split').'</a>';
       }
     }
   }
@@ -5673,7 +5664,7 @@ function drawProviderTermFromObject($list, $obj, $type, $refresh=false) {
   echo '<td class="assignHeader" style="width:10%">'.i18n('colId').'</td>';
   echo '<td class="assignHeader" style="width:15%">'.i18n('colStatusDateTime').'</td>';
   echo '<td class="assignHeader" style="width:20%">'.i18n('colValidatedAmount2').'</td>';
-  echo '<td class="assignHeader" style="width:55%">'.i18n('colIdProviderBill').'</td>';
+  echo '<td class="assignHeader" style="width:45%">'.i18n('colIdProviderBill').'</td>';
   $sumTermAmount=0;
   echo '</tr>';
   foreach ($list as $term) {
@@ -5689,7 +5680,7 @@ function drawProviderTermFromObject($list, $obj, $type, $refresh=false) {
       $canCreate=false;
       $canDelete=false;
     }
-    if($term->idProviderBill){
+    if ($term->idProviderBill) {
       $canUpdate=false;
       $canDelete=false;
     }
@@ -5705,54 +5696,57 @@ function drawProviderTermFromObject($list, $obj, $type, $refresh=false) {
     if (!$print and securityCheckDisplayMenu(null, $typeAffectable2) and securityGetAccessRightYesNo('menu'.$typeAffectable2, 'read', '')=="YES") {
       $goto2=' onClick="gotoElement(\''.$typeAffectable2.'\',\''.htmlEncode($term->idProviderBill).'\');" style="cursor: pointer;" ';
     }
-      echo '<tr>';
-      if (!$print) {
-        echo '<td class="assignData'.$idleClass.'" style="text-align:center;white-space: nowrap;">';
-        if ($canUpdate and !$print) {
-          echo '  <a onClick="editProviderTerm(\''.$obj->id.'\',\''.$isLineProviderTerm.'\',\''.$term->id.'\',\''.$term->name.'\',\''.$term->date.'\',\''.htmlDisplayNumericWithoutTrailingZeros($term->taxPct).'\',\''.htmlDisplayNumericWithoutTrailingZeros($obj->discountRate).'\',\''.$term->untaxedAmount.'\',\''.$term->taxAmount.'\',\''.$term->fullAmount.'\',\''.$obj->totalUntaxedAmount.'\');" '.'title="'.i18n('editProviderTerm').'" > '.formatSmallButton('Edit').'</a>';
-        }
-        if ($canDelete and !$print) {
-          echo '  <a onClick="removeProviderTerm('."'".htmlEncode($term->id)."'".');" '.'title="'.i18n('removeProviderTerm').'" > '.formatSmallButton('Remove').'</a>';
-        }
-          if ($term->idle) {
-            echo '<a><div style="display:table-cell;width:20px;"><img style="position:relative;top:4px;left:2px" src="css/images/tabClose.gif" '.'title="'.i18n('colIdle').'"/></div></a>';
-          } else {
-            echo '<a><div style="display:table-cell;width:20px;">&nbsp;</div></a>';
-          }
-        echo '</td>';
+    echo '<tr>';
+    if (!$print) {
+      echo '<td class="assignData'.$idleClass.'" style="text-align:center;white-space: nowrap;">';
+      if ($canUpdate and !$print) {
+        echo '  <a onClick="editProviderTerm(\''.get_class($obj).'\',\''.$obj->id.'\',\''.$isLineProviderTerm.'\',\''.$term->id.'\',\''.$term->name.'\',\''.$term->date.'\',\''.htmlDisplayNumericWithoutTrailingZeros($term->taxPct).'\',\''.htmlDisplayNumericWithoutTrailingZeros($obj->discountRate).'\',\''.$term->untaxedAmount.'\',\''.$term->taxAmount.'\',\''.$term->fullAmount.'\',\''.$obj->totalUntaxedAmount.'\');" '.'title="'.i18n('editProviderTerm').'" > '.formatSmallButton('Edit').'</a>';
       }
-      echo  '<td class="assignData'.$idleClass.'" align="center" '.$goto.'>#'.htmlEncode($term->id).'</td>';
-      echo  '<td class="assignData'.$idleClass.'" align="center" '.$goto.' style="white-space: nowrap;">'.htmlFormatDate($term->date).'</td>';
-      echo  '<td class="assignData'.$idleClass.'" align="right" '.$goto.' style="white-space: nowrap;">'.htmlDisplayCurrency($term->fullAmount).'</td>';
-      $sumTermAmount+=$term->fullAmount;
-      if($term->idProviderBill){
-        $bill=new ProviderBill($term->idProviderBill);
-        $objStatus=new Status($bill->idStatus);
-        echo  '<td class="assignData'.$idleClass.'" align="center" '.$goto2.' style="white-space:nowrap; padding:0px !important;" >';
-        echo '<table style="width:100%;padding:0;marin:0;"><tr>';
-        echo '<td class="" style="width:10%">#'.htmlEncode($term->idProviderBill).'</td>';
-        echo '<td class="" style="width:40%">'.htmlEncode($bill->externalReference).'</td>';
-        echo '<td class="" style="width:50%">'.colorNameFormatter($objStatus->name."#split#".$objStatus->color).'</td>';
-        echo '</tr></table>';
-        echo '</td>';
-      }else{
-        echo  '<td class="assignData'.$idleClass.'" align="center"'.$goto2.' style="white-space: nowrap;"></td>';
+      if ($canDelete and !$print) {
+        echo '  <a onClick="removeProviderTerm('."'".htmlEncode($term->id)."'".');" '.'title="'.i18n('removeProviderTerm').'" > '.formatSmallButton('Remove').'</a>';
       }
-      echo '</tr>';
-    
+//       if ($term->idle) {
+//         echo '<div style="display:table-cell;width:20px;"><img style="position:relative;top:4px;left:2px" src="css/images/tabClose.gif" '.'title="'.i18n('colIdle').'"/></div>';
+//       } else {
+//         echo '<div style="display:table-cell;width:20px;">&nbsp;</div>';
+//       }
+      if ($term->isPaid) {
+        echo i18n('colIsPaid');
+      } else if ($term->isBilled) {
+        echo i18n('colIsBilled');
+      }
+      echo '</td>';
+    }
+    echo '<td class="assignData'.$idleClass.'" align="center" '.$goto.'>#'.htmlEncode($term->id).'</td>';
+    echo '<td class="assignData'.$idleClass.'" align="center" '.$goto.' style="white-space: nowrap;">'.htmlFormatDate($term->date).'</td>';
+    echo '<td class="assignData'.$idleClass.'" align="right" '.$goto.' style="white-space: nowrap;">'.htmlDisplayCurrency($term->fullAmount).'</td>';
+    $sumTermAmount+=$term->fullAmount;
+    if ($term->idProviderBill) {
+      $bill=new ProviderBill($term->idProviderBill);
+      $objStatus=new Status($bill->idStatus);
+      echo '<td class="assignData" align="center" '.$goto2.' style="white-space:nowrap; padding:0px !important;" >';
+      echo '<table style="width:100%;padding:0;marin:0;"><tr>';
+      echo '<td class="assignData" style="width:10%;border:0;">#'.htmlEncode($term->idProviderBill).'</td>';
+      echo '<td class="assignData" style="width:50%;border:0;">'.htmlEncode($bill->externalReference).'</td>';
+      echo '<td class="assignData" style="width:40%;border:0;">'.colorNameFormatter($objStatus->name."#split#".$objStatus->color).'</td>';
+      echo '</tr></table>';
+      echo '</td>';
+    } else {
+      echo '<td class="assignData'.$idleClass.'" align="center"'.$goto2.' style="white-space: nowrap;"></td>';
+    }
+    echo '</tr>';
   }
   // Summ for terms
   if (count($list)>0) {
-    echo '<tr>'; 
+    echo '<tr>';
     echo '<td colspan="'.(($print)?'2':'3').'" class="assignHeader" style="text-align:right">'.i18n('sum').'&nbsp;</td>';
     echo '<td class="assignData" style="font-weight:bold;vertical-align:middle;" align="right">'.htmlDisplayCurrency($sumTermAmount).'</td>';
     echo '<td class="assignHeader" >&nbsp;</td>';
     echo '</tr>';
   }
-  //echo '</table></td></tr>';
+  // echo '</table></td></tr>';
   echo '</table>';
 }
-
 
 function drawAffectationsResourceTeamResourceFromObject($list, $obj, $type, $refresh=false) {
   global $cr, $print, $user, $browserLocale, $comboDetail;
@@ -5784,22 +5778,22 @@ function drawAffectationsResourceTeamResourceFromObject($list, $obj, $type, $ref
     $canCreate=false;
     $canDelete=false;
   }
-
+  
   echo '<table style="width:100%">';
   echo '<tr><td colspan=2 style="width:100%;"><table style="width:100%;">';
   echo '<tr>';
-  if (get_class($obj)=='Resource' or get_class($obj)=='ResourceTeam' ) {
+  if (get_class($obj)=='Resource' or get_class($obj)=='ResourceTeam') {
     $idRess=$obj->id;
   } else {
     $idRess=null;
   }
-
+  
   echo '<td class="assignHeader" style="width:8%">'.i18n('colId').'</td>';
   echo '<td class="assignHeader" style="width:39%">'.i18n('colName').'</td>';
   echo '<td class="assignHeader" style="width:13%">'.i18n('colStartDate').'</td>';
   echo '<td class="assignHeader" style="width:13%">'.i18n('colEndDate').'</td>';
   echo '<td class="assignHeader" style="width:12%">'.i18n('colRate').'</td>';
-
+  
   echo '</tr>';
   foreach ($list as $aff) {
     $canUpdate=securityGetAccessRightYesNo('menuAffectation', 'update', $aff)=="YES";
@@ -5826,7 +5820,7 @@ function drawAffectationsResourceTeamResourceFromObject($list, $obj, $type, $ref
     if ($aff->idResource!=$name and trim($name)) {
       echo '<tr>';
       echo '<td class="assignData'.$idleClass.'" align="center">'.htmlEncode($aff->id).'</td>';
-
+      
       echo '<td class="assignData'.$idleClass.'" align="left"'.$goto.'>';
       if ($aff->description and !$print) {
         echo '<div style="float:right">'.formatCommentThumb($aff->description).'</div>';
@@ -5842,7 +5836,6 @@ function drawAffectationsResourceTeamResourceFromObject($list, $obj, $type, $ref
   echo '</table></td></tr>';
   echo '</table>';
 }
-
 
 function drawAffectationsFromObject($list, $obj, $type, $refresh=false) {
   global $cr, $print, $user, $browserLocale, $comboDetail;
@@ -5892,7 +5885,7 @@ function drawAffectationsFromObject($list, $obj, $type, $refresh=false) {
   if (get_class($obj)=='Project') {
     $idProj=$obj->id;
     $idRess=null;
-  } else if (get_class($obj)=='Resource' or get_class($obj)=='ResourceTeam'  or get_class($obj)=='Contact' or get_class($obj)=='User') {
+  } else if (get_class($obj)=='Resource' or get_class($obj)=='ResourceTeam' or get_class($obj)=='Contact' or get_class($obj)=='User') {
     $idProj=null;
     $idRess=$obj->id;
   } else {
@@ -5945,29 +5938,28 @@ function drawAffectationsFromObject($list, $obj, $type, $refresh=false) {
     } else {
       $name=$aff->name;
       $typeAffectable=$type;
-      #resourceTeam 
+      // resourceTeam
       $idToShow=$aff->idResource;
       $classToShow='Resource';
-      if($typeAffectable=='ResourceAll'){
+      if ($typeAffectable=='ResourceAll') {
         $resource=new ResourceAll($aff->idResource);
-        if($resource->isResourceTeam){
-          if(securityCheckDisplayMenu(null, 'ResourceTeam') and securityGetAccessRightYesNo('menuResourceTeam', 'read', '')=="YES"){
+        if ($resource->isResourceTeam) {
+          if (securityCheckDisplayMenu(null, 'ResourceTeam') and securityGetAccessRightYesNo('menuResourceTeam', 'read', '')=="YES") {
             $goto=' onClick="gotoElement(\'ResourceTeam\',\''.htmlEncode($aff->idResource).'\');" style="cursor: pointer;" ';
           }
           $classToShow='ResourceTeam';
-        }else{
+        } else {
           if (!$print and $isResource and securityCheckDisplayMenu(null, 'Resource') and securityGetAccessRightYesNo('menuResource', 'read', '')=="YES") {
             $goto=' onClick="gotoElement(\'Resource\',\''.htmlEncode($aff->idResource).'\');" style="cursor: pointer;" ';
           }
           $classToShow='Resource';
         }
-      }else{
+      } else {
         if (!$print and securityCheckDisplayMenu(null, $typeAffectable) and securityGetAccessRightYesNo('menu'.$typeAffectable, 'read', '')=="YES") {
           $goto=' onClick="gotoElement(\''.$typeAffectable.'\',\''.htmlEncode($aff->idResource).'\');" style="cursor: pointer;" ';
         }
         $classToShow=$typeAffectable;
       }
-     
     }
     if ($aff->idResource!=$name and trim($name)) {
       echo '<tr>';
@@ -6000,10 +5992,10 @@ function drawAffectationsFromObject($list, $obj, $type, $refresh=false) {
        * }
        */
       echo '<td class="assignData'.$idleClass.'" align="left"'.$goto.'>';
-      //resourceTeam
-      if(isset($typeAffectable)=='ResourceAll'){
+      // resourceTeam
+      if (isset($typeAffectable)=='ResourceAll') {
         $resource=new ResourceAll($aff->idResource);
-        if($resource->isResourceTeam){
+        if ($resource->isResourceTeam) {
           echo '<div style="float:right; vertical-align:middle;"> '.formatIcon('Team', 16, i18n('ResourceTeam')).'</div>';
         }
       }
@@ -6167,7 +6159,7 @@ function drawTestCaseRunFromObject($list, $obj, $refresh=false) {
   echo '</table>';
   echo '</td></tr>';
 }
-//gautier #providerTerm
+// gautier #providerTerm
 function drawProviderTermFromProviderBill($list, $obj, $refresh=false) {
   global $cr, $print, $user, $browserLocale, $comboDetail;
   if ($comboDetail) {
@@ -6177,26 +6169,55 @@ function drawProviderTermFromProviderBill($list, $obj, $refresh=false) {
   
   $canCreate=securityGetAccessRightYesNo('menu'.$class, 'update', $obj)=="YES";
   $canDelete=$canCreate;
+  $canUpdate=$canCreate;
   if ($obj->idle==1) {
     $canCreate=false;
     $canDelete=false;
+    $canUpdate=false;
   }
- echo '<tr><td colspan="2" style="width:100%;">';
- echo '<table style="width:100%;">';
- echo  '<tr>';
+  echo '<tr><td colspan="2" style="width:100%;">';
+  echo '<table style="width:100%;">';
+  echo '<tr>';
   if (!$print and $class=='ProviderBill') {
+    $provTerm=new ProviderTerm();
+    $billLine=new BillLine();
+    $critArray=array("idProviderBill"=>$obj->id);
+    $listProvTerm=$provTerm->getSqlElementsFromCriteria($critArray);
+    $test=false;
+    $y=0;
+    foreach ($listProvTerm as $prov) {
+      $y=1;
+      $critArray2=array("refType"=>"ProviderTerm", "refId"=>$prov->id);
+      $cpt=$billLine->countSqlElementsFromCriteria($critArray2);
+      if ($cpt!=0) {
+        $test=true;
+      }
+    }
+    if (get_class($obj)=='ProviderBill') {
+      $idProviderBill=$obj->id;
+    } else {
+      $idProviderBill=null;
+    }
+    $isLineProviderTerm='test';
     echo '<td class="assignHeader" style="width:10%;">';
     if ($obj->id!=null and !$print and $canCreate and !$obj->idle) {
-      $depType = 'ProviderTerm';
-      echo '<a onClick="addProviderTermFromProviderBill();" title="'.i18n('addDependency'.$depType).'"> '.formatSmallButton('Add').'</a>';
+      $depType='ProviderTerm';
+      if ($obj->totalUntaxedAmount!=0) {
+        if ($test!=true or $y==0) {
+          $isLineProviderTerm=false;
+          echo '<a onClick="addProviderTerm(\''.get_class($obj).'\',\'\',\''.$idProviderBill.'\',\'false\');" title="'.i18n('addProviderTerm').'" > '.formatSmallButton('Add').'</a>';
+        }
+      }
+      echo '<a onClick="addProviderTermFromProviderBill();" title="'.i18n('addDependency'.$depType).'"> '.formatSmallButton('List').'</a>';
     }
     echo '</td>';
   }
-  echo '<td class="assignHeader" colspan="1" style="width:5%">'.i18n('colId').'</td>';
-  echo '<td class="assignHeader" colspan="1" style="width:20%">'.i18n('colDate').'</td>';
-  echo '<td class="assignHeader" colspan="1" style="width:40%">'.i18n('colAmount').'</td>';
-  echo '<td class="assignHeader" colspan="1" style="width:20%">'.i18n('colIdProviderOrder').'</td>';
-  
+  echo '<td class="assignHeader" colspan="1" style="width:10%">'.i18n('colId').'</td>';
+  echo '<td class="assignHeader" colspan="1" style="width:15%">'.i18n('colDate').'</td>';
+  echo '<td class="assignHeader" colspan="1" style="width:20%">'.i18n('colAmount').'</td>';
+  echo '<td class="assignHeader" colspan="1" style="width:45%">'.i18n('colIdProviderOrder').'</td>';
+  echo '</tr>';
+  $sumTermAmount=0;
   foreach ($list as $prT) {
     $goto="";
     $typeAffectable='ProviderOrder';
@@ -6209,25 +6230,50 @@ function drawProviderTermFromProviderBill($list, $obj, $refresh=false) {
       $goto2=' onClick="gotoElement(\''.$typeAffectable2.'\',\''.htmlEncode($prT->id).'\');" style="cursor: pointer;" ';
     }
     echo '<tr>';
-    echo '  <td class="assignData" align="center" style="width:10%">';
-    if ($canDelete) {
-      echo '    <a onClick="removeProviderTermFromBill('."'".htmlEncode($prT->id)."'".');" '.'title="'.i18n('removeProviderTerm').'" > '.formatSmallButton('Remove').'</a>';
+    echo '  <td class="assignData" align="center" style="width:10%;white-space:nowrap">';
+    if ($obj->id!=null and $canUpdate and !$print and !$obj->idle and !$prT->idProviderOrder) {
+      echo '  <a onClick="editProviderTerm(\''.get_class($obj).'\',\''.$obj->id.'\',\''.$isLineProviderTerm.'\',\''.$prT->id.'\',\''.$prT->name.'\',\''.$prT->date.'\',\''.htmlDisplayNumericWithoutTrailingZeros($prT->taxPct).'\',\''.htmlDisplayNumericWithoutTrailingZeros($obj->discountRate).'\',\''.$prT->untaxedAmount.'\',\''.$prT->taxAmount.'\',\''.$prT->fullAmount.'\',\''.$obj->totalUntaxedAmount.'\');" '.'title="'.i18n('editProviderTerm').'" > '.formatSmallButton('Edit').'</a>';
     }
-    echo'   </td>';
-    echo '  <td class="assignData" align="center"'.$goto2.' style="width:5%">#'.htmlEncode($prT->id).'</td>';
-    echo '  <td class="assignData" align="center" style="width:20%">'.htmlFormatDate($prT->date).'</td>';
-    echo '  <td class="assignData" align="center" style="width:40%">'.htmlDisplayCurrency($prT->fullAmount,true).'</td>';
-    if($prT->idProviderOrder){
-      echo '  <td class="assignData" align="center"'.$goto.' style="width:20%">#'.htmlEncode($prT->idProviderOrder).'</td>';
-    }else{
-      echo '  <td class="assignData" align="center"'.$goto.' style="width:20%"></td>';
+    if ($canDelete and !$print) {
+      if ($prT->idProviderOrder) {
+        echo '  <a onClick="removeProviderTermFromBill('."'".htmlEncode($prT->id)."'".');" '.'title="'.i18n('removeProviderTermFromBill').'" > '.formatSmallButton('Mark').'</a>';
+      } else { 
+        echo '  <a onClick="removeProviderTerm('."'".htmlEncode($prT->id)."'".',true);" '.'title="'.i18n('removeProviderTerm').'" > '.formatSmallButton('Remove').'</a>';
+      }
+    }
+    if ($prT->isPaid) {
+      echo i18n('colIsPaid');
+    }
+    echo '   </td>';
+    echo '  <td class="assignData" align="center" '.$goto2.' style="width:10%">#'.htmlEncode($prT->id).'</td>';
+    echo '  <td class="assignData" align="center" '.$goto2.' style="width:15%">'.htmlFormatDate($prT->date).'</td>';
+    echo '  <td class="assignData" align="right" '.$goto2.' style="width:20%;text-align:right;">'.htmlDisplayCurrency($prT->fullAmount).'</td>';
+    $sumTermAmount+=$prT->fullAmount;
+    if ($prT->idProviderOrder) {
+      //echo '  <td class="assignData" align="center"'.$goto.' style="width:45%">#'.htmlEncode($prT->idProviderOrder).'</td>';
+      $order=new ProviderOrder($prT->idProviderOrder);
+      $objStatus=new Status($order->idStatus);
+      echo '<td class="assignData" align="center" '.$goto.' style="white-space:nowrap; padding:0px !important;" >';
+      echo '<table style="width:100%;padding:0;marin:0;"><tr>';
+      echo '<td class="assignData" style="width:10%;border:0;">#'.htmlEncode($prT->idProviderOrder).'</td>';
+      echo '<td class="assignData" style="width:50%;border:0;">'.htmlEncode($order->name).'</td>';
+      echo '<td class="assignData" style="width:40%;border:0;">'.colorNameFormatter($objStatus->name."#split#".$objStatus->color).'</td>';
+      echo '</tr></table>';
+      echo '</td>';
+    } else {
+      echo '  <td class="assignData" align="center"'.$goto.' style="width:45%"></td>';
     }
     echo '</tr>';
   }
-  
- echo '</tr>';
- echo '</table>';
- echo '</td></tr>';
+  if (count($list)>0) {
+    echo '<tr>';
+    echo '<td colspan="'.(($print)?'2':'3').'" class="assignHeader" style="text-align:right">'.i18n('sum').'&nbsp;</td>';
+    echo '<td class="assignData" style="font-weight:bold;vertical-align:middle;" align="right">'.htmlDisplayCurrency($sumTermAmount).'</td>';
+    echo '<td class="assignHeader" >&nbsp;</td>';
+    echo '</tr>';
+  }
+  echo '</table>';
+  echo '</td></tr>';
 }
 
 function drawOtherVersionFromObject($otherVersion, $obj, $type) {
@@ -6385,54 +6431,54 @@ function startBuffering() {
 function endBuffering($prevSection, $included) {
   global $reorg, $leftPane, $rightPane, $extraPane, $bottomPane, $nbColMax, $section, $beforeAllPanes;
   $sectionPosition=array(
-      'assignment'=>array('2'=>'left', '3'=>'extra'),
-      'attachment'=>array('2'=>'bottom', '3'=>'extra'),
-      'attendees'=>array('2'=>'right', '3'=>'extra'),
-      'billline'=>array('2'=>'bottom', '3'=>'bottom'),
-      'billlineterm'=>array('2'=>'bottom', '3'=>'bottom'),
-      'calendar'=>array('2'=>'bottom', '3'=>'bottom'),
-      'description'=>array('2'=>'left', '3'=>'left'),
-      'evaluation'=>array('2'=>'left', '3'=>'extra'),
-      'evaluationcriteria'=>array('2'=>'right', '3'=>'extra'),
-      'expensedetail'=>array('2'=>'bottom', '3'=>'bottom'),
-      'helpallowedwords'=>array('3'=>'bottom', '3'=>'extra'),
-      'helpallowedreceivers'=>array('3'=>'bottom', '3'=>'extra'),
-      'hierarchicorganizationprojects'=>array('2'=>'bottom', '3'=>'extra'),
-      'iban'=>array('2'=>'right', '3'=>'extra'),
-      'internalalert'=>array('2'=>'right', '3'=>'extra'),
-      'link'=>array('2'=>'bottom', '3'=>'extra'),
-      'linkrequirement'=>array('2'=>'bottom', '3'=>'extra'),
-      'linkdeliverable'=>array('2'=>'left', '3'=>'extra'),
-      'listtypeusingworkflow'=>array('2'=>'right', '3'=>'extra'),
-      'lock'=>array('2'=>'left', '3'=>'left'),
-      'mailtext'=>array('2'=>'bottom', '3'=>'bottom'),
-      'miscellaneous'=>array('2'=>'right', '3'=>'extra'),
-      'note'=>array('2'=>'bottom', '3'=>'extra'),
-      'notificationtitle'=>array('2'=>'left', '3'=>'left'),
-      'notificationrule'=>array('2'=>'left', '3'=>'left'),
-      'notificationcontent'=>array('2'=>'left', '3'=>'right'),
-      'notification'=>array('3'=>'bottom', '3'=>'extra'),
-      'predecessor'=>array('2'=>'bottom', '3'=>'bottom'),
-      'projectsofobject'=>array('2'=>'bottom', '3'=>'extra'),
-      'progress'=>array('2'=>'right', '3'=>'extra'),
-      'progress_left'=>array('2'=>'left', '3'=>'extra'),
-      'progress_center'=>array('2'=>'right', '3'=>'right'),
-      'productcomponent'=>array('2'=>'left', '3'=>'extra'),
-      'providerterm'=>array('2'=>'right', '3'=>'extra'),
-      'receivers'=>array('3'=>'bottom', '3'=>'extra'),
-      'resourcesofobject'=>array('2'=>'bottom', '3'=>'extra'),
-      'resourcecost'=>array('2'=>'right', '3'=>'extra'),
-      'subbudgets'=>array('2'=>'right', '3'=>'extra'),
-      'submissions'=>array('2'=>'right', '3'=>'extra'),
-      'successor'=>array('2'=>'bottom', '3'=>'bottom'),
-      'target'=>array('2'=>'bottom', '3'=>'extra'),
-      'treatment_right'=>array('2'=>'right', '3'=>'extra'),
-      'testcaselist'=>array('2'=>'bottom', '3'=>'extra'),
-      'testcaserun'=>array('2'=>'bottom', '3'=>'bottom'),
-      'testcaserunsummary'=>array('2'=>'left', '3'=>'extra'),
-      'testcasesummary'=>array('2'=>'right', '3'=>'extra'),
-      'void'=>array('2'=>'right', '3'=>'right'),
-      'workflowdiagram'=>array('2'=>'bottom', '3'=>'bottom'),
+      'assignment'=>array('2'=>'left', '3'=>'extra'), 
+      'attachment'=>array('2'=>'bottom', '3'=>'extra'), 
+      'attendees'=>array('2'=>'right', '3'=>'extra'), 
+      'billline'=>array('2'=>'bottom', '3'=>'bottom'), 
+      'billlineterm'=>array('2'=>'bottom', '3'=>'bottom'), 
+      'calendar'=>array('2'=>'bottom', '3'=>'bottom'), 
+      'description'=>array('2'=>'left', '3'=>'left'), 
+      'evaluation'=>array('2'=>'left', '3'=>'extra'), 
+      'evaluationcriteria'=>array('2'=>'right', '3'=>'extra'), 
+      'expensedetail'=>array('2'=>'bottom', '3'=>'bottom'), 
+      'helpallowedwords'=>array('3'=>'bottom', '3'=>'extra'), 
+      'helpallowedreceivers'=>array('3'=>'bottom', '3'=>'extra'), 
+      'hierarchicorganizationprojects'=>array('2'=>'bottom', '3'=>'extra'), 
+      'iban'=>array('2'=>'right', '3'=>'extra'), 
+      'internalalert'=>array('2'=>'right', '3'=>'extra'), 
+      'link'=>array('2'=>'bottom', '3'=>'extra'), 
+      'linkrequirement'=>array('2'=>'bottom', '3'=>'extra'), 
+      'linkdeliverable'=>array('2'=>'left', '3'=>'extra'), 
+      'listtypeusingworkflow'=>array('2'=>'right', '3'=>'extra'), 
+      'lock'=>array('2'=>'left', '3'=>'left'), 
+      'mailtext'=>array('2'=>'bottom', '3'=>'bottom'), 
+      'miscellaneous'=>array('2'=>'right', '3'=>'extra'), 
+      'note'=>array('2'=>'bottom', '3'=>'extra'), 
+      'notificationtitle'=>array('2'=>'left', '3'=>'left'), 
+      'notificationrule'=>array('2'=>'left', '3'=>'left'), 
+      'notificationcontent'=>array('2'=>'left', '3'=>'right'), 
+      'notification'=>array('3'=>'bottom', '3'=>'extra'), 
+      'predecessor'=>array('2'=>'bottom', '3'=>'bottom'), 
+      'projectsofobject'=>array('2'=>'bottom', '3'=>'extra'), 
+      'progress'=>array('2'=>'right', '3'=>'extra'), 
+      'progress_left'=>array('2'=>'left', '3'=>'extra'), 
+      'progress_center'=>array('2'=>'right', '3'=>'right'), 
+      'productcomponent'=>array('2'=>'left', '3'=>'extra'), 
+      'providerterm'=>array('2'=>'right', '3'=>'extra'), 
+      'receivers'=>array('3'=>'bottom', '3'=>'extra'), 
+      'resourcesofobject'=>array('2'=>'bottom', '3'=>'extra'), 
+      'resourcecost'=>array('2'=>'right', '3'=>'extra'), 
+      'subbudgets'=>array('2'=>'right', '3'=>'extra'), 
+      'submissions'=>array('2'=>'right', '3'=>'extra'), 
+      'successor'=>array('2'=>'bottom', '3'=>'bottom'), 
+      'target'=>array('2'=>'bottom', '3'=>'extra'), 
+      'treatment_right'=>array('2'=>'right', '3'=>'extra'), 
+      'testcaselist'=>array('2'=>'bottom', '3'=>'extra'), 
+      'testcaserun'=>array('2'=>'bottom', '3'=>'bottom'), 
+      'testcaserunsummary'=>array('2'=>'left', '3'=>'extra'), 
+      'testcasesummary'=>array('2'=>'right', '3'=>'extra'), 
+      'void'=>array('2'=>'right', '3'=>'right'), 
+      'workflowdiagram'=>array('2'=>'bottom', '3'=>'bottom'), 
       'workflowstatus'=>array('2'=>'bottom', '3'=>'bottom'));
   
   // ADD BY TABARY Marc - 2017-06-06 - USE OR NOT ORGANIZATION BUDGETELEMENT

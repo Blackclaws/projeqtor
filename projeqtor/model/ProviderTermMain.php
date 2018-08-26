@@ -37,7 +37,6 @@ class ProviderTermMain extends SqlElement {
   public $idProject;
   public $idProviderOrder;
   public $idProviderBill;
-  public $idle;
   public $_sec_Price;
   public $_tab_4_1_smallLabel = array('untaxedAmountShort', 'tax', '', 'fullAmountShort','initial');
   public $untaxedAmount;
@@ -47,6 +46,7 @@ class ProviderTermMain extends SqlElement {
   public $date;
   public $isBilled;
   public $isPaid;
+  public $idle;
   public $idProjectExpense;
   public $_Note=array();
   public $_sec_Link;
@@ -68,7 +68,9 @@ class ProviderTermMain extends SqlElement {
                                           "idProject"=>"required",
                                           "date"=>"required",
                                           "idProjectExpense"=>"hidden",
-  								                        "idProviderBill"=>"display,readonly"
+  								                        //"idProviderBill"=>"display,readonly",
+                                          "isBilled"=>"readonly",
+                                          "isPaid"=>"readonly"
   );  
   
   private static $_colCaptionTransposition = array("idUser"=>"issuer");
@@ -134,9 +136,12 @@ class ProviderTermMain extends SqlElement {
   
   public function deleteControl() {
   	$result = "";
-  	if ($this->idProviderBill){
+  	if ($this->isPaid){
+  	  $result .= "<br/>" . i18n("cannotDeletePaidTerm");
+  	} else if ($this->idProviderBill){
   		$result .= "<br/>" . i18n("cannotDeleteBilledTerm");
   	}
+
   	if (! $result) {  
       $result=parent::deleteControl();
     }
@@ -166,6 +171,11 @@ class ProviderTermMain extends SqlElement {
    */  
 
 	public function save() {
+	  if ($this->idProviderBill) {
+	    $this->isBilled=1;
+	  } else {
+	    $this->isBilled=0;
+	  }
 		$result = parent::save();	
 		return $result;
 	}
@@ -175,10 +185,21 @@ class ProviderTermMain extends SqlElement {
       $result=i18n('copyNotAsProviderBill').'<br/>';
       $this->_copyResult=$result;
       return $this;
-    }else{
+    }else {
       $newObj =  parent::copyTo($newClass, $newType, $newName, $setOrigin, $withNotes, null, $withLinks);
-      $this->idProviderBill = $newObj->id;
-      $this->saveForced();
+      if($newClass=='ProviderBill') {
+        $this->idProviderBill = $newObj->id;
+        $this->isBilled=1;
+        $this->saveForced();
+        if ($this->idProviderOrder) { // Copy to Bill a Term that is linked to Order => link Bill and Order
+          $link=new Link();
+          $link->ref1Type='ProviderBill';
+          $link->ref1Id=$newObj->id;
+          $link->ref2Type='ProviderOrder';
+          $link->ref2Id=$this->idProviderOrder;
+          $link->save();
+        }
+      }
       return $newObj;
     }
   }
@@ -188,9 +209,21 @@ class ProviderTermMain extends SqlElement {
       self::$_fieldsAttributes["idProject"]='readonly';
     }
     if ($this->idProviderOrder) {
-      self::$_fieldsAttributes['untaxedAmount']='readonly';
       self::$_fieldsAttributes['taxPct']='readonly';
       self::$_fieldsAttributes['idProviderOrder']='readonly';
+      $billLine=new BillLine();
+      if ($this->id) {
+        $cpt=$billLine->countSqlElementsFromCriteria(array('refType'=>'ProviderTerm','refId'=>$this->id));
+        if ($cpt>0) { 
+          self::$_fieldsAttributes['untaxedAmount']='readonly';
+        }
+      }
+    }
+    if ($this->idProviderBill) {
+      $bill=new ProviderBill($this->idProviderBill);
+      if ($bill->done) {
+        self::$_fieldsAttributes['idProviderBill']='readonly';
+      }
     }
     self::$_fieldsAttributes['taxAmount']='readonly';
     self::$_fieldsAttributes['fullAmount']='readonly';

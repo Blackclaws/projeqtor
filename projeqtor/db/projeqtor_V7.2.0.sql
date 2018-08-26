@@ -215,8 +215,9 @@ INSERT INTO `${prefix}type` (`scope`, `name`, `sortOrder`, `idle`, `color`, idWo
 
 INSERT INTO `${prefix}copyable` (`id`,`name`, `idle`, `sortOrder`,`idDefaultCopyable`) VALUES 
 (23,'ProviderOrder', '0', '121','24'),
-(24,'ProviderBill', '0', '122',NULL),
-(25,'ProviderTerm', '0', '123',NULL);
+(24,'ProviderBill', '0', '122',26),
+(25,'ProviderTerm', '1', '123',26),
+(26,'ProviderPayment', '0', '124',NULL);
 
 UPDATE `${prefix}copyable` SET idDefaultCopyable=23 WHERE id=16;
 

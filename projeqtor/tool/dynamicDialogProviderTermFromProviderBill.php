@@ -41,14 +41,27 @@ if($provBill->taxPct > 0 ){
 	         <table>
 	            <tr>
              <td class="dialogLabel"  >
-               <label for="linkRef2TypeProviderTerm" ><?php echo i18n("ProviderTerm") ?>&nbsp;:&nbsp;</label>
+               <label for="linkRef2TypeProviderTerm" ><?php echo i18n("colIdProviderTerm") ?>&nbsp;:&nbsp;</label>
              </td>
              <td>
-               <select dojoType="dijit.form.FilteringSelect" id="linkRef2TypeProviderTerm" name="linkRef2TypeProviderTerm"
-               <?php echo autoOpenFilteringSelect();?>
-                class="input" value="">
-                 <?php htmlDrawOptionForReference('idProviderTerm', null, $obj, true,$critFld,$critVal);?>
-               </select>
+               <div id="linkProviderTermDiv">
+                 <select xdojoType="dijit.form.FilteringSelect" id="linkProviderTerm" name="linkProviderTerm[]"
+                 <?php echo autoOpenFilteringSelect();?>
+                  size="14" multiple class="selectList" 
+                  ondblclick="saveProviderTermFromProviderBill();"
+                  value="">
+                   <?php htmlDrawOptionForReference('idProviderTerm', null, $obj, true,$critFld,$critVal);?>
+                 </select>
+               </div>
+             </td>
+             <td style="vertical-align:top">
+               <button id="providerTermDetailButton" dojoType="dijit.form.Button" showlabel="false"
+                 title="<?php echo i18n('showDetail')?>"
+                 iconClass="iconView">
+                 <script type="dojo/connect" event="onClick" args="evt">
+                    showDetail('linkProviderTerm', false, 'ProviderTerm', true);
+                 </script>
+               </button>
              </td>
            </tr>
 	         </table>
