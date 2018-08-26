@@ -32,6 +32,7 @@ require_once "../tool/projeqtor.php";
 
 $idProviderTerm = RequestHandler::getId('providerTermId');
 $isProviderBill = RequestHandler::getValue('isProviderBill');
+$fromBill=RequestHandler::getBoolean('fromBill');
 Sql::beginTransaction();
 $obj = new ProviderTerm($idProviderTerm);
 if($isProviderBill){
@@ -43,6 +44,9 @@ if($isProviderBill){
   $result=$obj->save();
   $providerBill->save();
 }else{
+  if ($fromBill) {
+    $obj->idProviderBill=null;
+  }
   $result=$obj->delete();
 }
 // Message of correct saving

@@ -149,7 +149,6 @@
     }else if($type=='providerPayment'){
       $idBill=trim(RequestHandler::getValue('idBill'));
       $idTerm=trim(RequestHandler::getValue('idTerm'));
-      debugLog("bill='$idBill', term='$idTerm'");
       if ($idBill) {
         $bill=new ProviderBill($idBill);
         $totalFullAmount = $bill->totalFullAmount;
