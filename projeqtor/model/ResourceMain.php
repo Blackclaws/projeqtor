@@ -59,9 +59,12 @@ class ResourceMain extends SqlElement {
   public $_sec_affectationResourceTeamResource;
   public $_spe_affectationResourceTeamResource;
   public $_sec_Miscellaneous;
+  public $isLdap;
   public $dontReceiveTeamMails;
   public $password;
   public $isResourceTeam;
+
+  
   public $_nbColMax=3;
   
   private static $_layout='
@@ -86,7 +89,8 @@ class ResourceMain extends SqlElement {
                                           "isResourceTeam"=>"hidden" ,
                                           "userName"=>"truncatedWidth100",
                                           "idRole"=>"required",
-                                          "idCalendarDefinition"=>"required"
+                                          "idCalendarDefinition"=>"required",
+                                          "isLdap"=>"hidden"
   );    
   
   private static $_databaseTableName = 'resource';
@@ -185,6 +189,9 @@ class ResourceMain extends SqlElement {
       self::$_fieldsAttributes["idProfile"]="readonly";
       self::$_fieldsAttributes["isUser"]="readonly";
       self::$_fieldsAttributes["userName"]="readonly,truncatedWidth100";
+      if ($this->isUser) {
+        self::$_fieldsAttributes["isLdap"]="readonly";
+      }
     } else {
       self::$_fieldsAttributes["isUser"]="";
       self::$_fieldsAttributes["idProfile"]="";
@@ -192,6 +199,7 @@ class ResourceMain extends SqlElement {
       if ($this->isUser) {
         self::$_fieldsAttributes["idProfile"]="required";
         self::$_fieldsAttributes["userName"]="required,truncatedWidth100";
+        self::$_fieldsAttributes["isLdap"]="";
       }
     }
     

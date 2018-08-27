@@ -5239,8 +5239,7 @@ function saveProviderTerm() {
 
 var cancelRecursiveChange_OnGoingChange = false;
 function providerTermLine(totalUntaxedAmount){
-  if (cancelRecursiveChange_OnGoingChange)
-    return;
+  if (cancelRecursiveChange_OnGoingChange) return;
   cancelRecursiveChange_OnGoingChange = true;
   var totalUntaxedAmountValue = totalUntaxedAmount;
   var untaxedAmount = dijit.byId("providerTermUntaxedAmount").get("value");
@@ -5258,11 +5257,10 @@ function providerTermLine(totalUntaxedAmount){
   dijit.byId("providerTermPercent").set('value', percent);
   dijit.byId("providerTermTaxAmount").set('value', taxAmount);
   dijit.byId("providerTermFullAmount").set('value', fullAmount);
-  cancelRecursiveChange_OnGoingChange = false;
+  setTimeout("cancelRecursiveChange_OnGoingChange = false;",50);
 }
 function providerTermLinePercent(totalUntaxedAmount){
-  if (cancelRecursiveChange_OnGoingChange)
-    return;
+  if (cancelRecursiveChange_OnGoingChange) return;
   cancelRecursiveChange_OnGoingChange = true;
   var totalUntaxedAmountValue = totalUntaxedAmount;
   var percent = dijit.byId("providerTermPercent").get("value");
@@ -5277,12 +5275,11 @@ function providerTermLinePercent(totalUntaxedAmount){
   dijit.byId("providerTermUntaxedAmount").set('value', untaxedAmount);
   dijit.byId("providerTermTaxAmount").set('value', taxAmount);
   dijit.byId("providerTermFullAmount").set('value', fullAmount);
-  cancelRecursiveChange_OnGoingChange = false;
+  setTimeout("cancelRecursiveChange_OnGoingChange = false;",50);
 }
 
 function providerTermLineBillLine(id){
-  if (cancelRecursiveChange_OnGoingChange)
-    return;
+  if (cancelRecursiveChange_OnGoingChange) return;
   cancelRecursiveChange_OnGoingChange = true;
   var totalUntaxedAmountValue = dijit.byId("providerTermBillLineUntaxed"+id).get("value");
   var untaxedAmount = dijit.byId("providerTermUntaxedAmount"+id).get("value");
@@ -5303,12 +5300,11 @@ function providerTermLineBillLine(id){
   dijit.byId("providerTermPercent"+id).set('value', percent);
   dijit.byId("providerTermTaxAmount"+id).set('value', taxAmount);
   dijit.byId("providerTermFullAmount"+id).set('value', fullAmount);
-  cancelRecursiveChange_OnGoingChange = false;
+  setTimeout("cancelRecursiveChange_OnGoingChange = false;",50);
 }
 
 function providerTermLinePercentBilleLine(id){
-  if (cancelRecursiveChange_OnGoingChange)
-    return;
+  if (cancelRecursiveChange_OnGoingChange) return;
   cancelRecursiveChange_OnGoingChange = true;
   var totalUntaxedAmountValue = dijit.byId("providerTermBillLineUntaxed"+id).get("value");
   var percent = dijit.byId("providerTermPercent"+id).get("value");
@@ -5326,7 +5322,7 @@ function providerTermLinePercentBilleLine(id){
   dijit.byId("providerTermDiscountAmount"+id).set('value', discountBill);
   dijit.byId("providerTermTaxAmount"+id).set('value', taxAmount);
   dijit.byId("providerTermFullAmount"+id).set('value', fullAmount);
-  cancelRecursiveChange_OnGoingChange = false;
+  setTimeout("cancelRecursiveChange_OnGoingChange = false;",50);
 }
 
 function addProviderTermFromProviderBill() {
@@ -5375,7 +5371,7 @@ function providerTermLineChangeNumber(){
       var startDate=dateFormatter(formatDate(termDate));
       dojo.byId('labelRegularTerms').innerHTML='<br/>'+i18n('labelRegularTerms',new Array(number,termDay,startDate));
     }
-    setTimeout("cancelRecursiveChange_OnGoingChange=false;",20);
+    setTimeout("cancelRecursiveChange_OnGoingChange=false;",50);
   } else {
     //dijit.byId('providerTermPercent').set('value',100);
     unlockWidget('providerTermPercent');

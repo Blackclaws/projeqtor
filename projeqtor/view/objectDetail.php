@@ -3893,14 +3893,17 @@ function drawAttachmentsFromObject($obj, $refresh=false) {
       echo formatUserThumb($userId, $userName, 'Creator');
       echo formatDateThumb($creationDate, $updateDate);
       echo formatPrivacyThumb($attachment->idPrivacy, $attachment->idTeam);
-      if ($attachment->description and !$print) {
-        echo formatCommentThumb($attachment->description);
-      }
       if ($attachment->link) {
-        echo htmlEncode(urldecode($attachment->link), 'print');
+        $fileName=htmlEncode(urldecode($attachment->link), 'print');
       } else {
-        echo htmlEncode($attachment->fileName, 'print');
+        $fileName=htmlEncode($attachment->fileName, 'print');
       }
+      if ($attachment->description and !$print) {
+        echo formatCommentThumb($fileName);
+        echo htmlEncode($attachment->description, 'print');
+      } else {
+        echo $fileName;
+      } 
       echo '</td>';
       echo '</tr>';
     }

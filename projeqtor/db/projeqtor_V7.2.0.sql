@@ -242,6 +242,36 @@ UPDATE `${prefix}expense` SET
 realTaxAmount=realFullAmount-realAmount
 WHERE realFullAmount is not null and realAmount is not null;
 
+INSERT INTO `${prefix}report` (`id`, `name`, `idReportCategory`, `file`, `sortOrder`,`hasCsv`) VALUES 
+(86, 'financialExpenseBoard', 7, 'financialExpenseBoard.php', 740, 0),
+(87, 'financialExpenseSynthesis', 7, 'financialExpenseSynthesis.php', 750, 0);
+
+INSERT INTO `${prefix}reportparameter` (`idReport`, `name`, `paramType`, `sortOrder`, `idle`, `defaultValue`, `multiple`) VALUES
+(86,'idProject','projectList',10,0,'currentProject',0),
+(86,'idProjectType','projectTypeList',20,0,null,0),
+(86,'idOrganization','organizationList',30,0,null,0),
+(87,'idProject','projectList',10,0,'currentProject',0),
+(87,'idProjectType','projectTypeList',20,0,null,0),
+(87,'idOrganization','organizationList',30,0,null,0);
+
+INSERT INTO `${prefix}habilitationreport` (`idProfile`, `idReport`, `allowAccess`) VALUES 
+(1, 86, 1),
+(2, 86, 1),
+(3, 86, 1),
+(1, 87, 1),
+(2, 87, 1),
+(3, 87, 1);
+
+INSERT INTO `${prefix}notifiable` (`notifiableItem`,`name`) VALUES
+ ('ProviderOrder','ProviderOrder'),
+ ('ProviderTerm','ProviderTerm'),
+ ('ProviderBill','ProviderBill'),
+ ('Tender','Tender');
+ 
+ INSERT INTO `${prefix}indicatorable` (`name`,idle) VALUES
+ ('ProviderOrder',0),
+ ('ProviderTerm',0),
+ ('ProviderBill',0);
 -- ==================================================================
 -- Budget
 -- ==================================================================
