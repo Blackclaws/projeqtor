@@ -430,9 +430,9 @@ function formatCommentThumb($comment,$img=null) {
   $res='';
   if (! trim($comment)) return '';
   $title=htmlEncode($comment,'title');
-  $res.='<span onMouseOver="showBigImage(null,null,this,\''.$title.'\');" onMouseOut="hideBigImage();" >';
+  $res.='<span onMouseOver="showBigImage(null,null,this,\''.$title.'\');" onMouseOut="hideBigImage();"  style="margin-right:5px">';
   if ($img) {
-    $res.='<img src="'.$img.'" />';
+    $res.='<img src="'.$img.'"/>';
   } else {
     $res.= formatSmallButton('Comment');
   }
@@ -512,6 +512,7 @@ function activityStreamDisplayNote ($note,$origin){
   $userNameFormatted = '<span style="color:blue"><strong>' . $userName . '</strong></span>';
   $idNote = '<span style="color:blue">#' . $note->id . '</span>';
   $ticketName = '<span style="color:blue;cursor:pointer;" onClick="gotoElement(\''.htmlEncode($note->refType).'\',\''.htmlEncode($note->refId).'\')">' . $note->refType . ' #' . $note->refId . '</span>';
+  if ($origin=='activityStream') $ticketName.=' - '.SqlList::getNameFromId($note->refType, $note->refId);
   if ($note->updateDate)  $colCommentStream = i18n ( 'activityStreamUpdateComment', array ($idNote, $ticketName ) );
   else  $colCommentStream = i18n ( 'activityStreamCreationComment', array ($idNote, $ticketName ) );
   if (!$user) $user=getSessionUser();

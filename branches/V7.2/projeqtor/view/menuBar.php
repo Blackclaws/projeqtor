@@ -232,6 +232,7 @@
       <span style="position: relative; left:7px; top:-7px; height: 20px">
       <button id="projectSelectorSelectCurrent" dojoType="dijit.form.Button" showlabel="false"
          title="<?php echo i18n('selectCurrentProject');?>" style="top:2px;height:20px;"
+         ondblclick="if (dojo.byId('projectSelectorMode') && dojo.byId('projectSelectorMode').value=='Standard') { setSelectedProject('*',i18n('allProjects'),'selectedProject'); } else { dijit.byId('projectSelectorFiletering').set('value','*'); }"
          iconClass="iconProject16 iconProject iconSize16" xclass="detailButton">
           <script type="dojo/connect" event="onClick" args="evt">
             var selected=null;
@@ -245,31 +246,11 @@
                 selectedName=dijit.byId("idProject").get("displayedValue");
               }
             }
-            if (previousSelectedProject) {
-              selected=previousSelectedProject;
-              selectedName=previousSelectedProjectName;
-            }
-            console.log("selected="+selected+" "+selectedName);
-            console.log("previous selected="+previousSelectedProject+" "+previousSelectedProjectName);
             if (selected) {
-              if (dijit.byId("projectSelectorFiletering")) {
-                if (! previousSelectedProject || previousSelectedProject!=selected) {
-                  previousSelectedProject=dijit.byId("projectSelectorFiletering").get("value");
-                  previousSelectedProjectName=dijit.byId("projectSelectorFiletering").get("displayedValue");
-                } else {
-                  previousSelectedProject=null;
-                  previousSelectedProjectName=null;
-                }
-                dijit.byId("projectSelectorFiletering").set("value",selected);
-              } else {
-                if (! previousSelectedProject || previousSelectedProject!=selected) {
-                  previousSelectedProject=currentSelectedProject;
-                  previousSelectedProjectName=dijit.byId('selectedProject').get("label");
-                } else {
-                  previousSelectedProject=null;
-                  previousSelectedProjectName=null;
-                }
+              if (dojo.byId('projectSelectorMode') && dojo.byId('projectSelectorMode').value=='Standard') {
                 setSelectedProject(selected,selectedName,'selectedProject');
+              } else {
+                dijit.byId("projectSelectorFiletering").set("value",selected);
               }
             } else {
               showAlert(i18n("noCurrentProject"));
