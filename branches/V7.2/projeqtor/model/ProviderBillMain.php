@@ -356,10 +356,11 @@ class ProviderBillMain extends SqlElement {
       $colScript .= '</script>';
     }else if ($colName=="discountRate") {
       $colScript .= '<script type="dojo/connect" event="onChange" >';
-      $colScript .= '   var rate=dijit.byId("discountRate").get("value");';
-      $colScript .= '   var untaxedAmount=dijit.byId("untaxedAmount").get("value");';
+      $colScript .= '  if (cancelRecursiveChange_OnGoingChange) return;';
+      $colScript .= '  var rate=dijit.byId("discountRate").get("value");';
+      $colScript .= '  var untaxedAmount=dijit.byId("untaxedAmount").get("value");';
       $colScript .= '  if (!isNaN(rate)) {';
-      $colScript .= '   var discount=Math.round(untaxedAmount*rate)/100;';
+      $colScript .= '    var discount=Math.round(untaxedAmount*rate)/100;';
       $colScript .= '    dijit.byId("discountAmount").set("value",discount);';
       $colScript .= '  }';
       $colScript .= '  formChanged();';

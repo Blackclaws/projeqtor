@@ -77,7 +77,9 @@ if ($proj=='*') {
      <script type="dojo/connect" event="onChange" args="evt">
        setSelectedProject(this.value, this.displayedValue, 'selectedProject',true);
      </script>
+     <?php htmlDrawOptionForReference("idProject", $proj, null, true,null, null, $limitToActiveProjects);?>
    </div>
+   <input type="hidden" id="projectSelectorMode" value="Standard" />
    <div style="text-align:left;position:absolute; top:1px; left:201px; padding:0px;">
       <button id="projectButton" dojoType="dijit.form.Button" showlabel="false " style="position: relative; left:26px; top:-1px; height: 20px"
          title="<?php echo i18n('searchProject');?>" iconClass="iconView">
@@ -99,6 +101,7 @@ if ($proj=='*') {
    <option value="*"><i><?php echo i18n("allProjects");?></i></option>
    <?php htmlDrawOptionForReference("idProject", $proj, null, true,null, null, $limitToActiveProjects);?>
 </select>
+<input type="hidden" id="projectSelectorMode" value="Filtering" />
    <div style="text-align:left;position:absolute; top:1px; left:201px; padding:0px;">
       <button id="projectButton" dojoType="dijit.form.Button" showlabel="false " style="position: relative; left:26px; top:-1px; height: 20px"
          title="<?php echo i18n('searchProject');?>" iconClass="iconView">
@@ -122,7 +125,7 @@ name="projectSelectorFiletering"
    <option value="*"><i><?php echo i18n("allProjects");?></i></option>
    <?php htmlDrawOptionForReference("idProject", $proj, null, true,null, null, $limitToActiveProjects);?>  
 </select>
-		   
+	<input type="hidden" id="projectSelectorMode" value="Filtering" />
    <div style="text-align:left;position:absolute; top:1px; left:201px; padding:0px;">
       <button id="projectButton" dojoType="dijit.form.Button" showlabel="false " style="position: relative; left:26px; top:-1px; height: 20px"
          title="<?php echo i18n('searchProject');?>" iconClass="iconView">

@@ -3598,7 +3598,7 @@ function updateFinancialTotal() {
   dijit.byId("totalUntaxedAmount").set('value', totalUntaxedAmount);
   dijit.byId("totalTaxAmount").set('value', totalTaxAmount);
   dijit.byId("totalFullAmount").set('value', totalFullAmount);
-  cancelRecursiveChange_OnGoingChange = false;
+  setTimeout("cancelRecursiveChange_OnGoingChange = false;",50);
 }
 //end
 function updateBillTotal() { // Also used for Qutation !!!

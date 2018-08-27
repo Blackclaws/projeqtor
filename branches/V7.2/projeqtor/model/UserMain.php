@@ -55,8 +55,8 @@ class UserMain extends SqlElement {
   public $_sec_Miscellaneous;
   public $password;
   public $_spe_buttonSendMail;
-  public $dontReceiveTeamMails;
   public $isLdap;
+  public $dontReceiveTeamMails;
   public $apiKey;
   public $idTeam;
 
