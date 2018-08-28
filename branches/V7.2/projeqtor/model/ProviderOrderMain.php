@@ -197,10 +197,15 @@ class ProviderOrderMain extends SqlElement {
         $term->idProviderOrder=null;
         $term->save();
       }
+      if($this->idProjectExpense){
+        $projExpense = new ProjectExpense($this->idProjectExpense);
+        $projExpense->save();
+      }
     }
     return ($result);
   }
   public function save() {
+    $old=$this->getOld();
    if (trim($this->idProvider)) {
       $provider=new Provider($this->idProvider);
       if ($provider->taxPct!='' and !$this->taxPct) {
@@ -252,8 +257,13 @@ class ProviderOrderMain extends SqlElement {
           $listExpD = $expD->getSqlElementsFromCriteria($critArray);
           $number = 1;
           foreach ($listExpD as $exp){
+            $detail =  SqlList::getNameFromId('ExpenseDetailType', $exp->idExpenseDetailType)."\n". $exp->getFormatedDetail();
+            $detail = str_replace('<b>', '', $detail) ;
+            $detail = str_replace('</b>', '', $detail) ;
             $billLine = new BillLine();
             $billLine->line = $number;
+            $billLine->description = $exp->name;
+            $billLine->detail = $detail;
             $billLine->refType = 'ProviderOrder';
             $billLine->refId = $this->id;
             $billLine->price = $exp->amount;
@@ -306,6 +316,27 @@ class ProviderOrderMain extends SqlElement {
     $this->totalTaxAmount=$this->totalFullAmount-$this->totalUntaxedAmount;
 
     parent::simpleSave();
+    
+    if($old->idProjectExpense != null and $old->idProjectExpense!=$this->idProjectExpense){
+      $projExpense = new ProjectExpense($old->idProjectExpense);
+      $projExpense->realAmount -= $this->totalUntaxedAmount;
+      $projExpense->realTaxAmount -= $this->totalTaxAmount;
+      $projExpense->realFullAmount -= $this->totalFullAmount;
+      $projExpense->save();
+    }
+    if($this->idProjectExpense){
+      $projExpense = new ProjectExpense($this->idProjectExpense);
+      if($this->deliveryDoneDate){
+        $projExpense->expenseRealDate = $this->deliveryDoneDate;
+      }else if($this->deliveryExpectedDate){
+        $projExpense->expenseRealDate = $this->deliveryExpectedDate;
+      }else{
+        $currentDate = new DateTime();
+        $theCurrentDate = $currentDate->format('Y-m-d');
+        $projExpense->expenseRealDate = $theCurrentDate;
+      }
+      $projExpense->save();
+    }
     return $result;
   }
   

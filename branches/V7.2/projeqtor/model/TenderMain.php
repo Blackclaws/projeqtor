@@ -70,8 +70,8 @@ class TenderMain extends SqlElement {
   public $_void_2;
   public $totalTaxAmount;
   public $totalFullAmount;
-  //
   public $idProjectExpense;
+  public $_button_generateProjectExpense;
   public $paymentCondition;
   public $deliveryDelay;
   public $deliveryDate;
@@ -149,26 +149,6 @@ class TenderMain extends SqlElement {
    */ 
   function __construct($id = NULL, $withoutDependentObjects=false) {
     parent::__construct($id,$withoutDependentObjects);
-    if ($this->idCallForTender) {
-      if ($this->idProvider) {
-        self::$_fieldsAttributes['name']='readonly';
-        self::$_fieldsAttributes['idTenderStatus']='required';
-      }
-      $cft=new CallForTender($this->idCallForTender,true);
-      if ($cft->idProject) {
-        self::$_fieldsAttributes['idProject']='readonly';
-      }
-      if (SqlList::getNameFromId('Type',$cft->idCallForTenderType)==SqlList::getNameFromId('Type',$this->idTenderType)) {
-        self::$_fieldsAttributes['idTenderType']='readonly';
-      }
-    } else {
-      self::$_fieldsAttributes['evaluationValue']='hidden';
-      self::$_fieldsAttributes['evaluationRank']='hidden';
-    }
-    
-    if (count($this->_BillLine)) {
-      self::$_fieldsAttributes['untaxedAmount']='readonly';
-    }
   }
 
    /** ==========================================================================
@@ -229,6 +209,62 @@ class TenderMain extends SqlElement {
         $this->taxPct=$provider->taxPct;
       }
     }
+    
+    //generate project expense
+    if(RequestHandler::getBoolean('generateProjectExpenseButton')){
+      $canCreate=securityGetAccessRightYesNo('menuProjectExpense', 'create')=="YES";
+      if($canCreate){
+        $projExpense = new ProjectExpense();
+        $lstType=SqlList::getList('ProjectExpenseType');
+        reset($lstType);
+        $projExpense->idProjectExpenseType=key($lstType);
+        $lstStatus=SqlList::getList('Status');
+        reset($lstStatus);
+        $projExpense->idStatus=key($lstStatus);
+        $projExpense->name = $this->name;
+        $projExpense->idProject = $this->idProject;
+        $projExpense->taxPct = $this->taxPct;
+        $projExpense->realAmount = $this->totalUntaxedAmount;
+        $projExpense->realTaxAmount = $this->totalTaxAmount;
+        $projExpense->realFullAmount = $this->totalFullAmount;
+        if($this->receptionDateTime){
+          $projExpense->expenseRealDate = $this->receptionDateTime;
+        }else if ($this->requestDateTime){
+          $projExpense->expenseRealDate = $this->requestDateTime;
+        }else{
+          $currentDate = new DateTime();
+          $theCurrentDate = $currentDate->format('Y-m-d');
+          $projExpense->expenseRealDate = $theCurrentDate;
+        }
+        $projExpense->save();
+        $this->idProjectExpense = $projExpense->id;
+      }
+    }
+    
+    //convert project expense  to bill lines
+    if($this->idProjectExpense){
+      $billLine = new BillLine();
+      $critArray=array('refType'=>'Tender','refId'=>$this->id);
+      $cptBillLine=$billLine->countSqlElementsFromCriteria($critArray, false);
+      if ($cptBillLine < 1) {
+        $expD = new ExpenseDetail();
+        $critArray=array('idExpense'=>$this->idProjectExpense);
+        $listExpD = $expD->getSqlElementsFromCriteria($critArray);
+        $number = 1;
+        foreach ($listExpD as $exp){
+          $billLine = new BillLine();
+          $billLine->line = $number;
+          $billLine->refType = 'Tender';
+          $billLine->refId = $this->id;
+          $billLine->price = $exp->amount;
+          $billLine->quantity = 1;
+          $billLine->save();
+          $number++;
+        }
+      }
+    }
+    
+    
     // Update amounts
     if ($this->untaxedAmount!=null) {
       if ($this->taxPct!=null) {
@@ -419,7 +455,13 @@ class TenderMain extends SqlElement {
     	$colScript .= '  refreshList("idProjectExpense", "idProject", this.value, null, null, false);';
     	$colScript .= '  formChanged();';
     	$colScript .= '</script>';
-    } 
+    }else if ($colName=="idProjectExpense") {
+    	  $colScript .= '<script type="dojo/connect" event="onChange" >';
+    	  $colScript .= ' var idExpense=dijit.byId("idProjectExpense").get("value");';
+    	  $colScript .= 'if(idExpense != " "){ ';
+    	  $colScript .= '  dojo.query("._button_generateProjectExpenseClass").style("display", "none"); }else{ dojo.query("._button_generateProjectExpenseClass").style("display", "block"); }';
+    	  $colScript .= '</script>';
+    }
     return $colScript;
   }
 
@@ -428,7 +470,12 @@ class TenderMain extends SqlElement {
     $result = "";
     if ($item == 'evaluation' and ! $comboDetail) {
       $this->drawTenderEvaluationFromObject();
-    }
+    }else if ($item=='generateProjectExpense') {
+      echo '<div id="' . $item . 'Button" name="' . $item . 'Button" ';
+      echo ' title="' . i18n('generateProjectExpense') . '" class="greyCheck generalColClass _button_generateProjectExpenseClass" ';
+      echo ' dojoType="dijit.form.CheckBox"  type="checkbox" >';
+      echo '</div> ';
+    } 
     return $result;
   }
   
@@ -545,5 +592,31 @@ class TenderMain extends SqlElement {
     } 
     
   }
+  
+  public function setAttributes() {
+    if ($this->idCallForTender) {
+      if ($this->idProvider) {
+        self::$_fieldsAttributes['name']='readonly';
+        self::$_fieldsAttributes['idTenderStatus']='required';
+      }
+      $cft=new CallForTender($this->idCallForTender,true);
+      if ($cft->idProject) {
+        self::$_fieldsAttributes['idProject']='readonly';
+      }
+      if (SqlList::getNameFromId('Type',$cft->idCallForTenderType)==SqlList::getNameFromId('Type',$this->idTenderType)) {
+        self::$_fieldsAttributes['idTenderType']='readonly';
+      }
+    } else {
+      self::$_fieldsAttributes['evaluationValue']='hidden';
+      self::$_fieldsAttributes['evaluationRank']='hidden';
+    }
+    if (count($this->_BillLine)) {
+      self::$_fieldsAttributes['untaxedAmount']='readonly';
+    }
+    if($this->idProjectExpense){
+      self::$_fieldsAttributes['_button_generateProjectExpense']='hidden';
+    }
+  }
+  
 }
 ?>

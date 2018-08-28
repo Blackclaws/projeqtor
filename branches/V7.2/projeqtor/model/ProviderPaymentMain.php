@@ -190,6 +190,17 @@ class ProviderPaymentMain extends SqlElement {
       if ($oldBill->paymentAmount==0) $oldBill->paymentDate=null;
       $oldBill->retreivePayments();
     }
+    // ProviderTerm isPaid
+    if($old->idProviderTerm and $old->idProviderTerm != $this->idProviderTerm){
+      $provTerm = new ProviderTerm($old->idProviderTerm);
+      $provTerm->isPaid = 0;
+      $provTerm->save();
+    }
+    if($this->idProviderTerm){
+      $provTerm = new ProviderTerm($this->idProviderTerm);
+      $provTerm->isPaid = 1;
+      $provTerm->save();
+    }
     return $result;
   }
   
