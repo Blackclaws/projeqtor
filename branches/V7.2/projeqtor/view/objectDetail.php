@@ -5735,7 +5735,7 @@ function drawProviderTermFromObject($list, $obj, $type, $refresh=false) {
       echo '</tr></table>';
       echo '</td>';
     } else {
-      echo '<td class="assignData'.$idleClass.'" align="center"'.$goto2.' style="white-space: nowrap;"></td>';
+      echo '<td class="assignData'.$idleClass.'" align="center" style="white-space: nowrap;"></td>';
     }
     echo '</tr>';
   }
@@ -6264,7 +6264,7 @@ function drawProviderTermFromProviderBill($list, $obj, $refresh=false) {
       echo '</tr></table>';
       echo '</td>';
     } else {
-      echo '  <td class="assignData" align="center"'.$goto.' style="width:45%"></td>';
+      echo '  <td class="assignData" align="center" style="width:45%"></td>';
     }
     echo '</tr>';
   }
@@ -6278,6 +6278,106 @@ function drawProviderTermFromProviderBill($list, $obj, $refresh=false) {
   echo '</table>';
   echo '</td></tr>';
 }
+
+function drawTabExpense($obj, $refresh=false) {
+  global $cr, $print, $user, $browserLocale, $comboDetail;
+  if ($comboDetail) {
+    return;
+  }
+  $class=get_class($obj);
+  echo '<tr><td colspan="2" style="width:100%;">';
+  echo '<table style="width:100%;">';
+  echo '  <tr>';
+  echo '    <td class="" colspan="1" style="width:25%"></td>';
+  echo '    <td class="assignHeader" colspan="1" style="width:30%">'.i18n('colUntaxedAmount').'</td>';
+  echo '    <td class="assignHeader" colspan="1" style="width:30%">'.i18n('colFullAmount').'</td>';
+  echo '    <td class="assignHeader" colspan="1" style="width:15%">'.i18n('colWorkElementCount').'</td>';
+  echo '  </tr>';
+  
+  $clauseStatus=transformListIntoInClause(SqlList::getListWithCrit('tenderStatus', array('isSelected'=>'1')));
+  $providerTender = new Tender();
+  $listTender = $providerTender->getSqlElementsFromCriteria(null,false,"idTenderStatus in $clauseStatus and idProjectExpense=$obj->id ");
+  $untaxedAmount = 0;
+  $fullAmount = 0;
+  foreach ($listTender as $tender ){
+    $untaxedAmount += $tender->totalUntaxedAmount;
+    $fullAmount += $tender->totalFullAmount;
+  }
+  echo '  <tr>';
+  echo '    <td class="assignHeader" colspan="1" style="width:25%">'.i18n('menuTender').'</td>';
+  echo '    <td class="assignData" align="right" colspan="1" style="width:30%">'.htmlDisplayCurrency($untaxedAmount).'</td>';
+  echo '    <td class="assignData" align="right" colspan="1" style="width:30%">'.htmlDisplayCurrency($fullAmount).'</td>';
+  echo '    <td class="assignData" align="center" colspan="1" style="width:15%">'.count($listTender).'</td>';
+  echo '  </tr>';
+  $untaxedAmountTerm = 0;
+  $fullAmountTerm =0;
+  $nbTerm = 0;
+  $providerOrder = new ProviderOrder();
+  $listProviderOrder = $providerOrder->getSqlElementsFromCriteria(array("idProjectExpense"=>$obj->id));
+  $untaxedAmount = 0;
+  $fullAmount = 0;
+  foreach ($listProviderOrder as $order ){
+    $untaxedAmount += $order->totalUntaxedAmount;
+    $fullAmount += $order->totalFullAmount;
+    $providerTerm = new ProviderTerm();
+    $listProviderTerm = $providerTerm->getSqlElementsFromCriteria(array("idProviderOrder"=>$order->id,"idProviderBill"=>null));
+    foreach ($listProviderTerm as $term){
+      $nbTerm++;
+      $untaxedAmountTerm += $term->untaxedAmount;
+      $fullAmountTerm += $term->fullAmount;
+    }
+  }
+  echo '  <tr>';
+  echo '    <td class="assignHeader" colspan="1" style="width:25%">'.i18n('menuProviderOrder').'</td>';
+  echo '    <td class="assignData" align="right" colspan="1" style="width:30%">'.htmlDisplayCurrency($untaxedAmount).'</td>';
+  echo '    <td class="assignData" align="right" colspan="1" style="width:30%">'.htmlDisplayCurrency($fullAmount).'</td>';
+  echo '    <td class="assignData" align="center" colspan="1" style="width:15%">'.count($listProviderOrder).'</td>';
+  echo '  </tr>';
+  $providerBill = new ProviderBill();
+  $listProviderBill = $providerBill->getSqlElementsFromCriteria(array("idProjectExpense"=>$obj->id));
+  $untaxedAmount = 0;
+  $fullAmount = 0;
+  $fullAmountPayment =0;
+  $nbPayment = 0;
+  foreach ($listProviderBill as $bill ){
+    $untaxedAmount += $bill->totalUntaxedAmount;
+    $fullAmount += $bill->totalFullAmount;
+    $payment = new ProviderPayment();
+    $listProviderPayment = $payment->getSqlElementsFromCriteria(array("idProviderBill"=>$bill->id));
+    foreach ($listProviderPayment as $provPayment){
+      $nbPayment++;
+      $fullAmountPayment += $provPayment->paymentAmount;
+    }
+    $providerTerm = new ProviderTerm();
+    $listProviderTerm = $providerTerm->getSqlElementsFromCriteria(array("idProviderBill"=>$bill->id));
+    foreach ($listProviderTerm as $term){
+      $nbTerm++;
+      $untaxedAmountTerm += $term->untaxedAmount;
+      $fullAmountTerm += $term->fullAmount;
+    }
+  }
+  echo '  <tr>';
+  echo '    <td class="assignHeader" colspan="1" style="width:25%">'.i18n('menuProviderBill').'</td>';
+  echo '    <td class="assignData" align="right" colspan="1" style="width:30%">'.htmlDisplayCurrency($untaxedAmount).'</td>';
+  echo '    <td class="assignData" align="right" colspan="1" style="width:30%">'.htmlDisplayCurrency($fullAmount).'</td>';
+  echo '    <td class="assignData" align="center" colspan="1" style="width:15%">'.count($listProviderBill).'</td>';
+  echo '  </tr>';
+  echo '  <tr>';
+  echo '    <td class="assignHeader" colspan="1" style="width:25%">'.i18n('menuProviderTerm').'</td>';
+  echo '    <td class="assignData" align="right" colspan="1" style="width:30%">'.htmlDisplayCurrency($untaxedAmountTerm).'</td>';
+  echo '    <td class="assignData" align="right" colspan="1" style="width:30%">'.htmlDisplayCurrency($fullAmountTerm).'</td>';
+  echo '    <td class="assignData" align="center" colspan="1" style="width:15%">'.$nbTerm.'</td>';
+  echo '  </tr>';
+  echo '  <tr>';
+  echo '    <td class="assignHeader" colspan="1" style="width:25%">'.i18n('menuProviderPayment').'</td>';
+  echo '    <td class="assignData" align="right" colspan="1" style="width:30%"></td>';
+  echo '    <td class="assignData" align="right" colspan="1" style="width:30%">'.htmlDisplayCurrency($fullAmountPayment).'</td>';
+  echo '    <td class="assignData" align="center" colspan="1" style="width:15%">'.$nbPayment.'</td>';
+  echo '  </tr>';
+  echo '</table>';
+  echo '</td></tr>';
+}
+
 
 function drawOtherVersionFromObject($otherVersion, $obj, $type) {
   global $print;
@@ -6479,7 +6579,8 @@ function endBuffering($prevSection, $included) {
       'testcaselist'=>array('2'=>'bottom', '3'=>'extra'), 
       'testcaserun'=>array('2'=>'bottom', '3'=>'bottom'), 
       'testcaserunsummary'=>array('2'=>'left', '3'=>'extra'), 
-      'testcasesummary'=>array('2'=>'right', '3'=>'extra'), 
+      'testcasesummary'=>array('2'=>'right', '3'=>'extra'),
+      'totalfinancialsynthesis'=>array('2'=>'right', '3'=>'extra'),
       'void'=>array('2'=>'right', '3'=>'right'), 
       'workflowdiagram'=>array('2'=>'bottom', '3'=>'bottom'), 
       'workflowstatus'=>array('2'=>'bottom', '3'=>'bottom'));

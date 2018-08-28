@@ -884,23 +884,20 @@ function getObjectClassTranslatedFieldsList($objectClassName="",
  *      return the fields list for 'Project' that have the data type 'Date'
  */
 function getObjectClassFieldsListWithDateType($objectClassName='', $withoutCreationDate=true) {
-    if (trim($objectClassName)=='') {return array();}
-    
-    $reflect = new ReflectionClass($objectClassName);
-    $props   = $reflect->getProperties(ReflectionProperty::IS_PUBLIC);
-    
-    $array_fieldsDateType = array();
-    $i=0;
-    foreach($props as $prop) {
-        $colName = $prop->getName();
-        if (strpos($colName,'Date')>0 && substr($colName,0,1)!='_') {
-            if (($colName === 'creationDate' or $colName === 'creationDateTime') and $withoutCreationDate===true) {} else { 
-                $array_fieldsDateType[$i]=$colName;
-                $i++;
-            }
-        }
-    }
-    return $array_fieldsDateType;
+  if (trim($objectClassName)=='') {return array();}
+
+  $obj=new $objectClassName(); 
+  $array_fieldsDateType = array();
+  //$i=0;
+  foreach($obj as $colName=>$val) {
+    if ($colName!='date' and (strpos($colName,'Date')===false or substr($colName,0,1)=='_')) continue;
+    if ($colName=='handledDate' or $colName=='doneDate' or $colName=='idleDate') continue;
+    if ($colName=='handledDateTime' or $colName=='doneDateTime' or $colName=='idleDateTime') continue;
+    if ($obj->isAttributeSetToField($colName,'hidden')) continue;
+    if (($colName=='creationDate' or $colName=='creationDateTime' or $colName=='lastUpdateDateTime') and $withoutCreationDate===true) continue;
+    $array_fieldsDateType[$colName]=$obj->getColCaption($colName);
+  }
+  return $array_fieldsDateType;
 }
 // END - ADD BY TABARY - GENERIC FUNCTION TO GET CLASS's FIELDS LIST THAT HAVE 'Date' IN THEIR NAME
 

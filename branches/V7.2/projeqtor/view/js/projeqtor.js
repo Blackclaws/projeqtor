@@ -4305,17 +4305,22 @@ function refreshTargetDateFieldNotification(notificationItemValue) {
         handleAs : "text",
         load : function(data) {
             var obj = JSON.parse(data);
+            console.log(obj);
             if(data){
                 first=true;
                 for ( var key in obj) {
                     if (first===true) {
                         first=false;
-                        readOnlyNotificationGenerateBeforeInMin(obj[key]);
+                        readOnlyNotificationGenerateBeforeInMin(key);
                     }
-                    theLabel = i18n('col'+obj[key].charAt(0).toUpperCase()+obj[key].substr(1));
-                    var o = dojo.create("option", {label: theLabel, value: obj[key]});     
+                    var o = dojo.create("option", {label: obj[key], value: key});     
                     dijit.byId(selectTarget).addOption(o); 
                 }
+            }
+            if (first==true) {
+              var o = dojo.create("option", {label: i18n('noDataFound'), value: ' '});     
+              dijit.byId(selectTarget).addOption(o); 
+              //readOnlyNotificationGenerateBeforeInMin(' ');
             }
         }
     });

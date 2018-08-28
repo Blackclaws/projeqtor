@@ -274,7 +274,10 @@ function decimalFormatter(value) {
   var roundedValue = dojo.number.format(Math.round(value * 100) / 100);
   return '<div style="width:100%;text-align:right;">' + roundedValue + '</div>';
 }
-
+function decimalAsNumericFormatter(value) {
+  var roundedValue = dojo.number.format(Math.round(value));
+  return '<div style="width:100%;text-align:right;">' + roundedValue + '</div>';
+}
 
 function durationFormatter(value) {
   return value+' '+i18n('shortDay');
