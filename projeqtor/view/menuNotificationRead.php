@@ -54,7 +54,7 @@ foreach ($notifsList as $result) {
     echo'</div>';
     echo'   </td>';
     echo'   <td>';
-    echo '  <span onClick="gotoElement(\'Notification\',\''.htmlEncode($result->id).'\')" style="cursor:pointer; width:90%; overflow-x:hidden;position:relative;"> <b> &nbsp; #'. $result->id.'&nbsp;'. $result->name.' </b></span>';
+    echo '  <span onClick="gotoElement(\'Notification\',\''.htmlEncode($result->id).'\')" style="cursor:pointer; width:90%; overflow-x:hidden;position:relative;"> <b>&nbsp; '. $result->title.' </b></span>';
     echo'   </td>';
     echo'   <td width="15px">';
     echo '<span style="cursor:pointer; top:5px; margin-left:14px;" onClick="readNotification(\''.htmlEncode($result->id).'\')"  title="'.i18n('markAsRead').'" class="iconNotification16"> &nbsp;&nbsp;&nbsp;</span>';
@@ -62,6 +62,10 @@ foreach ($notifsList as $result) {
     echo' </tr>';
     echo' <tr>';
     echo'   <td colspan="2" align="left">';
+    $not=new Notifiable($result->idNotifiable);
+    $ref=$not->notifiableItem;
+    //$item=new $ref($result->notifiedObjectId);
+    echo '    <div onClick="gotoElement(\''.$ref.'\',\''.htmlEncode($result->notifiedObjectId).'\')"  style="color:blue;cursor:pointer;text-align:left; font-size:90%; max-height:100px; margin-left:8px; margin-top:5px; overflow-y:auto;">'.i18n($ref) . ' #'.$result->notifiedObjectId.'</div>';
     echo '    <div style="text-align:left; font-size:90%; max-height:100px; margin-left:8px; margin-top:5px; overflow-y:auto;">'.$result->content.'</div>';
     echo'   </td>';
     echo' </tr>';

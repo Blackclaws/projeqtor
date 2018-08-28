@@ -16,7 +16,7 @@ CREATE TABLE `${prefix}providerorder` (
   `idProviderOrderType` int(12) unsigned DEFAULT NULL,
   `idProject` int(12) unsigned DEFAULT NULL,
   `idUser` int(12) unsigned DEFAULT NULL,
-  `creationDate` datetime DEFAULT NULL,
+  `creationDate` date DEFAULT NULL,
   `idProvider` int(12) unsigned DEFAULT NULL,
   `externalReference` varchar(100) DEFAULT NULL,
   `description` mediumtext DEFAULT NULL,
@@ -67,6 +67,7 @@ CREATE TABLE `${prefix}providerbill` (
   `idProviderBillType` int(12) unsigned DEFAULT NULL,
   `idProject` int(12) unsigned DEFAULT NULL,
   `idUser` int(12) unsigned DEFAULT NULL,
+  `creationDate` date DEFAULT NULL,
   `date` date DEFAULT NULL,
   `idProvider` int(12) unsigned DEFAULT NULL,
   `externalReference` varchar(100) DEFAULT NULL,
@@ -89,7 +90,6 @@ CREATE TABLE `${prefix}providerbill` (
   `discountRate`   DECIMAL(5,2),
   `discountFrom`   varchar(10),
   `lastPaymentDate` date DEFAULT NULL,
-  `expectedPaymentDate` date DEFAULT NULL,
   `paymentAmount` DECIMAL(11,2),
   `paymentCondition` varchar(100) DEFAULT NULL,
   `paymentDate` date DEFAULT NULL,
@@ -118,6 +118,9 @@ CREATE INDEX providerbillType ON `${prefix}providerbill` (idProviderBillType);
 CREATE TABLE `${prefix}providerterm` (
   `id` int(12) unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(100) DEFAULT NULL,
+  `idUser` int(12) unsigned DEFAULT NULL,
+  `creationDate` date DEFAULT NULL,
+  `idResource` int(12) unsigned DEFAULT NULL,
   `idProject` int(12) unsigned DEFAULT NULL,
   `done` int(1) unsigned DEFAULT NULL,
   `idle` int(1) unsigned DEFAULT NULL,
@@ -227,6 +230,7 @@ ADD `rate` DECIMAL(5,2)  DEFAULT NULL;
 
 ALTER TABLE `${prefix}expense`
 ADD `plannedTaxAmount` DECIMAL(11,2) UNSIGNED NULL DEFAULT NULL,
+ADD `isCalculated` int(1) unsigned DEFAULT '0',
 ADD `realTaxAmount` DECIMAL(11,2) UNSIGNED NULL DEFAULT NULL;
 
 UPDATE `${prefix}expense` SET 
@@ -268,10 +272,20 @@ INSERT INTO `${prefix}notifiable` (`notifiableItem`,`name`) VALUES
  ('ProviderBill','ProviderBill'),
  ('Tender','Tender');
  
- INSERT INTO `${prefix}indicatorable` (`name`,idle) VALUES
+INSERT INTO `${prefix}indicatorable` (`name`,idle) VALUES
  ('ProviderOrder',0),
  ('ProviderTerm',0),
  ('ProviderBill',0);
+ 
+INSERT INTO `${prefix}indicator` (`id`, `code`, `type`, `name`, `sortOrder`, `idle`, `targetDateColumnName`) VALUES
+(27, 'DELAY', 'delay', 'deliveryExpectedDate', 410, 0, 'deliveryDoneDate'),
+(28, 'DELAY', 'delay', 'date', 420, 0, 'isPaid');
+
+INSERT INTO `${prefix}indicatorableindicator` (`idIndicatorable`, `nameIndicatorable`, `idIndicator`, `idle`) VALUES 
+('22', 'ProviderOrder', '27', '0'),
+('24', 'ProviderBill', '24', '0'),
+('23', 'ProviderTerm', '28', '0');
+
 -- ==================================================================
 -- Budget
 -- ==================================================================
@@ -524,3 +538,5 @@ UPDATE `${prefix}planningelement` SET realEndDate=(select meetingDate from `${pr
 
 UPDATE `${prefix}assignment` SET plannedStartDate=(select meetingDate from `${prefix}meeting` as meet where meet.id=refId) where refType = "Meeting";
 UPDATE `${prefix}assignment` SET plannedEndDate=(select meetingDate from `${prefix}meeting` as meet where meet.id=refId) where refType = "Meeting";
+
+DELETE FROM `${prefix}notifiable` WHERE notifiableItem='Activity' or notifiableItem='Milestone';

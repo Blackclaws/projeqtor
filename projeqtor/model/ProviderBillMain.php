@@ -37,7 +37,7 @@ class ProviderBillMain extends SqlElement {
   public $idProviderBillType;
   public $idProject;
   public $idUser;
- // public $creationDate;
+  public $creationDate;
   public $date;
   public $Origin;
   public $idProvider;
@@ -50,7 +50,7 @@ class ProviderBillMain extends SqlElement {
   public $idResource;
   public $idContact;
   public $paymentCondition;
-  public $expectedPaymentDate;
+  public $paymentDueDate;
   public $lastPaymentDate;
   public $handled;
   public $handledDate;
@@ -105,7 +105,7 @@ class ProviderBillMain extends SqlElement {
     <th field="name" width="27%" >${name}</th>
     <th field="colorNameStatus" width="9%" formatter="colorNameFormatter">${idStatus}</th>
     <th field="nameResource" formatter="thumbName22" width="8%" >${responsible}</th>
-    <th field="expectedPaymentDate" width="8%" formatter="dateFormatter" >${expectedPaymentDate}</th>
+    <th field="paymentDueDate" width="8%" formatter="dateFormatter" >${paymentDueDate}</th>
     <th field="untaxedAmount" width="7%" formatter="costFormatter">${untaxedAmount}</th>
     <th field="totalUntaxedAmount" width="7%" formatter="costFormatter">${totalUntaxedAmount}</th>
     <th field="handled" width="4%" formatter="booleanFormatter" >${handled}</th>
@@ -133,9 +133,8 @@ class ProviderBillMain extends SqlElement {
       "initialPricePerDayAmount"=>"hidden",
       "addPricePerDayAmount"=>"hidden",
       "validatedPricePerDayAmount"=>"hidden",
-      'paymentDueDate'=>'readonly',
+      //'paymentDueDate'=>'readonly',
       'paymentsCount'=>'hidden',
-      'expectedPaymentDate'=>'hidden',
       'lastPaymentDate'=>'hidden',
       "idProject"=>"required");
  
@@ -272,10 +271,15 @@ class ProviderBillMain extends SqlElement {
           $listExpD = $expD->getSqlElementsFromCriteria($critArray);
           $number = 1;
           foreach ($listExpD as $exp){
+            $detail =  SqlList::getNameFromId('ExpenseDetailType', $exp->idExpenseDetailType)."\n". $exp->getFormatedDetail();
+            $detail = str_replace('<b>', '', $detail) ;
+            $detail = str_replace('</b>', '', $detail) ;
             $billLine = new BillLine();
             $billLine->line = $number;
             $billLine->refType = 'ProviderBill';
             $billLine->refId = $this->id;
+            $billLine->description = $exp->name;
+            $billLine->detail = $detail;
             $billLine->price = $exp->amount;
             $billLine->quantity = 1;
             $billLine->save();
@@ -331,6 +335,17 @@ class ProviderBillMain extends SqlElement {
     }
     if ($result=="") {
       $result='OK';
+    }
+    return $result;
+  }
+  
+  public function delete() {
+    $result=parent::delete();
+    if (getLastOperationStatus($result)=='OK') {
+      if($this->idProjectExpense){
+        $projExpense = new ProjectExpense($this->idProjectExpense);
+        $projExpense->save();
+      }
     }
     return $result;
   }
@@ -394,7 +409,7 @@ class ProviderBillMain extends SqlElement {
       $result.='<div style="position:relative;top:0px;left:80px;width:350px; ">';
       $result.='<table style="width:100%">';
       foreach ($payList as $pay) {
-        $result.='<tr class="noteHeader pointer" onClick="gotoElement(\'Payment\','.htmlEncode($pay->id).');">';
+        $result.='<tr class="noteHeader pointer" onClick="gotoElement(\'ProviderPayment\','.htmlEncode($pay->id).');">';
         $result.='<td style="padding:0px 5px; width:20px;">';
         $result.= formatSmallButton('ProviderPayment');
         $result.='</td>';
@@ -408,6 +423,7 @@ class ProviderBillMain extends SqlElement {
         echo ' title="' . i18n('generateProjectExpense') . '" class="greyCheck generalColClass _button_generateProjectExpenseClass" ';
         echo ' dojoType="dijit.form.CheckBox"  type="checkbox" >';
         echo '</div> ';
+        echo ' ('.i18n("generateProjectExpenseFrom").')';
     } 
     return $result;
   }

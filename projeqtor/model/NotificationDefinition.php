@@ -98,7 +98,7 @@ class NotificationDefinition extends SqlElement {
   private static $_layout='
     <th field="id" formatter="numericFormatter" width="4%" ># ${id}</th>
     <th field="name" width="30%" >${name}</th>
-    <th field="nameNotifiable" width="30%" >${idNotifiable}</th>
+    <th field="nameNotifiable" formatter="translateFormatter" width="30%" >${idNotifiable}</th>
     <th field="colorNameNotificationType" width="10%" formatter="colorTranslateNameFormatter">${type}</th>
     <th field="sendEmail" width="4%" formatter="booleanFormatter" >${sendEmail}</th>
     <th field="idle" width="4%" formatter="booleanFormatter" >${idle}</th>
@@ -895,11 +895,11 @@ class NotificationDefinition extends SqlElement {
         }
 
         foreach ($arrayTargetDate as $key => $value) {
-            $result .= '<option value="' . $value . '"';
-            if($this->id and $value === $this->targetDateNotifiableField) {
+            $result .= '<option value="' . $key . '"';
+            if($this->id and $key === $this->targetDateNotifiableField) {
                 $result .= ' selected="selected" ';
             }
-            $result .= '><span >'. htmlEncode(i18n("col".ucfirst($value))) . '</span></option>';
+            $result .= '><span >'. htmlEncode($value) . '</span></option>';
         }
 
         $result .=$colScript;

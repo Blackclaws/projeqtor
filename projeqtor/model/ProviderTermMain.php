@@ -37,6 +37,9 @@ class ProviderTermMain extends SqlElement {
   public $idProject;
   public $idProviderOrder;
   public $idProviderBill;
+  public $idUser;
+  public $creationDate;
+  public $idResource;
   public $_sec_Price;
   public $_tab_4_1_smallLabel = array('untaxedAmountShort', 'tax', '', 'fullAmountShort','initial');
   public $untaxedAmount;
@@ -73,7 +76,7 @@ class ProviderTermMain extends SqlElement {
                                           "isPaid"=>"readonly"
   );  
   
-  private static $_colCaptionTransposition = array("idUser"=>"issuer");
+  private static $_colCaptionTransposition = array("idUser"=>"issuer", 'idResource'=> 'responsible');
   
   //private static $_databaseColumnName = array('realAmount'=>'amount');
    /** ==========================================================================
