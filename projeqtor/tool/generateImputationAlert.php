@@ -25,107 +25,81 @@
  *** DO NOT REMOVE THIS NOTICE ************************************************/
 require_once("../tool/projeqtor.php");
 
-function generateImputationAlert() {
-  $endDate=date('Y-m-d');
-  // imputationAlertGenerationDay => managed by CRON
-  // imputationAlertGenerationHour => managed by CRON
-  $controlDay=Parameter::getGlobalParameter('imputationAlertControlDay');
-  if (!$controlDay) {
-    traceLog("generationImputationAlert() - No control day defined - Exiting");
-    return;
-  }
-  if ($controlDay=='next') {
-    $endDate=addDaysToDate($endDate, 1);
-  } else if ($controlDay=='previous') {
-    $endDate=addDaysToDate($endDate, -1);
-  } // else = current => nothing to do
+function cronImputationAlertCronFonction($from) {
     
-  $numberOfDays=Parameter::getGlobalParameter('imputationAlertControlNumberOfDays');
-  if ($numberOfDays=="" or $numberOfDays==null) {
-    traceLog("generationImputationAlert() - No number of days defined - Exiting");
-    return;
-  }
-  $startDate=addDaysToDate($endDate, (-1)*($numberOfDays-1));
-    
-  $sendToResource=Parameter::getGlobalParameter('imputationAlertSendToResource');
-  $sendToProjectLeader=Parameter::getGlobalParameter('imputationAlertSendToProjectLeader');
-  $sendToTeamManager=Parameter::getGlobalParameter('imputationAlertSendToTeamManager');
+    $dest = substr($from,23);
+    $refEndDate=date('Y-m-d');
+    $refStartDate=$refEndDate;
+    calculDateByDest($refStartDate, $refEndDate, $dest);
+    $sendToResource="NO";
+    $sendToProjectLeader="NO";
+    $sendToTeamManager="NO";
+    $sendToOrganismManager="NO";
+    foreach (Cron::$listCronExecution as $id=>$cronExecution) {
+        verifyCronExecution($cronExecution, $sendToResource, 'Resource', $from, $refStartDate, $refEndDate);
+        verifyCronExecution($cronExecution, $sendToProjectLeader, 'ProjectLeader', $from, $refStartDate, $refEndDate);
+        verifyCronExecution($cronExecution, $sendToTeamManager, 'TeamManager', $from, $refStartDate, $refEndDate);
+        verifyCronExecution($cronExecution, $sendToOrganismManager, 'OrganismManager', $from, $refStartDate, $refEndDate);
+    }
+    generateImputationAlert($refStartDate, $refEndDate, $sendToResource, $sendToProjectLeader, $sendToTeamManager, $sendToOrganismManager);
+    traceLog("Cron::run() - generateImputationAlert for ".$from.' at '.Cron::$lastCronTimeExecution. " $sendToResource $sendToProjectLeader $sendToTeamManager $sendToOrganismManager" );
+}
 
-  $tmpDate=$startDate;
-  $emptyArray=array(
-    'name'=>'',
-    'full'=>false,
-    'days'=>array(),
-    'capacity'=>1,
-    'projects'=>array()
-  );
-  while ($tmpDate<=$endDate) {  
-    $emptyArray['days'][$tmpDate]=array(
-        'open'=>isOpenDay($tmpDate),
-        'work'=>0
-    );
-    $tmpDate=addDaysToDate($tmpDate, 1);
-  }
-  $lstResource=SqlList::getList('Resource','name',null,false);
-  $lstProject=SqlList::getList('Project');
-  // Initialize list of resources
-  $lstRes=array();
-  foreach ($lstResource as $id=>$name) {
-    $emptyArray['name']=$name;
-    $lstRes[$id]=array(
-        'name'=>$name, 
-        'full'=>false, 
-        'days'=>array(), 
-        'capacity'=>SqlList::getFieldFromId('Resource', $id, 'capacity'),
-        'projects'=>array()
-    );
-    // Initialize list of days for the period
-    $tmpDate=$startDate;
-    while ($tmpDate<=$endDate) {
-      $lstRes[$id]['days'][$tmpDate]=array(
-          'open'=>isOpenDay($tmpDate,SqlList::getFieldFromId('Resource', $id, 'idCalendarDefinition')),
-          'work'=>0
-      );
-      $tmpDate=addDaysToDate($tmpDate, 1);
+function verifyCronExecution($cronExecution, &$sendTo, $dest, $from, $refStartDate, $refEndDate){
+    if($cronExecution->fonctionName=="cronImputationAlertCron".$dest){
+        $endDate=date('Y-m-d');
+        $startDate=$endDate;
+        calculDateByDest($startDate, $endDate, $dest);
+        if($cronExecution->cron==Cron::$lastCronExecution && (($cronExecution->nextTime == Cron::$lastCronTimeExecution && $refStartDate == $startDate && $refEndDate == $endDate) || $cronExecution->fonctionName == $from)){
+            $sendTo=Parameter::getGlobalParameter('imputationAlertSendTo'.$dest);
+            traceLog("Cron::run() - Calcul Imputation Alert for ".$dest);
+            if($cronExecution->fonctionName != $from){
+                $cronExecution->calculNextTime();
+            }
+        }
     }
-    // Store projects the resource is affected to
-    $aff=new Affectation();
-    $lstAff=$aff->getSqlElementsFromCriteria(array('idResource'=>$id,'idle'=>'0'));
-    foreach ($lstAff as $aff) {
-      if ( (! $aff->startDate or $aff->startDate<=$endDate) and (! $aff->endDate or $aff->endDate>=$startDate) ) {
-        $lstRes[$id]['projects'][$aff->idProject]=$aff->idProject;
-      }
+}
+
+function calculDateByDest(&$startDate, &$endDate, $dest){
+    $endDate=date('Y-m-d');
+    $controlDay=Parameter::getGlobalParameter('imputationAlertControlDay'.$dest);
+    if (!$controlDay) {
+        traceLog("generationImputationAlert() - No control day defined - Exiting");
+        return;
     }
-  }
-  
-  $where="workDate>='$startDate' and workDate<='$endDate'";
-  $wk=new Work();
-  $workList=$wk->getSqlElementsFromCriteria(null,false,$where);
-  foreach ($workList as $wk) {
-    if (!isset($lstRes[$wk->idResource])) $lstRes[$wk->idResource]=$emptyArray;
-    if (!isset($lstRes[$wk->idResource]['days'])) $lstRes[$wk->idResource]['days']=array();
-    if (!isset($lstRes[$wk->idResource]['days'][$wk->workDate])) $lstRes[$wk->idResource]['days'][$wk->workDate]=array();
-    if (!isset($lstRes[$wk->idResource]['days'][$wk->workDate]['work'])) $lstRes[$wk->idResource]['days'][$wk->workDate]['work']=0;
-    $lstRes[$wk->idResource]['days'][$wk->workDate]['work']+=$wk->work;
-  }
-  
-  foreach ($lstRes as $idRes=>$res) {
-    $tmpDate=$startDate;
-    $full=true;
-    while ($tmpDate<=$endDate) {
-      if (isset($res['days'][$tmpDate]) and $res['days'][$tmpDate]['open']=='1' and abs($res['days'][$tmpDate]['work'] - $res['capacity']) >= 0.01) {
-        $full=false;
-      }
-      $tmpDate=addDaysToDate($tmpDate, 1);
-    }
-    $lstRes[$idRes]['full']=$full;
-    if (!$full) {
-      $lstRes[$idRes]['workDetail']=getImputationSummary($res);
-    } else {
-    	$lstRes[$idRes]['workDetail']=null;
-    }
-  }
+    if ($controlDay=='next') {
+        $endDate=addDaysToDate($endDate, 1);
+    } else if ($controlDay=='previous') {
+        $endDate=addDaysToDate($endDate, -1);
+    } // else = current => nothing to do
     
+    $numberOfDays=Parameter::getGlobalParameter('imputationAlertControlNumberOfDays'.$dest);
+    if ($numberOfDays=="" or $numberOfDays==null) {
+        traceLog("generationImputationAlert() - No number of days defined - Exiting");
+        return;
+    }
+    $startDate=addDaysToDate($endDate, (-1)*($numberOfDays-1));
+}
+
+function cronImputationAlertCronResource() {
+    cronImputationAlertCronFonction("cronImputationAlertCronResource");
+}
+
+function cronImputationAlertCronProjectLeader() {
+    cronImputationAlertCronFonction("cronImputationAlertCronProjectLeader");
+}
+
+function cronImputationAlertCronTeamManager() {
+    cronImputationAlertCronFonction("cronImputationAlertCronTeamManager");
+}
+
+function cronImputationAlertCronOrganismManager() {
+    cronImputationAlertCronFonction("cronImputationAlertCronOrganismManager");
+}
+
+function generateImputationAlert($startDate, $endDate, $sendToResource, $sendToProjectLeader, $sendToTeamManager, $sendToOrganismManager) {
+  $lstRes=array();
+  calculListToSend($startDate, $endDate, $lstRes);
   $dest=array();
   foreach ($lstRes as $id=>$res) {
     if (!$res['full']) {
@@ -175,6 +149,21 @@ function generateImputationAlert() {
           }
         }
       }
+      if ($sendToOrganismManager and $sendToOrganismManager!='NO') {
+          $organization=SqlList::getFieldFromId('Resource', $id, 'idOrganization');
+          $manager=(trim($organization))?SqlList::getFieldFromId('Organization', $organization, 'idResource'):'';
+          if (trim($manager) and isset($dest[$manager])) {
+              $dest[$manager]['ress'][$id]=$res['workDetail'];
+              if ($dest[$manager]['send']!=$sendToOrganismManager) {
+                  $dest[$manager]['send']='ALERT&MAIL';
+              }
+          } else if (trim($manager)) {
+              $dest[$manager]=array(
+                  'ress'=>array($id=>$res['workDetail']),
+                  'send'=>$sendToOrganismManager
+              );
+          }
+      }
     }
   }
   foreach ($dest as $id=>$dst) {
@@ -200,6 +189,86 @@ function generateImputationAlert() {
     }
   }
 }
+
+function calculListToSend($startDate, $endDate, &$lstRes){
+    $tmpDate=$startDate;
+    $emptyArray=array(
+        'name'=>'',
+        'full'=>false,
+        'days'=>array(),
+        'capacity'=>1,
+        'projects'=>array()
+    );
+    while ($tmpDate<=$endDate) {
+        $emptyArray['days'][$tmpDate]=array(
+            'open'=>isOpenDay($tmpDate),
+            'work'=>0
+        );
+        $tmpDate=addDaysToDate($tmpDate, 1);
+    }
+    $lstResource=SqlList::getList('Resource','name',null,false);
+    // Initialize list of resources
+    foreach ($lstResource as $id=>$name) {
+        $emptyArray['name']=$name;
+        if(!isset($lstRes[$id])){
+            $lstRes[$id]=array(
+                'name'=>$name,
+                'full'=>false,
+                'days'=>array(),
+                'capacity'=>SqlList::getFieldFromId('Resource', $id, 'capacity'),
+                'projects'=>array()
+            );
+        }
+        // Initialize list of days for the period
+        $tmpDate=$startDate;
+        while ($tmpDate<=$endDate) {
+            if(!isset($lstRes[$id]['days'][$tmpDate])){
+                $lstRes[$id]['days'][$tmpDate]=array(
+                    'open'=>isOpenDay($tmpDate,SqlList::getFieldFromId('Resource', $id, 'idCalendarDefinition')),
+                    'work'=>0
+                );
+            }
+            $tmpDate=addDaysToDate($tmpDate, 1);
+        }
+        // Store projects the resource is affected to
+        $aff=new Affectation();
+        $lstAff=$aff->getSqlElementsFromCriteria(array('idResource'=>$id,'idle'=>'0'));
+        foreach ($lstAff as $aff) {
+            if ( (! $aff->startDate or $aff->startDate<=$endDate) and (! $aff->endDate or $aff->endDate>=$startDate) ) {
+                $lstRes[$id]['projects'][$aff->idProject]=$aff->idProject;
+            }
+        }
+    }
+    
+    $where="workDate>='$startDate' and workDate<='$endDate'";
+    $wk=new Work();
+    $workList=$wk->getSqlElementsFromCriteria(null,false,$where);
+    foreach ($workList as $wk) {
+        if (!isset($lstRes[$wk->idResource])) $lstRes[$wk->idResource]=$emptyArray;
+        if (!isset($lstRes[$wk->idResource]['days'])) $lstRes[$wk->idResource]['days']=array();
+        if (!isset($lstRes[$wk->idResource]['days'][$wk->workDate])) $lstRes[$wk->idResource]['days'][$wk->workDate]=array();
+        if (!isset($lstRes[$wk->idResource]['days'][$wk->workDate]['work'])) $lstRes[$wk->idResource]['days'][$wk->workDate]['work']=0;
+        $lstRes[$wk->idResource]['days'][$wk->workDate]['work']+=$wk->work;
+    }
+    
+    foreach ($lstRes as $idRes=>$res) {
+        $tmpDate=$startDate;
+        $full=true;
+        while ($tmpDate<=$endDate) {
+            if (isset($res['days'][$tmpDate]) and $res['days'][$tmpDate]['open']=='1' and abs($res['days'][$tmpDate]['work'] - $res['capacity']) >= 0.01) {
+                $full=false;
+            }
+            $tmpDate=addDaysToDate($tmpDate, 1);
+        }
+        $lstRes[$idRes]['full']=$full;
+        if (!$full) {
+            $lstRes[$idRes]['workDetail']=getImputationSummary($res);
+        } else {
+            $lstRes[$idRes]['workDetail']=null;
+        }
+    }
+}
+
 function getImputationSummary($resTab) {
   $workHeader="";
   $workData="";

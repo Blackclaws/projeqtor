@@ -427,7 +427,7 @@
 	          $externalObj=new $externalClass();
 	          $externalTable = $externalObj->getDatabaseTableName();
 	          $externalTableAlias = 'T' . $idTab;
-	          if (property_exists($externalObj, '_calculateForColumn') and isset($externalObj->_calculateForColumn['name'])) {
+	          if (property_exists($externalObj, '_calculateForColumn') and isset($externalObj->_calculateForColumn['name']) and $formatter[$numField]!='noCalculate') {
 	          	$fieldCalc=$externalObj->_calculateForColumn["name"];
 	          	$fieldCalc=str_replace("(","($externalTableAlias.",$fieldCalc);
 	          	//$calculated=true;

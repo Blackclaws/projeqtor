@@ -5279,7 +5279,7 @@ function drawResourceCostFromObject($list, $obj, $refresh=false) {
   foreach ($list as $rcost) {
     echo '<tr>';
     if (!$print) {
-      echo '<td class="assignData" style="text-align:center;">';
+      echo '<td class="assignData" style="text-align:center;white-space:nowrap;">';
       if (!$rcost->endDate and $canUpdate and !$print) {
         echo '  <a onClick="editResourceCost('."'".htmlEncode($rcost->id)."'".",'".htmlEncode($rcost->idResource)."'".",'".htmlEncode($rcost->idRole)."'".",'".($rcost->cost*100)."'".",'".htmlEncode($rcost->startDate)."'".",'".htmlEncode($rcost->endDate)."'".');" '.'title="'.i18n('editResourceCost').'" > '.formatSmallButton('Edit').'</a>';
       }

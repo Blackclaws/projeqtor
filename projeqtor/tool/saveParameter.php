@@ -265,7 +265,7 @@ if ($type=='habilitation') {
         $val=substr($val,1,5);
       }
       $val=str_replace('#comma#',',',$val);
-      if ($fld=='imputationAlertGenerationDay'  or $fld=='imputationAlertGenerationHour'
+      /*if ($fld=='imputationAlertGenerationDay'  or $fld=='imputationAlertGenerationHour'
        or $fld=='imputationAlertControlDay'     or $fld=='imputationAlertControlNumberOfDays'
        or $fld=='imputationAlertSendToResource' or $fld=='imputationAlertSendToProjectLeader'
        or $fld=='imputationAlertSendToTeamManager') {
@@ -273,7 +273,7 @@ if ($type=='habilitation') {
         if ($obj->parameterValue!=$val) {
           $changeImputationAlerts=true;
         }
-      }
+      }*/
 // BEGIN - ADD BY TABARY - NOTIFICATION SYSTEM
       if ($obj->parameterValue!=$val and $obj->parameterCode=="notificationSystemActiv") {
           $changeNotificationSystemActiv = true;
@@ -295,16 +295,16 @@ if ($type=='habilitation') {
           $status="OK";
         }
       }
-    } else if  ($fld=='imputationAlertGenerationDay'  or $fld=='imputationAlertGenerationHour'
+    }/* else if  ($fld=='imputationAlertGenerationDay'  or $fld=='imputationAlertGenerationHour'
        or $fld=='imputationAlertControlDay'     or $fld=='imputationAlertControlNumberOfDays'
        or $fld=='imputationAlertSendToResource' or $fld=='imputationAlertSendToProjectLeader'
        or $fld=='imputationAlertSendToTeamManager') {
         $$fld=$val;
         $changeImputationAlerts=true;
-    }
+    }*/
   }
   if ($changeImputationAlerts) {
-    $cronExec=SqlElement::getSingleSqlElementFromCriteria('CronExecution',array('fonctionName'=>'generateImputationAlert'));
+    /*$cronExec=SqlElement::getSingleSqlElementFromCriteria('CronExecution',array('fonctionName'=>'generateImputationAlert'));
     if (isset($imputationAlertControlDay) and $imputationAlertControlDay=='NEVER'
     or (    isset($imputationAlertSendToResource) and $imputationAlertSendToResource=='NO' 
         and isset($imputationAlertSendToProjectLeader) and $imputationAlertSendToProjectLeader=='NO'
@@ -327,10 +327,10 @@ if ($type=='habilitation') {
       $cronExec->fonctionName='generateImputationAlert';
       $cronExec->nextTime=null;
       $cronExec->save();
-    }
+    }*/
     //Cron::restart();
-    $errors=i18n("cronRestartRequired");
-    $status='WARNING';
+    //$errors=i18n("cronRestartRequired");
+    //$status='WARNING';
   }
 
 // BEGIN - ADD BY TABARY - NOTIFICATION SYSTEM
