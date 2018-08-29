@@ -384,10 +384,9 @@ class Parameter extends SqlElement {
       	$list=SqlList::getList('Profile');
       	break;
       case 'ldapMsgOnUserCreation': case 'imputationAlertSendToResource': 
-      case 'imputationAlertSendToProjectLeader': case 'imputationAlertSendToTeamManager':
-      case 'imputationAlertInputByOther':
-        $list=array('NO'=>i18n('displayNo'),
-                    'ALERT'=>i18n('displayAlert'),
+      case 'imputationAlertSendToProjectLeader': case 'imputationAlertSendToTeamManager': 
+      case 'imputationAlertSendToOrganismManager': case 'imputationAlertInputByOther':
+        $list=array('ALERT'=>i18n('displayAlert'),
                     'MAIL'=>i18n('displayMail'),
                     'ALERT&MAIL'=>i18n('displayAlertAndMail'));
         break;
@@ -538,13 +537,34 @@ class Parameter extends SqlElement {
           '*'=>i18n('periodicityDaily')
         );
         break;
-      case 'imputationAlertControlDay' :
-        $list=array(
-            'current'=>i18n('imputationControlCurrentDay'),
-            'previous'=>i18n('imputationControlPreviousDay'),
-            'next'=>i18n('imputationControlNextDay')
-        );
-        break;
+      case 'imputationAlertControlDayResource' :
+          $list=array(
+          'current'=>i18n('imputationControlCurrentDay'),
+          'previous'=>i18n('imputationControlPreviousDay'),
+          'next'=>i18n('imputationControlNextDay')
+          );
+          break;
+      case 'imputationAlertControlDayProjectLeader' :
+          $list=array(
+          'current'=>i18n('imputationControlCurrentDay'),
+          'previous'=>i18n('imputationControlPreviousDay'),
+          'next'=>i18n('imputationControlNextDay')
+          );
+          break;
+      case 'imputationAlertControlDayTeamManager' :
+          $list=array(
+          'current'=>i18n('imputationControlCurrentDay'),
+          'previous'=>i18n('imputationControlPreviousDay'),
+          'next'=>i18n('imputationControlNextDay')
+          );
+          break;
+      case 'imputationAlertControlDayOrganismManager' :
+          $list=array(
+          'current'=>i18n('imputationControlCurrentDay'),
+          'previous'=>i18n('imputationControlPreviousDay'),
+          'next'=>i18n('imputationControlNextDay')
+          );
+          break;
       case 'mailerTestSender' :
         $list=array(
           'sender'=>i18n('paramParamMailSender'),
@@ -854,20 +874,37 @@ class Parameter extends SqlElement {
                 	            'cronCheckEmailsHost'=>'text',
                 	            'cronCheckEmailsUser'=>'text',
                 	            'cronCheckEmailsPassword'=>'password',
+                	            'sectionAutomaticPlanning'=>'section',
+                	            'automaticPlanningDifferential'=>'specific',
+                	            'automaticPlanningDifferentialDate'=>'list',
+                	            'automaticPlanningComplete'=>'specific',
+                	            'automaticPlanningCompleteDate'=>'list',
         	                'newColumnbAutomationRight'=>'newColumn',
-          	                'sectionImputationAlert'=>'section',
+        	                  'sectionImputationAlert'=>'section',
+        	                    'imputationAlertCronResource'=>'specific',
+        	                    'imputationAlertControlDayResource'=>'list',
+        	                    'imputationAlertControlNumberOfDaysResource'=>'number',
+        	                    'imputationAlertSendToResource'=>'list',
+        	                    'imputationAlertCronProjectLeader'=>'specific',
+        	                    'imputationAlertControlDayProjectLeader'=>'list',
+        	                    'imputationAlertControlNumberOfDaysProjectLeader'=>'number',
+        	                    'imputationAlertSendToProjectLeader'=>'list',
+        	                    'imputationAlertCronTeamManager'=>'specific',
+        	                    'imputationAlertControlDayTeamManager'=>'list',
+        	                    'imputationAlertControlNumberOfDaysTeamManager'=>'number',
+        	                    'imputationAlertSendToTeamManager'=>'list',
+        	                    'imputationAlertCronOrganismManager'=>'specific',
+        	                    'imputationAlertControlDayOrganismManager'=>'list',
+        	                    'imputationAlertControlNumberOfDaysOrganismManager'=>'number',
+        	                    'imputationAlertSendToOrganismManager'=>'list',
+          	                /*'sectionImputationAlert'=>'section',
             	                'imputationAlertGenerationDay'=>'list',
             	                'imputationAlertGenerationHour'=>'time',
             	                'imputationAlertControlDay'=>'list',
             	                'imputationAlertControlNumberOfDays'=>'number',
             	                'imputationAlertSendToResource'=>'list',
             	                'imputationAlertSendToProjectLeader'=>'list',
-            	                'imputationAlertSendToTeamManager'=>'list',
-            	              'sectionAutomaticPlanning'=>'section',
-            	                'automaticPlanningDifferential'=>'specific',
-            	                'automaticPlanningDifferentialDate'=>'list',
-            	                'automaticPlanningComplete'=>'specific',
-            	                'automaticPlanningCompleteDate'=>'list',
+            	                'imputationAlertSendToTeamManager'=>'list',*/
           	            'tabSystem'=>"tab",
           	              'newColumnbSystemLeft'=>'newColumn',
             	              'sectionFiles'=>'section',

@@ -49,6 +49,8 @@ class Cron {
   private static $restartFile;
   private static $cronWorkDir;
   public static $listCronExecution;
+  public static $lastCronTimeExecution;
+  public static $lastCronExecution;
   
    /** ==========================================================================
    * Constructor
@@ -416,6 +418,8 @@ class Cron {
         $UTC=new DateTimeZone(Parameter::getGlobalParameter ( 'paramDefaultTimezone' ));
         $date=new DateTime('now');
         if(file_exists($cronExecution->fileExecuted) && $cronExecution->nextTime!=null && $cronExecution->nextTime<=$date->format("U")){
+          self::$lastCronTimeExecution = $cronExecution->nextTime;
+          self::$lastCronExecution = $cronExecution->cron;
           $cronExecution->calculNextTime();
           call_user_func($cronExecution->fonctionName);
         }
@@ -435,7 +439,7 @@ class Cron {
         }
       }
 // END - ADD BY TABARY - NOTIFICATION SYSTEM
-      
+		
       // Sleep to next check
       sleep($cronSleepTime);
     } // While 1

@@ -677,6 +677,35 @@ if ($currVersion=='V7.1.0') {
   disableCatchErrors();
 }
 
+if (beforeVersion($currVersion,'V7.2.0')) {
+    //On récupère les paramètres des anciennes alertes pour le nouveau système
+    $alertGenerationDay=Parameter::getGlobalParameter('imputationAlertGenerationDay');
+    $alertGenerationHour=Parameter::getGlobalParameter('imputationAlertGenerationHour');
+    $alertControlDay=Parameter::getGlobalParameter('imputationAlertControlDay');
+    $alertControlNumberOfDays=Parameter::getGlobalParameter('imputationAlertControlNumberOfDays');
+    $alertSendToTeamManager=Parameter::getGlobalParameter('imputationAlertSendToTeamManager');
+    $arrayDest = array('Resource', 'ProjectLeader', 'TeamManager', 'OrganismManager');
+    Parameter::storeGlobalParameter('imputationAlertSendToOrganismManager', $alertSendToTeamManager);
+    foreach ($arrayDest as $dest){
+        Parameter::storeGlobalParameter('imputationAlertControlDay'.$dest, $alertControlDay);
+        Parameter::storeGlobalParameter('imputationAlertControlNumberOfDays'.$dest, $alertControlNumberOfDays);
+        $cronExec=SqlElement::getSingleSqlElementFromCriteria('CronExecution',array('fonctionName'=>'cronImputationAlertCron'.$dest));
+        $splitHour = explode(':',$alertGenerationHour);
+        $hour = $splitHour[0];
+        $minute = $splitHour[1];
+        if($hour<10)$hour=substr($hour,1);
+        if(isset($minute) && isset($hour) && isset($alertGenerationDay)){
+            $cronExec->cron=$minute.' '.$hour.' * * '.$alertGenerationDay;
+        }else{
+            $cronExec->cron='0 0 1 * *';
+        }
+        $cronExec->idle=(Parameter::getGlobalParameter('imputationAlertSendTo'.$dest)=="NO" || $alertControlDay=="NEVER" || $dest=="OrganismManager") ? 1 : 0;
+        $cronExec->save();
+    }
+    Cron::restart();
+}
+
+
 // To be sure, after habilitations updates ...
 Habilitation::correctUpdates();
 Habilitation::correctUpdates();

@@ -2127,6 +2127,20 @@ abstract class SqlElement {
       $newObj->sendDate = null;
       $newObj->idDeliveryMode = null;
     }
+    if (get_class ( $newObj ) == 'ProviderPayment') {
+      $newObj->idPaymentMode = SqlList::getFirstId('PaymentMode');
+      $newObj->paymentDate=date('Y-m-d');
+      if (property_exists($this, 'totalFullAmount')) {
+        $newObj->paymentAmount=$this->totalFullAmount;
+      } else if (property_exists($this, 'fullAmount')) {
+        $newObj->paymentAmount=$this->fullAmount;
+      }
+      if (get_class($this)=='ProviderTerm') {
+        $newObj->idProviderTerm=$this->id;
+      } else if (get_class($this)=='ProviderBill') {
+        $newObj->idProviderBill=$this->id;
+      }
+    }
     $newObj->name = $newName;
     // check description
     if (property_exists ( $newObj, 'description' ) and ! $newObj->description) {

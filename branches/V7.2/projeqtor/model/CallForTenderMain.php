@@ -321,7 +321,7 @@ class CallForTenderMain extends SqlElement {
       $canUpdate=false;
     }
     $tender=new Tender();
-    $tenderList=$tender->getSqlElementsFromCriteria(array('idCallForTender'=>$this->id),false,null, 'evaluationValue desc, id asc');
+    $tenderList=$tender->getSqlElementsFromCriteria(array('idCallForTender'=>(($this->id)?$this->id:-1)),false,null, 'evaluationValue desc, id asc');
     if (count($tenderList)==0 and $readOnly) return;
     echo '<table width="99.9%">';
     echo '<tr>';

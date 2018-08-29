@@ -71,6 +71,7 @@ abstract class RequestHandler {
   
   public static function getNumeric($code,$required=false,$default=null) {
     $val=self::getValue($code,$required,$default);
+    if (!$val and $default!==null) return $default;
     if ($val==$default) return $val;
     return Security::checkValidNumeric($val);
   }
