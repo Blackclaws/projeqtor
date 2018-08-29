@@ -254,6 +254,8 @@ INSERT INTO `${prefix}reportparameter` (`idReport`, `name`, `paramType`, `sortOr
 (86,'idProject','projectList',10,0,'currentProject',0),
 (86,'idProjectType','projectTypeList',20,0,null,0),
 (86,'idOrganization','organizationList',30,0,null,0),
+(86,'showExpense','boolean',35,0,1,0),
+(86,'showClosedItems','boolean',40,0,null,0),
 (87,'idProject','projectList',10,0,'currentProject',0),
 (87,'idProjectType','projectTypeList',20,0,null,0),
 (87,'idOrganization','organizationList',30,0,null,0);

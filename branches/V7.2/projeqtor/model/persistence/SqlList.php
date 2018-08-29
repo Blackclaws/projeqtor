@@ -386,6 +386,12 @@ class SqlList {
     }
     return $result;
   }
+  
+  public static function getFirstId($class) {
+    $list=SqlList::getList($class);
+    reset($list);
+    return key($list);
+  }
 }
 
 ?>

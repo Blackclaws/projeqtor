@@ -3493,8 +3493,21 @@ function formatColor($type, $val) {
       $foreColor = '#FFFFFF';
     }
   }
-  
   $result = '<div align="center" style="text-align:center;  background:' . $color . ';color:' . $foreColor . ';">' . SqlList::getNameFromId ( $type, $val ) . '</div>';
+  return $result;
+}
+function formatColorFromNameAndColor($name, $color) {
+  $foreColor = '#000000';
+  if (strlen ( $color ) == 7) {
+    $red = substr ( $color, 1, 2 );
+    $green = substr ( $color, 3, 2 );
+    $blue = substr ( $color, 5, 2 );
+    $light = (0.3) * base_convert ( $red, 16, 10 ) + (0.6) * base_convert ( $green, 16, 10 ) + (0.1) * base_convert ( $blue, 16, 10 );
+    if ($light < 128) {
+      $foreColor = '#FFFFFF';
+    }
+  }
+  $result = '<div align="center" style="text-align:center;  background:' . $color . ';color:' . $foreColor . ';">' . $name . '</div>';
   return $result;
 }
 

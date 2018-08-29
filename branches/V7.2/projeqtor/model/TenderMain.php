@@ -428,7 +428,10 @@ class TenderMain extends SqlElement {
     }else if ($colName=="untaxedAmount" or $colName=="taxPct" or $colName=="discountAmount") {
       $colScript .= '<script type="dojo/connect" event="onChange" >';
       if ($colName=="discountAmount") {
-        $colScript .= '   if (avoidRecursiveRefresh) return;';
+        $colScript .= '   if (avoidRecursiveRefresh) {';
+        $colScript .= '     updateFinancialTotal();';
+        $colScript .= '     return;';
+        $colScript .= '   }';
         $colScript .= '   avoidRecursiveRefresh=true;';
         $colScript .= '   setTimeout(\'avoidRecursiveRefresh=false;\',100);';
         $colScript .= '   dijit.byId("discountFrom").set("value","amount");';
@@ -438,15 +441,15 @@ class TenderMain extends SqlElement {
       $colScript .= '</script>';
     }else if ($colName=="discountRate") {
       $colScript .= '<script type="dojo/connect" event="onChange" >';
-      $colScript .= '   var rate=dijit.byId("discountRate").get("value");';
-      $colScript .= '   var untaxedAmount=dijit.byId("untaxedAmount").get("value");';
+      $colScript .= '  var rate=dijit.byId("discountRate").get("value");';
+      $colScript .= '  var untaxedAmount=dijit.byId("untaxedAmount").get("value");';
       $colScript .= '  if (!isNaN(rate)) {';
-      $colScript .= '   if (avoidRecursiveRefresh) return;';
-      $colScript .= '   avoidRecursiveRefresh=true;';
-      $colScript .= '   setTimeout(\'avoidRecursiveRefresh=false;\',100);';
-      $colScript .= '   dijit.byId("discountFrom").set("value","rate");';
-      $colScript .= '   var discount=Math.round(untaxedAmount*rate)/100;';
-      $colScript .= '   dijit.byId("discountAmount").set("value",discount);';
+      $colScript .= '    if (avoidRecursiveRefresh) return;';
+      $colScript .= '    avoidRecursiveRefresh=true;';
+      $colScript .= '    setTimeout(\'avoidRecursiveRefresh=false;\',100);';
+      $colScript .= '    dijit.byId("discountFrom").set("value","rate");';
+      $colScript .= '    var discount=Math.round(untaxedAmount*rate)/100;';
+      $colScript .= '    dijit.byId("discountAmount").set("value",discount);';
       $colScript .= '  }';
       $colScript .= '  formChanged();';
       $colScript .= '</script>';
@@ -475,6 +478,7 @@ class TenderMain extends SqlElement {
       echo ' title="' . i18n('generateProjectExpense') . '" class="greyCheck generalColClass _button_generateProjectExpenseClass" ';
       echo ' dojoType="dijit.form.CheckBox"  type="checkbox" >';
       echo '</div> ';
+      echo ' ('.i18n("generateProjectExpenseFrom").')';
     } 
     return $result;
   }

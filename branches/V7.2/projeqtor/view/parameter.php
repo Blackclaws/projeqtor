@@ -322,8 +322,12 @@ function drawTableFromObjectList($objectList) {
 			    echo '<div id="testEmailResult" style="padding-left:10px;display:inline-block;"></div>';
 			    echo '<div id="testEmailSaveResult" style="display:none;"></div>';
 			    echo '</div>';
-			  } else if ($code=='automaticPlanningDifferential' or $code=='automaticPlanningComplete') {
-			    CronExecution::drawCronExecutionDefintion(substr($code,9));
+			  } else if ($code=='automaticPlanningDifferential' or $code=='automaticPlanningComplete' or strpos($code, 'imputationAlertCron') !== false) { 
+			      if(strpos($code, 'imputationAlertCron') !== false){
+			          CronExecution::drawCronExecutionDefintion($code);
+			      }else{
+			          CronExecution::drawCronExecutionDefintion(substr($code,9));
+			      }
 			  }
 			}
 			//if ($format!='photo') {
@@ -507,6 +511,7 @@ function drawTableFromObjectList($objectList) {
 // END ADD BY Marc TABARY - 2017-02-20 - ORGANIZATION VISIBILITY        
   } else {
   	drawTableFromObjectList($parameterList);
+    //var_dump($parameterList);
   }
   ?></form>
 </div>

@@ -148,29 +148,35 @@ if ($mode=='edit') {
       $providerTerm->taxPct=$taxPct;
       $providerTerm->taxAmount=$taxAmount;
       $providerTerm->fullAmount=$fullAmount;
+      if (property_exists($order, 'idResource')) $providerTerm->idResource=$order->idResource;
       $res=$providerTerm->save();
       $totalUntaxedAmount-=$untaxedAmount;
       $totalFullAmount-=$fullAmount;
       $date=sameDayOfNextMonths($date, $day);
     }
   } else {
+    $order=new $objectClass($idProviderOrder);
     $providerTerm=new ProviderTerm();
     $providerTerm->idProject=$idProject;
     $providerTerm->idProviderOrder=$idProviderOrder;
     $providerTerm->date=$date;
     $providerTerm->name=$name.' '.$date;
     $providerTerm->taxPct=$taxPct;
-    
+    $providerTerm->untaxedAmount=0;
+    $providerTerm->taxAmount=0;
+    $providerTerm->fullAmount=0;
     $billLine=new BillLine();
     $critArray=array("refType"=>"ProviderOrder", "refId"=>$idProviderOrder);
     $number=$billLine->countSqlElementsFromCriteria($critArray);
     for ($i=1; $i<=$number; $i++) {
-      $untaxedAmount=RequestHandler::getNumeric('providerTermUntaxedAmount'.$i);
-      $taxAmount=RequestHandler::getNumeric('providerTermTaxAmount'.$i);
-      $fullAmount=RequestHandler::getNumeric('providerTermFullAmount'.$i);
-      $discount=RequestHandler::getNumeric('providerTermDiscountAmount'.$i);
+      $untaxedAmount=RequestHandler::getNumeric('providerTermUntaxedAmount'.$i,false,0);
+      $taxAmount=RequestHandler::getNumeric('providerTermTaxAmount'.$i,false,0);
+      $fullAmount=RequestHandler::getNumeric('providerTermFullAmount'.$i,false,0);
+      $discount=RequestHandler::getNumeric('providerTermDiscountAmount'.$i,false,0);
+      debugLog("Check /$untaxedAmount/$discount/");
       $providerTerm->untaxedAmount+=($untaxedAmount-$discount);
       $providerTerm->taxAmount+=$taxAmount;
+      if (property_exists($order, 'idResource')) $providerTerm->idResource=$order->idResource;
       $providerTerm->fullAmount+=$fullAmount;
     }
     $res=$providerTerm->save();
