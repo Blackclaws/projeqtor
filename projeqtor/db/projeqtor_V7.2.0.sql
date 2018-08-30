@@ -19,7 +19,7 @@ CREATE TABLE `${prefix}providerorder` (
   `creationDate` date DEFAULT NULL,
   `idProvider` int(12) unsigned DEFAULT NULL,
   `externalReference` varchar(100) DEFAULT NULL,
-  `description` mediumtext DEFAULT NULL,
+  `description` mediumtext DEFAULT NULL, 
   `additionalInfo` mediumtext DEFAULT NULL,
   `idStatus` int(12) unsigned DEFAULT NULL,
   `idResource` int(12) unsigned DEFAULT NULL,
@@ -525,6 +525,16 @@ UPDATE `${prefix}parameter` set parameterValue='CKInline' where parameterValue='
 
 -- Event for any status change 
 INSERT INTO `${prefix}event` (`id`, `name`, `idle`, `sortOrder`) VALUES (14,'statusChange',0,100);
+
+--- ==================================================================
+--- Imputation Cron
+--- ==================================================================
+
+INSERT INTO `${prefix}cronexecution` (`cron`, `fileExecuted`, `idle`, `fonctionName`, `nextTime`) VALUES 
+('0 0 1 * *', '../tool/generateImputationAlert.php', '1', 'cronImputationAlertCronResource', NULL),
+('0 0 1 * *', '../tool/generateImputationAlert.php', '1', 'cronImputationAlertCronProjectLeader', NULL),
+('0 0 1 * *', '../tool/generateImputationAlert.php', '1', 'cronImputationAlertCronTeamManager', NULL),
+('0 0 1 * *', '../tool/generateImputationAlert.php', '1', 'cronImputationAlertCronOrganismManager', NULL);
 
 --- ==================================================================
 --- Fix
