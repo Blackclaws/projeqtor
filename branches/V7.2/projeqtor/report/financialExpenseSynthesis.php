@@ -105,7 +105,7 @@ $nbTerm = 0;
 foreach ($listProviderOrder as $order ){
   $untaxedAmount += $order->totalUntaxedAmount;
   $fullAmount += $order->totalFullAmount;
-  //TERM idProviderBill=>null
+  //TERM idProviderBill is null
   $providerTerm = new ProviderTerm();
   $listProviderTerm = $providerTerm->getSqlElementsFromCriteria(null, false, $queryWhereTerm . $queryWherePlus .' and idProviderOrder='.$order->id.' and idProviderBill is null');
   foreach ($listProviderTerm as $term){

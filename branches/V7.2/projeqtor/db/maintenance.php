@@ -678,7 +678,7 @@ if ($currVersion=='V7.1.0') {
 }
 
 if (beforeVersion($currVersion,'V7.2.0')) {
-    //On récupère les paramètres des anciennes alertes pour le nouveau système
+    // Retreive Timesheet alerts parameters from old system to new format
     $alertGenerationDay=Parameter::getGlobalParameter('imputationAlertGenerationDay');
     $alertGenerationHour=Parameter::getGlobalParameter('imputationAlertGenerationHour');
     $alertControlDay=Parameter::getGlobalParameter('imputationAlertControlDay');

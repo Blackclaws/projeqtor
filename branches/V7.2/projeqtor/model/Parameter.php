@@ -538,27 +538,9 @@ class Parameter extends SqlElement {
         );
         break;
       case 'imputationAlertControlDayResource' :
-          $list=array(
-          'current'=>i18n('imputationControlCurrentDay'),
-          'previous'=>i18n('imputationControlPreviousDay'),
-          'next'=>i18n('imputationControlNextDay')
-          );
-          break;
-      case 'imputationAlertControlDayProjectLeader' :
-          $list=array(
-          'current'=>i18n('imputationControlCurrentDay'),
-          'previous'=>i18n('imputationControlPreviousDay'),
-          'next'=>i18n('imputationControlNextDay')
-          );
-          break;
-      case 'imputationAlertControlDayTeamManager' :
-          $list=array(
-          'current'=>i18n('imputationControlCurrentDay'),
-          'previous'=>i18n('imputationControlPreviousDay'),
-          'next'=>i18n('imputationControlNextDay')
-          );
-          break;
-      case 'imputationAlertControlDayOrganismManager' :
+     	case 'imputationAlertControlDayProjectLeader' :
+   		case 'imputationAlertControlDayTeamManager' :
+ 			case 'imputationAlertControlDayOrganismManager' :
           $list=array(
           'current'=>i18n('imputationControlCurrentDay'),
           'previous'=>i18n('imputationControlPreviousDay'),
