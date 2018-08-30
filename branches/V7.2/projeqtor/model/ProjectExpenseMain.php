@@ -208,50 +208,51 @@ class ProjectExpenseMain extends Expense {
    */
   public function save() {
     $old=$this->getOld();
-    $provOrder = new ProviderOrder();
-    $listProvOrd=$provOrder->getSqlElementsFromCriteria(array("idProjectExpense"=>$this->id));
-    $hasProvOrder=false;
-    if($this->isCalculated or count($listProvOrd)>0){
-      $this->realAmount = 0;
-      $this->realTaxAmount = 0;
-      $this->realFullAmount =0;
-    }
-    foreach ($listProvOrd as $prov){
-      $hasProvOrder = true;
-      $this->realAmount += $prov->totalUntaxedAmount;
-      $this->realTaxAmount += $prov->totalTaxAmount;
-      $this->realFullAmount += $prov->totalFullAmount;
-      $this->isCalculated = 1;
-    }
-    if (count($listProvOrd)==0) {
-      $this->isCalculated = 0;
-    }
-    if($hasProvOrder == false){
-      $provBill = new ProviderBill();
-      $listProvBill=$provBill->getSqlElementsFromCriteria(array("idProjectExpense"=>$this->id));
-      if($this->isCalculated or count($listProvBill)>0){
+    if($this->id){
+      $provOrder = new ProviderOrder();
+      $listProvOrd=$provOrder->getSqlElementsFromCriteria(array("idProjectExpense"=>$this->id));
+      $hasProvOrder=false;
+      if($this->isCalculated or count($listProvOrd)>0){
         $this->realAmount = 0;
         $this->realTaxAmount = 0;
         $this->realFullAmount =0;
       }
-      foreach ($listProvBill as $prov){
+      foreach ($listProvOrd as $prov){
+        $hasProvOrder = true;
         $this->realAmount += $prov->totalUntaxedAmount;
         $this->realTaxAmount += $prov->totalTaxAmount;
         $this->realFullAmount += $prov->totalFullAmount;
         $this->isCalculated = 1;
       }
-      if (count($listProvBill)==0) {
+      if (count($listProvOrd)==0) {
         $this->isCalculated = 0;
-        if (count($this->getExpenseDetail())>0) {
-          if($old->isCalculated==1){
-            foreach ($this->getExpenseDetail() as $expenseD){
-              $this->realAmount += $expenseD->amount;
+      }
+      if($hasProvOrder == false){
+        $provBill = new ProviderBill();
+        $listProvBill=$provBill->getSqlElementsFromCriteria(array("idProjectExpense"=>$this->id));
+        if($this->isCalculated or count($listProvBill)>0){
+          $this->realAmount = 0;
+          $this->realTaxAmount = 0;
+          $this->realFullAmount =0;
+        }
+        foreach ($listProvBill as $prov){
+          $this->realAmount += $prov->totalUntaxedAmount;
+          $this->realTaxAmount += $prov->totalTaxAmount;
+          $this->realFullAmount += $prov->totalFullAmount;
+          $this->isCalculated = 1;
+        }
+        if (count($listProvBill)==0) {
+          $this->isCalculated = 0;
+          if (count($this->getExpenseDetail())>0) {
+            if($old->isCalculated==1){
+              foreach ($this->getExpenseDetail() as $expenseD){
+                $this->realAmount += $expenseD->amount;
+              }
             }
           }
         }
       }
-    }
-    
+   }
     if($this->isCalculated != 1){
         // Update amounts
       if ($this->realAmount!=null) {

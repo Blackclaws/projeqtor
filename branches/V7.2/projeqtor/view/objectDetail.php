@@ -2439,6 +2439,10 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false, $pare
         if (strpos(strtolower($col), 'year')!==false) {
           echo ' constraints="{min:2000,max:2100,pattern:\'###0\'}" ';
         } else if ($max) {
+          //gautier min amount
+           if($col != 'update3Amount' and $col != 'update4Amount'){
+             echo ' constraints="{min:0}" ';
+          }
           // END ADD BY Marc TABARY - 2017-03-06 - PATTERN FOR YEAR
           // COMMENT BY Marc TABARY - 2017-03-06 - PATTERN FOR YEAR
           // if ($max) {
@@ -5279,7 +5283,7 @@ function drawResourceCostFromObject($list, $obj, $refresh=false) {
   foreach ($list as $rcost) {
     echo '<tr>';
     if (!$print) {
-      echo '<td class="assignData" style="text-align:center;white-space:nowrap;">';
+      echo '<td class="assignData" style="text-align:center;">';
       if (!$rcost->endDate and $canUpdate and !$print) {
         echo '  <a onClick="editResourceCost('."'".htmlEncode($rcost->id)."'".",'".htmlEncode($rcost->idResource)."'".",'".htmlEncode($rcost->idRole)."'".",'".($rcost->cost*100)."'".",'".htmlEncode($rcost->startDate)."'".",'".htmlEncode($rcost->endDate)."'".');" '.'title="'.i18n('editResourceCost').'" > '.formatSmallButton('Edit').'</a>';
       }

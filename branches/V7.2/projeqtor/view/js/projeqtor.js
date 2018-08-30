@@ -1267,7 +1267,9 @@ function finalizeMessageDisplay(destination, validationType) {
         }
         if(refTypeName && dijit.byId(dojo.byId('objectClass').value+'_Link'+refTypeName)){
           var url = "objectDetail.php?refreshLinks="+refTypeName;
-          loadContent("objectDetail.php?refreshLinks="+refTypeName,dojo.byId('objectClass').value+ '_Link'+refTypeName,'listForm');        
+          loadContent("objectDetail.php?refreshLinks="+refTypeName,dojo.byId('objectClass').value+ '_Link'+refTypeName,'listForm');  
+          //gautier #2947
+          loadContent("objectDetail.php?refresh=true", "detailFormDiv",'listForm');
         }else{
           loadContent("objectDetail.php?refreshLinks=true",dojo.byId('objectClass').value+ '_Link','listForm');
         }
