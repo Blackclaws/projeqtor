@@ -189,6 +189,10 @@ if (array_key_exists($pe.'_priority',$_REQUEST)) {
   $pe_priority=trim($_REQUEST[$pe.'_priority']);
 }
 
+$profile = RequestHandler::getValue('idProfile_multiple');
+$rate= RequestHandler::getValue('rate_multiple');
+$team=RequestHandler::getValue('idTeam_multiple');
+
 SqlElement::unsetCurrentObject();
 
 $cptOk=0;
@@ -210,6 +214,17 @@ foreach ($selectList as $id) {
 		continue;
 	}
 	$typeField='id'.$className.'Type';
+	
+	if($profile){
+	 $item->idProfile = $profile;  
+	}
+	if($team){
+	 $item->idTeam = $team;  
+	}
+	if($rate){
+	 $item->rate = $rate;
+	}
+	
 	if ($type and property_exists($item,$typeField)) {
 		$item->$typeField=$type;
 	}

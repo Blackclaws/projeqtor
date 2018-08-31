@@ -224,17 +224,15 @@ class TenderMain extends SqlElement {
         $projExpense->name = $this->name;
         $projExpense->idProject = $this->idProject;
         $projExpense->taxPct = $this->taxPct;
-        $projExpense->realAmount = $this->totalUntaxedAmount;
-        $projExpense->realTaxAmount = $this->totalTaxAmount;
-        $projExpense->realFullAmount = $this->totalFullAmount;
-        if($this->receptionDateTime){
-          $projExpense->expenseRealDate = $this->receptionDateTime;
-        }else if ($this->requestDateTime){
-          $projExpense->expenseRealDate = $this->requestDateTime;
+        $projExpense->plannedAmount = $this->totalUntaxedAmount;
+        $projExpense->plannedTaxAmount = $this->totalTaxAmount;
+        $projExpense->plannedFullAmount = $this->totalFullAmount;
+        if(trim($this->receptionDateTime)){
+          $projExpense->expensePlannedDate = $this->receptionDateTime;
+        }else if (trim($this->requestDateTime)){
+          $projExpense->expensePlannedDate = $this->requestDateTime;
         }else{
-          $currentDate = new DateTime();
-          $theCurrentDate = $currentDate->format('Y-m-d');
-          $projExpense->expenseRealDate = $theCurrentDate;
+          $projExpense->expensePlannedDate = date('Y-m-d');
         }
         $projExpense->save();
         $this->idProjectExpense = $projExpense->id;

@@ -50,7 +50,9 @@ $listOption=ob_get_clean();
 $listFull=array();
 $split=explode('</option><option',$listOption);
 foreach ($split as $string) {
-  $start=strpos($string,'value="')+7;
+	if (!trim($string)) continue;
+	$start=strpos($string,'value="')+7;
+  if (!$start) continue;
   $end=strpos($string,'"',$start);
   $val=substr($string,$start,$end-$start);
   $listFull[$val]=SqlList::getNameFromId('ProviderTerm', $val);

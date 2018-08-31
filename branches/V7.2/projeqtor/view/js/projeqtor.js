@@ -4307,7 +4307,6 @@ function refreshTargetDateFieldNotification(notificationItemValue) {
         handleAs : "text",
         load : function(data) {
             var obj = JSON.parse(data);
-            console.log(obj);
             if(data){
                 first=true;
                 for ( var key in obj) {

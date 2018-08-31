@@ -207,6 +207,11 @@ class ProviderTermMain extends SqlElement {
           $link->ref2Type='ProviderOrder';
           $link->ref2Id=$this->idProviderOrder;
           $link->save();
+          $providerOrder = new ProviderOrder($this->idProviderOrder);
+          if($providerOrder->idProjectExpense){
+            $newObj->idProjectExpense = $providerOrder->idProjectExpense;
+            $newObj->save();
+          }
         }
       }
       return $newObj;

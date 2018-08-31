@@ -173,7 +173,6 @@ if ($mode=='edit') {
       $taxAmount=RequestHandler::getNumeric('providerTermTaxAmount'.$i,false,0);
       $fullAmount=RequestHandler::getNumeric('providerTermFullAmount'.$i,false,0);
       $discount=RequestHandler::getNumeric('providerTermDiscountAmount'.$i,false,0);
-      debugLog("Check /$untaxedAmount/$discount/");
       $providerTerm->untaxedAmount+=($untaxedAmount-$discount);
       $providerTerm->taxAmount+=$taxAmount;
       if (property_exists($order, 'idResource')) $providerTerm->idResource=$order->idResource;

@@ -405,7 +405,7 @@ if ($paramShowExpenses) {
   foreach ($lst as $expense) {
     echo '<tr>';
     $done=($expense->paymentDone)?'Done':'';
-    echo '<td class="largeReportData' . $done . '" style="width:3%">' . $arrayClassInitial['ProviderOrder'] . htmlEncode($expense->id) . '</td>';
+    echo '<td class="largeReportData' . $done . '" style="width:3%">' . $arrayClassInitial['ProjectExpense'] . htmlEncode($expense->id) . '</td>';
     echo '<td class="largeReportData' . $done . '" style="width:7%">' . SqlList::getNameFromId('ProjectExpenseType', $expense->idProjectExpenseType) . '</td>';
     echo '<td class="largeReportData' . $done . '" style="width:15%">' . htmlEncode($expense->name).'</td>';
     echo '<td class="largeReportData' . $done . '" style="width:8%">' . SqlList::getNameFromId('Provider',$expense->idProvider) . '</td>';
