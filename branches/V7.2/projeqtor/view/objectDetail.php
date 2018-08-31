@@ -2440,7 +2440,7 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false, $pare
           echo ' constraints="{min:2000,max:2100,pattern:\'###0\'}" ';
         } else if ($max) {
           //gautier min amount
-           if($col != 'update3Amount' and $col != 'update4Amount'){
+           if($col != 'update3Amount' and $col != 'update4Amount' and $col != 'addUntaxedAmount' and $col != 'addFullAmount'){
              echo ' constraints="{min:0}" ';
           }
           // END ADD BY Marc TABARY - 2017-03-06 - PATTERN FOR YEAR
@@ -6320,15 +6320,15 @@ function drawTabExpense($obj, $refresh=false) {
   $listProviderOrder = $providerOrder->getSqlElementsFromCriteria(array("idProjectExpense"=>$obj->id));
   $untaxedAmount = 0;
   $fullAmount = 0;
+  $clauseProviderBill=transformListIntoInClause(SqlList::getListWithCrit('providerBill', array('idProvider'=>$obj->id)));
+  $arrayTerm=array();
   foreach ($listProviderOrder as $order ){
     $untaxedAmount += $order->totalUntaxedAmount;
     $fullAmount += $order->totalFullAmount;
     $providerTerm = new ProviderTerm();
-    $listProviderTerm = $providerTerm->getSqlElementsFromCriteria(array("idProviderOrder"=>$order->id,"idProviderBill"=>null));
+    $listProviderTerm = $providerTerm->getSqlElementsFromCriteria(null, false,'idProviderOrder='.$order->id);
     foreach ($listProviderTerm as $term){
-      $nbTerm++;
-      $untaxedAmountTerm += $term->untaxedAmount;
-      $fullAmountTerm += $term->fullAmount;
+    	$arrayTerm[$term->id]=$term;
     }
   }
   echo '  <tr>';
@@ -6355,10 +6355,14 @@ function drawTabExpense($obj, $refresh=false) {
     $providerTerm = new ProviderTerm();
     $listProviderTerm = $providerTerm->getSqlElementsFromCriteria(array("idProviderBill"=>$bill->id));
     foreach ($listProviderTerm as $term){
-      $nbTerm++;
-      $untaxedAmountTerm += $term->untaxedAmount;
-      $fullAmountTerm += $term->fullAmount;
+      $arrayTerm[$term->id]=$term;
     }
+  }
+  
+  foreach ($arrayTerm as $term){
+    $nbTerm++;
+    $untaxedAmountTerm += $term->untaxedAmount;
+    $fullAmountTerm += $term->fullAmount;
   }
   echo '  <tr>';
   echo '    <td class="assignHeader" colspan="1" style="width:25%">'.i18n('menuProviderBill').'</td>';
@@ -6374,7 +6378,7 @@ function drawTabExpense($obj, $refresh=false) {
   echo '  </tr>';
   echo '  <tr>';
   echo '    <td class="assignHeader" colspan="1" style="width:25%">'.i18n('menuProviderPayment').'</td>';
-  echo '    <td class="assignData" align="right" colspan="1" style="width:30%"></td>';
+  echo '    <td class="assignHeader" align="right" colspan="1" style="width:30%"></td>';
   echo '    <td class="assignData" align="right" colspan="1" style="width:30%">'.htmlDisplayCurrency($fullAmountPayment).'</td>';
   echo '    <td class="assignData" align="center" colspan="1" style="width:15%">'.$nbPayment.'</td>';
   echo '  </tr>';

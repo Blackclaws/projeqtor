@@ -246,9 +246,7 @@ class ProviderBillMain extends SqlElement {
         if($this->date){
           $projExpense->expenseRealDate = $this->date;
         }else{
-          $currentDate = new DateTime();
-          $theCurrentDate = $currentDate->format('Y-m-d');
-          $projExpense->expenseRealDate = $theCurrentDate;
+          $projExpense->expenseRealDate = date('Y-m-d');
         }
         $projExpense->save();
         $this->idProjectExpense = $projExpense->id;

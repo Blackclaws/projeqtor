@@ -224,7 +224,7 @@ INSERT INTO `${prefix}copyable` (`id`,`name`, `idle`, `sortOrder`,`idDefaultCopy
 
 UPDATE `${prefix}copyable` SET idDefaultCopyable=23 WHERE id=16;
 
-ALTER TABLE `${prefix}billLine`
+ALTER TABLE `${prefix}billline`
 ADD `idBillLine` int(12)  DEFAULT NULL,
 ADD `rate` DECIMAL(5,2)  DEFAULT NULL;
 

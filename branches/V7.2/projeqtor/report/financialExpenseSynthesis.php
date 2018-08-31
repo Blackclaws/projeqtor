@@ -162,7 +162,7 @@ echo'</tr>';
 //payment
 echo'<tr>';
 echo' <td class="assignHeader" style="width:25%">'.i18n('menuProviderPayment').'</td>';
-echo' <td class="assignData" align="right" style="width:30%"></td>';
+echo' <td class="assignHeader" align="right" style="width:30%"></td>';
 echo' <td class="assignData" align="right" style="width:30%">'.htmlDisplayCurrency($fullAmountPayment).'</td>';
 echo' <td class="assignData" align="center" style="width:15%">'.$nbPayment.'</td>';
 echo'</tr>';

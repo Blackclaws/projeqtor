@@ -66,13 +66,14 @@ class CronExecution extends SqlElement {
     $count=0;
     if(count($splitCron)==5){
       $find=false;
-      while(!$find){ //cron minute/hour/day of month/month/day of week
+      while(!$find){ //cron minute/hour/dayOfMonth/month/dayOfWeek
         if(($splitCron[0]=='*' || $date->format("i")==$splitCron[0])
         && ($splitCron[1]=='*' || $date->format("H")==$splitCron[1])
         && ($splitCron[2]=='*' || $date->format("d")==$splitCron[2])
         && ($splitCron[3]=='*' || $date->format("m")==$splitCron[3])
         && ($splitCron[4]=='*' || $date->format("N")==$splitCron[4])){
           $find=true;
+          $date->setTime($date->format("H"), $date->format("i"), 0);
           $this->nextTime=$date->format("U");
           $this->save(false);
         }else{
