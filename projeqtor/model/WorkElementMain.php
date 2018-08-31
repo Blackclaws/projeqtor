@@ -57,8 +57,8 @@ class WorkElementMain extends SqlElement {
 	    "refType" => "hidden",
 			"refId" => "hidden",
 			"refName" => "hidden",
-			"realWork" => "",
-	    "realCost" => "hidden",
+			"realWork" => "noImport",
+	    "realCost" => "hidden,noImport",
 	    "leftCost" => "hidden",
 			"ongoing" => "hidden",
 			"ongoingStartDateTime" => "hidden",
@@ -113,7 +113,7 @@ class WorkElementMain extends SqlElement {
 		return self::$_fieldsAttributes;
 	}
 	public static function lockRealWork() {
-		self::$_fieldsAttributes ['realWork'] = 'readonly';
+		self::$_fieldsAttributes ['realWork'] = 'readonly,noImport';
 	}
 	/**
 	 * ============================================================================

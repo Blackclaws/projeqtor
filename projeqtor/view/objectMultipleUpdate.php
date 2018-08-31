@@ -156,7 +156,7 @@
                  id="idProject" name="idProject">
                  <?php htmlDrawOptionForReference('idProject', null, null, false);?>
                 </select>
-                <button id="projectButton" dojoType="dijit.form.Button" showlabel="false"
+                <button id="projectButton_multiple" dojoType="dijit.form.Button" showlabel="false"
                   title="<?php echo i18n('showDetail');?>" iconClass="iconView">
                   <script type="dojo/connect" event="onClick" args="evt">
                     showDetail("idProject",0); 
@@ -669,11 +669,11 @@
       <?php $titlePane=get_class($obj)."_MultipleOthers";?>
       <br/>
       <div style="width: <?php echo $displayWidth;?>" dojoType="dijit.TitlePane" 
-     title="<?php echo i18n('sectionMiscellaneous');?>"
-     open="<?php echo ( array_key_exists($titlePane, $collapsedList)?'false':'true');?>"
-     id="<?php echo $titlePane;?>" 
-     onHide="saveCollapsed('<?php echo $titlePane;?>');"
-     onShow="saveExpanded('<?php echo $titlePane;?>');" >
+           title="<?php echo i18n('sectionMiscellaneous');?>"
+           open="<?php echo ( array_key_exists($titlePane, $collapsedList)?'false':'true');?>"
+           id="<?php echo $titlePane;?>" 
+           onHide="saveCollapsed('<?php echo $titlePane;?>');"
+           onShow="saveExpanded('<?php echo $titlePane;?>');" >
           <table>
             <?php
       // Notes
@@ -683,6 +683,47 @@
               <td>
                 <textarea dojoType="dijit.form.Textarea" name="note" id="note"
                  rows="2" style="width:<?php echo $fieldWidth;?>px;" maxlength="4000" maxSize="4" class="input" ></textarea>
+              </td>
+            </tr>
+            <?php } if(get_class($obj)=='Affectation'){ ?>
+            <tr class="detail">
+              <td class="label" style="width:<?php echo $labelWidth;?>px;"><?php echo i18n('colChangeProfile',array($obj->getColCaption('idProfile')));?>&nbsp;:&nbsp;</td>
+              <td>
+                <select dojoType="dijit.form.FilteringSelect" class="input" style="width:<?php echo $fieldWidth-25;?>px;" 
+                <?php echo autoOpenFilteringSelect();?>
+                 id="idProfile_multiple" name="idProfile_multiple">
+                 <?php htmlDrawOptionForReference('idProfile', null, null, false);?>
+                </select>
+                <button id="profileButton" dojoType="dijit.form.Button" showlabel="false"
+                  title="<?php echo i18n('showDetail');?>" iconClass="iconView">
+                  <script type="dojo/connect" event="onClick" args="evt">
+                    showDetail("idProfile",0); 
+                  </script>
+                </button>
+              </td>
+            </tr>
+            <tr class="detail">
+              <td class="label" style="width:<?php echo $labelWidth;?>px;"><?php echo i18n('colChangeRate');?>&nbsp;:&nbsp;</td>
+              <td>
+                <textarea dojoType="dijit.form.NumberTextBox"  constraints="{min:0,max:100}" name="rate_multiple" id="rate_multiple"
+                 rows="2" style="width:60px;" maxlength="4000" maxSize="4" class="input" ></textarea>
+              </td>
+            </tr>
+            <?php } if(get_class($obj)=='Resource'){?>
+            <tr class="detail">
+              <td class="label" style="width:<?php echo $labelWidth;?>px;"><?php echo i18n('colChangeTeam');?>&nbsp;:&nbsp;</td>
+              <td>
+                <select dojoType="dijit.form.FilteringSelect" class="input" style="width:<?php echo $fieldWidth-25;?>px;" 
+                <?php echo autoOpenFilteringSelect();?>
+                 id="idTeam_multiple" name="idTeam_multiple">
+                 <?php htmlDrawOptionForReference('idTeam', null, null, false);?>
+                </select>
+                <button id="teamButton" dojoType="dijit.form.Button" showlabel="false"
+                  title="<?php echo i18n('showDetail');?>" iconClass="iconView">
+                  <script type="dojo/connect" event="onClick" args="evt">
+                    showDetail("idTeam",0); 
+                  </script>
+                </button>
               </td>
             </tr>
             <?php }?>

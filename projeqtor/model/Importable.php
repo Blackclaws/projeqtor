@@ -309,7 +309,7 @@ class Importable extends SqlElement {
 						}
 					}
 					if (isset($titleObject[$idx]) and SqlElement::class_exists($titleObject[$idx]) ) {
-						$subObj=new $titleObject[$idx];
+						$subObj=new $titleObject[$idx]();
 						if ($subObj->isAttributeSetToField($title[$idx], 'noImport')) {
 							$color=$colorNoImport;
 							$noImport[$idx]=true;
