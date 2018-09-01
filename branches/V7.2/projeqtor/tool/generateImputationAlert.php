@@ -207,8 +207,11 @@ function calculListToSend($startDate, $endDate, &$lstRes){
         $tmpDate=addDaysToDate($tmpDate, 1);
     }
     $lstResource=SqlList::getList('Resource','name',null,false);
+    unset(SqlElement::$_cachedQuery['Habilitation']);
     // Initialize list of resources
     foreach ($lstResource as $id=>$name) {
+        $userTmp=new User($id);
+        if (!$userTmp->id or securityCheckDisplayMenu(null,'Imputation',$userTmp)==false) continue; // #2506 : do not send alert on Real work input if resource does not have access to Timesheet screen 
         $emptyArray['name']=$name;
         if(!isset($lstRes[$id])){
             $lstRes[$id]=array(

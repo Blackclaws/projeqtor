@@ -1455,14 +1455,13 @@ function array_sum_preserve_keys() {
  *          name of the menu to check
  * @return boolean, true if displayable, false either
  */
-function securityCheckDisplayMenu($idMenu, $class = null) {
+function securityCheckDisplayMenu($idMenu, $class = null,$user=null) {
   
-  $user = null;
   $menu = $idMenu;
   if (! $idMenu and $class) {
     $menu = SqlList::getIdFromName ( 'MenuList', 'menu' . $class );
   }
-  if (sessionUserExists()) {
+  if (!$user and sessionUserExists()) {
     $user = getSessionUser();
   }
   if (! $user) {
