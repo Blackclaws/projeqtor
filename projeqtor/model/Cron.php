@@ -649,7 +649,17 @@ class Cron {
 		// IMAP must be enabled in Google Mail Settings
 		$emailEmail=Parameter::getGlobalParameter('cronCheckEmailsUser');
 		$emailPassword=Parameter::getGlobalParameter('cronCheckEmailsPassword');
-		$emailAttachmentsDir=dirname(__FILE__) . '/../files/attach';
+		//$emailAttachmentsDir=dirname(__FILE__) . '/../files/attach';
+		$paramAttachDir=Parameter::getGlobalParameter('paramAttachmentDirectory');
+		$pathSeparator=Parameter::getGlobalParameter('paramPathSeparator');
+		if (substr($paramAttachDir,0,2)=='..') {
+		  $curdir=dirname(__FILE__);
+		  $paramAttachDir=str_replace(array('/model','\model'),array('',''),$curdir).substr($paramAttachDir,2);
+		}
+		$emailAttachmentsDir=((substr($paramAttachDir,-1)=='\\' or substr($paramAttachDir,-1)=="/")?$paramAttachDir:$paramAttachDir.$pathSeparator).'emails';
+		if (! file_exists($emailAttachmentsDir)) {
+		  mkdir($emailAttachmentsDir,0777,true);
+		}
 		$emailHost=Parameter::getGlobalParameter('cronCheckEmailsHost'); // {imap.gmail.com:993/imap/ssl}INBOX';
 		if (! $emailHost) {
 			traceLog("IMAP connection string not defined");
@@ -778,6 +788,12 @@ class Cron {
   		} else {
   		  $mailbox->markMailAsUnread($mailId);
   		}
+    }
+    // Clean $emailAttachmentsDir for php files
+    foreach(glob($emailAttachmentsDir.'/*') as $v) {
+      if (! is_file($v)) continue;
+      if (substr(strtolower($v),-4)=='.php' or substr(strtolower($v),-5,4)=='.php') unlink($v);
+      //if (is_file($v)) unlink($v);
     }
   }
   
