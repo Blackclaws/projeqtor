@@ -171,6 +171,7 @@ $queryWhere.=  $table . ".idProject not in " . Project::getAdminitrativeProjectL
 $ass=new Assignment();
 $res=new Resource();
 $querySelect .= "pe.idProject as idProj, pe.id idPe, pe.wbs wbs, pe.wbsSortable wbsSortable, pe.priority priority, pe.idplanningmode idplanningmode, pe.validatedenddate, pe.notplannedwork, ass.* , usr.fullName as name, pe.refName refName";
+$querySelect .= ", pe.topRefType as topreftype, pe.toprefid as toprefid, pe.topid as topid ";
 $queryFrom .= $table . ' pe, ' . $ass->getDatabaseTableName() . ' ass, ' . $res->getDatabaseTableName() . ' usr';
 $queryWhere= ' pe.refType=ass.refType and pe.RefId=ass.refId and usr.id=ass.idResource and ' . str_replace($table, 'pe', $queryWhere);
 $queryOrderBy .= ' name, pe.wbsSortable ';
@@ -348,9 +349,18 @@ if (Sql::$lastQueryNbRows == 0) {
       $sumProjLeft=0;
       $sumProjPlanned=0;
     }
-		$line["elementary"]='1';
-		$line["topreftype"]=($showProject)?'Project':'Resource';
-		$line["toprefid"]=($showProject)?$idProject:$idResource;
+    $line["elementary"]='1';
+    if (!isset($line["id"])) $line["id"]=$line["idpe"];
+		if ($line['reftype']=='Meeting' and $line['topreftype']=='PeriodicMeeting') {
+		  // Do not change topRefType and topRefId;
+		} else {
+		  if ($line['reftype']=='PeriodicMeeting') {
+		    $line["elementary"]='0'; // Will contain meetings
+		    $line["id"]=$line["idpe"];
+		  } 
+		  $line["topreftype"]=($showProject)?'Project':'Resource';
+		  $line["toprefid"]=($showProject)?$idProject:$idResource;
+		}
 		$line["validatedworkdisplay"]='';
 		$line["assignedworkdisplay"]=Work::displayWorkWithUnit($line["assignedwork"]);
 		$line["realworkdisplay"]=Work::displayWorkWithUnit($line["realwork"]);
@@ -363,7 +373,11 @@ if (Sql::$lastQueryNbRows == 0) {
       $line["status"]=(property_exists($item,'idStatus'))?SqlList::getNameFromId('Status',$item->idStatus):null;
       $line["type"]=(property_exists($item,$type))?SqlList::getNameFromId('Type',$item->$type):null;
 		}
-		$line["topid"]=($showProject)?$idProj:$idRes;
+		if ($line['reftype']=='Meeting' and $line['topreftype']=='PeriodicMeeting') {
+		  // topid from query
+		} else {
+		  $line["topid"]=($showProject)?$idProj:$idRes;
+		}
 		if ($line["leftwork"]>0) {
 			//$line['realenddate']='';
 		}
