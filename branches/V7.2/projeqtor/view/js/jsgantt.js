@@ -1260,7 +1260,8 @@ JSGantt.GanttChart =  function(pGanttVar, pDiv, pFormat) {
               + '<TABLE class="rightTableLine" style="width:' + vChartWidth + 'px;">' 
               + '<TR id=childrow_'+vID+' class="ganttTaskgroup" style="height: 21px;"'
               + ' onMouseover=JSGantt.ganttMouseOver("'+vID+'","right","group") '
-              + ' oncontextmenu="return false;"'
+              //+ ' oncontextmenu="return false;"'
+              + ' oncontextmenu="'+vTaskList[i].getContextMenu()+';return false;" '
               + ' onMouseout=JSGantt.ganttMouseOut("'+vID+'","right","group")>' + vItemRowStr + '</TR></TABLE></DIV>';
             var vBaselineTopTitle="";
             if (vTaskList[i].getBaseTopStart() && vTaskList[i].getBaseTopEnd()) {              
@@ -1306,7 +1307,8 @@ JSGantt.GanttChart =  function(pGanttVar, pDiv, pFormat) {
               vRightTable += '<div id=taskbar_'+vID+' title="' + vTaskList[i].getName() + ' : ' + vDateRowStr + vBaselineTopTitle + vBaselineBottomTitle +'" '
               + ' onmousedown=JSGantt.startLink('+i+'); '
               + ' onmouseup=JSGantt.endLink('+i+'); '
-              + ' oncontextmenu="return false;"'
+              //+ ' oncontextmenu="return false;"'
+              + ' oncontextmenu="'+vTaskList[i].getContextMenu()+';return false;" '
               + ' onMouseover=JSGantt.enterBarLink('+i+'); '
               + ' onMouseout=JSGantt.exitBarLink('+i+'); '
               + '  onclick=JSGantt.taskLink("' + vTaskList[i].getLink() + '");'
@@ -1315,7 +1317,8 @@ JSGantt.GanttChart =  function(pGanttVar, pDiv, pFormat) {
                 + ' onmousedown=JSGantt.startLink('+i+'); '
                 + ' onmouseup=JSGantt.endLink('+i+'); '
                 + ' onMouseover=JSGantt.enterBarLink('+i+'); '
-                + ' oncontextmenu="return false;"'
+                //+ ' oncontextmenu="return false;"'
+                + ' oncontextmenu="'+vTaskList[i].getContextMenu()+';return false;" '                
                 + ' onMouseout=JSGantt.exitBarLink('+i+'); '                
                 + ' class="ganttGrouprowBarComplete">' 
                 + '</div>' 
