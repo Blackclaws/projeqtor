@@ -92,7 +92,8 @@ if ($pe->idPlanningMode=='22') { // RECW
   $end=$pe->plannedEndDate;
 }
 if (!$start or !$end) {
-	echo '<div style="background-color:#FFF0F0;padding:3px;border:1px solid #E0E0E0;">'.i18n('noDataToDisplay').'<br/>'.i18n('planningCalculationRequired')."</div>";
+  if ($pe->elementary) echo '<div style="background-color:#FFF0F0;padding:3px;border:1px solid #E0E0E0;">'.i18n('noDataToDisplay').'<br/>'.i18n('planningCalculationRequired')."</div>";
+  else echo '<div style="background-color:#FFF0F0;padding:3px;border:1px solid #E0E0E0;">'.i18n('noDataToDisplay')."</div>";
 	return;
 }
 
