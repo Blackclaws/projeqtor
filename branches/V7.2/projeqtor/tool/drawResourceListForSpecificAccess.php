@@ -55,7 +55,7 @@ if ($selectedProject and $selectedProject!='*' and (isset($limitResourceByProj) 
 	}
 }
 
-$restrictArrayVisibility = getUserVisibleResourcesList(true,null,null,$includePool);
+$restrictArrayVisibility = getUserVisibleResourcesList(true,'List',null,$includePool);
 foreach ($table as $idR=>$nameR) {
   if (isset($restrictTableProjectSelected) and !isset($restrictTableProjectSelected[$idR])) {
     unset($table[$idR]);
