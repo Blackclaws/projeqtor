@@ -5110,3 +5110,39 @@ function hideImageEditMessageMail(code){
   var iconMessageMail = dojo.byId(code+'_iconMessageMail');
   iconMessageMail.style.display = "none";
 }
+
+var timeoutDirectSelectProject=null;
+function directSelectProject() {
+  var selected=null;
+  var selectedName=null; 
+  if (dojo.byId("objectClass") && dijit.byId("idProject") && dijit.byId("id")) {
+    if (dojo.byId("objectClass").value=='Project' && dijit.byId("id").value) {
+      selected=dijit.byId("id").get("value");
+      selectedName=dijit.byId("name").get("value");
+    } else {
+      selected=dijit.byId("idProject").get("value");
+      selectedName=dijit.byId("idProject").get("displayedValue");
+    }
+  }
+  if (selected) {
+    if (dojo.byId('projectSelectorMode') && dojo.byId('projectSelectorMode').value=='Standard') {
+      setSelectedProject(selected,selectedName,'selectedProject');
+    } else {
+      dijit.byId("projectSelectorFiletering").set("value",selected);
+    }
+  } else {
+    showAlert(i18n("noCurrentProject"));
+  }
+  timeoutDirectSelectProject=null;
+  hideWait();
+}
+function directUnselectProject() {
+  clearTimeout(timeoutDirectSelectProject);
+  if (dojo.byId('projectSelectorMode') && dojo.byId('projectSelectorMode').value=='Standard') { 
+    setSelectedProject('*',i18n('allProjects'),'selectedProject'); 
+  } else { 
+    dijit.byId('projectSelectorFiletering').set('value','*'); 
+  }
+  timeoutDirectSelectProject=null;
+  hideWait();
+}

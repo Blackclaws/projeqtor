@@ -94,9 +94,9 @@ function colorTranslateNameFormatter($value) {
 
 function booleanFormatter($value) {
   if ($value==1) { 
-    return '<img src="img/checkedOK.png" width="12" height="12" />'; 
+    return '<div style="width:100%;text-align:center"><img src="img/checkedOK.png" width="12" height="12" /></div>'; 
   } else { 
-    return '<img src="img/checkedKO.png" width="12" height="12" />'; 
+    return '<div style="width:100%;text-align:center"><img src="img/checkedKO.png" width="12" height="12" /></div>'; 
   }
 }
 

@@ -152,7 +152,7 @@ class ProjectMain extends SqlElement {
                                   "organizationInherited"=>"hidden",
                                   "organizationElementary"=>"hidden",
                                   "fixPlanning"=>"nobr",
-                                  "underConstruction"=>"nobr",
+                                  "isUnderConstruction"=>"nobr",
                                   "excludeFromGlobalPlanning"=>"nobr"
   );   
  
@@ -173,12 +173,8 @@ class ProjectMain extends SqlElement {
    */ 
   function __construct($id = NULL, $withoutDependentObjects=false) {
     if ($id=='*') {$id='';}
-    if (Parameter::getGlobalParameter('allowTypeRestrictionOnProject')!='YES') {
-      unset($this->_sec_restrictTypes);
-      unset($this->_spe_restrictTypes);
-    }
   	parent::__construct($id,$withoutDependentObjects);
-  	if(SqlList::getFieldFromId("Status", $this->idStatus, "setHandledStatus")!=0)self::$_fieldsAttributes["isUnderConstruction"]="readonly,nobr";
+  	
   }
 
    /** ==========================================================================
@@ -858,7 +854,7 @@ scriptLog("Project($this->id)->drawSubProjects(selectField=$selectField, recursi
           .")";
       $cpt=$pe->countSqlElementsFromCriteria(null,$where);
       if ($cpt>0) {
-        $result.='<br/>' .i18n('cannotExclureFromGlobalPlanning',array($cpt));
+        $result.='<br/>' .i18n('cannotExcludeFromGlobalPlanning',array($cpt));
       }
     }
     $defaultControl=parent::control();
@@ -998,6 +994,13 @@ scriptLog("Project($this->id)->drawSubProjects(selectField=$selectField, recursi
   }
   protected function getStaticFieldsTooltip() {
     return self::$_fieldsTooltip;
+  }
+  public function setAttributes() {
+    if (SqlList::getFieldFromId("Status", $this->idStatus, "setHandledStatus")!=0) self::$_fieldsAttributes["isUnderConstruction"]="readonly,nobr";
+    if (Parameter::getGlobalParameter('allowTypeRestrictionOnProject')!='YES') {
+      unset($this->_sec_restrictTypes);
+      unset($this->_spe_restrictTypes);
+    }
   }
 }
 ?>
