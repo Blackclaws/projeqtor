@@ -510,7 +510,7 @@ INSERT INTO `${prefix}accessscopespecific` (`id`, `name`, `accessCode`, `sortOrd
 -- ==================================================================
 
 -- change caption for Meeting menu context
-UPDATE `${prefix}menu`set menuClass=REPLACE(menuClass,'Meeting','Review') WHERE menuClass LIKE '%Meeting%';
+UPDATE `${prefix}menu`set menuClass=replace(menuClass,'Meeting','Review') WHERE menuClass LIKE '%Meeting%';
 
 -- manage milestones on activities
 ALTER TABLE `${prefix}activity`
@@ -540,15 +540,15 @@ INSERT INTO `${prefix}cronexecution` (`cron`, `fileExecuted`, `idle`, `fonctionN
 --- Fix
 --- ==================================================================
 
-UPDATE `${prefix}planningelement` SET plannedStartDate=(select meetingDate from `${prefix}meeting` as meet where meet.id=refId) where refType = "Meeting";
-UPDATE `${prefix}planningelement` SET plannedEndDate=(select meetingDate from `${prefix}meeting` as meet where meet.id=refId) where refType = "Meeting";
-UPDATE `${prefix}planningelement` SET validatedStartDate=(select meetingDate from `${prefix}meeting` as meet where meet.id=refId) where refType = "Meeting";
-UPDATE `${prefix}planningelement` SET validatedEndDate=(select meetingDate from `${prefix}meeting` as meet where meet.id=refId) where refType = "Meeting";
+UPDATE `${prefix}planningelement` SET plannedStartDate=(select meetingDate from `${prefix}meeting` as meet where meet.id=refId) where refType = 'Meeting';
+UPDATE `${prefix}planningelement` SET plannedEndDate=(select meetingDate from `${prefix}meeting` as meet where meet.id=refId) where refType = 'Meeting';
+UPDATE `${prefix}planningelement` SET validatedStartDate=(select meetingDate from `${prefix}meeting` as meet where meet.id=refId) where refType = 'Meeting';
+UPDATE `${prefix}planningelement` SET validatedEndDate=(select meetingDate from `${prefix}meeting` as meet where meet.id=refId) where refType = 'Meeting';
 
-UPDATE `${prefix}planningelement` SET realStartDate=(select meetingDate from `${prefix}meeting` as meet where meet.id=refId and meet.handled=1) where refType = "Meeting";
-UPDATE `${prefix}planningelement` SET realEndDate=(select meetingDate from `${prefix}meeting` as meet where meet.id=refId and meet.done=1) where refType = "Meeting";
+UPDATE `${prefix}planningelement` SET realStartDate=(select meetingDate from `${prefix}meeting` as meet where meet.id=refId and meet.handled=1) where refType = 'Meeting';
+UPDATE `${prefix}planningelement` SET realEndDate=(select meetingDate from `${prefix}meeting` as meet where meet.id=refId and meet.done=1) where refType = 'Meeting';
 
-UPDATE `${prefix}assignment` SET plannedStartDate=(select meetingDate from `${prefix}meeting` as meet where meet.id=refId) where refType = "Meeting";
-UPDATE `${prefix}assignment` SET plannedEndDate=(select meetingDate from `${prefix}meeting` as meet where meet.id=refId) where refType = "Meeting";
+UPDATE `${prefix}assignment` SET plannedStartDate=(select meetingDate from `${prefix}meeting` as meet where meet.id=refId) where refType = 'Meeting';
+UPDATE `${prefix}assignment` SET plannedEndDate=(select meetingDate from `${prefix}meeting` as meet where meet.id=refId) where refType = 'Meeting';
 
 DELETE FROM `${prefix}notifiable` WHERE notifiableItem='Activity' or notifiableItem='Milestone';
