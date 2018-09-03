@@ -232,30 +232,9 @@
       <span style="position: relative; left:7px; top:-7px; height: 20px">
       <button id="projectSelectorSelectCurrent" dojoType="dijit.form.Button" showlabel="false"
          title="<?php echo i18n('selectCurrentProject');?>" style="top:2px;height:20px;"
-         ondblclick="if (dojo.byId('projectSelectorMode') && dojo.byId('projectSelectorMode').value=='Standard') { setSelectedProject('*',i18n('allProjects'),'selectedProject'); } else { dijit.byId('projectSelectorFiletering').set('value','*'); }"
+         ondblclick="directUnselectProject();"
+         onClick="if (!timeoutDirectSelectProject) {showWait();timeoutDirectSelectProject=setTimeout('directSelectProject();',500);}"
          iconClass="iconProject16 iconProject iconSize16" xclass="detailButton">
-          <script type="dojo/connect" event="onClick" args="evt">
-            var selected=null;
-            var selectedName=null; 
-            if (dojo.byId("objectClass") && dijit.byId("idProject") && dijit.byId("id")) {
-              if (dojo.byId("objectClass").value=='Project' && dijit.byId("id").value) {
-                selected=dijit.byId("id").get("value");
-                selectedName=dijit.byId("name").get("value");
-              } else {
-                selected=dijit.byId("idProject").get("value");
-                selectedName=dijit.byId("idProject").get("displayedValue");
-              }
-            }
-            if (selected) {
-              if (dojo.byId('projectSelectorMode') && dojo.byId('projectSelectorMode').value=='Standard') {
-                setSelectedProject(selected,selectedName,'selectedProject');
-              } else {
-                dijit.byId("projectSelectorFiletering").set("value",selected);
-              }
-            } else {
-              showAlert(i18n("noCurrentProject"));
-            }
-          </script>
         </button>
 
       </span>
