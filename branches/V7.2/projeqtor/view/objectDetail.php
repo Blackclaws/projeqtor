@@ -2440,14 +2440,11 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false, $pare
           echo ' constraints="{min:2000,max:2100,pattern:\'###0\'}" ';
         } else if ($max) {
           //gautier min amount
-           if($col != 'update3Amount' and $col != 'update4Amount' and $col != 'addUntaxedAmount' and $col != 'addFullAmount'){
-             echo ' constraints="{min:0}" ';
+          if(($isAmount or $isCost) and $col != 'update3Amount' and $col != 'update3FullAmount' and $col != 'update4Amount' and $col != 'update4FullAmount' and $col != 'addUntaxedAmount' and $col != 'addFullAmount'){
+              echo ' constraints="{min:0,max:'.$max.(($isAmount)?',places:2':'').'}" ';
+          } else {
+            echo ' constraints="{min:-'.$max.',max:'.$max.(($isAmount)?',places:2':'').'}" ';
           }
-          // END ADD BY Marc TABARY - 2017-03-06 - PATTERN FOR YEAR
-          // COMMENT BY Marc TABARY - 2017-03-06 - PATTERN FOR YEAR
-          // if ($max) {
-          // END COMMENT BY Marc TABARY - 2017-03-06 - PATTERN FOR YEAR
-          echo ' constraints="{min:-'.$max.',max:'.$max.(($isAmount)?',places:2':'').'}" ';
         } else if ($isAmount) {
           echo ' constraints="{places:2}" ';
         }

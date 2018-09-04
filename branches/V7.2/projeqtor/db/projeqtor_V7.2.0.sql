@@ -510,7 +510,7 @@ INSERT INTO `${prefix}accessscopespecific` (`id`, `name`, `accessCode`, `sortOrd
 -- ==================================================================
 
 -- change caption for Meeting menu context
-UPDATE `${prefix}menu`set menuClass=replace(menuClass,'Meeting','Review') WHERE menuClass LIKE '%Meeting%';
+UPDATE `${prefix}menu` set menuClass=replace(menuClass,'Meeting','Review') WHERE menuClass LIKE '%Meeting%';
 
 -- manage milestones on activities
 ALTER TABLE `${prefix}activity`
