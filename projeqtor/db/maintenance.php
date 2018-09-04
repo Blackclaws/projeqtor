@@ -691,10 +691,10 @@ if (beforeVersion($currVersion,'V7.2.0')) {
         Parameter::storeGlobalParameter('imputationAlertControlNumberOfDays'.$dest, $alertControlNumberOfDays);
         $cronExec=SqlElement::getSingleSqlElementFromCriteria('CronExecution',array('fonctionName'=>'cronImputationAlertCron'.$dest));
         $splitHour = explode(':',$alertGenerationHour);
-        $hour = $splitHour[0];
-        $minute = $splitHour[1];
+        $hour = (isset($splitHour[0]))?$splitHour[0]:null;
+        $minute = (isset($splitHour[1]))?$splitHour[1]:null;
         if($hour<10)$hour=substr($hour,1);
-        if(isset($minute) && isset($hour) && isset($alertGenerationDay)){
+        if(isset($minute) && $minute!='' && isset($hour) && $hour!='' && isset($alertGenerationDay) && $alertGenerationDay!=''){
             $cronExec->cron=$minute.' '.$hour.' * * '.$alertGenerationDay;
         }else{
             $cronExec->cron='0 0 1 * *';
