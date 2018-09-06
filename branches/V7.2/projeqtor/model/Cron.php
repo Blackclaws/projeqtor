@@ -224,7 +224,10 @@ class Cron {
     if (file_exists(self::$runningFile)) {
   	  unlink(self::$runningFile);
     }
-    $errorFile=fopen(self::$errorFile.'_'.date('Ymd_His'), 'w');
+    
+    $errorFileName=self::$errorFile.'_'.date('Ymd_His');
+    $mode=(file_exists($errorFileName))?'w':'x';
+    $errorFile=fopen($errorFileName, $mode);
     fclose($errorFile);  
   } 
   
