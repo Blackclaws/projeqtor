@@ -445,21 +445,43 @@ Parameters for the “Cron” process.
       * Must be an IMAP connection string.
    
       * Ex: to connect to GMAIL input box, host must be: {imap.gmail.com:993/imap/ssl}INBOX
+
+.. rubric:: Section: Automatic planning calculation
+
+ .. compound:: **Differential calculation**
+
+Project planning is recalculated only for those who need to be. A data or more has been changed into the project so a new calculation is expected. 
+
+ .. compound:: **Complete calculation**
+
+All projects planning are recalculated. 
+
+ .. compound:: **Define parameters**
+ 
+ * Select a schedule, day(s), month  to be done.
+
+ .. compound:: **Activated or desactived this feature** 
+
+      * by simple click
+
+ .. compound:: ** Start date for... **
+
+      * Select when you want to recalculate project(s)according the date of today's date 
+
+
 .. rubric:: Section: Generation of alerts if real work is not entered
 
 * Specific parameters about alerts.
 
- .. compound:: **Send reminder on**
+ .. compound:: **Define parameters**
  
- * Select a day if you want send a reminder.
+ * Select a schedule, day(s), month  if you want send a reminder.
   
-        .. note:: 
-  
-            * It is possible to choose every day or never.
+            * It is possible to choose as wished.
 
- .. compound:: **Send reminder at** 
+ .. compound:: **Activated or desactived this feature** 
 
-      * Select the hour when you want receive the reminder.
+      * by simple click
 
  .. compound:: **Control input up to**
 
@@ -475,18 +497,10 @@ Parameters for the “Cron” process.
               
               * Off days in real work allocation will not send you an alert.
 
- .. compound:: **Send alert to resource**
+ .. compound:: **Select how to send alert to each profil **
 
-      * Select how send alert to ressource, Internal alert, email, both or none.
+      * Internal alert, email, both or none.
 
- .. compound:: **Send alert to project leader**
-
-      * Select how send alert to project leader
-      
- .. compound:: **Send alert to team manager**   
-      
-      * Select how send alert to team manager
-.. rubric:: Section: Automatic planning calculation
 
 .. rubric:: GENERAL SECTION 8 : System
 

@@ -41,6 +41,10 @@ function cronImputationAlertCronFonction($from) {
         verifyCronExecution($cronExecution, $sendToTeamManager, 'TeamManager', $from, $refStartDate, $refEndDate);
         verifyCronExecution($cronExecution, $sendToOrganismManager, 'OrganismManager', $from, $refStartDate, $refEndDate);
     }
+    if (! $refStartDate or ! $refEndDate) {
+      traceLog("Cron::run() - generationImputationAlert() - Incorrect start date = '$refStartDate' or end date = '$refEndDate' - Exiting");
+      return;
+    }
     generateImputationAlert($refStartDate, $refEndDate, $sendToResource, $sendToProjectLeader, $sendToTeamManager, $sendToOrganismManager);
     traceLog("Cron::run() - generateImputationAlert for ".$from.' at '.Cron::$lastCronTimeExecution. " $sendToResource $sendToProjectLeader $sendToTeamManager $sendToOrganismManager" );
 }

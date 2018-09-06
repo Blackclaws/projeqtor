@@ -79,6 +79,14 @@ Top bar
 
    * Defines the project that will be selected by default.
 
+
+*  Button (next to the project selector setup button) to select current project in the project selector. Click twice to set up "all project" or just one time to select the project relates to this element.
+
+.. figure:: /images/GUI/screenshot.461.png
+   :alt: Top bar
+   :align: center
+
+
 .. rubric:: 1.1 - Project selector parameters
 
 * Click on |buttonIconParameter| to display the project selector parameters dialog box, you can select :
@@ -407,6 +415,14 @@ List window
     \newpage
 
 .. _quick-search:
+
+Global list
+^^^^^^^^^^^^
+"Global List" screen that lists all the main project objects in the same list. The "Global List" view allows you to search among all the types of elements available in a single query. Just select what must be dispayed.
+
+.. figure:: /images/GUI/screenshot.460.png
+   :alt: Zone - Quick search
+   :align: center
 
 Quick search
 ^^^^^^^^^^^^
