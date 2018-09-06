@@ -18,6 +18,10 @@ Gantt charts
 
 .. _gantt-planning:
 
+Planning global
+--------
+Shows any item on Gantt chart
+
 Planning
 --------
 
@@ -395,6 +399,10 @@ For each planning element, a Gantt bar is displayed at them right.
 Warning: You have to selected week or day scale to display detail or a message 
 will ask you to switch to smaller scale.
 
+.. rubric:: 10 - Miscellaneous
+
+* On "floating" elements (floating milestone, fixed duration activity) without predecessor, set the planned start date to the validated start date
+
 .. raw:: latex
 
     \newpage
@@ -506,13 +514,27 @@ The calculations are programmed according to a frequency of CRON type (every min
    :alt: Dialog box - Store planned dates
    :align: center
 
-
 .. raw:: latex
 
     \newpage
 
 
 .. index:: ! Gantt chart (Projects portfolio)
+
+Global planning 
+------------------
+Project planning and activity planning calculation can be done in the Gantt.
+
+.. rubric:: - Add a new planning element displaying each items existing
+
+* Allows to create a new planning element.
+* The created item is added in the Gantt and detail window is opened.
+* The detail window allows to complete entry
+
+.. figure:: /images/GUI/screenshot.463.png
+   :alt: Popup menu - Create a new item
+   :align: center
+
 
 Projects portfolio
 ------------------
@@ -553,6 +575,8 @@ This screen displays Gantt chart from the resources point of view.
 
 Assigned tasks are grouped under resource level.
 
+On resource planning, group periodic meetings is under its parent
+
 .. rubric:: Gantt bars
 
 * For activities, the Gantt bar is split in two: 
@@ -587,6 +611,10 @@ Assigned tasks are grouped under resource level.
 * Tasks can be grouped by project.
 * Click on “Show project level” to display project level.
 
+.. rubric:: |added| - show activities without work
+* Ability to display assigned activities with zero work 
+
+
 .. rubric:: |two| - Show left work 
 
 * Left work can be displayed at right from Gantt bar.
@@ -596,6 +624,10 @@ Assigned tasks are grouped under resource level.
 
 * Click and select one ressource to display only his data.
 * Click and select one team to display only data of resources of this team.
+
+
+
+
 
 .. raw:: latex
 

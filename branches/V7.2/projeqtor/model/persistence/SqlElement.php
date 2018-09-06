@@ -2237,6 +2237,7 @@ abstract class SqlElement {
         $crit = array('refType' => get_class ( $this ), 'refId' => $this->id);
         $lstAss = $ass->getSqlElementsFromCriteria ( $crit );
         foreach ( $lstAss as $ass ) {
+          $oldAssId=$ass->id;
           $ass->id = null;
           $ass->idProject = $newObj->idProject;
           $ass->refType = $newClass;
@@ -2255,6 +2256,17 @@ abstract class SqlElement {
           $ass->billedWork = null;
           $ass->idle = 0;
           $ass->save ();
+          // Also copy AssignmentRecurring for recurring tasks
+          $assRec=new AssignmentRecurring();
+          $critRec = array('idAssignment' => $oldAssId);
+          $lstAssRec = $assRec->getSqlElementsFromCriteria ( $crit );
+          foreach ( $lstAssRec as $assRec ) {
+            $assRec->id = null;
+            $assRec->idAssignment=$ass->id;
+            $assRec->refType = $newClass;
+            $assRec->refId = $newObj->id;
+            $assRec->save();
+          }
         }
       }
     }

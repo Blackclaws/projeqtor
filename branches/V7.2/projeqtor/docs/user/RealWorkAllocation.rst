@@ -294,6 +294,9 @@ This section explains controls done on data entries.
 
 These controls are not blocking.
 
+Enhancement of data entered (yellow background)
+
+
 .. rubric:: Resource capacity validation
 
 

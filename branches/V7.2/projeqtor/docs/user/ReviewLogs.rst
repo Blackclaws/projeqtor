@@ -124,6 +124,10 @@ This will provide an easy way to find back when, where and why a decision has be
 
 Retrieving the agenda of a meeting from the description of its type
 
+**\* Diary**
+
+Viewing meetings in agenda, even if they are not planned
+
 .. raw:: latex
 
     \newpage
