@@ -46,9 +46,31 @@ This section summarizes significant changes made in the user guide document for 
 
 To see complete list of changes made to software, visit the ProjeQtOr web site.
 
-Current version is V7.1 
+Current version is V7.2
+
+**Main evolutions**
+.. rubric:: Expenses
+
+Extension of the Expenses part to put it at the same level as the Recipes
+
+ * See: :ref:`Expenses`  (still under construction)
+
+.. rubric:: Planning
+
+Global planning can show any item on Gantt chart
+
+ * See: :ref:`Global planning`
+
+.. rubric:: Ergonomics and interface
+
+A new "Global List" screen that lists all the main project objects in the same list.The "Global List" view allows you to search among all the types of elements available in a single query
+
+ * See: :ref:`Global list`
 
 
+
+
+.. rubric:: Prévious version was V7.1
 
 .. rubric:: Planning
 

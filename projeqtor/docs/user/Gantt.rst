@@ -20,7 +20,19 @@ Gantt charts
 
 Planning global
 --------
-Shows any item on Gantt chart
+
+Project planning and activity planning calculation can be done in the Gantt.
+
+.. rubric:: - Add and Show any item on Gantt chart.
+
+* Allows to create a new planning element.
+* The created item is added in the Gantt and detail window is opened.
+* The detail window allows to complete entry
+
+.. figure:: /images/GUI/screenshot.463.png
+   :alt: Popup menu - Create a new item
+   :align: center
+
 
 Planning
 --------
@@ -520,21 +532,6 @@ The calculations are programmed according to a frequency of CRON type (every min
 
 
 .. index:: ! Gantt chart (Projects portfolio)
-
-Global planning 
-------------------
-Project planning and activity planning calculation can be done in the Gantt.
-
-.. rubric:: - Add a new planning element displaying each items existing
-
-* Allows to create a new planning element.
-* The created item is added in the Gantt and detail window is opened.
-* The detail window allows to complete entry
-
-.. figure:: /images/GUI/screenshot.463.png
-   :alt: Popup menu - Create a new item
-   :align: center
-
 
 Projects portfolio
 ------------------
