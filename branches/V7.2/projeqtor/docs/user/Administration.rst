@@ -51,6 +51,10 @@ Administration console allows to execute administration tasks on application.
     * Allows to open and close application.
     * When the application is closed the message below will appear on login screen.
 
+.. rubric:: Section: Consistency check
+
+  * Consistency check on the WBS sequence (search for duplicates, sequence holes, incorrect order)
+  * This feature available on the administration screen also automatically corrects detected issues
 
 .. index:: ! Email (Maintenance of Data)
 .. index:: ! Internal alert (Maintenance of Data)

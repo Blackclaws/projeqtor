@@ -70,7 +70,7 @@ function jsonBuildSortCriteria(&$querySelect,&$queryFrom,&$queryWhere,&$queryOrd
         $externalObj=new $externalClass();
         $externalTable = $externalObj->getDatabaseTableName();
         $sortColumn='id';
-        if (property_exists($externalObj,'sortOrder')) {
+        if (property_exists($externalObj,'sortOrder') and $externalClass!='Project') {
           $sortColumn=$externalObj->getDatabaseColumnName('sortOrder');
         } else {
           $sortColumn=$externalObj->getDatabaseColumnName('name');

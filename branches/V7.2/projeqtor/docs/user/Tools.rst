@@ -242,6 +242,9 @@ For columns corresponding to linked tables ("idXxxx"), you can indicate as the c
 * Insertion into "Planning" elements (activity, project), automatically inserts an element in the table “PlanningElement”.
 * The data of this table can be inserted into the import file.
 
+.. rubric:: Tickets
+* Do not import the value of "real work" on tickets, even if it is specified in the import file.
+
 
 .. raw:: latex
 
