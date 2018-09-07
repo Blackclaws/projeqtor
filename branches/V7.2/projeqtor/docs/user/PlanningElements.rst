@@ -205,7 +205,7 @@ An activity can be:
 * Activities can be sorted inside their parent activity, on the Gantt planning view, using drag and drop.
 * Parent activity must belong to the same project.
 
-.. rubric:: **Work on tickets**
+.. rubric:: Work on tickets
 
 * Tickets can be linked to an activity (task).
 * Work on tickets will be included in the activity.
@@ -217,6 +217,9 @@ An activity can be:
     * The assignment will be automatically created once that resource has entered the working time (real work) in the ticket.
     * The assigned task and the sum of working time entries by resource in tickets will be available in its timesheet.
 
+.. rubric:: Filter on list
+
+Ability to filter activities by data or type, for instance by assigned resources
 
 .. rubric:: Monitoring indicator
 
