@@ -1,0 +1,2724 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2018, ProjeQtOr
+# This file is distributed under the same license as the ProjeQtOr Bedienhandbuch Deutsch package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: ProjeQtOr Bedienhandbuch Deutsch 7.2\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2018-07-03 14:34+0200\n"
+"PO-Revision-Date: 2018-07-17 21:10+0200\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 2.0.8\n"
+"Last-Translator: \n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"Language: de\n"
+
+#: ../../Concept.rst:12 ../../Concept.rst:327
+msgid "Project"
+msgstr "Projekt"
+
+#: ../../Concept.rst:14
+msgid "A project is the main entity of ProjeQtOr."
+msgstr "Ein Projekt ist die Haupteinheit von ProjeQtOr."
+
+#: ../../Concept.rst:16
+msgid ""
+"Project element is more than a :ref:`planning-element`, it is also used to:"
+msgstr ""
+"Projektelement ist mehr als ein :ref:`planning-element`, es wird auch "
+"verwendet um:"
+
+#: ../../Concept.rst:19
+msgid "Gather all project data"
+msgstr "Sammeln aller Projektdaten"
+
+#: ../../Concept.rst:20
+msgid "Allows to gather all data depend on project:"
+msgstr "Ermöglicht die Erfassung aller Daten je nach Projekt:"
+
+#: ../../Concept.rst:22 ../../Concept.rst:320
+msgid "Planning elements"
+msgstr "Planungselemente"
+
+#: ../../Concept.rst:23
+msgid "Risk assessment, Risk mitigation, Reserve"
+msgstr "Risikobewertung, Risikominderung, Reserve"
+
+#: ../../Concept.rst:24
+msgid "Ticket, Issue, Bug tracking, Change request, Support"
+msgstr "Ticket, Problem, Bug Tracking, Änderungsanfrage, Unterstützung"
+
+#: ../../Concept.rst:25
+msgid "Review logs, Meeting, Decision, Action plan"
+msgstr "Prüfprotokolle, Besprechung, Entscheidung, Aktionsplan"
+
+#: ../../Concept.rst:26
+msgid "Requirement & Test"
+msgstr "Anforderung & Test"
+
+#: ../../Concept.rst:27
+msgid "Project expense"
+msgstr "Projektkosten"
+
+#: ../../Concept.rst:28
+msgid "Quotation, Order, Bill, Payment"
+msgstr "Angebot, Bestellung, Rechnung, Zahlung"
+
+#: ../../Concept.rst:29
+msgid "Document"
+msgstr "Dokument"
+
+#: ../../Concept.rst:32
+msgid "Restrict data visibility"
+msgstr "Datensichtbarkeit einschränken"
+
+#: ../../Concept.rst:33
+msgid "Allows restricting data visibility to users by project."
+msgstr ""
+"Ermöglicht die Beschränkung der Datensichtbarkeit auf Benutzer pro Projekt."
+
+#: ../../Concept.rst:34
+msgid "The project data visibility is granted according to the user profile."
+msgstr ""
+"Die Sichtbarkeit der Projektdaten wird entsprechend dem Benutzerprofil "
+"gewährleistet."
+
+#: ../../Concept.rst:35
+msgid "See: :ref:`profiles-definition`"
+msgstr "Siehe auch: :ref:`profiles-definition`"
+
+#: ../../Concept.rst:36
+msgid "See: :ref:`allocation-to-project`"
+msgstr "Siehe auch: :ref:`allocation-to-project`"
+
+#: ../../Concept.rst:39
+msgid "**Project selector**"
+msgstr "** Projektauswahl**"
+
+#: ../../Concept.rst:41
+msgid ""
+"It is a filter that allows restricting the data visible to a dedicated "
+"project."
+msgstr ""
+"Es ist ein Filter, der es erlaubt, die sichtbaren Daten auf ein bestimmtes "
+"Projekt zu beschränken."
+
+#: ../../Concept.rst:42
+msgid "See: :ref:`top-bar`"
+msgstr "Siehe auch: :ref:`top-bar`"
+
+#: ../../Concept.rst:50
+msgid "Define the project type"
+msgstr "Definieren Sie den Projekttyp"
+
+#: ../../Concept.rst:51
+msgid "Three project types can be defined:"
+msgstr "Drei Projekttypen können definiert werden:"
+
+#: ../../Concept.rst:53
+msgid "**Operational project**"
+msgstr "**Betriebliches Projekt**"
+
+#: ../../Concept.rst:55
+msgid "Most common project to follow activity."
+msgstr "Häufigstes Projekt zur Verfolgung von Aktivitäten."
+
+#: ../../Concept.rst:57
+msgid "**Administrative project**"
+msgstr "**Verwaltungsprojekt**"
+
+#: ../../Concept.rst:59
+msgid ""
+"Allows to follow the non productive work as holidays, sickness, training, …"
+msgstr ""
+"Ermöglicht die Verfolgung der nicht produktiven Arbeit wie Urlaub, "
+"Krankheit, Ausbildung, …"
+
+#: ../../Concept.rst:63
+msgid ""
+"All resource will be able to enter some real work on such project, without "
+"having to be allocated to the project, nor assigned to project activities."
+msgstr ""
+"Alle Ressourcen werden in der Lage sein, die tatsächliche Arbeit im Projekt "
+"einzugeben, ohne dass sie dem Projekt zugewiesen werden müssen oder den "
+"Projektaktivitäten zugeordnet werden müssen."
+
+#: ../../Concept.rst:65
+msgid "**Template project**"
+msgstr "**Vorlagenprojekt**"
+
+#: ../../Concept.rst:67
+msgid ""
+"Designed to define templates, to be copied as operational project. (See: :"
+"ref:`copy-item`)"
+msgstr ""
+"Entworfen, um Vorlagen zu definieren, die als operatives Projekt kopiert "
+"werden sollen. (Siehe: :ref:`copy-item`)"
+
+#: ../../Concept.rst:68
+msgid ""
+"Any project leaders can copy such projects, without having to be allocated "
+"to them."
+msgstr ""
+"Jeder Projektleiter kann solche Projekte kopieren, ohne ihnen zugeordnet "
+"werden zu müssen."
+
+#: ../../Concept.rst:72
+msgid ""
+"The project type is defined in a project type (See: :ref:`project-type` "
+"screen)."
+msgstr ""
+"Der Projekttyp wird in einem Projekttyp definiert (siehe: :ref:`project-"
+"type` screen)."
+
+#: ../../Concept.rst:73 ../../Concept.rst:90
+msgid "Which is associated to a project (See: :ref:`project` screen)."
+msgstr "Die einem Projekt zugeordnet ist (Siehe: :ref:`project` screen)."
+
+#: ../../Concept.rst:76
+msgid "Define billable project"
+msgstr "Definieren Sie ein abrechenbares Projekt"
+
+#: ../../Concept.rst:77
+msgid "A project can be billable or not."
+msgstr "Ein Projekt kann abrechenbar sein oder nicht."
+
+#: ../../Concept.rst:79
+msgid "**Non billable project**"
+msgstr "**Nicht abrechenbares Projekt**"
+
+#: ../../Concept.rst:81
+msgid ""
+"The non billable project is used for internal or administrative project."
+msgstr ""
+"Das nicht abrechenbare Projekt wird für interne oder administrative Projekte "
+"verwendet."
+
+#: ../../Concept.rst:83
+msgid "**Billable project**"
+msgstr "**Abrechenbares Projekt**"
+
+#: ../../Concept.rst:85
+msgid ""
+"For billable projects the billing types available are: at terms, on "
+"producing work, on capping produced work and manual."
+msgstr ""
+"Für abrechenbare Projekte stehen folgende Abrechnungsarten zur Verfügung: zu "
+"Konditionen, bei der Erstellung von Arbeiten, bei der Kappung von "
+"produzierten Arbeiten und manuell."
+
+#: ../../Concept.rst:89
+msgid ""
+"The project billing type is defined in a project type (See: :ref:`project-"
+"type` screen)."
+msgstr ""
+"Die Projektabrechnungsart wird in einem Projekttyp definiert (Siehe: :ref:"
+"`project-type` screen)."
+
+#: ../../Concept.rst:100
+msgid "Organization"
+msgstr "Organisation"
+
+#: ../../Concept.rst:102
+msgid ""
+"The notion of organization introduces a way to consolidate projects on a "
+"different hiererchic structure, apart from projects / sub-projects structure."
+msgstr ""
+"Der Begriff der Organisation führt einen Weg ein, um Projekte auf einer "
+"anderen hierarchischen Struktur zu konsolidieren, abgesehen von Projekten / "
+"Teilprojekten."
+
+#: ../../Concept.rst:105
+msgid ""
+"Definition of the structure of the company in the frame of organizations "
+"(Departments, Units, Location, ...)"
+msgstr ""
+"Definition der Unternehmensstruktur im Rahmen von Organisationen "
+"(Abteilungen, Einheiten, Standorte,….)"
+
+#: ../../Concept.rst:106
+msgid ""
+"The organization summarizes the data of the projects in progress for the "
+"organization"
+msgstr ""
+"Die Organisation fasst die Daten der laufenden Projekte für die Organisation "
+"zusammen"
+
+#: ../../Concept.rst:112
+msgid "Organization link"
+msgstr "Organisatorische Verbindung"
+
+#: ../../Concept.rst:113
+msgid "Each project can be linked to an organization"
+msgstr "Jedes Projekt kann mit einer Organisation verknüpft werden"
+
+#: ../../Concept.rst:117
+msgid ""
+"Sub-projects are by default attached to the same organization as the parent, "
+"but can be integrated into another organization."
+msgstr ""
+"Teilprojekte sind standardmäßig der gleichen Organisation wie die "
+"Mutterorganisation zugeordnet, können aber in eine andere Organisation "
+"integriert werden."
+
+#: ../../Concept.rst:119
+msgid "Resources can be linked to an organization."
+msgstr "Ressourcen können mit einer Organisation verknüpft werden."
+
+#: ../../Concept.rst:123
+msgid ""
+"Depending on the profile, you can limit the visibility of resources to "
+"people in the same organization or team as the current user."
+msgstr ""
+"Je nach Profil können Sie die Sichtbarkeit von Ressourcen auf Personen in "
+"derselben Organisation oder demselben Team wie der aktuelle Benutzer "
+"beschränken."
+
+#: ../../Concept.rst:133
+msgid "Product"
+msgstr "Produkt"
+
+#: ../../Concept.rst:135
+msgid ""
+"A product is a material object or for IT/IS projects is a software "
+"application."
+msgstr ""
+"Ein Produkt ist ein materielles Objekt oder für IT/IS-Projekte eine "
+"Softwareanwendung."
+
+#: ../../Concept.rst:138
+msgid "Composition of product"
+msgstr "Zusammensetzung"
+
+#: ../../Concept.rst:139
+msgid ""
+"A product can have a complex structure that can be composed of sub-product "
+"and components."
+msgstr ""
+"Ein Produkt kann eine komplexe Struktur haben, die sich aus Teilprodukt und "
+"Komponenten zusammensetzen kann."
+
+#: ../../Concept.rst:140
+msgid ""
+"A product and its components can have several versions that represent each "
+"declination."
+msgstr ""
+"Ein Produkt und seine Komponenten können mehrere Versionen haben, die jede "
+"Deklination repräsentieren."
+
+#: ../../Concept.rst:141
+msgid "See: :ref:`product-structure`"
+msgstr "Siehe auch: :ref:`product-structure`"
+
+#: ../../Concept.rst:144
+msgid "Linked to a project"
+msgstr "Verknüpft mit einem Projekt"
+
+#: ../../Concept.rst:145
+msgid "A product is an element delivered by a project."
+msgstr "Ein Produkt ist ein Element, das von einem Projekt geliefert wird."
+
+#: ../../Concept.rst:146
+msgid "The link with the project have no impact on project planning."
+msgstr ""
+"Die Verknüpfung mit dem Projekt hat keinen Einfluss auf die Projektplanung."
+
+#: ../../Concept.rst:147
+msgid "Indicates only that project is devoted to a specific product versions."
+msgstr ""
+"Gibt nur an, dass das Projekt für eine bestimmte Produktversion bestimmt ist."
+
+#: ../../Concept.rst:148
+msgid ""
+"The link management is done in :ref:`project` and :ref:`product-version` "
+"screens."
+msgstr ""
+"Die Verwaltung der Links erfolgt in den Fenstern :ref:`project` and :ref:"
+"`product-version`."
+
+#: ../../Concept.rst:154
+msgid "Link with projects"
+msgstr "Verknüpfung mit Projekten"
+
+#: ../../Concept.rst:157
+msgid "Identifying the version that is the subject of treatment"
+msgstr "Identifizierung der zu behandelnden Version"
+
+#: ../../Concept.rst:158
+msgid ""
+"Product (component) versions can be identified in these elements: :ref:"
+"`activity`, :ref:`milestone`, :ref:`requirement`, :ref:`test-case`, :ref:"
+"`test-session` and :ref:`ticket`."
+msgstr ""
+"Produkt(komponenten)-Versionen können anhand dieser Elemente identifiziert "
+"werden: :ref:`activity`, :ref:`milestone`, :ref:`requirement`, :ref:`test-"
+"case`, :ref:`test-session` und :ref:`ticket`."
+
+#: ../../Concept.rst:159
+msgid ""
+"The purpose is to identify which product (component) and its version that is "
+"the subject of the treatment."
+msgstr ""
+"Ziel ist es, festzustellen, welches Produkt (Komponente) und welche Version "
+"Gegenstand der Bearbeitung ist."
+
+#: ../../Concept.rst:160
+msgid ""
+"Depending on the element, it has the possibility identifying version of  "
+"origin, target version or both."
+msgstr ""
+"Abhängig vom Element gibt es die Möglichkeit, Herkunftsversion, Zielversion "
+"oder beides zu identifizieren."
+
+#: ../../Concept.rst:163
+msgid "Document management"
+msgstr "Dokumentenmanagement"
+
+#: ../../Concept.rst:164
+msgid "Documents can be identified to products."
+msgstr "Dokumente können zu Produkten identifiziert werden."
+
+#: ../../Concept.rst:165
+msgid "See: :ref:`document`"
+msgstr "Siehe auch: :ref:`document`"
+
+#: ../../Concept.rst:168
+msgid "Management of product and component elements"
+msgstr "Verwaltung von Produkt- und Komponentenelementen"
+
+#: ../../Concept.rst:169
+msgid ""
+"See: :ref:`ConfigurationManagement`, for detail about management of product "
+"and component elements."
+msgstr ""
+"Siehe: :ref:`ConfigurationManagement`, für Details zur Verwaltung von "
+"Produkt- und Komponentenelementen."
+
+#: ../../Concept.rst:174
+msgid "Product structure"
+msgstr "Produktstruktur"
+
+#: ../../Concept.rst:176
+msgid ""
+"The product structure is defined depending on the relationships defined "
+"between product and component elements."
+msgstr ""
+"Die Produktstruktur wird in Abhängigkeit von den Beziehungen zwischen "
+"Produkt und Komponentenelementen definiert."
+
+#: ../../Concept.rst:178
+msgid "The rules defining a product structure are:"
+msgstr "Die Regeln, die eine Produktstruktur definieren, sind:"
+
+#: ../../Concept.rst:180
+msgid "**Relationships between product elements**"
+msgstr "**Beziehungen zwischen Produktelementen**"
+
+#: ../../Concept.rst:182
+msgid "A product can have several sub-products."
+msgstr "Ein Produkt kann mehrere Teilprodukte haben."
+
+#: ../../Concept.rst:183
+msgid "A sub-product can be in the composition only one product."
+msgstr "Ein Teilprodukt kann in der Zusammensetzung nur ein Produkt sein."
+
+#: ../../Concept.rst:189
+msgid "Relationships between product elements"
+msgstr "Beziehungen zwischen Produktelementen"
+
+#: ../../Concept.rst:191
+msgid "**Relationships between product and component elements**"
+msgstr "**Beziehungen zwischen Produkt und Komponentenelementen**"
+
+#: ../../Concept.rst:193
+msgid "A product can be composed of several components."
+msgstr "Ein Produkt kann aus mehreren Komponenten bestehen."
+
+#: ../../Concept.rst:194
+msgid "A component can be in the composition of several products."
+msgstr "Eine Komponente kann sich aus mehreren Produkten zusammensetzen."
+
+#: ../../Concept.rst:200
+msgid "Relationships between product and component elements"
+msgstr "Beziehungen zwischen Produkt- und Komponentenelementen"
+
+#: ../../Concept.rst:202
+msgid "**Relationships between component elements**"
+msgstr "**Beziehungen zwischen Komponentenelementen**"
+
+#: ../../Concept.rst:204
+msgid "Components can be linked between them (N to N relationships)."
+msgstr "Komponenten können miteinander verknüpft werden (N bis N-Beziehungen)."
+
+#: ../../Concept.rst:210
+msgid "Relationships between component elements"
+msgstr "Beziehungen zwischen Komponenten"
+
+#: ../../Concept.rst:213
+msgid "Versions of product and component elements"
+msgstr "Versionen von Produkt- und Komponentenelementen"
+
+#: ../../Concept.rst:214
+msgid ""
+"A product can have several versions that represent each declination of "
+"product."
+msgstr ""
+"Ein Produkt kann mehrere Versionen haben, die jeder Deklination des Produkts "
+"darstellen."
+
+#: ../../Concept.rst:215
+msgid ""
+"A component can have several versions that represent each declination of the "
+"component."
+msgstr ""
+"Eine Komponente kann mehrere Versionen enthalten, die jeder Deklination der "
+"Komponente darstellen."
+
+#: ../../Concept.rst:216
+msgid ""
+"Links can be defined between versions of products and components, but only "
+"with the elements defined in the product structure."
+msgstr ""
+"Es können Verknüpfungen zwischen Versionen von Produkten und Komponenten "
+"definiert werden, jedoch nur mit den in der Produktstruktur definierten "
+"Elementen."
+
+#: ../../Concept.rst:223
+msgid "Link between versions of product and component"
+msgstr "Verbindung zwischen Produkt- und Komponentenversionen"
+
+#: ../../Concept.rst:235
+msgid "Planning"
+msgstr "Planung"
+
+#: ../../Concept.rst:237
+msgid "ProjeQtOr implements work-driven planning method."
+msgstr "ProjeQtOr arbeitet mit einer arbeitsorientierten Planungsmethode."
+
+#: ../../Concept.rst:239
+msgid "Based upon on resource availability and their capacity."
+msgstr "Basierend auf der Verfügbarkeit von Ressourcen und deren Kapazität."
+
+#: ../../Concept.rst:242 ../../Concept.rst:583 ../../Concept.rst:894
+msgid "Resource availability"
+msgstr "Verfügbarkeit von Ressourcen"
+
+#: ../../Concept.rst:243
+msgid ""
+"Resource availability is defined by calendars and project allocation period."
+msgstr ""
+"Die Ressourcenverfügbarkeit wird durch Kalender und "
+"Projektzuordnungszeitraum definiert."
+
+#: ../../Concept.rst:245
+msgid "**Resource calendar**"
+msgstr "**Ressourcenkalender**"
+
+#: ../../Concept.rst:247
+msgid "Each resource is attached to a calendar to define its working days."
+msgstr ""
+"Jede Ressource ist einem Kalender zugeordnet, um deren Werktage zu "
+"definieren."
+
+#: ../../Concept.rst:248
+msgid ""
+"Tasks assigned to the resource will be planned according to working days "
+"defined in the calendar."
+msgstr ""
+"Die der Ressource zugeordneten Aufgaben werden nach den im Kalender "
+"definierten Werktagen geplant."
+
+#: ../../Concept.rst:249
+msgid "More detail, see: :ref:`resource-calendar`"
+msgstr "Mehr Details, siehe: :ref:`resource-calendar`"
+
+#: ../../Concept.rst:251
+msgid "**Project allocation period**"
+msgstr "**Projektvergabezeitraum**"
+
+#: ../../Concept.rst:253
+msgid "The resource can be allocated to several projects."
+msgstr "Die Ressource kann mehreren Projekten zugeordnet werden."
+
+#: ../../Concept.rst:254
+msgid "Possibility to define allocation period."
+msgstr "Möglichkeit, den Vergabezeitraum zu definieren."
+
+#: ../../Concept.rst:255
+msgid "More detail, see: :ref:`resource-allocation-to-project`"
+msgstr "Mehr dazu unter: :ref:`resource-allocation-to-project`"
+
+#: ../../Concept.rst:258 ../../Concept.rst:584
+msgid "Resource capacity"
+msgstr "Ressourcenkapazität"
+
+#: ../../Concept.rst:259
+msgid "Resource capacity is defined on daily base."
+msgstr "Die Ressourcenkapazität wird auf Tagesbasis definiert."
+
+#: ../../Concept.rst:260
+msgid "The scheduling tool does not exceed the daily resource capacity."
+msgstr ""
+"Das Planungstool überschreitet nicht die täglichen Ressourcenkapazität."
+
+#: ../../Concept.rst:264
+msgid "This indicator is defined for each resource."
+msgstr "Dieser Indikator wird für jede Ressource definiert."
+
+#: ../../Concept.rst:265
+msgid "It allows to define the daily capacity."
+msgstr "Ermöglicht die Definition der Tageskapazität."
+
+#: ../../Concept.rst:266
+msgid "More detail, see: :ref:`resource`"
+msgstr "Mehr Details, siehe: :ref:`resource`"
+
+#: ../../Concept.rst:269
+msgid "Project allocation rate"
+msgstr "Projektvergaberate"
+
+#: ../../Concept.rst:270
+msgid ""
+"The project allocation rate is used to resolve allocation conflicts between "
+"projects."
+msgstr ""
+"Die Projektzuweisungsrate wird zur Lösung von Zuordnungskonflikten zwischen "
+"Projekten verwendet."
+
+#: ../../Concept.rst:271
+msgid ""
+"It allows to define resource availability for a project during a period."
+msgstr ""
+"Ermöglicht die Definition der Ressourcenverfügbarkeit für ein Projekt "
+"während eines Zeitraums."
+
+#: ../../Concept.rst:272
+msgid ""
+"Use with the resource capacity, it allows to define the project allocation "
+"capacity on a weekly base."
+msgstr ""
+"Mit der Ressourcenkapazität kann die Projektverteilungskapazität auf "
+"Wochenbasis definiert werden."
+
+#: ../../Concept.rst:276
+msgid "Task assignation rate"
+msgstr "Aufgabenzuordnungsrate"
+
+#: ../../Concept.rst:277
+msgid ""
+"The task assignation rate is used to keep some scheduling time for other "
+"tasks."
+msgstr ""
+"Die Aufgabenzuteilungsrate wird verwendet, um eine gewisse Zeit für andere "
+"Aufgaben einzuplanen."
+
+#: ../../Concept.rst:278
+msgid ""
+"Use with the resource capacity, it allows to define the assignation capacity "
+"on a daily base."
+msgstr ""
+"Mit der Ressourcenkapazität können Sie die Zuordnungskapazität auf "
+"Tagesbasis definieren."
+
+#: ../../Concept.rst:281
+msgid "Draft planning"
+msgstr "Entwurfsplanung"
+
+#: ../../Concept.rst:283
+msgid "Two methods can be used to create a draft planning."
+msgstr ""
+"Für die Erstellung einer Entwurfsplanung stehen zwei Methoden zur Verfügung."
+
+#: ../../Concept.rst:285
+msgid "**Use planning mode \"fixed duration\"**"
+msgstr "**Verwenden Sie den Planungsmodus „feste Dauer“**"
+
+#: ../../Concept.rst:287
+msgid ""
+"This planning mode is used to define fixed duration tasks. (See: :ref:"
+"`planningMode`)"
+msgstr ""
+"Dieser Planungsmodus wird verwendet, um Aufgaben mit fester Dauer zu "
+"definieren. (Siehe: :ref:`planningMode`)"
+
+#: ../../Concept.rst:288
+msgid ""
+"Dependencies allow to define the execution order of tasks. (See: :ref:"
+"`dependencies`)"
+msgstr ""
+"Abhängigkeiten erlauben es, die Ausführungsreihenfolge von Aufgaben zu "
+"definieren. (Siehe: :ref:`dependencies`)"
+
+#: ../../Concept.rst:289
+msgid ""
+"You can define this planning mode as defaut in the Activities Types screen "
+"for some types of activities you'll use in draft plannings"
+msgstr ""
+"Sie können diesen Planungsmodus im Dialogfenster Aktivitätsarten für einige "
+"Arten von Aktivitäten, die Sie in der Entwurfsplanung verwenden werden, als "
+"Standard definieren"
+
+#: ../../Concept.rst:291
+msgid "**Use faked and team resource**"
+msgstr "**Benutze vorgetäuschte und Team-Ressourcen**"
+
+#: ../../Concept.rst:293
+msgid ""
+"The faked and team resource can be useful to get a first estimate of project "
+"cost and duration without involving the real resources."
+msgstr ""
+"Ein vorgetäuschte und Team-Ressource kann nützlich sein, um eine erste "
+"Schätzung der Projektkosten und -dauer zu erhalten, ohne die tatsächlichen "
+"Ressourcen einzubeziehen."
+
+#: ../../Concept.rst:294
+msgid ""
+"Planning schedule is calculated using of the work-driven planning method."
+msgstr ""
+"Der Planungsterminplan wird mit Hilfe der arbeitsgesteuerten Planungsmethode "
+"berechnet."
+
+#: ../../Concept.rst:295
+msgid "Faked and team resources can be mixed in same draft planning."
+msgstr ""
+"Vorgetäuschte und Teamressourcen können in derselben Entwurfsplanung "
+"gemischt werden."
+
+#: ../../Concept.rst:297
+msgid "**Faked resources**"
+msgstr "**Vorgetäuschte Ressourcen**"
+
+#: ../../Concept.rst:299
+msgid ""
+"For instance, you want to define a Java developer resource. You can create a "
+"resource named \"Java developer #1\"."
+msgstr ""
+"Beispielsweise möchten Sie eine Java-Entwickler Ressource definieren. Sie "
+"können eine Ressource namens „Java-Entwickler #1“ erstellen."
+
+#: ../../Concept.rst:300
+msgid ""
+"There are several levels of Java developer with different daily costs "
+"(beginner, intermediary and expert)."
+msgstr ""
+"Es gibt mehrere Ebenen der Java-Entwickler mit unterschiedlichen täglichen "
+"Kosten (Anfänger, Fortgeschrittene und Experten)."
+
+#: ../../Concept.rst:301
+msgid ""
+"You can define for this resource the functions and average daily cost for "
+"each level. (See: :ref:`resource-function-cost`)"
+msgstr ""
+"Sie können für diese Ressource die Funktionen und die durchschnittlichen "
+"Tageskosten pro Stufe festlegen. (Siehe: :ref:`resource-function-cost`)"
+
+#: ../../Concept.rst:302
+msgid ""
+"You assign this resource to tasks, to a specific function (level). (See: :"
+"ref:`assignment`)"
+msgstr ""
+"Sie ordnen diese Ressource einer bestimmten Funktion (Ebene) zu. (See: :ref:"
+"`assignment`)"
+
+#: ../../Concept.rst:303
+msgid ""
+"Faked resource will be easily replaced with *real* resources when project "
+"becomes real, with *allocation replacement* feature."
+msgstr ""
+"Vorgetäuschte Ressourcen werden einfach durch *reale* Ressourcen mit der "
+"Funktion *Zuweisungstausch* ersetzt, wenn das Projekt real wird."
+
+#: ../../Concept.rst:305
+msgid "**Team resource**"
+msgstr "**Team Ressource**"
+
+#: ../../Concept.rst:307
+msgid ""
+"A team resource is a resource whose daily capacity has been defined to "
+"represent capacity of a team (Capacity (FTE) > 1)."
+msgstr ""
+"Eine Teamressource ist eine Ressource, deren Tageskapazität definiert wurde, "
+"um die Kapazität eines Teams darzustellen (Kapazität (FTE) > 1). „FTE = Full "
+"Time Employee“"
+
+#: ../../Concept.rst:308
+msgid ""
+"For instance, you needed to define four Java developers, but you don’t want "
+"to create a resource for each. You can *overload* the daily capacity of the "
+"resource (Example: Capacity FTE=4)."
+msgstr ""
+"Zum Beispiel mussten Sie vier Java-Entwickler definieren, aber Sie wollen "
+"nicht für jeden eine Ressource anlegen. Sie können die Tageskapazität der "
+"Ressource *überladen* (Beispiel: Kapazität FTE=4)."
+
+#: ../../Concept.rst:309
+msgid ""
+"Using team resources is very easy but renders estimation of project duration "
+"as draft, not taking into account constraint of different resources such as "
+"possibly different skills or expertise level."
+msgstr ""
+"Die Verwendung von Teamressourcen ist sehr einfach, macht aber eine "
+"Schätzung der Projektdauer als Entwurf möglich, ohne Berücksichtigung der "
+"Einschränkung verschiedener Ressourcen wie z.B. unterschiedlicher "
+"Fähigkeiten oder Fachkenntnisse."
+
+#: ../../Concept.rst:310
+msgid ""
+"With team resources it is very easy to estimate planning with different "
+"number of members in the team : what if I include 5 Java develpers instead "
+"of 4 ? Just change capacity to 5 and re-calculate planning..."
+msgstr ""
+"Mit Team-Ressourcen ist es sehr einfach, die Planung mit unterschiedlicher "
+"Anzahl von Mitgliedern im Team abzuschätzen: was, wenn ich 5 Java-Entwickler "
+"anstelle von 4 einschließe? Einfach die Kapazität auf 5 ändern und die "
+"Planung neu berechnen…."
+
+#: ../../Concept.rst:322
+msgid ""
+"ProjeQtOr offers standard planning elements like Project, Activity and "
+"Milestone."
+msgstr ""
+"ProjeQtOr bietet Standard-Planungselemente wie Projekt, Aktivität und "
+"Meilenstein."
+
+#: ../../Concept.rst:324
+msgid ""
+"But also, it offers two more planning element: Test session and Meeting."
+msgstr ""
+"Es bietet aber auch zwei weitere Planungselemente: Testsitzung und "
+"Besprechung."
+
+#: ../../Concept.rst:328
+msgid "This planning element defines the project."
+msgstr "Dieses Planungselement definiert das Projekt."
+
+#: ../../Concept.rst:330
+msgid ""
+"It allows to specify information on the project sheet like the customer, "
+"bill contact, sponsor, manager and objectives."
+msgstr ""
+"Es ermöglicht die Angabe von Informationen auf dem Projektblatt wie Kunde, "
+"Rechnungskontakt, Sponsor, Manager und Ziele."
+
+#: ../../Concept.rst:331
+msgid "Documents, notes and attachments can be annexed."
+msgstr "Dokumente, Notizen und Anlagen können beigefügt werden."
+
+#: ../../Concept.rst:332
+msgid "More detail, see: :ref:`project` screen."
+msgstr "Mehr Details, siehe: :ref:`project` screen."
+
+#: ../../Concept.rst:335
+msgid "**Sub-project**"
+msgstr "**Teilprojekt**"
+
+#: ../../Concept.rst:337
+msgid "Sub-project is used to split the project."
+msgstr "Das Teilprojekt wird zur Aufteilung des Projekts verwendet."
+
+#: ../../Concept.rst:338
+msgid ""
+"The project can be split to correspond the organizational breakdown or "
+"something else."
+msgstr ""
+"Das Projekt kann so aufgeteilt werden, dass es der organisatorischen "
+"Aufteilung oder etwas anderem entspricht."
+
+#: ../../Concept.rst:340 ../../Concept.rst:351
+msgid "Separation of duties"
+msgstr "Funktionstrennung"
+
+#: ../../Concept.rst:342
+msgid "A project can be split into multiple sub projects."
+msgstr "Ein Projekt kann in mehrere Teilprojekte aufgeteilt werden."
+
+#: ../../Concept.rst:343
+msgid "A project leader and team can be allocated to each sub-project."
+msgstr ""
+"Jedem Teilprojekt kann ein Teil-Projektleiter und ein Team zugeordnet werden."
+
+#: ../../Concept.rst:344
+msgid ""
+"Project allocation allows to define data visibility and isolate sub-"
+"projects. (See: :ref:`allocation-to-project`)"
+msgstr ""
+"Die Projektzuordnung ermöglicht es, die Sichtbarkeit der Daten zu definieren "
+"und Teilprojekte zu isolieren. (Siehe: :ref:`allocation-to-project`)"
+
+#: ../../Concept.rst:345
+msgid "A supervisor can follow-up the project in its totality."
+msgstr "Ein Supervisor kann das Projekt in seiner Gesamtheit verfolgen."
+
+#: ../../Concept.rst:359
+msgid "Activity"
+msgstr "Aktivität"
+
+#: ../../Concept.rst:360
+msgid ""
+"This planning element can be a phase, a delivery, a task or any other "
+"activity."
+msgstr ""
+"Dieses Planungselement kann eine Phase, eine Lieferung, eine Aufgabe oder "
+"eine andere Aktivität sein."
+
+#: ../../Concept.rst:362
+msgid "An activity can grouped other activities or be a task."
+msgstr ""
+"Eine Aktivität kann andere Aktivitäten gruppieren oder eine Aufgabe sein."
+
+#: ../../Concept.rst:364
+msgid "**Grouping of activities**"
+msgstr "**Gruppierung von Aktivitäten**"
+
+#: ../../Concept.rst:366
+msgid "An activity can be the parent of activities."
+msgstr "Eine Aktivität kann das übergeordnete Element von Aktivitäten sein."
+
+#: ../../Concept.rst:367
+msgid "This allows to define the structure of phases and deliveries."
+msgstr ""
+"Dies ermöglicht es, die Struktur von Phasen und Lieferungen zu definieren."
+
+#: ../../Concept.rst:368
+msgid ""
+"Dates, works and costs of activities (child) are summarized in the activity "
+"(parent)."
+msgstr ""
+"Termine, Arbeiten und Kosten von Aktivitäten (Kind) werden in der Aktivität "
+"(Elternteil) zusammengefasst."
+
+#: ../../Concept.rst:370 ../../Concept.rst:392
+msgid "**Task**"
+msgstr "**Aufgabe**"
+
+#: ../../Concept.rst:372
+msgid "An activity is a task when it's not a parent of activities."
+msgstr ""
+"Eine Aktivität ist eine Aufgabe, wenn sie kein Elternteil von Aktivitäten "
+"ist."
+
+#: ../../Concept.rst:373 ../../Concept.rst:395
+msgid "A task is assigned to resources for to be performed."
+msgstr "Eine Aufgabe wird Ressourcen zugeordnet, die ausgeführt werden sollen."
+
+#: ../../Concept.rst:375
+msgid "More detail, see: :ref:`activity` screen."
+msgstr "Weitere Einzelheiten finden Sie unter: :ref:`activity` screen."
+
+#: ../../Concept.rst:379
+msgid "Test session"
+msgstr "Testsitzung"
+
+#: ../../Concept.rst:380
+msgid "This planning element is a specialized activity aimed for tests."
+msgstr "Dieses Planungselement ist eine spezialisierte Aktivität für Tests."
+
+#: ../../Concept.rst:382
+msgid "A test session allows to define a set of test case that must be run."
+msgstr ""
+"Eine Testsitzung erlaubt es, einen Satz von Testfällen zu definieren, die "
+"ausgeführt werden müssen."
+
+#: ../../Concept.rst:384
+msgid "A test session can grouped other test sessions or be a task."
+msgstr ""
+"Eine Testsitzung kann andere Testsitzungen gruppieren oder eine Aufgabe sein."
+
+#: ../../Concept.rst:386
+msgid "**Grouping of test sessions**"
+msgstr "**Gruppierung von Testsitzungen**"
+
+#: ../../Concept.rst:388
+msgid "A test session can be the parent of test sessions."
+msgstr ""
+"Eine Testsitzung kann das übergeordnete Element von Testsitzungen sein."
+
+#: ../../Concept.rst:389
+msgid "This allows to define the structure of test sessions."
+msgstr "Dies ermöglicht es, die Struktur von Testsitzungen zu definieren."
+
+#: ../../Concept.rst:390
+msgid ""
+"Dates, works and costs of test sessions (child) are summarized in the test "
+"session (parent)."
+msgstr ""
+"Termine, Arbeiten und Kosten von Testsitzungen (Kind) werden in der "
+"Testsitzung (Elternteil) zusammengefasst."
+
+#: ../../Concept.rst:394
+msgid "A test session is a task when it's not a parent of test sessions."
+msgstr "Eine Testsitzung ist eine Aufgabe, wenn sie nicht übergeordnet ist."
+
+#: ../../Concept.rst:397
+msgid "More detail, see: :ref:`test-session` screen."
+msgstr "Weitere Details finden Sie unter: :ref:`test-session` screen."
+
+#: ../../Concept.rst:404
+msgid "Milestone"
+msgstr "Meilenstein"
+
+#: ../../Concept.rst:405
+msgid ""
+"This planning element is a flag in the planning, to point out key dates."
+msgstr ""
+"Dieses Planungselement ist ein Kennzeichen in der Planung, um auf Stichtage "
+"hinzuweisen."
+
+#: ../../Concept.rst:407
+msgid "May be a transition point between phases, deliveries."
+msgstr "Möglicher Übergangspunkt zwischen Phasen, Lieferungen."
+
+#: ../../Concept.rst:409
+msgid "ProjeQtOr offers two types of milestone floating and fixed."
+msgstr "ProjeQtOr bietet zwei Arten von Meilensteinen, flexible und feste."
+
+#: ../../Concept.rst:411
+msgid "More detail, see: :ref:`milestone` screen."
+msgstr "Weitere Einzelheiten finden Sie unter: :ref:`milestone` screen."
+
+#: ../../Concept.rst:414
+msgid "Meeting"
+msgstr "Meetings"
+
+#: ../../Concept.rst:415
+msgid "This planning element acts like a fixed milestone, but it's a task."
+msgstr ""
+"Dieses Planungselement wirkt wie ein fester Meilenstein, ist aber eine "
+"Aufgabe."
+
+#: ../../Concept.rst:417
+msgid "Like a milestone, a meeting can be a transition point."
+msgstr "Wie ein Meilenstein kann ein Meeting ein Übergangspunkt sein."
+
+#: ../../Concept.rst:419
+msgid ""
+"But also, like a task because it's possible to assign resources and planned "
+"work."
+msgstr ""
+"Aber auch, wie eine Aufgabe, weil es möglich ist, Ressourcen und geplante "
+"Arbeit zuzuweisen."
+
+#: ../../Concept.rst:421
+msgid "More detail, see: :ref:`meeting` screen."
+msgstr "Mehr Details, siehe: :ref:`meeting` screen."
+
+#: ../../Concept.rst:430
+msgid "Dependencies"
+msgstr "Abhängigkeiten"
+
+#: ../../Concept.rst:432
+msgid ""
+"Dependencies allow to define the execution order of tasks (sequential or "
+"concurrent)."
+msgstr ""
+"Abhängigkeiten erlauben es, die Ausführungsreihenfolge von Aufgaben "
+"(sequentiell oder gleichzeitig) zu definieren."
+
+#: ../../Concept.rst:434
+msgid "All planning elements can be linked to others."
+msgstr "Alle Planungselemente können mit anderen verknüpft werden."
+
+#: ../../Concept.rst:436
+msgid ""
+"Dependencies can be managed in the Gantt chart and in screen of planning "
+"element."
+msgstr ""
+"Abhängigkeiten können im Balkenplan und im Bild des Planungselements "
+"verwaltet werden."
+
+#: ../../Concept.rst:438
+msgid ""
+"More detail, see: :ref:`project-planning`, :ref:`predSuces-element-section`."
+msgstr ""
+"Mehr Details siehe: :ref:`project-planning`, :ref:`predSuces-element-"
+"section`."
+
+#: ../../Concept.rst:440
+msgid "Global parameter \"Apply strict mode for dependencies\""
+msgstr "Globaler Parameter „Stricktmodus für Abhängigkeiten anwenden“."
+
+#: ../../Concept.rst:442
+msgid ""
+"If the value is set to “Yes”, the planning element (successor) can't start "
+"the same day that the end date of planning element (predecessor)."
+msgstr ""
+"Wenn der Wert auf „Ja“ gesetzt ist, kann das Planungselement (Nachfolger) "
+"nicht am selben Tag beginnen wie das Endedatum des Planungselements "
+"(Vorgänger)."
+
+#: ../../Concept.rst:445
+msgid "Delay (days)"
+msgstr "Verzögerung (Tage)"
+
+#: ../../Concept.rst:446
+msgid "A delay can be defined between predecessor and successor (start)."
+msgstr ""
+"Zwischen Vorgänger und Nachfolger kann eine Verzögerung definiert werden "
+"(Start)."
+
+#: ../../Concept.rst:None
+msgid "Dependency types"
+msgstr "Beziehungstypen"
+
+#: ../../Concept.rst:451
+msgid "ProjeQtOr offers only the dependency (Finish to Start)."
+msgstr "ProjeQtOr bietet nur die Abhängigkeit (Finish to Start)."
+
+#: ../../Concept.rst:452
+msgid ""
+"This section explains what are they dependency types can be reproduced or "
+"not."
+msgstr ""
+"In diesem Abschnitt wird erläutert, welche Abhängigkeitstypen reproduziert "
+"werden können und welche nicht."
+
+#: ../../Concept.rst:454
+msgid "**Start to Start**"
+msgstr "**Anfang zu Anfang**"
+
+#: ../../Concept.rst:456
+msgid ""
+"To reproduce this dependency type, it's possible to add a milestone as prior "
+"of both tasks."
+msgstr ""
+"Um diesen Abhängigkeitstyp zu reproduzieren, ist es möglich, einen "
+"Meilenstein als Vorgänger der beiden Aufgaben hinzuzufügen."
+
+#: ../../Concept.rst:458
+msgid "**Start to Finish**"
+msgstr "**Anfang zu Ende**"
+
+#: ../../Concept.rst:460 ../../Concept.rst:465
+msgid "This dependency type can't be reproduced in ProjeQtOr."
+msgstr "Dieser Abhängigkeitstyp kann in ProjeQtOr nicht reproduziert werden."
+
+#: ../../Concept.rst:461
+msgid "This is a very weird scenario."
+msgstr "Das ist ein sehr eigenartiges Szenario."
+
+#: ../../Concept.rst:463
+msgid "**Finish to Finish**"
+msgstr "**Ende zu Ende**"
+
+#: ../../Concept.rst:466
+msgid ""
+"This involves reverse planning and may introduce overloading of resources, "
+"what is not possible in ProjeQtOr."
+msgstr ""
+"Dies beinhaltet eine umgekehrte Planung und kann zu einer Überlastung der "
+"Ressourcen führen, was in ProjeQtOr nicht möglich ist."
+
+#: ../../Concept.rst:476 ../../Concept.rst:589
+msgid "Planning mode"
+msgstr "Planungsmodus"
+
+#: ../../Concept.rst:478
+msgid ""
+"Planning mode allows to define constraints on planning elements: activity, "
+"test session and milestone."
+msgstr ""
+"Der Planungsmodus ermöglicht die Definition von Einschränkungen für "
+"Planungselemente: Aktivität, Testsitzung und Meilenstein."
+
+#: ../../Concept.rst:480
+msgid "Planning modes are grouped under two types (Floating and Fixed)."
+msgstr ""
+"Die Planungsmodi sind unter zwei Typen (flexibel und fixiert) "
+"zusammengefasst."
+
+#: ../../Concept.rst:483
+msgid "Floating"
+msgstr "Fließend"
+
+#: ../../Concept.rst:484
+msgid "These planning modes have no constraint date."
+msgstr "Diese Planungsmodi haben kein Einschränkungsdatum."
+
+#: ../../Concept.rst:485
+msgid "Planning element is floating depending on its predecessors."
+msgstr "Das Planungselement bewegt sich in Abhängigkeit von seinen Vorgängern."
+
+#: ../../Concept.rst:486
+msgid ""
+"Planning modes: As soon as possible, Work together, Fixed duration and "
+"floating milestone."
+msgstr ""
+"Planungsmodi So bald wie möglich, Zusammenarbeiten, Feste Dauer und "
+"gleitender Meilenstein."
+
+#: ../../Concept.rst:490
+msgid "Fixed"
+msgstr "Fest"
+
+#: ../../Concept.rst:491
+msgid "These planning modes have constraint date."
+msgstr "Diese Planungsmodi haben ein Begrenzungsdatum."
+
+#: ../../Concept.rst:492
+msgid ""
+"Planning modes: Must not start before validated date, As late as possible, "
+"Regular and fixed milestone."
+msgstr ""
+"Planungsmodi Darf nicht vor dem validierten Datum beginnen, So spät wie "
+"möglich, Regelmäßiger und fester Meilenstein."
+
+#: ../../Concept.rst:494
+msgid ""
+"More detail, see: :ref:`Activity and Test session  planning modes<progress-"
+"section-planning-mode>` and :ref:`Milestone planning modes<planning-mode-"
+"milestone>`."
+msgstr ""
+"Mehr Details, siehe: :ref:`Activity and Test session  planning "
+"modes<progress-section-planning-mode>` und :ref:`Milestone planning "
+"modes<planning-mode-milestone>`."
+
+#: ../../Concept.rst:498
+msgid ""
+"Because ProjeQtOr does not backward planning, the planning mode \"As late as "
+"possible\" with no constraint date  (Floating) is not available."
+msgstr ""
+"Da ProjeQtOr nicht rückwärts plant, steht der Planungsmodus „So spät wie "
+"möglich“ ohne Einschränkungsdatum (flexibel) nicht zur Verfügung."
+
+#: ../../Concept.rst:500
+msgid "Default planning mode"
+msgstr "Standard-Planungsmodus"
+
+#: ../../Concept.rst:502
+msgid ""
+"Possibility to define the default planning mode according to element type."
+msgstr ""
+"Möglichkeit, den Standard-Planungsmodus in Abhängigkeit von der Elementart "
+"zu definieren."
+
+#: ../../Concept.rst:503
+msgid ""
+"See: :ref:`activity-type`, :ref:`milestone-type` and :ref:`test-session-"
+"type` screens."
+msgstr ""
+"Siehe auch: :ref:`activity-type`, :ref:`milestone-type` und :ref:`test-"
+"session-type` Bildschirme."
+
+#: ../../Concept.rst:513 ../../Concept.rst:573
+msgid "Prioritized planning elements"
+msgstr "Priorisierte Planungselemente"
+
+#: ../../Concept.rst:515
+msgid "Planning elements are scheduled in this order of priority:"
+msgstr "Planungselemente werden in dieser Reihenfolge eingeplant:"
+
+#: ../../Concept.rst:517
+msgid "Fixed date (Fixed milestone, Meeting)"
+msgstr "Fester Termin (Fester Meilenstein, Besprechung"
+
+#: ../../Concept.rst:518
+msgid ""
+"Recurrent activities - Planning modes \"Regular...\" (Activity, Test session)"
+msgstr ""
+"Wiederkehrende Aktivitäten - Planungsmodi „Normal….“ (Aktivität, Testsitzung)"
+
+#: ../../Concept.rst:519
+msgid "Fixed duration (Activity, Test session)"
+msgstr "Feste Dauer (Aktivität, Testsitzung)"
+
+#: ../../Concept.rst:520
+msgid "Others"
+msgstr "Andere"
+
+#: ../../Concept.rst:526
+msgid "Scheduling priority"
+msgstr "Terminierungspriorität"
+
+#: ../../Concept.rst:528
+msgid ""
+"The scheduling priority allows to define scheduled order among planning "
+"elements."
+msgstr ""
+"Die Terminpriorität ermöglicht es, den terminierten Auftrag zwischen den "
+"Planungselementen zu definieren."
+
+#: ../../Concept.rst:530
+msgid "Possible values: from 1 (highest priority) to 999 (lowest priority)."
+msgstr "Mögliche Werte: 1 (höchste Priorität) bis 999 (niedrigste Priorität)."
+
+#: ../../Concept.rst:532
+msgid ""
+"Scheduling priority value is set in progress section of planning element."
+msgstr ""
+"Der Terminprioritätswert wird im Abschnitt Fortschritt des Planungselements "
+"gesetzt."
+
+#: ../../Concept.rst:536
+msgid ""
+"If projects have different priorities, all elements of project with highest "
+"priority are scheduled first."
+msgstr ""
+"Wenn Projekte unterschiedliche Prioritäten haben, werden alle Elemente des "
+"Projekts mit der höchsten Priorität zuerst geplant."
+
+#: ../../Concept.rst:540
+msgid "Project structure"
+msgstr "Projektstruktur"
+
+#: ../../Concept.rst:542
+msgid "Work breakdown structure (WBS) is used to define project structure."
+msgstr ""
+"Der Projektstrukturplan (PSP) wird zur Definition der Projektstruktur "
+"verwendet."
+
+#: ../../Concept.rst:544
+msgid "Breakdown can be done with sub-projects, activities and test sessions."
+msgstr ""
+"Die Aufteilung kann mit Teilprojekten, Aktivitäten und Testsitzungen "
+"erfolgen."
+
+#: ../../Concept.rst:547
+msgid "Structure management"
+msgstr "Strukturmanagement"
+
+#: ../../Concept.rst:548
+msgid "As seen previously, the project can be split in subprojects."
+msgstr ""
+"Wie bereits gesehen, kann das Projekt in Teilprojekte aufgeteilt werden."
+
+#: ../../Concept.rst:549
+msgid ""
+"All other planning elements concerned by the project or subproject are put "
+"under them without structure."
+msgstr ""
+"Alle anderen vom Projekt oder Teilprojekt betroffenen Planungselemente "
+"werden ohne Struktur untergeordnet."
+
+#: ../../Concept.rst:550
+msgid "Planning elements can be grouped and orderly in hierarchical form."
+msgstr ""
+"Planungselemente können in hierarchischer Form gruppiert und geordnet werden."
+
+#: ../../Concept.rst:551
+msgid ""
+"Structure management can be done in the Gantt chart or in planning elements "
+"screen."
+msgstr ""
+"Die Strukturverwaltung kann im Balkenplan oder im Menü der Planungselemente "
+"erfolgen."
+
+#: ../../Concept.rst:554
+msgid "WBS element numbering"
+msgstr "PSP-Elementnummerierung"
+
+#: ../../Concept.rst:555
+msgid "The project is numbered by its id number."
+msgstr "Das Projekt ist nach seiner ID-Nummer nummeriert."
+
+#: ../../Concept.rst:556
+msgid "All other elements are numbered depending on their level and sequence."
+msgstr "Alle anderen Elemente sind je nach Stufe und Reihenfolge nummeriert."
+
+#: ../../Concept.rst:557
+msgid "WBS numbering is automatically adjusted."
+msgstr "Die PSP-Nummerierung wird automatisch angepasst."
+
+#: ../../Concept.rst:564
+msgid "Project scheduling calculation"
+msgstr "Projektplanungsrechnung"
+
+#: ../../Concept.rst:566
+msgid ""
+"The project schedule is calculated on the full project plan that includes "
+"parents and predecessor elements (dependencies)."
+msgstr ""
+"Der Projektzeitplan wird auf der Grundlage des vollständigen Projektplans "
+"berechnet, der Eltern und Vorgänger-Elemente (Abhängigkeiten) enthält."
+
+#: ../../Concept.rst:569
+msgid "Scheduling"
+msgstr "Terminierung"
+
+#: ../../Concept.rst:570
+msgid "The calculation is executed task by task in the following order:"
+msgstr ""
+"Die Berechnung wird Aufgabe für Aufgabe in der folgenden Reihenfolge "
+"durchgeführt:"
+
+#: ../../Concept.rst:572
+msgid "Dependencies (Predecessor tasks are calculated first)"
+msgstr "Abhängigkeiten (Vorgängeraufgaben werden zuerst berechnet)"
+
+#: ../../Concept.rst:574
+msgid "Project priority"
+msgstr "Projekt Priorität"
+
+#: ../../Concept.rst:575
+msgid "Task priority"
+msgstr "Aufgabenpriorität"
+
+#: ../../Concept.rst:576
+msgid "Project structure (WBS)"
+msgstr "Projektstrukturplan (PSP)"
+
+#: ../../Concept.rst:580
+msgid "Constraints"
+msgstr "Einschränkungen"
+
+#: ../../Concept.rst:581
+msgid ""
+"The remaining work (left) on tasks will be distributed on the following days "
+"from starting planning date, taking into account several constraints:"
+msgstr ""
+"Die restliche (noch ausstehende) Arbeit zu den Aufgaben wird an den "
+"folgenden Tagen ab Planungsbeginn unter Berücksichtigung verschiedener "
+"Randbedingungen verteilt:"
+
+#: ../../Concept.rst:586
+msgid "Project allocation capacity (Project allocation rate)"
+msgstr "Projektvergabekapazität (Projektvergaberate)"
+
+#: ../../Concept.rst:587
+msgid "Assignation capacity (Task assignation rate)"
+msgstr "Zuordnungskapazität (Aufgabenzuordnungsrate)"
+
+#: ../../Concept.rst:593
+msgid "Resource overloads"
+msgstr "Ressourcenüberlastung"
+
+#: ../../Concept.rst:594
+msgid "This is not possible to overloading the resources."
+msgstr "Dies ist nicht möglich, um die Ressourcen nicht zu überlasten."
+
+#: ../../Concept.rst:595
+msgid ""
+"The planning calculation process respects availability and capacity of the "
+"resource."
+msgstr ""
+"Die Planungsrechnung berücksichtigt die Verfügbarkeit und Kapazität der "
+"Ressource."
+
+#: ../../Concept.rst:596
+msgid ""
+"If it is not possible to distribute remaining work, on already planned days, "
+"the calculation process uses new available time slot."
+msgstr ""
+"Wenn es nicht möglich ist, die Restarbeit an bereits geplanten Tagen zu "
+"verteilen, verwendet der Berechnungsablauf ein neues verfügbares "
+"Terminangebot."
+
+#: ../../Concept.rst:605
+msgid "ProjeQtOr roles"
+msgstr "ProjeQtOr Rollen"
+
+#: ../../Concept.rst:607
+msgid "A stakeholder can play many roles in ProjeQtOr."
+msgstr "Ein Stakeholder kann in ProjeQtOr viele Rollen einnehmen."
+
+#: ../../Concept.rst:609
+msgid "Roles depends on :ref:`user-ress-contact-demystify`."
+msgstr "Rollen sind abhängig von :ref:`user-ress-contact-demystify`."
+
+#: ../../Concept.rst:611
+msgid "Specific roles are defined to allow:"
+msgstr "Spezifische Rollen werden definiert, um dies zu ermöglichen:"
+
+#: ../../Concept.rst:613
+msgid "To categorize the stakeholders involved in the projects."
+msgstr "Kategorisierung der an den Projekten beteiligten Stakeholder."
+
+#: ../../Concept.rst:614
+msgid "To identify the stakeholders on items."
+msgstr "Identifizierung der Stakeholder zu den Themen."
+
+#: ../../Concept.rst:615
+msgid "To regroup the stakeholders to facilitate information broadcasting."
+msgstr ""
+"Umgruppierung der Stakeholder zur Erleichterung der Informationsvermittlung."
+
+#: ../../Concept.rst:619
+msgid "Use to"
+msgstr "Verwenden um"
+
+#: ../../Concept.rst:620
+msgid "In items of elements."
+msgstr "In den Elementen."
+
+#: ../../Concept.rst:621
+msgid "As reports parameters."
+msgstr "Als Berichtsparameter."
+
+#: ../../Concept.rst:622
+msgid "As recipients list to mailing and alert."
+msgstr "Als Empfänger Liste für Mailings und Warnmeldungen."
+
+#: ../../Concept.rst:627
+msgid "Administrator"
+msgstr "Administrator"
+
+#: ../../Concept.rst:630
+msgid "An administrator is a :term:`user` with \"Administrator\" profile."
+msgstr "Ein Administrator ist ein :term:`Nutzer` mit „Administrator“ Profil."
+
+#: ../../Concept.rst:631
+msgid "Has a visibility over all the projects."
+msgstr "Hat einen Überblick über alle Projekte."
+
+#: ../../Concept.rst:632
+msgid "Contact"
+msgstr "Kontakt"
+
+#: ../../Concept.rst:635
+msgid "A contact is a person in a business relationship."
+msgstr "Ein Kontakt ist eine Person in einer Geschäftsbeziehung."
+
+#: ../../Concept.rst:636
+msgid "A contact can be a person in the customer organization."
+msgstr "Ein Kontakt kann eine Person in der Kundenorganisation sein."
+
+#: ../../Concept.rst:637
+msgid "Used as contact person for contracts, sales and billing."
+msgstr "Dient als Ansprechpartner für Verträge, Verkauf und Fakturierung."
+
+#: ../../Concept.rst:638
+msgid "Contacts management is performed on :ref:`contact` screen."
+msgstr "Die Verwaltung der Kontakte erfolgt auf dem Bildschirm :ref:`contact`."
+
+#: ../../Concept.rst:639
+msgid "Issuer"
+msgstr "Aussteller"
+
+#: ../../Concept.rst:642
+msgid "An issuer is a :term:`user` who created the item."
+msgstr "Ein Ersteller ist ein :term:`Nutzer`, der den Eintrag erstellt hat."
+
+#: ../../Concept.rst:644
+msgid "Creation information"
+msgstr "Erstellungsinformation"
+
+#: ../../Concept.rst:646
+msgid ""
+"The issuer name and creation date of an item are displayed in the :ref:"
+"`Creation information zone<detail-window>`."
+msgstr ""
+"Der Name des Erstellers und das Erstellungsdatum eines Postens werden im "
+"Fenster :ref:`Creation information zone<detail-window>`."
+
+#: ../../Concept.rst:647
+msgid "Project leader"
+msgstr "Projektleiter"
+
+#: ../../Concept.rst:650
+msgid ""
+"A project leader is a :term:`resource` allocated to a project with a "
+"“Project Leader” profile."
+msgstr ""
+"Ein Projektleiter ist ein :term:`Ressource`, der einem Projekt mit dem "
+"Profil „Projektleiter“ zugeordnet ist."
+
+#: ../../Concept.rst:651
+msgid "Project manager"
+msgstr "Projektmanager"
+
+#: ../../Concept.rst:654
+msgid ""
+"A project manager is a :term:`resource` defined as the manager on a project."
+msgstr ""
+"Ein Projektmanager ist ein :term:`Ressource` definiert als der Manager in "
+"einem Projekt."
+
+#: ../../Concept.rst:656 ../../Concept.rst:689
+msgid "Accelerator button"
+msgstr "Beschleuniger-Taste"
+
+#: ../../Concept.rst:658
+msgid "This button allows to set current user is the project manager."
+msgstr ""
+"Diese Schaltfläche ermöglicht die Einstellung, dass der aktuelle Benutzer "
+"der Projektmanager ist."
+
+#: ../../Concept.rst:659 ../../Concept.rst:692
+msgid "More detail, see: :ref:`Assign to me button<assignToMe-button>`."
+msgstr "Mehr Details, siehe: :ref:`Assign to me button<assignToMe-button>`."
+
+#: ../../Concept.rst:660
+msgid "Project team"
+msgstr "Projektteam"
+
+#: ../../Concept.rst:663
+msgid "All :term:`resources<resource>` allocated to a project."
+msgstr "Alle :term:`Resourcen<Ressource>` die einem Projekt zugeordnet sind."
+
+#: ../../Concept.rst:665
+msgid "Requestor"
+msgstr "Anforderer"
+
+#: ../../Concept.rst:668
+msgid "A requestor is a :term:`contact`."
+msgstr "Ein Anforderer ist ein :term:`Kontact`."
+
+#: ../../Concept.rst:669
+msgid "Used to specify the requestor for ticket, activity and requirement."
+msgstr ""
+"Wird verwendet, um den Antragsteller für Ticket, Aktivität und Anforderung "
+"anzugeben."
+
+#: ../../Concept.rst:670
+msgid "Only contacts allocated to the selected project can be a requestor."
+msgstr ""
+"Nur Kontakte, die dem ausgewählten Projekt zugeordnet sind, können "
+"Antragsteller sein."
+
+#: ../../Concept.rst:671
+msgid "Responsible"
+msgstr "Verantwortlich"
+
+#: ../../Concept.rst:674
+msgid "A responsible is a :term:`resource` in charge of item treatment."
+msgstr ""
+"Ein Verantwortlicher ist eine :term:`Ressource`, die für die Behandlung von "
+"Gegenständen zuständig ist."
+
+#: ../../Concept.rst:675
+msgid ""
+"Usually, the responsible is set when the status of the item is :term:"
+"`handled<Handled status>`."
+msgstr ""
+"In der Regel wird der Verantwortliche gesetzt, wenn sich der Status der "
+"Position auf :term:`behandelt<Behandelt Status>`."
+
+#: ../../Concept.rst:676
+msgid "Only resources allocated to the selected project can be a responsible."
+msgstr ""
+"Nur Ressourcen, die dem ausgewählten Projekt zugeordnet sind, können "
+"verantwortlich sein."
+
+#: ../../Concept.rst:678
+msgid "GUI behavior"
+msgstr "GUI-Verhalten"
+
+#: ../../Concept.rst:680
+msgid ""
+"It is possible to define that responsible field is mandatory on handled "
+"status."
+msgstr ""
+"Es ist möglich zu definieren, dass das verantwortliche Feld für den "
+"behandelten Status verpflichtend ist."
+
+#: ../../Concept.rst:681
+msgid ""
+"The element type screens allow to set this parameter to several elements."
+msgstr ""
+"Die Elementtyp Bildschirm erlaubt es, Parameter zu mehrere Elemente zu "
+"setzen."
+
+#: ../../Concept.rst:682
+msgid "More detail, see: :ref:`behavior-section`."
+msgstr "Mehr Details siehe: :ref:`behavior-section`."
+
+#: ../../Concept.rst:684
+msgid "Set automatically the responsible"
+msgstr "Setzen Sie automatisch den Verantwortlichen"
+
+#: ../../Concept.rst:686
+msgid "It is possible to set automatically the responsible."
+msgstr "Es ist möglich, den Verantwortlichen automatisch zu setzen."
+
+#: ../../Concept.rst:687
+msgid "More detail, see: :ref:`Global parameters<responsible-section>`."
+msgstr "Mehr Details, siehe: :ref:`Global parameters<responsible-section>`."
+
+#: ../../Concept.rst:691
+msgid "This button allows to set current user is the responsible."
+msgstr "Diese Schaltfläche ermöglicht die Einstellung des aktuellen Benutzers."
+
+#: ../../Concept.rst:694
+msgid "Access rights"
+msgstr "Zugriffsrechte"
+
+#: ../../Concept.rst:696
+msgid ""
+"It is possible to define a combination of rights to permit access for "
+"elements the user is responsible for."
+msgstr ""
+"Es ist möglich, eine Kombination von Rechten zu definieren, um den Zugriff "
+"auf Elemente zu ermöglichen, für die der Benutzer verantwortlich ist."
+
+#: ../../Concept.rst:697
+msgid "More detail, see: :ref:`access-mode` screen."
+msgstr "Mehr Details siehe: :ref:`access-mode` screen."
+
+#: ../../Concept.rst:698
+msgid "Resource"
+msgstr "Ressource"
+
+#: ../../Concept.rst:701
+msgid "Human or material resource involved in the projects."
+msgstr ""
+"Menschliche oder materielle Ressourcen, die an den Projekten beteiligt sind."
+
+#: ../../Concept.rst:702
+msgid "It is possible to define the resource availability to the projects."
+msgstr ""
+"Es ist möglich, die Ressourcenverfügbarkeit für die Projekte zu definieren."
+
+#: ../../Concept.rst:703
+msgid "Resources management is performed on the :ref:`resource` screen."
+msgstr "Die Ressourcenverwaltung erfolgt in der Maske :ref:`resource`."
+
+#: ../../Concept.rst:705
+msgid "User"
+msgstr "Benutzer"
+
+#: ../../Concept.rst:708
+msgid "User allows to connect to the application."
+msgstr "Benutzer erlaubt die Verbindung zur Anwendung."
+
+#: ../../Concept.rst:709
+msgid ""
+"User profile define general access rights. But it does not necessarily give "
+"access to project data."
+msgstr ""
+"Benutzerprofile definieren allgemeine Zugriffsrechte. Es gibt aber keinen "
+"zwangsläufigen Zugriff auf Projektdaten."
+
+#: ../../Concept.rst:710
+msgid "Users management is performed on the :ref:`user` screen."
+msgstr "Die Benutzerverwaltung erfolgt im Menü :ref:`user`."
+
+#: ../../Concept.rst:725
+msgid "Profiles definition"
+msgstr "Definition der Profile"
+
+#: ../../Concept.rst:727
+msgid ""
+"The profile is a group used to define application authorization and access "
+"rights to the data."
+msgstr ""
+"Das Profil ist eine Gruppe zur Definition von Anwendungsberechtigungen und "
+"Zugriffsrechten auf die Daten."
+
+#: ../../Concept.rst:729
+msgid ""
+"A user linked to a profile belongs to this group who share same application "
+"behavior."
+msgstr ""
+"Ein mit einem Profil verknüpfter Benutzer gehört zu dieser Gruppe, der das "
+"gleiche Anwendungsverhalten hat."
+
+#: ../../Concept.rst:733
+msgid ""
+"You can define profiles to be conformed to the roles defined in your "
+"organization."
+msgstr ""
+"Sie können Profile definieren, die an die definierten Rollen in Ihrer "
+"Organisation angepasst werden."
+
+#: ../../Concept.rst:734
+msgid ""
+"Access rights management is done on :ref:`Access rights<profile>` screens"
+msgstr ""
+"Die Verwaltung der Zugriffsrechte erfolgt über die :ref:`Access "
+"rights<profile>` Maske"
+
+#: ../../Concept.rst:738
+msgid "Used for"
+msgstr "Verwendet für"
+
+#: ../../Concept.rst:739
+msgid ""
+"The profile is used to define access rights to application and data, first."
+msgstr ""
+"Über das Profil werden zunächst die Zugriffsrechte auf Anwendung und Daten "
+"definiert."
+
+#: ../../Concept.rst:740
+msgid "Also, the profile is used to send message, email and alert to groups."
+msgstr ""
+"Außerdem wird das Profil verwendet, um Nachrichten, E-Mails und "
+"Benachrichtigungen an Gruppen zu senden."
+
+#: ../../Concept.rst:743
+msgid "Selected profile in project allocation"
+msgstr "Ausgewähltes Profil in der Projektzuordnung"
+
+#: ../../Concept.rst:744
+msgid ""
+"A profile can be selected to a user, resource or contact in project "
+"allocation."
+msgstr ""
+"Ein Profil kann für einen Benutzer, eine Ressource oder einen Kontakt in der "
+"Projektzuordnung ausgewählt werden."
+
+#: ../../Concept.rst:745
+msgid ""
+"The profile selected is used to give data access to elements of the projects."
+msgstr ""
+"Das ausgewählte Profil wird verwendet, um Datenzugriff auf Elemente der "
+"Projekte zu ermöglichen."
+
+#: ../../Concept.rst:748
+msgid "Workflow definition"
+msgstr "Definiton des Arbeitsablaufs"
+
+#: ../../Concept.rst:749
+msgid ""
+"The profile is used to define who can change from one status to another one."
+msgstr ""
+"Über das Profil wird festgelegt, wer von einem Status in einen anderen "
+"wechseln darf."
+
+#: ../../Concept.rst:750
+msgid ""
+"You can restrict or allow the state transition to another one according to "
+"the profile."
+msgstr ""
+"Sie können den Zustandsübergang je nach Profil einschränken oder zulassen."
+
+#: ../../Concept.rst:751
+msgid "Workflow definition is managed in :ref:`workflow` screen."
+msgstr ""
+"Die Arbeitsablauf-Definition wird über das Menü :ref:`workflow` verwaltet."
+
+#: ../../Concept.rst:758
+msgid "Predefined profiles"
+msgstr "Vordefinierte Profile"
+
+#: ../../Concept.rst:759
+msgid "ProjeQtOr offer some predefined profiles."
+msgstr "ProjeQtOr bieten einige vordefinierte Profile an."
+
+#: ../../Concept.rst:762
+msgid "Administrator profile"
+msgstr "Administrator-Profil"
+
+#: ../../Concept.rst:765
+msgid "This profile group all administrator users."
+msgstr "Dieses Profil gruppiert alle Administrator-Benutzer."
+
+#: ../../Concept.rst:766
+msgid ""
+"Only these users can manage the application and see all data without "
+"restriction."
+msgstr ""
+"Nur diese Benutzer können die Anwendung verwalten und alle Daten "
+"uneingeschränkt einsehen."
+
+#: ../../Concept.rst:767
+msgid "The user \"admin\" is already defined."
+msgstr "Der Benutzer „Admin“ ist bereits definiert."
+
+#: ../../Concept.rst:768
+msgid "Supervisor profile"
+msgstr "Supervisor-Profil"
+
+#: ../../Concept.rst:771
+msgid "Users linked to this profile have a visibility over all the projects."
+msgstr ""
+"Die mit diesem Profil verknüpften Benutzer haben einen Überblick über alle "
+"Projekte."
+
+#: ../../Concept.rst:772
+msgid "This profile allows to monitor projects."
+msgstr "Dieses Profil ermöglicht die Überwachung von Projekten."
+
+#: ../../Concept.rst:773
+msgid "Project leader profile"
+msgstr "Projektleiterprofil"
+
+#: ../../Concept.rst:776
+msgid "Users of this profile are the project leaders."
+msgstr "Nutzer dieses Profils sind die Projektleiter."
+
+#: ../../Concept.rst:777
+msgid "The project leader has a complete access to owns projects."
+msgstr "Der Projektleiter hat vollen Zugriff auf eigene Projekte."
+
+#: ../../Concept.rst:778
+msgid "Project member profile"
+msgstr "Projektmitarbeiterprofil"
+
+#: ../../Concept.rst:781
+msgid "A project member is working on projects allocated to it."
+msgstr "Ein Projektmitarbeiter arbeitet an den ihm zugewiesenen Projekten."
+
+#: ../../Concept.rst:782
+msgid "The user linked to this profile is a  member of  team projects."
+msgstr ""
+"Der mit diesem Profil verknüpfte Benutzer ist Mitglied von Teamprojekten."
+
+#: ../../Concept.rst:783
+msgid "Project guest profile"
+msgstr "Projekt-Gastprofil"
+
+#: ../../Concept.rst:786
+msgid ""
+"Users linked to this profile have limited visibility to projects allocated "
+"to them."
+msgstr ""
+"Benutzer, die mit diesem Profil verknüpft sind, haben eine eingeschränkte "
+"Sicht der ihnen zugeordneten Projekte."
+
+#: ../../Concept.rst:787
+msgid "The user \"guest\" is already defined."
+msgstr "Der Benutzer \"guest\" ist bereits definiert."
+
+#: ../../Concept.rst:790
+msgid "Predefined profiles (External)"
+msgstr "Vordefinierte Profile (extern)"
+
+#: ../../Concept.rst:791
+msgid "ProjeQtOr allow to involve client employees in their projects."
+msgstr ""
+"ProjeQtOr ermöglicht es, die Mitarbeiter des Kunden in ihre Projekte "
+"einzubeziehen."
+
+#: ../../Concept.rst:792
+msgid ""
+"The distinction between this profile and its equivalent, user access is more "
+"limited."
+msgstr ""
+"Die Unterscheidung zwischen diesem Profil und seiner Entsprechung, der "
+"Benutzerzugriff ist eingeschränkter."
+
+#: ../../Concept.rst:805
+msgid "Stakeholder definition"
+msgstr "Stakeholder Definition"
+
+#: ../../Concept.rst:807
+msgid "ProjeQtOr allows to define roles of stakeholders."
+msgstr "ProjeQtOr erlaubt es, die Rollen der Stakeholder zu definieren."
+
+#: ../../Concept.rst:809
+msgid ""
+"The stakeholder definition is made with profile and a combination with user/"
+"resource/contact definition."
+msgstr ""
+"Die Stakeholder-Definition erfolgt mit Profil und einer Kombination aus "
+"Benutzer-, Ressourcen- und Kontaktdefinition."
+
+#: ../../Concept.rst:811
+msgid "The combinations user/resource/contact allow to define:"
+msgstr ""
+"Die Kombinationen Benutzer/Ressource/Kontakt erlauben es zu definieren:"
+
+#: ../../Concept.rst:813
+msgid "Connection to the application or not."
+msgstr "Verbindung zur Anwendung oder nicht."
+
+#: ../../Concept.rst:814
+msgid "Data visibility."
+msgstr "Daten-Sichtbarkeit."
+
+#: ../../Concept.rst:815
+msgid "Resource availability."
+msgstr "Verfügbarkeit von Ressourcen."
+
+#: ../../Concept.rst:816
+msgid "Contact roles."
+msgstr "Kontaktrollen."
+
+#: ../../Concept.rst:818
+msgid "The next matrix shows the different possibilities."
+msgstr "Die folgende Matrix zeigt die verschiedenen Möglichkeiten."
+
+#: ../../Concept.rst:825
+msgid "Connection"
+msgstr "Verbindung"
+
+#: ../../Concept.rst:826
+msgid "Visibility"
+msgstr "Sichtbarkeit"
+
+#: ../../Concept.rst:827
+msgid "Availability"
+msgstr "Verfügbarkeit"
+
+#: ../../Concept.rst:828
+msgid "URC"
+msgstr "URC"
+
+#: ../../Concept.rst:829 ../../Concept.rst:830 ../../Concept.rst:831
+#: ../../Concept.rst:833 ../../Concept.rst:834 ../../Concept.rst:835
+#: ../../Concept.rst:837 ../../Concept.rst:838 ../../Concept.rst:841
+#: ../../Concept.rst:842 ../../Concept.rst:847
+msgid "|yes|"
+msgstr "|yes|"
+
+#: ../../Concept.rst:832
+msgid "UR"
+msgstr "UR"
+
+#: ../../Concept.rst:836
+msgid "UC"
+msgstr "UC"
+
+#: ../../Concept.rst:839 ../../Concept.rst:843 ../../Concept.rst:845
+#: ../../Concept.rst:846
+msgid "|no|"
+msgstr "|no|"
+
+#: ../../Concept.rst:840
+msgid "U"
+msgstr "U"
+
+#: ../../Concept.rst:844
+msgid "R"
+msgstr "R"
+
+#: ../../Concept.rst:852
+msgid "Row legend"
+msgstr "Zeilenlegende"
+
+#: ../../Concept.rst:853
+msgid "U = User, R = Resource, C = Contact"
+msgstr "U = Benutzer, R = Ressource, C = Kontakt"
+
+#: ../../Concept.rst:860
+msgid "Data visibility"
+msgstr "Daten-Sichtbarkeit"
+
+#: ../../Concept.rst:865
+msgid "Data visibility diagram"
+msgstr "Diagramm der Datensichtbarkeit"
+
+#: ../../Concept.rst:869
+msgid "**User profile**"
+msgstr "**Benutzerprofil**"
+
+#: ../../Concept.rst:871
+msgid "To a user, data visibility is based on its user profile."
+msgstr ""
+"Für einen Benutzer basiert die Datensichtbarkeit auf seinem Benutzerprofil."
+
+#: ../../Concept.rst:872
+msgid ""
+"User profile defined general access to application functionalities and data."
+msgstr ""
+"Das Benutzerprofil definiert den allgemeinen Zugriff auf "
+"Anwendungsfunktionalitäten und Daten."
+
+#: ../../Concept.rst:873
+msgid ""
+"Base access rights defined if a user has access to own projects or over all "
+"projects."
+msgstr ""
+"Basiszugriffsrechte definiert, wenn ein Benutzer Zugriff auf eigene Projekte "
+"oder über alle Projekte hat."
+
+#: ../../Concept.rst:875
+msgid "**All projects**"
+msgstr "**Alle Projekte **"
+
+#: ../../Concept.rst:877
+msgid ""
+"This access right is typically reserved for administrators and supervisors."
+msgstr ""
+"Dieses Zugriffsrecht ist typischerweise Administratoren und Supervisoren "
+"vorbehalten."
+
+#: ../../Concept.rst:878
+msgid "Users have access to all elements of all projects."
+msgstr "Benutzer haben Zugriff auf alle Elemente aller Projekte."
+
+#: ../../Concept.rst:880
+msgid "**Own projects**"
+msgstr "**Eigene Projekte**"
+
+#: ../../Concept.rst:882
+msgid ""
+"Users with this access right must be allocated to project to get data "
+"visibility."
+msgstr ""
+"Benutzer mit diesem Zugriffsrecht müssen dem Projekt zugeordnet werden, um "
+"Datentransparenz zu erhalten."
+
+#: ../../Concept.rst:883
+msgid ""
+"Selected profile in allocation allows to define access rights on project "
+"elements."
+msgstr ""
+"Ausgewähltes Profil in der Zuordnung erlaubt es, Zugriffsrechte auf "
+"Projektelemente zu definieren."
+
+#: ../../Concept.rst:884
+msgid "For more detail, see: :ref:`allocation-to-project`."
+msgstr "Für mehr Details siehe: :ref:`allocation-to-project`."
+
+#: ../../Concept.rst:899
+msgid "Resource availability diagram"
+msgstr "Verfügbarkeitsdiagramm der Ressourcen"
+
+#: ../../Concept.rst:901
+msgid "Only resource can be assigned to project activities."
+msgstr "Projektaktivitäten können nur Ressourcen zugeordnet werden."
+
+#: ../../Concept.rst:902
+msgid ""
+"Project allocation allows to define the resource availability on project."
+msgstr ""
+"Die Projektzuordnung ermöglicht es, die Ressourcenverfügbarkeit im Projekt "
+"zu definieren."
+
+#: ../../Concept.rst:904
+msgid "**Human resource**"
+msgstr "**Menschliche Ressourcen**"
+
+#: ../../Concept.rst:906
+msgid "Human resource is a project member."
+msgstr "Die Personalabteilung ist Projektmitglied."
+
+#: ../../Concept.rst:907
+msgid "Combined with a user, a human resource can connect to the application."
+msgstr ""
+"In Kombination mit einem Benutzer kann sich eine Personalabteilung mit der "
+"Anwendung verbinden."
+
+#: ../../Concept.rst:909
+msgid "**Material resource**"
+msgstr "**Materielle Ressource**"
+
+#: ../../Concept.rst:911
+msgid "Material resources availability can be defined on projects."
+msgstr ""
+"Die Verfügbarkeit von Materialressourcen kann auf Projekten definiert werden."
+
+#: ../../Concept.rst:912
+msgid "But,  material resource must not  be  connected to the application."
+msgstr ""
+"Die materielle Ressource darf jedoch nicht mit der Anwendung verbunden sein."
+
+#: ../../Concept.rst:918
+msgid "Contact roles"
+msgstr "Kontaktrollen"
+
+#: ../../Concept.rst:919
+msgid "ProjeQtOr allows to involve contacts in projects."
+msgstr "ProjeQtOr ermöglicht die Einbindung von Kontakten in Projekte."
+
+#: ../../Concept.rst:920
+msgid "Combined with a user, a contact can connect to the application"
+msgstr ""
+"In Kombination mit einem Benutzer kann sich ein Kontakt mit der Anwendung "
+"verbinden"
+
+#: ../../Concept.rst:921
+msgid ""
+"Combined with a resource, contact availability can be planned in projects."
+msgstr ""
+"In Verbindung mit einer Ressource kann die Kontaktverfügbarkeit in Projekten "
+"geplant werden."
+
+#: ../../Concept.rst:927
+msgid "Contact roles diagram"
+msgstr "Kontaktrollendiagramm"
+
+#: ../../Concept.rst:935
+msgid "Shared data"
+msgstr "Gemeinsam genutzte Daten"
+
+#: ../../Concept.rst:937
+msgid "For a stakeholder, data on user, resource and contact are shared."
+msgstr ""
+"Für einen Stakeholder werden Daten über Benutzer, Ressourcen und Kontakte "
+"ausgetauscht."
+
+#: ../../Concept.rst:939
+msgid "Allocation to project and user profile are also shared."
+msgstr ""
+"Die Zuordnung zu Projekt und Benutzerprofil wird ebenfalls freigegeben."
+
+#: ../../Concept.rst:943
+msgid ""
+"For a stakeholder, you can define and redefine the combination without "
+"losing data."
+msgstr ""
+"Für einen Stakeholder können Sie die Kombination festlegen und neu "
+"definieren, ohne Daten zu verlieren."
+
+#: ../../Concept.rst:956
+msgid "Allocation to project"
+msgstr "Zuordnung zum Projekt"
+
+#: ../../Concept.rst:958
+msgid "Allocation to project is used to:"
+msgstr "Die Zuordnung zum Projekt wird verwendet um:"
+
+#: ../../Concept.rst:960
+msgid "Defines project data visibility."
+msgstr "Definiert die Sichtbarkeit der Projektdaten."
+
+#: ../../Concept.rst:961
+msgid "Defines resource availability."
+msgstr "Definiert die Sichtbarkeit der Projektdaten."
+
+#: ../../Concept.rst:962
+msgid "Defines the period of access to project data by the user."
+msgstr ""
+"Definiert den Zeitraum des Zugriffs auf die Projektdaten durch den Benutzer."
+
+#: ../../Concept.rst:966
+msgid ""
+"The :ref:`allocation` screen allows to manage overall allocations to project."
+msgstr ""
+"Mit der Anzeige :ref:`allocation` können Sie die Gesamtzuordnungen zum "
+"Projekt verwalten."
+
+#: ../../Concept.rst:968
+msgid ""
+"The following sections describe allocation to project, performed for user, "
+"resource or contact."
+msgstr ""
+"Die folgenden Abschnitte beschreiben die Zuordnung zum Projekt, die für den "
+"Benutzer, die Ressource oder den Kontakt durchgeführt wird."
+
+#: ../../Concept.rst:971
+msgid "User allocation"
+msgstr "Benutzerzuordnung"
+
+#: ../../Concept.rst:973
+msgid "Allocation to project gives data visibility on a project."
+msgstr ""
+"Die Zuordnung zum Projekt ermöglicht die Sichtbarkeit der Daten zu einem "
+"Projekt."
+
+#: ../../Concept.rst:975
+msgid "Allocation to project can be defined in the :ref:`user` screen."
+msgstr ""
+"Die Zuordnung zum Projekt kann im Bildschirm :ref:`user` definiert werden."
+
+#: ../../Concept.rst:978
+msgid "Profile selection"
+msgstr "Profilauswahl"
+
+#: ../../Concept.rst:979
+msgid "Selected profile allows to define access rights on project elements."
+msgstr ""
+"Das ausgewählte Profil ermöglicht die Definition von Zugriffsrechten auf "
+"Projektelemente."
+
+#: ../../Concept.rst:983
+msgid ""
+"Selected profile allows to define the role played by the user in a project."
+msgstr ""
+"Ausgewähltes Profil erlaubt es, die Rolle des Benutzers in einem Projekt zu "
+"definieren."
+
+#: ../../Concept.rst:984
+msgid ""
+"For instance, the user might be a project manager in a project and it could "
+"be a project member in another."
+msgstr ""
+"Beispielsweise kann der Benutzer ein Projektmanager in einem Projekt sein "
+"und ein Projektmitglied in einem anderen."
+
+#: ../../Concept.rst:988
+msgid ""
+"Profile defined in allocation to project does not grant or revoke access to "
+"users."
+msgstr ""
+"Das in der Zuordnung zum Projekt definierte Profil gewährt oder entzieht den "
+"Benutzern keinen Zugriff."
+
+#: ../../Concept.rst:989
+msgid ""
+"General access to application functionalities and data is defined by user "
+"profile."
+msgstr ""
+"Der allgemeine Zugriff auf Anwendungsfunktionalitäten und Daten wird durch "
+"das Benutzerprofil definiert."
+
+#: ../../Concept.rst:992
+msgid "Period selection"
+msgstr "Periodenauswahl"
+
+#: ../../Concept.rst:993
+msgid "Allow to define the period of project data visibility."
+msgstr ""
+"Ermöglicht die Festlegung des Zeitraums der Sichtbarkeit der Projektdaten."
+
+#: ../../Concept.rst:997
+msgid "Can be used to limit access period, according to services agreement."
+msgstr ""
+"Kann verwendet werden, um die Zugriffszeit zu begrenzen, je nach "
+"Servicevereinbarung."
+
+#: ../../Concept.rst:1009
+msgid "Resource allocation to project"
+msgstr "Ressourcenzuordnung zum Projekt"
+
+#: ../../Concept.rst:1011
+msgid ""
+"Allocation to project allows to define the resource availability on project."
+msgstr ""
+"Die Zuordnung zum Projekt ermöglicht es, die Ressourcenverfügbarkeit im "
+"Projekt zu definieren."
+
+#: ../../Concept.rst:1013
+msgid ""
+"A resource may be allocated to projects at a specified rate for a period."
+msgstr ""
+"Eine Ressource kann einem Projekt für einen bestimmten Zeitraum zu einem "
+"bestimmten Prozentsatz zugewiesen werden."
+
+#: ../../Concept.rst:1015
+msgid ""
+"Allocation to project can be defined in :ref:`project` and :ref:`resource` "
+"screens."
+msgstr ""
+"Die Zuordnung zum Projekt kann im Menü :ref:`project` und :ref:`resource` "
+"definiert werden."
+
+#: ../../Concept.rst:1017
+msgid ""
+"It is also possible to allocate a team to a project in :ref:`team` screens."
+msgstr ""
+"Es ist auch möglich, ein Team einem Projekt im :ref:`team` Bildschirmfenster "
+"zuzuordnen."
+
+#: ../../Concept.rst:1021
+msgid ""
+"A resource allocated to a project can be defined as :term:`responsible` of "
+"project items treatment."
+msgstr ""
+"Eine Ressource, die einem Projekt zugeordnet ist, kann als :term:"
+"`Verantwortlicher` für die Behandlung der Projektelemente definiert werden."
+
+#: ../../Concept.rst:1025
+msgid "Period & Rate selection"
+msgstr "Zeitraum & Tarifauswahl"
+
+#: ../../Concept.rst:1026
+msgid ""
+"A resource may be allocated to a project at a specified rate for a period."
+msgstr ""
+"Eine Ressource kann einem Projekt für einen bestimmten Zeitraum zu einem "
+"bestimmten Prozentsatz zugewiesen werden."
+
+#: ../../Concept.rst:1030
+msgid ""
+"If the period is not specified then the resource is allocated throughout the "
+"project."
+msgstr ""
+"Wenn der Zeitraum nicht angegeben ist, wird die Ressource für die gesamte "
+"Dauer des Projekts zugewiesen."
+
+#: ../../Concept.rst:1034
+msgid ""
+"The planning calculator tries to plan, the remaining work on the task "
+"assigned to a resource within the allocation to project period."
+msgstr ""
+"Der Planungsrechner versucht zu planen, die Restarbeit an der einer "
+"Ressource zugeordneten Aufgabe innerhalb der Zuordnung zum Projektzeitraum."
+
+#: ../../Concept.rst:1035
+msgid ""
+"If remaining work on the task can't be planned, a purple bar appears in the "
+"Gantt view."
+msgstr ""
+"Wenn die verbleibende Arbeit an der Aufgabe nicht geplant werden kann, "
+"erscheint ein violetter Balken im Balkendiagramm."
+
+#: ../../Concept.rst:1038
+msgid "Change resource on an allocation to project"
+msgstr "Ressource bei einer Zuordnung zum Projekt ändern"
+
+#: ../../Concept.rst:1039
+msgid "A resource can be changed on allocation to project."
+msgstr "Eine Ressource kann bei der Zuordnung zum Projekt geändert werden."
+
+#: ../../Concept.rst:1040
+msgid ""
+"All tasks assigned to old resource will be transferred to the new resource "
+"with planned work and remaining work."
+msgstr ""
+"Alle Aufgaben, die der alten Ressource zugeordnet sind, werden mit geplanter "
+"Arbeit und Restarbeit auf die neue Ressource übertragen."
+
+#: ../../Concept.rst:1041
+msgid "Work done on tasks belongs to always the old resource."
+msgstr ""
+"Die geleistete Arbeit an den Aufgaben gehört immer zur alten Ressource."
+
+#: ../../Concept.rst:1045
+msgid "Multi-allocation to project"
+msgstr "Mehrfachzuordnung zum Projekt"
+
+#: ../../Concept.rst:1047
+msgid "A resource can be allocated to multiple projects in the same period."
+msgstr ""
+"Eine Ressource kann mehreren Projekten im gleichen Zeitraum zugeordnet "
+"werden."
+
+#: ../../Concept.rst:1049
+msgid ""
+"Make sure that the allocation to projects for a period not exceeding 100%."
+msgstr ""
+"Stellen Sie sicher, dass die Zuweisung zu Projekten für einen Zeitraum von "
+"nicht mehr als 100% erfolgt."
+
+#: ../../Concept.rst:1051
+msgid ""
+"In the section **Allocations** in :ref:`resource` screen, a tool allows to "
+"displayed conflicts."
+msgstr ""
+"Im Abschnitt **Zuordnungen** im Fenster :ref:`ressource` ermöglicht das "
+"Programm die Anzeige von Konflikten."
+
+#: ../../Concept.rst:1053
+msgid "How resolve conflicts?"
+msgstr "Wie werden Konflikte gelöst?"
+
+#: ../../Concept.rst:1055
+msgid "You can change allocation period to avoid overlap between projects."
+msgstr ""
+"Sie können den Zuordnungszeitraum ändern, um Überschneidungen zwischen "
+"Projekten zu vermeiden."
+
+#: ../../Concept.rst:1056
+msgid ""
+"You can change the rate of allocation for it does not exceed 100% for the "
+"period."
+msgstr ""
+"Sie können den Kontingentierungsgrad ändern, solange er 100% für die Periode "
+"nicht überschreitet."
+
+#: ../../Concept.rst:1060
+msgid "Contact allocation to project"
+msgstr "Kontaktzuordnung zum Projekt"
+
+#: ../../Concept.rst:1062
+msgid "A contact allocated to a project can be defined as :term:`requestor`."
+msgstr ""
+"Ein einem Projekt zugeordneter Kontakt kann als :term:`Anfordere` definiert "
+"werden."
+
+#: ../../Concept.rst:1064
+msgid ""
+"Allocation to project can be defined in :ref:`project` and :ref:`contact` "
+"screens."
+msgstr ""
+"Die Zuordnung zum Projekt kann im Dialog :ref:`project` und :ref:`contact` "
+"definiert werden."
+
+#: ../../Concept.rst:1075
+msgid "Assignment"
+msgstr "Zuweisung"
+
+#: ../../Concept.rst:1077
+msgid ""
+"The assignment is used to assign resources to project tasks (activity, test "
+"session, meeting)."
+msgstr ""
+"Die Zuordnung dient der Zuordnung von Ressourcen zu Projektaufgaben "
+"(Aktivität, Testsitzung, Besprechung)."
+
+#: ../../Concept.rst:1079
+msgid ""
+"Consists to assign a resource to a task in a specific function. The function "
+"allows to define the resource daily cost."
+msgstr ""
+"Ist die Zuordnung einer Ressource zu einer Aufgabe in einer bestimmten "
+"Funktion. Die Funktion ermöglicht es, die täglichen Kosten der Ressource zu "
+"definieren."
+
+#: ../../Concept.rst:1081
+msgid ""
+"A resource assignment contains data about work on task (planned,  real, left "
+"and reassessed work)."
+msgstr ""
+"Eine Ressourcenzuordnung enthält Daten über die Tätigkeit zur Aufgabe "
+"(geplante, tatsächliche, verbleibende und neu bewertete Arbeit)."
+
+#: ../../Concept.rst:1085
+msgid ""
+"Only resources allocated by the project can be assigned to project tasks."
+msgstr ""
+"Nur den durch das Projekt zugewiesene Ressourcen können Projektaufgaben "
+"zugeordnet werden."
+
+#: ../../Concept.rst:1089
+msgid ""
+"Assignment can be done in :ref:`activity`, :ref:`test-session` and :ref:"
+"`meeting` screens."
+msgstr ""
+"Die Zuordnung kann im Menü :ref:`activity`, :ref:`test-session` und :ref:"
+"`meeting` vorgenommen werden."
+
+#: ../../Concept.rst:1103
+msgid "Resource function and cost"
+msgstr "Ressourcen-Funktion und -Kosten"
+
+#: ../../Concept.rst:1106
+msgid "Function"
+msgstr "Funktion"
+
+#: ../../Concept.rst:1107
+msgid "The function defines the generic competency of a resource."
+msgstr "Die Funktion definiert die allgemeine Kompetenz einer Ressource."
+
+#: ../../Concept.rst:1108
+msgid "It is used to define the role play by the resource on tasks."
+msgstr ""
+"Er dient dazu, das Rollenspiel der Ressource zu Aufgaben zu definieren."
+
+#: ../../Concept.rst:1109
+msgid ""
+"In real work allocation screen, the function name will be displayed in the "
+"real work entry."
+msgstr ""
+"Im konkreten Arbeitsverteilungsbild wird der Funktionsname im tatsächlichen "
+"Arbeitseintrag angezeigt."
+
+#: ../../Concept.rst:1110
+msgid ""
+"A main function must be defined to resource and it is used as default "
+"function."
+msgstr ""
+"Eine Hauptfunktion muss für die Ressource definiert sein und wird als "
+"Standardfunktion verwendet."
+
+#: ../../Concept.rst:1111
+msgid "A daily cost can be defined for each function of the resource."
+msgstr "Für jede Funktion der Ressource kann ein Tagespreis definiert werden."
+
+#: ../../Concept.rst:1112
+msgid "The :ref:`function` screen allows to manage function list."
+msgstr ""
+"Der Bildschirm :ref:`funktion` ermöglicht die Verwaltung der Funktionsliste."
+
+#: ../../Concept.rst:1115
+msgid "Resource cost definition"
+msgstr "Definition der Ressourcenkosten"
+
+#: ../../Concept.rst:1116
+msgid ""
+"Allows to define the daily cost, according to the functions of the resource."
+msgstr ""
+"Ermöglicht die Definition der täglichen Kosten entsprechend den Funktionen "
+"der Ressource."
+
+#: ../../Concept.rst:1117
+msgid "The daily cost is defined for a specific period."
+msgstr "Die täglichen Kosten werden für einen bestimmten Zeitraum festgelegt."
+
+#: ../../Concept.rst:1120
+msgid "Real cost calculation"
+msgstr "Ist-Kostenberechnung"
+
+#: ../../Concept.rst:1121
+msgid ""
+"When real work is entered, the real cost is calculated with work of the day "
+"and daily cost for this period."
+msgstr ""
+"Bei der Erfassung der realen Arbeit werden die tatsächlichen Kosten mit der "
+"Tagesarbeit und den Tageskosten für diesen Zeitraum berechnet."
+
+#: ../../Concept.rst:1124
+msgid "Planned cost calculation"
+msgstr "Plankostenberechnung"
+
+#: ../../Concept.rst:1125
+msgid ""
+"When the project planning is calculated, resource cost is used to calculate "
+"planned cost."
+msgstr ""
+"Zur Berechnung der Projektplanung werden die Ressourcenkosten zur Berechnung "
+"der Plankosten herangezogen."
+
+#: ../../Concept.rst:1126
+msgid ""
+"Planned cost is calculated with planned work of the day and current daily "
+"cost."
+msgstr ""
+"Die Plankosten werden mit der geplanten Arbeit des Tages und den aktuellen "
+"Tageskosten berechnet."
+
+#: ../../Concept.rst:1130
+msgid "Function and cost are defined in :ref:`resource` screen."
+msgstr "Funktion und Kosten werden in der Maske :ref:`ressource` definiert."
+
+#: ../../Concept.rst:1141
+msgid "Resource calendar"
+msgstr "Ressourcenkalender"
+
+#: ../../Concept.rst:1143
+msgid "A calendar defines the working days in a the year."
+msgstr "Ein Kalender definiert die Arbeitstage in einem Jahr."
+
+#: ../../Concept.rst:1145
+msgid ""
+"A calendar is defined for a type of resources and each resource is attached "
+"to a calendar."
+msgstr ""
+"Für einen Ressourcentyp wird ein Kalender definiert und jede Ressource ist "
+"einem Kalender zugeordnet."
+
+#: ../../Concept.rst:1148
+msgid "Planning process"
+msgstr "Planungsprozess"
+
+#: ../../Concept.rst:1149
+msgid ""
+"Calendars are used in the planning process which dispatches work on every "
+"working day."
+msgstr ""
+"Im Planungsprozess werden Kalender verwendet, die die Arbeit an jedem "
+"Werktag einplanen."
+
+#: ../../Concept.rst:1150
+msgid ""
+"During the planning process, the assigned work to a resource is planned in "
+"its working days."
+msgstr ""
+"Während des Planungsprozesses wird die zugeordnete Arbeit einer Ressource "
+"anhand ihrer Werktage geplant."
+
+#: ../../Concept.rst:1154
+msgid ""
+"You must re-calculate an existing planning to take into account changes on "
+"the calendar."
+msgstr ""
+"Sie müssen eine bestehende Planung neu berechnen, um Änderungen im Kalender "
+"zu berücksichtigen."
+
+#: ../../Concept.rst:1157
+msgid "Shows the availability of resources"
+msgstr "Zeigt die Verfügbarkeit von Ressourcen an"
+
+#: ../../Concept.rst:1158
+msgid ""
+"Working days defined in a calendar allows to show availability of resources."
+msgstr ""
+"Die in einem Kalender definierten Werktage erlauben es, die Verfügbarkeit "
+"der Ressourcen anzuzeigen."
+
+#: ../../Concept.rst:1163
+msgid "Default calendar"
+msgstr "Standardkalender"
+
+#: ../../Concept.rst:1164
+msgid "The default calendar is used to define the working days in the year."
+msgstr ""
+"Der Standardkalender wird verwendet, um die Werktage im Jahr zu definieren."
+
+#: ../../Concept.rst:1165
+msgid "By default, this calendar is defined for all resources."
+msgstr "Standardmäßig ist dieser Kalender für alle Ressourcen definiert."
+
+#: ../../Concept.rst:1168
+msgid "Specific calendar"
+msgstr "Spezifischer Kalender"
+
+#: ../../Concept.rst:1169
+msgid ""
+"A specific calendar can be created to define working days for a type of "
+"resource."
+msgstr ""
+"Ein spezieller Kalender kann erstellt werden, um Werktage für einen "
+"Ressourcentyp zu definieren."
+
+#: ../../Concept.rst:1176
+msgid "A calendar is set in :ref:`resource` screen."
+msgstr "Ein Kalender wird mit der Maske :ref:`resource` eingestellt."
+
+#: ../../Concept.rst:1177
+msgid "The calendar is defined in :ref:`calendar` screen."
+msgstr "Der Kalender wird per Maske :ref:`calendar` definiert."
+
+#: ../../Concept.rst:1187
+msgid "Use case"
+msgstr "Anwendungsszenario"
+
+#: ../../Concept.rst:1190
+msgid "You can use the default calendar to set public holidays."
+msgstr "Sie können den Standardkalender verwenden, um Feiertage einzustellen."
+
+#: ../../Concept.rst:1194
+msgid "You can define a different work schedule to some resources."
+msgstr ""
+"Sie können einen abweichenden Arbeitszeitplan für einige Ressourcen "
+"definieren."
+
+#: ../../Concept.rst:1195
+msgid "This calendar defined exceptions to normal working days."
+msgstr "Dieser Kalender definiert Ausnahmen von normalen Werktagen."
+
+#: ../../Concept.rst:1196
+msgid ""
+"For instance, you can define a calendar for resources on leave on Wednesdays."
+msgstr ""
+"Sie können z.B. einen Kalender für Ressourcen definieren die mittwochs im "
+"Urlaub sind."
+
+#: ../../Concept.rst:1198
+msgid "Personal calendar"
+msgstr "Persönliche Kalender"
+
+#: ../../Concept.rst:1200
+msgid ""
+"Even if you can create a specific calendar to each resource, this is not the "
+"advised way to manage personal days off and vacations."
+msgstr ""
+"Auch wenn Sie für jede Ressource einen eigenen Kalender erstellen können, "
+"ist dies nicht der richtige Weg, um persönliche Urlaubstage zu verwalten."
+
+#: ../../Concept.rst:1201
+msgid "You’d better use Administrative projects (enter real work in advance)."
+msgstr ""
+"Sie sollten besser Verwaltungsprojekte verwenden (geben Sie wirkliche Arbeit "
+"im Voraus ein)."
+
+#: ../../Concept.rst:1212
+msgid "Photo"
+msgstr "Foto"
+
+#: ../../Concept.rst:1214
+msgid "A photo can be defined for a user, a resource and a contact."
+msgstr ""
+"Ein Foto kann für einen Benutzer, eine Ressource und einen Kontakt definiert "
+"werden."
+
+#: ../../Concept.rst:1216
+msgid "It is a visual identification associated with the name."
+msgstr "Es ist eine visuelle Identifikation, die mit dem Namen verbunden ist."
+
+#: ../../Concept.rst:1218
+msgid ""
+"To default, the first letter of the name appear as long as you don't add "
+"photo."
+msgstr ""
+"Standardmäßig wird der erste Buchstabe des Namens angezeigt, solange Sie "
+"kein Foto hinzufügen."
+
+#: ../../Concept.rst:1222
+msgid "To enlarge, move the cursor over the picture."
+msgstr "Zum Vergrößern bewegen Sie den Cursor über das Bild."
+
+#: ../../Concept.rst:1225
+msgid "Photo management"
+msgstr "Fotoverwaltung"
+
+#: ../../Concept.rst:1226
+msgid ""
+"Click on |buttonAdd| or photo frame to add an image file. To complete "
+"instruction see: :ref:`Attachment file<attachment-file>`."
+msgstr ""
+"Klicken Sie auf |buttonAdd| oder Fotorahmen, um eine Bilddatei hinzuzufügen. "
+"Zur Vervollständigung siehe: :ref:`Attachment file<attachment-file>`."
+
+#: ../../Concept.rst:1227
+msgid "Click on |buttonIconDelete| to remove  the image."
+msgstr "Klicken Sie auf |buttonIconDelete| um das Bild zu entfernen."
+
+#: ../../Concept.rst:1228
+msgid "Click on image to display the photo."
+msgstr "Klicken Sie auf das Bild, um das Foto anzuzeigen."
+
+#: ../../Concept.rst:1232
+msgid ""
+"Photo management can be done in :ref:`user-parameters`, :ref:`user`, :ref:"
+"`resource` , :ref:`contact` screens."
+msgstr ""
+"Die Fotoverwaltung kann im Menü „ref:`user-parameters`, :ref:`user`, :ref:"
+"`resource`, :ref:`contact` durchgeführt werden."

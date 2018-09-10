@@ -1,0 +1,638 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2018, ProjeQtOr
+# This file is distributed under the same license as the ProjeQtOr Bedienhandbuch Deutsch package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"POT-Creation-Date: \n"
+"PO-Revision-Date: \n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=ISO-8859-1\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: de\n"
+"X-Generator: Poedit 2.0.8\n"
+
+#: ../../PlanningElements.rst:12 ../../PlanningElements.rst:17
+msgid "Planning elements"
+msgstr "Planungselement"
+
+#: ../../PlanningElements.rst:27 ../../PlanningElements.rst:29
+msgid "The project is the primary entity of ProjeQtOr."
+msgstr "Das Projekt ist die primäre Einheit von ProjeQtOr."
+
+#: ../../PlanningElements.rst:31
+msgid "It is also the top-level of visibility, depending on profiles."
+msgstr "Es ist auch die höchste Ebene der Sichtbarkeit, abhängig von den Profilen."
+
+#: ../../PlanningElements.rst:37
+msgid "Sub-projects"
+msgstr "Unterprojekte"
+
+#: ../../PlanningElements.rst:38
+msgid "You can also define sub-projects on a project."
+msgstr "Sie können auch Teilprojekte zu einem Projekt definieren."
+
+#: ../../PlanningElements.rst:43 ../../PlanningElements.rst:139
+msgid "Fix planning"
+msgstr "Planung fixiere"
+
+#: ../../PlanningElements.rst:45
+msgid "This will avoid change on planned values."
+msgstr "Dadurch werden Ä„nderungen an den geplanten Werten vermieden."
+
+#: ../../PlanningElements.rst:48 ../../PlanningElements.rst:141
+msgid "Under construction"
+msgstr "Im Bau"
+
+#: ../../PlanningElements.rst:54
+msgid "Manual indicators"
+msgstr "Manuelle Indikatoren"
+
+#: ../../PlanningElements.rst:57
+msgid "Some manual indicators are displayed on the Today screen."
+msgstr "Einige manuelle Anzeigen werden auf dem Heute-Bildschirm angezeigt."
+
+#: ../../PlanningElements.rst:60
+msgid "Special fields"
+msgstr "Spezialgebiete"
+
+#: ../../PlanningElements.rst:62
+msgid "See: :ref:`administration-special-field-label`"
+msgstr "Siehe: :ref:`administration-special-field-label`"
+
+#: ../../PlanningElements.rst:65 ../../PlanningElements.rst:222
+#: ../../PlanningElements.rst:330
+msgid "Monitoring indicator"
+msgstr "Überwachungsindikator"
+
+#: ../../PlanningElements.rst:66 ../../PlanningElements.rst:223
+#: ../../PlanningElements.rst:331
+msgid "The indicators can be defined on the progress data."
+msgstr "Die Indikatoren können auf den Fortschrittsdaten definiert werden."
+
+#: ../../PlanningElements.rst:67 ../../PlanningElements.rst:224
+#: ../../PlanningElements.rst:332
+msgid "See: :ref:`progress-section-monitor-indicator`"
+msgstr "Siehe: :ref:`progress-section-monitor-indicator`"
+
+#: ../../PlanningElements.rst:74
+msgid "Project reserve"
+msgstr "Projektreserve"
+
+#: ../../PlanningElements.rst:78
+msgid "The amount of project reserve will be added to remaining amount."
+msgstr "Der Betrag der Projektreserve wird zum Restbetrag addiert."
+
+#: ../../PlanningElements.rst:79
+msgid "See: :ref:`risk` and :ref:`opportunity`"
+msgstr "Siehe: :ref:`risk` and :ref:`opportunity`"
+
+#: ../../PlanningElements.rst:84 ../../PlanningElements.rst:229
+msgid ":ref:`Progress<progress-section-activity>`"
+msgstr ":ref:`Progress<progress-section-activity>`"
+
+#: ../../PlanningElements.rst:85
+msgid ":ref:`Allocations<allocation-section>`"
+msgstr ":ref:`Allocations<allocation-section>`"
+
+#: ../../PlanningElements.rst:86
+msgid ":ref:`Versions linked to this project<Link-version-project-section>`"
+msgstr ":ref:`Versions linked to this project<Link-version-project-section>`"
+
+#: ../../PlanningElements.rst:87
+msgid ":ref:`Types restrictions<type-restriction-section>`"
+msgstr ":ref:`Types restrictions<type-restriction-section>`"
+
+#: ../../PlanningElements.rst:88 ../../PlanningElements.rst:230
+#: ../../PlanningElements.rst:337
+msgid ":ref:`Predecessor and Sucessor element<predSuces-element-section>`"
+msgstr ":ref:`Predecessor and Sucessor element<predSuces-element-section>`"
+
+#: ../../PlanningElements.rst:89 ../../PlanningElements.rst:231
+#: ../../PlanningElements.rst:338
+msgid ":ref:`Linked element<linkElement-section>`"
+msgstr ":ref:`Linked element<linkElement-section>`"
+
+#: ../../PlanningElements.rst:90 ../../PlanningElements.rst:232
+#: ../../PlanningElements.rst:339
+msgid ":ref:`Attachments<attachment-section>`"
+msgstr ":ref:`Attachments<attachment-section>`"
+
+#: ../../PlanningElements.rst:91 ../../PlanningElements.rst:233
+#: ../../PlanningElements.rst:340
+msgid ":ref:`Notes<note-section>`"
+msgstr ":ref:`Notes<note-section>`"
+
+#: ../../PlanningElements.rst:94 ../../PlanningElements.rst:236
+#: ../../PlanningElements.rst:343
+msgid "Section: Description"
+msgstr "Sektion: Beschreibung"
+
+#: ../../PlanningElements.rst:101 ../../PlanningElements.rst:243
+#: ../../PlanningElements.rst:272 ../../PlanningElements.rst:350
+#: ../../PlanningElements.rst:376
+msgid "Field"
+msgstr "Feld"
+
+#: ../../PlanningElements.rst:102 ../../PlanningElements.rst:244
+#: ../../PlanningElements.rst:273 ../../PlanningElements.rst:351
+#: ../../PlanningElements.rst:377
+msgid "Description"
+msgstr "Beschreibung"
+
+#: ../../PlanningElements.rst:103 ../../PlanningElements.rst:245
+#: ../../PlanningElements.rst:352
+msgid ":term:`Id`"
+msgstr ":term:`Id``"
+
+#: ../../PlanningElements.rst:104
+msgid "Unique Id for the project."
+msgstr "Unique Id für das Projekt."
+
+#: ../../PlanningElements.rst:105 ../../PlanningElements.rst:247
+#: ../../PlanningElements.rst:354
+msgid "**Name**"
+msgstr "**Name**"
+
+#: ../../PlanningElements.rst:106
+msgid "Short name of the project."
+msgstr "Kurzname des Projekts."
+
+#: ../../PlanningElements.rst:107
+msgid "**Type**"
+msgstr "**Type**"
+
+#: ../../PlanningElements.rst:108
+msgid "Type of project."
+msgstr "Projektart."
+
+#: ../../PlanningElements.rst:109
+msgid "Organization"
+msgstr "Organisation"
+
+#: ../../PlanningElements.rst:110
+msgid "The organization of the project."
+msgstr "Die Organisation des Projekts."
+
+#: ../../PlanningElements.rst:111
+msgid "Customer"
+msgstr "Kunde"
+
+#: ../../PlanningElements.rst:112
+msgid "The customer of the project."
+msgstr "Der Kunde des Projekts."
+
+#: ../../PlanningElements.rst:113
+msgid "Bill contact"
+msgstr "Rechnung Kontakt"
+
+#: ../../PlanningElements.rst:114
+msgid "Billing contact."
+msgstr "Rechnungskontakt."
+
+#: ../../PlanningElements.rst:115
+msgid "Project code"
+msgstr "Projektkürze"
+
+#: ../../PlanningElements.rst:116
+msgid "Code of the project."
+msgstr "Code des Projekts."
+
+#: ../../PlanningElements.rst:117
+msgid "Contract code"
+msgstr "Vertragsschlüsse"
+
+#: ../../PlanningElements.rst:118
+msgid "Code of the contract of the project."
+msgstr "Code des Vertrags des Projekts."
+
+#: ../../PlanningElements.rst:119
+msgid "Customer code"
+msgstr "Kundenkennun"
+
+#: ../../PlanningElements.rst:120
+msgid "Code of the customer of the project."
+msgstr "Code des Kunden des Projekts."
+
+#: ../../PlanningElements.rst:121
+msgid "Is sub-project of"
+msgstr "Ist Teilprojekt von"
+
+#: ../../PlanningElements.rst:122
+msgid "Name of the top project if this project is a sub-project."
+msgstr "Name des Top-Projekts, wenn es sich um ein Teilprojekt handelt."
+
+#: ../../PlanningElements.rst:123
+msgid "Sponsor"
+msgstr "Sponsor"
+
+#: ../../PlanningElements.rst:124
+msgid "Name of the sponsor of the project."
+msgstr "Name des Sponsors des Projekts."
+
+#: ../../PlanningElements.rst:125
+msgid ":term:`Manager<Project manager>`"
+msgstr ":term:`Manager<Projektleiter>``"
+
+#: ../../PlanningElements.rst:126
+msgid "Name of the resource who manages the project."
+msgstr "Name der Ressource, die das Projekt verwaltet."
+
+#: ../../PlanningElements.rst:127
+msgid "Color"
+msgstr "Farbe"
+
+#: ../../PlanningElements.rst:128
+msgid "Color of the project, to be displayed in some reports."
+msgstr "Farbe des Projekts, wird in einigen Berichten angezeigt."
+
+#: ../../PlanningElements.rst:129 ../../PlanningElements.rst:276
+#: ../../PlanningElements.rst:380
+msgid "**Status**"
+msgstr "**Status**"
+
+#: ../../PlanningElements.rst:130
+msgid "Actual :term:`status` of the project."
+msgstr "Aktueller :term:`Status` des Projekts."
+
+#: ../../PlanningElements.rst:131
+msgid "Health status"
+msgstr "Gesundheitszustan"
+
+#: ../../PlanningElements.rst:132
+msgid "Global health status of the project."
+msgstr "Globaler Gesundheitsstatus des Projekts."
+
+#: ../../PlanningElements.rst:133
+msgid "Quality level"
+msgstr "Qualität"
+
+#: ../../PlanningElements.rst:134
+msgid "Estimation of quality level of project (result of audits)."
+msgstr "Schätzung des Qualitätsniveaus des Projekts (Ergebnis der Audits)."
+
+#: ../../PlanningElements.rst:135
+msgid "Trend"
+msgstr "Trend"
+
+#: ../../PlanningElements.rst:136
+msgid "Trend of global project health."
+msgstr "Trend der globalen Projektgesundheit."
+
+#: ../../PlanningElements.rst:137
+msgid "Overall progress"
+msgstr "Gesamtfortschritt"
+
+#: ../../PlanningElements.rst:138
+msgid "Overall progress to be selected in a defined list."
+msgstr "Gesamtfortschritt in einer definierten Liste auswählen."
+
+#: ../../PlanningElements.rst:142
+msgid "Box checked indicates the project is under construction."
+msgstr "Feld markiert zeigt an, dass das Projekt im Bau ist."
+
+#: ../../PlanningElements.rst:143 ../../PlanningElements.rst:282
+#: ../../PlanningElements.rst:386
+msgid ":term:`Done`"
+msgstr ":term:`Erledigt`"
+
+#: ../../PlanningElements.rst:144
+msgid "Box checked indicates the project is finished."
+msgstr "Feld markiert zeigt an, dass das Projekt abgeschlossen ist."
+
+#: ../../PlanningElements.rst:145 ../../PlanningElements.rst:284
+#: ../../PlanningElements.rst:388
+msgid ":term:`Closed`"
+msgstr ":term:`Geschlossen`"
+
+#: ../../PlanningElements.rst:146
+msgid "Box checked indicates the project is archived."
+msgstr "Box checked zeigt an, dass das Projekt archiviert ist."
+
+#: ../../PlanningElements.rst:147 ../../PlanningElements.rst:286
+#: ../../PlanningElements.rst:390
+msgid "Cancelled"
+msgstr "Abgesagt"
+
+#: ../../PlanningElements.rst:148
+msgid "Box checked indicates the project is cancelled."
+msgstr "Box angekreuzt zeigt an, dass das Projekt abgebrochen wurde."
+
+#: ../../PlanningElements.rst:149 ../../PlanningElements.rst:259
+#: ../../PlanningElements.rst:362
+msgid ":term:`Description`"
+msgstr ":term:`Beschreibung`"
+
+#: ../../PlanningElements.rst:150
+msgid "Complete description of the project."
+msgstr "Vollständige Beschreibung des Projekts."
+
+#: ../../PlanningElements.rst:151
+msgid "Objectives"
+msgstr "Ziele"
+
+#: ../../PlanningElements.rst:152
+msgid "Objectives of the project."
+msgstr "Ziele des Projekts."
+
+#: ../../PlanningElements.rst:154 ../../PlanningElements.rst:262
+#: ../../PlanningElements.rst:293 ../../PlanningElements.rst:365
+#: ../../PlanningElements.rst:397
+msgid "**\\* Required field**"
+msgstr "**\\* Pflichtfeld**"
+
+#: ../../PlanningElements.rst:162
+msgid "The value of the field is used in Bills concerned with the project."
+msgstr "Der Wert des Feldes wird in den mit dem Projekt verbundenen Rechnungen verwendet."
+
+#: ../../PlanningElements.rst:167
+msgid "Section: Sub projects"
+msgstr "Sektion: Unterprojekte"
+
+#: ../../PlanningElements.rst:168
+msgid "List of sub-projects under for the project."
+msgstr "Liste der Teilprojekte unter für das Projekt."
+
+#: ../../PlanningElements.rst:180
+msgid "Activities"
+msgstr "Aktivitäten"
+
+#: ../../PlanningElements.rst:184
+msgid "An activity can be:"
+msgstr "Eine Aktivität kann sein:"
+
+#: ../../PlanningElements.rst:186
+msgid "Planned tasks."
+msgstr "Geplante Aufgaben."
+
+#: ../../PlanningElements.rst:187
+msgid "Change requests."
+msgstr "Änderungswünsche."
+
+#: ../../PlanningElements.rst:188
+msgid "Phases."
+msgstr "Phasen."
+
+#: ../../PlanningElements.rst:189
+msgid "Deliveries."
+msgstr "Lieferungen."
+
+#: ../../PlanningElements.rst:190
+msgid "Versions or releases."
+msgstr "Versionen oder Veröffentlichungen."
+
+#: ../../PlanningElements.rst:193
+msgid "Assigned resources"
+msgstr "Zugewiesene Ressourcen"
+
+#: ../../PlanningElements.rst:194
+msgid "Resources are assigned to activities."
+msgstr "Ressourcen werden Aktivitäten zugeordnet."
+
+#: ../../PlanningElements.rst:198
+msgid "Real work allocation"
+msgstr "Echte Arbeitsverteilung"
+
+#: ../../PlanningElements.rst:202
+msgid "Activities regroupment"
+msgstr "Aktivitäten Umgruppierung"
+
+#: ../../PlanningElements.rst:203
+msgid "Activities can have parents to regroup activities."
+msgstr "Aktivitäten können Eltern haben, um Aktivitäten neu zu gruppieren."
+
+#: ../../PlanningElements.rst:206
+msgid "Parent activity must belong to the same project."
+msgstr "Elternaktivität muss zum selben Projekt gehören."
+
+#: ../../PlanningElements.rst:209
+msgid "**Work on tickets**"
+msgstr "**Arbeit an Tickets**"
+
+#: ../../PlanningElements.rst:210
+msgid "Tickets can be linked to an activity (task)."
+msgstr "Tickets können mit einer Aktivität (Aufgabe) verknüpft werden."
+
+#: ../../PlanningElements.rst:211
+msgid "Work on tickets will be included in the activity."
+msgstr "Die Arbeit an Tickets wird in die Aktivität einbezogen."
+
+#: ../../PlanningElements.rst:212
+msgid "More detail, see: :ref:`ticket` screen."
+msgstr "Mehr Details, siehe: :ref:`ticket` Bildschirm."
+
+#: ../../PlanningElements.rst:214
+msgid "**Assignment of resources to task**"
+msgstr "**Zuweisung von Ressourcen zur Aufgabe**"
+
+#: ../../PlanningElements.rst:228
+msgid ":ref:`Assignment<assignment-section>`"
+msgstr ":ref:`Assignment<assignment-section>`"
+
+#: ../../PlanningElements.rst:246
+msgid "Unique Id for the activity."
+msgstr "Unique Id für die Aktivität."
+
+#: ../../PlanningElements.rst:248
+msgid "Short description of the activity."
+msgstr "Kurzbeschreibung der Aktivität."
+
+#: ../../PlanningElements.rst:249
+msgid "**Activity type**"
+msgstr "**Aktivitätsart**"
+
+#: ../../PlanningElements.rst:250
+msgid "Type of activity."
+msgstr "Art der Tätigkeit."
+
+#: ../../PlanningElements.rst:251 ../../PlanningElements.rst:358
+msgid "**Project**"
+msgstr "**Projekt**"
+
+#: ../../PlanningElements.rst:252
+msgid "The project concerned by the activity."
+msgstr "Das von der Aktivität betroffene Projekt."
+
+#: ../../PlanningElements.rst:253
+msgid ":term:`External reference`"
+msgstr ":term:`Externer Verweis`"
+
+#: ../../PlanningElements.rst:254
+msgid "External reference of the activity."
+msgstr "Externe Referenz der Aktivität."
+
+#: ../../PlanningElements.rst:255
+msgid ":term:`Requestor`"
+msgstr ":term:`Antragsteller`"
+
+#: ../../PlanningElements.rst:256
+msgid "Contact at the origin of the activity."
+msgstr "Kontakt am Ursprung der Aktivität."
+
+#: ../../PlanningElements.rst:257 ../../PlanningElements.rst:360
+msgid ":term:`Origin`"
+msgstr ":term:`Ursprung`"
+
+#: ../../PlanningElements.rst:258
+msgid "Element which is the origin of the activity."
+msgstr "Element, das der Ursprung der Aktivität ist."
+
+#: ../../PlanningElements.rst:260
+msgid "Complete description of the activity."
+msgstr "Vollständige Beschreibung der Aktivität."
+
+#: ../../PlanningElements.rst:265 ../../PlanningElements.rst:369
+msgid "Section: Treatment"
+msgstr "Sektion: Behandlung"
+
+#: ../../PlanningElements.rst:274 ../../PlanningElements.rst:378
+msgid "Parent activity"
+msgstr "Eltern-Tätigkeit"
+
+#: ../../PlanningElements.rst:275 ../../PlanningElements.rst:379
+msgid "Parent activity for grouping purpose."
+msgstr "Elternaktivität für Gruppierungszwecke."
+
+#: ../../PlanningElements.rst:277
+msgid "Actual :term:`status` of the activity."
+msgstr "Aktueller :term:`Status` der Aktivität."
+
+#: ../../PlanningElements.rst:278 ../../PlanningElements.rst:382
+msgid ":term:`Responsible`"
+msgstr ":term:`Verantwortlicher`"
+
+#: ../../PlanningElements.rst:279
+msgid "Resource who is responsible for the activity."
+msgstr "Ressource, die für die Aktivität verantwortlich ist."
+
+#: ../../PlanningElements.rst:280 ../../PlanningElements.rst:384
+msgid ":term:`Handled`"
+msgstr ":term:`Bearbeitet`"
+
+#: ../../PlanningElements.rst:281
+msgid "Box checked indicates the activity is taken over."
+msgstr "Kästchen markiert zeigt an, dass die Aktivität übernommen wurde."
+
+#: ../../PlanningElements.rst:283
+msgid "Box checked indicates the activity has been treated."
+msgstr "Kästchen markiert zeigt an, dass die Aktivität behandelt wurde."
+
+#: ../../PlanningElements.rst:285
+msgid "Box checked indicates the activity is archived."
+msgstr "Kästchen markiert zeigt an, dass die Aktivität archiviert ist."
+
+#: ../../PlanningElements.rst:287
+msgid "Box checked indicates the activity is cancelled."
+msgstr "Kästchen markiert zeigt an, dass die Aktivität abgebrochen wurde."
+
+#: ../../PlanningElements.rst:288 ../../PlanningElements.rst:392
+msgid "Target version"
+msgstr "Zielversion"
+
+#: ../../PlanningElements.rst:290 ../../PlanningElements.rst:394
+msgid ":term:`Result`"
+msgstr ":term:`Ergebnis`"
+
+#: ../../PlanningElements.rst:291
+msgid "Complete description of the treatment done on the activity."
+msgstr "Vollständige Beschreibung der Behandlung der Aktivität."
+
+#: ../../PlanningElements.rst:297 ../../PlanningElements.rst:401
+msgid "Contains the list of product versions linked to the project."
+msgstr "Enthält die Liste der mit dem Projekt verknüpften Produktversionen."
+
+#: ../../PlanningElements.rst:298 ../../PlanningElements.rst:402
+msgid "More detail, see: :ref:`Product concept<product-concept>`"
+msgstr "Mehr Details, siehe: :ref:`Product concept<product-concept>`"
+
+#: ../../PlanningElements.rst:309
+msgid "Milestones"
+msgstr "Meilensteine"
+
+#: ../../PlanningElements.rst:311
+msgid "A milestone is a flag in the planning, to point out key dates."
+msgstr "Ein Meilenstein ist eine Flagge in der Planung, um auf wichtige Termine hinzuweisen."
+
+#: ../../PlanningElements.rst:313
+msgid "Milestones are commonly used to check delivery dates."
+msgstr "Meilensteine werden häufig zur Üœberprüfung von Lieferterminen verwendet."
+
+#: ../../PlanningElements.rst:317
+msgid "ProjeQtOr offers two types of milestone:"
+msgstr "ProjeQtOr bietet zwei Arten von Meilensteinen:"
+
+#: ../../PlanningElements.rst:319
+msgid "**Floating milestone**"
+msgstr "**Schwebender Meilenstein**"
+
+#: ../../PlanningElements.rst:323
+msgid "**Fixed milestone**"
+msgstr "**Fester Meilenstein**"
+
+#: ../../PlanningElements.rst:327
+msgid "Fixed date is set by validated date."
+msgstr "Fixes Datum wird durch validiertes Datum gesetzt."
+
+#: ../../PlanningElements.rst:336
+msgid ":ref:`Progress<progress-section-milestone>`"
+msgstr ":ref:`Progress<progress-section-milestone>`"
+
+#: ../../PlanningElements.rst:353
+msgid "Unique Id for the milestone."
+msgstr "Unique Id für den Meilenstein."
+
+#: ../../PlanningElements.rst:355
+msgid "Short description of the milestone."
+msgstr "Kurzbeschreibung des Meilensteins."
+
+#: ../../PlanningElements.rst:356
+msgid "**Milestone type**"
+msgstr "**Meilensteintyp**"
+
+#: ../../PlanningElements.rst:357
+msgid "Type of milestone."
+msgstr "Art des Meilensteins."
+
+#: ../../PlanningElements.rst:359
+msgid "The project concerned by the milestone."
+msgstr "Das vom Meilenstein betroffene Projekt."
+
+#: ../../PlanningElements.rst:361
+msgid "Element which is the origin of the milestone."
+msgstr "Element, das der Ursprung des Meilensteins ist."
+
+#: ../../PlanningElements.rst:363
+msgid "Long description of the milestone."
+msgstr "Lange Beschreibung des Meilensteins."
+
+#: ../../PlanningElements.rst:381
+msgid "Actual :term:`status` of the milestone."
+msgstr "Aktueller :term:`Status` des Meilensteins."
+
+#: ../../PlanningElements.rst:383
+msgid "Resource who is responsible for the milestone."
+msgstr "Ressource, die für den Meilenstein verantwortlich ist."
+
+#: ../../PlanningElements.rst:385
+msgid "Box checked indicates the milestone is taken over."
+msgstr "Feld markiert zeigt an, dass der Meilenstein übernommen wurde."
+
+#: ../../PlanningElements.rst:387
+msgid "Box checked indicates the milestone has been treated."
+msgstr "Kästchen markiert zeigt an, dass der Meilenstein behandelt wurde."
+
+#: ../../PlanningElements.rst:389
+msgid "Box checked indicates the milestone is archived."
+msgstr "Kästchen markiert zeigt an, dass der Meilenstein archiviert ist."
+
+#: ../../PlanningElements.rst:391
+msgid "Box checked indicates the milestone is cancelled."
+msgstr "Box angekreuzt zeigt an, dass der Meilenstein abgebrochen wurde."
+
+#: ../../PlanningElements.rst:395
+msgid "Complete description of the treatment done on the milestone."
+msgstr "Vollständige Beschreibung der Behandlung am Meilenstein."

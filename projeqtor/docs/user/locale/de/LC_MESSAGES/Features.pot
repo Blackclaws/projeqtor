@@ -1,0 +1,744 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2018, ProjeQtOr
+# This file is distributed under the same license as the ProjeQtOr Bedienhandbuch Deutsch package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: ProjeQtOr Bedienhandbuch Deutsch 7.2\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2018-07-03 14:34+0200\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: ../../Features.rst:9
+msgid "Features"
+msgstr ""
+
+#: ../../Features.rst:16
+msgid "Planning management"
+msgstr ""
+
+#: ../../Features.rst:18
+msgid "ProjeQtOr  provides all the elements needed to build a planning from workload, constraints between tasks and resources availability."
+msgstr ""
+
+#: ../../Features.rst:23
+msgid "Project"
+msgstr ""
+
+#: ../../Features.rst:24
+msgid "The project is the main element of ProjeQtOr."
+msgstr ""
+
+#: ../../Features.rst:26
+msgid "It is also the highest level of visibility and definition of access rights based on profiles."
+msgstr ""
+
+#: ../../Features.rst:28
+msgid "You can define profiles , some have visibility on all projects, others only on the projects they are assigned to."
+msgstr ""
+
+#: ../../Features.rst:30
+msgid "You can also define sub-projects of a project and sub-project of sub-projects without limit to this hierarchical organization."
+msgstr ""
+
+#: ../../Features.rst:32
+msgid "This allows for example to define projects that are not real projects , but just a definition of the structure for your organization."
+msgstr ""
+
+#: ../../Features.rst:37
+msgid "Activity"
+msgstr ""
+
+#: ../../Features.rst:38
+msgid "An activity is a task that must be planned, or includes other activities."
+msgstr ""
+
+#: ../../Features.rst:40
+msgid "This is usually a task that has a certain duration and should be assigned to one or more resources."
+msgstr ""
+
+#: ../../Features.rst:42
+msgid "Activities appear on the Gantt Planning view."
+msgstr ""
+
+#: ../../Features.rst:47
+msgid "Milestone"
+msgstr ""
+
+#: ../../Features.rst:48
+msgid "A milestone is an event or a key date of the project."
+msgstr ""
+
+#: ../../Features.rst:50
+msgid "Milestones are commonly used to track delivery dates or force a start date of activity."
+msgstr ""
+
+#: ../../Features.rst:52
+msgid "They can also be used to highlight the transition from one phase to the next one."
+msgstr ""
+
+#: ../../Features.rst:54
+msgid "Unlike activities , milestones have no duration and no work."
+msgstr ""
+
+#: ../../Features.rst:58
+#: ../../Features.rst:111
+msgid "Resources"
+msgstr ""
+
+#: ../../Features.rst:59
+msgid "Resources can be assigned to activities."
+msgstr ""
+
+#: ../../Features.rst:61
+#: ../../Features.rst:128
+msgid "This means that some work is defined on this activity for the resource."
+msgstr ""
+
+#: ../../Features.rst:63
+#: ../../Features.rst:130
+msgid "Only the resources allocated to the project of the activity can be assigned to the activity."
+msgstr ""
+
+#: ../../Features.rst:67
+#: ../../Features.rst:147
+msgid "Real work allocation"
+msgstr ""
+
+#: ../../Features.rst:68
+msgid "Resources enter their time spent on the Real work allocation screen."
+msgstr ""
+
+#: ../../Features.rst:70
+msgid "This allows for a real-time monitoring of work."
+msgstr ""
+
+#: ../../Features.rst:72
+#: ../../Features.rst:150
+msgid "Moreover, updating the left work allows to recalculate the planning taking into account the actual progress on each task."
+msgstr ""
+
+#: ../../Features.rst:76
+msgid "Planning"
+msgstr ""
+
+#: ../../Features.rst:77
+msgid "The planning is based on all the constraints defined:"
+msgstr ""
+
+#: ../../Features.rst:79
+msgid "left work on each activity"
+msgstr ""
+
+#: ../../Features.rst:81
+msgid "availability of resources"
+msgstr ""
+
+#: ../../Features.rst:83
+msgid "rate of resource allocation to projects and assignment rate of resources to activities"
+msgstr ""
+
+#: ../../Features.rst:85
+msgid "planning mode for each activity (as soon as possible, fixed duration, ... )"
+msgstr ""
+
+#: ../../Features.rst:87
+msgid "dependencies between activities"
+msgstr ""
+
+#: ../../Features.rst:89
+msgid "priorities of activities and projects"
+msgstr ""
+
+#: ../../Features.rst:91
+msgid "The planning is displayed as a Gantt chart."
+msgstr ""
+
+#: ../../Features.rst:95
+msgid "Project Portfolio"
+msgstr ""
+
+#: ../../Features.rst:96
+msgid "The planning can also be viewed as a Project Portfolio, which is a Gantt planning view restricted to one line per project, plus optionally selected milestones."
+msgstr ""
+
+#: ../../Features.rst:105
+msgid "Resource management"
+msgstr ""
+
+#: ../../Features.rst:107
+msgid "ProjeQtOr  manages the availability of resources that can be allocated to multiple projects. Tool calculates a reliable, optimized and realistic planning."
+msgstr ""
+
+#: ../../Features.rst:112
+msgid "Resources are the persons working on the project activities."
+msgstr ""
+
+#: ../../Features.rst:114
+msgid "A resource can also be a group of persons (team) for which you do not want to manage individual detail."
+msgstr ""
+
+#: ../../Features.rst:116
+msgid "You can manage this through the capacity of the resource, that can be greater than 1 (for a group of people) or less than 1 (for a person working part-time)."
+msgstr ""
+
+#: ../../Features.rst:120
+msgid "Allocations"
+msgstr ""
+
+#: ../../Features.rst:121
+msgid "The first step is to allocate each resource to the projects on which it has to work, specifying the allocation rate (% of maximum weekly time spent on this project)."
+msgstr ""
+
+#: ../../Features.rst:125
+msgid "Assignments"
+msgstr ""
+
+#: ../../Features.rst:126
+msgid "Then you can assign resources to project activities."
+msgstr ""
+
+#: ../../Features.rst:134
+msgid "Calendars"
+msgstr ""
+
+#: ../../Features.rst:135
+msgid "To manage off days, you have a global calendar."
+msgstr ""
+
+#: ../../Features.rst:137
+msgid "This calendar can be split into multiple calendars, to manage distinct availability types :"
+msgstr ""
+
+#: ../../Features.rst:139
+msgid "you can create a calendar \"80% \" with every Wednesday as off day"
+msgstr ""
+
+#: ../../Features.rst:141
+msgid "you can manage distinct holidays when working with international teams."
+msgstr ""
+
+#: ../../Features.rst:143
+msgid "Each resource is then assigned to a calendar."
+msgstr ""
+
+#: ../../Features.rst:148
+msgid "Resources enter their time spent on the Real work allocation screen. This allows for a real-time monitoring of work."
+msgstr ""
+
+#: ../../Features.rst:160
+msgid "Tickets management"
+msgstr ""
+
+#: ../../Features.rst:162
+msgid "ProjeQtOr includes a Bug Tracker to monitor incidents on your projects, with possibility to include work on planned tasks of your projects."
+msgstr ""
+
+#: ../../Features.rst:166
+msgid "Ticket"
+msgstr ""
+
+#: ../../Features.rst:167
+msgid "A Ticket is any intervention not needing to be planned (or that cannot be planned)."
+msgstr ""
+
+#: ../../Features.rst:169
+msgid "It is generally a short activity for which you want to follow advancement to describe (and possibly provide) a result."
+msgstr ""
+
+#: ../../Features.rst:171
+msgid "For example, bugs or problems can be managed through Tickets:"
+msgstr ""
+
+#: ../../Features.rst:173
+msgid "You can not schedule the bugs before they are identified and registered"
+msgstr ""
+
+#: ../../Features.rst:174
+msgid "You must be able to give a solution to a bug (workaround or fix)."
+msgstr ""
+
+#: ../../Features.rst:179
+msgid "Simple tickets"
+msgstr ""
+
+#: ../../Features.rst:180
+msgid "Simple tickets are just simplified representations of Tickets for users that will \"create\" tickets but not \"treat\" them."
+msgstr ""
+
+#: ../../Features.rst:182
+msgid "Elements created as simple tickets are also visible as Tickets, and vice versa."
+msgstr ""
+
+#: ../../Features.rst:192
+msgid "Costs management"
+msgstr ""
+
+#: ../../Features.rst:194
+msgid "All elements related to delays can also be followed as costs (from resources work) and managing other expenses all costs of the project are monitored and can generate invoices."
+msgstr ""
+
+#: ../../Features.rst:198
+msgid "Projects"
+msgstr ""
+
+#: ../../Features.rst:199
+msgid "The Project is the main entity of ProjeQtOr. In addition to tracking work on projects, ProjeQtOr can track the costs associated with this work."
+msgstr ""
+
+#: ../../Features.rst:204
+msgid "Activities"
+msgstr ""
+
+#: ../../Features.rst:205
+msgid "An Activity is a task that must be planned, or includes other activities. Work assigned to resources on activities is converted into associated costs."
+msgstr ""
+
+#: ../../Features.rst:210
+msgid "Resource cost"
+msgstr ""
+
+#: ../../Features.rst:211
+msgid "To calculate the cost of expenses ProjeQtOr  defines the Resources cost. This cost may vary depending on the role of the resource and may change over time."
+msgstr ""
+
+#: ../../Features.rst:216
+msgid "Project expenses"
+msgstr ""
+
+#: ../../Features.rst:217
+msgid "Projects expenses can also record expenses not related to resource costs (purchase , lease, sub-contracting)."
+msgstr ""
+
+#: ../../Features.rst:221
+msgid "Individual expenses"
+msgstr ""
+
+#: ../../Features.rst:222
+msgid "Individual expenses can record expenses generated by a given resource."
+msgstr ""
+
+#: ../../Features.rst:230
+msgid "Quote, Orders, Term, Bill"
+msgstr ""
+
+#: ../../Features.rst:231
+msgid "ProjeQtOr  can manage various financial elements found on a project: Quotation (proposals), Orders (received from customers), the invoicing Terms and Bills."
+msgstr ""
+
+#: ../../Features.rst:241
+msgid "Quality management"
+msgstr ""
+
+#: ../../Features.rst:243
+msgid "The specificity of ProjeQtOr  is that it is Quality Oriented : it integrates the best practices that can help you meet the quality requirements on your projects."
+msgstr ""
+
+#: ../../Features.rst:245
+msgid "This way, the approval stage of your Quality Systems are eased, whatever the reference (ISO, CMMI, ...)."
+msgstr ""
+
+#: ../../Features.rst:249
+msgid "Workflows"
+msgstr ""
+
+#: ../../Features.rst:250
+msgid "Workflows are defined to monitor changes of possible status."
+msgstr ""
+
+#: ../../Features.rst:252
+msgid "This allows, among other things, to restrict certain profiles from changing some status."
+msgstr ""
+
+#: ../../Features.rst:254
+msgid "You can, for instance, limit the change to a validation status to a given profile, to ensure that only an authorized user will perform this validation."
+msgstr ""
+
+#: ../../Features.rst:258
+msgid "Delays for tickets"
+msgstr ""
+
+#: ../../Features.rst:259
+msgid "You can define Delays for ticket. This will automatically calculate the due date of the Ticket when creating the Ticket."
+msgstr ""
+
+#: ../../Features.rst:263
+msgid "Indicators"
+msgstr ""
+
+#: ../../Features.rst:264
+msgid "Indicators can be calculated relative to respect of expected work, end date or cost values."
+msgstr ""
+
+#: ../../Features.rst:266
+msgid "Some indicators are configured by default , and you can configure your own depending on your needs."
+msgstr ""
+
+#: ../../Features.rst:270
+#: ../../Features.rst:481
+msgid "Alerts"
+msgstr ""
+
+#: ../../Features.rst:271
+msgid "Non respect of indicators (or the approach of non-respect target) can generate Alerts."
+msgstr ""
+
+#: ../../Features.rst:275
+msgid "Checklists"
+msgstr ""
+
+#: ../../Features.rst:276
+msgid "It is possible to define custom Checklists that will allow, for instance, to ensure that a process is applied."
+msgstr ""
+
+#: ../../Features.rst:280
+msgid "Reports"
+msgstr ""
+
+#: ../../Features.rst:281
+msgid "Many Reports are available to track activity on projects, some displayed as graphs."
+msgstr ""
+
+#: ../../Features.rst:284
+msgid "All is traced"
+msgstr ""
+
+#: ../../Features.rst:285
+msgid "Finally, thanks to ProjeQtOr , everything is traced."
+msgstr ""
+
+#: ../../Features.rst:287
+msgid "You can follow-up, in a centralized and collaborative way, the various elements you used to follow-up (or not) in many Excel sheets : list of Questions & Answers, recording Decisions impacting the project, management of documents configuration, follow-up of meetings ..."
+msgstr ""
+
+#: ../../Features.rst:289
+msgid "In addition, all updates are tracked on each item to keep (and display) an history of the life of the item."
+msgstr ""
+
+#: ../../Features.rst:298
+msgid "Risks management"
+msgstr ""
+
+#: ../../Features.rst:300
+msgid "ProjeQtOr  includes a comprehensive risks and opportunities management, including the action plan necessary to mitigate or treat them and monitoring occurring problems."
+msgstr ""
+
+#: ../../Features.rst:304
+msgid "Risks"
+msgstr ""
+
+#: ../../Features.rst:305
+msgid "A Risk is a threat or event that could have a negative impact on the project, which can be neutralized, or at least minimize, by predefined actions."
+msgstr ""
+
+#: ../../Features.rst:307
+msgid "The risk management plan is a key point of the project management. Its objective is to :"
+msgstr ""
+
+#: ../../Features.rst:309
+msgid "identify hazards and measure their impact on the project and their probability of occurrence,"
+msgstr ""
+
+#: ../../Features.rst:310
+msgid "identify avoidance measures (contingency) and mitigation in case of occurrence (mitigation),"
+msgstr ""
+
+#: ../../Features.rst:311
+msgid "identify opportunities,"
+msgstr ""
+
+#: ../../Features.rst:312
+msgid "monitor the actions of risks contingency and mitigation,"
+msgstr ""
+
+#: ../../Features.rst:313
+msgid "identify risks that eventually do happen (so they become issues)."
+msgstr ""
+
+#: ../../Features.rst:317
+msgid "Opportunities"
+msgstr ""
+
+#: ../../Features.rst:318
+msgid "An Opportunity can be seen as a positive risk. This is not a threat but an opportunity to have a positive impact on the project."
+msgstr ""
+
+#: ../../Features.rst:320
+msgid "They must be identified and followed-up not to be missed out."
+msgstr ""
+
+#: ../../Features.rst:324
+msgid "Issues"
+msgstr ""
+
+#: ../../Features.rst:325
+msgid "Issue is a risk that happens during the project."
+msgstr ""
+
+#: ../../Features.rst:327
+msgid "If the risk management plan has been properly managed, the issue should be an identified and qualified risk."
+msgstr ""
+
+#: ../../Features.rst:331
+msgid "Actions"
+msgstr ""
+
+#: ../../Features.rst:332
+msgid "Actions shall be defined to avoid risks, not miss the opportunities and solve issues."
+msgstr ""
+
+#: ../../Features.rst:334
+msgid "It is also appropriate to provide mitigation actions for identified risks that did not occur yet."
+msgstr ""
+
+#: ../../Features.rst:344
+msgid "Perimeter management"
+msgstr ""
+
+#: ../../Features.rst:346
+msgid "ProjeQtOr allows you to monitor and record all events on your projects and helps you in managing of deviations, to control the perimeter of projects."
+msgstr ""
+
+#: ../../Features.rst:350
+msgid "Meetings"
+msgstr ""
+
+#: ../../Features.rst:351
+msgid "Follow-up and organize Meetings, track associated action plans, decisions and easily find this information afterwards."
+msgstr ""
+
+#: ../../Features.rst:355
+msgid "Periodic meetings"
+msgstr ""
+
+#: ../../Features.rst:356
+msgid "You can also create Periodic meetings, which are regularly recurring meetings (steering committees, weekly progress meetings, ... )"
+msgstr ""
+
+#: ../../Features.rst:360
+msgid "Decisions"
+msgstr ""
+
+#: ../../Features.rst:361
+msgid "Decisions follow-up allows you to easily retrieve the information about the origin of a decision :"
+msgstr ""
+
+#: ../../Features.rst:363
+msgid "who has taken a particular decision ?"
+msgstr ""
+
+#: ../../Features.rst:364
+msgid "when?"
+msgstr ""
+
+#: ../../Features.rst:365
+msgid "during which meeting ?"
+msgstr ""
+
+#: ../../Features.rst:366
+msgid "who was present at this meeting?"
+msgstr ""
+
+#: ../../Features.rst:368
+msgid "Not revolutionary, this feature can save you many hours of research in case of dispute ."
+msgstr ""
+
+#: ../../Features.rst:372
+msgid "Questions"
+msgstr ""
+
+#: ../../Features.rst:373
+msgid "Tracking Questions / Answers can also simplify your life on such exchanges, which often end up as a game of Ping - Pong with a poor Excel sheet in the role of the ball (when it is not a simple email exchange... )."
+msgstr ""
+
+#: ../../Features.rst:377
+msgid "Product and Version"
+msgstr ""
+
+#: ../../Features.rst:378
+msgid "ProjeQtOr includes Product management and Product Versions."
+msgstr ""
+
+#: ../../Features.rst:380
+msgid "Each version can be connected to one or more projects."
+msgstr ""
+
+#: ../../Features.rst:382
+msgid "This allows you to link your activities to target version."
+msgstr ""
+
+#: ../../Features.rst:384
+msgid "This also allows to know, in the case of Bug Tracking, the version on which a problem is identified and the version on which it is (or will be) fixed."
+msgstr ""
+
+#: ../../Features.rst:396
+msgid "Documents management"
+msgstr ""
+
+#: ../../Features.rst:398
+msgid "ProjeQtOr offers integrated **Document Management**."
+msgstr ""
+
+#: ../../Features.rst:400
+msgid "This tool is simple and efficient to manage your project and product documents."
+msgstr ""
+
+#: ../../Features.rst:402
+msgid "ProjeQtOr supported only digital document. Document file will be stored in the tool as versions."
+msgstr ""
+
+#: ../../Features.rst:404
+msgid "Document can be versioning and an approver process can be defined."
+msgstr ""
+
+#: ../../Features.rst:407
+msgid "Directories structure management"
+msgstr ""
+
+#: ../../Features.rst:408
+msgid "Allows to define a structure for document storage."
+msgstr ""
+
+#: ../../Features.rst:409
+msgid "Directories structure is defined in :ref:`document-directory` screen."
+msgstr ""
+
+#: ../../Features.rst:412
+msgid "Document management"
+msgstr ""
+
+#: ../../Features.rst:413
+msgid ":ref:`document` screen allows to manage documents."
+msgstr ""
+
+#: ../../Features.rst:416
+msgid "Document access"
+msgstr ""
+
+#: ../../Features.rst:417
+msgid "Global definition of directories is directly displayed in the document menu, to give direct access to documents depending on the defined structure."
+msgstr ""
+
+#: ../../Features.rst:418
+msgid "See: :ref:`menu-document-window`."
+msgstr ""
+
+#: ../../Features.rst:427
+msgid "Commitments management"
+msgstr ""
+
+#: ../../Features.rst:429
+msgid "ProjeQtOr  allows you to follow the requirements on your projects and measure at any time coverage progress, making it easy to reach your commitments."
+msgstr ""
+
+#: ../../Features.rst:431
+msgid "In addition to the standard functionalities to manage your projects and monitor costs and delays, ProjeQtOr  provides elements to monitor commitments on products."
+msgstr ""
+
+#: ../../Features.rst:433
+msgid "By linking these three elements, you can obtain a requirements covering matrix, simply, efficiently and in real time."
+msgstr ""
+
+#: ../../Features.rst:437
+msgid "Requirements"
+msgstr ""
+
+#: ../../Features.rst:438
+msgid "Requirements management  helps in describing requirements explicitly and quantitatively monitor progress in building a product."
+msgstr ""
+
+#: ../../Features.rst:442
+msgid "Test cases"
+msgstr ""
+
+#: ../../Features.rst:443
+msgid "The definition of Test cases is used to describe how you will test that a given requirement is met."
+msgstr ""
+
+#: ../../Features.rst:447
+msgid "Test sessions"
+msgstr ""
+
+#: ../../Features.rst:448
+msgid "Test sessions group test cases to be executed for a particular purpose."
+msgstr ""
+
+#: ../../Features.rst:458
+msgid "Tools"
+msgstr ""
+
+#: ../../Features.rst:460
+msgid "ProjeQtOr includes some tools to generate alerts, automatically send emails on chosen events, import or export data in various formats."
+msgstr ""
+
+#: ../../Features.rst:464
+msgid "Imports"
+msgstr ""
+
+#: ../../Features.rst:465
+msgid "ProjeQtOr includes an import feature for almost all elements of project management, from CSV or XLSX files."
+msgstr ""
+
+#: ../../Features.rst:469
+msgid "CSV and PDF exports"
+msgstr ""
+
+#: ../../Features.rst:470
+msgid "All lists of items can be printed and exported to CSV and PDF format."
+msgstr ""
+
+#: ../../Features.rst:472
+msgid "The details of each item can be printed or exported in PDF format."
+msgstr ""
+
+#: ../../Features.rst:476
+msgid "MS-Project export"
+msgstr ""
+
+#: ../../Features.rst:477
+msgid "The Gantt planning can be exported to MS-Project format (XML)."
+msgstr ""
+
+#: ../../Features.rst:482
+msgid "Internal alerts can be generated automatically based on defined events."
+msgstr ""
+
+#: ../../Features.rst:486
+msgid "Emails"
+msgstr ""
+
+#: ../../Features.rst:487
+msgid "These alerts can also be dispatched as emails."
+msgstr ""
+
+#: ../../Features.rst:489
+msgid "It is also possible to manually send emails from the application, attaching the details of an item."
+msgstr ""
+
+#: ../../Features.rst:491
+msgid "It is also possible to retrieve answers to this type of email to save the message in the notes of the relevant item."
+msgstr ""
+
+#: ../../Features.rst:495
+msgid "Administration"
+msgstr ""
+
+#: ../../Features.rst:496
+msgid "ProjeQtOr provides administrative features to manage connections, send special alerts and manage background tasks treatments."
+msgstr ""
+
+#: ../../Features.rst:500
+msgid "CRON"
+msgstr ""
+
+#: ../../Features.rst:501
+msgid "Moreover, the tool features its own CRON system, independent of the operating system and able to handle the PHP stop and restart."
+msgstr ""
+

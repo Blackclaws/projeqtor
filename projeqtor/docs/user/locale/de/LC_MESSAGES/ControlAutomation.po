@@ -1,0 +1,1168 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2018, ProjeQtOr
+# This file is distributed under the same license as the ProjeQtOr Bedienhandbuch Deutsch package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"POT-Creation-Date: \n"
+"PO-Revision-Date: \n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 2.0.8\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"Last-Translator: \n"
+"Language: de\n"
+
+msgid "Workflows"
+msgstr "Arbeitsabläufe"
+
+msgid ":ref:`profiles-definition`"
+msgstr ":ref:`profiles-definition`"
+
+msgid ""
+"A workflow defines the possibility to go from one status to another one, and "
+"who (depending on profile) can do this operation for each status."
+msgstr ""
+"Ein Workflow definiert die Möglichkeit, von einem Status zum anderen zu "
+"wechseln, und wer (je nach Profil) diese Operation für jeden Status "
+"durchführen kann."
+
+msgid "Once defined, a workflow can be linked to any type of any item."
+msgstr ""
+"Einmal definiert, kann ein Workflow mit jeder Art von Objekt verknüpft "
+"werden."
+
+msgid "Section: Description"
+msgstr "Sektion: Beschreibung"
+
+msgid "Field"
+msgstr "Feld"
+
+msgid "Description"
+msgstr "Beschreibung"
+
+msgid ":term:`Id`"
+msgstr ":term:`Id`"
+
+msgid "Unique Id for the workflow."
+msgstr "Eindeutige Id für den Workflow."
+
+msgid "**Name**"
+msgstr "**Name**"
+
+msgid "Name of the workflow."
+msgstr "Name des Workflows."
+
+msgid "Sort order"
+msgstr "Sortierung"
+
+msgid "Number to define the order of display in lists."
+msgstr "Nummer zur Festlegung der Reihenfolge der Anzeige in Listen."
+
+msgid ":term:`Closed`"
+msgstr ":term:`Geschlossen`"
+
+msgid "Flag to indicate that workflow is archived."
+msgstr "Kennzeichen, dass der Workflow archiviert wird."
+
+msgid "Complete description of the workflow."
+msgstr "Vollständige Beschreibung des Workflows\""
+
+msgid "**\\* Required field**"
+msgstr "**\\* Pflichtfeld**"
+
+msgid "Button: Select status to show or hide"
+msgstr "Schaltfläche: Status zum Ein- und Ausblenden auswählen"
+
+msgid ""
+"This button |buttonIconParameter|  can be used to hide some unnecessary "
+"status."
+msgstr ""
+"Diese Schaltfläche |buttonIconParameter| kann verwendet werden, um unnötige "
+"Status."
+
+msgid "Section: Workflow Diagram"
+msgstr "Sektion: Workflow-Diagramm"
+
+msgid ""
+"The workflow diagram presents a visual representation of the workflow "
+"displaying all possible transitions (independently to profile rights)."
+msgstr ""
+"Das Workflow-Diagramm zeigt eine visuelle Darstellung des Workflows Anzeige "
+"aller möglichen Übergänge (unabhängig von den Profilrechten)."
+
+msgid "Workflow Diagram"
+msgstr "Workflow-Diagramm"
+
+msgid "Section: Habilitation to change from a status to another"
+msgstr "Sektion: Übersicht zum Wechsel von einem Status in einen anderen"
+
+msgid ""
+"The habilitation table helps defining who can move from one status to "
+"another one."
+msgstr ""
+"Die Übersichtstabelle hilft bei der Definition, wer von einem Status in den "
+"Noch eine."
+
+msgid ""
+"Each line corresponds to the status from which you want to be able to move."
+msgstr "Jede Zeile entspricht dem Status, von dem aus Sie sich bewegen wollen."
+
+msgid ""
+"Each column corresponds to the status to which you want to be able to go."
+msgstr "Jede Spalte entspricht dem Status, in den Sie gehen wollen."
+
+msgid ""
+"It is not possible to go from one status to itself (these cells are blank)."
+msgstr ""
+"Es ist nicht möglich, von einem Status zu sich selbst zu gelangen (diese "
+"Zellen sind leer)."
+
+msgid ""
+"Just check the profile (or “all”) who is allowed to pass from one status to "
+"the other."
+msgstr ""
+"Überprüfen Sie einfach das Profil (oder \"alle\"), das von einem Status auf "
+"die andere."
+
+msgid "**In the upper example:**"
+msgstr "**Im oberen Beispiel:**"
+
+msgid ""
+"Anyone can move an item from “recorded” to “assigned” and from “recorded” to "
+"“cancelled”."
+msgstr ""
+"Jeder kann einen Artikel von \"aufgezeichnet\" nach \"zugewiesen\" und von "
+"\"aufgezeichnet\" nach \" verschieben."
+
+msgid ""
+"No one can move an item from “qualified” status to any other status. In this "
+"case, pay attention that it must never be possible to move an item to "
+"“qualified” status, because it will not be possible to leave this status."
+msgstr ""
+"Niemand kann einen Artikel aus dem Status \"qualifiziert\" in einen anderen "
+"Status verschieben. In diesem Fall, achten Sie darauf, dass es niemals "
+"möglich sein darf, einen Gegenstand nach Qualifizierter\" Status, weil es "
+"nicht möglich sein wird, diesen Status zu verlassen."
+
+msgid "Email Templates"
+msgstr "E-Mail-Vorlagen"
+
+msgid ""
+"The user is able to format mails that are sent automaticaly on events (see "
+"Mails on event). When using template, the standard email formating is "
+"replaced with selected one. Just define your templates, and select it on the "
+"\"Mail on Events\""
+msgstr ""
+"Der Benutzer ist in der Lage, Mails zu formatieren, die bei Ereignissen "
+"automatisch versendet werden (siehe Mails bei Ereignis). Bei Verwendung der "
+"Vorlage ist die Standard-E-Mail-Formatierung ersetzt durch eine ausgewählte. "
+"Definieren Sie einfach Ihre Vorlagen und wählen Sie es von der Liste „Mail "
+"on Events“ aus."
+
+msgid "`Id`"
+msgstr "`Id`"
+
+msgid "Unique Id for the template."
+msgstr "Eindeutige Id für die Vorlage."
+
+msgid "name"
+msgstr "name\" (Name"
+
+msgid "email template name"
+msgstr "Name der E-Mail-Vorlage"
+
+msgid "Element updated"
+msgstr "Element aktualisiert"
+
+msgid "elements that will be able to use this template"
+msgstr "Elemente, die diese Vorlage verwenden können"
+
+msgid "Type"
+msgstr "Type\" (Typ"
+
+msgid "Type of the selected element that will be able to use this template"
+msgstr "Typ des ausgewählten Elements, das diese Vorlage verwenden kann"
+
+msgid "title"
+msgstr "title\" (Titel"
+
+msgid "title of sent mails"
+msgstr "Titel der gesendeten E-Mails"
+
+msgid "template"
+msgstr "vorlage"
+
+msgid "template of sent mails"
+msgstr "Vorlage der gesendeten Mails"
+
+msgid "Flag to indicate that email template is archived."
+msgstr "Kennzeichen, dass die E-Mail-Vorlage archiviert ist."
+
+msgid "If not set, the template is valid for every type of the element"
+msgstr "Wenn nicht gesetzt, gilt die Vorlage für jeden Typ des Elements"
+
+msgid ""
+"If element is set, only these elements will be able to select the template"
+msgstr ""
+"Wenn das Element gesetzt ist, können nur diese Elemente die Vorlage auswählen"
+
+msgid ""
+"if element and type are set, only these elements of the correspondiong type "
+"will be able to select the template"
+msgstr ""
+"wenn Element und Typ gesetzt sind, nur diese Elemente des entsprechenden "
+"Typs wird in der Lage sein, die Vorlage auszuwählen"
+
+msgid ""
+"in the template, user can use any property of the updated object to show in "
+"the mail, just use ${propertyName} for instance ${name} will display the "
+"name of the item, ${id} will display its id"
+msgstr ""
+"in der Vorlage kann der Benutzer jede Eigenschaft des aktualisierten Objekts "
+"verwenden, um in die Mail, verwenden Sie einfach ${propertyName} zum "
+"Beispiel ${name} wird die Name des Eintrags, ${id} zeigt seine ID an"
+
+msgid ""
+"for properties referencing external item, such as idXxxxx, use ${nameXxxxx} "
+"to display name of item instead of its id for instance ${nameProject} will "
+"display the name of the project, as ${idProject} will display the id of the "
+"project"
+msgstr ""
+"für Eigenschaften, die sich auf ein externes Element beziehen, wie z.B. "
+"idXxxxxxx, verwenden Sie ${nameXxxxx}. um den Namen des Elements anstelle "
+"seiner ID anzuzeigen, z.B. ${nameProject} wird den Namen des Projekts "
+"anzeigen, da ${idProject} die ID des Projekt"
+
+msgid ""
+"other tags are available as parameters for email titles (see Global "
+"Parameters > emails)"
+msgstr ""
+"andere Tags stehen als Parameter für E-Mail-Titel zur Verfügung (siehe "
+"Globale Parameter > E-Mails)"
+
+msgid "some specific tags can also be used"
+msgstr "einige spezifische Tags können auch verwendet werden"
+
+msgid "${item} : class of the item"
+msgstr "${item} : class of the item"
+
+msgid "${dbName} : display name of current instance"
+msgstr "${dbName} : Anzeigename der aktuellen Instanz"
+
+msgid "${responsible} : synonym for ${nameResource}"
+msgstr "${responsible} : synonym für ${nameResource}"
+
+msgid "Other event that will possibly generate an email."
+msgstr "Anderes Ereignis, das möglicherweise eine E-Mail generiert."
+
+msgid "Flag to indicate that status mail is archived."
+msgstr "Kennzeichen, dass Status-Mail archiviert wird."
+
+msgid "If not set, the event is valid for every type of the element."
+msgstr "Wenn nicht gesetzt, gilt das Ereignis für jeden Typ des Elements."
+
+msgid "Section: Mail receivers"
+msgstr "Sektion: Mail-Empfänger"
+
+msgid "List of addresses of the mails."
+msgstr "Liste der Adressen der Mails."
+
+msgid "The list is not nominative, but defined as roles on the element."
+msgstr ""
+"Die Liste ist nicht nominativ, sondern als Rollen auf dem Element definiert."
+
+msgid ""
+"Each addressee will receive mail only once, even if a person has several "
+"“checked” roles on the element."
+msgstr ""
+"Jeder Empfänger erhält nur einmal Post, auch wenn eine Person mehrere "
+"Überprüfte\" Rollen auf dem Element."
+
+msgid "See: :ref:`receivers-list` for receivers detail."
+msgstr "Siehe: :ref:`receivers-list` für Empfängerdetails."
+
+msgid "Delays for tickets"
+msgstr "Verspätungen für Tickets"
+
+msgid ""
+"It is possible to define a default delay for tickets, for each ticket type "
+"and each ticket urgency."
+msgstr ""
+"Es ist möglich, eine Standardverzögerung für Tickets zu definieren, für "
+"jeden Tickettyp und jede Ticket-Dringlichkeit."
+
+msgid ""
+"On creation, the due date will automatically be calculated as creation date "
+"+ delay."
+msgstr ""
+"Bei der Erstellung wird das Fälligkeitsdatum automatisch als "
+"Erstellungsdatum berechnet."
+
+msgid "Unique Id for the delay definition."
+msgstr "Eindeutige Id für die Verzögerungsdefinition."
+
+msgid "**Ticket type**"
+msgstr "**Tickettyp**"
+
+msgid "Ticket type the delay applies to."
+msgstr "Tickettyp, für den die Verzögerung gilt."
+
+msgid "**Urgency**"
+msgstr "**Dringlichkeit**"
+
+msgid "Urgency of ticket the delay applied to."
+msgstr "Dringlichkeit des Tickets, auf das sich die Verspätung bezieht."
+
+msgid "**Value**"
+msgstr "**Wert**"
+
+msgid "Value of delay."
+msgstr "Wert der Verzögerung."
+
+msgid "Flag to indicate that delay definition is archived."
+msgstr "Flag, um anzuzeigen, dass die Delay-Definition archiviert ist."
+
+msgid "Unit for the value can be :"
+msgstr "Einheit für den Wert kann sein:"
+
+msgid "Days : simple calculation as days."
+msgstr "Tage: einfache Berechnung als Tage."
+
+msgid "Hours : simple calculation as hours."
+msgstr "Stunden : einfache Berechnung als Stunden."
+
+msgid ""
+"Open days : calculation excluding days off (weekends and days off defined on "
+"“calendar”)."
+msgstr ""
+"Tage der offenen Tür: Berechnung ohne arbeitsfreie Tage (Wochenenden und "
+"arbeitsfreie Tage, definiert an \"Kalender\"\")."
+
+msgid ""
+"Open hours : calculation only on the “standard open hours” defined in :ref:"
+"`Global parameters<daily-work-hours-section>` screen."
+msgstr ""
+"Öffnungszeiten: Berechnung nur auf dem in :ref:`Global parameters<daily-work-"
+"hours-section>` definierten Menü."
+
+msgid "Indicators"
+msgstr "Indikatoren"
+
+msgid "It is possible to define indicators on each type of element."
+msgstr "Es ist möglich, Indikatoren für jeden Elementtyp zu definieren."
+
+msgid ""
+"Depending on type of elements the type of indicators that can be selected in "
+"list differs."
+msgstr ""
+"Abhängig von der Art der Elemente ist die Art der Indikatoren, die unter "
+"Liste unterscheidet sich."
+
+msgid ""
+"Some indicators are based on delay (due date), some on work, some on cost."
+msgstr ""
+"Einige Indikatoren basieren auf Verspätung (Fälligkeitsdatum), andere auf "
+"Arbeit, wieder andere auf Kosten."
+
+msgid "For each indicator a warning value and an alert value can be defined."
+msgstr ""
+"Für jeden Indikator kann ein Warnwert und ein Alarmwert definiert werden."
+
+msgid "Unique Id for the indicator definition."
+msgstr "Eindeutige Id für die Indikatordefinition."
+
+msgid "Element"
+msgstr "Element\" (Element"
+
+msgid "The elements the indicator applies to."
+msgstr "Die Elemente, für die der Indikator gilt."
+
+msgid "Type of the elements the indicator applies to."
+msgstr "Typ der Elemente, für die der Indikator gilt."
+
+msgid "Indicator"
+msgstr "Indikator\" (Indikator"
+
+msgid "Indicator applies to."
+msgstr "Indikator gilt für."
+
+msgid "Reminder"
+msgstr "Erinnerung"
+
+msgid "Delay before due date or % of work or % or cost to send a warning."
+msgstr ""
+"Verspätung vor Fälligkeit oder % der Arbeit oder % oder Kosten für eine "
+"Verwarnung."
+
+msgid "Alert"
+msgstr "Alarm"
+
+msgid "Delay before due date or % of work or % or cost to send an alert."
+msgstr ""
+"Verspätung vor Fälligkeit oder % der Arbeit oder % oder Kosten für eine "
+"Benachrichtigung."
+
+msgid "See : :ref:`receivers-list` for receivers detail."
+msgstr "Siehe : :ref:`receivers-list` für Empfängerdetails."
+
+msgid "Section: Internal alert receivers"
+msgstr "Sektion: Interne Alarmempfänger"
+
+msgid "List of addresses of the internal alert."
+msgstr "Liste der Adressen des internen Alarms."
+
+msgid "Predefined notes"
+msgstr "Vordefinierte Notizen"
+
+msgid ""
+"The predefined note set the possibility to define some predefined texts for "
+"notes."
+msgstr ""
+"Die vordefinierte Notiz bietet die Möglichkeit, einige vordefinierte Texte "
+"für Notizen."
+
+msgid ""
+"When some predefined notes are defined for an element and / or type a list "
+"will appear on note creation."
+msgstr ""
+"Wenn einige vordefinierte Notizen für ein Element definiert sind und / oder "
+"eine Liste schreiben wird bei der Notenerstellung erscheinen."
+
+msgid ""
+"Selecting an item in the list will automatically fill in the note text field."
+msgstr ""
+"Die Auswahl eines Punktes in der Liste füllt automatisch das Notiztextfeld "
+"aus."
+
+msgid "Unique Id for the predefined note."
+msgstr "Eindeutige Id für die vordefinierte Notiz."
+
+msgid "Name of the predefined note."
+msgstr "Name der vordefinierten Notiz."
+
+msgid ""
+"Kind of item (Ticket, Activity, …) for which this predefined note will be "
+"proposed on note creation."
+msgstr ""
+"Art des Gegenstandes (Ticket, Aktivität, ....), für den diese vordefinierte "
+"Notiz vorgeschlagen bei der Erstellung von Notizen."
+
+msgid ""
+"Type of element for which this predefined note will be proposed on note "
+"creation."
+msgstr ""
+"Art des Elements, für das diese vordefinierte Notiz vorgeschlagen wird "
+"Schöpfung."
+
+msgid "Text"
+msgstr "Text\" (Text"
+
+msgid "Predefined text for notes."
+msgstr "Vordefinierter Text für Notizen."
+
+msgid "If not set, predefined note is valid for every element type."
+msgstr ""
+"Wenn nicht gesetzt, gilt der vordefinierte Hinweis für jeden Elementtyp."
+
+msgid "If not set, predefined note is valid for every type of the element."
+msgstr ""
+"Wenn nicht gesetzt, gilt der vordefinierte Hinweis für jeden Typ des "
+"Elements."
+
+msgid "Checklists"
+msgstr "Checklisten"
+
+msgid "It is possible to define checklist forms for each type of element."
+msgstr ""
+"Es ist möglich, Checklistenformulare für jeden Elementtyp zu definieren."
+
+msgid ""
+"When a checklist form exists for a given element, the checklist is available "
+"for the element."
+msgstr ""
+"Wenn ein Checklistenformular für ein bestimmtes Element existiert, ist die "
+"Checkliste verfügbar für das Element."
+
+msgid "Unique Id for the checklist definition."
+msgstr "Eindeutige Id für die Checklistendefinition."
+
+msgid "The elements the checklist applies to."
+msgstr "Die Elemente, auf die sich die Checkliste bezieht."
+
+msgid "Type of the elements the checklist applies to."
+msgstr "Art der Elemente, für die die Checkliste gilt."
+
+msgid "Flag to indicate that checklist definition is archived."
+msgstr "Kennzeichen, dass die Checklistendefinition archiviert wird."
+
+msgid "Section: Checklist lines"
+msgstr "Sektion: Checkliste Zeile"
+
+msgid "Displayed caption."
+msgstr "Angezeigte Bildunterschrift."
+
+msgid "Help text that will be displayed as tooltip."
+msgstr "Hilfetext, der als Tooltip angezeigt wird."
+
+msgid ""
+"Checks can be exclusive (select one will unselect others) or not (multi "
+"selection is then possible)."
+msgstr ""
+"Checks können exklusiv sein (wählen Sie einen aus, um andere zu "
+"deaktivieren) oder nicht (multi Auswahl ist dann möglich)."
+
+msgid "Receivers list"
+msgstr "Empfänger Liste"
+
+msgid "Receivers can receive email and alert."
+msgstr "Empfänger können E-Mails und Alarme empfangen."
+
+msgid "A description of receivers below."
+msgstr "Eine Beschreibung der Empfänger unten."
+
+msgid "Requestor"
+msgstr "Anfragender"
+
+msgid ""
+"The contact defined as :term:`requestor` on current item; sometimes appears "
+"as “contact” (on quotation and order, for instance) and sometimes have no "
+"meaning (for instance for milestone)."
+msgstr ""
+"Der Kontakt, definiert als :term:`Antragsteller` auf dem aktuellen Eintrag; "
+"erscheint manchmal als \"Kontakt\" (z.B. bei Angebot und Bestellung) und "
+"haben manchmal keine Bedeutung (zum Beispiel für Meilenstein)."
+
+msgid "Issuer"
+msgstr "Emittenti"
+
+msgid "The user defined as :term:`Issuer`."
+msgstr "Der Benutzer definiert als :term:`Herausgeber`."
+
+msgid "Responsible"
+msgstr "Verantwortlich"
+
+msgid "The resource defined as :term:`responsible`."
+msgstr "Die Ressource definiert als :term:`Verantwortlich`."
+
+msgid "Project team"
+msgstr "Projektteam"
+
+msgid "All resources allocated to the project."
+msgstr "Alle dem Projekt zugewiesenen Ressourcen."
+
+msgid "Project leader"
+msgstr "Projektleiter"
+
+msgid ""
+"The resource(s) allocated to the project with a “Project Leader” profile."
+msgstr ""
+"Die dem Projekt zugewiesene(n) Ressource(n) mit dem Profil \"Projektleiter\"."
+
+msgid "Project manager"
+msgstr "Projektmanager"
+
+msgid "The resource defined as the manager on a project."
+msgstr "Die Ressource, die als Manager in einem Projekt definiert ist."
+
+msgid "Assigned resource"
+msgstr "Zugewiesene Ressource"
+
+msgid "All resources assigned."
+msgstr "Alle Ressourcen zugeordnet."
+
+msgid "Other"
+msgstr "Sonstiges"
+
+msgid "Provides an extra field to manually enter email addresses."
+msgstr ""
+"Bietet ein zusätzliches Feld zur manuellen Eingabe von E-Mail-Adressen."
+
+msgid ""
+"If “other” is checked, an input box is displayed to enter a static mail "
+"address list."
+msgstr ""
+"Wenn \"Andere\" angekreuzt ist, wird ein Eingabefeld zur Eingabe einer "
+"statischen Mail Adressliste angezeigt."
+
+msgid "Several addresses can be entered, separated by semicolon."
+msgstr "Mehrere Adressen können durch Semikolon getrennt eingegeben werden."
+
+msgid "KPI definitions"
+msgstr "KPI-Definition\" (KPI-Definitionen"
+
+msgid ""
+"A performance indicator or key performance indicator (KPI) is a type of "
+"performance measurement."
+msgstr ""
+"Ein Leistungsindikator oder Key Performance Indicator (KPI) ist eine Art von "
+"Leistungsmessung."
+
+msgid "It is possible to define Kpi on incomings and deliverables items."
+msgstr "Es ist möglich, Kpi für Einnahmen und Ausgaben zu definieren."
+
+msgid "Unique Id for the KPI."
+msgstr "Eindeutige Id for the KPI."
+
+msgid "Name of the KPI."
+msgstr "Name des KPI."
+
+msgid "Code"
+msgstr "Code\" (Code"
+
+msgid "code of the KPI."
+msgstr "Code des KPI."
+
+msgid "Complete description of the KPI."
+msgstr "Vollständige Beschreibung des KPI."
+
+msgid "Idle"
+msgstr "Leerlauf"
+
+msgid "Statut of the KPI."
+msgstr "Statut des KPI."
+
+msgid "Description integrates the formula used to calculate the KPI."
+msgstr "Beschreibung integriert die Formel zur Berechnung der KPI."
+
+msgid "Section: Tresholds"
+msgstr "Sektion: Schwellenwerte"
+
+msgid "It is possible to attributes tresholds lines to KPI."
+msgstr "Es ist möglich, den KPIs Schwellenwerte zuzuordnen."
+
+msgid "Click on |buttonAdd|  to create a new JobList line."
+msgstr "Klicken Sie auf |buttonAdd|, um eine neue JobList-Zeile zu erstellen."
+
+msgid "Click on |buttonEdit| to update an existing JobList line."
+msgstr ""
+"Klicken Sie auf |buttonEdit|, um eine bestehende JobList-Zeile zu "
+"aktualisieren."
+
+msgid "Click on |buttonIconDelete| to delete the corresponding JobList line."
+msgstr ""
+"Klicken Sie auf |buttonIconDelete|, um die entsprechende JobList-Zeile zu "
+"löschen."
+
+msgid ""
+"Keep in mind KPI is an indicator of performance at project level (opposite "
+"to indicator which is calculated at item level)."
+msgstr ""
+"Der KPI ist ein Indikator für die Leistung auf Projektebene (im Gegensatz zu "
+"zum Kennzeichen, das auf Positionsebene berechnet wird)."
+
+msgid "to display the indicator, use Kpi report. See: :ref:`report`"
+msgstr ""
+"um den Indikator anzuzeigen, verwenden Sie den KPI-Bericht. Siehe: :ref:"
+"`report`"
+
+msgid "JobList"
+msgstr "JobList\" (englisch"
+
+msgid ""
+"Management of the JobList can be used for each element but it usually used "
+"to detail an Activity or Ticket."
+msgstr ""
+"Die Verwaltung der JobList kann für jedes Element verwendet werden, wird "
+"aber üblicherweise verwendet um eine Aktivität oder ein Ticket zu "
+"detaillieren."
+
+msgid ""
+"When a Joblist form exists for a given element, the Joblist is available for "
+"the element"
+msgstr ""
+"Wenn ein Joblistenformular für ein bestimmtes Element existiert, ist die "
+"Jobliste verfügbar für Das Element"
+
+msgid "It is an indicator to follow the respect of dates values."
+msgstr "Es ist ein Indikator für die Einhaltung der Datenwerte."
+
+msgid "Unique Id for the KPI.."
+msgstr "Eindeutige Id for the KPI..."
+
+msgid "IdChecklistable"
+msgstr "IdChecklistable"
+
+msgid "Unique Id for the Checklistable."
+msgstr "Eindeutige Id for the Checklistentabelle."
+
+msgid "idType"
+msgstr "idType\" (englisch"
+
+msgid "Type of the elements the joblist applies to."
+msgstr "Typ der Elemente, für die die Jobliste gilt."
+
+msgid "idle."
+msgstr "Leerlauf\""
+
+msgid "Section: JobList lines"
+msgstr "Sektion: JobList-Zeilen"
+
+msgid "A JobList is built from JobList lines."
+msgstr "Eine JobList wird aus JobList-Zeilen aufgebaut."
+
+msgid "Looking like CheckLists with no choice."
+msgstr "Sieht aus wie Checklisten ohne Wahl."
+
+msgid "Notification system"
+msgstr "Benachrichtigungssystem"
+
+msgid ""
+"This system also allows you to generate notifications manually or according "
+"to some very \"powerful\" rules (defined as \"where\" clauses). We now have "
+"2 systems for generating alerts or reminders :  indicators and notifications."
+msgstr ""
+"Dieses System ermöglicht es Ihnen auch, Meldungen manuell oder nach zu "
+"einigen sehr mächtigen Regeln (definiert als \"wo\" Klauseln). Wir haben "
+"jetzt 2 Systeme zur Generierung von Alarmen oder Erinnerungen: Indikatoren "
+"und Benachrichtigungen."
+
+msgid ""
+"The concept of user notification has been incorporated into projeqtor. A "
+"notification has a title, a content, a remitter. If it is generated by the "
+"notification system (see following paragraph), it is linked to an element of "
+"the system (Action, Invoice,…)."
+msgstr ""
+"Das Konzept der Benutzerbenachrichtigung wurde in projeqtor integriert. A "
+"Benachrichtigung hat einen Titel, einen Inhalt, einen Absender. Wird sie "
+"durch die Meldesystem (siehe folgenden Absatz), ist es mit einem Element von "
+"Das System (Aktion, Rechnung,....)."
+
+msgid ""
+"In order to automatically generate notifications based on certain field "
+"values of a system element, a notification system has been implemented. This "
+"notification system, whose purpose is to automatically generate "
+"notifications, is based on notification generation definitions."
+msgstr ""
+"Um automatisch Benachrichtigungen zu generieren, die auf einem bestimmten "
+"Feld basieren Werte eines Systemelements wurde ein Benachrichtigungssystem "
+"implementiert. Dieses Benachrichtigungssystem, dessen Zweck es ist, "
+"automatisch Benachrichtigungen, basiert auf den Definitionen der "
+"Benachrichtigungsgenerierung."
+
+msgid "Creation _________________"
+msgstr "Erstellung __________________________"
+
+msgid "The definition of notification generation is based on the following:"
+msgstr "Die Definition der Benachrichtigungsgenerierung basiert auf folgendem:"
+
+msgid ""
+"The element of the system that determines the notification, called "
+"\"Notifiable Element\" (notifiable)"
+msgstr ""
+"Das Element des Systems, das die Meldung bestimmt, genannt Meldepflichtiges "
+"Element\" (Meldepflichtig"
+
+msgid ""
+"The notification rule notifying the elements related to the generation of a "
+"notification"
+msgstr ""
+"Die Benachrichtigungsregel, die die Elemente im Zusammenhang mit der "
+"Generierung eines Benachrichtigung"
+
+msgid ""
+"The date (referred to as the reference date) at which the notification must "
+"be generated. This is one of the dates of the notifiable item that is not "
+"the creation date."
+msgstr ""
+"Das Datum (das als Bezugsdatum bezeichnet wird), an dem die Meldung "
+"generiert werden muss. Dies ist eines der Daten des meldepflichtigen "
+"Postens, das nicht das Erstellungsdatum ist."
+
+msgid ""
+"The generated notification receivers. Fields of the notifiable element or "
+"its sub-elements that refer to users."
+msgstr ""
+"Die generierten Benachrichtigungsempfänger. Felder des meldepflichtigen "
+"Elements oder seine Unterelemente, die sich auf Benutzer beziehen."
+
+msgid "The type of notification (Alert, Warning, Information)"
+msgstr "Die Art der Benachrichtigung (Alert, Warnung, Information)\""
+
+msgid ""
+"The title that can contain the field values of the notifiable element or its "
+"sub-elements"
+msgstr ""
+"Der Titel, der die Feldwerte des meldepflichtigen Elements oder dessen "
+"Unterelemente"
+
+msgid ""
+"The content may also contain the field values of the notifiable element or "
+"its sub-elements."
+msgstr ""
+"Der Inhalt kann auch die Feldwerte des meldepflichtigen Elements enthalten "
+"oder seine Unterelemente."
+
+msgid ""
+"The choice to send, or not, to all the sending of emails at the same time as "
+"the notifications."
+msgstr ""
+"Die Wahl, alle E-Mails zur gleichen Zeit zu versenden oder nicht, wie Die "
+"Benachrichtigungen."
+
+msgid "**\\* Definition of notifications**"
+msgstr "**\\* Definition von Benachrichtigungen**"
+
+msgid ":term:`Name`"
+msgstr ":term:`Name`"
+
+msgid "appears on level 3 of the unread notification tree."
+msgstr "erscheint auf Ebene 3 des ungelesenen Benachrichtigungsbaums."
+
+msgid "Notif. item"
+msgstr "Benachrichtigungsartikel"
+
+msgid "Type of the element the list applies to ."
+msgstr "Typ des Elements, auf das sich die Liste bezieht."
+
+msgid "Type represents level 1 of the unread notification tree."
+msgstr "Typ repräsentiert die Ebene 1 des ungelesenen Benachrichtigungsbaums."
+
+msgid "Section: Notification title"
+msgstr "Sektion: Titel der Benachrichtigung"
+
+msgid ":term:`Title`"
+msgstr ":term:`Titel`"
+
+msgid "Can add dynamics fields."
+msgstr "Kann Dynamikfelder hinzufügen."
+
+msgid ""
+"This is the screen used to define the \"programmed\" parameters of the "
+"programming generation."
+msgstr ""
+"Dies ist der Bildschirm, auf dem die programmierten Parameter der "
+"Programmierung Generation."
+
+msgid "Section 'Description':"
+msgstr "Abschnitt 'Beschreibung':"
+
+msgid "◦ Closed: As everywhere in projeQtor."
+msgstr "◦ Geschlossen: Wie überall in ProjeQtor."
+
+msgid "Section \"Title of the notification\""
+msgstr "Abschnitt \"Titel der Meldung\""
+
+msgid ""
+"◦ Title: The title of the notification (the subject of the email is the "
+"option 'Send email' is selected). It can contain fields of the \"notifiable"
+"\" element and its linked elements through an idXXX (where XXX represents "
+"the name of the linked element). In this case, the syntax must be: # {the "
+"field name}. Example: # {billId} - Invoice not paid - Sent on # {sendDate} "
+"If the rule (see below) of the instruction on the invoice of 'billId' "
+"2017-10-30-0001 whose sending date is 30-10-2017 then the title of the "
+"notification SERA: 2017-10-30-0001 - Invoice not paid - Submitted on "
+"10-30-2017"
+msgstr ""
+"◦ Titel: Der Titel der Benachrichtigung (der Betreff der E-Mail ist der "
+"Option'E-Mail senden' ausgewählt ist). Es kann Felder der "
+"\"anzeigepflichtigenElement und seine verknüpften Elemente durch ein idXXX "
+"(wobei XXX für der Name des verknüpften Elements). In diesem Fall muss die "
+"Syntax stimmen: Die Feldname}. Beispiel: # {billId} - Rechnung nicht bezahlt "
+"- Gesendet am # {sendDate} Wenn die Regel (siehe unten) der Anweisung auf "
+"der Rechnung von 'billId' 2017-10-30-0001, dessen Versanddatum 30-10-2017 "
+"ist, dann der Titel der Benachrichtigung SERA: 2017-10-30-0001 - Rechnung "
+"nicht bezahlt - Vorgelegt am 10-30-2017"
+
+msgid ""
+"The following elements allow you to integrate dynamic fields: The comboBox "
+"'Element' allows you to choose the selected notifiable element or one of its "
+"key linked elements. The comboxBox 'Field' allows you to choose the dynamic "
+"field of the element selected in 'Element'. The 'Insert' button allows you "
+"to insert where the cursor is in the title the dynamic field with the right "
+"synthax."
+msgstr ""
+"Die folgenden Elemente ermöglichen es Ihnen, dynamische Felder zu "
+"integrieren: Mit der Combobox“Element\" können Sie das ausgewählte "
+"meldepflichtige Element oder eines seiner Schlüsselelemente auswählen. Die "
+"ComboxBox’Feld’ ermöglicht es Ihnen, das dynamische Feld des unter’Element’ "
+"ausgewählten Elements auszuwählen. Mit der Schaltfläche ’Einfügen’ können "
+"Sie an der Stelle, an der sich der Cursor im Titel befindet, das dynamische "
+"Feld mit dem richtigen Synthax einfügen."
+
+msgid ""
+"◦ Content: This is the content of the notification (to the email, if the "
+"'Send Email' option is selected). In the same way as for the title, it can "
+"contain fields of the \"notifiable\" element and its elements leas by an "
+"idXXXX."
+msgstr ""
+"◦ Inhalt: Dies ist der Inhalt der Benachrichtigung (an die E-Mail, wenn die "
+"Die Option \"E-Mail senden\" ist ausgewählt). Wie beim Titel kann er "
+"enthalten Felder des meldepflichtigen Elements und seiner Elemente, die von "
+"einem idXXXX."
+
+msgid "Rule to apply:"
+msgstr "Regel zur Anwendung:"
+
+msgid ""
+"This rule determines which instance of the item will generate a "
+"notification. The syntax is the one we take for a WHERE clause in an SQL "
+"statement. Example: Declares a notification for all invoices whose amount "
+"has been paid <total amount AND whose project name is 'ACME' # "
+"{paymentAmount} <# {fullAmount} AND # {idProject.name} = 'ACME' AND isnull "
+"(# {paymentDate)"
+msgstr ""
+"Diese Regel legt fest, welche Instanz des Elements eine Benachrichtigung Die "
+"Syntax ist diejenige, die wir für eine WHERE-Klausel in einer SQL Aussage. "
+"Beispiel: Deklariert eine Benachrichtigung für alle Rechnungen, deren Betrag "
+"wurde bezahlt <Gesamtbetrag UND dessen Projektname'ACME' ist # ZahlungBetrag "
+"<# {fullAmount} AND # {idProject.name} = 'ACME' AND isnull (# {paymentDate)"
+
+msgid ""
+"The rule to apply is not mandatory. If the rule is empty, then only the "
+"reference date is used to determine whether or not a notification is "
+"generated."
+msgstr ""
+"Die anzuwendende Regel ist nicht zwingend. Wenn die Regel leer ist, dann "
+"wird nur die Das Bezugsdatum wird verwendet, um festzustellen, ob eine "
+"Meldung generiert."
+
+msgid ""
+"In addition to choosing a dynamic field, you can choose to use an operator "
+"or function with the following elements:"
+msgstr ""
+"Neben der Auswahl eines dynamischen Feldes können Sie auch einen Operator "
+"verwenden oder Funktion mit folgenden Elementen:"
+
+msgid "Notification content : Mandatory"
+msgstr "Benachrichtigungsinhalt : Verbindlich"
+
+msgid "Start as:"
+msgstr "Start als:"
+
+msgid ""
+"Reference Date : This is the notification date of the creation of the "
+"notification."
+msgstr ""
+"Bezugsdatum : Dies ist das Benachrichtigungsdatum für die Erstellung der "
+"Benachrichtigung."
+
+msgid ""
+"Example: 'Due date' (paymentDueDate) is selected. For all invoices that are "
+"not the previous rule, a notification will be generated if the due date is "
+"greater than or equal to the current date."
+msgstr ""
+"Beispiel: 'Fälligkeitsdatum' (paymentDueDate) wird gewählt. Für alle "
+"Rechnungen, die nicht die bisherige Regel, wird eine Benachrichtigung "
+"generiert, wenn das Fälligkeitsdatum größer oder gleich dem aktuellen Datum."
+
+msgid ""
+"Month: If checked, the generator (notification) applies to the year from the "
+"reference date to the reference day."
+msgstr ""
+"Monat: Wenn angekreuzt, gilt der Generator (Benachrichtigung) für das Jahr "
+"ab der Bezugsdatum zum Bezugsdatum."
+
+msgid ""
+"Fixed Day: If a day is chosen (not empty), the generator (if the rule "
+"applies)."
+msgstr ""
+"Fixer Tag: Wird ein Tag gewählt (nicht leer), wird der Generator (wenn die "
+"Regel gilt)."
+
+msgid ""
+"Year: If the year is checked, the generator is a notification every year to "
+"the month and the day of the reference date"
+msgstr ""
+"Jahr: Wenn das Jahr überprüft wird, wird der Generator jedes Jahr auf den "
+"Monat und den Tag des Bezugsdatums hingewiesen"
+
+msgid ""
+"Fixed month: If a month is chosen, the generator (a rule) a notification "
+"each year to the fixed month and the day of the reference date"
+msgstr ""
+"Fester Monat: Wenn ein Monat gewählt wird, wird der Generator (eine Regel) "
+"eine Benachrichtigung jedes Jahr auf den festgelegten Monat und den Tag des "
+"Bezugsdatums"
+
+msgid ""
+"Fixed day: If a day is chosen, the data generator (not apply) is notified "
+"each year to the year of the reference date on the day fixed."
+msgstr ""
+"Fixer Tag: Wird ein Tag gewählt, wird der Datengenerator (nicht zutreffend) "
+"benachrichtigt jedes Jahr auf das Jahr des Bezugsdatums an dem festgelegten "
+"Tag."
+
+msgid ""
+"If Year Checked, month and day corrects, then it is a birthday. The "
+"statement generator a notification every year to come in the month and on "
+"the set day. The reference date is no longer used for anything in this case."
+msgstr ""
+"Wenn Jahr geprüft, Monat und Tag korrigiert werden, dann ist es ein "
+"Geburtstag. Die Statement Generator eine Benachrichtigung jedes Jahr im "
+"Monat und auf Der Stichtag. Das Bezugsdatum wird in diesem Fall nicht mehr "
+"verwendet."
+
+msgid ""
+"Notify before: This is a number of days before the notification date for "
+"which the notification is to be generated"
+msgstr ""
+"Benachrichtigen Sie mich vorher: Dies ist eine Anzahl von Tagen vor dem "
+"Benachrichtigungsdatum für welche die Meldung erzeugt werden soll"
+
+msgid "Send to: These are the types of people who are notified."
+msgstr "Senden an: Das sind die Leute, die benachrichtigt werden."
+
+msgid ""
+"The syntax is as follows: One of the words in the \"Help - Authorized "
+"Recipients\" section separated by a '; The following items allow you to "
+"choose the type of remitter."
+msgstr ""
+"Die Syntax ist wie folgt: Eines der Wörter in der \"Hilfe - Autorisiert Der "
+"Abschnitt \"Empfänger\" ist durch einen Punkt getrennt; Die folgenden Punkte "
+"erlauben es Ihnen, Wählen Sie die Art des Überweisers."
+
+msgid ""
+"Sent e-mail: If checked, an e-mail will be generated even if the "
+"notification for each type of person has been defined."
+msgstr ""
+"Gesendete E-Mail: Wenn diese Option aktiviert ist, wird eine E-Mail "
+"generiert, auch wenn die Benachrichtigung für jede Art von Person wurde "
+"definiert."
+
+msgid "Miscellaneous ____________________"
+msgstr "Sonstiges ____________________"
+
+msgid "The parameterization"
+msgstr "Die Parametrierung"
+
+msgid "There are 2 global settings for the notification system:"
+msgstr "Es gibt 2 globale Einstellungen für das Benachrichtigungssystem:"
+
+msgid "notificationSystemActiv"
+msgstr "notificationSystemActiv"
+
+msgid "If YES, the notification system is implemented."
+msgstr "Wenn JA, ist das Benachrichtigungssystem implementiert."
+
+msgid "CronCheckNotifications"
+msgstr "CronCheckNotifications\" (Benachrichtigungen"
+
+msgid ""
+"Gives in seconds, the time interval between two generations of notification "
+"(and the Cron system is active) and between two the refresh of notifications "
+"on the HMI."
+msgstr ""
+"Gibt in Sekunden das Zeitintervall zwischen zwei Generationen der "
+"Benachrichtigung an.(und das Cron-System ist aktiv) und zwischen zweien das "
+"Aktualisieren von Benachrichtigungen auf dem HMI."
+
+msgid "Generation of notifications"
+msgstr "Generierung von Benachrichtigungen"
+
+msgid ""
+"Made by the CRON every hour Made at each change (creation, modification, "
+"deletion) of rule definition Not done on changes of other classes"
+msgstr ""
+"Von der CRON jede Stunde bei jeder Änderung gemacht (Erstellung, Änderung,"
+"Löschen) der Regeldefinition Nicht durchgeführt bei Änderungen anderer "
+"Klassen"
+
+msgid "The authorizations"
+msgstr "Die Berechtigungen"
+
+msgid ""
+"The access rights for the 'Notification' menu were given to the 'standard' "
+"projeqtor profiles (idProfile = 1 to 7). The access rights for the "
+"'Notification Definition' menu have been given for the administrator profile "
+"(idProfile = 1)."
+msgstr ""
+"Die Zugriffsrechte für das Menü'Benachrichtigung' wurden dem'Standard' "
+"zugewiesen Projeqtor-Profile (idProfile = 1 bis 7). Die Zugriffsrechte für "
+"das Menü Benachrichtigungsdefinition\" wurde für das Administratorprofil "
+"eingerichtet (idProfile = 1)"
+
+msgid "Access Rights"
+msgstr "Zugriffsberechtigunge"
+
+msgid "For notifications, rights:"
+msgstr "Für Mitteilungen, Rechte:"
+
+msgid "'full' were given to the administrator profile."
+msgstr "'full' wurden dem Administratorprofil übergeben."
+
+msgid "'modifiers'"
+msgstr "'Modifikatoren'"
+
+msgid ""
+"For the definition of the notification rules (notificationDefinition), the "
+"rights:"
+msgstr ""
+"Für die Definition der Benachrichtigungsregeln (notificationDefinition) wird "
+"die Rechte:"
+
+msgid "\"update\" was given to the administrator profile."
+msgstr "\"Update\" wurde dem Administratorprofil gegeben."
+
+msgid "'read only' for other profiles"
+msgstr "'Nur Lesen' für andere Profil"
+
+msgid "The IHMs ____________________"
+msgstr "Die IHMs ____________________"
+
+msgid ""
+"After logging in, a message generated after \"Login accepted\" that tells "
+"you that you have unread notifications:"
+msgstr ""
+"Nach dem Einloggen wird eine Nachricht generiert, die nach \"Login akzeptiert"
+"\" erscheint, die besagt: Dass Sie ungelesene Mitteilungen haben:"
+
+msgid ""
+"Display of unread notifications It is done at 2 levels on the main screen:"
+msgstr ""
+"Anzeige von ungelesenen Benachrichtigungen Auf dem Hauptbildschirm erfolgt "
+"dies auf 2 Ebenen:"
+
+msgid ""
+"Bottom right A notification icon appears as soon as a notification is not "
+"intended for the user."
+msgstr ""
+"Unten rechts Ein Benachrichtigungssymbol erscheint, sobald eine "
+"Benachrichtigung nicht erscheint Für den Benutzer bestimmt."
+
+msgid "Clicking on the icon gives direct access to the notifications screen."
+msgstr ""
+"Ein Klick auf das Symbol ermöglicht den direkten Zugriff auf den "
+"Benachrichtigungsbildschirm."
+
+msgid "Below the menus"
+msgstr "Unterhalb der Menüs"
+
+msgid ""
+"A tree whose title indicates the number of unread notifications intended for "
+"the user."
+msgstr ""
+"Ein Baum, dessen Titel die Anzahl der ungelesenen Benachrichtigungen angibt, "
+"die für Der Benutzer."
+
+msgid "This tree has the following levels:"
+msgstr "Dieser Baum hat folgende Ebenen:"
+
+msgid "Level 1: The types of notifications"
+msgstr "Ebene 1: Die Arten von Benachrichtigungen"
+
+msgid "Level 2: The trigger for notifications"
+msgstr "Level 2: Der Auslöser für Benachrichtigungen"
+
+msgid "Level 3: The Notification Definition to Product Notifications"
+msgstr "Level 3: Die Meldungsdefinition für Produktmeldungen"
+
+msgid ""
+"Level 4: The id of the element that generated the notification. The icon "
+"allows direct access to the item."
+msgstr ""
+"Level 4: Die ID des Elements, das die Benachrichtigung erzeugt hat. Das "
+"Symbol erlaubt den direkten Zugriff auf das Objekt."
+
+msgid ""
+"The icon allows you to refresh notifications without waiting for the "
+"scheduled update. The icon provides direct access to the notifications "
+"screen."
+msgstr ""
+"Das Symbol ermöglicht es Ihnen, Benachrichtigungen zu aktualisieren, ohne "
+"auf die Geplantes Update. Das Symbol ermöglicht den direkten Zugriff auf die "
+"Benachrichtigungen Bildschirm."

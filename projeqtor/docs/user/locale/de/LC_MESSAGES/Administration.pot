@@ -1,0 +1,883 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2018, ProjeQtOr
+# This file is distributed under the same license as the ProjeQtOr Bedienhandbuch Deutsch package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: ProjeQtOr Bedienhandbuch Deutsch 7.2\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2018-07-03 14:34+0200\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: ../../Administration.rst:5
+msgid "The screens described below are restricted to users with administrator profile."
+msgstr ""
+
+#: ../../Administration.rst:6
+msgid "Users with others profiles can have access whether access rights is granted."
+msgstr ""
+
+#: ../../Administration.rst:14
+msgid "Administration console"
+msgstr ""
+
+#: ../../Administration.rst:16
+msgid "Administration console allows to execute administration tasks on application."
+msgstr ""
+
+#: ../../Administration.rst:23
+msgid "Section: Background tasks"
+msgstr ""
+
+#: ../../Administration.rst:24
+msgid "Allows to start and stop background task is a specific threaded treatment that regularly checks for indicators to generate corresponding alerts, warnings and automatic import when needed."
+msgstr ""
+
+#: ../../Administration.rst:30
+msgid "Section: Send an internal alert"
+msgstr ""
+
+#: ../../Administration.rst:31
+msgid "Allows to send an internal alert to users."
+msgstr ""
+
+#: ../../Administration.rst:36
+msgid "Section: Manage connections"
+msgstr ""
+
+#: ../../Administration.rst:37
+msgid "Allows to force disconnection of active users and close the application for new connections."
+msgstr ""
+
+#: ../../Administration.rst:39
+msgid "**Button: Disconnect all users**"
+msgstr ""
+
+#: ../../Administration.rst:41
+msgid "Allows to disconnect all connected users except your own connection."
+msgstr ""
+
+#: ../../Administration.rst:42
+msgid "The application status is displayed below."
+msgstr ""
+
+#: ../../Administration.rst:46
+msgid "Disconnection will be effective for each user when his browser will ckeck for alerts to be displayed."
+msgstr ""
+
+#: ../../Administration.rst:47
+msgid "The delay for the effective disconnection of users will depend on the parameter “delay (in second) to check alerts” in :ref:`Global parameters<automated-service>` screen."
+msgstr ""
+
+#: ../../Administration.rst:49
+msgid "**Button: Open/Close application**"
+msgstr ""
+
+#: ../../Administration.rst:51
+msgid "Allows to open and close application."
+msgstr ""
+
+#: ../../Administration.rst:52
+msgid "When the application is closed the message below will appear on login screen."
+msgstr ""
+
+#: ../../Administration.rst:60
+msgid "Section: Maintenance of Data"
+msgstr ""
+
+#: ../../Administration.rst:61
+#: ../../Administration.rst:71
+msgid "The administrator has the possibility to:"
+msgstr ""
+
+#: ../../Administration.rst:63
+msgid "Close and delete sent emails and alerts."
+msgstr ""
+
+#: ../../Administration.rst:64
+msgid "Delete history of connections."
+msgstr ""
+
+#: ../../Administration.rst:65
+msgid "Updating references for any kind of element."
+msgstr ""
+
+#: ../../Administration.rst:70
+msgid "Section: Log files maintenance"
+msgstr ""
+
+#: ../../Administration.rst:73
+msgid "Delete old log files."
+msgstr ""
+
+#: ../../Administration.rst:74
+msgid "Show the list and specific log file."
+msgstr ""
+
+#: ../../Administration.rst:82
+msgid "Audit connections"
+msgstr ""
+
+#: ../../Administration.rst:84
+msgid "Audit connection proposes a view of “who is online”."
+msgstr ""
+
+#: ../../Administration.rst:88
+msgid "The administrator has the possibility to force the disconnection of any user (except his own current connection), see: :ref:`admin-console`."
+msgstr ""
+
+#: ../../Administration.rst:99
+msgid "Global parameters"
+msgstr ""
+
+#: ../../Administration.rst:101
+msgid "Global parameters screen allows configuration of application settings."
+msgstr ""
+
+#: ../../Administration.rst:103
+msgid "Tooltip"
+msgstr ""
+
+#: ../../Administration.rst:105
+msgid "Moving the mouse over the caption of a parameter will display a tooltip with more description about the parameter."
+msgstr ""
+
+#: ../../Administration.rst:108
+msgid "GENERAL SECTION 1: Work time"
+msgstr ""
+
+#: ../../Administration.rst:112
+msgid "Section: Daily work hours"
+msgstr ""
+
+#: ../../Administration.rst:113
+msgid "Definition of regular “work hours”."
+msgstr ""
+
+#: ../../Administration.rst:115
+msgid "Used to calculate delays based on “open hours”."
+msgstr ""
+
+#: ../../Administration.rst:118
+msgid "Section: Open days"
+msgstr ""
+
+#: ../../Administration.rst:119
+msgid "Possibility to define the working days in the company."
+msgstr ""
+
+#: ../../Administration.rst:121
+msgid "For each day of the week, you can choose between open days or off days."
+msgstr ""
+
+#: ../../Administration.rst:125
+msgid "This parameter are taken into account in : working days on calendars, the working days on the calculation and the display ,the working days on the display of real work allocation."
+msgstr ""
+
+#: ../../Administration.rst:133
+msgid "Section: Units for work"
+msgstr ""
+
+#: ../../Administration.rst:134
+msgid "The parameters to real work allocation and workload."
+msgstr ""
+
+#: ../../Administration.rst:136
+msgid "**Fields: Unit for real work allocation and for all work data**"
+msgstr ""
+
+#: ../../Administration.rst:138
+msgid "Definition of the unit can be in days or hours."
+msgstr ""
+
+#: ../../Administration.rst:142
+msgid "If both values are different, rounding errors may occur."
+msgstr ""
+
+#: ../../Administration.rst:143
+msgid "Remember that data is always stored in days."
+msgstr ""
+
+#: ../../Administration.rst:144
+msgid "Duration will always be displayed in days, whatever the workload unit."
+msgstr ""
+
+#: ../../Administration.rst:146
+msgid "**Number of hours per day**"
+msgstr ""
+
+#: ../../Administration.rst:148
+msgid "Allows to set number of hours per day."
+msgstr ""
+
+#: ../../Administration.rst:157
+msgid "Section: Real work allocation"
+msgstr ""
+
+#: ../../Administration.rst:158
+msgid "Defines behavior of tasks in the real work allocation screen."
+msgstr ""
+
+#: ../../Administration.rst:160
+msgid "**Display only handled tasks**"
+msgstr ""
+
+#: ../../Administration.rst:162
+msgid "Display only tasks with \"handled\" status."
+msgstr ""
+
+#: ../../Administration.rst:164
+msgid "**Set to first 'handled' status**"
+msgstr ""
+
+#: ../../Administration.rst:166
+msgid "Change status of the task to the first \"handled\" status when  real work is entered."
+msgstr ""
+
+#: ../../Administration.rst:168
+msgid "**Set to first 'done' status**"
+msgstr ""
+
+#: ../../Administration.rst:170
+msgid "Change status of the task to the first \"done\" status when no left work remains."
+msgstr ""
+
+#: ../../Administration.rst:172
+msgid "**Max days to book work (warning) :**"
+msgstr ""
+
+#: ../../Administration.rst:174
+msgid "Number of days that user can enter real work in the future before getting a warning."
+msgstr ""
+
+#: ../../Administration.rst:177
+#: ../../Administration.rst:184
+msgid "this parameter does not apply to administrative projects"
+msgstr ""
+
+#: ../../Administration.rst:179
+msgid "**Max days to book work (blocking)**"
+msgstr ""
+
+#: ../../Administration.rst:181
+msgid "Number of days that user can enter real work in the future. This limit is blocking."
+msgstr ""
+
+#: ../../Administration.rst:186
+msgid "**Alert resource on input done by someone else**"
+msgstr ""
+
+#: ../../Administration.rst:188
+msgid "Select your type of alert : Internal, Email, both or none."
+msgstr ""
+
+#: ../../Administration.rst:191
+msgid "GENERAL SECTION 2 : Activity"
+msgstr ""
+
+#: ../../Administration.rst:193
+msgid "Section: Planning"
+msgstr ""
+
+#: ../../Administration.rst:194
+msgid "Specific parameters about Gantt planning presentation."
+msgstr ""
+
+#: ../../Administration.rst:196
+msgid "**Show resource in Gantt**"
+msgstr ""
+
+#: ../../Administration.rst:198
+msgid "Select if the resource can be displayed in a Gantt chart, and format for display (name or initials)."
+msgstr ""
+
+#: ../../Administration.rst:200
+msgid "**Max projects to display**"
+msgstr ""
+
+#: ../../Administration.rst:202
+msgid "Defines maximum number of projects to display."
+msgstr ""
+
+#: ../../Administration.rst:203
+msgid "To avoid performance issues."
+msgstr ""
+
+#: ../../Administration.rst:205
+msgid "Section: Tickets"
+msgstr ""
+
+#: ../../Administration.rst:206
+msgid "**Only responsible works on ticket**"
+msgstr ""
+
+#: ../../Administration.rst:208
+msgid "Only responsible can enter some real work on the ticket."
+msgstr ""
+
+#: ../../Administration.rst:210
+msgid "**Display ticket at customer level** * Display of tickets on the Customer screen and on the Contacts screen"
+msgstr ""
+
+#: ../../Administration.rst:213
+msgid "Section: Organization"
+msgstr ""
+
+#: ../../Administration.rst:214
+msgid "Section: Automation"
+msgstr ""
+
+#: ../../Administration.rst:215
+msgid "**Consolidate validated work & cost**"
+msgstr ""
+
+#: ../../Administration.rst:217
+msgid "Select if validated work & cost are consolidated on top activities and projects :"
+msgstr ""
+
+#: ../../Administration.rst:219
+msgid "**Never** : Not consolidate"
+msgstr ""
+
+#: ../../Administration.rst:220
+msgid "**Always** : Values are replaced on activities and project."
+msgstr ""
+
+#: ../../Administration.rst:221
+msgid "**Only is set** : Replaces values, only if not already set."
+msgstr ""
+
+#: ../../Administration.rst:223
+msgid "Section: Milestones"
+msgstr ""
+
+#: ../../Administration.rst:224
+msgid "Milestone Management on Requirements, Tickets, Product Versions, Incomings, Deliverables and Deliveries. It updates the target (planned) date of the element from the planned date of the milestone."
+msgstr ""
+
+#: ../../Administration.rst:227
+msgid "It optionally allows you to link the element and the milestone (to get the list of linked elements from the milestone view)"
+msgstr ""
+
+#: ../../Administration.rst:229
+msgid "It optionally allows you to automatically retrieve the milestone from the milestone of the Project Version. .. rubric:: Section: Controls and restrictions"
+msgstr ""
+
+#: ../../Administration.rst:233
+msgid "GENERAL SECTION 3 : Display"
+msgstr ""
+
+#: ../../Administration.rst:234
+#: ../../Administration.rst:435
+msgid "Section: Display"
+msgstr ""
+
+#: ../../Administration.rst:235
+msgid "Section: Localization"
+msgstr ""
+
+#: ../../Administration.rst:236
+msgid "Section: Default values for user parameters"
+msgstr ""
+
+#: ../../Administration.rst:237
+msgid "GENERAL SECTION 4 : Miscellaneous"
+msgstr ""
+
+#: ../../Administration.rst:238
+msgid "Section: Format for reference numbering"
+msgstr ""
+
+#: ../../Administration.rst:239
+msgid "Allows to define reference formats for items of element, documents and bills. * Prefix : can contain {PROJ} for project code, {TYPE} for type code, {YEAR} for current year and {MONTH} for current month."
+msgstr ""
+
+#: ../../Administration.rst:242
+msgid "Section: Document reference format"
+msgstr ""
+
+#: ../../Administration.rst:243
+msgid "Format : can contain {PROJ} for project code, {TYPE} for type code, {NUM} for number as computed for reference, and {NAME} for document name."
+msgstr ""
+
+#: ../../Administration.rst:245
+msgid "Suffix : can contain {VERS} for version name."
+msgstr ""
+
+#: ../../Administration.rst:247
+msgid "Section: Bill reference format"
+msgstr ""
+
+#: ../../Administration.rst:249
+msgid "Section: Product and Component"
+msgstr ""
+
+#: ../../Administration.rst:251
+msgid "GENERAL SECTION 5 : Mailing"
+msgstr ""
+
+#: ../../Administration.rst:252
+#: ../../Administration.rst:479
+msgid "Section: Emailing"
+msgstr ""
+
+#: ../../Administration.rst:253
+#: ../../Administration.rst:492
+msgid "Section: Mail titles"
+msgstr ""
+
+#: ../../Administration.rst:255
+msgid "Section: Automatic emails grouping"
+msgstr ""
+
+#: ../../Administration.rst:256
+msgid "E-mail sending delay: possibility not to send emails in a row, but to delay them to send only one message if several changes generating an emails send are made in a short time."
+msgstr ""
+
+#: ../../Administration.rst:259
+msgid "Section: Test email configuration"
+msgstr ""
+
+#: ../../Administration.rst:260
+msgid "GENERAL SECTION 6 : Authentication"
+msgstr ""
+
+#: ../../Administration.rst:262
+msgid "Section: Ldap management parameters"
+msgstr ""
+
+#: ../../Administration.rst:263
+msgid "Information about LDAP connection and behavior on creation of new user from LDAP connection."
+msgstr ""
+
+#: ../../Administration.rst:266
+msgid "Section: User and password"
+msgstr ""
+
+#: ../../Administration.rst:267
+msgid "Security constraints about users and passwords."
+msgstr ""
+
+#: ../../Administration.rst:269
+msgid "GENERAL SECTION 7 : Automation"
+msgstr ""
+
+#: ../../Administration.rst:270
+#: ../../Administration.rst:453
+msgid "Section: Management of automated service (CRON)"
+msgstr ""
+
+#: ../../Administration.rst:271
+msgid "Parameters for the “Cron” process."
+msgstr ""
+
+#: ../../Administration.rst:275
+msgid "It will manage :"
+msgstr ""
+
+#: ../../Administration.rst:277
+msgid "Alert generation : Frequency for recalculation of indicators values."
+msgstr ""
+
+#: ../../Administration.rst:279
+msgid "Check alert : Frequency for client side browser to check if alert has to be displayed."
+msgstr ""
+
+#: ../../Administration.rst:281
+msgid "Import : Automatic import parameters as below."
+msgstr ""
+
+#: ../../Administration.rst:283
+msgid "Section: Automatic import of files"
+msgstr ""
+
+#: ../../Administration.rst:284
+msgid "Cron working directory"
+msgstr ""
+
+#: ../../Administration.rst:286
+#: ../../Administration.rst:355
+#: ../../Administration.rst:369
+msgid "Should be set out of web reach."
+msgstr ""
+
+#: ../../Administration.rst:288
+msgid "Directory of automated integration files"
+msgstr ""
+
+#: ../../Administration.rst:290
+msgid "Should must be set out of web reach."
+msgstr ""
+
+#: ../../Administration.rst:291
+msgid "Section: Automatic import of replies to emails"
+msgstr ""
+
+#: ../../Administration.rst:294
+msgid "It will manage connection to IMAP INBOX to retrieve email answers."
+msgstr ""
+
+#: ../../Administration.rst:296
+msgid "Email input check cron delay"
+msgstr ""
+
+#: ../../Administration.rst:298
+msgid "Delay of -1 deactivates this functionality."
+msgstr ""
+
+#: ../../Administration.rst:300
+msgid "IMAP host"
+msgstr ""
+
+#: ../../Administration.rst:302
+msgid "Must be an IMAP connection string."
+msgstr ""
+
+#: ../../Administration.rst:304
+msgid "Ex: to connect to GMAIL input box, host must be: {imap.gmail.com:993/imap/ssl}INBOX"
+msgstr ""
+
+#: ../../Administration.rst:306
+msgid "Section: Generation of alerts if real work is not entered"
+msgstr ""
+
+#: ../../Administration.rst:307
+msgid "Specific parameters about alerts."
+msgstr ""
+
+#: ../../Administration.rst:309
+msgid "**Send reminder on**"
+msgstr ""
+
+#: ../../Administration.rst:311
+msgid "Select a day if you want send a reminder."
+msgstr ""
+
+#: ../../Administration.rst:315
+msgid "It is possible to choose every day or never."
+msgstr ""
+
+#: ../../Administration.rst:317
+msgid "**Send reminder at**"
+msgstr ""
+
+#: ../../Administration.rst:319
+msgid "Select the hour when you want receive the reminder."
+msgstr ""
+
+#: ../../Administration.rst:321
+msgid "**Control input up to**"
+msgstr ""
+
+#: ../../Administration.rst:323
+msgid "Select when you want to be controlled, current day, previous day or next days."
+msgstr ""
+
+#: ../../Administration.rst:325
+msgid "**Number of days to control**"
+msgstr ""
+
+#: ../../Administration.rst:327
+msgid "Choose how many days will be controled"
+msgstr ""
+
+#: ../../Administration.rst:331
+msgid "All days of the week, open or off days are taken into account."
+msgstr ""
+
+#: ../../Administration.rst:333
+msgid "Off days in real work allocation will not send you an alert."
+msgstr ""
+
+#: ../../Administration.rst:335
+msgid "**Send alert to resource**"
+msgstr ""
+
+#: ../../Administration.rst:337
+msgid "Select how send alert to ressource, Internal alert, email, both or none."
+msgstr ""
+
+#: ../../Administration.rst:339
+msgid "**Send alert to project leader**"
+msgstr ""
+
+#: ../../Administration.rst:341
+msgid "Select how send alert to project leader"
+msgstr ""
+
+#: ../../Administration.rst:343
+msgid "**Send alert to team manager**"
+msgstr ""
+
+#: ../../Administration.rst:345
+msgid "Select how send alert to team manager"
+msgstr ""
+
+#: ../../Administration.rst:348
+msgid "Section: Automatic planning calculation"
+msgstr ""
+
+#: ../../Administration.rst:349
+msgid "GENERAL SECTION 8 : System"
+msgstr ""
+
+#: ../../Administration.rst:350
+msgid "Section: Files and directories"
+msgstr ""
+
+#: ../../Administration.rst:351
+msgid "Definition of directories and other parameters used for Files management."
+msgstr ""
+
+#: ../../Administration.rst:353
+msgid "Attachments Directory"
+msgstr ""
+
+#: ../../Administration.rst:357
+msgid "Temporary directory for reports"
+msgstr ""
+
+#: ../../Administration.rst:359
+msgid "Must be kept in web reach."
+msgstr ""
+
+#: ../../Administration.rst:364
+msgid "Section: Document"
+msgstr ""
+
+#: ../../Administration.rst:365
+msgid "Definition of directories and other parameters used for Documents management."
+msgstr ""
+
+#: ../../Administration.rst:367
+msgid "Root directory for documents"
+msgstr ""
+
+#: ../../Administration.rst:371
+msgid "Section: Localization data"
+msgstr ""
+
+#: ../../Administration.rst:372
+msgid "**Charset to save files on server**"
+msgstr ""
+
+#: ../../Administration.rst:374
+msgid "Keep empty for Linux servers, files names will be stored in UTF8. For windows OS server, define charset as \"windows-1252\" (for western europe) or similar corresponding to your localization."
+msgstr ""
+
+#: ../../Administration.rst:376
+msgid "**Separator for CSV files (on export and export)**"
+msgstr ""
+
+#: ../../Administration.rst:378
+msgid "Section: Miscellaneous"
+msgstr ""
+
+#: ../../Administration.rst:379
+msgid "Auto check (or not) for existing new version of the tool (only administrator is informed);"
+msgstr ""
+
+#: ../../Administration.rst:381
+msgid "Section: PDF export"
+msgstr ""
+
+#: ../../Administration.rst:382
+msgid "Memory limit for PDF generation."
+msgstr ""
+
+#: ../../Administration.rst:385
+#: ../../Administration.rst:486
+msgid "Section: SSL connection to database"
+msgstr ""
+
+#: ../../Administration.rst:386
+msgid "SSL Key"
+msgstr ""
+
+#: ../../Administration.rst:387
+msgid "SSL Certification"
+msgstr ""
+
+#: ../../Administration.rst:388
+msgid "SSL Certificate Authority"
+msgstr ""
+
+#: ../../Administration.rst:389
+msgid "Enter patch to corresponding files to enable SSL connection to the database."
+msgstr ""
+
+#: ../../Administration.rst:391
+msgid "Take care that these files must exist and be valid SSL files."
+msgstr ""
+
+#: ../../Administration.rst:393
+msgid "If values are incorrect, the application will not work any more, and you'll have to manually fix parameters in the database."
+msgstr ""
+
+#: ../../Administration.rst:395
+msgid "666666666666666666666666666666666666666666666666666666666666666666666666666666666666666"
+msgstr ""
+
+#: ../../Administration.rst:396
+msgid "**Print Gantt with 'old style' format**"
+msgstr ""
+
+#: ../../Administration.rst:398
+msgid "Propose possibility to display “old style” Gantt."
+msgstr ""
+
+#: ../../Administration.rst:399
+msgid "May cause performance issues, but could fix some display issue on browsers."
+msgstr ""
+
+#: ../../Administration.rst:403
+msgid "**Apply strict mode for dependencies**"
+msgstr ""
+
+#: ../../Administration.rst:405
+msgid "Defines if a task can begin the same day as the preceding one."
+msgstr ""
+
+#: ../../Administration.rst:416
+msgid "Section: Responsible"
+msgstr ""
+
+#: ../../Administration.rst:417
+msgid "Behavior about management of responsible, including automatic initialization of responsible."
+msgstr ""
+
+#: ../../Administration.rst:419
+msgid "**Auto set responsible if single resource**"
+msgstr ""
+
+#: ../../Administration.rst:421
+msgid "Automatically set responsible if not set and only one resource if allocated to the project."
+msgstr ""
+
+#: ../../Administration.rst:423
+msgid "**Auto set responsible if needed**"
+msgstr ""
+
+#: ../../Administration.rst:425
+msgid "Automatically set responsible to current resource if not set and the responsible is required (depending on status)."
+msgstr ""
+
+#: ../../Administration.rst:436
+msgid "Selection of graphic interface behavior and generic display parameter for users."
+msgstr ""
+
+#: ../../Administration.rst:438
+msgid "Icon size are default : user can overwrite these values"
+msgstr ""
+
+#: ../../Administration.rst:457
+msgid "Automatic import"
+msgstr ""
+
+#: ../../Administration.rst:480
+msgid "Parameters to allow the application to send emails."
+msgstr ""
+
+#: ../../Administration.rst:493
+msgid "Parameters to define title of email depending on event (1)."
+msgstr ""
+
+#: ../../Administration.rst:495
+msgid "(see: :ref:`administration-special-field-label`)"
+msgstr ""
+
+#: ../../Administration.rst:506
+msgid "Special fields"
+msgstr ""
+
+#: ../../Administration.rst:508
+msgid "Special fields can be used in the title and body mail to be replaced by item values :"
+msgstr ""
+
+#: ../../Administration.rst:510
+msgid "${dbName} : the display name of the instance"
+msgstr ""
+
+#: ../../Administration.rst:511
+msgid "${id} : id of the item"
+msgstr ""
+
+#: ../../Administration.rst:512
+msgid "${item} : the class of the item (for instance \"Ticket\")"
+msgstr ""
+
+#: ../../Administration.rst:513
+msgid "${name} : name of the item"
+msgstr ""
+
+#: ../../Administration.rst:514
+msgid "${status} : the current status of the item"
+msgstr ""
+
+#: ../../Administration.rst:515
+msgid "${project} : the name of the project of the item"
+msgstr ""
+
+#: ../../Administration.rst:516
+msgid "${type} : the type of the item"
+msgstr ""
+
+#: ../../Administration.rst:517
+msgid "${reference} : the reference of the item"
+msgstr ""
+
+#: ../../Administration.rst:518
+msgid "${externalReference} : the :term:`external reference` of the item"
+msgstr ""
+
+#: ../../Administration.rst:519
+msgid "${issuer} : the name of the issuer of the item"
+msgstr ""
+
+#: ../../Administration.rst:520
+msgid "${responsible}  : the name of the responsible for the item"
+msgstr ""
+
+#: ../../Administration.rst:521
+msgid "${sender} : the name of the sender of email"
+msgstr ""
+
+#: ../../Administration.rst:522
+msgid "${sponsor} : the name of the project sponsor"
+msgstr ""
+
+#: ../../Administration.rst:523
+msgid "${projectCode} : the project code"
+msgstr ""
+
+#: ../../Administration.rst:524
+msgid "${contractCode} : the contact code of project"
+msgstr ""
+
+#: ../../Administration.rst:525
+msgid "${customer} : Customer of project"
+msgstr ""
+
+#: ../../Administration.rst:526
+msgid "${url} : the URL for direct access to the item"
+msgstr ""
+
+#: ../../Administration.rst:527
+msgid "${login} the user name"
+msgstr ""
+
+#: ../../Administration.rst:528
+msgid "${password} the user password"
+msgstr ""
+
+#: ../../Administration.rst:529
+msgid "${adminMail} the email of administrator"
+msgstr ""
+
