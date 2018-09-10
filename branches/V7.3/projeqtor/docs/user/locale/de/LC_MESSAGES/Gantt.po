@@ -1,0 +1,718 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2018, ProjeQtOr
+# This file is distributed under the same license as the ProjeQtOr Bedienhandbuch Deutsch package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"POT-Creation-Date: \n"
+"PO-Revision-Date: \n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 2.0.8\n"
+"Last-Translator: \n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"Language: de\n"
+
+#: ../../Gantt.rst:10 ../../Gantt.rst:15
+msgid "Gantt charts"
+msgstr "Balken-Diagramme"
+
+#: ../../Gantt.rst:22
+msgid "Planning"
+msgstr "Planung"
+
+#: ../../Gantt.rst:24
+msgid "This screen allows to define project planning and follow progress."
+msgstr "Dieser Bildschirm ermöglicht es, die Projektplanung zu definieren und den Fortschritt zu verfolgen."
+
+#: ../../Gantt.rst:26
+msgid "It is composed with two areas:"
+msgstr "Es besteht aus zwei Bereichen:"
+
+#: ../../Gantt.rst:28
+msgid ":ref:`task-list-area` |one|"
+msgstr ":ref:`task-list-area` |one|"
+
+#: ../../Gantt.rst:29
+msgid ":ref:`gantt-chart-view` |two|"
+msgstr ":ref:`gantt-chart-view` |two|"
+
+#: ../../Gantt.rst:39
+msgid "Gantt (Planning)"
+msgstr "Gantt (Planung)"
+
+#: ../../Gantt.rst:42
+msgid "3 - Activity planning calculation"
+msgstr "3 - Berechnung der Leistungsplanung"
+
+#: ../../Gantt.rst:56
+msgid "4 - Buttons"
+msgstr "4 - Tasten"
+
+#: ../../Gantt.rst:57
+msgid "Click on |iconEnableCalendar| to validate planning."
+msgstr "Klicken Sie auf |iconEnableCalendar|, um die Planung zu validieren."
+
+#: ../../Gantt.rst:61
+msgid "Click on |msProject| to export planning to MS-Project xml format."
+msgstr "Klicken Sie auf |msProject|, um die Planung ins MS-Project xml-Format zu exportieren."
+
+#: ../../Gantt.rst:65
+msgid "Click on |buttonIconFilter| to filter the list."
+msgstr "Klicken Sie auf |buttonIconFilter|, um die Liste zu filtern."
+
+#: ../../Gantt.rst:69
+msgid "5 - Show Baseline"
+msgstr "5 - Grundlinie anzeigen"
+
+#: ../../Gantt.rst:74
+msgid "Ability to display two baselines on the Gantt chart."
+msgstr "Möglichkeit, zwei Grundlinien im Gantt-Diagramm anzuzeigen."
+
+#: ../../Gantt.rst:75
+msgid "Baseline can be saved with |storePlannedDates|."
+msgstr "Baseline kann mit |storePlannedDates| gespeichert werden."
+
+#: ../../Gantt.rst:79
+msgid "6 - Show Critical path"
+msgstr "6 - Kritischen Pfad anzeigen"
+
+#: ../../Gantt.rst:89
+msgid "Task list area"
+msgstr "Bereich Aufgabenliste"
+
+#: ../../Gantt.rst:91
+msgid "The task list area is composed with:"
+msgstr "Der Aufgabenbereich besteht aus:"
+
+#: ../../Gantt.rst:93
+msgid ":ref:`task-list` |one|"
+msgstr ":ref:`task-list` |one|"
+
+#: ../../Gantt.rst:94
+msgid ":ref:`progress-data-view` |two|"
+msgstr ":ref:`progress-data-view` |two|"
+
+#: ../../Gantt.rst:100 ../../Gantt.rst:135
+msgid "Task list & progress data view"
+msgstr "Aufgabenliste & Fortschrittsdatenansicht"
+
+#: ../../Gantt.rst:104
+msgid "3 - Area splitter"
+msgstr "3 - Bereichsverteiler"
+
+#: ../../Gantt.rst:105
+msgid "The splitter is used to show or hide the progress data view."
+msgstr "Der Splitter dient zum Ein- und Ausblenden der Fortschrittsdatenansicht."
+
+#: ../../Gantt.rst:109
+msgid "The progress data view is hidden by default."
+msgstr "Die Fortschrittsdatenansicht ist standardmäßig ausgeblendet."
+
+#: ../../Gantt.rst:110
+msgid "Move the splitter on your right to display them."
+msgstr "Verschieben Sie den Splitter nach rechts, um sie anzuzeigen."
+
+#: ../../Gantt.rst:119
+msgid "Task list"
+msgstr "Aufgabenliste"
+
+#: ../../Gantt.rst:121
+msgid "The task list displayed planning elements in hierarchical form."
+msgstr "Die Aufgabenliste zeigt Planungselemente in hierarchischer Form an."
+
+#: ../../Gantt.rst:123
+msgid "Tasks are regrouped by project and activity."
+msgstr "Aufgaben werden nach Projekt und Tätigkeit gruppiert."
+
+#: ../../Gantt.rst:126
+msgid "Projects displayed"
+msgstr "Angezeigte Projekte"
+
+#: ../../Gantt.rst:127
+msgid "Projects displayed depends on selection done with the project selector."
+msgstr "Die angezeigten Projekte hängen von der Auswahl mit dem Projekt-Selektor ab."
+
+#: ../../Gantt.rst:128
+msgid "See: :ref:`top-bar`"
+msgstr "Siehe: :ref:`top-bar`"
+
+#: ../../Gantt.rst:138
+msgid "1 - Hierarchical level"
+msgstr "1 - Hierarchische Ebene"
+
+#: ../../Gantt.rst:142
+msgid "2 - Icon of element"
+msgstr "2 - Symbol des Elements"
+
+#: ../../Gantt.rst:143
+msgid "An icon is displayed on the left of the corresponding element."
+msgstr "Links neben dem entsprechenden Element wird ein Symbol angezeigt."
+
+#: ../../Gantt.rst:146
+msgid "3 - Group row"
+msgstr "3 - Gruppenreihe"
+
+#: ../../Gantt.rst:151
+msgid "4 - Show WBS"
+msgstr "4 - WBS anzeigen"
+
+#: ../../Gantt.rst:152
+msgid "Click on \"Show WBS\" to display the WBS number before the names."
+msgstr "Klicken Sie auf „Zeige PSP“, um die PSP-Nummer vor den Namen anzuzeigen."
+
+#: ../../Gantt.rst:155
+msgid "5 - Item name"
+msgstr "5 - Artikelbezeichnung"
+
+#: ../../Gantt.rst:159
+msgid "6 - Checkbox «Show closed items»"
+msgstr "6 - Kontrollkästchen «Geschlossene Objekte anzeigen»"
+
+#: ../../Gantt.rst:160
+msgid "Flag on «Show closed items» allows to list also closed items."
+msgstr "Flagge auf «geschlossen Elemente anzeigen» erlaubt es, auch geschlossene Positionen aufzulisten."
+
+#: ../../Gantt.rst:176 ../../Gantt.rst:187
+msgid "Progress data view"
+msgstr "Ansicht Fortschrittsdaten"
+
+#: ../../Gantt.rst:178
+msgid "The progress data view allows to show progress on project elements."
+msgstr "Die Fortschrittsdatenansicht erlaubt es, den Fortschritt von Projektelementen anzuzeigen."
+
+#: ../../Gantt.rst:190
+msgid "1 - Group row"
+msgstr "1 - Zeile gruppieren"
+
+#: ../../Gantt.rst:191
+msgid "The group row has a gray background."
+msgstr "Die Gruppenzeile ist grau hinterlegt."
+
+#: ../../Gantt.rst:192
+msgid "Used to display consolidated progress data for tasks."
+msgstr "Zur Anzeige von konsolidierten Fortschrittsdaten für Aufgaben."
+
+#: ../../Gantt.rst:195
+msgid "2 - Task row"
+msgstr "2 - Aufgabe Zeile"
+
+#: ../../Gantt.rst:196
+msgid "The task row has a white background."
+msgstr "Die Aufgabenzeile hat einen weißen Hintergrund."
+
+#: ../../Gantt.rst:197
+msgid "Used to display task progress data."
+msgstr "Zur Anzeige von Aufgabenfortschrittsdaten."
+
+#: ../../Gantt.rst:204
+msgid "3 -  Define the columns of progress data that will be displayed"
+msgstr "3 - Definieren Sie die Spalten der Fortschrittsdaten, die angezeigt werden sollen"
+
+#: ../../Gantt.rst:205
+msgid "Click on |buttonIconColumn| to define the columns displayed."
+msgstr "Klicken Sie auf |buttonIconColumn|, um die angezeigten Spalten zu definieren."
+
+#: ../../Gantt.rst:206
+msgid "Click on **OK** button to apply changes."
+msgstr "Klicken Sie auf die Schaltfläche **OK**, um die ßnderungen zu übernehmen."
+
+#: ../../Gantt.rst:208
+msgid "**Column selection**"
+msgstr "**Spaltenauswahl**"
+
+#: ../../Gantt.rst:210
+msgid "Use checkboxes to select or unselect columns to display."
+msgstr "Verwenden Sie Kontrollkästchen, um die anzuzeigenden Spalten zu markieren oder zu deaktivieren."
+
+#: ../../Gantt.rst:212
+msgid "**Columns order**"
+msgstr "**Spaltenreihenfolge**"
+
+#: ../../Gantt.rst:214
+msgid "Use the |buttonIconDrag| to reorder columns with drag & drop feature."
+msgstr "Mit der Schaltfläche |buttonIconDrag| können Sie Spalten mit Drag & Drop neu anordnen."
+
+#: ../../Gantt.rst:221
+msgid "Popup list - Select columns"
+msgstr "Popup-Liste - Spalten auswählen"
+
+#: ../../Gantt.rst:230 ../../Gantt.rst:240
+msgid "Gantt chart view"
+msgstr "Gantt-Diagramm-Ansicht"
+
+#: ../../Gantt.rst:232
+msgid "The Gantt chart view is a graphic representation of progress data."
+msgstr "Die Balkendiagrammansicht ist eine grafische Darstellung der Fortschrittsdaten."
+
+#: ../../Gantt.rst:234
+msgid "For each planning element, a Gantt bar is displayed at them right."
+msgstr "Für jedes Planungselement wird rechts davon eine Gantt-Leiste angezeigt."
+
+#: ../../Gantt.rst:243
+msgid "1 - Scale"
+msgstr "1 - Maßstab"
+
+#: ../../Gantt.rst:244
+msgid "Scale available: daily, weekly, monthly or quarter"
+msgstr "Skala verfügbar: täglich, wöchentlich, monatlich oder vierteljährlich"
+
+#: ../../Gantt.rst:245
+msgid "The Gantt chart view will be adjusted according to scale selected."
+msgstr "Die Gantt-Diagrammansicht wird entsprechend dem gewählten Maßstab angepasst."
+
+#: ../../Gantt.rst:248
+msgid "2 - Start and end dates"
+msgstr "2 - Anfangs- und Enddaten"
+
+#: ../../Gantt.rst:252
+msgid "3 - Saving dates"
+msgstr "3 - Daten speichern"
+
+#: ../../Gantt.rst:253
+msgid "Save previous dates to retrieve them on every connection."
+msgstr "Frühere Daten speichern, um sie bei jeder Verbindung abzurufen."
+
+#: ../../Gantt.rst:260
+msgid "4- Gantt bars"
+msgstr "4- Gantt-Balken"
+
+#: ../../Gantt.rst:261
+msgid "Overdue tasks appear in red, others in green."
+msgstr "Überfällige Aufgaben erscheinen in rot, andere in grün."
+
+#: ../../Gantt.rst:263
+msgid "**Red bar**"
+msgstr "**Roter Balken**"
+
+#: ../../Gantt.rst:269
+msgid "**Purple bar**"
+msgstr "**Lila bar**"
+
+#: ../../Gantt.rst:275
+msgid "**Consolidation bar**"
+msgstr "**Konsolidierungsleiste**"
+
+#: ../../Gantt.rst:280
+msgid "Displayed at group row level."
+msgstr "Anzeige auf Gruppenzeilenebene."
+
+#: ../../Gantt.rst:281
+msgid "Graphic display of consolidated dates for planning elements group."
+msgstr "Grafische Darstellung der konsolidierten Termine der Planungselementegruppe."
+
+#: ../../Gantt.rst:285
+msgid "**Real work progress**"
+msgstr "**Echter Arbeitsfortschritt**"
+
+#: ../../Gantt.rst:293
+msgid "Lighter bar"
+msgstr "Leichtere Stange"
+
+#: ../../Gantt.rst:301
+msgid "Move the cursor over the bar to display item name and planned dates."
+msgstr "Bewegen Sie den Cursor über den Balken, um den Namen und die geplanten Termine anzuzeigen."
+
+#: ../../Gantt.rst:304
+msgid "5 - Dependency links"
+msgstr "5 - Abhängigkeitsverknüpfungen"
+
+#: ../../Gantt.rst:305
+msgid "Dependencies between planning elements are displayed with an arrow."
+msgstr "Abhängigkeiten zwischen Planungselementen werden mit einem Pfeil dargestellt."
+
+#: ../../Gantt.rst:307
+msgid "To modify dependency link, click on dependency to displays a pop-up"
+msgstr "Um den Abhängigkeitslink zu ändern, klicken Sie auf Abhängigkeit, um ein Popup-Fenster anzuzeigen"
+
+#: ../../Gantt.rst:313
+msgid "3 dependency types are managed:"
+msgstr "3 Abhängigkeitstypen werden verwaltet:"
+
+#: ../../Gantt.rst:319
+msgid "if the resource is already 100% used until the end of the successor"
+msgstr "wenn die Ressource bereits zu 100% bis zum Ende des Nachfolgers genutzt wird"
+
+#: ../../Gantt.rst:323
+msgid "Pop-up"
+msgstr "Pop-Up"
+
+#: ../../Gantt.rst:326
+msgid "You can modify the delay, add a comment or remove the dependency."
+msgstr "Sie können die Verzögerung ändern, einen Kommentar hinzufügen oder die Abhängigkeit entfernen."
+
+#: ../../Gantt.rst:328
+msgid "Graphical add dependency"
+msgstr "Grafische Abhängigkeit hinzufügen"
+
+#: ../../Gantt.rst:339
+msgid "6 - Milestone"
+msgstr "6 - Meilenstein"
+
+#: ../../Gantt.rst:340
+msgid "Milestones appear as diamonds, filled if completed, empty if not."
+msgstr "Meilensteine erscheinen als Diamanten, gefüllt, wenn abgeschlossen, leer, wenn nicht."
+
+#: ../../Gantt.rst:341
+msgid "Color of  diamond depends on milestone progress."
+msgstr "Farbe des Diamanten hängt vom Fortschritt des Meilensteins ab."
+
+#: ../../Gantt.rst:343
+msgid "**Ongoing milestone and in times**"
+msgstr "**Laufender Meilenstein und in Zeiten**"
+
+#: ../../Gantt.rst:348
+msgid "**Completed milestone and in times**"
+msgstr "**Abgeschlossener Meilenstein und in Zeiten**"
+
+#: ../../Gantt.rst:353
+msgid "**Ongoing milestone and delayed**"
+msgstr "**Laufender Meilenstein und verzögert**"
+
+#: ../../Gantt.rst:360
+msgid "Planned end date > Validate end date"
+msgstr "Geplantes Endedatum > Endedatum bestätigen"
+
+#: ../../Gantt.rst:362
+msgid "**Completed milestone and delayed**"
+msgstr "**Abgeschlossener Meilenstein und verzögert**"
+
+#: ../../Gantt.rst:369
+msgid "Real end date > Validated end date"
+msgstr "Reales Endedatum > Validiertes Endedatum"
+
+#: ../../Gantt.rst:375
+msgid "7 - Show resources"
+msgstr "7 - Ressourcen zeigen"
+
+#: ../../Gantt.rst:376
+msgid "Click on “Show resources” to display resources assigned to tasks."
+msgstr "Klicken Sie auf „Ressourcen anzeigen“, um die den Aufgaben zugeordneten Ressourcen anzuzeigen."
+
+#: ../../Gantt.rst:383
+msgid "8 - Current date"
+msgstr "8 - Aktuelles Datum"
+
+#: ../../Gantt.rst:385
+msgid "Red bar in yellow collumn display the current day and time."
+msgstr "Roter Balken in gelber Spalte zeigt den aktuellen Tag und die Uhrzeit an."
+
+#: ../../Gantt.rst:388
+msgid "9 - Detail of the work"
+msgstr "9 - Detail der Arbeit"
+
+#: ../../Gantt.rst:389
+msgid "Right click on a bar to displays the detail of the work for this bar."
+msgstr "Klicken Sie mit der rechten Maustaste auf einen Balken, um die Details der Arbeit für diesen Balken anzuzeigen."
+
+#: ../../Gantt.rst:407 ../../Gantt.rst:417
+msgid "Project planning"
+msgstr "Projektplanung"
+
+#: ../../Gantt.rst:420
+msgid "1 - Add a new planning element"
+msgstr "1 - Neues Planungselement hinzufügen"
+
+#: ../../Gantt.rst:421
+msgid "Allows to create a new planning element."
+msgstr "Erlaubt das Anlegen eines neuen Planungselements."
+
+#: ../../Gantt.rst:422
+msgid "The created element is added in the Gantt and detail window is opened."
+msgstr "Das erzeugte Element wird im Gantt hinzugefügt und das Detailfenster geöffnet."
+
+#: ../../Gantt.rst:423
+msgid "The detail window allows to complete entry."
+msgstr "Das Detailfenster erlaubt es, die Eingabe abzuschließen."
+
+#: ../../Gantt.rst:430
+msgid "Popup menu - Create a new item"
+msgstr "Popup-Menü - Einen neuen Eintrag erstellen"
+
+#: ../../Gantt.rst:432
+msgid "Planning elements management"
+msgstr "Verwaltung der Planungselemente"
+
+#: ../../Gantt.rst:434
+msgid "Planning elements can be managed with their own dedicated screen."
+msgstr "Planungselemente können mit einem eigenen Bildschirm verwaltet werden."
+
+#: ../../Gantt.rst:438
+msgid "2 - Reorder planning elements"
+msgstr "2 - Planungselemente neu ordnen"
+
+#: ../../Gantt.rst:439
+msgid "The selector |buttonIconDrag| allows to reorder the planning elements."
+msgstr "Der Selektor |buttonIconDrag| erlaubt es, die Planungselemente neu zu ordnen."
+
+#: ../../Gantt.rst:444
+msgid "3 - Indenting element"
+msgstr "3 - Einrückbares Element"
+
+#: ../../Gantt.rst:445
+msgid "Click on an element, the detail window will be displayed."
+msgstr "Klicken Sie auf ein Element, das Detailfenster wird angezeigt."
+
+#: ../../Gantt.rst:448
+msgid "**Increase indent**"
+msgstr "**Einzug vergrößern**"
+
+#: ../../Gantt.rst:450
+msgid "The element will become the child of the previous element."
+msgstr "Das Element wird zum Kind des vorherigen Elements."
+
+#: ../../Gantt.rst:452
+msgid "**Decrease indent**"
+msgstr "**Einzug verringern**"
+
+#: ../../Gantt.rst:454
+msgid "The element will be moved at the same level than the previous element."
+msgstr "Das Element wird auf der gleichen Ebene wie das vorherige Element verschoben."
+
+#: ../../Gantt.rst:458
+msgid "4 - Dependency links"
+msgstr "4 - Abhängigkeitsverknüpfungen"
+
+#: ../../Gantt.rst:462
+msgid "Dependency links management"
+msgstr "Verwaltung von Abhängigkeitsbeziehungen"
+
+#: ../../Gantt.rst:464
+msgid "Dependency links can be managed in element screen."
+msgstr "Abhängigkeitsverknüpfungen können im Elementbild verwaltet werden."
+
+#: ../../Gantt.rst:465
+msgid "See: :ref:`predSuces-element-section`."
+msgstr "Siehe: :ref:`predSuces-element-section`."
+
+#: ../../Gantt.rst:469
+msgid "5 - Activity planning calculation"
+msgstr "5 - Berechnung der Leistungsplanung"
+
+#: ../../Gantt.rst:472
+msgid "**Automatic run plan**"
+msgstr "**Automatischer Ablaufplan**"
+
+#: ../../Gantt.rst:474
+msgid "Check the box to activate automatic calculation on each change."
+msgstr "Aktivieren Sie das Kontrollkästchen, um die automatische Berechnung bei jeder ßnderung zu aktivieren."
+
+#: ../../Gantt.rst:486
+msgid "**Automatic calculation **"
+msgstr "**Automatische Berechnung **"
+
+#: ../../Gantt.rst:489
+msgid "Complete calculation = calculation of all projects"
+msgstr "Vollständige Berechnung = Berechnung aller Projekte"
+
+#: ../../Gantt.rst:494
+msgid "6 - Store planned dates"
+msgstr "6 - Plandaten speichern"
+
+#: ../../Gantt.rst:495
+msgid "Allows to store planned dates into requested and validated dates."
+msgstr "Erlaubt es, geplante Daten in angeforderte und bestätigte Daten zu speichern."
+
+#: ../../Gantt.rst:498
+msgid "**Action available**"
+msgstr "**Aktion verfügbar**"
+
+#: ../../Gantt.rst:500
+msgid "**Always:** Always overwrite existing values."
+msgstr "**Immer:** Vorhandene Werte immer überschreiben."
+
+#: ../../Gantt.rst:501
+msgid "**If empty:** Store only if the value is empty."
+msgstr "**Wenn leer:** Nur speichern, wenn der Wert leer ist."
+
+#: ../../Gantt.rst:502
+msgid "**Never:** Values are not stored."
+msgstr "**Niemals:** Werte werden nicht gespeichert."
+
+#: ../../Gantt.rst:518
+msgid "Projects portfolio"
+msgstr "Projekt-Portfolio"
+
+#: ../../Gantt.rst:520
+msgid "This screen displays Gantt chart from projects portfolio point of view."
+msgstr "Dieses Menü zeigt das Balkendiagramm aus Sicht des Projektportfolios."
+
+#: ../../Gantt.rst:526 ../../Gantt.rst:574
+msgid "This section describes specific behavior for this screen."
+msgstr "Dieser Abschnitt beschreibt das spezifische Verhalten für dieses Bild."
+
+#: ../../Gantt.rst:527 ../../Gantt.rst:575
+msgid "All others behaviors are similar to :ref:`gantt-planning` screen."
+msgstr "Alle anderen Verhaltensweisen ähneln der :ref:`gantt-planning` Anzeige."
+
+#: ../../Gantt.rst:534
+msgid "Gantt (Projects portfolio)"
+msgstr "Gantt (Projektportfolio)"
+
+#: ../../Gantt.rst:537
+msgid "1 - Show milestones"
+msgstr "1 - Meilensteine anzeigen"
+
+#: ../../Gantt.rst:538
+msgid "It is possible to define whether milestones are displayed or not."
+msgstr "Es kann festgelegt werden, ob Meilensteine angezeigt werden oder nicht."
+
+#: ../../Gantt.rst:550
+msgid "Resource Planning"
+msgstr "Ressourcenplanun"
+
+#: ../../Gantt.rst:552
+msgid "This screen displays Gantt chart from the resources point of view."
+msgstr "Dieser Bildschirm zeigt das Gantt-Diagramm aus der Sicht der Ressourcen."
+
+#: ../../Gantt.rst:554
+msgid "Assigned tasks are grouped under resource level."
+msgstr "Zugewiesene Aufgaben werden unter Ressourcenebene gruppiert."
+
+#: ../../Gantt.rst:557
+msgid "Gantt bars"
+msgstr "Gantt-Balken"
+
+#: ../../Gantt.rst:558
+msgid "For activities, the Gantt bar is split in two:"
+msgstr "Für Aktivitäten ist die Gantt-Leiste in zwei Teile geteilt:"
+
+#: ../../Gantt.rst:560
+msgid "Real work in grey."
+msgstr "Echte Arbeit in grau."
+
+#: ../../Gantt.rst:561
+msgid "Reassessed work in green."
+msgstr "Neubewertete Arbeit in grün."
+
+#: ../../Gantt.rst:568
+msgid "Dependencies behavior"
+msgstr "Verhalten bei Abhängigkeiten"
+
+#: ../../Gantt.rst:569
+msgid "Links between activities are displayed only in the resource group."
+msgstr "Verknüpfungen zwischen Aktivitäten werden nur in der Ressourcengruppe angezeigt."
+
+#: ../../Gantt.rst:570
+msgid "Links existing between tasks on different resources are not displayed."
+msgstr "Verknüpfungen zwischen Aufgaben auf verschiedenen Ressourcen werden nicht angezeigt."
+
+#: ../../Gantt.rst:582
+msgid "Gantt (Resource planning)"
+msgstr "Gantt (Ressourcenplanung)"
+
+#: ../../Gantt.rst:586
+msgid "|one| - Show project level"
+msgstr "|one| - Projektebene zeigen"
+
+#: ../../Gantt.rst:587
+msgid "Tasks can be grouped by project."
+msgstr "Aufgaben können nach Projekt gruppiert werden."
+
+#: ../../Gantt.rst:588
+msgid "Click on “Show project level” to display project level."
+msgstr "Klicken Sie auf “Projektebene anzeigen“, um die Projektebene anzuzeigen."
+
+#: ../../Gantt.rst:591
+msgid "|two| - Show left work"
+msgstr "|two| - Linke Arbeit anzeigen"
+
+#: ../../Gantt.rst:592
+msgid "Left work can be displayed at right from Gantt bar."
+msgstr "Linke Arbeit kann rechts von der Gantt-Leiste angezeigt werden."
+
+#: ../../Gantt.rst:593
+msgid "Click on “Show left work” to display left work for each item."
+msgstr "Klicken Sie auf “Verbleibende Arbeit anzeigen“ , um die verbleibende Arbeit für jedes Element anzuzeigen."
+
+#: ../../Gantt.rst:596
+msgid "|three| - Limit display to selected ressource or team"
+msgstr "|three| - Anzeige auf ausgewählte Ressource oder Team beschränken"
+
+#: ../../Gantt.rst:597
+msgid "Click and select one ressource to display only his data."
+msgstr "Klicken und eine Ressource auswählen, um nur seine Daten anzuzeigen."
+
+#: ../../Gantt.rst:607
+msgid "Export planning to PDF"
+msgstr "Planung als PDF exportieren"
+
+#: ../../Gantt.rst:609
+msgid "Allows to export planning to PDF format."
+msgstr "Erlaubt den Export der Planung ins PDF-Format."
+
+#: ../../Gantt.rst:611
+msgid "Export contains all details and links between tasks."
+msgstr "Export enthält alle Details und Verknüpfungen zwischen Aufgaben."
+
+#: ../../Gantt.rst:620
+msgid "Fields - Export planning to PDF dialog box"
+msgstr "Felder - Planung als PDF-Dialog exportieren"
+
+#: ../../Gantt.rst:624
+msgid "Field"
+msgstr "Bereich"
+
+#: ../../Gantt.rst:625
+msgid "Description"
+msgstr "Beschreibung"
+
+#: ../../Gantt.rst:626
+msgid "Orientation"
+msgstr "Orientierung"
+
+#: ../../Gantt.rst:627
+msgid "Page orientation."
+msgstr "Seitenausrichtung."
+
+#: ../../Gantt.rst:628
+msgid "Zoom"
+msgstr "Zoomen"
+
+#: ../../Gantt.rst:629
+msgid "Allows to fit planning on page."
+msgstr "Erlaubt die Anpassung der Planung auf der Seite."
+
+#: ../../Gantt.rst:630
+msgid "Repeat headers"
+msgstr "Kopfzeilen wiederholen"
+
+#: ../../Gantt.rst:631
+msgid "Planning can be  span multiple pages."
+msgstr "Planung kann mehrere Seiten umfassen."
+
+#: ../../Gantt.rst:633
+msgid "Technical points"
+msgstr "Technische Punkte"
+
+#: ../../Gantt.rst:635
+msgid "This new feature will execute export on client side, in your browser."
+msgstr "Diese neue Funktion führt den Export auf der Client-Seite in Ihrem Browser aus."
+
+#: ../../Gantt.rst:637
+msgid "It is highly faster than *standard* PDF export."
+msgstr "Es ist schneller als der *Standard* PDF-Export."
+
+#: ../../Gantt.rst:638
+msgid "Therefore, this feature is hightly dependant to browser compatibility."
+msgstr "Daher ist diese Funktion stark von der Browser-Kompatibilität abhängig."
+
+#: ../../Gantt.rst:640
+msgid "Browser compatibility"
+msgstr "Browser-Kompatibilität"
+
+#: ../../Gantt.rst:643
+msgid "Compatible with IE11, Firefox, Edge and Chrome."
+msgstr "Kompatibel mit IE11, Firefox, Edge und Chrome."
+
+#: ../../Gantt.rst:644
+msgid "Else, the old export feature will be used."
+msgstr "Sonst wird die alte Exportfunktion verwendet."
+
+#: ../../Gantt.rst:646
+msgid "Forced feature activation (deactivation)"
+msgstr "Erzwungene Feature-Aktivierung (Deaktivierung)"

@@ -1,0 +1,508 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2018, ProjeQtOr
+# This file is distributed under the same license as the ProjeQtOr Bedienhandbuch Deutsch package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"POT-Creation-Date: \n"
+"PO-Revision-Date: \n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 2.0.8\n"
+"Last-Translator: \n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"Language: de\n"
+
+#: ../../Document.rst:14
+msgid "Documents"
+msgstr "Dokumente"
+
+#: ../../Document.rst:18
+msgid ":ref:`product-concept`"
+msgstr ":ref:`product-concept`"
+
+#: ../../Document.rst:22
+msgid "Document item describes general information about the document."
+msgstr "Dokumentposition beschreibt allgemeine Informationen über das Dokument."
+
+#: ../../Document.rst:24
+msgid "The file document will be stored in the tool as versions."
+msgstr "Das Datei-Dokument wird als Version im Tool gespeichert."
+
+#: ../../Document.rst:29
+msgid "Directories are defined in :ref:`document-directory` screen."
+msgstr "Verzeichnisse werden im Bildschirm \"ref:`document-directory`\" definiert."
+
+#: ../../Document.rst:34
+msgid "Document can evolve and a new file is generated at each evolution."
+msgstr "Dokument kann sich entwickeln und bei jeder Evolution wird eine neue Datei erzeugt."
+
+#: ../../Document.rst:35
+msgid ":term:`Type of versioning` must be defined for a document."
+msgstr ":term:`Type of versioning` muss für ein Dokument definiert werden."
+
+#: ../../Document.rst:39
+msgid "You can define approvers to a document."
+msgstr "Sie können Genehmigende für ein Dokument definieren."
+
+#: ../../Document.rst:51
+msgid "Type of versioning"
+msgstr "Art der Versionierung"
+
+#: ../../Document.rst:54
+msgid "A document can evolve following four ways defined as versioning type :"
+msgstr "Ein Dokument kann sich auf vier Arten entwickeln, die als Versionierungstyp definiert sind:"
+
+#: ../../Document.rst:56
+msgid "**Evolutive**"
+msgstr "**Evolutive**"
+
+#: ../../Document.rst:58
+msgid "Version is a standard Vx.y format."
+msgstr "Version ist ein Standard-Vx.y-Format."
+
+#: ../../Document.rst:59
+msgid "It is the most commonly used versioning type."
+msgstr "Es ist der am häufigsten verwendete Versionierungstyp."
+
+#: ../../Document.rst:60
+msgid "Major updates increase x and reset y to zero."
+msgstr "Größere Updates erhöhen x und setzen y auf Null zurück."
+
+#: ../../Document.rst:61
+msgid "Minor updates increase y."
+msgstr "Kleine Updates erhöhen y."
+
+#: ../../Document.rst:63
+msgid "**Chronological**"
+msgstr "**Chronologisch**"
+
+#: ../../Document.rst:65
+msgid "Version is a date."
+msgstr "Version ist ein Datum."
+
+#: ../../Document.rst:66
+msgid "This versioning type is commonly used for periodical documents."
+msgstr "Dieser Versionierungstyp wird häufig für periodische Dokumente verwendet."
+
+#: ../../Document.rst:67
+msgid "For instance : weekly boards."
+msgstr "Zum Beispiel: Wochentafeln."
+
+#: ../../Document.rst:69
+msgid "**Sequential**"
+msgstr "**Sequentiell**"
+
+#: ../../Document.rst:71
+msgid "Version is a sequential number."
+msgstr "Version ist eine fortlaufende Nummer."
+
+#: ../../Document.rst:72
+msgid "This versioning type is commonly used for recurring documents."
+msgstr "Dieser Versionierungstyp wird häufig für wiederkehrende Dokumente verwendet."
+
+#: ../../Document.rst:73
+msgid "For instance : Meeting reviews."
+msgstr "Zum Beispiel: Besprechungsberichte."
+
+#: ../../Document.rst:75
+msgid "**Custom**"
+msgstr "**Benutzerdefiniert**"
+
+#: ../../Document.rst:77
+msgid "Version is manually set."
+msgstr "Version wird manuell gesetzt."
+
+#: ../../Document.rst:87 ../../Document.rst:88 ../../Document.rst:91
+msgid "Section: Description"
+msgstr "Abschnitt: Beschreibung"
+
+#: ../../Document.rst:98 ../../Document.rst:156 ../../Document.rst:198
+#: ../../Document.rst:249 ../../Document.rst:295
+msgid "Field"
+msgstr "Bereich"
+
+#: ../../Document.rst:99 ../../Document.rst:157 ../../Document.rst:199
+#: ../../Document.rst:214 ../../Document.rst:250 ../../Document.rst:296
+msgid "Description"
+msgstr "Beschreibung"
+
+#: ../../Document.rst:100
+msgid ":term:`Id`"
+msgstr ":term:`Id``"
+
+#: ../../Document.rst:101
+msgid "Unique Id for the document."
+msgstr "Eindeutige Id für das Dokument."
+
+#: ../../Document.rst:102
+msgid "**Name**"
+msgstr "**Name**"
+
+#: ../../Document.rst:103
+msgid "Short description of the document."
+msgstr "Kurzbeschreibung des Dokuments."
+
+#: ../../Document.rst:104
+msgid "**Type**"
+msgstr "**Typ**"
+
+#: ../../Document.rst:105
+msgid "Type of document."
+msgstr "Art des Dokuments."
+
+#: ../../Document.rst:106
+msgid "Project"
+msgstr "Projekt"
+
+#: ../../Document.rst:107
+msgid "The project concerned by the document."
+msgstr "Das vom Dokument betroffene Projekt."
+
+#: ../../Document.rst:108
+msgid "Product"
+msgstr "Produkt\" (englisch"
+
+#: ../../Document.rst:109
+msgid "The product concerned by the document."
+msgstr "Das vom Dokument betroffene Produkt."
+
+#: ../../Document.rst:110
+msgid "**Directory**"
+msgstr "**Verzeichnis**"
+
+#: ../../Document.rst:111
+msgid "Place where the document is stored  to organize document structure."
+msgstr "Ort, an dem das Dokument gespeichert ist, um die Dokumentstruktur zu organisieren."
+
+#: ../../Document.rst:112
+msgid "Document reference"
+msgstr "Dokument-Referen"
+
+#: ../../Document.rst:113
+msgid "Document reference name."
+msgstr "Referenzname des Dokuments."
+
+#: ../../Document.rst:114
+msgid ":term:`External reference`"
+msgstr ":term:`External reference`"
+
+#: ../../Document.rst:115
+msgid "External reference of the document."
+msgstr "Externe Referenz des Dokuments."
+
+#: ../../Document.rst:116
+msgid "Author"
+msgstr "Schriftsteller"
+
+#: ../../Document.rst:117
+msgid "User or Resource or Contact who created the document."
+msgstr "Benutzer oder Ressource oder Kontakt, der das Dokument erstellt hat."
+
+#: ../../Document.rst:118
+msgid ":term:`Closed`"
+msgstr ":term:`Closed`"
+
+#: ../../Document.rst:119
+msgid "Box checked indicates the document is archived."
+msgstr "Box checked zeigt an, dass das Dokument archiviert ist."
+
+#: ../../Document.rst:120
+msgid "Cancelled"
+msgstr "Abgesagt"
+
+#: ../../Document.rst:121
+msgid "Box checked indicates the document is cancelled."
+msgstr "Box angekreuzt zeigt an, dass das Dokument abgebrochen wurde."
+
+#: ../../Document.rst:123 ../../Document.rst:165
+msgid "**\\* Required field**"
+msgstr "**\\* Pflichtfeld**"
+
+#: ../../Document.rst:127
+msgid "Must be concerned either with a project, a product or both."
+msgstr "Muss entweder ein Projekt, ein Produkt oder beides betreffen."
+
+#: ../../Document.rst:136
+msgid "Positioned by default as the connected user."
+msgstr "Standardmäßig als verbundener Benutzer positioniert."
+
+#: ../../Document.rst:137
+msgid "Can be changed (for instance if the author is not  the current user)."
+msgstr "Kann geändert werden (z.B. wenn der Autor nicht der aktuelle Benutzer ist)\""
+
+#: ../../Document.rst:147
+msgid "Section: Versions"
+msgstr "Abschnitt: Versionen"
+
+#: ../../Document.rst:148
+msgid "This section allows to manage version list of document."
+msgstr "Dieser Abschnitt erlaubt die Verwaltung der Versionsliste des Dokuments."
+
+#: ../../Document.rst:152
+msgid "Version list fields"
+msgstr "Versions-Listenfelde"
+
+#: ../../Document.rst:158
+msgid "**Versioning type**"
+msgstr "**Ausführungstyp**"
+
+#: ../../Document.rst:159
+msgid ":term:`Type of versioning` for the document."
+msgstr ":term:`Type of versioning` für das Dokument."
+
+#: ../../Document.rst:160 ../../Document.rst:202
+msgid "Last version"
+msgstr "Letzte Version"
+
+#: ../../Document.rst:161
+msgid "Caption of the last version of the document."
+msgstr "Beschriftung der letzten Version des Dokuments."
+
+#: ../../Document.rst:162
+msgid ":term:`Status`"
+msgstr ":term:`Status`"
+
+#: ../../Document.rst:163
+msgid "Status of the last version of the document."
+msgstr "Status der letzten Version des Dokuments."
+
+#: ../../Document.rst:170
+msgid "Version list management"
+msgstr "Versionslisten-Verwaltun"
+
+#: ../../Document.rst:171
+msgid "Click on |buttonAdd| to add a new version."
+msgstr "Klicken Sie auf |buttonAdd|, um eine neue Version hinzuzufügen."
+
+#: ../../Document.rst:172
+msgid "Click on |buttonEdit| to modifiy a version."
+msgstr "Klicken Sie auf |buttonEdit|, um eine Version zu ändern."
+
+#: ../../Document.rst:173
+msgid "Click on |buttonIconDelete| to delete a version."
+msgstr "Klicken Sie auf |buttonIconDelete|, um eine Version zu löschen."
+
+#: ../../Document.rst:174
+msgid "Click on |iconDownload| to download file at this version."
+msgstr "Klicken Sie auf |iconDownload|, um die Datei bei dieser Version herunterzuladen."
+
+#: ../../Document.rst:176
+msgid "**Document viewer**"
+msgstr "**Dokumentenbetrachter**"
+
+#: ../../Document.rst:178
+msgid "Document viewer available for image, text and PDF files."
+msgstr "Dokumentbetrachter für Bild-, Text- und PDF-Dateien verfügbar."
+
+#: ../../Document.rst:179
+msgid "Click on icon."
+msgstr "Klicken Sie auf das Symbol."
+
+#: ../../Document.rst:181
+msgid "Name of download file"
+msgstr "Name der Download-Datei"
+
+#: ../../Document.rst:194 ../../Document.rst:200 ../../Document.rst:201
+msgid "This button allows to upload locale file."
+msgstr "Diese Schaltfläche ermöglicht das Hochladen einer lokalen Datei."
+
+#: ../../Document.rst:203
+msgid "Caption of the last existing version."
+msgstr "Beschriftung der letzten existierenden Version."
+
+#: ../../Document.rst:204
+msgid "Update"
+msgstr "Aktualisieren"
+
+#: ../../Document.rst:205
+msgid "Importance of the update concerned by the new version."
+msgstr "Bedeutung des von der neuen Version betroffenen Updates."
+
+#: ../../Document.rst:206
+msgid "New version"
+msgstr "Neue Version"
+
+#: ../../Document.rst:207
+msgid "New caption for the created version."
+msgstr "Neue Ãberschrift für die erstellte Version."
+
+#: ../../Document.rst:208
+msgid "Date"
+msgstr "Datum"
+
+#: ../../Document.rst:209
+msgid "Date of the version."
+msgstr "Datum der Version."
+
+#: ../../Document.rst:210 ../../Document.rst:255
+msgid "Status"
+msgstr "Status\" (Status"
+
+#: ../../Document.rst:211
+msgid "Current status of the version."
+msgstr "Aktueller Stand der Version."
+
+#: ../../Document.rst:212
+msgid "Is a reference"
+msgstr "Ist eine Referenz"
+
+#: ../../Document.rst:213
+msgid "Check box to set this version is the new reference of the document."
+msgstr "Kontrollkästchen zum Setzen dieser Version ist die neue Referenz des Dokuments."
+
+#: ../../Document.rst:215
+msgid "Description of the version."
+msgstr "Beschreibung der Version."
+
+#: ../../Document.rst:219
+msgid "A version can have a draft status, that may be removed afterwards."
+msgstr "Eine Version kann einen Entwurfsstatus haben, der nachträglich entfernt werden kann."
+
+#: ../../Document.rst:223
+msgid "Should be checked when version is validated."
+msgstr "Sollte geprüft werden, wenn die Version validiert ist."
+
+#: ../../Document.rst:224
+msgid "Only one version can be the reference for a document."
+msgstr "Nur eine Version kann die Referenz für ein Dokument sein."
+
+#: ../../Document.rst:225
+msgid "Reference version is displayed in bold format in the versions list."
+msgstr "Referenzversion wird in der Versionsliste fett dargestellt."
+
+#: ../../Document.rst:229
+msgid "May be used to describe updates brought by the version."
+msgstr "Kann verwendet werden, um Updates zu beschreiben, die die Version mit sich bringt."
+
+#: ../../Document.rst:230
+msgid "This icon |Note| appears when the description field is filled."
+msgstr "Dieses Symbol |Note| erscheint, wenn das Beschreibungsfeld gefüllt ist."
+
+#: ../../Document.rst:231
+msgid "Moving the mouse over the icon will display description text."
+msgstr "Wenn Sie mit der Maus über das Symbol fahren, wird der Beschreibungstext angezeigt."
+
+#: ../../Document.rst:240
+msgid "Section: Approvers"
+msgstr "Abschnitt: Genehmigende"
+
+#: ../../Document.rst:241
+msgid "This section allows to manage approver list of a document."
+msgstr "Dieser Abschnitt ermöglicht die Verwaltung der Genehmigerliste eines Dokuments."
+
+#: ../../Document.rst:245
+msgid "Approver list fields"
+msgstr "Listenfelder des Genehmigers"
+
+#: ../../Document.rst:251
+msgid "Id"
+msgstr "Id\" (=Id"
+
+#: ../../Document.rst:252
+msgid "Id of the approver."
+msgstr "Id des Genehmigers."
+
+#: ../../Document.rst:253
+msgid "Name"
+msgstr "Name"
+
+#: ../../Document.rst:254
+msgid "Name of the approver."
+msgstr "Name des Genehmigers."
+
+#: ../../Document.rst:256
+msgid "Status of the approval of the last version of document."
+msgstr "Status der Genehmigung der letzten Version des Dokuments."
+
+#: ../../Document.rst:258
+msgid "**Button: Approve now**"
+msgstr "**Button: Jetzt genehmigen**"
+
+#: ../../Document.rst:260
+msgid "This button appears in approver list."
+msgstr "Diese Schaltfläche erscheint in der Genehmigerliste."
+
+#: ../../Document.rst:261
+msgid "Just click on the button to approve the latest version of the document."
+msgstr "Klicken Sie einfach auf die Schaltfläche, um die neueste Version des Dokuments zu genehmigen."
+
+#: ../../Document.rst:263
+msgid "**Button: Send a reminder email to the approvers**"
+msgstr "**Button: Schicken Sie eine Erinnerungs-E-Mail an die Genehmiger**"
+
+#: ../../Document.rst:269
+msgid "Approver list management"
+msgstr "Verwaltung der Genehmigungsliste"
+
+#: ../../Document.rst:270
+msgid "Click on |buttonAdd| to add a new approver."
+msgstr "Klicken Sie auf |buttonAdd|, um einen neuen Genehmigenden hinzuzufügen."
+
+#: ../../Document.rst:271
+msgid "Click on |buttonIconDelete| to delete the approver."
+msgstr "Klicken Sie auf |buttonIconDelete|, um den Genehmigenden zu löschen."
+
+#: ../../Document.rst:277
+msgid "Section: Lock"
+msgstr "Abschnitt: Sperre"
+
+#: ../../Document.rst:278
+msgid "This section allows to manage document locking."
+msgstr "Dieser Abschnitt ermöglicht das Sperren von Dokumenten."
+
+#: ../../Document.rst:280
+msgid "**Button: lock/unlock this document**"
+msgstr "**Button: Dieses Dokument sperren/entsperren**"
+
+#: ../../Document.rst:283
+msgid "When document is locked it cannot be modified."
+msgstr "Wenn das Dokument gesperrt ist, kann es nicht geändert werden."
+
+#: ../../Document.rst:286
+msgid "**Document locked**"
+msgstr "**Dokument gesperrt**"
+
+#: ../../Document.rst:288
+msgid "When a document is locked the following fields are displayed."
+msgstr "Wenn ein Dokument gesperrt ist, werden folgende Felder angezeigt."
+
+#: ../../Document.rst:291
+msgid "Fields when the document is locked"
+msgstr "Felder, wenn das Dokument gesperrt ist"
+
+#: ../../Document.rst:297
+msgid "Locked"
+msgstr "Gesperrt"
+
+#: ../../Document.rst:298
+msgid "Box checked indicates the document is locked."
+msgstr "Box checked zeigt an, dass das Dokument gesperrt ist."
+
+#: ../../Document.rst:299
+msgid "Locked by"
+msgstr "Gesperrt von"
+
+#: ../../Document.rst:300
+msgid "User who locked the document."
+msgstr "Benutzer, der das Dokument gesperrt hat."
+
+#: ../../Document.rst:301
+msgid "Locked since"
+msgstr "Gesperrt seit"
+
+#: ../../Document.rst:302
+msgid "Date and time when document was locked."
+msgstr "Datum und Uhrzeit, wann das Dokument gesperrt wurde."
+
+#: ../../Document.rst:305
+msgid "Nomenclature"
+msgstr "Nomenklatur\" (Nomenklatur"
+
+#: ../../Document.rst:308
+msgid "{PROD} product designation"
+msgstr "{PROD} Produktbezeichnung"

@@ -1,0 +1,173 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2018, ProjeQtOr
+# This file is distributed under the same license as the ProjeQtOr Bedienhandbuch Deutsch package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"POT-Creation-Date: \n"
+"PO-Revision-Date: \n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=ISO-8859-1\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: de\n"
+"X-Generator: Poedit 2.0.8\n"
+
+#: ../../Plugin.rst:8
+msgid "Plug-ins management"
+msgstr "Plug-Ins-Verwaltung"
+
+#: ../../Plugin.rst:10
+msgid "Plug-ins allows to add non generic features to ProjeQtOr."
+msgstr "Plug-ins erlaubt es, nicht generische Funktionen zu ProjeQtOr hinzuzufügen."
+
+#: ../../Plugin.rst:13
+msgid "Plug-in deployment"
+msgstr "Plug-in-Bereitstellung"
+
+#: ../../Plugin.rst:14
+msgid "Plug-in will be deployed during installation."
+msgstr "Plug-in wird bei der Installation eingesetzt."
+
+#: ../../Plugin.rst:18
+msgid "Section: Installed plug-ins"
+msgstr "Sektion: Installierte Plug-Ins"
+
+#: ../../Plugin.rst:19
+msgid "This section lists the installed plug-ins."
+msgstr "Dieser Abschnitt listet die installierten Plugins auf."
+
+#: ../../Plugin.rst:23
+msgid "Detail of installed plug-ins list"
+msgstr "Detail der Liste der installierten Plugins"
+
+#: ../../Plugin.rst:27 ../../Plugin.rst:61
+msgid "Field"
+msgstr "Feld"
+
+#: ../../Plugin.rst:28 ../../Plugin.rst:31 ../../Plugin.rst:62
+msgid "Description"
+msgstr "Beschreibung"
+
+#: ../../Plugin.rst:29
+msgid "Name"
+msgstr "Name"
+
+#: ../../Plugin.rst:30
+msgid "Plug-in name."
+msgstr "Name des Plugins"
+
+#: ../../Plugin.rst:32
+msgid "Plug-in description."
+msgstr "Plug-in-Beschreibung"
+
+#: ../../Plugin.rst:33
+msgid "Version"
+msgstr "Version"
+
+#: ../../Plugin.rst:34
+msgid "Plug-in version."
+msgstr "Plug-in-Version"
+
+#: ../../Plugin.rst:35
+msgid "Deployed date"
+msgstr "Verteiltes Datum"
+
+#: ../../Plugin.rst:36
+msgid "Deployed date."
+msgstr "Einsatzdatum."
+
+#: ../../Plugin.rst:37
+msgid "Deployed on"
+msgstr "Eingesetzt auf"
+
+#: ../../Plugin.rst:38
+msgid "The version when the module has been installed."
+msgstr "Die Version, wenn das Modul installiert ist."
+
+#: ../../Plugin.rst:39
+msgid "Compatible since"
+msgstr "Kompatibel ab"
+
+#: ../../Plugin.rst:40
+msgid "Compatibility version."
+msgstr "Kompatibilitätsversion."
+
+#: ../../Plugin.rst:47
+msgid "Section: Available plug-ins (local)"
+msgstr "Sektion: Verfügbare Plugins (lokal)"
+
+#: ../../Plugin.rst:48
+msgid "This section allows to manage local plug-ins."
+msgstr "Dieser Bereich erlaubt die Verwaltung lokaler Plugins."
+
+#: ../../Plugin.rst:50
+msgid "**Available plug-ins list**"
+msgstr "**Verfügbare Plug-Ins Liste**"
+
+#: ../../Plugin.rst:52
+msgid "The button allows to select plug-in file."
+msgstr "Die Schaltfläche erlaubt die Auswahl der Plugin-Datei."
+
+#: ../../Plugin.rst:53
+msgid "The file will be uploaded and it will be added in plugin-ins list."
+msgstr "Die Datei wird hochgeladen und in die Liste der Plugins aufgenommen."
+
+#: ../../Plugin.rst:57
+msgid "Detail of available plug-ins list"
+msgstr "Detail der Liste der verfügbaren Plugins"
+
+#: ../../Plugin.rst:63
+msgid "File"
+msgstr "Datei"
+
+#: ../../Plugin.rst:64
+msgid "Plug-in file name."
+msgstr "Plugin-Dateiname."
+
+#: ../../Plugin.rst:65
+msgid "Date"
+msgstr "Datum"
+
+#: ../../Plugin.rst:66
+msgid "File date."
+msgstr "Dateidatum."
+
+#: ../../Plugin.rst:67
+msgid "Size"
+msgstr "Größe"
+
+#: ../../Plugin.rst:68
+msgid "File size."
+msgstr "Dateigröße."
+
+#: ../../Plugin.rst:70
+msgid "**Plug-in installation**"
+msgstr "**Einschub-Installation**"
+
+#: ../../Plugin.rst:72
+msgid "Click on |buttonAdd| to install plug-in."
+msgstr "Klicken Sie auf |buttonAdd|, um das Plugin zu installieren."
+
+#: ../../Plugin.rst:73
+msgid "Click on |buttonIconDisplay| to display the description of plug-in."
+msgstr "Klicken Sie auf |buttonIconDisplay|, um die Beschreibung des Plugins anzuzeigen."
+
+#: ../../Plugin.rst:81
+msgid "Plug-in is removed from the list after installation."
+msgstr "Plug-in wird nach der Installation aus der Liste entfernt."
+
+#: ../../Plugin.rst:85
+msgid "Section: Available plug-ins (remote)"
+msgstr "Sektion: Verfügbare Plug-Ins (Remote"
+
+#: ../../Plugin.rst:86
+msgid "This section allows to manage remote plug-ins."
+msgstr "Dieser Bereich ermöglicht die Verwaltung von Remote-Plugins."
+
+#: ../../Plugin.rst:90
+msgid "This feature will be available later."
+msgstr "Diese Funktion wird später verfügbar sein."

@@ -1,0 +1,469 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2018, ProjeQtOr
+# This file is distributed under the same license as the ProjeQtOr Bedienhandbuch Deutsch package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"POT-Creation-Date: \n"
+"PO-Revision-Date: \n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=ISO-8859-1\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: de\n"
+"X-Generator: Poedit 2.0.8\n"
+
+#: ../../RealWorkAllocation.rst:16
+msgid "Real work allocation"
+msgstr "Echte Arbeitsverteilung"
+
+#: ../../RealWorkAllocation.rst:18
+msgid "This screen is devoted to input of real work."
+msgstr "Dieser Bildschirm ist der Eingabe echter Arbeit gewidmet."
+
+#: ../../RealWorkAllocation.rst:20
+msgid "Resource enters work day by day, on each assigned task."
+msgstr "Ressource tritt Tag für Tag bei jeder zugewiesenen Aufgabe ein."
+
+#: ../../RealWorkAllocation.rst:22
+msgid "Data entry for one resource, on a weekly base."
+msgstr "Dateneingabe für eine Ressource, wöchentlich."
+
+#: ../../RealWorkAllocation.rst:28
+msgid "**Global parameter: Number of hours per day**"
+msgstr "**Globaler Parameter: Anzahl der Stunden pro Tag **"
+
+#: ../../RealWorkAllocation.rst:32
+msgid "After first work is entered, this parameter will be locked."
+msgstr "Nach Eingabe der ersten Arbeit wird dieser Parameter gesperrt."
+
+#: ../../RealWorkAllocation.rst:38
+msgid "Timesheet zone screen"
+msgstr "Zeiterfassungs-Zonen-Bildschirm"
+
+#: ../../RealWorkAllocation.rst:41
+msgid "1- Selection timesheet"
+msgstr "1- Auswahlzeitenblatt"
+
+#: ../../RealWorkAllocation.rst:42
+msgid "Allows to select a timesheet for a resource and for a period."
+msgstr "Ermöglicht die Auswahl einer Arbeitszeittabelle für eine Ressource und einen Zeitraum."
+
+#: ../../RealWorkAllocation.rst:46
+msgid "2 - Show planned work"
+msgstr "2 - Geplante Arbeit zeigen"
+
+#: ../../RealWorkAllocation.rst:47
+msgid "Check this box to display the planned work."
+msgstr "Aktivieren Sie dieses Kontrollkästchen, um die geplante Arbeit anzuzeigen."
+
+#: ../../RealWorkAllocation.rst:55
+msgid "Planned work displayed zone"
+msgstr "Geplante Arbeit angezeigte Zone"
+
+#: ../../RealWorkAllocation.rst:62
+msgid "3 - Filters"
+msgstr "3 - Filter"
+
+#: ../../RealWorkAllocation.rst:63
+msgid "Filters allow to define the list of assigned tasks displayed."
+msgstr "Filter erlauben es, die Liste der zugewiesenen Aufgaben zu definieren."
+
+#: ../../RealWorkAllocation.rst:65
+msgid "**Show only current week meeting**"
+msgstr "**Nur aktuelles Wochenmeeting anzeigen**"
+
+#: ../../RealWorkAllocation.rst:67
+msgid "Check this box  to show only the tasks on meetings of the week."
+msgstr "Aktivieren Sie dieses Kontrollkästchen, um nur die Aufgaben in den Meetings der Woche anzuzeigen."
+
+#: ../../RealWorkAllocation.rst:69
+msgid "**Hide not handled items**"
+msgstr "**Nicht behandelte Objekte ausblenden**"
+
+#: ../../RealWorkAllocation.rst:71
+msgid "Check this box to hide tasks not taken over."
+msgstr "Aktivieren Sie dieses Kontrollkästchen, um nicht übernommene Aufgaben auszublenden."
+
+#: ../../RealWorkAllocation.rst:73
+msgid "**Hide done items**"
+msgstr "**Fertige Artikel ausblenden**"
+
+#: ../../RealWorkAllocation.rst:75
+msgid "Check this box to hide completed tasks."
+msgstr "Aktivieren Sie dieses Kontrollkästchen, um erledigte Aufgaben auszublenden."
+
+#: ../../RealWorkAllocation.rst:77
+msgid "**Show closed items**"
+msgstr "**Zeige geschlossene Artikel**"
+
+#: ../../RealWorkAllocation.rst:79
+msgid "Check this box to show closed tasks."
+msgstr "Aktivieren Sie dieses Kontrollkästchen, um geschlossene Aufgaben anzuzeigen."
+
+#: ../../RealWorkAllocation.rst:81
+msgid "**Show ID**"
+msgstr "**ID anzeigen**"
+
+#: ../../RealWorkAllocation.rst:83
+msgid "Show ID to identify all single task."
+msgstr "Show ID to identify all single task."
+
+#: ../../RealWorkAllocation.rst:85
+msgid "Global parameter \"Display only handled tasks\""
+msgstr "Global parameter \"Display only handled tasks\""
+
+#: ../../RealWorkAllocation.rst:88
+msgid "The checkbox \"Hide not handled items\" will be hidden."
+msgstr "Das Kontrollkästchen \"Nicht behandelte Objekte verstecken\" wird ausgeblendet."
+
+#: ../../RealWorkAllocation.rst:91
+msgid "4 - Buttons"
+msgstr "4 - Tasten"
+
+#: ../../RealWorkAllocation.rst:92
+msgid "Buttons of the timesheet:"
+msgstr "Schaltflächen des Stundenzettels:"
+
+#: ../../RealWorkAllocation.rst:94
+msgid "Click on |buttonIconSave| to save timesheet data."
+msgstr "Klicken Sie auf |buttonIconSave|, um Zeiterfassungsdaten zu speichern."
+
+#: ../../RealWorkAllocation.rst:95
+msgid "Click on |buttonIconPrint| to print timesheet."
+msgstr "Klicken Sie auf |buttonIconPrint|, um Stundenzettel zu drucken."
+
+#: ../../RealWorkAllocation.rst:96
+msgid "Click on |buttonIconPdf| to export timesheet in PDF format."
+msgstr "Klicken Sie auf |buttonIconPdf|, um Stundenzettel im PDF-Format zu exportieren."
+
+#: ../../RealWorkAllocation.rst:97
+msgid "Click on |buttonIconCsv| to export timesheet in CSV format."
+msgstr "Klicken Sie auf |buttonIconCsv|, um Timesheet im CSV-Format zu exportieren."
+
+#: ../../RealWorkAllocation.rst:98
+msgid "Click on |buttonIconUndo| to undo modification on the timesheet."
+msgstr "Klicken Sie auf |buttonIconUndo|, um die Änderung im Arbeitszeitblatt rückgängig zu machen."
+
+#: ../../RealWorkAllocation.rst:101
+msgid "5 - Data entry validation"
+msgstr "5 - Dateneingabe-Validierung"
+
+#: ../../RealWorkAllocation.rst:102
+msgid "Buttons allow to send and validate real work."
+msgstr "Schaltflächen ermöglichen das Senden und Validieren echter Arbeit."
+
+#: ../../RealWorkAllocation.rst:104
+msgid "**Button: Submit work**  (Displayed if mandatory )"
+msgstr "**Button: Arbeit einreichen** (Wird angezeigt, wenn obligatorisch)"
+
+#: ../../RealWorkAllocation.rst:106
+msgid "Users can send works to project leader."
+msgstr "Benutzer können Werke an den Projektleiter senden."
+
+#: ../../RealWorkAllocation.rst:108
+msgid "**Button: Validate work**"
+msgstr "**Button: Arbeit bestätigen**"
+
+#: ../../RealWorkAllocation.rst:110
+msgid "Project leaders can validate works."
+msgstr "Projektleiter können Arbeiten validieren."
+
+#: ../../RealWorkAllocation.rst:112
+msgid "**Button: Enter real as planned**"
+msgstr "**Button: Geben Sie real wie geplant ein**"
+
+#: ../../RealWorkAllocation.rst:114
+msgid "To enter automatically  the work as it is planned"
+msgstr "Automatisch das Werk so eingeben, wie es geplant ist"
+
+#: ../../RealWorkAllocation.rst:117
+msgid "6 - Scroll bar"
+msgstr "6 - Bildlaufleiste"
+
+#: ../../RealWorkAllocation.rst:118
+msgid "Scroll bar allows the scrolling on imputation lines."
+msgstr "Scrollbar ermöglicht das Scrollen auf Imputationszeilen."
+
+#: ../../RealWorkAllocation.rst:119
+msgid "The header of table stays visible."
+msgstr "Der Kopf der Tabelle bleibt sichtbar."
+
+#: ../../RealWorkAllocation.rst:123
+msgid "7 - Input fields"
+msgstr "7 - Eingabefelde"
+
+#: ../../RealWorkAllocation.rst:124
+msgid "Input fields in timesheet."
+msgstr "Eingabefelder im Arbeitszeitblatt."
+
+#: ../../RealWorkAllocation.rst:125
+msgid "More detail about, see : :ref:`inputFields-section`"
+msgstr "Mehr Details dazu, siehe : :ref:`inputFields-section`"
+
+#: ../../RealWorkAllocation.rst:133
+msgid "8 - Tasks list"
+msgstr "8 - Aufgabenliste"
+
+#: ../../RealWorkAllocation.rst:138
+msgid "Task list zone"
+msgstr "Task-Listen-Bereic"
+
+#: ../../RealWorkAllocation.rst:140
+msgid "The list displays the assigned tasks for the resource."
+msgstr "Die Liste zeigt die zugeordneten Aufgaben für die Ressource an."
+
+#: ../../RealWorkAllocation.rst:142
+msgid "Only assigned tasks that meet the next criteria will be displayed."
+msgstr "Es werden nur die Aufgaben angezeigt, die die nächsten Kriterien erfüllen."
+
+#: ../../RealWorkAllocation.rst:144
+msgid "Assigned tasks planned during this period."
+msgstr "In diesem Zeitraum geplante Aufgaben."
+
+#: ../../RealWorkAllocation.rst:145
+msgid "Assigned tasks that meet the criteria of selected filters."
+msgstr "Zugewiesene Aufgaben, die den Kriterien ausgewählter Filter entsprechen."
+
+#: ../../RealWorkAllocation.rst:149
+msgid "Assigned tasks with real work are always displayed, even if closed."
+msgstr "Zugewiesene Aufgaben mit echter Arbeit werden immer angezeigt, auch wenn sie geschlossen sind."
+
+#: ../../RealWorkAllocation.rst:153
+msgid "**A - Tasks**"
+msgstr "**A - Aufgaben**"
+
+#: ../../RealWorkAllocation.rst:156
+msgid "Click on the name of the activity to access it."
+msgstr "Klicken Sie auf den Namen der Aktivität, um darauf zuzugreifen."
+
+#: ../../RealWorkAllocation.rst:161
+msgid "**B - Assigned task function**"
+msgstr "**B - Zugewiesene Aufgabenfunktion**"
+
+#: ../../RealWorkAllocation.rst:165
+msgid "**C - Assigned task comments**"
+msgstr "**C - Zugewiesene Aufgabenkommentare**"
+
+#: ../../RealWorkAllocation.rst:167
+msgid "The icon |iconNoteAdd| allows to add a comment."
+msgstr "Das Icon |iconNoteAdd| erlaubt es, einen Kommentar hinzuzufügen."
+
+#: ../../RealWorkAllocation.rst:168
+msgid "The icon |Note| indicates there is a comment on assigned task."
+msgstr "Das Icon |Note| zeigt an, dass es einen Kommentar zur zugewiesenen Aufgabe gibt."
+
+#: ../../RealWorkAllocation.rst:169
+msgid "Just move the mouse over the icon to see the last comment."
+msgstr "Bewegen Sie einfach die Maus über das Symbol, um den letzten Kommentar zu sehen."
+
+#: ../../RealWorkAllocation.rst:171
+msgid "Click on icon |Note|"
+msgstr "Klick auf Symbol |Hinweis|"
+
+#: ../../RealWorkAllocation.rst:173
+msgid "to open windows view comments"
+msgstr "Fenster öffnen Kommentare ansehen"
+
+#: ../../RealWorkAllocation.rst:185
+msgid "Total of days"
+msgstr "Gesamtanzahl Tage"
+
+#: ../../RealWorkAllocation.rst:199
+msgid "Selection timesheet"
+msgstr "Auswahl Zeiterfassungsbogen"
+
+#: ../../RealWorkAllocation.rst:205
+msgid "Timesheet selector zone"
+msgstr "Zeiterfassungsauswahlzone"
+
+#: ../../RealWorkAllocation.rst:208
+msgid "1 - Selection of the resource"
+msgstr "1 - Auswahl der Ressource"
+
+#: ../../RealWorkAllocation.rst:209
+msgid "Users can only select themselves as a resource."
+msgstr "Benutzer können sich nur als Ressource auswählen."
+
+#: ../../RealWorkAllocation.rst:219
+msgid "Selection period"
+msgstr "Auswahlzeitraum"
+
+#: ../../RealWorkAllocation.rst:220
+msgid "By default, the period is determined depending on the current day."
+msgstr "StandardmäßŸig wird der Zeitraum in Abhängigkeit vom aktuellen Tag ermittelt."
+
+#: ../../RealWorkAllocation.rst:221
+msgid "It is possible to change the period of two ways:"
+msgstr "Es ist möglich, den Zeitraum auf zwei Arten zu ändern:"
+
+#: ../../RealWorkAllocation.rst:223
+msgid "Select year and week. |two|"
+msgstr "Jahr und Woche wählen. |two|"
+
+#: ../../RealWorkAllocation.rst:224
+msgid "Or select the first day of the week. |three|"
+msgstr "Oder wählen Sie den ersten Tag der Woche. |three|"
+
+#: ../../RealWorkAllocation.rst:227
+msgid "Displayed timesheet"
+msgstr "Angezeigte Arbeitszeiterfassung"
+
+#: ../../RealWorkAllocation.rst:228
+msgid "A timesheet is displayed depends on the resource and period selection."
+msgstr "Ein Stundenzettel wird abhängig von der Ressourcen- und Periodenauswahl angezeigt."
+
+#: ../../RealWorkAllocation.rst:229
+msgid "The name of the resource and the week are displayed. |four|"
+msgstr "Der Name der Ressource und die Woche werden angezeigt. |four|"
+
+#: ../../RealWorkAllocation.rst:230
+msgid "The days of the week are displayed. |five|"
+msgstr "Die Wochentage werden angezeigt. |five|"
+
+#: ../../RealWorkAllocation.rst:231
+msgid "The current day is displayed. |six|"
+msgstr "Der aktuelle Tag wird angezeigt. |six|"
+
+#: ../../RealWorkAllocation.rst:242
+msgid "Input fields"
+msgstr "Eingabefelde"
+
+#: ../../RealWorkAllocation.rst:248
+msgid "Input timesheet zone"
+msgstr "Zeiterfassungszone eingebe"
+
+#: ../../RealWorkAllocation.rst:251
+msgid "1 - Comments"
+msgstr "1 - Kommentare"
+
+#: ../../RealWorkAllocation.rst:252
+msgid "A global comment can be added on the weekly follow-up."
+msgstr "Ein globaler Kommentar kann zum wöchentlichen Follow-up hinzugefügt werden."
+
+#: ../../RealWorkAllocation.rst:255
+msgid "Possibility to extend the main comment area."
+msgstr "Möglichkeit, den Hauptkommentarbereich zu erweitern."
+
+#: ../../RealWorkAllocation.rst:256
+msgid "Can enter a comment on each line of real work allocation screen."
+msgstr "Kann einen Kommentar zu jeder Zeile des realen Arbeitsverteilungsbildschirms eingeben."
+
+#: ../../RealWorkAllocation.rst:259
+msgid "2 - Real work entry"
+msgstr "2 - Echter Arbeitseintrag"
+
+#: ../../RealWorkAllocation.rst:260
+msgid "Area allows to entry real work."
+msgstr "Bereich erlaubt den Zugang zu echten Arbeiten."
+
+#: ../../RealWorkAllocation.rst:261
+msgid "Week is displayed from monday to sunday."
+msgstr "Woche wird von Montag bis Sonntag angezeigt."
+
+#: ../../RealWorkAllocation.rst:262
+msgid "It possible put real work in off days."
+msgstr "Es ist möglich, echte Arbeit in schlechte Tage zu legen."
+
+#: ../../RealWorkAllocation.rst:264
+msgid "**Unit time of real work data entry**"
+msgstr "**Einheit Zeit der realen Arbeitsdateneingabe**"
+
+#: ../../RealWorkAllocation.rst:267
+msgid "Unit time available are in \"Days\" or \"Hours\"."
+msgstr "Verfügbare Zeiteinheiten sind in \"Tage\" oder \"Stunden\"."
+
+#: ../../RealWorkAllocation.rst:268
+msgid "Selected unit time is displayed on left at bottom window. |four|"
+msgstr "Die gewählte Zeiteinheit wird links unten im Fenster angezeigt. |four|"
+
+#: ../../RealWorkAllocation.rst:270
+msgid "**Current day**"
+msgstr "**Aktueller Tag**"
+
+#: ../../RealWorkAllocation.rst:272
+msgid "Columns of current day is displayed in yellow."
+msgstr "Spalten des aktuellen Tages werden gelb dargestellt."
+
+#: ../../RealWorkAllocation.rst:274
+msgid "**Days off**"
+msgstr "**Tage frei**"
+
+#: ../../RealWorkAllocation.rst:276
+msgid "Columns of days off is displayed in grey."
+msgstr "Spalten der freien Tage werden grau dargestellt."
+
+#: ../../RealWorkAllocation.rst:280
+msgid "3 - Left work"
+msgstr "3 - Linke Arbeit"
+
+#: ../../RealWorkAllocation.rst:281
+msgid "Left work is automatically decreased on input of real work."
+msgstr "Linke Arbeit wird bei der Eingabe von echter Arbeit automatisch verringert."
+
+#: ../../RealWorkAllocation.rst:292
+msgid "Input entry validation"
+msgstr "Eingabewertüberprüfun"
+
+#: ../../RealWorkAllocation.rst:294
+msgid "This section explains controls done on data entries."
+msgstr "Dieser Abschnitt erklärt die Kontrolle der Dateneingabe."
+
+#: ../../RealWorkAllocation.rst:296
+msgid "These controls are not blocking."
+msgstr "Diese Kontrollen blockieren nicht."
+
+#: ../../RealWorkAllocation.rst:300
+msgid "Resource capacity validation"
+msgstr "Ressourcenkapazitätsvalidierung"
+
+#: ../../RealWorkAllocation.rst:308
+msgid "The capacity of the resource is defined :ref:`resource` screen."
+msgstr "Die Kapazität der Ressource ist definiert :ref:`resource` Bildschirm."
+
+#: ../../RealWorkAllocation.rst:315
+msgid "Columns validation zone"
+msgstr "Spalten-Validierungszone"
+
+#: ../../RealWorkAllocation.rst:319
+msgid "Entering real work is in excess of the number of days specified"
+msgstr "Die Eingabe der realen Arbeit liegt über der angegebenen Anzahl von Tagen"
+
+#: ../../RealWorkAllocation.rst:327
+msgid "Real work over expected days alert"
+msgstr "Echte Arbeit über erwartete Tage Alarm"
+
+#: ../../RealWorkAllocation.rst:335
+msgid "Automatically changing the status of tasks"
+msgstr "Den Status von Aufgaben automatisch ändern"
+
+#: ../../RealWorkAllocation.rst:340
+msgid "Global parameter \"Set to first 'handled' status\""
+msgstr "Global parameter \"Set to first 'handled' status\""
+
+#: ../../RealWorkAllocation.rst:344
+msgid "Global parameter \"Set to first 'done' status\""
+msgstr "Global parameter \"Set to first 'done' status\""
+
+#: ../../RealWorkAllocation.rst:348
+msgid "Change status validation"
+msgstr "Statusvalidierung änder"
+
+#: ../../RealWorkAllocation.rst:349
+msgid "An icon will be displayed on the task if a status change is applicable."
+msgstr "Ein Symbol wird auf der Aufgabe angezeigt, wenn eine Statusänderung zutrifft."
+
+#: ../../RealWorkAllocation.rst:351
+msgid "**Icons**"
+msgstr "**Ikonen**"
+
+#: ../../RealWorkAllocation.rst:360
+msgid "Move the cursor over the icon to see the message."
+msgstr "Bewegen Sie den Cursor über das Symbol, um die Nachricht zu sehen."
+
+#: ../../RealWorkAllocation.rst:362
+msgid "**Common issue**"
+msgstr "**Gemeinsame Ausgabe**"
