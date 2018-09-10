@@ -1454,16 +1454,18 @@ scriptLog("storeListPlan(listPlan,$plan->id)");
   	// first sort on simple criterias
     foreach ($list as $id=>$elt) {
     	if ($elt->idPlanningMode=='16' or $elt->idPlanningMode=='6') { // FIXED
-    		$crit='1';
+    		$crit='100000000';
     	} else if ($elt->idPlanningMode=='2' or  $elt->idPlanningMode=='3' or  $elt->idPlanningMode=='7' or  $elt->idPlanningMode=='20'
     	  or $elt->idPlanningMode=='10' or $elt->idPlanningMode=='11' or $elt->idPlanningMode=='13') { // REGUL or FULL or HALF or QUART)
-    	  $crit='2';
+    	  $crit='200000000';
+    	} else if ($elt->idPlanningMode=='4' and $elt->validatedEndDate) {
+    		$crit='5'.str_replace('-','',$elt->validatedEndDate);
     	} else if ($elt->idPlanningMode=='8' or  $elt->idPlanningMode=='14') { // FDUR  
-    	  $crit='3';
+    	  $crit='400000000';
     	} else if ($elt->idPlanningMode=='22') { // RECW
-    	  $crit='5'; // Lower priority (availability will be reserved)
-    	} else { // Others (includes GROUP, with is not a priority but a constraint)
-        $crit='4';
+    	  $crit='600000000'; // Lower priority (availability will be reserved)
+    	} else { // Others (includes GROUP, wich is not a priority but a constraint)
+        $crit='500000000';
     	}
       $crit.='.';
       $prio=$elt->priority;
