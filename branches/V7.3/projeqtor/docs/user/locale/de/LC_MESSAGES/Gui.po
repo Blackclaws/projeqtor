@@ -1,0 +1,1698 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2018, ProjeQtOr
+# This file is distributed under the same license as the ProjeQtOr Bedienhandbuch Deutsch package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"POT-Creation-Date: \n"
+"PO-Revision-Date: \n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: de\n"
+"X-Generator: Poedit 2.0.8\n"
+
+#: ../../Gui.rst:10 ../../Gui.rst:28
+msgid "Global view"
+msgstr "Globale Sicht"
+
+#: ../../Gui.rst:12
+msgid "ProjeQtOr interface is divided into several areas."
+msgstr "ProjeQtOr-Schnittstelle ist in mehrere Bereiche unterteilt."
+
+#: ../../Gui.rst:14
+msgid "Those areas are :"
+msgstr "Diese Bereiche sind:"
+
+#: ../../Gui.rst:16
+msgid ":ref:`top-bar` |one|"
+msgstr ":ref:`top-bar` |one|"
+
+#: ../../Gui.rst:17
+msgid ":ref:`logo-area` |two|"
+msgstr ":ref:`logo-area` |two|"
+
+#: ../../Gui.rst:18
+msgid ":ref:`menu-document-window` |three|"
+msgstr ":ref:`menu-document-window` |three|"
+
+#: ../../Gui.rst:19
+msgid ":ref:`message-link-window` |four|"
+msgstr ":ref:`message-link-window` |four|"
+
+#: ../../Gui.rst:20
+msgid ":ref:`list-window` |five|"
+msgstr ":ref:`list-window` |five|"
+
+#: ../../Gui.rst:21
+msgid ":ref:`detail-window` |six|"
+msgstr ":ref:`detail-window` |six|"
+
+#: ../../Gui.rst:22
+msgid ":ref:`info-bar` |seven|"
+msgstr ":ref:`info-bar` |seven|"
+
+#: ../../Gui.rst:37 ../../Gui.rst:51
+msgid "Area separation"
+msgstr "Flächenaufteilung"
+
+#: ../../Gui.rst:38
+msgid "The splitters allow resizing areas in the interface."
+msgstr "Die Splitter erlauben die Größenänderung von Bereichen im Interface."
+
+#: ../../Gui.rst:40
+msgid "The red splitter allows to resize the areas left and right."
+msgstr "Der rote Splitter erlaubt es, die Größe der Bereiche links und rechts zu verändern."
+
+#: ../../Gui.rst:45
+msgid "The  position of splitters is saved and retrieved on each connection."
+msgstr "Die Position der Splitter wird bei jeder Verbindung gespeichert und abgerufen."
+
+#: ../../Gui.rst:61 ../../Gui.rst:67
+msgid "Top bar"
+msgstr "Oberer Balken"
+
+#: ../../Gui.rst:73
+msgid "1 - Project selector"
+msgstr "1 - Projektauswahl"
+
+#: ../../Gui.rst:74
+msgid "Allows to select the project to work on."
+msgstr "Ermöglicht die Auswahl des zu bearbeitenden Projekts."
+
+#: ../../Gui.rst:75 ../../Gui.rst:76
+msgid "Defined the \\\"default\\\" project for new items."
+msgstr "Definierte das \\\"Standard\\\"-Projekt für neue Objekte."
+
+#: ../../Gui.rst:78
+msgid "User parameter: Default project"
+msgstr "Benutzerparameter: Standardprojekt"
+
+#: ../../Gui.rst:80
+msgid "Defines the project that will be selected by default."
+msgstr "Definiert das Projekt, das standardmäßig ausgewählt wird."
+
+#: ../../Gui.rst:83
+msgid "1.1 - Project selector parameters"
+msgstr "1.1 - Projektauswahl-Parameter"
+
+#: ../../Gui.rst:86
+msgid "View closed projects."
+msgstr "Abgeschlossene Projekte ansehen."
+
+#: ../../Gui.rst:87
+msgid "Change the project list display mode."
+msgstr "Anzeigemodus der Projektliste ändern."
+
+#: ../../Gui.rst:88
+msgid "Refresh the list."
+msgstr "Liste aktualisieren."
+
+#: ../../Gui.rst:95
+msgid "1.1.a - Standard (reflecting WBS structure)"
+msgstr "1.1.a - Standard (reflektierende WBS-Struktur)"
+
+#: ../../Gui.rst:108
+msgid "1.1.b - Filtering select (with autocomplete)"
+msgstr "1.1.b - Filterung auswählen (mit Autovervollständigung)"
+
+#: ../../Gui.rst:110
+msgid "Search criteria works in a \\\"starts with\\\" mode"
+msgstr "Suchkriterien funktionieren im \\\"Beginnt mit\\\" Modus"
+
+#: ../../Gui.rst:111
+msgid "Autocompletion is active"
+msgstr "Autovervollständigung ist aktiv"
+
+#: ../../Gui.rst:118
+msgid "1.1.c - Filtering select (with search)"
+msgstr "1.1.c - Filterung wählen (mit Suche)"
+
+#: ../../Gui.rst:120
+msgid "Search criteria works in a \\\"contains\" mode"
+msgstr "Suchkriterien funktionieren in einem \\\"beinhalten\\\" Modus"
+
+#: ../../Gui.rst:121
+msgid "Autocompletion is **not** active"
+msgstr "Autovervollständigung ist **nicht** aktiv"
+
+#: ../../Gui.rst:133
+msgid "2 - Menu on top bar"
+msgstr "2 - Menü in der oberen Leiste"
+
+#: ../../Gui.rst:134
+msgid "Menu on top bar allows a rapid access to elements."
+msgstr "Menü in der oberen Leiste ermöglicht einen schnellen Zugriff auf die Elemente."
+
+#: ../../Gui.rst:140
+msgid "Menu on top bar"
+msgstr "Menü in der oberen Leiste"
+
+#: ../../Gui.rst:142
+msgid "**Menu selector** |A|"
+msgstr "**Menüwähler** |A|"
+
+#: ../../Gui.rst:148
+msgid "Predefined menus"
+msgstr "Vordefinierte Menüs"
+
+#: ../../Gui.rst:153
+msgid "Custom menu"
+msgstr "Benutzerdefiniertes Menü"
+
+#: ../../Gui.rst:154
+msgid "A user can define its custom menu in the top bar."
+msgstr "Ein Benutzer kann sein eigenes Menü in der oberen Leiste definieren."
+
+#: ../../Gui.rst:157
+msgid "**Added an item**"
+msgstr "**Ein Artikel hinzugefügt**"
+
+#: ../../Gui.rst:159
+msgid "Select a predefined menu (for example: \\\"All menus\\\")."
+msgstr "Wählen Sie ein vordefiniertes Menü aus (zum Beispiel: \\\"Alle Menüs\\\")"
+
+#: ../../Gui.rst:160
+msgid "Move the cursor over icon wanted."
+msgstr "Bewegen Sie den Cursor über das gewünschte Symbol."
+
+#: ../../Gui.rst:161 ../../Gui.rst:171
+msgid "Click on the right button, a message appear."
+msgstr "Klicken Sie auf den rechten Knopf, es erscheint eine Meldung."
+
+#: ../../Gui.rst:162
+msgid "Click on the left button and the icon will be added to the custom menu."
+msgstr "Klicken Sie auf die linke Schaltfläche und das Symbol wird dem benutzerdefinierten Menü hinzugefügt."
+
+#: ../../Gui.rst:166
+msgid "A star is added on selected icons."
+msgstr "Ein Stern wird auf ausgewählten Symbolen hinzugefügt."
+
+#: ../../Gui.rst:168
+msgid "**Remove an item**"
+msgstr "**Ein Element entfernen**"
+
+#: ../../Gui.rst:170
+msgid "Move the cursor over icon (icon with star)."
+msgstr "Bewegen Sie den Cursor über das Symbol (Symbol mit Stern)."
+
+#: ../../Gui.rst:184
+msgid "3 - Navigation buttons"
+msgstr "3 - Navigationstasten"
+
+#: ../../Gui.rst:188
+msgid "4 - Button \\\"New tab\\\""
+msgstr "4 - Schaltfläche \\\"Neue Registerkarte\\\""
+
+#: ../../Gui.rst:189
+msgid "Allows to open a new tab within the same session."
+msgstr "Erlaubt das Öffnen einer neuen Registerkarte innerhalb derselben Sitzung."
+
+#: ../../Gui.rst:199 ../../Gui.rst:205
+msgid "Logo area"
+msgstr "Bereich Log"
+
+#: ../../Gui.rst:208
+msgid "Information about the software"
+msgstr "Informationen über die Software"
+
+#: ../../Gui.rst:209
+msgid "Click on \\\"Logo Area\\\" will display the software information box."
+msgstr "Klicken Sie auf \\\"Logobereich\\\", um das Software-Informationsfeld anzuzeigen."
+
+#: ../../Gui.rst:217
+msgid "Online user manual"
+msgstr "Online-Benutzerhandbuch"
+
+#: ../../Gui.rst:222
+msgid "You can change logo with your own."
+msgstr "Sie können das Logo mit Ihrem eigenen ändern."
+
+#: ../../Gui.rst:223
+msgid "Refer to administration guide to replace the logo."
+msgstr "Zum Ersetzen des Logos siehe Administrationsanleitung."
+
+#: ../../Gui.rst:234 ../../Gui.rst:240
+msgid "\\“Menu\\“ and \\“Documents\\“ windows"
+msgstr "\\“Menü\\“ und \\“Dokumente\\“ Fenster"
+
+#: ../../Gui.rst:242 ../../Gui.rst:284
+msgid "Toggling between windows"
+msgstr "Zwischen Fenstern umschalten"
+
+#: ../../Gui.rst:244 ../../Gui.rst:286
+msgid "To toggling between windows, just click on window header."
+msgstr "Um zwischen den Fenstern umzuschalten, klicken Sie einfach auf den Fensterkopf."
+
+#: ../../Gui.rst:247
+msgid "1 - Menu window"
+msgstr "1 - Menü-Fenster"
+
+#: ../../Gui.rst:248
+msgid "The menu is proposed as a tree view of reachable items."
+msgstr "Das Menü wird als Baumansicht der erreichbaren Elemente vorgeschlagen."
+
+#: ../../Gui.rst:250
+msgid "Click on a grouping line will expand-shrink the group."
+msgstr "Klicken Sie auf eine Gruppierungslinie, um die Gruppe zu vergrößern oder zu verkleinern."
+
+#: ../../Gui.rst:255
+msgid "User parameter \\“Icon size in menu\\“"
+msgstr "Benutzerparameter \\“Symbolgröße im Menü\\“"
+
+#: ../../Gui.rst:257
+msgid "This parameter defines the size of icons in the menu."
+msgstr "Dieser Parameter definiert die Größe der Symbole im Menü."
+
+#: ../../Gui.rst:261
+msgid "2 - Documents window"
+msgstr "2 - Fenster Dokumente"
+
+#: ../../Gui.rst:264
+msgid "**3 - Document directories**"
+msgstr "**3 - Dokumentenverzeichnisse**"
+
+#: ../../Gui.rst:275 ../../Gui.rst:281
+msgid "«External shortcuts» and «Console messages» windows"
+msgstr "«Externe Verknüpfungen» und «Konsolenmeldungen» Fenster"
+
+#: ../../Gui.rst:289
+msgid "1 - External shortcuts window"
+msgstr "1 - Fenster für externe Verknüpfungen"
+
+#: ../../Gui.rst:290
+msgid "Display hyperlinks to remote web pages."
+msgstr "Hyperlinks zu entfernten Webseiten anzeigen."
+
+#: ../../Gui.rst:291
+msgid "These links are defined as hyperlink attachments on projects."
+msgstr "Diese Links sind als Hyperlink-Anhänge in Projekten definiert."
+
+#: ../../Gui.rst:292
+msgid "Links displayed here depend on the selected project."
+msgstr "Hier angezeigte Links hängen vom gewählten Projekt ab."
+
+#: ../../Gui.rst:296
+msgid "2 - Console messages window"
+msgstr "2 - Nachrichtenfenster der Konsole"
+
+#: ../../Gui.rst:297
+msgid "Displays information about main actions: insert, update, delete."
+msgstr "Zeigt Informationen über die wichtigsten Aktionen: Einfügen, Aktualisieren, Löschen."
+
+#: ../../Gui.rst:298
+msgid "The timestamp indicates when the action was done."
+msgstr "Der Zeitstempel zeigt an, wann die Aktion ausgeführt wurde."
+
+#: ../../Gui.rst:313 ../../Gui.rst:324
+msgid "List window"
+msgstr "Listenfenster"
+
+#: ../../Gui.rst:318
+msgid "List window features"
+msgstr "Eigenschaften des Listenfensters"
+
+#: ../../Gui.rst:328
+msgid "1 - Element identifier"
+msgstr "1 - Elementkennzeichen"
+
+#: ../../Gui.rst:329
+msgid "Displays the element name and the count of items in the list."
+msgstr "Zeigt den Elementnamen und die Anzahl der Elemente in der Liste an."
+
+#: ../../Gui.rst:330 ../../Gui.rst:657
+msgid "Each element is identified with a distinctive icon."
+msgstr "Jedes Element ist mit einem unverwechselbaren Symbol gekennzeichnet."
+
+#: ../../Gui.rst:336
+msgid "2 - Rapid filter"
+msgstr "2 - Schnellfilter"
+
+# msgstr "Schnellfilterfelder werden vorgeschlagen: \\"Id\\", \\"Name\\" und \\"Typ\\“."
+#: ../../Gui.rst:337 ../../Gui.rst:339
+msgid "**Any change on \\\"Id\\\" and \\\"Name\\\"**"
+msgstr "**Jede Änderung an \\“Id\\“ und \\“Name\\“**"
+
+#: ../../Gui.rst:341
+msgid "Will instantly filter data."
+msgstr "Filtert Daten sofort."
+
+#: ../../Gui.rst:344
+msgid "**Selecting a \\\"Type\\\"**"
+msgstr "**Auswahl eines \\\"Typs\\\"**"
+
+#: ../../Gui.rst:346
+msgid "Will restrict the list to the corresponding type."
+msgstr "Schränkt die Liste auf den entsprechenden Typ ein."
+
+#: ../../Gui.rst:348
+msgid "**Other filter fields**"
+msgstr "**Sonstige Filterfelder**"
+
+#: ../../Gui.rst:350
+msgid "Depending on the element, other filter fields will be available."
+msgstr "Je nach Element stehen weitere Filterfelder zur Verfügung."
+
+#: ../../Gui.rst:359 ../../Gui.rst:674
+msgid "3 - Buttons"
+msgstr "3 - Tasten"
+
+#: ../../Gui.rst:363
+msgid "Click on |buttonIconPrint| to get a printable version of the list."
+msgstr "Klicken Sie auf |buttonIconPrint|, um eine druckbare Version der Liste zu erhalten."
+
+#: ../../Gui.rst:364
+msgid "Click on |buttonIconPdf| to export it to PDF format."
+msgstr "Klicken Sie auf |buttonIconPdf|, um es ins PDF-Format zu exportieren."
+
+#: ../../Gui.rst:366
+msgid "Click on |buttonIconNew| to create a new item of the element."
+msgstr "Klicken Sie auf |buttonIconNew|, um ein neues Element anzulegen."
+
+#: ../../Gui.rst:369
+msgid "4 - Extra buttons"
+msgstr "4 - Extra-Tasten"
+
+#: ../../Gui.rst:370
+msgid "Click on |buttonIconStatus| to displays status list."
+msgstr "Klicken Sie auf |buttonIconStatus|, um die Statusliste anzuzeigen."
+
+#: ../../Gui.rst:375
+msgid "Only existing status are visible if their are used."
+msgstr "Nur vorhandene Status sind sichtbar, wenn sie verwendet werden."
+
+#: ../../Gui.rst:376
+msgid "Choice one of them and the item list will be filter."
+msgstr "Wählen Sie eine davon aus und die Artikelliste wird gefiltert."
+
+#: ../../Gui.rst:377
+msgid "This is a quick filter list by status."
+msgstr "Dies ist eine Schnellfilterliste nach Status."
+
+#: ../../Gui.rst:384
+msgid "5 - Checkbox \\\"Show closed items\\\""
+msgstr "5 - Kontrollkästchen \\\"Geschlossene Objekte anzeigen\\\""
+
+#: ../../Gui.rst:385
+msgid "Flag on \\\"Show closed items\\\" allows to list also closed items."
+msgstr "Flag auf \\\"Geschlossene Objekte anzeigen\\\" erlaubt es, auch geschlossene Objekte aufzulisten."
+
+#: ../../Gui.rst:389
+msgid "6 - Column headers"
+msgstr "6 - Spaltenüberschriften"
+
+#: ../../Gui.rst:392
+msgid "Sorting is not always on the name displayed"
+msgstr "Die Sortierung erfolgt nicht immer nach dem angezeigten Namen"
+
+#: ../../Gui.rst:396
+msgid "For instance"
+msgstr "Zum Beispiel"
+
+#: ../../Gui.rst:401
+msgid "7 - Items list"
+msgstr "7 - Artikelliste"
+
+#: ../../Gui.rst:412
+msgid "Quick search"
+msgstr "Schnelle Such"
+
+#: ../../Gui.rst:414
+msgid "The quick search allows to execute a textual search."
+msgstr "Die Schnellsuche ermöglicht eine textuelle Suche."
+
+#: ../../Gui.rst:420
+msgid "Click on |buttonIconSearch| to execute the search."
+msgstr "Klicken Sie auf |buttonIconSearch|, um die Suche auszuführen."
+
+#: ../../Gui.rst:421
+msgid "Click on |buttonIconUndo| to close the quick search."
+msgstr "Klicken Sie auf |buttonIconUndo|, um die Schnellsuche zu schließen."
+
+#: ../../Gui.rst:430
+msgid "Advanced filter"
+msgstr "Erweiterte Filterung"
+
+#: ../../Gui.rst:432
+msgid "The advanced filter allows to define clause to filter and sort."
+msgstr "Der erweiterte Filter erlaubt es, Klauseln zum Filtern und Sortieren zu definieren."
+
+#: ../../Gui.rst:434
+msgid "The \\\"advanced filter definition\\\" dialog box is divided into two sections."
+msgstr "Das Dialogfeld \\\"Erweiterte Filterdefinition\\\" ist in zwei Abschnitte unterteilt."
+
+#: ../../Gui.rst:441
+msgid "1 - Active filter"
+msgstr "1 - Aktive Filte"
+
+#: ../../Gui.rst:442
+msgid "This section allows to define the filter and sort clauses."
+msgstr "Dieser Abschnitt erlaubt es, die Filter- und Sortier-Klauseln zu definieren."
+
+#: ../../Gui.rst:444
+msgid "**Add criteria**"
+msgstr "**Kriterien hinzufügen**"
+
+#: ../../Gui.rst:446
+msgid "Define the clauses of filter or sort in \\\"Add a filter or sort clause\\\"."
+msgstr "Definieren Sie die Klauseln des Filters oder sortieren Sie in \\\"Filter- oder Sortier-Klausel hinzufügen\\\"."
+
+#: ../../Gui.rst:447
+msgid "Select the name of the field, the operator and the value to the clause."
+msgstr "Wählen Sie den Namen des Feldes, den Operator und den Wert der Klausel."
+
+#: ../../Gui.rst:448
+msgid "Click on |buttonAdd| to add additional criteria."
+msgstr "Klicken Sie auf |buttonAdd|, um weitere Kriterien hinzuzufügen."
+
+#: ../../Gui.rst:449
+msgid "Click on **OK** button to apply the filter."
+msgstr "Klicken Sie auf die Schaltfläche **OK**, um den Filter anzuwenden."
+
+#: ../../Gui.rst:450
+msgid "Click on **Cancel** button to revert to previous filter."
+msgstr "Klicken Sie auf **Abbrechen**, um zum vorherigen Filter zurückzukehren."
+
+#: ../../Gui.rst:466
+msgid "**Remove criteria**"
+msgstr "**Kriterien entfernen**"
+
+#: ../../Gui.rst:468
+msgid "To remove a criteria, click on |buttonIconDelete| on the line."
+msgstr "Um ein Kriterium zu entfernen, klicken Sie auf |buttonIconDelete| in der Zeile."
+
+#: ../../Gui.rst:469
+msgid "To remove all criteria, click on |buttonIconDelete| on the header."
+msgstr "Um alle Kriterien zu entfernen, klicken Sie auf |buttonIconDelete| in der Kopfzeile."
+
+#: ../../Gui.rst:470
+msgid "Click on the **Clear** button to reset the active filter."
+msgstr "Klicken Sie auf die Schaltfläche **Löschen**, um den aktiven Filter zurückzusetzen."
+
+#: ../../Gui.rst:472
+msgid "**Save active filter**"
+msgstr "**Aktiver Filter speichern**"
+
+#: ../../Gui.rst:474
+msgid "Active filter can be saved to reuse."
+msgstr "Aktiver Filter kann zur Wiederverwendung gespeichert werden."
+
+#: ../../Gui.rst:484
+msgid "2 - Saved filters"
+msgstr "2 - Gespeicherte Filter"
+
+#: ../../Gui.rst:485
+msgid "This section allows to manage saved filters."
+msgstr "In diesem Bereich können gespeicherte Filter verwaltet werden."
+
+#: ../../Gui.rst:487
+msgid "Click on a saved filter to retrieve its definition."
+msgstr "Klicken Sie auf einen gespeicherten Filter, um dessen Definition abzurufen."
+
+#: ../../Gui.rst:488
+msgid "Click on |buttonIconDelete| from a saved filter to delete it."
+msgstr "Klicken Sie auf |buttonIconDelete| aus einem gespeicherten Filter, um ihn zu löschen."
+
+#: ../../Gui.rst:491
+msgid "Default filter"
+msgstr "Standardfilter"
+
+#: ../../Gui.rst:493
+msgid "The default filter is defined for the user."
+msgstr "Der Standardfilter ist für den Benutzer definiert."
+
+#: ../../Gui.rst:494
+msgid "The filter will be automatically applied in the next connection."
+msgstr "Der Filter wird bei der nächsten Verbindung automatisch angewendet."
+
+#: ../../Gui.rst:497
+msgid "3 - Shared filters"
+msgstr "3 - Gemeinsame Filter"
+
+#: ../../Gui.rst:498
+msgid "Defined filters can be shared with other users."
+msgstr "Definierte Filter können mit anderen Benutzern geteilt werden."
+
+#: ../../Gui.rst:499
+msgid "Click on |unShareFilter| to share the selected filter."
+msgstr "Klicken Sie auf |unShareFilter|, um den ausgewählten Filter zu teilen."
+
+#: ../../Gui.rst:500
+msgid "Click on |sharedFilter| to unshare the selected filter."
+msgstr "Klicken Sie auf |sharedFilter|, um die Freigabe des ausgewählten Filters aufzuheben."
+
+#: ../../Gui.rst:504
+msgid "Shared filters are available for all users in them session."
+msgstr "Gemeinsame Filter sind für alle Benutzer in der Sitzung verfügbar."
+
+#: ../../Gui.rst:510
+msgid "Dialog box - Advanced filter definition with shared filter"
+msgstr "Dialogbox - Erweiterte Filterdefinition mit gemeinsamem Filter"
+
+#: ../../Gui.rst:518
+msgid "- List of filters"
+msgstr "- Liste der Filter"
+
+#: ../../Gui.rst:519
+msgid "The filter list allows to select a stored filter."
+msgstr "Die Filterliste erlaubt die Auswahl eines gespeicherten Filters."
+
+#: ../../Gui.rst:520
+msgid "To see the filter list, move the cursor over the advanced filter icon."
+msgstr "Um die Filterliste zu sehen, bewegen Sie den Cursor über das erweiterte Filtersymbol."
+
+#: ../../Gui.rst:526
+msgid "Click on the filter name to apply. |buttonIconActiveFilter|"
+msgstr "Klicken Sie auf den Namen des Filters, um ihn anzuwenden. |buttonIconActiveFilter|"
+
+#: ../../Gui.rst:527
+msgid "Click on **\\\"no filter clause\\\"** to reset the filter. |buttonIconFilter|"
+msgstr "Klicken Sie auf **\\\"keine Filterklausel\\\"**, um den Filter zurückzusetzen. |buttonIconFilter|"
+
+#: ../../Gui.rst:535
+msgid "Displayed columns"
+msgstr "Angezeigte Spalten"
+
+#: ../../Gui.rst:539
+msgid "Click on **OK** button to apply changes."
+msgstr "Klicken Sie auf **OK**, um Änderungen zu übernehmen."
+
+#: ../../Gui.rst:540
+msgid "Click on **Reset** button to reset the list to its default format."
+msgstr "Klicken Sie auf die Schaltfläche **Reset**, um die Liste auf das Standardformat zurückzusetzen."
+
+#: ../../Gui.rst:544
+msgid "The columns display is defined for the user."
+msgstr "Die Spaltenanzeige ist für den Benutzer definiert."
+
+#: ../../Gui.rst:545
+msgid "The definition will be automatically applied in the next connection."
+msgstr "Die Definition wird bei der nächsten Verbindung automatisch übernommen."
+
+#: ../../Gui.rst:553
+msgid "Column selection"
+msgstr "Spaltenauswahl"
+
+#: ../../Gui.rst:554
+msgid "Use checkboxes to select or unselect columns to display."
+msgstr "Verwenden Sie Kontrollkästchen, um die anzuzeigenden Spalten zu markieren oder zu deaktivieren."
+
+#: ../../Gui.rst:558
+msgid "**Id** and **name** are mandatory fields."
+msgstr "**Id** und **name** sind Pflichtfelder."
+
+#: ../../Gui.rst:559
+msgid "They cannot be removed from display."
+msgstr "Sie können nicht aus der Anzeige entfernt werden."
+
+#: ../../Gui.rst:562
+msgid "Columns order"
+msgstr "Spaltenreihenfolge"
+
+#: ../../Gui.rst:571
+msgid "Column size"
+msgstr "Spaltengröße"
+
+#: ../../Gui.rst:572
+msgid "Use the spinner button |one| to change the width of the field."
+msgstr "Mit der Spinner-Taste |one| können Sie die Breite des Feldes ändern."
+
+#: ../../Gui.rst:573
+msgid "Width is in % of the total list width."
+msgstr "Breite ist in % der gesamten Listenbreite."
+
+#: ../../Gui.rst:574
+msgid "The minimum width is 1%."
+msgstr "Die Mindestbreite beträgt 1%."
+
+#: ../../Gui.rst:575
+msgid "The maximum width is 50%."
+msgstr "Die maximale Breite beträgt 50%."
+
+#: ../../Gui.rst:577
+msgid "Field: Name"
+msgstr "Feld: Name"
+
+#: ../../Gui.rst:580
+msgid "The width of the field cannot be less than 10%."
+msgstr "Die Breite des Feldes darf nicht kleiner als 10% sein."
+
+#: ../../Gui.rst:582
+msgid "Total width over 100%"
+msgstr "Gesamtbreite über 100%"
+
+#: ../../Gui.rst:584
+msgid "The total width must be limited to a maximum 100%."
+msgstr "Die Gesamtbreite muss auf maximal 100% begrenzt sein."
+
+#: ../../Gui.rst:585
+msgid "The exceedance will be highlighted beside the buttons. |two|"
+msgstr "Die Überschreitung wird neben den Schaltflächen hervorgehoben. |two|"
+
+#: ../../Gui.rst:598
+msgid "Export to CSV format"
+msgstr "Export ins CSV-Format"
+
+#: ../../Gui.rst:600
+msgid "This functionality allows to export data of list in a CSV file."
+msgstr "Diese Funktion ermöglicht den Export von Listendaten in eine CSV-Datei."
+
+#: ../../Gui.rst:604
+msgid "Click on **OK** button to export data."
+msgstr "Klicken Sie auf **OK**, um Daten zu exportieren."
+
+#: ../../Gui.rst:605
+msgid "Click on **Cancel** button to close the dialog box."
+msgstr "Klicken Sie auf die Schaltfläche **Abbrechen**, um die Dialogbox zu schließen."
+
+#: ../../Gui.rst:609
+msgid "The active filter defined will be applied to export data."
+msgstr "Der definierte aktive Filter wird auf die Exportdaten angewendet."
+
+#: ../../Gui.rst:611
+msgid "The export definition is defined for each user."
+msgstr "Die Exportdefinition wird für jeden Benutzer definiert."
+
+#: ../../Gui.rst:612
+msgid "The same definition can be applied in the next export."
+msgstr "Die gleiche Definition kann beim nächsten Export angewendet werden."
+
+#: ../../Gui.rst:619
+msgid "Fields selection"
+msgstr "Auswahl der Felde"
+
+#: ../../Gui.rst:620
+msgid "Use the checkbox to select or unselect all fields."
+msgstr "Verwenden Sie das Kontrollkästchen, um alle Felder auszuwählen oder abzuwählen."
+
+#: ../../Gui.rst:624
+msgid "Id or name for references"
+msgstr "Id oder Name für Referenzen"
+
+#: ../../Gui.rst:628
+msgid "Preserve html format for long texts"
+msgstr "HTML-Format für Langtexte beibehalten"
+
+#: ../../Gui.rst:642
+msgid "Detail window"
+msgstr "Detail-Fenster"
+
+#: ../../Gui.rst:648
+msgid "Detail window features"
+msgstr "Eigenschaften des Detailfensters"
+
+#: ../../Gui.rst:655
+msgid "1 - Item identifier"
+msgstr "1 - Artikelkennung"
+
+#: ../../Gui.rst:656
+msgid "Identifies the item with the element type and the item id and name."
+msgstr "Identifiziert das Element mit dem Elementtyp und der Item-ID und dem Namen."
+
+#: ../../Gui.rst:660
+msgid "2 - Creation information"
+msgstr "2 - Informationen zur Erstellung"
+
+#: ../../Gui.rst:661
+msgid "Information on the item (issuer and creation date) in thumbnail format."
+msgstr "Informationen zum Objekt (Aussteller und Erstellungsdatum) im Thumbnail-Format."
+
+#: ../../Gui.rst:662 ../../Gui.rst:736
+msgid "See: :ref:`thumbnails`."
+msgstr "Siehe: :ref:`thumbnails`."
+
+#: ../../Gui.rst:667
+msgid "Administrator can change information."
+msgstr "Administrator kann Informationen ändern."
+
+#: ../../Gui.rst:675 ../../Gui.rst:1221
+msgid "Click on |buttonIconNew| to create a new item."
+msgstr "Klicken Sie auf |buttonIconNew|, um einen neuen Eintrag zu erstellen."
+
+#: ../../Gui.rst:677
+msgid "Click on |buttonIconPrint| to get a printable version of the details."
+msgstr "Klicken Sie auf |buttonIconPrint|, um eine druckbare Version der Details zu erhalten."
+
+#: ../../Gui.rst:680
+msgid "Click on |buttonIconUndo| to cancel ongoing changes."
+msgstr "Klicken Sie auf |buttonIconUndo|, um laufende Änderungen zu verwerfen."
+
+#: ../../Gui.rst:681
+msgid "Click on |buttonIconDelete| to delete the item."
+msgstr "Klicken Sie auf |buttonIconDelete|, um den Eintrag zu löschen."
+
+#: ../../Gui.rst:682
+msgid "Click on |buttonIconRefresh| to refresh the display."
+msgstr "Klicken Sie auf |buttonIconRefresh|, um die Anzeige zu aktualisieren."
+
+#: ../../Gui.rst:689
+msgid "Some buttons are not clickable when changes are ongoing."
+msgstr "Einige Schaltflächen sind bei laufenden Änderungen nicht anklickbar."
+
+#: ../../Gui.rst:690
+msgid "|buttonIconUndo| button is clickable only when changes are ongoing."
+msgstr "|buttonIconUndo| button ist nur bei laufenden Änderungen klickbar."
+
+#: ../../Gui.rst:695
+msgid "Save or cancel ongoing changes first."
+msgstr "Laufende Änderungen zuerst speichern oder abbrechen."
+
+#: ../../Gui.rst:698
+msgid "4 - Drop file area"
+msgstr "4 - Dateibereich ablegen"
+
+#: ../../Gui.rst:699
+msgid "This area allows to add an attachment file to the item."
+msgstr "Dieser Bereich erlaubt das Hinzufügen einer Anhangsdatei zum Objekt."
+
+#: ../../Gui.rst:701
+msgid "Drop the file in the area."
+msgstr "Legen Sie die Datei in den Bereich."
+
+#: ../../Gui.rst:702
+msgid "Or click on the area to select a file."
+msgstr "Oder klicken Sie auf den Bereich, um eine Datei auszuwählen."
+
+#: ../../Gui.rst:710
+msgid "5 - Sections"
+msgstr "5 - Abteilungen"
+
+#: ../../Gui.rst:711
+msgid "The fields are regrouped under a section."
+msgstr "Die Felder sind unter einer Sektion zusammengefasst."
+
+#: ../../Gui.rst:712
+msgid "All sections can be folded or unfolded, clicking on the section title."
+msgstr "Alle Abschnitte können gefaltet oder aufgeklappt werden, indem Sie auf den Titel des Abschnitts klicken."
+
+#: ../../Gui.rst:714
+msgid "**Columns**"
+msgstr "**Spalten**"
+
+#: ../../Gui.rst:716
+msgid "The sections are organized in columns."
+msgstr "Die Sektionen sind in Spalten organisiert."
+
+#: ../../Gui.rst:717
+msgid "Number of displayed columns can be defined in user parameters."
+msgstr "Anzahl der angezeigten Spalten kann in Benutzerparametern definiert werden."
+
+#: ../../Gui.rst:719
+msgid "**Common sections**"
+msgstr "**Gemeinsame Abschnitte**"
+
+#: ../../Gui.rst:723
+msgid "**Item count in the list**"
+msgstr "**Artikelanzahl in der Liste**"
+
+#: ../../Gui.rst:731
+msgid "Header section"
+msgstr "Kopfbereich"
+
+#: ../../Gui.rst:733
+msgid "**Thumbnails on items in the list**"
+msgstr "**Thumbnails auf Einträge in der Liste**"
+
+#: ../../Gui.rst:738
+msgid "**Go to selected item**"
+msgstr "**Zur ausgewählten Position gehen**"
+
+#: ../../Gui.rst:741
+msgid "Cursor change to |pointingHandCursor| on clickable fields."
+msgstr "Cursor wechseln zu |pointingHandCursor| auf anklickbare Felder."
+
+#: ../../Gui.rst:756
+msgid "Copy item"
+msgstr "Eintrag kopiere"
+
+#: ../../Gui.rst:758
+msgid "Allows copied an item of the element."
+msgstr "Erlaubt das Kopieren eines Elements."
+
+#: ../../Gui.rst:766
+msgid "Simple element"
+msgstr "Einfaches Element"
+
+#: ../../Gui.rst:770
+msgid "Complex element"
+msgstr "Komplexes Element"
+
+#: ../../Gui.rst:777
+msgid "It is possible to select:"
+msgstr "Man kann wählen:"
+
+#: ../../Gui.rst:779
+msgid "New kind of element."
+msgstr "Neue Art von Element."
+
+#: ../../Gui.rst:780
+msgid "Select new type (corresponding to the kind of element)."
+msgstr "Neuen Typ auswählen (entsprechend der Art des Elements)"
+
+#: ../../Gui.rst:781
+msgid "Change the name."
+msgstr "Ändern Sie den Namen."
+
+#: ../../Gui.rst:788
+msgid "The new item has the status ÒcopiedÓ."
+msgstr "Der neue Eintrag hat den Status kopiert."
+
+#: ../../Gui.rst:800
+msgid "Email detail"
+msgstr "E-Mail-Detail"
+
+#: ../../Gui.rst:802
+msgid "Allows to send an informative email to defined recipients list."
+msgstr "Ermöglicht das Versenden einer informativen E-Mail an definierte Empfänger."
+
+#: ../../Gui.rst:809
+msgid "Recipients list"
+msgstr "Liste der Empfänger"
+
+#: ../../Gui.rst:811
+msgid "Flag on the role checkbox to define the recipients list."
+msgstr "Flag auf der Rollen-Checkbox, um die Empfängerliste zu definieren."
+
+#: ../../Gui.rst:813
+msgid "**Checkbox \\\"other\\\"**"
+msgstr "**Checkbox \\\"andere\\\"**"
+
+#: ../../Gui.rst:815
+msgid "Flag on the checkbox \\\"other\\\" to manually enter email addresses."
+msgstr "Flag auf der Checkbox \\\"Andere\\\", um E-Mail-Adressen manuell einzugeben."
+
+#: ../../Gui.rst:818
+msgid "Message"
+msgstr "Meldung"
+
+#: ../../Gui.rst:822
+msgid "Save as note"
+msgstr "Als Notiz speichern"
+
+#: ../../Gui.rst:823
+msgid "Flag on to indicate the email message will be saved as a note."
+msgstr "Flag on, um anzuzeigen, dass die E-Mail-Nachricht als Notiz gespeichert wird."
+
+#: ../../Gui.rst:834
+msgid "Subscribe detail"
+msgstr "Detail abonnieren"
+
+#: ../../Gui.rst:837
+msgid "Subscribe list"
+msgstr "Liste abonnieren"
+
+#: ../../Gui.rst:838
+msgid "Allows to subscribe to tracking of an item."
+msgstr "Ermöglicht es, die Verfolgung eines Artikels zu abonnieren."
+
+#: ../../Gui.rst:843
+msgid "This icon is checked when you subscribed."
+msgstr "Dieses Symbol wird bei der Anmeldung überprüft."
+
+#: ../../Gui.rst:0
+msgid "Display of list of tracked items."
+msgstr "Anzeige der Liste der verfolgten Objekte."
+
+#: ../../Gui.rst:0
+msgid "To display it, click on button \\\"Show list of subscriptions\\\""
+msgstr "Um es anzuzeigen, klicke auf den Button \\\"Liste der Abonnements\\\""
+
+#: ../../Gui.rst:873
+msgid "Multiple update"
+msgstr "Mehrfach-Update"
+
+#: ../../Gui.rst:875
+msgid "Allows to update several items in one operation."
+msgstr "Ermöglicht die Aktualisierung mehrerer Elemente in einem Arbeitsgang."
+
+#: ../../Gui.rst:877
+msgid "The fields that can be updated depends on the element."
+msgstr "Welche Felder aktualisiert werden können, hängt vom Element ab."
+
+#: ../../Gui.rst:878
+msgid "The fields are grouped by section."
+msgstr "Die Felder sind nach Bereichen gruppiert."
+
+#: ../../Gui.rst:879
+msgid "Click on |buttonQuitMultiMode| to quit the multiple mode window."
+msgstr "Klicken Sie auf |buttonQuitMultiMode|, um das Mehrfachmodus-Fenster zu verlassen."
+
+#: ../../Gui.rst:882
+msgid "Select items"
+msgstr "Artikel auswählen"
+
+#: ../../Gui.rst:884
+msgid "Or use checkboxes to select/unselect all items in the list. |two|"
+msgstr "Oder verwenden Sie Kontrollkästchen, um alle Elemente in der Liste zu markieren bzw. zu entmarkieren. |two|"
+
+#: ../../Gui.rst:885
+msgid "The count of items selected is displayed. |three|"
+msgstr "Die Anzahl der ausgewählten Artikel wird angezeigt.  |three|"
+
+#: ../../Gui.rst:891
+msgid "Multiple mode item selection"
+msgstr "Multimodale Elementauswahl"
+
+#: ../../Gui.rst:898
+msgid "Multiple mode window"
+msgstr "Mehrfachmodus-Fenster"
+
+#: ../../Gui.rst:901
+msgid "Apply updates"
+msgstr "Updates anwenden"
+
+#: ../../Gui.rst:902
+msgid "Click on |buttonIconSave| to save updates on selection."
+msgstr "Klicken Sie auf |buttonIconSave|, um Updates bei der Auswahl zu speichern."
+
+#: ../../Gui.rst:903
+msgid "Click on |buttonIconDelete| to delete all selected items."
+msgstr "Klicken Sie auf |buttonIconDelete|, um alle ausgewählten Elemente zu löschen."
+
+#: ../../Gui.rst:912
+msgid "Checklist"
+msgstr "Kontrolllist"
+
+#: ../../Gui.rst:914
+msgid "Allows to fill a checklist form."
+msgstr "Erlaubt das Ausfüllen eines Checklistenformulars."
+
+#: ../../Gui.rst:921
+msgid "The checklist forms are defined in :ref:`checklist-definition` screen."
+msgstr "Die Checklistenformulare werden im Bildschirm :ref:`checklist-definition` definiert."
+
+#: ../../Gui.rst:925
+msgid "The access to view the checklist depends on your access rights."
+msgstr "Der Zugriff auf die Checkliste hängt von Ihren Zugriffsrechten ab."
+
+#: ../../Gui.rst:929
+msgid "Displaying the checklist"
+msgstr "Checkliste anzeigen"
+
+#: ../../Gui.rst:933
+msgid "Click on |buttonIconShowChecklist| to display the checklist form."
+msgstr "Klicken Sie auf |buttonIconShowChecklist|, um das Checklistenformular anzuzeigen."
+
+#: ../../Gui.rst:935
+msgid "With other value the \\\"Checklist\\\" section appears in the detail window."
+msgstr "Mit anderem Wert erscheint der Abschnitt \\\"Checkliste\\\" im Detailfenster."
+
+#: ../../Gui.rst:941
+msgid "Dialog box - Checklist"
+msgstr "Dialogfenster - Checklist"
+
+#: ../../Gui.rst:947
+msgid "Section - Checklist"
+msgstr "Abschnitt - Checkliste"
+
+#: ../../Gui.rst:950
+msgid "How to use"
+msgstr "Wie benutze ich"
+
+#: ../../Gui.rst:951
+msgid "The user just has to check information corresponding to the situation."
+msgstr "Der Benutzer muss nur die der Situation entsprechenden Informationen prüfen."
+
+#: ../../Gui.rst:952
+msgid "When done, the user name and checked date are recorded and displayed."
+msgstr "Wenn Sie fertig sind, werden der Benutzername und das geprüfte Datum aufgezeichnet und angezeigt."
+
+#: ../../Gui.rst:965
+msgid "History of changes"
+msgstr "Geschichte der Veränderungen"
+
+#: ../../Gui.rst:967
+msgid "All the changes items are tracked."
+msgstr "Alle Änderungen werden verfolgt."
+
+#: ../../Gui.rst:969
+msgid "They are stored and displayed on each item."
+msgstr "Sie werden auf jedem Artikel gespeichert und angezeigt."
+
+#: ../../Gui.rst:977
+msgid "Fields of changes"
+msgstr "Felder der Veränderung"
+
+#: ../../Gui.rst:981 ../../Gui.rst:1266
+msgid "Field"
+msgstr "Feld"
+
+#: ../../Gui.rst:982 ../../Gui.rst:1267
+msgid "Description"
+msgstr "Beschreibung"
+
+#: ../../Gui.rst:983
+msgid "Operation"
+msgstr "Betrieb"
+
+#: ../../Gui.rst:984
+msgid "The operation on the item (insert or update)."
+msgstr "Die Operation am Objekt (einfügen oder aktualisieren)."
+
+#: ../../Gui.rst:985
+msgid "Data"
+msgstr "Daten"
+
+#: ../../Gui.rst:986
+msgid "The field modified."
+msgstr "Das Feld geändert."
+
+#: ../../Gui.rst:987
+msgid "Value before"
+msgstr "Wert vor"
+
+#: ../../Gui.rst:988
+msgid "The value of the field before the update."
+msgstr "Der Wert des Feldes vor dem Update."
+
+#: ../../Gui.rst:989
+msgid "Value after"
+msgstr "Wert nach"
+
+#: ../../Gui.rst:990
+msgid "The value of the field after the update."
+msgstr "Der Wert des Feldes nach dem Update."
+
+#: ../../Gui.rst:991 ../../Gui.rst:1299
+msgid "Date"
+msgstr "Datum"
+
+#: ../../Gui.rst:992
+msgid "Date of change operation."
+msgstr "Datum der Änderung."
+
+#: ../../Gui.rst:993 ../../Gui.rst:1311
+msgid "User"
+msgstr "Benutzer"
+
+#: ../../Gui.rst:994
+msgid "Name of the user who operated the change."
+msgstr "Name des Benutzers, der die Änderung durchgeführt hat."
+
+#: ../../Gui.rst:998
+msgid "Displaying the history of changes"
+msgstr "Anzeige der Änderungshistorie"
+
+#: ../../Gui.rst:1002
+msgid "Click on |buttonIconShowHistory| to display the history of changes."
+msgstr "Klicken Sie auf |buttonIconShowHistory|, um die Historie der Änderungen anzuzeigen."
+
+#: ../../Gui.rst:1010
+msgid "Dialog box - History of changes"
+msgstr "Dialogbox - Historie der Änderungen"
+
+#: ../../Gui.rst:1016
+msgid "Section - Change history"
+msgstr "Bereich - Änderungshistorie"
+
+#: ../../Gui.rst:1024
+msgid "Show/Hide work"
+msgstr "Arbeit anzeigen/verbergen"
+
+#: ../../Gui.rst:1033
+msgid "Text editor"
+msgstr "Texteditor"
+
+#: ../../Gui.rst:1038
+msgid "Parameter \\\"Editor for rich text\\\""
+msgstr "Parameter \\\"Editor für Rich Text\\\""
+
+#: ../../Gui.rst:1043 ../../Gui.rst:1051
+msgid "CK Editor"
+msgstr "CK-Editor"
+
+#: ../../Gui.rst:1044
+msgid "The most advanced web editor."
+msgstr "Der fortschrittlichste Webeditor."
+
+#: ../../Gui.rst:1045
+msgid "Spell checker available with this text editor."
+msgstr "Rechtschreibprüfung mit diesem Texteditor verfügbar."
+
+#: ../../Gui.rst:1055
+msgid "Ability to resize the CK Editor height, the size is saved."
+msgstr "Möglichkeit, die Höhe des CK-Editors zu ändern, die Grüße wird gespeichert."
+
+#: ../../Gui.rst:1059
+msgid "CK editor inline"
+msgstr "CK-Editor inline"
+
+#: ../../Gui.rst:1064
+msgid "As CK Editor."
+msgstr "Als CK-Editor."
+
+#: ../../Gui.rst:1065 ../../Gui.rst:1090
+msgid "Activated only when needed."
+msgstr "Nur bei Bedarf aktiviert."
+
+#: ../../Gui.rst:1069
+msgid "CK editor inline height, keep the size of CK editor."
+msgstr "CK-Editor Inline-Höhe, Grüße des CK-Editors beibehalten."
+
+#: ../../Gui.rst:1070
+msgid "Click on the text zone to display toolbar."
+msgstr "Klicken Sie auf den Textbereich, um die Symbolleiste anzuzeigen."
+
+#: ../../Gui.rst:1071
+msgid "Can not use it in fullscreen mode."
+msgstr "Kann nicht im Vollbildmodus verwendet werden."
+
+#: ../../Gui.rst:1074 ../../Gui.rst:1081
+msgid "Dojo Editor"
+msgstr "Dojo-Editor"
+
+#: ../../Gui.rst:1075
+msgid "Historically first used on ProjeQtOr."
+msgstr "Historisch erstmals bei ProjeQtOr eingesetzt."
+
+#: ../../Gui.rst:1088 ../../Gui.rst:1097
+msgid "Inline editor"
+msgstr "Inline-Editor"
+
+#: ../../Gui.rst:1089
+msgid "As Dojo Editor."
+msgstr "Als Dojo Editor."
+
+#: ../../Gui.rst:1091 ../../Gui.rst:1103
+msgid "Text zone is extendable."
+msgstr "Textzone ist erweiterbar."
+
+#: ../../Gui.rst:1101 ../../Gui.rst:1109
+msgid "Plain text editor"
+msgstr "Klartext-Editor"
+
+#: ../../Gui.rst:1102
+msgid "Conventional text input."
+msgstr "Konventionelle Texteingabe."
+
+#: ../../Gui.rst:1121 ../../Gui.rst:1129
+msgid "Special fields"
+msgstr "Spezialgebiete"
+
+#: ../../Gui.rst:1123
+msgid "This section describes the ProjeQtOr special fields."
+msgstr "Dieser Abschnitt beschreibt die ProjeQtOr Spezialgebiete."
+
+#: ../../Gui.rst:1132
+msgid "Accelerator buttons"
+msgstr "Beschleuniger-Buttons"
+
+#: ../../Gui.rst:1137
+msgid "Move to next status button"
+msgstr "Zum nächsten Status-Button wechseln"
+
+#: ../../Gui.rst:1149
+msgid "Assign to me button"
+msgstr "Mir zuweisen Butto"
+
+#: ../../Gui.rst:1150
+msgid "This button allows to set the current user in the related field."
+msgstr "Diese Schaltfläche erlaubt es, den aktuellen Benutzer in das entsprechende Feld einzutragen."
+
+#: ../../Gui.rst:1166
+msgid "Combo list field"
+msgstr "Kombinationslistenfeld"
+
+#: ../../Gui.rst:1172
+msgid "The access to view or create item depends on your access rights."
+msgstr "Der Zugriff auf das Objekt hängt von Ihren Zugriffsrechten ab."
+
+#: ../../Gui.rst:1173
+msgid "Some buttons can be not available."
+msgstr "Einige Schaltflächen können nicht verfügbar sein."
+
+#: ../../Gui.rst:1180
+msgid "Click on |comboArrowDown| to get the list of values."
+msgstr "Klicken Sie auf |comboArrowDown|, um die Werteliste zu erhalten."
+
+#: ../../Gui.rst:1181
+msgid "Click on |iconGoto| will directly go to the selected item."
+msgstr "Klicken Sie auf |iconGoto|, um direkt zum ausgewählten Artikel zu gelangen."
+
+#: ../../Gui.rst:1191
+msgid "Click on |buttonIconSearch| to access item details."
+msgstr "Klicken Sie auf |buttonIconSearch|, um auf die Artikeldetails zuzugreifen."
+
+#: ../../Gui.rst:1192
+msgid "The next action depends on whether the field value is filled or not."
+msgstr "Die nächste Aktion hängt davon ab, ob der Feldwert gefüllt ist oder nicht."
+
+#: ../../Gui.rst:1195
+msgid "**Field value is filled**"
+msgstr "**Feldwert ist gefüllt**"
+
+#: ../../Gui.rst:1203
+msgid "Dialog box - Item details"
+msgstr "Dialogfeld - Artikeldetails"
+
+#: ../../Gui.rst:1205
+msgid "Click on |buttonIconSearch| to re-select an item."
+msgstr "Klicken Sie auf |buttonIconSearch|, um einen Artikel erneut auszuwählen."
+
+#: ../../Gui.rst:1206
+msgid "Click on |buttonIconUndo| to close the dialog box."
+msgstr "Klicken Sie auf |buttonIconUndo|, um die Dialogbox zu schließen."
+
+#: ../../Gui.rst:1210
+msgid "**Field value is empty**"
+msgstr "**Feldwert ist leer**"
+
+#: ../../Gui.rst:1218
+msgid "Dialog box - List of items"
+msgstr "Dialogbox - Liste der Artikel"
+
+#: ../../Gui.rst:1220
+msgid "Click on |buttonIconSelect| to select items."
+msgstr "Klicken Sie auf |buttonIconSelect|, um Elemente auszuwählen."
+
+#: ../../Gui.rst:1222
+msgid "Click on |buttonIconUndo| to close the window."
+msgstr "Klicken Sie auf |buttonIconUndo|, um das Fenster zu schließen."
+
+#: ../../Gui.rst:1224
+msgid "Window header"
+msgstr "Fensterkopfleiste"
+
+#: ../../Gui.rst:1228
+msgid "Select several items"
+msgstr "Mehrere Artikel auswählen"
+
+#: ../../Gui.rst:1240
+msgid "Origin field"
+msgstr "Herkunftsfeld"
+
+#: ../../Gui.rst:1242
+msgid "This field allows to determine the element of origin."
+msgstr "Dieses Feld erlaubt die Bestimmung des Ursprungselements."
+
+#: ../../Gui.rst:1252 ../../Gui.rst:1270
+msgid "Origin element"
+msgstr "Herkunftselement"
+
+#: ../../Gui.rst:1253
+msgid "Click on |buttonAdd| to add a origin element."
+msgstr "Klicken Sie auf |buttonAdd|, um ein Ursprungs-Element hinzuzufügen."
+
+#: ../../Gui.rst:1254
+msgid "Click on |buttonIconDelete| to delete the link."
+msgstr "Klicken Sie auf |buttonIconDelete|, um den Link zu löschen."
+
+#: ../../Gui.rst:1262
+msgid "Fields of add an origin element dialog box"
+msgstr "Felder zum Hinzufügen eines Ursprungselement-Dialogfensters"
+
+#: ../../Gui.rst:1268
+msgid "Type of the orign"
+msgstr "Typ des Originals"
+
+#: ../../Gui.rst:1269
+msgid "Type of element to be selected."
+msgstr "Typ des zu wählenden Elements."
+
+#: ../../Gui.rst:1271
+msgid "item to select."
+msgstr "Artikel zur Auswahl."
+
+#: ../../Gui.rst:1275
+msgid "Set color field"
+msgstr "Farbfeld setzen"
+
+#: ../../Gui.rst:1277
+msgid "This field allows to set the color of an item."
+msgstr "Dieses Feld erlaubt es, die Farbe eines Artikels einzustellen."
+
+#: ../../Gui.rst:1278
+msgid "Used to differentiate items in list or report."
+msgstr "Dient zur Unterscheidung von Elementen in der Liste oder im Bericht."
+
+#: ../../Gui.rst:1279
+msgid "Click on list of colors to select."
+msgstr "Klicken Sie auf die Liste der Farben zur Auswahl."
+
+#: ../../Gui.rst:1280
+msgid "Click on \\\"Reset\\\" button to erase."
+msgstr "Klicken Sie auf die Schaltfläche \\\"Reset\\\", um sie zu löschen."
+
+#: ../../Gui.rst:1294
+msgid "Thumbnails"
+msgstr "Miniaturansichten"
+
+#: ../../Gui.rst:1296
+msgid "Thumbnails are a graphical representation of the field value."
+msgstr "Thumbnails sind eine grafische Darstellung des Feldwertes."
+
+#: ../../Gui.rst:1300
+msgid "Displays the date of creation or update of the item."
+msgstr "Zeigt das Erstellungs- oder Aktualisierungsdatum des Artikels an."
+
+#: ../../Gui.rst:1301
+msgid "Move cursor over thumbnail to display the date."
+msgstr "Bewegen Sie den Cursor über das Miniaturbild, um das Datum anzuzeigen."
+
+#: ../../Gui.rst:1304
+msgid "|calendarRed| The Item have been created or updated today."
+msgstr "|calendarRed| The Item have been created or updated today."
+
+#: ../../Gui.rst:1306
+msgid "|calendarYellow| The Item have been created or updated recently."
+msgstr "|calendarYellow| The Item have been created or updated recently."
+
+#: ../../Gui.rst:1308
+msgid "|calendarWhite| Default view."
+msgstr "|calendarWhite| Standardansicht."
+
+#: ../../Gui.rst:1312
+msgid "Displays the user who created or updated the item."
+msgstr "Zeigt den Benutzer an, der den Artikel erstellt oder aktualisiert hat."
+
+#: ../../Gui.rst:1315
+msgid "|defaultUserThumb| The user doesn't have a photo."
+msgstr "|defaultUserThumb| Der Benutzer hat kein Foto."
+
+#: ../../Gui.rst:1319
+msgid "Comment"
+msgstr "Kommentar"
+
+#: ../../Gui.rst:1320
+msgid "|Note| Indicates a comment or description is defined."
+msgstr "|Note| Zeigt an, dass ein Kommentar oder eine Beschreibung definiert ist."
+
+#: ../../Gui.rst:1321
+msgid "Move cursor over thumbnail to display text."
+msgstr "Bewegen Sie den Cursor über das Miniaturbild, um Text anzuzeigen."
+
+#: ../../Gui.rst:1324
+msgid "Privacy"
+msgstr "Datenschutz"
+
+#: ../../Gui.rst:1325
+msgid "Indicates the visibility level defined in a note or attachment."
+msgstr "Gibt die in einer Notiz oder Anlage definierte Sichtbarkeitsebene an."
+
+#: ../../Gui.rst:1327
+msgid "|privateThumb| Private contents."
+msgstr "|privateThumb| Private Inhalte."
+
+#: ../../Gui.rst:1329
+msgid "|teamThumb| Visible to team."
+msgstr "|teamThumb| Visible to team."
+
+#: ../../Gui.rst:1333
+msgid "Color"
+msgstr "Farbe"
+
+#: ../../Gui.rst:1334
+msgid "Displays a colored circle for field colorable."
+msgstr "Zeigt einen farbigen Kreis für färbbare Felder an."
+
+#: ../../Gui.rst:1335
+msgid "Some list of values has a field to define a color."
+msgstr "Some list of values has a field to define a color."
+
+#: ../../Gui.rst:1336
+msgid "A color is defined for each value."
+msgstr "Für jeden Wert wird eine Farbe definiert."
+
+#: ../../Gui.rst:1349 ../../Gui.rst:1355
+msgid "Info bar"
+msgstr "Info-Leist"
+
+#: ../../Gui.rst:1358
+msgid "1 - Version button"
+msgstr "1 - Version Taste"
+
+#: ../../Gui.rst:1359
+msgid "Displays the application version."
+msgstr "Zeigt die Programmversion an."
+
+#: ../../Gui.rst:1360
+msgid "Click on button to access to ProjeQtOr site."
+msgstr "Klicken Sie auf die Schaltfläche, um zur ProjeQtOr-Seite zu gelangen."
+
+#: ../../Gui.rst:1363
+msgid "2 -Session"
+msgstr "2-Sitzung"
+
+#: ../../Gui.rst:1369
+msgid "a - Log out button"
+msgstr "a - Schaltfläche Abmelden"
+
+#: ../../Gui.rst:1370
+msgid "Allows to disconnect the user."
+msgstr "Erlaubt das Trennen der Verbindung."
+
+#: ../../Gui.rst:1372
+msgid "User parameter \\\"Confirm quit application\\\""
+msgstr "Benutzerparameter \\\"Beenden der Anwendung bestätigen\\\""
+
+#: ../../Gui.rst:1379
+msgid "b - User parameters button"
+msgstr "b - Schaltfläche Benutzerparameter"
+
+#: ../../Gui.rst:1380
+msgid "Allows to access user parameters."
+msgstr "Erlaubt den Zugriff auf Benutzerparameter."
+
+#: ../../Gui.rst:1384
+msgid "c - Language"
+msgstr "c - Sprache"
+
+#: ../../Gui.rst:1385
+msgid "ProjeQtOr is multilingual."
+msgstr "ProjeQtOr ist mehrsprachig."
+
+#: ../../Gui.rst:1387
+msgid "Each user can choose the language to display all the captions."
+msgstr "Jeder Benutzer kann die Sprache wählen, in der alle Beschriftungen angezeigt werden."
+
+#: ../../Gui.rst:1390
+msgid "User parameter \\\"Language\\\""
+msgstr "Benutzerparameter \\\"Sprache\\\""
+
+#: ../../Gui.rst:1392
+msgid "This parameter defines the language used to display captions."
+msgstr "Dieser Parameter definiert die Sprache, in der die Beschriftungen angezeigt werden."
+
+#: ../../Gui.rst:1394
+msgid "d - Theme"
+msgstr "d - Thema"
+
+#: ../../Gui.rst:1395
+msgid "Users can select Theme to display the interface."
+msgstr "Benutzer können das Thema auswählen, um die Oberfläche anzuzeigen."
+
+#: ../../Gui.rst:1398
+msgid "User parameter \\\"Theme\\\""
+msgstr "Benutzerparameter \\\"Thema\\\""
+
+#: ../../Gui.rst:1399
+msgid "This parameter defines the theme to display."
+msgstr "Dieser Parameter definiert das anzuzeigende Thema."
+
+#: ../../Gui.rst:1400
+msgid "The new theme is automatically applied when selected."
+msgstr "Das neue Thema wird bei Auswahl automatisch übernommen."
+
+#: ../../Gui.rst:1404
+msgid "Default theme"
+msgstr "Standard-Thema"
+
+#: ../../Gui.rst:1406
+msgid "By default your selected theme is \\\"ProjeQtOr 'Flat Design' Blue\\\"."
+msgstr "Standardmäßig ist Ihr ausgewähltes Thema \\\"ProjeQtOr 'Flat Design' Blue\\\"."
+
+#: ../../Gui.rst:1407
+msgid "Screenshoots has been taken with \\\"ProjeQtOr Standard\\\" theme."
+msgstr "Screenshoots has been taken with \\\"ProjeQtOr Standard\\\" theme."
+
+#: ../../Gui.rst:1410
+msgid "e - Fist page"
+msgstr "e - Erste Seite"
+
+#: ../../Gui.rst:1414
+msgid "f - Change password"
+msgstr "f - Passwort ändern"
+
+#: ../../Gui.rst:1415
+msgid "Validate the new one clicking and activating the next combo box"
+msgstr "Neues anklicken und nächste Combobox aktivieren"
+
+#: ../../Gui.rst:1417
+msgid "g - Online manual"
+msgstr "g - Online Handbuch"
+
+#: ../../Gui.rst:1418
+msgid "or press F1"
+msgstr "oder F1 drücken"
+
+#: ../../Gui.rst:1420
+msgid "h - Keyboard shortcuts"
+msgstr "h - Tastaturkürzel"
+
+#: ../../Gui.rst:1422
+msgid "Shortcut keys"
+msgstr "Tastaturkürzel"
+
+#: ../../Gui.rst:1423
+msgid ":kbd:`Control-s` to save the changes."
+msgstr ":kbd:`Control-s` um die Änderungen zu speichern."
+
+#: ../../Gui.rst:1425
+msgid ":kbd:`ESC` to exit full screen mode of CK Editor."
+msgstr ":kbd:`ESC`, um den Vollbildmodus des CK-Editors zu verlassen."
+
+#: ../../Gui.rst:1428
+msgid "Numeric keypad"
+msgstr "Numerische Tastatur"
+
+#: ../../Gui.rst:1432
+msgid "i - About ProjeQtOr"
+msgstr "i - Über ProjeQtOr"
+
+#: ../../Gui.rst:1433
+msgid "Display database name."
+msgstr "Datenbankname anzeigen."
+
+#: ../../Gui.rst:1436
+msgid "3 - Switched mode button"
+msgstr "3 - Schaltmodus-Taste"
+
+#: ../../Gui.rst:1438
+msgid "Window selected is displayed in \\\"full screen\\\" mode."
+msgstr "Das ausgewählte Fenster wird im \\\"Vollbildmodus\\\" angezeigt."
+
+#: ../../Gui.rst:1439
+msgid "Hidden window are replaced by a gray bar."
+msgstr "Versteckte Fenster werden durch einen grauen Balken ersetzt."
+
+#: ../../Gui.rst:1440
+msgid "Click on the gray bar to switch between windows."
+msgstr "Klicken Sie auf den grauen Balken, um zwischen den Fenstern zu wechseln."
+
+#: ../../Gui.rst:1442
+msgid "User parameter \\\"Switched mode\\\""
+msgstr "Benutzerparameter \\\"Schaltmodus\\\""
+
+#: ../../Gui.rst:1444
+msgid "This parameter defines whether switching mode is enabled or not."
+msgstr "Dieser Parameter definiert, ob der Schaltmodus aktiviert ist oder nicht."
+
+#: ../../Gui.rst:1447
+msgid "4 - \\\"Full-screen\\\" button"
+msgstr "4 - \\\"Vollbild\\\" Taste"
+
+#: ../../Gui.rst:1448
+msgid "One-click to displays in full Screen view."
+msgstr "Mit einem Klick zur Anzeige im Vollbildmodus."
+
+#: ../../Gui.rst:1452
+msgid "5 - Hide and show menu button"
+msgstr "5 - Menütaste ausblenden und einblenden"
+
+#: ../../Gui.rst:1453
+msgid "Allows to hide or show the menu section."
+msgstr "Erlaubt das Ein- und Ausblenden des Menüteils."
+
+#: ../../Gui.rst:1455
+msgid "User parameter ÒHide menuÓ"
+msgstr "Benutzerparameter Menü ausblenden"
+
+#: ../../Gui.rst:1457
+msgid "This parameter defines whether the menu is hidden by default."
+msgstr "Dieser Parameter definiert, ob das Menü standardmäßig ausgeblendet ist."
+
+#: ../../Gui.rst:1478
+msgid "Internal alert"
+msgstr "Interner Alarm"
+
+#: ../../Gui.rst:1480
+msgid "Internal alerts can be sent to users."
+msgstr "Interne Alarme können an Benutzer gesendet werden."
+
+#: ../../Gui.rst:1484
+msgid "**By the administrator**"
+msgstr "**Durch den Administrator**"
+
+#: ../../Gui.rst:1487
+msgid "The message will be received by user via message pop-up."
+msgstr "Die Nachricht wird vom Benutzer per Nachrichten-Popup empfangen."
+
+#: ../../Gui.rst:1489
+msgid "**Monitoring indicators**"
+msgstr "**Überwachungsindikatoren**"
+
+#: ../../Gui.rst:1491
+msgid "Monitoring indicators send only warning and alert message."
+msgstr "Überwachungsindikatoren senden nur Warn- und Alarmmeldungen."
+
+#: ../../Gui.rst:1492
+msgid "The message contains information that explains the alert:"
+msgstr "Die Nachricht enthält Informationen, die den Alarm erklären:"
+
+#: ../../Gui.rst:1494
+msgid "Item id and type."
+msgstr "Artikelnummer und Typ."
+
+#: ../../Gui.rst:1495
+msgid "Indicator description."
+msgstr "Indikatorbeschreibung."
+
+#: ../../Gui.rst:1496
+msgid "Target value."
+msgstr "Zielwert."
+
+#: ../../Gui.rst:1497
+msgid "Alert or warning value."
+msgstr "Alarm- oder Warnwert."
+
+#: ../../Gui.rst:1499
+msgid "The indicators are defined in :ref:`indicator` screen."
+msgstr "Die Indikatoren sind im Bildschirm :ref:`indicator` definiert."
+
+#: ../../Gui.rst:1506
+msgid "Message pop-up"
+msgstr "Nachrichten-Popup"
+
+#: ../../Gui.rst:1509
+msgid "Three kinds of message may be displayed:"
+msgstr "Es können drei Arten von Meldungen angezeigt werden:"
+
+#: ../../Gui.rst:1511
+msgid "Information"
+msgstr "Informationen"
+
+#: ../../Gui.rst:1512
+msgid "Warning"
+msgstr "Warnung"
+
+#: ../../Gui.rst:1513
+msgid "Alert"
+msgstr "Alarm"
+
+#: ../../Gui.rst:1520
+msgid "Action on message pop-up"
+msgstr "Aktion bei Nachrichten-Popup"
+
+#: ../../Gui.rst:1521
+msgid "Three possible actions:"
+msgstr "Drei mögliche Aktionen:"
+
+#: ../../Gui.rst:1524
+msgid "Mark it as read to definitively hide it."
+msgstr "Markieren Sie es als gelesen, um es endgültig zu verstecken."
+
+#: ../../Gui.rst:1525
+msgid "Mark as read all remaining alerts (the number appears on the button)."
+msgstr "Markieren Sie alle verbleibenden Alerts als gelesen (die Nummer erscheint auf der Schaltfläche)"
+
+#: ../../Gui.rst:1540 ../../Gui.rst:1549
+msgid "Alert on detail window"
+msgstr "Alarm im Detail-Fenster"
+
+#: ../../Gui.rst:1553 ../../Gui.rst:1560
+msgid "Alert on Today screen"
+msgstr "Alarm auf dem Heute-Bildschirm"

@@ -1,0 +1,855 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2018, ProjeQtOr
+# This file is distributed under the same license as the ProjeQtOr Bedienhandbuch Deutsch package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: ProjeQtOr Bedienhandbuch Deutsch 7.2\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2018-07-03 14:34+0200\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: ../../Expense.rst:9
+msgid "Expenses"
+msgstr ""
+
+#: ../../Expense.rst:11
+msgid "The expenses incurred for the project are monitored."
+msgstr ""
+
+#: ../../Expense.rst:15
+msgid "Expense"
+msgstr ""
+
+#: ../../Expense.rst:22
+msgid "Call for tenders"
+msgstr ""
+
+#: ../../Expense.rst:24
+msgid "Call for tenders stores information about your needs to create a submission to call for tenders."
+msgstr ""
+
+#: ../../Expense.rst:26
+msgid "This can for instance be used to detail all the requests and find the best answer."
+msgstr ""
+
+#: ../../Expense.rst:28
+msgid "You have the possibility to create some different evaluation criterias. Thereafter you can attribute them a value in Offer."
+msgstr ""
+
+#: ../../Expense.rst:31
+#: ../../Expense.rst:125
+#: ../../Expense.rst:224
+#: ../../Expense.rst:330
+msgid "Section: Description"
+msgstr ""
+
+#: ../../Expense.rst:38
+#: ../../Expense.rst:63
+#: ../../Expense.rst:93
+#: ../../Expense.rst:132
+#: ../../Expense.rst:161
+#: ../../Expense.rst:231
+#: ../../Expense.rst:257
+#: ../../Expense.rst:337
+#: ../../Expense.rst:374
+#: ../../Expense.rst:451
+#: ../../Expense.rst:481
+msgid "Field"
+msgstr ""
+
+#: ../../Expense.rst:39
+#: ../../Expense.rst:64
+#: ../../Expense.rst:94
+#: ../../Expense.rst:133
+#: ../../Expense.rst:162
+#: ../../Expense.rst:232
+#: ../../Expense.rst:258
+#: ../../Expense.rst:338
+#: ../../Expense.rst:375
+#: ../../Expense.rst:452
+#: ../../Expense.rst:482
+msgid "Description"
+msgstr ""
+
+#: ../../Expense.rst:40
+#: ../../Expense.rst:134
+#: ../../Expense.rst:233
+#: ../../Expense.rst:339
+msgid ":term:`Id`"
+msgstr ""
+
+#: ../../Expense.rst:41
+msgid "Unique Id for the call for tender."
+msgstr ""
+
+#: ../../Expense.rst:42
+#: ../../Expense.rst:136
+#: ../../Expense.rst:235
+#: ../../Expense.rst:341
+#: ../../Expense.rst:487
+msgid "**Name**"
+msgstr ""
+
+#: ../../Expense.rst:43
+msgid "Short name of the call for tender."
+msgstr ""
+
+#: ../../Expense.rst:44
+#: ../../Expense.rst:138
+#: ../../Expense.rst:237
+#: ../../Expense.rst:343
+msgid "**Type**"
+msgstr ""
+
+#: ../../Expense.rst:45
+#: ../../Expense.rst:139
+msgid "Type of tender."
+msgstr ""
+
+#: ../../Expense.rst:46
+#: ../../Expense.rst:140
+msgid "Project"
+msgstr ""
+
+#: ../../Expense.rst:47
+msgid "Project link to call for tender."
+msgstr ""
+
+#: ../../Expense.rst:48
+msgid "Maximum amount"
+msgstr ""
+
+#: ../../Expense.rst:49
+msgid "Maximum amount of the call for tender."
+msgstr ""
+
+#: ../../Expense.rst:50
+#: ../../Expense.rst:185
+#: ../../Expense.rst:384
+msgid "Expected delivery date"
+msgstr ""
+
+#: ../../Expense.rst:51
+msgid "Date expected."
+msgstr ""
+
+#: ../../Expense.rst:53
+#: ../../Expense.rst:82
+#: ../../Expense.rst:151
+#: ../../Expense.rst:196
+#: ../../Expense.rst:246
+#: ../../Expense.rst:274
+#: ../../Expense.rst:360
+#: ../../Expense.rst:402
+#: ../../Expense.rst:494
+msgid "**\\* Required field**"
+msgstr ""
+
+#: ../../Expense.rst:56
+#: ../../Expense.rst:154
+#: ../../Expense.rst:250
+#: ../../Expense.rst:367
+msgid "Section: Treatment"
+msgstr ""
+
+#: ../../Expense.rst:65
+#: ../../Expense.rst:163
+#: ../../Expense.rst:259
+#: ../../Expense.rst:376
+msgid "**Status**"
+msgstr ""
+
+#: ../../Expense.rst:66
+msgid "Actual :term:`status` of the call for tender."
+msgstr ""
+
+#: ../../Expense.rst:67
+#: ../../Expense.rst:165
+#: ../../Expense.rst:261
+msgid "Responsible"
+msgstr ""
+
+#: ../../Expense.rst:68
+msgid "Person responsible for the processing of this call for tender."
+msgstr ""
+
+#: ../../Expense.rst:69
+msgid "Sent date"
+msgstr ""
+
+#: ../../Expense.rst:70
+msgid "Sent date of the call for tender."
+msgstr ""
+
+#: ../../Expense.rst:71
+#: ../../Expense.rst:101
+#: ../../Expense.rst:171
+msgid "Expected answer date"
+msgstr ""
+
+#: ../../Expense.rst:72
+msgid "Expected answer date, meaning expected tender date."
+msgstr ""
+
+#: ../../Expense.rst:73
+#: ../../Expense.rst:187
+msgid "Handled"
+msgstr ""
+
+#: ../../Expense.rst:74
+msgid "Box checked indicates that the call for tender is handled with date when checked."
+msgstr ""
+
+#: ../../Expense.rst:75
+#: ../../Expense.rst:189
+msgid "Done"
+msgstr ""
+
+#: ../../Expense.rst:76
+msgid "Box checked indicates that the call for tender is done with date when checked."
+msgstr ""
+
+#: ../../Expense.rst:77
+#: ../../Expense.rst:191
+msgid "Closed"
+msgstr ""
+
+#: ../../Expense.rst:78
+msgid "Box checked indicates that the call for tender is archived with date when checked."
+msgstr ""
+
+#: ../../Expense.rst:79
+#: ../../Expense.rst:193
+#: ../../Expense.rst:271
+#: ../../Expense.rst:390
+msgid "Cancelled"
+msgstr ""
+
+#: ../../Expense.rst:80
+msgid "Box checked indicates that the call for tender is cancelled."
+msgstr ""
+
+#: ../../Expense.rst:86
+msgid "Section: Submissions of tenders"
+msgstr ""
+
+#: ../../Expense.rst:95
+#: ../../Expense.rst:347
+msgid "Provider"
+msgstr ""
+
+#: ../../Expense.rst:96
+#: ../../Expense.rst:147
+msgid "Provider of the tender."
+msgstr ""
+
+#: ../../Expense.rst:97
+#: ../../Expense.rst:167
+msgid "Contact"
+msgstr ""
+
+#: ../../Expense.rst:98
+msgid "Contact for the tender."
+msgstr ""
+
+#: ../../Expense.rst:99
+#: ../../Expense.rst:169
+msgid "Request date"
+msgstr ""
+
+#: ../../Expense.rst:100
+msgid "Request date when tender sent with the hour."
+msgstr ""
+
+#: ../../Expense.rst:102
+msgid "Date expected with the hour."
+msgstr ""
+
+#: ../../Expense.rst:103
+msgid "Tender status"
+msgstr ""
+
+#: ../../Expense.rst:104
+#: ../../Expense.rst:145
+msgid "Statut of the tender."
+msgstr ""
+
+#: ../../Expense.rst:111
+msgid "Tenders"
+msgstr ""
+
+#: ../../Expense.rst:113
+msgid "Tenders store information about the responses to the call for tenders that you have submitted."
+msgstr ""
+
+#: ../../Expense.rst:115
+msgid "This can for instance be used to detail all the tenders and compare them to choose one of them."
+msgstr ""
+
+#: ../../Expense.rst:117
+msgid "If your call for tenders has evaluation criteria, you can attribute a rating for each criteria."
+msgstr ""
+
+#: ../../Expense.rst:119
+msgid "Evalutation will display a summary of your criterias with their ratings."
+msgstr ""
+
+#: ../../Expense.rst:121
+msgid "Global rating will then be displayed on the call for tender for all concerned tenders."
+msgstr ""
+
+#: ../../Expense.rst:135
+msgid "Unique Id for the tender."
+msgstr ""
+
+#: ../../Expense.rst:137
+msgid "Short name of the tender."
+msgstr ""
+
+#: ../../Expense.rst:141
+msgid "Project link to tender."
+msgstr ""
+
+#: ../../Expense.rst:142
+msgid "Call for tender"
+msgstr ""
+
+#: ../../Expense.rst:143
+msgid "Link to call for tender."
+msgstr ""
+
+#: ../../Expense.rst:144
+msgid "Tender statuts"
+msgstr ""
+
+#: ../../Expense.rst:146
+msgid "**Provider**"
+msgstr ""
+
+#: ../../Expense.rst:148
+msgid "External reference"
+msgstr ""
+
+#: ../../Expense.rst:149
+msgid "External reference of the tender."
+msgstr ""
+
+#: ../../Expense.rst:164
+msgid "Actual :term:`status` of the tender."
+msgstr ""
+
+#: ../../Expense.rst:166
+msgid "Person responsible for the processing of this tender."
+msgstr ""
+
+#: ../../Expense.rst:168
+msgid "Contact of the tender."
+msgstr ""
+
+#: ../../Expense.rst:170
+msgid "Resquest date for tender."
+msgstr ""
+
+#: ../../Expense.rst:172
+msgid "Expected answer date of the tender."
+msgstr ""
+
+#: ../../Expense.rst:173
+#: ../../Expense.rst:386
+msgid "Date of receipt"
+msgstr ""
+
+#: ../../Expense.rst:174
+msgid "Date of receipt of the tender with the hour."
+msgstr ""
+
+#: ../../Expense.rst:175
+msgid "Offer validity"
+msgstr ""
+
+#: ../../Expense.rst:176
+msgid "Offer validity date."
+msgstr ""
+
+#: ../../Expense.rst:177
+msgid "Initial"
+msgstr ""
+
+#: ../../Expense.rst:178
+msgid "Price"
+msgstr ""
+
+#: ../../Expense.rst:179
+msgid "Negotiated"
+msgstr ""
+
+#: ../../Expense.rst:180
+msgid "Price of negotiated."
+msgstr ""
+
+#: ../../Expense.rst:181
+#: ../../Expense.rst:355
+msgid "Payment conditions"
+msgstr ""
+
+#: ../../Expense.rst:182
+msgid "Type of payment conditions."
+msgstr ""
+
+#: ../../Expense.rst:183
+#: ../../Expense.rst:382
+msgid "Delivery delay"
+msgstr ""
+
+#: ../../Expense.rst:184
+msgid "Delivery delay of the tender."
+msgstr ""
+
+#: ../../Expense.rst:186
+msgid "Expected delivery date of the tender."
+msgstr ""
+
+#: ../../Expense.rst:188
+msgid "Box checked indicates that the tender is handled with date when checked."
+msgstr ""
+
+#: ../../Expense.rst:190
+msgid "Box checked indicates that the tender is done with date when checked."
+msgstr ""
+
+#: ../../Expense.rst:192
+msgid "Box checked indicates that the tender is archived with date when checked."
+msgstr ""
+
+#: ../../Expense.rst:194
+msgid "Box checked indicates that the tender is cancelled."
+msgstr ""
+
+#: ../../Expense.rst:204
+msgid "Individual expense"
+msgstr ""
+
+#: ../../Expense.rst:206
+msgid "An individual expense stores information about individual costs, such as travel costs or else."
+msgstr ""
+
+#: ../../Expense.rst:208
+msgid "Individual expense has detail listing for all items of expense."
+msgstr ""
+
+#: ../../Expense.rst:210
+msgid "This can for instance be used to detail all the expense on one month so that each user opens only one individual expense per month (per project), or detail all the elements of a travel expense."
+msgstr ""
+
+#: ../../Expense.rst:213
+#: ../../Expense.rst:318
+msgid "Planned amount"
+msgstr ""
+
+#: ../../Expense.rst:214
+#: ../../Expense.rst:319
+msgid "Planned amount will help to have an overview of project total costs, even before expense is realized."
+msgstr ""
+
+#: ../../Expense.rst:218
+#: ../../Expense.rst:324
+msgid ":ref:`expense-detail-lines`"
+msgstr ""
+
+#: ../../Expense.rst:219
+#: ../../Expense.rst:325
+msgid ":ref:`Linked element<linkElement-section>`"
+msgstr ""
+
+#: ../../Expense.rst:220
+#: ../../Expense.rst:326
+msgid ":ref:`Attachments<attachment-section>`"
+msgstr ""
+
+#: ../../Expense.rst:221
+#: ../../Expense.rst:327
+msgid ":ref:`Notes<note-section>`"
+msgstr ""
+
+#: ../../Expense.rst:234
+#: ../../Expense.rst:340
+msgid "Unique Id for the expense."
+msgstr ""
+
+#: ../../Expense.rst:236
+#: ../../Expense.rst:342
+msgid "Short description of the expense."
+msgstr ""
+
+#: ../../Expense.rst:238
+#: ../../Expense.rst:344
+#: ../../Expense.rst:458
+#: ../../Expense.rst:490
+msgid "Type of expense."
+msgstr ""
+
+#: ../../Expense.rst:239
+#: ../../Expense.rst:345
+msgid "**Project**"
+msgstr ""
+
+#: ../../Expense.rst:240
+#: ../../Expense.rst:346
+msgid "The project concerned by the expense."
+msgstr ""
+
+#: ../../Expense.rst:241
+msgid "**Resource**"
+msgstr ""
+
+#: ../../Expense.rst:242
+msgid "Resource concerned by the expense."
+msgstr ""
+
+#: ../../Expense.rst:243
+#: ../../Expense.rst:357
+msgid ":term:`Description`"
+msgstr ""
+
+#: ../../Expense.rst:244
+#: ../../Expense.rst:358
+msgid "Complete description of the expense."
+msgstr ""
+
+#: ../../Expense.rst:260
+#: ../../Expense.rst:377
+msgid "Actual :term:`status` of the expense."
+msgstr ""
+
+#: ../../Expense.rst:262
+msgid "Person responsible for the processing of this expense."
+msgstr ""
+
+#: ../../Expense.rst:263
+#: ../../Expense.rst:392
+msgid "Planned"
+msgstr ""
+
+#: ../../Expense.rst:264
+#: ../../Expense.rst:393
+msgid "Planned amount of the expense (Date is mandatory)."
+msgstr ""
+
+#: ../../Expense.rst:265
+#: ../../Expense.rst:394
+msgid "Real"
+msgstr ""
+
+#: ../../Expense.rst:266
+#: ../../Expense.rst:395
+msgid "Real amount of the expense (Date is mandatory)."
+msgstr ""
+
+#: ../../Expense.rst:267
+#: ../../Expense.rst:396
+msgid "Payment done"
+msgstr ""
+
+#: ../../Expense.rst:268
+#: ../../Expense.rst:397
+msgid "Box checked indicates the payment is done."
+msgstr ""
+
+#: ../../Expense.rst:269
+#: ../../Expense.rst:388
+msgid ":term:`Closed`"
+msgstr ""
+
+#: ../../Expense.rst:270
+#: ../../Expense.rst:389
+msgid "Box checked indicates that the expense is archived."
+msgstr ""
+
+#: ../../Expense.rst:272
+#: ../../Expense.rst:391
+msgid "Box checked indicates that the expense is cancelled."
+msgstr ""
+
+#: ../../Expense.rst:278
+#: ../../Expense.rst:406
+msgid "Columns:"
+msgstr ""
+
+#: ../../Expense.rst:280
+msgid "**Full**: Amount."
+msgstr ""
+
+#: ../../Expense.rst:282
+#: ../../Expense.rst:410
+msgid "Real amount is automatically updated with the sum of the amounts of detail lines."
+msgstr ""
+
+#: ../../Expense.rst:284
+#: ../../Expense.rst:416
+msgid "**Payment date**:"
+msgstr ""
+
+#: ../../Expense.rst:286
+#: ../../Expense.rst:418
+msgid "For field \"Planned\" is the planned date."
+msgstr ""
+
+#: ../../Expense.rst:287
+#: ../../Expense.rst:419
+msgid "For field \"Real\" can be the payment date or else."
+msgstr ""
+
+#: ../../Expense.rst:300
+msgid "Project expense"
+msgstr ""
+
+#: ../../Expense.rst:302
+msgid "A project expense stores information about project costs that are not resource costs."
+msgstr ""
+
+#: ../../Expense.rst:304
+msgid "This can be used for all kinds of project cost :"
+msgstr ""
+
+#: ../../Expense.rst:306
+msgid "Machines (rent or buy)."
+msgstr ""
+
+#: ../../Expense.rst:307
+msgid "Softwares."
+msgstr ""
+
+#: ../../Expense.rst:308
+msgid "Office."
+msgstr ""
+
+#: ../../Expense.rst:309
+msgid "Any logistic item."
+msgstr ""
+
+#: ../../Expense.rst:313
+msgid "Purchase request"
+msgstr ""
+
+#: ../../Expense.rst:314
+msgid "Allows to manage the purchase request information about the expense. (Purchase order, receipt and payment)"
+msgstr ""
+
+#: ../../Expense.rst:348
+msgid "Provider name."
+msgstr ""
+
+#: ../../Expense.rst:349
+msgid ":term:`External reference`"
+msgstr ""
+
+#: ../../Expense.rst:350
+msgid "External reference of the expense."
+msgstr ""
+
+#: ../../Expense.rst:351
+msgid "Business responsible"
+msgstr ""
+
+#: ../../Expense.rst:352
+msgid "The person who makes the purchase requisition."
+msgstr ""
+
+#: ../../Expense.rst:353
+msgid "Financial responsible"
+msgstr ""
+
+#: ../../Expense.rst:354
+msgid "The person who pays the purchase."
+msgstr ""
+
+#: ../../Expense.rst:356
+msgid "Conditions of payment."
+msgstr ""
+
+#: ../../Expense.rst:378
+msgid "Order date"
+msgstr ""
+
+#: ../../Expense.rst:379
+msgid "Date of the order."
+msgstr ""
+
+#: ../../Expense.rst:380
+msgid "Delivery mode"
+msgstr ""
+
+#: ../../Expense.rst:381
+msgid "Delivery mode for the order."
+msgstr ""
+
+#: ../../Expense.rst:383
+msgid "Delivery delay for the order."
+msgstr ""
+
+#: ../../Expense.rst:385
+msgid "Expected delivery date for the order."
+msgstr ""
+
+#: ../../Expense.rst:387
+msgid "Date of receipt of the order."
+msgstr ""
+
+#: ../../Expense.rst:398
+msgid "Result"
+msgstr ""
+
+#: ../../Expense.rst:399
+msgid "Complete description of the treatment of the expense."
+msgstr ""
+
+#: ../../Expense.rst:408
+msgid "**Ex VAT**: Amount without taxes."
+msgstr ""
+
+#: ../../Expense.rst:412
+msgid "**Tax**: Applicable tax."
+msgstr ""
+
+#: ../../Expense.rst:414
+msgid "**Full**: Amount with taxes."
+msgstr ""
+
+#: ../../Expense.rst:431
+msgid "Expense detail lines"
+msgstr ""
+
+#: ../../Expense.rst:434
+msgid "Section: Expense detail lines"
+msgstr ""
+
+#: ../../Expense.rst:435
+msgid "This section is common to individual and project expenses."
+msgstr ""
+
+#: ../../Expense.rst:437
+msgid "It allows to enter detail on expense line."
+msgstr ""
+
+#: ../../Expense.rst:441
+msgid "When a line is entered, expense real amount is automatically updated to sum of lines amount."
+msgstr ""
+
+#: ../../Expense.rst:442
+msgid "Real date is set with the date in the firts detail line."
+msgstr ""
+
+#: ../../Expense.rst:453
+#: ../../Expense.rst:483
+msgid "Date"
+msgstr ""
+
+#: ../../Expense.rst:454
+msgid "Date of the detail line."
+msgstr ""
+
+#: ../../Expense.rst:455
+msgid "Name"
+msgstr ""
+
+#: ../../Expense.rst:456
+msgid "Name of the detail line."
+msgstr ""
+
+#: ../../Expense.rst:457
+#: ../../Expense.rst:489
+msgid "Type"
+msgstr ""
+
+#: ../../Expense.rst:459
+msgid "Detail"
+msgstr ""
+
+#: ../../Expense.rst:460
+msgid "Detail depends on the type of expense."
+msgstr ""
+
+#: ../../Expense.rst:461
+msgid "Amount"
+msgstr ""
+
+#: ../../Expense.rst:462
+msgid "Amount of the detail line."
+msgstr ""
+
+#: ../../Expense.rst:466
+msgid "Detail lines management"
+msgstr ""
+
+#: ../../Expense.rst:467
+msgid "Click on |buttonAdd| to add a detail line."
+msgstr ""
+
+#: ../../Expense.rst:468
+msgid "Click on |buttonEdit| to modify an existing detail line."
+msgstr ""
+
+#: ../../Expense.rst:469
+msgid "Click on |buttonIconDelete| to delete the detail line."
+msgstr ""
+
+#: ../../Expense.rst:477
+msgid "Fields - Expense detail dialog box"
+msgstr ""
+
+#: ../../Expense.rst:484
+msgid "Date of the detail."
+msgstr ""
+
+#: ../../Expense.rst:485
+msgid "Reference"
+msgstr ""
+
+#: ../../Expense.rst:486
+msgid "External reference."
+msgstr ""
+
+#: ../../Expense.rst:488
+msgid "Name of the detail."
+msgstr ""
+
+#: ../../Expense.rst:491
+msgid "**Amount**"
+msgstr ""
+
+#: ../../Expense.rst:492
+msgid "Amount of the detail."
+msgstr ""
+
+#: ../../Expense.rst:499
+msgid "This allows to input several items, during several days, for the same expense, to have for instance one expense per travel or per month."
+msgstr ""
+
+#: ../../Expense.rst:503
+msgid "Depending on type, new fields will appear to help calculate of amount."
+msgstr ""
+
+#: ../../Expense.rst:504
+msgid "Available types depending on whether individual or project expense."
+msgstr ""
+
+#: ../../Expense.rst:505
+msgid "See: :ref:`expense-detail-type`."
+msgstr ""
+
+#: ../../Expense.rst:509
+msgid "Automatically calculated from fields depending on type."
+msgstr ""
+
+#: ../../Expense.rst:510
+msgid "May also be input for type “justified expense”."
+msgstr ""
+

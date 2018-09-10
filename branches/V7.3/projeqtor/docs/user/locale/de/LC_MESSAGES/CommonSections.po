@@ -1,0 +1,2761 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2018, ProjeQtOr
+# This file is distributed under the same license as the ProjeQtOr Bedienhandbuch Deutsch package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: ProjeQtOr Bedienhandbuch Deutsch 7.2\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2018-07-03 14:34+0200\n"
+"PO-Revision-Date: 2018-07-17 21:01+0200\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 2.0.8\n"
+"Last-Translator: \n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"Language: de\n"
+
+#: ../../CommonSections.rst:14
+msgid "Common sections"
+msgstr "Gemeinsame Abschnitte"
+
+#: ../../CommonSections.rst:16
+msgid "Some sections are displayed on almost all screens."
+msgstr "Einige Abschnitte werden auf fast allen Bildschirmen angezeigt."
+
+#: ../../CommonSections.rst:18
+msgid ""
+"Those sections allows to set information or add information to an item of "
+"the element."
+msgstr ""
+"Diese Abschnitte erlauben es, Informationen zu setzen oder Informationen zu "
+"einem Element hinzuzufügen."
+
+#: ../../CommonSections.rst:28
+msgid "Description section"
+msgstr "Abschnitt Beschreibung"
+
+#: ../../CommonSections.rst:30
+msgid "This section allows to identify items of the element."
+msgstr "Dieser Abschnitt erlaubt es, Objekte des Elements zu identifizieren."
+
+#: ../../CommonSections.rst:32 ../../CommonSections.rst:56
+msgid "Information grouped under this section are:"
+msgstr "Informationen, die unter diesem Abschnitt zusammengefasst sind:"
+
+#: ../../CommonSections.rst:34 ../../CommonSections.rst:94
+#: ../../CommonSections.rst:1385 ../../CommonSections.rst:1513
+msgid ":term:`Id`"
+msgstr ":term:`Id`"
+
+#: ../../CommonSections.rst:35
+msgid "Element type"
+msgstr "Elementtyp"
+
+#: ../../CommonSections.rst:36 ../../CommonSections.rst:1234
+#: ../../CommonSections.rst:1321
+msgid "Name"
+msgstr "Name"
+
+#: ../../CommonSections.rst:37 ../../CommonSections.rst:93
+#: ../../CommonSections.rst:136 ../../CommonSections.rst:149
+#: ../../CommonSections.rst:204 ../../CommonSections.rst:296
+#: ../../CommonSections.rst:334 ../../CommonSections.rst:1066
+#: ../../CommonSections.rst:1231 ../../CommonSections.rst:1318
+#: ../../CommonSections.rst:1384 ../../CommonSections.rst:1465
+#: ../../CommonSections.rst:1466 ../../CommonSections.rst:1512
+msgid "Description"
+msgstr "Beschreibung"
+
+#: ../../CommonSections.rst:38
+msgid "Current situation"
+msgstr "Ist-Zustand"
+
+#: ../../CommonSections.rst:39
+msgid "Stakeholder"
+msgstr "Stakeholder"
+
+#: ../../CommonSections.rst:40
+msgid "Objective"
+msgstr "Ziel"
+
+#: ../../CommonSections.rst:41
+msgid "Reference"
+msgstr "Referenz"
+
+#: ../../CommonSections.rst:42 ../../CommonSections.rst:60
+msgid "Link"
+msgstr "Verweis"
+
+#: ../../CommonSections.rst:50
+msgid "Treatment section"
+msgstr "Behandlungsabschnitt"
+
+#: ../../CommonSections.rst:52
+msgid "This section contains information about item treatment."
+msgstr "Dieser Abschnitt enthält Informationen zur Objektbehandlung."
+
+#: ../../CommonSections.rst:54
+msgid "Depending on the element, this section  may have a different name."
+msgstr "Je nach Element kann dieser Abschnitt einen anderen Namen haben."
+
+#: ../../CommonSections.rst:58
+msgid "Status and Dates"
+msgstr "Status und Termine"
+
+#: ../../CommonSections.rst:59
+msgid ":term:`Responsible`"
+msgstr ":term:`Verantwortlich`"
+
+#: ../../CommonSections.rst:61
+msgid "Outcome"
+msgstr "Auswirkung"
+
+#: ../../CommonSections.rst:62
+msgid "Comment"
+msgstr "Kommentar"
+
+#: ../../CommonSections.rst:77
+msgid "Allocations section"
+msgstr "Abschnitt Zuweisungen"
+
+#: ../../CommonSections.rst:81
+msgid ":ref:`profiles-definition`"
+msgstr ":ref:`profiles-definition`"
+
+#: ../../CommonSections.rst:82
+msgid ":ref:`allocation-to-project`"
+msgstr ":ref:`allocation-to-project`"
+
+#: ../../CommonSections.rst:84
+msgid "This section allows to manage resource allocation to projects."
+msgstr ""
+"Dieser Abschnitt ermöglicht die Verwaltung der Ressourcenzuordnung zu "
+"Projekten."
+
+#: ../../CommonSections.rst:88
+msgid "Fields - Resource allocation list"
+msgstr "Felder - Ressourcenzuordnungsliste"
+
+#: ../../CommonSections.rst:92 ../../CommonSections.rst:135
+#: ../../CommonSections.rst:203 ../../CommonSections.rst:295
+#: ../../CommonSections.rst:333 ../../CommonSections.rst:1065
+#: ../../CommonSections.rst:1230 ../../CommonSections.rst:1317
+#: ../../CommonSections.rst:1383 ../../CommonSections.rst:1464
+#: ../../CommonSections.rst:1511
+msgid "Field"
+msgstr "Feld"
+
+#: ../../CommonSections.rst:95
+msgid "Unique Id for the allocation."
+msgstr "Eindeutige Id für die Zuordnung."
+
+#: ../../CommonSections.rst:96
+msgid "Project"
+msgstr "Projekt"
+
+#: ../../CommonSections.rst:97
+msgid "Project allocated to."
+msgstr "Projekt zugeordnet zu."
+
+#: ../../CommonSections.rst:98 ../../CommonSections.rst:297
+#: ../../CommonSections.rst:335
+msgid "Resource"
+msgstr "Ressource"
+
+#: ../../CommonSections.rst:99
+msgid "Name of the allocated resource."
+msgstr "Name der zugeordneten Ressource."
+
+#: ../../CommonSections.rst:100
+msgid "Profile"
+msgstr "Profil"
+
+#: ../../CommonSections.rst:101
+msgid "Selected profile."
+msgstr "Ausgewähltes Profil."
+
+#: ../../CommonSections.rst:102 ../../CommonSections.rst:145
+#: ../../CommonSections.rst:213
+msgid "Start date"
+msgstr "Startdatum"
+
+#: ../../CommonSections.rst:103 ../../CommonSections.rst:146
+#: ../../CommonSections.rst:214
+msgid "Start date of allocation."
+msgstr "Startdatum der Zuordnung."
+
+#: ../../CommonSections.rst:104 ../../CommonSections.rst:147
+#: ../../CommonSections.rst:215
+msgid "End date"
+msgstr "Endedatum"
+
+#: ../../CommonSections.rst:105 ../../CommonSections.rst:148
+#: ../../CommonSections.rst:216
+msgid "End date of allocation."
+msgstr "Endedatum der Zuordnung."
+
+#: ../../CommonSections.rst:106 ../../CommonSections.rst:143
+#: ../../CommonSections.rst:341
+msgid "Rate"
+msgstr "Bewerten"
+
+#: ../../CommonSections.rst:107
+msgid "Allocation rate for the project (%)."
+msgstr "Zuordnungsrate für das Projekt (%)."
+
+#: ../../CommonSections.rst:111
+msgid "Allocation list management"
+msgstr "Zuordnungslistenverwaltung"
+
+#: ../../CommonSections.rst:112
+msgid "Click on |buttonAdd| to create a new allocation."
+msgstr "Klicken Sie auf |buttonAdd| um eine neue Zuordnung zu erstellen."
+
+#: ../../CommonSections.rst:113
+msgid "Click on |buttonEdit| to update an existing allocation."
+msgstr ""
+"Klicken Sie auf |buttonEdit| um eine vorhandene Zuordnung zu aktualisieren."
+
+#: ../../CommonSections.rst:114
+msgid "Click on |buttonIconDelete| to delete the corresponding allocation."
+msgstr ""
+"Klicken Sie auf |buttonIconDelete| um die entsprechende Zuordnung zu löschen."
+
+#: ../../CommonSections.rst:115
+msgid ""
+"Click on |iconSwitch| to replace resource on the corresponding allocation. "
+"(See: :ref:`Replace resource on an allocation<replace-resource-allocation>`)"
+msgstr ""
+"Klicken Sie auf |iconSwitch|, um die Ressource in der entsprechenden "
+"Zuordnung zu ersetzen. (Siehe: :ref:`Replace resource on an "
+"allocation<replace-resource-allocation>`)"
+
+#: ../../CommonSections.rst:116
+msgid "The icon |closeIcon| indicates that allocation to project is closed."
+msgstr ""
+"Das Symbol |closeIcon| zeigt an, dass die Zuordnung zum Projekt geschlossen "
+"ist."
+
+#: ../../CommonSections.rst:118
+msgid "Direct access to information"
+msgstr "Direkter Zugang zu Informationen"
+
+#: ../../CommonSections.rst:120
+msgid ""
+"From project screen, click on the resource name to go directly to the "
+"selected resource."
+msgstr ""
+"Klicken Sie vom Projektbildschirm aus auf den Namen der Ressource, um direkt "
+"zur ausgewählten Ressource zu gelangen."
+
+#: ../../CommonSections.rst:121
+msgid ""
+"From resource screen, click the project name to go directly to the selected "
+"project."
+msgstr ""
+"Klicken Sie im Ressourcenbildschirm auf den Projektnamen, um direkt zum "
+"ausgewählten Projekt zu gelangen."
+
+#: ../../CommonSections.rst:131
+msgid "Fields - Allocation dialog box"
+msgstr "Felder - Dialogfenster Zuordnung"
+
+#: ../../CommonSections.rst:137 ../../CommonSections.rst:722
+msgid "**Project**"
+msgstr "**Projekt**"
+
+#: ../../CommonSections.rst:138
+msgid "Project list."
+msgstr "Projektliste."
+
+#: ../../CommonSections.rst:139 ../../CommonSections.rst:205
+msgid "**Resource**"
+msgstr "**Resource**"
+
+#: ../../CommonSections.rst:140 ../../CommonSections.rst:206
+#: ../../CommonSections.rst:336
+msgid "Resource list."
+msgstr "Ressourcenliste."
+
+#: ../../CommonSections.rst:141 ../../CommonSections.rst:209
+msgid "**Profile**"
+msgstr "**Profil**"
+
+#: ../../CommonSections.rst:142 ../../CommonSections.rst:210
+msgid "Profile list."
+msgstr "Profilliste."
+
+#: ../../CommonSections.rst:144 ../../CommonSections.rst:212
+msgid "Rate (in %) of the allocation to the project."
+msgstr "Rate (in %) der Zuweisung an das Projekt."
+
+#: ../../CommonSections.rst:150
+msgid "Complete description of the allocation."
+msgstr "Vollständige Beschreibung der Zuordnung."
+
+#: ../../CommonSections.rst:151
+msgid "Closed"
+msgstr "Geschlossen"
+
+#: ../../CommonSections.rst:152
+msgid ""
+"Flag to indicate that allocation in not active anymore, without deleting it."
+msgstr ""
+"Kennzeichen, das anzeigt, dass die Zuordnung nicht mehr aktiv ist, ohne sie "
+"zu löschen."
+
+#: ../../CommonSections.rst:154 ../../CommonSections.rst:218
+msgid "**\\* Required field**"
+msgstr "**\\* Pflichtfeld**"
+
+#: ../../CommonSections.rst:158
+msgid ""
+"If the allocation is done on the screen «Projects», the field «resource» "
+"will be selectable."
+msgstr ""
+"Erfolgt die Zuordnung auf dem Bildschirm „Projekte“, ist das Feld "
+"„Ressource“ auswählbar."
+
+#: ../../CommonSections.rst:159
+msgid ""
+"If the allocation is done on the screens «Resources», «Contacts» or «Users», "
+"the field «project» will be selectable."
+msgstr ""
+"Erfolgt die Zuordnung auf den Bildschirmen „Ressourcen“, „Kontakte“ oder "
+"„Benutzer“, ist das Feld „Projekt“ auswählbar."
+
+#: ../../CommonSections.rst:163
+msgid ""
+"This field can contain a list of users, resources or contacts according to "
+"which screen comes from project allocation."
+msgstr ""
+"Dieses Feld kann eine Liste von Benutzern, Ressourcen oder Kontakten "
+"enthalten, nach denen der Bildschirm aus der Projektzuordnung stammt."
+
+#: ../../CommonSections.rst:167 ../../CommonSections.rst:223
+msgid "The user profile defined will be displayed first."
+msgstr "Das definierte Benutzerprofil wird zuerst angezeigt."
+
+#: ../../CommonSections.rst:171 ../../CommonSections.rst:227
+msgid "100% means a full time allocation."
+msgstr "100% bedeutet eine Vollzeitzuteilung."
+
+#: ../../CommonSections.rst:175
+msgid ""
+"Depending on which screen is used to manage project allocations, the "
+"behavior of fields will change."
+msgstr ""
+"Je nachdem, in welchem Dialogbild die Projektzuordnungen verwaltet werden, "
+"ändert sich das Verhalten der Felder."
+
+#: ../../CommonSections.rst:185
+msgid "Replace resource on an allocation"
+msgstr "Ressource auf einer Zuteilung ersetzen"
+
+#: ../../CommonSections.rst:186
+msgid "This feature allows to replace a resource by another."
+msgstr ""
+"Diese Funktion ermöglicht es, eine Ressource durch eine andere zu ersetzen."
+
+#: ../../CommonSections.rst:187
+msgid ""
+"All tasks assigned to old resource will be transferred to the new resource "
+"with assigned and left work."
+msgstr ""
+"Alle Aufgaben, die der alten Ressource zugeordnet sind, werden auf die neue "
+"Ressource mit zugewiesener und ausstehender Arbeit übertragen."
+
+#: ../../CommonSections.rst:191
+msgid "Work done on tasks belongs to always the old resource."
+msgstr ""
+"Die geleistete Arbeit an den Aufgaben gehört immer zur alten Ressource."
+
+#: ../../CommonSections.rst:199
+msgid "Fields - Replace allocation dialog box"
+msgstr "Felder - Dialogfenster Zuordnung ersetzen"
+
+#: ../../CommonSections.rst:207
+msgid "Capacity (FTE)"
+msgstr "Kapazität (FTE) „Full Time Employee“"
+
+#: ../../CommonSections.rst:208
+msgid "The capacity of the resource selected"
+msgstr "Die Kapazität der ausgewählten Ressource"
+
+#: ../../CommonSections.rst:211
+msgid "**Rate**"
+msgstr "**Rate**"
+
+#: ../../CommonSections.rst:239
+msgid "Assignment section"
+msgstr "Zuordnungsabschnitt"
+
+#: ../../CommonSections.rst:243
+msgid ":ref:`resource-function-cost`"
+msgstr ":ref:`resource-function-cost`"
+
+#: ../../CommonSections.rst:245
+msgid "This section allows to manage assignment of resources to tasks."
+msgstr ""
+"In diesem Abschnitt können Sie die Zuordnung von Ressourcen zu Aufgaben "
+"verwalten."
+
+#: ../../CommonSections.rst:249
+msgid "Only resources allocated to a project can be assigned to its tasks."
+msgstr ""
+"Nur Ressourcen, die einem Projekt zugeordnet sind, können Aufgaben "
+"zugeordnet werden."
+
+#: ../../CommonSections.rst:252
+msgid "Assignment function"
+msgstr "Zuordnungsfunktion"
+
+#: ../../CommonSections.rst:253
+msgid ""
+"The assignment function allows to define the resource function to task and "
+"the daily cost if defined."
+msgstr ""
+"Die Zuordnungsfunktion erlaubt es, die Ressourcenfunktion zur Aufgabe und "
+"die Tageskosten zu definieren, falls definiert."
+
+#: ../../CommonSections.rst:256
+msgid "Assignment rate"
+msgstr "Zuweisungsrate"
+
+#: ../../CommonSections.rst:257
+msgid "Assignment rate is used to keep some scheduling time for other tasks."
+msgstr ""
+"Die Zuweisungsrate wird verwendet, um eine gewisse Zeit für andere Aufgaben "
+"einzuplanen."
+
+#: ../../CommonSections.rst:258
+msgid ""
+"For instance, if rate is 50%, the resource will not be planned more than "
+"half days on the task."
+msgstr ""
+"Zum Beispiel, wenn die Rate 50% beträgt, wird die Ressource nicht länger als "
+"einen halben Tag für die Aufgabe eingeplant."
+
+#: ../../CommonSections.rst:261
+msgid "Multiple assignment to a task"
+msgstr "Mehrfachzuordnung zu einer Aufgabe"
+
+#: ../../CommonSections.rst:262
+msgid "A resource can be assigned more than once to a task."
+msgstr "Eine Ressource kann einer Aufgabe mehrfach zugeordnet werden."
+
+#: ../../CommonSections.rst:263
+msgid ""
+"Allows to assign the resource to the same task, but with a different "
+"function (different daily cost)."
+msgstr ""
+"Ermöglicht die Zuordnung der Ressource zur gleichen Aufgabe, jedoch mit "
+"einer anderen Funktion (unterschiedliche Tageskosten)."
+
+#: ../../CommonSections.rst:264
+msgid "Allows to add extra work without modifying initial assignment."
+msgstr ""
+"Ermöglicht es, zusätzliche Arbeit hinzuzufügen, ohne die anfängliche "
+"Zuordnung zu ändern."
+
+#: ../../CommonSections.rst:267
+msgid "Incomplete planned work"
+msgstr "Unvollständige geplante Arbeiten"
+
+#: ../../CommonSections.rst:268
+msgid ""
+"The scheduling process tries to schedule, the remaining work on the assigned "
+"task within the allocation to project period."
+msgstr ""
+"Der Terminierungsprozess versucht, die verbleibende Arbeit an der "
+"zugeordneten Aufgabe innerhalb der Zuordnung zum Projektzeitraum einzuplanen."
+
+#: ../../CommonSections.rst:269
+msgid ""
+"The remaining work that can't be planned is displayed on the right of the "
+"resource name."
+msgstr ""
+"Die nicht planbare Restarbeit wird rechts neben dem Ressourcennamen "
+"angezeigt."
+
+#: ../../CommonSections.rst:275
+msgid "Assignment section with incomplete planned work"
+msgstr "Zuordnungsteil mit unvollständig geplanten Arbeiten"
+
+#: ../../CommonSections.rst:290
+msgid "Assignment list"
+msgstr "Zuordnungsliste"
+
+#: ../../CommonSections.rst:291
+msgid "Fields of assignment list"
+msgstr "Felder der Zuordnungsliste"
+
+#: ../../CommonSections.rst:298
+msgid "Name of the resource assigned to the task."
+msgstr "Name der Ressource, die der Aufgabe zugeordnet ist."
+
+#: ../../CommonSections.rst:299
+msgid "Rate (%)"
+msgstr "Rate [%]"
+
+#: ../../CommonSections.rst:300
+msgid "Rate planned for this resource to the task."
+msgstr "Bewerten Sie die für diese Ressource geplante Rate auf die Aufgabe."
+
+#: ../../CommonSections.rst:301 ../../CommonSections.rst:728
+#: ../../CommonSections.rst:1183
+msgid "Assigned"
+msgstr "Zugewiesen"
+
+#: ../../CommonSections.rst:302 ../../CommonSections.rst:344
+msgid "The work initially planned for this resource to the task."
+msgstr "Die ursprünglich für diese Ressource geplante Arbeit an der Aufgabe."
+
+#: ../../CommonSections.rst:303 ../../CommonSections.rst:681
+#: ../../CommonSections.rst:732 ../../CommonSections.rst:1071
+#: ../../CommonSections.rst:1141 ../../CommonSections.rst:1187
+msgid "Real"
+msgstr "Tatsächlich"
+
+#: ../../CommonSections.rst:304 ../../CommonSections.rst:346
+msgid "Sum of work done by this resource to the task."
+msgstr "Summe der von dieser Ressource für die Aufgabe geleisteten Arbeit."
+
+#: ../../CommonSections.rst:305 ../../CommonSections.rst:736
+#: ../../CommonSections.rst:1073 ../../CommonSections.rst:1191
+msgid "Left"
+msgstr "Links"
+
+#: ../../CommonSections.rst:306 ../../CommonSections.rst:348
+msgid "Remaining work to this resource to complete the task."
+msgstr "Verbleibende Arbeit an dieser Ressource, um die Aufgabe zu erledigen."
+
+#: ../../CommonSections.rst:310
+msgid "Click on the resource name to directly move to resource detail."
+msgstr ""
+"Klicken Sie auf den Ressourcennamen, um direkt zum Ressourcendetail zu "
+"gelangen."
+
+#: ../../CommonSections.rst:313
+msgid "**Assignment list buttons**"
+msgstr "**Schaltflächen der Zuordnungsliste**"
+
+#: ../../CommonSections.rst:314
+msgid "Click on |buttonAdd| to assign a new resource."
+msgstr "Klicken Sie auf |buttonAdd|, um eine neue Ressource zuzuweisen."
+
+#: ../../CommonSections.rst:315
+msgid "Click on |buttonEdit| to modify the assignment."
+msgstr "Klicken Sie auf |buttonEdit| um die Zuordnung zu ändern."
+
+#: ../../CommonSections.rst:316
+msgid "Click on |buttonIconDelete| to delete the assignment."
+msgstr "Klicken Sie auf |buttonIconDelete|, um die Zuordnung zu löschen."
+
+#: ../../CommonSections.rst:320
+msgid "If real work exists for an assignment, it can not be deleted."
+msgstr ""
+"Wenn zu einer Zuordnung echte Arbeit vorhanden ist, kann diese nicht "
+"gelöscht werden."
+
+#: ../../CommonSections.rst:329
+msgid "Fields - Assignment dialog box"
+msgstr "Dialogfenster Felder - Zuordnung"
+
+#: ../../CommonSections.rst:337
+msgid "Function"
+msgstr "Funktion"
+
+#: ../../CommonSections.rst:338
+msgid "Function list."
+msgstr "Funktionsliste."
+
+#: ../../CommonSections.rst:339
+msgid "Cost"
+msgstr "Kosten"
+
+#: ../../CommonSections.rst:340
+msgid "Daily cost defined for the resource and its function."
+msgstr ""
+"Tägliche Kosten, die für die Ressource und ihre Funktion definiert sind."
+
+#: ../../CommonSections.rst:342
+msgid "The max rate (%) to schedule the resource on the task by day."
+msgstr ""
+"Die maximale Rate (%), um die Ressource für die Aufgabe tageweise "
+"einzuplanen."
+
+#: ../../CommonSections.rst:343
+msgid "Assigned work"
+msgstr "Zugewiesene Arbeiten"
+
+#: ../../CommonSections.rst:345
+msgid "Real work"
+msgstr "Tatsächliche Arbeit"
+
+#: ../../CommonSections.rst:347
+msgid "Left work"
+msgstr "Ausstehende Arbeit"
+
+#: ../../CommonSections.rst:349
+msgid "Reassessed work"
+msgstr "Überprüfte Arbeit"
+
+#: ../../CommonSections.rst:350
+msgid "The new total work planned to complete the task."
+msgstr "Die neue Gesamtarbeit, die zur Erfüllung der Aufgabe geplant war."
+
+#: ../../CommonSections.rst:351
+msgid "Comments"
+msgstr "Kommentare"
+
+#: ../../CommonSections.rst:352
+msgid "Any comment on the allocation."
+msgstr "Irgendein Kommentar zur Zuteilung."
+
+#: ../../CommonSections.rst:356
+msgid ""
+"The main function defined for the resource is the default function selected."
+msgstr ""
+"Die für die Ressource definierte Hauptfunktion ist die gewählte "
+"Standardfunktion."
+
+#: ../../CommonSections.rst:360
+msgid "[Left work] = [Assigned Work] – [Real Work]"
+msgstr "[Verbleibende Arbeit] = [Zugewiesene Arbeit] - [Tatsächliche Arbeit]"
+
+#: ../../CommonSections.rst:361
+msgid ""
+"Project leaders can adjust this value to estimate the work needed to "
+"complete the task by the resource."
+msgstr ""
+"Projektleiter können diesen Wert anpassen, um den Arbeitsaufwand zu "
+"schätzen, der für die Erfüllung der Aufgabe durch die Ressource erforderlich "
+"ist."
+
+#: ../../CommonSections.rst:365
+msgid "[Reassessed work] = [Real Work] + [Left Work]"
+msgstr "[Überprüfte Arbeit] = [Tatsächliche Arbeit] + [Verbleibende Arbeit]"
+
+#: ../../CommonSections.rst:369
+msgid ""
+"When a comment exists, |note| will appear on the assignment list, and on the "
+"description of the activity on the “real work allocation” screen."
+msgstr ""
+"Wenn ein Kommentar vorhanden ist, erscheint |note| in der Zuordnungsliste "
+"und in der Beschreibung der Aktivität auf dem Bildschirm „Echte "
+"Arbeitsverteilung“."
+
+#: ../../CommonSections.rst:370
+msgid "Moving the mouse over the icon will display the comment."
+msgstr ""
+"Wenn Sie mit der Maus über das Symbol fahren, wird der Kommentar angezeigt."
+
+#: ../../CommonSections.rst:380
+msgid "Progress section"
+msgstr "Fortschrittsbereich"
+
+#: ../../CommonSections.rst:382
+msgid ""
+"This section allows all at once, define planning and follow-up the progress."
+msgstr ""
+"Dieser Abschnitt ermöglicht es Ihnen, die Planung zu definieren und den "
+"Fortschritt zu verfolgen."
+
+#: ../../CommonSections.rst:384
+msgid "All planning elements have a progress section."
+msgstr "Alle Planungselemente haben einen Fortschrittsbereich."
+
+#: ../../CommonSections.rst:386
+msgid ""
+"Description of the different sections is grouped by the planning elements "
+"that have common fields and behavior."
+msgstr ""
+"Die Beschreibung der verschiedenen Abschnitte ist nach den Planungselementen "
+"gruppiert, die gemeinsame Felder und Verhaltensweisen haben."
+
+#: ../../CommonSections.rst:388
+msgid ""
+"Progress data are displayed in the same format, but according to the "
+"planning element, fields can have another meaning or behavior."
+msgstr ""
+"Fortschrittsdaten werden im gleichen Format angezeigt, aber je nach "
+"Planungselement können Felder eine andere Bedeutung oder ein anderes "
+"Verhalten haben."
+
+#: ../../CommonSections.rst:390
+msgid ""
+"The following sections displayed first a general description of progress "
+"data."
+msgstr ""
+"In den folgenden Abschnitten wurde zunächst eine allgemeine Beschreibung der "
+"Fortschrittsdaten angezeigt."
+
+#: ../../CommonSections.rst:392
+msgid ""
+"Next, description of fields and information in sections will be displayed."
+msgstr ""
+"Als nächstes wird eine Beschreibung der Felder und Informationen in "
+"Abschnitten angezeigt."
+
+#: ../../CommonSections.rst:401
+msgid "Columns definition"
+msgstr "Spaltendefinition"
+
+#: ../../CommonSections.rst:404
+msgid "Column \"Requested\""
+msgstr "Spalte \"Angefordert\""
+
+#: ../../CommonSections.rst:405
+msgid "Requested dates allows to define initial dates (wished dates)."
+msgstr ""
+"Gewünschte Termine erlauben es, Anfangsdaten (Wunschtermine) zu definieren."
+
+#: ../../CommonSections.rst:406
+msgid ""
+"Useful to define preliminary dates in a project, in a change request or "
+"other."
+msgstr ""
+"Nützlich, um vorläufige Termine in einem Projekt, in einem Änderungsauftrag "
+"oder anderem zu definieren."
+
+#: ../../CommonSections.rst:407
+msgid "Requested dates can be used:"
+msgstr "Gewünschte Termine können verwendet werden:"
+
+#: ../../CommonSections.rst:409
+msgid "as a first draft of planned dates."
+msgstr "als ersten Entwurf der geplanten Termine."
+
+#: ../../CommonSections.rst:410
+msgid "with indicators to monitor the respect of start and end dates."
+msgstr ""
+"mit Indikatoren zur Überwachung der Einhaltung von Start- und Enddaten."
+
+#: ../../CommonSections.rst:413
+msgid "Column \"Validated\""
+msgstr "Spalte „Geprüft“"
+
+#: ../../CommonSections.rst:414
+msgid ""
+"Validated data are used by project leader to define committed dates,  work "
+"and cost expected."
+msgstr ""
+"Validierte Daten werden vom Projektleiter verwendet, um Termine, Arbeiten "
+"und Kosten zu definieren."
+
+#: ../../CommonSections.rst:415
+msgid "Validated data can be used:"
+msgstr "Geprüfte Daten können verwendet werden:"
+
+#: ../../CommonSections.rst:417
+msgid ""
+"to fix a limit or a target and for some planning mode they are used to "
+"define parameter entries."
+msgstr ""
+"um ein Limit oder ein Ziel festzulegen und für einige Planungsmodi werden "
+"sie zur Definition von Parametereinträgen verwendet."
+
+#: ../../CommonSections.rst:418
+msgid ""
+"with indicators to monitor the respect of start and end dates, work and cost "
+"expected."
+msgstr ""
+"mit Indikatoren zur Überwachung der Einhaltung von Start- und Endterminen, "
+"Arbeiten und Kosten."
+
+#: ../../CommonSections.rst:419
+msgid "like the project's baseline."
+msgstr "wie die Ausgangssituation des Projekts."
+
+#: ../../CommonSections.rst:421
+msgid "Validated end date (due date)"
+msgstr "Geprüftes Enddatum (Fälligkeitsdatum)"
+
+#: ../../CommonSections.rst:423
+msgid ""
+"The validated end date allows to fix a due date at which the work must be "
+"completed."
+msgstr ""
+"Das validierte Enddatum erlaubt es, ein Fälligkeitsdatum festzulegen, an dem "
+"die Arbeiten abgeschlossen sein müssen."
+
+#: ../../CommonSections.rst:424
+msgid ""
+"If the work is planned or completed beyond this limit, the error field will "
+"be highlighted."
+msgstr ""
+"Wird die Arbeit über diese Grenze hinaus geplant oder abgeschlossen, wird "
+"das Fehlerfeld markiert."
+
+#: ../../CommonSections.rst:425
+msgid ""
+"For task and milestone, their Gantt element will be red. (See: :ref:`gantt-"
+"chart-view`)"
+msgstr ""
+"Für Aufgabe und Meilenstein ist ihr Gantt-Element rot. (Siehe: :ref:`gantt-"
+"chart-view`)"
+
+#: ../../CommonSections.rst:428
+msgid "Column \"Planned\""
+msgstr "Spalte \"Geplant\""
+
+#: ../../CommonSections.rst:429
+msgid ""
+"Planned dates are the estimated time to complete tasks or the estimated end "
+"date of milestones."
+msgstr ""
+"Geplante Termine sind die geschätzte Zeit bis zur Erledigung von Aufgaben "
+"oder das geschätzte Enddatum von Meilensteinen."
+
+#: ../../CommonSections.rst:430
+msgid ""
+"Planned dates can be used to initialize validated and requested dates. "
+"(See: :ref:`project-planning`)"
+msgstr ""
+"Geplante Termine können zur Initialisierung von validierten und "
+"angeforderten Terminen verwendet werden. (Siehe: :ref:`project-planning`)"
+
+#: ../../CommonSections.rst:434
+msgid ""
+"Assigned work is the planned work assigned to resources for completing tasks."
+msgstr ""
+"Zugeordnete Arbeit ist die geplante Arbeit, die Ressourcen zur Erledigung "
+"von Aufgaben zugewiesen wird."
+
+#: ../../CommonSections.rst:435
+msgid ""
+"Planned dates are the estimated duration to complete tasks by resources "
+"according to assigned work."
+msgstr ""
+"Geplante Termine sind die geschätzte Dauer für die Erledigung von Aufgaben "
+"durch Ressourcen entsprechend der zugewiesenen Arbeit."
+
+#: ../../CommonSections.rst:442
+msgid "Column \"Assigned\""
+msgstr "Spalte \"Zugewiesen\""
+
+#: ../../CommonSections.rst:443
+msgid ""
+"This column displays the planned work and cost of resources and the planned "
+"project expenses."
+msgstr ""
+"In dieser Spalte werden die geplante Arbeit und die Kosten der Ressourcen "
+"sowie die geplanten Projektausgaben angezeigt."
+
+#: ../../CommonSections.rst:445
+msgid "**Planned work and cost of resources**"
+msgstr "**Geplante Arbeit und Kosten der Ressourcen**"
+
+#: ../../CommonSections.rst:447
+msgid "Scheduled work time assigned to a resource for completing a task."
+msgstr ""
+"Sollarbeitszeit, die einer Ressource zur Erledigung einer Aufgabe zugeordnet "
+"ist."
+
+#: ../../CommonSections.rst:448
+msgid ""
+"The estimated cost is the scheduled work time assigned to a resource for "
+"completing a task multiplied by its current daily cost."
+msgstr ""
+"Die geschätzten Kosten sind die geplante Arbeitszeit, die einer Ressource "
+"für die Erledigung einer Aufgabe zugewiesen wird, multipliziert mit den "
+"aktuellen Tageskosten."
+
+#: ../../CommonSections.rst:450
+msgid "**Planned project expenses**"
+msgstr "**Geplante Projektausgaben**"
+
+#: ../../CommonSections.rst:452
+msgid "Sum of the planned amount of all project expenses."
+msgstr "Summe des geplanten Betrages aller Projektausgaben."
+
+#: ../../CommonSections.rst:455
+msgid "Column \"Real\""
+msgstr "Spalte „tatsächlich“"
+
+#: ../../CommonSections.rst:456
+msgid ""
+"This column displays the duration, completion date, work done and cost "
+"incurred by resources and the project expenses."
+msgstr ""
+"In dieser Spalte werden Dauer, Fertigstellungstermin, Leistung und Kosten "
+"der Ressourcen sowie die Projektkosten angezeigt."
+
+#: ../../CommonSections.rst:458
+msgid "**Dates**"
+msgstr "**Termine**"
+
+#: ../../CommonSections.rst:460
+msgid ""
+"Allows to determine when a planning element has really begun and completed."
+msgstr ""
+"Ermöglicht es, festzustellen, wann ein Planungselement wirklich begonnen und "
+"abgeschlossen hat."
+
+#: ../../CommonSections.rst:462
+msgid "**Work done and cost incurred by resources**"
+msgstr "**Leistung und Kosten der Ressourcen**"
+
+#: ../../CommonSections.rst:464
+msgid "Work done by a resource on an assigned task."
+msgstr "Geleistete Arbeit einer Ressource an einer zugewiesenen Aufgabe."
+
+#: ../../CommonSections.rst:465
+msgid ""
+"Work done are entered by resources, on a daily basis by real work allocation "
+"screen."
+msgstr ""
+"Die geleistete Arbeit wird von den Ressourcen erfasst, und zwar auf "
+"täglicher Basis über eine echte Arbeitszuordnung."
+
+#: ../../CommonSections.rst:466
+msgid ""
+"The cost incurred is the work done by a resource on a task on daily base "
+"multiplied by its daily cost defined for the period."
+msgstr ""
+"Die anfallenden Kosten sind die Arbeit einer Ressource an einer Aufgabe auf "
+"Tagesbasis multipliziert mit den für die Periode definierten Tageskosten."
+
+#: ../../CommonSections.rst:468
+msgid "**Project expenses**"
+msgstr "**Projektkosten**"
+
+#: ../../CommonSections.rst:470
+msgid "Sum of the real amount of all project expenses."
+msgstr "Summe des tatsächlichen Betrages aller Projektausgaben."
+
+#: ../../CommonSections.rst:473
+msgid "Column \"Left\""
+msgstr "Spalte „Links“"
+
+#: ../../CommonSections.rst:474
+msgid "This column displays the remaining of planned work and planned amount."
+msgstr ""
+"Diese Spalte zeigt den Rest der geplanten Arbeit und den geplanten Betrag an."
+
+#: ../../CommonSections.rst:475
+msgid "By default : Left = Assigned - Real"
+msgstr "Standardmäßig : Links = Zugeordnet - Tatsächlich"
+
+#: ../../CommonSections.rst:476
+msgid "Left work should be re-estimated by the resource."
+msgstr ""
+"Die verbleibende Arbeit sollte von der Ressource neu eingeschätzt werden."
+
+#: ../../CommonSections.rst:478
+msgid "**Work and cost remaining of resources**"
+msgstr "**Arbeit und verbleibende Kosten der Ressourcen**"
+
+#: ../../CommonSections.rst:480
+msgid ""
+"Scheduled work time assigned to resources for completing tasks minus the "
+"work done."
+msgstr ""
+"Geplante Arbeitszeit, die Ressourcen für die Erledigung von Aufgaben "
+"zugewiesen wird, abzüglich der geleisteten Arbeit."
+
+#: ../../CommonSections.rst:481
+msgid ""
+"The remaining cost is the remaining work by a resource on a task multiplied "
+"by the latest daily cost defined for it."
+msgstr ""
+"Die verbleibenden Kosten sind die verbleibende Arbeit einer Ressource an "
+"einer Aufgabe multipliziert mit den letzten dafür definierten Tageskosten."
+
+#: ../../CommonSections.rst:483
+msgid "**Project expense**"
+msgstr "**Projektkosten**"
+
+#: ../../CommonSections.rst:485
+msgid "Sum of the planned amount of project expenses not incurred yet."
+msgstr "Summe der geplanten, noch nicht angefallenen Projektausgaben."
+
+#: ../../CommonSections.rst:488
+msgid "Column \"Reassessed\""
+msgstr "Spalte „Neu bewertet“"
+
+#: ../../CommonSections.rst:489
+msgid ""
+"This column displays the resources work reassess and the spending projection."
+msgstr "Diese Spalte zeigt die Ressourcenarbeit und die Ausgabenprojektion an."
+
+#: ../../CommonSections.rst:490
+msgid "Always calculated as : [Reassessed] = [Real] + [Left]"
+msgstr "Immer berechnet als : [Neu bewertet] = [Tatsächlich] +[Verbleibend]"
+
+#: ../../CommonSections.rst:499
+msgid "Work and cost consolidation"
+msgstr "Arbeits- und Kostenkonsolidierung"
+
+#: ../../CommonSections.rst:501
+msgid ""
+"Work and cost from tasks (Activity, Test session and Meeting) are summarized "
+"for each parent element."
+msgstr ""
+"Arbeit und Kosten von Aufgaben (Aktivität, Testsitzung und Besprechung) "
+"werden für jedes übergeordnete Element zusammengefasst."
+
+#: ../../CommonSections.rst:503
+msgid ""
+"Allows to follow-up progress on grouped tasks like phase, delivery, test "
+"group, sub-project and project."
+msgstr ""
+"Ermöglicht die Verfolgung des Fortschritts bei gruppierten Aufgaben wie "
+"Phase, Lieferung, Testgruppe, Teilprojekt und Projekt."
+
+#: ../../CommonSections.rst:506
+msgid "Consolidate validated work and cost"
+msgstr "Bestätigte Arbeit und Kosten konsolidieren"
+
+#: ../../CommonSections.rst:507
+msgid "Consolidation can be done on validated work and cost."
+msgstr ""
+"Die Konsolidierung kann auf Basis validierter Arbeit und Kosten erfolgen."
+
+#: ../../CommonSections.rst:508
+msgid ""
+"Allows to calculate the scheduled work and budgeted cost from lower planning "
+"elements."
+msgstr ""
+"Ermöglicht die Berechnung der geplanten Arbeit und der budgetierten Kosten "
+"aus niedrigeren Planungselementen."
+
+#: ../../CommonSections.rst:509
+msgid ""
+"The calculation depends on consolidation method selected and on which level "
+"the validated values are entered."
+msgstr ""
+"Die Berechnung ist abhängig von der gewählten Konsolidierungsmethode und "
+"davon, auf welcher Ebene die validierten Werte eingegeben werden."
+
+#: ../../CommonSections.rst:511
+msgid "**Consolidation method \"Never\"**"
+msgstr "**Konsolidierungsmethode „Niemals“**"
+
+#: ../../CommonSections.rst:513
+msgid "Values are not consolidated."
+msgstr "Werte werden nicht konsolidiert."
+
+#: ../../CommonSections.rst:515
+msgid "**Consolidation method \"Always\"**"
+msgstr "**Konsolidierungsmethode „Immer“**"
+
+#: ../../CommonSections.rst:517
+msgid "Values on the lower levels are consolidate up to project level."
+msgstr ""
+"Die Werte auf den unteren Ebenen werden bis auf Projektebene konsolidiert."
+
+#: ../../CommonSections.rst:519
+msgid "**Consolidation method \"Only if set\"**"
+msgstr "**Konsolidierungsmethode „Nur wenn gesetzt „**"
+
+#: ../../CommonSections.rst:521
+msgid ""
+"Zero values at lower levels do not overwrite values on upper level, but non-"
+"zero values on the lower level are consolidated up to project level."
+msgstr ""
+"Nullwerte auf den unteren Ebenen überschreiben die Werte auf der oberen "
+"Ebene nicht, aber die Werte auf der unteren Ebene werden bis zur "
+"Projektebene konsolidiert."
+
+#: ../../CommonSections.rst:523
+msgid "Selection of consolidation method"
+msgstr "Auswahl der Konsolidierungsmethode"
+
+#: ../../CommonSections.rst:525
+msgid ""
+"The parameter \"Consolidated validated cost & work\" in global parameters "
+"screen allows to select consolidation method."
+msgstr ""
+"Der Parameter „Konsolidierte validierte Kosten & Arbeit“ im globalen "
+"Parameterbild ermöglicht die Auswahl der Konsolidierungsmethode."
+
+#: ../../CommonSections.rst:537
+msgid "Monitoring indicator"
+msgstr "Überwachungsindikator"
+
+#: ../../CommonSections.rst:539
+msgid "The indicators can be defined on the progress data."
+msgstr "Die Indikatoren können auf den Fortschrittsdaten definiert werden."
+
+#: ../../CommonSections.rst:542
+msgid "Project, Activity and Test session."
+msgstr "Projekt, Aktivität und Testsitzung."
+
+#: ../../CommonSections.rst:543
+msgid "Next indicators defined for Project, Activity and Test session"
+msgstr "Nächste Indikatoren für Projekt, Aktivität und Testsitzung definiert"
+
+#: ../../CommonSections.rst:545
+msgid ""
+"**Respect of start or end date for the requested, validated and planned "
+"values**"
+msgstr ""
+"**Berücksichtigung des Beginn- oder Endedatums der angeforderten, "
+"validierten und geplanten Werte**"
+
+#: ../../CommonSections.rst:547
+msgid ""
+"These indicators can be programmed as a reminder and an alert, according to "
+"the number of days or hours before the start or end date."
+msgstr ""
+"Diese Indikatoren können als Erinnerung und Alarm programmiert werden, je "
+"nach Anzahl der Tage oder Stunden vor dem Start- oder Enddatum."
+
+#: ../../CommonSections.rst:549
+msgid "**On resource work and cost**"
+msgstr "**Auf Ressourcenarbeit und Kosten**"
+
+#: ../../CommonSections.rst:551
+msgid ""
+"These indicators can be programmed as a reminder and an alert, according to "
+"percentage of progress on monitored value compared to the target value."
+msgstr ""
+"Diese Indikatoren können als Erinnerung und Warnung programmiert werden, je "
+"nach Prozentsatz des Fortschritts beim überwachten Wert im Vergleich zum "
+"Zielwert."
+
+#: ../../CommonSections.rst:555
+msgid "The reassessed cost compared to budgeted (validated) cost."
+msgstr ""
+"Die neu bewerteten Kosten im Vergleich zu den geplanten (validierten) Kosten."
+
+#: ../../CommonSections.rst:559
+msgid ""
+"The reassessed cost compared to cost calculated from assigned work for "
+"resources."
+msgstr ""
+"Die neu bewerteten Kosten im Vergleich zu den geplanten (validierten) Kosten."
+
+#: ../../CommonSections.rst:563
+msgid "The reassessed work compared to scheduled (validated) work."
+msgstr ""
+"Die neu bewerteten Kosten im Vergleich zu den geplanten (validierten) Kosten."
+
+#: ../../CommonSections.rst:567
+msgid "The reassessed work compared to work assigned to resources."
+msgstr ""
+"Die neu bewertete Arbeit im Vergleich zur Arbeit, die den Ressourcen "
+"zugewiesen wurde."
+
+#: ../../CommonSections.rst:571
+msgid ""
+"The work really done by resources compared to scheduled (validated) work."
+msgstr ""
+"Die Arbeit der Ressourcen im Vergleich zur geplanten (geprüften) Arbeit."
+
+#: ../../CommonSections.rst:575
+msgid ""
+"The work really done by resources compared to work assigned to resources."
+msgstr ""
+"Die Arbeit, die wirklich von den Ressourcen geleistet wird, im Vergleich zur "
+"Arbeit, die den Ressourcen zugewiesen wird."
+
+#: ../../CommonSections.rst:578
+msgid "Milestone"
+msgstr "Meilenstein"
+
+#: ../../CommonSections.rst:579
+msgid "Next indicators defined for Milestone."
+msgstr "Nächste Kennzeichen für Meilenstein definiert."
+
+#: ../../CommonSections.rst:581
+msgid "**Respect of end date for the requested, validated and planned values**"
+msgstr ""
+"**Einhaltung des Enddatums für die angeforderten, validierten und geplanten "
+"Werte**"
+
+#: ../../CommonSections.rst:583
+msgid ""
+"These indicators can be programmed as a reminder and an alert, according to "
+"the number of days or hours before the end date."
+msgstr ""
+"Diese Indikatoren können als Erinnerung und Alarm programmiert werden, je "
+"nach Anzahl der Tage oder Stunden vor dem Enddatum."
+
+#: ../../CommonSections.rst:592
+msgid "Progress section (Project, Activity & Test session)"
+msgstr "Fortschrittsbereich (Projekt, Aktivität & Testsitzung)"
+
+#: ../../CommonSections.rst:594
+msgid "Next sections describe each part of progress section display."
+msgstr ""
+"Die nächsten Abschnitte beschreiben jeden Teil der Fortschrittsanzeige."
+
+#: ../../CommonSections.rst:596
+msgid "Some parts are used only by a specific planning element."
+msgstr ""
+"Einige Teile werden nur von einem bestimmten Planungselement verwendet."
+
+#: ../../CommonSections.rst:598
+msgid "Parts used by planning elements are:"
+msgstr "Teile, die von Planungselementen verwendet werden, sind:"
+
+#: ../../CommonSections.rst:603 ../../CommonSections.rst:611
+#: ../../CommonSections.rst:619
+msgid ":ref:`progress-section-date-duration`"
+msgstr ":ref:`progress-section-date-duration`"
+
+#: ../../CommonSections.rst:604 ../../CommonSections.rst:612
+#: ../../CommonSections.rst:620
+msgid ":ref:`progress-section-resource`"
+msgstr ":ref:`progress-section-resource`"
+
+#: ../../CommonSections.rst:605
+msgid ":ref:`progress-section-expense-reserve`"
+msgstr ":ref:`progress-section-expense-reserve`"
+
+#: ../../CommonSections.rst:606 ../../CommonSections.rst:613
+#: ../../CommonSections.rst:621
+msgid ":ref:`progress-section-miscellaneous`"
+msgstr ":ref:`progress-section-miscellaneous`"
+
+#: ../../CommonSections.rst:607
+msgid ":ref:`progress-section-margin`"
+msgstr ":ref:`progress-section-margin`"
+
+#: ../../CommonSections.rst:614 ../../CommonSections.rst:622
+msgid ":ref:`progress-section-planning-mode`"
+msgstr ":ref:`progress-section-planning-mode`"
+
+#: ../../CommonSections.rst:615
+msgid ":ref:`progress-section-ticket`"
+msgstr ":ref:`progress-section-ticket`"
+
+#: ../../CommonSections.rst:628
+msgid "Dates and duration"
+msgstr "Termine und Dauer"
+
+#: ../../CommonSections.rst:634 ../../CommonSections.rst:703
+#: ../../CommonSections.rst:764 ../../CommonSections.rst:1109
+#: ../../CommonSections.rst:1172
+msgid ":ref:`progress-section-column-def`"
+msgstr ":ref:`progress-section-column-def`"
+
+#: ../../CommonSections.rst:635 ../../CommonSections.rst:705
+#: ../../CommonSections.rst:1110
+msgid ":ref:`progress-section-monitor-indicator`"
+msgstr ":ref:`progress-section-monitor-indicator`"
+
+#: ../../CommonSections.rst:638 ../../CommonSections.rst:1116
+msgid "Requested"
+msgstr "Gefordert"
+
+#: ../../CommonSections.rst:639
+msgid "Allows to define preliminary planned dates."
+msgstr "Ermöglicht die Definition von vorläufigen Plandaten."
+
+#: ../../CommonSections.rst:642 ../../CommonSections.rst:711
+#: ../../CommonSections.rst:1121 ../../CommonSections.rst:1178
+msgid "Validated"
+msgstr "Bestätigt"
+
+#: ../../CommonSections.rst:643
+msgid "Validated dates are used to:"
+msgstr "Geprüfte Daten werden verwendet:"
+
+#: ../../CommonSections.rst:645
+msgid "Define entry parameters according to selected planning mode."
+msgstr ""
+"Definieren Sie die Eingabeparameter entsprechend dem gewählten Planungsmodus."
+
+#: ../../CommonSections.rst:646
+msgid "Define initial planned dates, as a baseline."
+msgstr "Definieren Sie erste Plantermine als Baseline."
+
+#: ../../CommonSections.rst:647
+msgid "Fix a due date at which the work must be completed."
+msgstr ""
+"Legen Sie ein Fälligkeitsdatum fest, an dem die Arbeiten abgeschlossen sein "
+"müssen."
+
+#: ../../CommonSections.rst:655 ../../CommonSections.rst:1127
+msgid "Planned"
+msgstr "Geplant"
+
+#: ../../CommonSections.rst:656
+msgid "Planned dates can be defined with:"
+msgstr "Geplante Termine können definiert werden mit:"
+
+#: ../../CommonSections.rst:658
+msgid "**Requested or validated dates**"
+msgstr "**Gewünschte oder bestätigte Termine**"
+
+#: ../../CommonSections.rst:660
+msgid ""
+"The planned dates can be initialized with validated dates or requested dates "
+"(whether validated dates are not specified)."
+msgstr ""
+"Die Plantermine können mit validierten Terminen oder Wunschterminen "
+"initialisiert werden (unabhängig davon, ob validierte Termine nicht "
+"angegeben sind)."
+
+#: ../../CommonSections.rst:662
+msgid "**Planning calculation**"
+msgstr "**Planungsrechnung**"
+
+#: ../../CommonSections.rst:664
+msgid "The planned dates can be determined during the planning calculation."
+msgstr "Die Plantermine können bei der Planungsrechnung ermittelt werden."
+
+#: ../../CommonSections.rst:665
+msgid ""
+"The planning calculation is done according to tasks assigned to resources "
+"and their predecessors."
+msgstr ""
+"Die Planungsrechnung erfolgt nach Aufgaben, die den Ressourcen und ihren "
+"Vorgängern zugeordnet sind."
+
+#: ../../CommonSections.rst:667
+msgid "Planning mode \"Fixed duration\""
+msgstr "Planungsmodus \"Feste Dauer\""
+
+#: ../../CommonSections.rst:669
+msgid ""
+"The planned dates of tasks will be calculated depending on their "
+"predecessors and their specified duration."
+msgstr ""
+"Die geplanten Termine der Aufgaben werden in Abhängigkeit von ihren "
+"Vorgängern und der angegebenen Dauer berechnet."
+
+#: ../../CommonSections.rst:673
+msgid ""
+"At parent element level, dates are adjusted with the first planned start "
+"date and the last planned end date from all sub-elements."
+msgstr ""
+"Die geplanten Termine der Aufgaben werden in Abhängigkeit von ihren "
+"Vorgängern und der angegebenen Dauer berechnet."
+
+#: ../../CommonSections.rst:678
+msgid ""
+"The planned start date is adjusted to the real start date when work began."
+msgstr ""
+"Der geplante Starttermin wird an den tatsächlichen Starttermin bei "
+"Arbeitsbeginn angepasst."
+
+#: ../../CommonSections.rst:682
+msgid "The real start date is set when work began (handled)."
+msgstr ""
+"Der tatsächliche Starttermin wird bei Arbeitsbeginn (Abwicklung) festgelegt."
+
+#: ../../CommonSections.rst:683
+msgid "The real end date is set when no more remaining work (done)."
+msgstr ""
+"Das tatsächliche Enddatum wird gesetzt, wenn keine Restarbeit mehr geleistet "
+"wird."
+
+#: ../../CommonSections.rst:687
+msgid ""
+"The real start date will be propagated to parent elements up to project."
+msgstr ""
+"Das tatsächliche Startdatum wird auf die übergeordneten Elemente bis zum "
+"Projekt übertragen."
+
+#: ../../CommonSections.rst:688
+msgid ""
+"The real end date for parent element will be initialized, when all sub-"
+"element have been completed."
+msgstr ""
+"Das tatsächliche Enddatum für das übergeordnete Element wird initialisiert, "
+"wenn alle Unterelemente abgeschlossen sind."
+
+#: ../../CommonSections.rst:697
+msgid "Resources (Work & Cost)"
+msgstr "Ressourcen (Arbeit & Kosten)"
+
+#: ../../CommonSections.rst:704 ../../CommonSections.rst:1173
+msgid ":ref:`progress-section-consolidation`"
+msgstr ":ref:`progress-section-consolidation`"
+
+#: ../../CommonSections.rst:708
+msgid ""
+"Work of resources are calculated by the work assigned to each resource for "
+"tasks."
+msgstr ""
+"Die Arbeit der Ressourcen wird durch die Arbeit berechnet, die jeder "
+"Ressource für Aufgaben zugeordnet ist."
+
+#: ../../CommonSections.rst:712
+msgid "Allows to define scheduled work and budgeted cost of resources."
+msgstr ""
+"Ermöglicht die Definition von geplanten Arbeiten und budgetierten "
+"Ressourcenkosten."
+
+#: ../../CommonSections.rst:714
+msgid "**Work**"
+msgstr "**Arbeit**"
+
+#: ../../CommonSections.rst:716
+msgid ""
+"This value is used for calculation of the expected progress and project "
+"margin (work)."
+msgstr ""
+"Dieser Wert wird für die Berechnung des erwarteten Fortschritts und der "
+"Projektmarge (Arbeit) verwendet."
+
+#: ../../CommonSections.rst:718
+msgid "**Cost**"
+msgstr "**Kosten**"
+
+#: ../../CommonSections.rst:720 ../../CommonSections.rst:773
+msgid "This value is used for calculation of project margin (cost)."
+msgstr ""
+"Dieser Wert wird für die Berechnung der Projektmarge (Kosten) verwendet."
+
+#: ../../CommonSections.rst:724
+msgid ""
+"The values of work and cost can be initialized with the sum of total work "
+"and amount of all project orders."
+msgstr ""
+"Die Arbeits- und Kostenwerte können mit der Summe aus Gesamtleistung und "
+"Menge aller Projektaufträge initialisiert werden."
+
+#: ../../CommonSections.rst:725
+msgid "See: :ref:`order`"
+msgstr "See: :ref:`order`"
+
+#: ../../CommonSections.rst:729
+msgid "Sum of planned work assigned to resources and estimated cost."
+msgstr ""
+"Summe der geplanten Arbeit, die den Ressourcen zugeordnet ist, und der "
+"geschätzten Kosten."
+
+#: ../../CommonSections.rst:733
+msgid "Sum of work done by resources and cost incurred."
+msgstr "Summe der geleisteten Arbeit nach Ressourcen und angefallenen Kosten."
+
+#: ../../CommonSections.rst:737
+msgid "Sum of estimated remaining work to complete tasks and ensuing costs."
+msgstr ""
+"Summe der geschätzten Restarbeit zur Erledigung der Aufgaben und der daraus "
+"resultierenden Kosten."
+
+#: ../../CommonSections.rst:738
+msgid ""
+"Left work should be re-evaluated by resource while entering the real work on "
+"real work allocation screen."
+msgstr ""
+"Die verbleibende Arbeit sollte durch die Ressource neu bewertet werden, "
+"während die tatsächliche Arbeit im Bildschirm zur realen Arbeitsverteilung "
+"eingegeben wird."
+
+#: ../../CommonSections.rst:739
+msgid ""
+"Left work can also be changed on assignment, at project management level."
+msgstr ""
+"Die verbleibende Arbeit kann auch auf der Ebene des Projektmanagements "
+"geändert werden."
+
+#: ../../CommonSections.rst:742
+msgid "Reassessed"
+msgstr "Neu bewertet"
+
+#: ../../CommonSections.rst:743
+msgid ""
+"Sum of resource total work that will be needed from start to end and the "
+"ensuing costs."
+msgstr ""
+"Summe der von Anfang bis Ende benötigten Ressourcen und der daraus "
+"resultierenden Kosten."
+
+#: ../../CommonSections.rst:744
+msgid "[Reassessed] = [Real] + [Left]"
+msgstr "[Neu bewertet] = [Tatsächlich] +[Verbleibend]"
+
+#: ../../CommonSections.rst:748
+msgid ""
+"Sum of work done on tickets and costs is included in work of activity linked "
+"through the “planning activity” of tickets."
+msgstr ""
+"Die Summe der an den Tickets geleisteten Arbeit und der Kosten ist in der "
+"durch die „Planungstätigkeit“ der Tickets verbundenen Arbeit enthalten."
+
+#: ../../CommonSections.rst:749
+msgid ""
+"Sum of work done on tickets that don't link to any activity will be "
+"integrated in the work of the project."
+msgstr ""
+"Die Summe der Arbeiten an Tickets, die keinen Bezug zu einer Aktivität "
+"haben, wird in die Projektarbeit integriert."
+
+#: ../../CommonSections.rst:758
+msgid "Expense, Reserve and Total"
+msgstr "Aufwand, Rücklage und Summe"
+
+#: ../../CommonSections.rst:765
+msgid ":ref:`Project reserve<project-reserve>`"
+msgstr ":ref:`Project reserve<project-reserve>`"
+
+#: ../../CommonSections.rst:769 ../../CommonSections.rst:1030
+msgid "> Used by: Project"
+msgstr "> Verwendet von: Projekt"
+
+#: ../../CommonSections.rst:771
+msgid "Validated (Expense)"
+msgstr "Bestätigt (Aufwand)"
+
+#: ../../CommonSections.rst:772
+msgid "Allows to set the budgeted cost of project expenses."
+msgstr "Ermöglicht die Festlegung der budgetierten Kosten der Projektausgaben."
+
+#: ../../CommonSections.rst:777
+msgid "Assigned (Expense)"
+msgstr "Zugeordnet (Aufwand)"
+
+#: ../../CommonSections.rst:778
+msgid "Project expenses planned."
+msgstr "Projektausgaben geplant."
+
+#: ../../CommonSections.rst:779
+msgid "Sum of \"planned amount\" for all expenses on project."
+msgstr "Summe des „geplanten Betrages“ für alle Ausgaben im Projekt."
+
+#: ../../CommonSections.rst:782
+msgid "Real (Expense)"
+msgstr "Tatsächliche (Ausgaben)"
+
+#: ../../CommonSections.rst:783
+msgid "Project expenses committed."
+msgstr "Projektkosten bestätigt."
+
+#: ../../CommonSections.rst:784
+msgid "Sum of \"real amount\" for all expenses on project."
+msgstr "Summe des „ tatsächlichen Betrages „ für alle Ausgaben des Projekts."
+
+#: ../../CommonSections.rst:787
+msgid "Left (Expense)"
+msgstr "Ausstehende (Ausgaben)"
+
+#: ../../CommonSections.rst:788
+msgid "Project expenses not committed yet."
+msgstr "Projektkosten noch nicht zugesagt."
+
+#: ../../CommonSections.rst:789
+msgid ""
+"Sum of \"planned amount\" for expenses  for which \"real amount\" is not "
+"defined yet."
+msgstr ""
+"Summe des „geplanten Betrages“ für Ausgaben, für die der „tatsächliche "
+"Betrag“ noch nicht definiert ist."
+
+#: ../../CommonSections.rst:792
+msgid "Reassessed (Expense)"
+msgstr "Neu bewertet (Aufwand)"
+
+#: ../../CommonSections.rst:793
+msgid "Spending projections."
+msgstr "Ausgabenvorausschätzungen."
+
+#: ../../CommonSections.rst:794
+msgid "Sum of Real + Left"
+msgstr "Summe aus Tatsächlich + Verbleibend"
+
+#: ../../CommonSections.rst:797
+msgid "Left (Reserve)"
+msgstr "Offene (Rücklage)"
+
+#: ../../CommonSections.rst:798
+msgid "Project reserve."
+msgstr "Projektreserve."
+
+#: ../../CommonSections.rst:800
+msgid "Total columns"
+msgstr "Spalten gesamt"
+
+#: ../../CommonSections.rst:802
+msgid ""
+"Total is the sum of resources cost, expenses and reserve of their "
+"corresponding column."
+msgstr ""
+"Total ist die Summe aus Ressourcenkosten, Ausgaben und Reserve der "
+"entsprechenden Spalte."
+
+#: ../../CommonSections.rst:812
+msgid "Progress, Expected, WBS & Priority"
+msgstr "Fortschritt, erwartet, WBS & Priorität"
+
+#: ../../CommonSections.rst:815
+msgid "Progress"
+msgstr "Fortschritt"
+
+#: ../../CommonSections.rst:816
+msgid "Percentage of actual progress."
+msgstr "Prozentsatz des tatsächlichen Fortschritts."
+
+#: ../../CommonSections.rst:817
+msgid ""
+"Calculated by the sum of the work done divided by sum of work reassessed."
+msgstr ""
+"Berechnet durch die Summe der geleisteten Arbeit dividiert durch die Summe "
+"der neu bewerteten Arbeit."
+
+#: ../../CommonSections.rst:818
+msgid ""
+"[Progress %] = [real work] / [reassessed work] = [real work] / ( [real work] "
+"+ [left work] )"
+msgstr ""
+"[Fortschritt %] = [tatsächliche Arbeit] / [neu bewertete Arbeit] = "
+"[tatsächliche Arbeit] / ([tatsächliche Arbeit] + [verbleibende Arbeit] )"
+
+#: ../../CommonSections.rst:821
+msgid "Expected"
+msgstr "Erwartet"
+
+#: ../../CommonSections.rst:822
+msgid "Percentage of expected progress."
+msgstr "Prozentsatz der erwarteten Fortschritte."
+
+#: ../../CommonSections.rst:823
+msgid "Calculated by the sum of the work done divided by scheduled work."
+msgstr ""
+"Berechnet durch die Summe der geleisteten Arbeit dividiert durch die "
+"geplante Arbeit."
+
+#: ../../CommonSections.rst:824
+msgid "[Expected %] = [real work] / [validated work]"
+msgstr "[Erwartete %] = [tatsächliche Arbeit] / [bestätigte Arbeit]"
+
+#: ../../CommonSections.rst:827 ../../CommonSections.rst:1146
+msgid "WBS"
+msgstr "WBS"
+
+#: ../../CommonSections.rst:828
+msgid "Hierarchical position in the global planning."
+msgstr "Hierarchische Position in der globalen Planung."
+
+#: ../../CommonSections.rst:831 ../../CommonSections.rst:1195
+msgid "Priority"
+msgstr "Priorität"
+
+#: ../../CommonSections.rst:832
+msgid "Allows to define priority."
+msgstr "Ermöglicht die Definition der Priorität."
+
+#: ../../CommonSections.rst:833
+msgid "By default, the value is set to \"500\" (medium priority)."
+msgstr "Standardmäßig ist der Wert auf „500“ (mittlere Priorität) eingestellt."
+
+#: ../../CommonSections.rst:834 ../../CommonSections.rst:1198
+msgid "See: :ref:`Scheduling priority<scheduling-priority>`."
+msgstr "Siehe: :ref:`Scheduling priority<scheduling-priority>`."
+
+#: ../../CommonSections.rst:843 ../../CommonSections.rst:1150
+msgid "Planning mode"
+msgstr "Planungsmodus"
+
+#: ../../CommonSections.rst:846
+msgid "> Used by: Activity & Test session"
+msgstr "> Verwendet bei: Aktivität & Testsitzung"
+
+#: ../../CommonSections.rst:848
+msgid "As soon as possible"
+msgstr "So bald wie möglich"
+
+#: ../../CommonSections.rst:849
+msgid "The task is planned to finish as soon as possible."
+msgstr "Die Aufgabe soll so schnell wie möglich abgeschlossen werden."
+
+#: ../../CommonSections.rst:853
+msgid ""
+"For tasks \"as soon as possible\", if no assignment is created but the "
+"validated work is defined, take the validated work as the default duration "
+"(instead of 1 days)"
+msgstr ""
+"Für Aufgaben „so bald wie möglich“, wenn keine Zuordnung erstellt wird, aber "
+"die validierte Arbeit definiert ist, nehmen Sie die validierte Arbeit als "
+"Standarddauer (statt 1 Tag)."
+
+#: ../../CommonSections.rst:857
+msgid "Work together"
+msgstr "Zusammenarbeiten"
+
+#: ../../CommonSections.rst:858
+msgid ""
+"When two or more resources are assigned to the same task, planning tries to "
+"find periods where all resources are available to work together."
+msgstr ""
+"Wenn zwei oder mehr Ressourcen derselben Aufgabe zugeordnet sind, versucht "
+"die Planung, Zeiträume zu finden, in denen alle Ressourcen für die "
+"Zusammenarbeit zur Verfügung stehen."
+
+#: ../../CommonSections.rst:859
+msgid "Periods are searched \"as soon as possible\"."
+msgstr "Perioden werden „so schnell wie möglich“ durchsucht."
+
+#: ../../CommonSections.rst:860
+msgid ""
+"If only one resource is assigned, this planning mode is exactly the same as "
+"\"As soon as possible\"."
+msgstr ""
+"Wenn nur eine Ressource zugeordnet ist, ist dieser Planungsmodus genau "
+"derselbe wie „So bald wie möglich“."
+
+#: ../../CommonSections.rst:861
+msgid ""
+"If one resource is assigned more work than the other, the extra work is "
+"planned after working together periods."
+msgstr ""
+"Wenn einer Ressource mehr Arbeit zugeordnet ist als der anderen, wird die "
+"Mehrarbeit nach der Zusammenarbeit geplant."
+
+#: ../../CommonSections.rst:864
+msgid "Constraint by date"
+msgstr "Einschränkung nach Datum"
+
+#: ../../CommonSections.rst:865
+msgid "** The validated start or end date field must be set."
+msgstr "** Das Feld bestätigtes Start- oder Enddatum muss gesetzt sein."
+
+#: ../../CommonSections.rst:867
+msgid "**Must not start before validated date**"
+msgstr "**Darf nicht vor dem bestätigten Datum beginnen.**"
+
+#: ../../CommonSections.rst:869
+msgid "The task must not begin before a specific date."
+msgstr "Die Aufgabe darf nicht vor einem bestimmten Datum beginnen."
+
+#: ../../CommonSections.rst:871
+msgid "**As late as possible**"
+msgstr "**So spät wie möglich**"
+
+#: ../../CommonSections.rst:873
+msgid "The task is planned backward from end to start."
+msgstr "Die Aufgabe wird von Anfang bis Ende rückwärts geplant."
+
+#: ../../CommonSections.rst:874
+msgid ""
+"\"Floating\" backward planning is not possible, validated end date must be "
+"defined."
+msgstr ""
+"„Eine „gleitende“ Rückwärtsplanung ist nicht möglich, ein gültiges Endedatum "
+"muss definiert werden."
+
+#: ../../CommonSections.rst:882
+msgid "Recurrent activities"
+msgstr "Wiederkehrende Aktivitäten"
+
+#: ../../CommonSections.rst:883
+msgid "Allows to evenly distribute work between two dates."
+msgstr "Ermöglicht eine gleichmäßige Verteilung der Arbeit auf zwei Termine."
+
+#: ../../CommonSections.rst:884
+msgid "Used for management recurrent activities."
+msgstr "Wird für wiederkehrende Aktivitäten des Managements verwendet."
+
+#: ../../CommonSections.rst:885
+msgid "The validated dates fields must be set."
+msgstr "Die bestätigten Datumsfelder müssen gesetzt sein."
+
+#: ../../CommonSections.rst:889
+msgid ""
+"Examples of the planning modes upcoming are based on 2 work days to plan on "
+"10 days."
+msgstr ""
+"Beispiele für die anstehenden Planungsmodi basieren auf 2 Arbeitstagen, um "
+"an 10 Tagen zu planen."
+
+#: ../../CommonSections.rst:892
+msgid "**Regular between dates**"
+msgstr "**Regelmäßige Zwischentermine**"
+
+#: ../../CommonSections.rst:894
+msgid "Work will be evenly divided between on working days."
+msgstr "Die Arbeit wird gleichmäßig auf die Werktage verteilt."
+
+#: ../../CommonSections.rst:895
+msgid "For instance, 0.2 days during 10 days."
+msgstr "Zum Beispiel 0,2 Tage während 10 Tagen."
+
+#: ../../CommonSections.rst:899
+msgid "**Regular in full days**"
+msgstr "**Regulär in ganzen Tagen**"
+
+#: ../../CommonSections.rst:901
+msgid "Work will be distributed on full day between on working days."
+msgstr "Die Arbeit wird ganztägig zwischen den Werktagen verteilt."
+
+#: ../../CommonSections.rst:908 ../../CommonSections.rst:940
+#: ../../CommonSections.rst:973
+msgid "Day"
+msgstr "Tag"
+
+#: ../../CommonSections.rst:909 ../../CommonSections.rst:924
+#: ../../CommonSections.rst:929 ../../CommonSections.rst:941
+#: ../../CommonSections.rst:974
+msgid "1"
+msgstr "1"
+
+#: ../../CommonSections.rst:910 ../../CommonSections.rst:942
+#: ../../CommonSections.rst:975
+msgid "2"
+msgstr "2"
+
+#: ../../CommonSections.rst:911 ../../CommonSections.rst:943
+#: ../../CommonSections.rst:976
+msgid "3"
+msgstr "3"
+
+#: ../../CommonSections.rst:912 ../../CommonSections.rst:944
+#: ../../CommonSections.rst:977
+msgid "4"
+msgstr "4"
+
+#: ../../CommonSections.rst:913 ../../CommonSections.rst:945
+#: ../../CommonSections.rst:978
+msgid "5"
+msgstr "5"
+
+#: ../../CommonSections.rst:914 ../../CommonSections.rst:946
+#: ../../CommonSections.rst:979
+msgid "6"
+msgstr "6"
+
+#: ../../CommonSections.rst:915 ../../CommonSections.rst:947
+#: ../../CommonSections.rst:980
+msgid "7"
+msgstr "7"
+
+#: ../../CommonSections.rst:916 ../../CommonSections.rst:948
+#: ../../CommonSections.rst:981
+msgid "8"
+msgstr "8"
+
+#: ../../CommonSections.rst:917 ../../CommonSections.rst:949
+#: ../../CommonSections.rst:982
+msgid "9"
+msgstr "9"
+
+#: ../../CommonSections.rst:918 ../../CommonSections.rst:950
+#: ../../CommonSections.rst:983
+msgid "10"
+msgstr "10"
+
+#: ../../CommonSections.rst:919 ../../CommonSections.rst:951
+#: ../../CommonSections.rst:984
+msgid "Distribution"
+msgstr "Vertrieb"
+
+#: ../../CommonSections.rst:920 ../../CommonSections.rst:921
+#: ../../CommonSections.rst:922 ../../CommonSections.rst:923
+#: ../../CommonSections.rst:925 ../../CommonSections.rst:926
+#: ../../CommonSections.rst:927 ../../CommonSections.rst:928
+#: ../../CommonSections.rst:952 ../../CommonSections.rst:953
+#: ../../CommonSections.rst:955 ../../CommonSections.rst:957
+#: ../../CommonSections.rst:958 ../../CommonSections.rst:960
+#: ../../CommonSections.rst:985 ../../CommonSections.rst:990
+msgid "0"
+msgstr "0"
+
+#: ../../CommonSections.rst:931
+msgid "**Regular in half days**"
+msgstr "**Regulär in halben Tagen**"
+
+#: ../../CommonSections.rst:933
+msgid "Work will be distributed on half of the day between on working days."
+msgstr ""
+"Die Arbeit wird an einem halben Tag zwischen den Arbeitstagen verteilt."
+
+#: ../../CommonSections.rst:954 ../../CommonSections.rst:956
+#: ../../CommonSections.rst:959 ../../CommonSections.rst:961
+msgid "0.5"
+msgstr "0,5"
+
+#: ../../CommonSections.rst:964
+msgid "**Regular in quarter days**"
+msgstr "**Regulär in Vierteltagen**"
+
+#: ../../CommonSections.rst:966
+msgid ""
+"Work will be distributed on one quarter of the day between on working days."
+msgstr ""
+"Die Arbeit wird an einem Viertel des Tages zwischen den Arbeitstagen "
+"verteilt."
+
+#: ../../CommonSections.rst:986 ../../CommonSections.rst:987
+#: ../../CommonSections.rst:988 ../../CommonSections.rst:989
+#: ../../CommonSections.rst:991 ../../CommonSections.rst:992
+#: ../../CommonSections.rst:993 ../../CommonSections.rst:994
+msgid "0.25"
+msgstr "0,25"
+
+#: ../../CommonSections.rst:997
+msgid "**Recurring (on a weekly basis)**"
+msgstr "**Wiederkehrend (wöchentlich)**"
+
+#: ../../CommonSections.rst:0
+msgid ""
+"This new mode allows reserving availability on recurring tasks on a weekly "
+"basis, for example 1/2 day every Monday, 1h every day, ..."
+msgstr ""
+"Dieser neue Modus ermöglicht es, die Verfügbarkeit für wiederkehrende "
+"Aufgaben auf Wochenbasis zu reservieren, z.B. 1/2 Tag jeden Montag, 1 Stunde "
+"jeden Tag,…."
+
+#: ../../CommonSections.rst:1002
+msgid ""
+"Activities in this mode dynamically assign the work based on the start and "
+"end bounds:"
+msgstr ""
+"Aktivitäten in diesem Modus weisen die Arbeit dynamisch auf Basis der Start- "
+"und Endgrenzen zu:"
+
+#: ../../CommonSections.rst:1004
+msgid "start defined with a dependence End-Start or Start-Start"
+msgstr "Start definiert mit einer Abhängigkeit End-Start oder Start-Start"
+
+#: ../../CommonSections.rst:1005
+msgid ""
+"end defined with an end-end dependency. This is the first planning mode in "
+"ProjeQtOr that defines activities whose assigned work is not fixed, but "
+"adapts to the duration of the project."
+msgstr ""
+"Ende mit einer Ende-End-Abhängigkeit definiert. Dies ist der erste "
+"Planungsmodus in ProjeQtOr, der Aktivitäten definiert, deren zugeordnete "
+"Arbeit nicht fixiert ist, sondern sich an die Dauer des Projekts anpasst."
+
+#: ../../CommonSections.rst:1009
+msgid "Fixed duration"
+msgstr "Feste Dauer"
+
+#: ../../CommonSections.rst:1010
+msgid "The task is planned by duration."
+msgstr "Die Aufgabe wird nach Dauer geplant."
+
+#: ../../CommonSections.rst:1011
+msgid "The task is “floating” depending on predecessors."
+msgstr "Die Aufgabe ist je nach Vorgänger „flexibel“."
+
+#: ../../CommonSections.rst:1012
+msgid "The validated duration field must be set."
+msgstr "Das Feld geprüfte Dauer muss gesetzt sein."
+
+#: ../../CommonSections.rst:1013
+msgid "It is not necessary to assign resources to the task."
+msgstr "Es ist nicht notwendig, der Aufgabe Ressourcen zuzuordnen."
+
+#: ../../CommonSections.rst:1014
+msgid ""
+"If work is assigned to the task, planning behavior is the same as \"Regular "
+"between dates\" but with floating task."
+msgstr ""
+"Wenn der Aufgabe Arbeit zugeordnet ist, entspricht das Planungsverhalten dem "
+"von „ Regulär zwischen Terminen „, jedoch mit gleitender Aufgabe."
+
+#: ../../CommonSections.rst:1018
+msgid ""
+"If you want fixed duration with fixed start, use \"Regular between dates\", "
+"or use milestone to define start."
+msgstr ""
+"Wenn Sie eine feste Dauer mit festem Start wünschen, verwenden Sie "
+"„Regelmäßig zwischen den Terminen“, oder definieren Sie den Start über "
+"Meilenstein."
+
+#: ../../CommonSections.rst:1027
+msgid "Margin"
+msgstr "Margin"
+
+#: ../../CommonSections.rst:1031
+msgid "Displays remaining margin."
+msgstr "Zeigt die verbleibende Marge."
+
+#: ../../CommonSections.rst:1035
+msgid "The percentage of remaining margins will be displayed on the right."
+msgstr ""
+"Der Prozentsatz der verbleibenden Margen wird auf der rechten Seite "
+"angezeigt."
+
+#: ../../CommonSections.rst:1038
+msgid "Margin (work)"
+msgstr "Spanne (Arbeit)"
+
+#: ../../CommonSections.rst:1039
+msgid "Calculated by the scheduled work minus the sum of work reassessed."
+msgstr ""
+"Berechnet durch die geplante Arbeit abzüglich der Summe der neu bewerteten "
+"Arbeit."
+
+#: ../../CommonSections.rst:1040
+msgid "[Margin] = [Validated work] - [Reassessed work]"
+msgstr "[Marge] = [Bestätigte Arbeit] - [Neubewertete Arbeit]"
+
+#: ../../CommonSections.rst:1041
+msgid ""
+"[Margin (%)] = ([Validated work] - [Reassessed work]) / [Validated work]"
+msgstr ""
+"[Marge (%)] = ([Bestätigte Arbeit] - [Neubewertete Arbeit]) / [Bestätigte "
+"Arbeit])"
+
+#: ../../CommonSections.rst:1044
+msgid "Margin (cost)"
+msgstr "Spanne (Kosten)"
+
+#: ../../CommonSections.rst:1045
+msgid ""
+"Calculated by the budgeted cost (resource & expense) minus the total of "
+"reassessed cost."
+msgstr ""
+"Berechnet aus den budgetierten Kosten (Ressourcen & Ausgaben) abzüglich der "
+"Summe der neu bewerteten Kosten."
+
+#: ../../CommonSections.rst:1046
+msgid "[Margin] = [Validated cost] - [Reassessed cost]"
+msgstr "[Marge] = [Bestätigte Kosten] - [Neubewertete Kosten]"
+
+#: ../../CommonSections.rst:1047
+msgid ""
+"[Margin (%)] = ([Validated cost] - [Reassessed cost]) / [Validated cost]"
+msgstr ""
+"[Marge (%)] = ([bestätigte Kosten] - [neu bewertet Kosten]) / [bestätigte "
+"Kosten]"
+
+#: ../../CommonSections.rst:1053
+msgid "Ticket"
+msgstr "Ticket"
+
+#: ../../CommonSections.rst:1056
+msgid "> Used by: Activity"
+msgstr "> Von verwendet: Aktivität"
+
+#: ../../CommonSections.rst:1057
+msgid ""
+"Allows tracking of tickets attached to the activity throught the \"planning "
+"activity\" field of tickets."
+msgstr ""
+"Ermöglicht die Verfolgung von Tickets, die mit der Aktivität verbunden sind, "
+"über das Feld „Planungsaktivität“ der Tickets."
+
+#: ../../CommonSections.rst:1067
+msgid "Number"
+msgstr "Nummer"
+
+#: ../../CommonSections.rst:1068
+msgid "Number of tickets attached to the activity."
+msgstr "Anzahl der Tickets, die der Aktivität zugeordnet sind."
+
+#: ../../CommonSections.rst:1069
+msgid "Estimated"
+msgstr "Geschätzte"
+
+#: ../../CommonSections.rst:1070
+msgid "Sum of estimated work for tickets attached to the activity."
+msgstr ""
+"Summe der geschätzten Arbeit für die mit der Aktivität verbundenen Tickets."
+
+#: ../../CommonSections.rst:1072
+msgid "Sum of work done for tickets attached to the activity."
+msgstr ""
+"Summe der geleisteten Arbeit für die mit der Aktivität verbundenen Tickets."
+
+#: ../../CommonSections.rst:1074
+msgid "Sum of remaining work for tickets attached to the activity."
+msgstr "Summe der Restarbeit für die mit der Aktivität verbundenen Tickets."
+
+#: ../../CommonSections.rst:1078
+msgid ""
+"This field will be highlighted when the sum of estimated work on the tickets "
+"is higher than the planned work on the activity."
+msgstr ""
+"Dieses Feld wird markiert, wenn die Summe der geschätzten Arbeit an den "
+"Tickets höher ist als die geplante Arbeit an der Aktivität."
+
+#: ../../CommonSections.rst:1082
+msgid ""
+"This field will be highlighted when the sum of remaining work on the tickets "
+"is higher than the remaining planned work on the activity."
+msgstr ""
+"Dieses Feld wird hervorgehoben, wenn die Summe der verbleibenden Arbeit an "
+"den Tickets höher ist als die verbleibende geplante Arbeit an der Aktivität."
+
+#: ../../CommonSections.rst:1086
+msgid "Show tickets attached"
+msgstr "Tickets anzeigen"
+
+#: ../../CommonSections.rst:1087
+msgid ""
+"Click on |buttonIconSearch| to show ticket list attached to the activity."
+msgstr ""
+"Klicken Sie auf |buttonIconSearch|, um die an die Aktivität angehängte "
+"Ticketliste anzuzeigen."
+
+#: ../../CommonSections.rst:1088
+msgid "Click on a ticket name to directly move to it."
+msgstr "Klicken Sie auf einen Ticketnamen, um direkt dorthin zu gelangen."
+
+#: ../../CommonSections.rst:1103
+msgid "Progress section (Milestone)"
+msgstr "Fortschrittsbereich (Meilenstein)"
+
+#: ../../CommonSections.rst:1112
+msgid ""
+"This section allows to define planning and follow progress on a milestone."
+msgstr ""
+"In diesem Abschnitt können Sie die Planung definieren und den Fortschritt "
+"eines Meilensteins verfolgen."
+
+#: ../../CommonSections.rst:1117
+msgid "Allows to define the initial due date for the milestone."
+msgstr ""
+"Ermöglicht die Festlegung des Anfangsfälligkeitsdatums für den Meilenstein."
+
+#: ../../CommonSections.rst:1118
+msgid "Have no impact on planning."
+msgstr "Haben keinen Einfluss auf die Planung."
+
+#: ../../CommonSections.rst:1122
+msgid "Allows to define the due date at which the milestone must be completed."
+msgstr ""
+"Ermöglicht die Festlegung des Fälligkeitsdatums, zu dem der Meilenstein "
+"abgeschlossen sein muss."
+
+#: ../../CommonSections.rst:1128
+msgid "Defined according to the selected planning mode."
+msgstr "Definiert entsprechend dem gewählten Planungsmodus."
+
+#: ../../CommonSections.rst:1130
+msgid "**Fixed milestone**"
+msgstr "**Feste Meilensteine**"
+
+#: ../../CommonSections.rst:1132
+msgid "Planned due date is the value from validated due date field."
+msgstr ""
+"Geplantes Fälligkeitsdatum ist der Wert aus dem Feld bestätigtes "
+"Fälligkeitsdatum."
+
+#: ../../CommonSections.rst:1133
+msgid "The milestone will not move, and may have successors."
+msgstr "Der Meilenstein bewegt sich nicht und kann Nachfolger haben."
+
+#: ../../CommonSections.rst:1135
+msgid "**Floating milestone**"
+msgstr "**Bewegliche Meilensteine**"
+
+#: ../../CommonSections.rst:1137
+msgid ""
+"Calculation of planned due date takes into account dependencies with tasks."
+msgstr ""
+"Die Berechnung der geplanten Fälligkeit berücksichtigt Abhängigkeiten mit "
+"Aufgaben."
+
+#: ../../CommonSections.rst:1138
+msgid "The milestone will move depending on predecessors."
+msgstr "Der Meilenstein wird sich je nach Vorgänger verschieben."
+
+#: ../../CommonSections.rst:1142
+msgid "Determined when the status of the milestone is “done”."
+msgstr "Bestimmt, wann der Status des Meilensteins „erreicht“ ist."
+
+#: ../../CommonSections.rst:1147
+msgid "Hierarchical position of the milestone in the global planning."
+msgstr "Hierarchische Position des Meilensteins in der globalen Planung."
+
+#: ../../CommonSections.rst:1151
+msgid "Fixed milestone"
+msgstr "Fester Meilenstein"
+
+#: ../../CommonSections.rst:1152
+msgid "Floating milestone"
+msgstr "Bewegliche Meilensteine"
+
+#: ../../CommonSections.rst:1156
+msgid ""
+"A milestone has no duration, so there are no start and end dates for a "
+"milestone, just a single date."
+msgstr ""
+"Ein Meilenstein hat keine Dauer, es gibt also kein Start- und Enddatum für "
+"einen Meilenstein, sondern nur ein einziges Datum."
+
+#: ../../CommonSections.rst:1166
+msgid "Progress section (Meeting)"
+msgstr "Bereich Fortschritt (Meeting)"
+
+#: ../../CommonSections.rst:1175
+msgid ""
+"This section allows to define priority and follow progress on a meeting."
+msgstr ""
+"In diesem Abschnitt können Sie die Priorität festlegen und den Fortschritt "
+"einer Besprechung verfolgen."
+
+#: ../../CommonSections.rst:1179
+msgid "Allows to define scheduled work and budgeted cost."
+msgstr ""
+"Ermöglicht die Definition von geplanten Arbeiten und budgetierten Kosten."
+
+#: ../../CommonSections.rst:1180
+msgid "Used to consolidate validated work and cost to the project."
+msgstr ""
+"Wird verwendet, um geprüfte Arbeit und Kosten für das Projekt zu "
+"konsolidieren."
+
+#: ../../CommonSections.rst:1184
+msgid "Sum of planned work assigned to attendees and the planned cost."
+msgstr "Summe der den Teilnehmern zugeordneten Planarbeit und der Plankosten."
+
+#: ../../CommonSections.rst:1188
+msgid "Sum of work done by attendees and the cost."
+msgstr "Summe der von den Teilnehmern geleisteten Arbeit und der Kosten."
+
+#: ../../CommonSections.rst:1192
+msgid "Sum of planned work remaining and the remaining amount."
+msgstr "Summe der geplanten Restarbeit und des Restbetrags."
+
+#: ../../CommonSections.rst:1196
+msgid "Allows to define meeting priority."
+msgstr "Ermöglicht die Definition der Besprechungspriorität."
+
+#: ../../CommonSections.rst:1197
+msgid "By default, the value is set to \"1\" (highest priority)."
+msgstr "Standardmäßig ist der Wert auf „1“ (höchste Priorität) eingestellt."
+
+#: ../../CommonSections.rst:1209
+msgid "Predecessor and Sucessor element sections"
+msgstr "Vorgänger- und Nachfolgeelementabschnitte"
+
+#: ../../CommonSections.rst:1213
+msgid ":ref:`dependencies`"
+msgstr ":ref:`dependencies`"
+
+#: ../../CommonSections.rst:1215
+msgid ""
+"This section allows to manage dependency links between planning elements."
+msgstr ""
+"Dieser Abschnitt ermöglicht die Verwaltung von Abhängigkeitsverknüpfungen "
+"zwischen Planungselementen."
+
+#: ../../CommonSections.rst:1217
+msgid ""
+"A dependency link can be created from a planning element (Predecessor) and "
+"to a planning element (Successor)."
+msgstr ""
+"Eine Abhängigkeitsverknüpfung kann von einem Planungselement (Vorgänger) und "
+"einem Planungselement (Nachfolger) hergestellt werden."
+
+#: ../../CommonSections.rst:1219
+msgid "Gantt chart"
+msgstr "Gantt-Diagramm"
+
+#: ../../CommonSections.rst:1221
+msgid "The dependency link can be created in the Gantt chart."
+msgstr "Die Abhängigkeitsverknüpfung kann im Balkenplan angelegt werden."
+
+#: ../../CommonSections.rst:1222
+msgid "See: :ref:`project-planning`"
+msgstr "Siehe: :ref:`project-planning`"
+
+#: ../../CommonSections.rst:1226
+msgid "Fields of predecessors and successors lists"
+msgstr "Felder von Vorgänger- und Nachfolgerlisten"
+
+#: ../../CommonSections.rst:1232 ../../CommonSections.rst:1319
+msgid "Element"
+msgstr "Element"
+
+#: ../../CommonSections.rst:1233
+msgid "Type and id of the element."
+msgstr "Typ und ID des Elements."
+
+#: ../../CommonSections.rst:1235
+msgid "Name of the element."
+msgstr "Name des Elements."
+
+#: ../../CommonSections.rst:1236 ../../CommonSections.rst:1327
+msgid "Status"
+msgstr "Status"
+
+#: ../../CommonSections.rst:1237
+msgid "Actual status of the element."
+msgstr "Ist-Zustand des Elements."
+
+#: ../../CommonSections.rst:1241
+msgid ""
+"Click on the name of a predecessor or successor will directly move to it."
+msgstr ""
+"Klicken Sie auf den Namen eines Vorgängers oder Nachfolgers, um direkt "
+"dorthin zu gelangen."
+
+#: ../../CommonSections.rst:1245
+msgid "Predecessors and successors elements list management"
+msgstr "Vorgänger- und Nachfolgeelemente Listenverwaltung"
+
+#: ../../CommonSections.rst:1246
+msgid ""
+"Click on |buttonAdd| on the corresponding section to add a dependency link."
+msgstr ""
+"Klicken Sie auf |buttonAdd| im entsprechenden Abschnitt, um einen "
+"Abhängigkeitslink hinzuzufügen."
+
+#: ../../CommonSections.rst:1247
+msgid "Click on |buttonEdit| to edit the dependency link."
+msgstr "Klicken Sie auf |buttonEdit|, um den Abhängigkeitslink zu bearbeiten."
+
+#: ../../CommonSections.rst:1248
+msgid ""
+"Click on |buttonIconDelete| to delete the corresponding dependency link."
+msgstr ""
+"Klicken Sie auf |buttonIconDelete|, um den entsprechenden Abhängigkeitslink "
+"zu löschen."
+
+#: ../../CommonSections.rst:1254
+msgid "Dialog box - Predecessor or Successor element"
+msgstr "Dialogfenster - Vorgänger- oder Nachfolgeelement"
+
+#: ../../CommonSections.rst:1260
+msgid "Recursive loops are controlled on saving."
+msgstr "Rekursive Schleifen werden beim Speichern kontrolliert."
+
+#: ../../CommonSections.rst:1264 ../../CommonSections.rst:1341
+msgid ""
+"By default, the list of values shows items of the same project. But, it is "
+"possible to link items from different projects."
+msgstr ""
+"Standardmäßig zeigt die Werteliste Elemente des gleichen Projekts an. Es ist "
+"jedoch möglich, Elemente aus verschiedenen Projekten zu verknüpfen."
+
+#: ../../CommonSections.rst:1265 ../../CommonSections.rst:1342
+msgid ""
+"Click on |buttonIconSearch| to get the list of elements of all projects."
+msgstr ""
+"Klicken Sie auf |buttonIconSearch|, um die Liste der Elemente aller Projekte "
+"zu erhalten."
+
+#: ../../CommonSections.rst:1269
+msgid ""
+"Multi-line selection is possible using :kbd:`Control` key while clicking."
+msgstr ""
+"Eine mehrzeilige Auswahl ist mit der Taste :kbd:`Control` beim Klicken "
+"möglich."
+
+#: ../../CommonSections.rst:1273
+msgid "Days between predecessor end and successor start."
+msgstr "Tage zwischen Vorgänger-Ende und Nachfolger-Start."
+
+#: ../../CommonSections.rst:1284
+msgid "Linked Elements section"
+msgstr "Abschnitt Verknüpfte Elemente"
+
+#: ../../CommonSections.rst:1286
+msgid "This section allows to manage link between items of elements."
+msgstr ""
+"Dieser Abschnitt ermöglicht die Verwaltung der Verknüpfung zwischen "
+"Elementen."
+
+#: ../../CommonSections.rst:1289
+msgid "Used for"
+msgstr "Verwendet für"
+
+#: ../../CommonSections.rst:1290
+msgid "Allows to associate items on different elements in the same project."
+msgstr ""
+"Ermöglicht die Zuordnung von Elementen zu verschiedenen Elementen im selben "
+"Projekt."
+
+#: ../../CommonSections.rst:1291
+msgid "A project can be linked with other."
+msgstr "Ein Projekt kann mit anderen verknüpft werden."
+
+#: ../../CommonSections.rst:1294
+msgid "Access to an item"
+msgstr "Zugriff auf ein Objekt"
+
+#: ../../CommonSections.rst:1296
+msgid "Click on an item name to directly move to it."
+msgstr "Klicken Sie auf einen Elementnamen, um direkt dorthin zu gelangen."
+
+#: ../../CommonSections.rst:1297
+msgid ""
+"Click on |buttonIconBackNavigation| to return to the last screen. (More "
+"detail, see: :ref:`Top bar <navigation-buttons>`)"
+msgstr ""
+"Klicken Sie auf |buttonIconBackNavigation|, um zum letzten Bildschirm "
+"zurückzukehren. (Mehr Details, siehe: :ref:`Top bar <navigation-buttons>`)"
+
+#: ../../CommonSections.rst:1301
+msgid "Reciprocally interrelated"
+msgstr "Reziprok zusammenhängend"
+
+#: ../../CommonSections.rst:1302
+msgid ""
+"If Item A is linked to Item B, Item B is automatically linked to Item A."
+msgstr ""
+"Wenn Position A mit Position B verknüpft ist, wird Position B automatisch "
+"mit Position A verknüpft."
+
+#: ../../CommonSections.rst:1306
+msgid "A link between items has no impact on them treatment."
+msgstr ""
+"Eine Verbindung zwischen den Items hat keinen Einfluss auf ihre Behandlung."
+
+#: ../../CommonSections.rst:1310
+msgid "Linked elements list"
+msgstr "Liste der verknüpften Elemente"
+
+#: ../../CommonSections.rst:1313
+msgid "Fields of linked elements list"
+msgstr "Felder der Liste der verknüpften Elemente"
+
+#: ../../CommonSections.rst:1320
+msgid "Type and id of the linked element."
+msgstr "Typ und ID des verknüpften Elements."
+
+#: ../../CommonSections.rst:1322
+msgid "Name of the linked element."
+msgstr "Name des verknüpften Elements."
+
+#: ../../CommonSections.rst:1323 ../../CommonSections.rst:1389
+#: ../../CommonSections.rst:1517
+msgid "Date"
+msgstr "Datum"
+
+#: ../../CommonSections.rst:1324
+msgid "Date of creation of the link."
+msgstr "Datum der Erstellung des Links."
+
+#: ../../CommonSections.rst:1325 ../../CommonSections.rst:1391
+#: ../../CommonSections.rst:1519
+msgid "User"
+msgstr "Benutzer"
+
+#: ../../CommonSections.rst:1326
+msgid "User who created the link."
+msgstr "Benutzer, der den Link erstellt hat."
+
+#: ../../CommonSections.rst:1328
+msgid "Actual status of the linked element."
+msgstr "Aktueller Status des verknüpften Elements."
+
+#: ../../CommonSections.rst:1331
+msgid "Linked elements list buttons"
+msgstr "Schaltflächen für die Liste der verknüpften Elemente"
+
+#: ../../CommonSections.rst:1332
+msgid "Click |buttonAdd| to create a new link."
+msgstr "Klicken Sie auf |buttonAdd|, um einen neuen Link zu erstellen."
+
+#: ../../CommonSections.rst:1333
+msgid "Click on |buttonIconDelete| to delete the corresponding link."
+msgstr ""
+"Klicken Sie auf |buttonIconDelete|, um den entsprechenden Link zu löschen."
+
+#: ../../CommonSections.rst:1352
+msgid "Link with Document"
+msgstr "Verknüpfung mit Dokument"
+
+#: ../../CommonSections.rst:1353
+msgid ""
+"When a link to a document is selected. The document version can be selected. "
+"(See options below)"
+msgstr ""
+"Wenn ein Verweis auf ein Dokument ausgewählt wird. Die Dokumentversion kann "
+"ausgewählt werden. (Siehe Optionen unten)"
+
+#: ../../CommonSections.rst:1354
+msgid "Linked documents are available directly in linked elements list."
+msgstr ""
+"Verlinkte Dokumente sind direkt in der Liste der verknüpften Elemente "
+"verfügbar."
+
+#: ../../CommonSections.rst:1356
+msgid "**Specified version**"
+msgstr "**Spezifizierte Version**"
+
+#: ../../CommonSections.rst:1358
+msgid ""
+"A link with a document element offer the possibility to select a specific "
+"version."
+msgstr ""
+"Ein Link mit einem Dokumentelement bietet die Möglichkeit, eine bestimmte "
+"Version auszuwählen."
+
+#: ../../CommonSections.rst:1359
+msgid "A direct link to version of the document is created."
+msgstr "Ein direkter Link zu Version des Dokuments wird erstellt."
+
+#: ../../CommonSections.rst:1361
+msgid "**Not specified version**"
+msgstr "**Nicht spezifizierte Version**"
+
+#: ../../CommonSections.rst:1363
+msgid "If the version is not specified, the last version will be selected."
+msgstr "Ist die Version nicht angegeben, wird die letzte Version ausgewählt."
+
+#: ../../CommonSections.rst:1364
+msgid "The download will transfer always the last version of the document."
+msgstr "Beim Download wird immer die letzte Version des Dokuments übertragen."
+
+#: ../../CommonSections.rst:1373
+msgid "Attachments section"
+msgstr "Abschnitt Anhänge"
+
+#: ../../CommonSections.rst:1375
+msgid "This section allows to attach files or hyperlinks to items of elements."
+msgstr ""
+"Dieser Abschnitt erlaubt es, Dateien oder Hyperlinks an Elemente anzuhängen."
+
+#: ../../CommonSections.rst:1379
+msgid "Fields of attachments list"
+msgstr "Felder der Anlagenliste"
+
+#: ../../CommonSections.rst:1386
+msgid "Unique Id for the attachment."
+msgstr "Eindeutige Id für die Anlage."
+
+#: ../../CommonSections.rst:1387
+msgid "File"
+msgstr "Datei"
+
+#: ../../CommonSections.rst:1388
+msgid "File name or hyperlink."
+msgstr "Dateiname oder Hyperlink."
+
+#: ../../CommonSections.rst:1390
+msgid "Date of creation of the attachment."
+msgstr "Datum der Erstellung des Anhangs."
+
+#: ../../CommonSections.rst:1392
+msgid "User who created the attachment."
+msgstr "Benutzer, der die Anlage angelegt hat."
+
+#: ../../CommonSections.rst:1396
+msgid "Select an attachment"
+msgstr "Wählen Sie eine Anlage"
+
+#: ../../CommonSections.rst:1397
+msgid "Select an attachment depends on whether is a file or a hyperlink."
+msgstr ""
+"Die Auswahl eines Anhangs hängt davon ab, ob es sich um eine Datei oder "
+"einen Hyperlink handelt."
+
+#: ../../CommonSections.rst:1399
+msgid "Click on |iconDownload| to download attachment file."
+msgstr "Klicken Sie auf |iconDownload|, um die Anhangsdatei herunterzuladen."
+
+#: ../../CommonSections.rst:1400
+msgid "Click on |iconLink| to access to hyperlink."
+msgstr "Klicken Sie auf |iconLink|, um auf den Hyperlink zuzugreifen."
+
+#: ../../CommonSections.rst:1403
+msgid "Document viewer"
+msgstr "Dokumentenanzeige"
+
+#: ../../CommonSections.rst:1404
+msgid "Document viewer available for files: image, text, PDF and hyperlinks."
+msgstr "Dokumentenanzeige für Dateien: Bild, Text, PDF und Hyperlinks."
+
+#: ../../CommonSections.rst:1405
+msgid "Click on the icon."
+msgstr "Klicken Sie auf das Icon."
+
+#: ../../CommonSections.rst:1408
+msgid "Delete an attachment"
+msgstr "Löschen einer Anlage"
+
+#: ../../CommonSections.rst:1409
+msgid "Click on |buttonIconDelete| to delete an attachment."
+msgstr "Klicken Sie auf |buttonIconDelete|, um eine Anlage zu löschen."
+
+#: ../../CommonSections.rst:1417
+msgid "Add an attachment"
+msgstr "Anhang hinzufügen"
+
+#: ../../CommonSections.rst:1418
+msgid "Click on |buttonAdd| to add an attachment file to an item."
+msgstr ""
+"Klicken Sie auf |buttonAdd|, um eine Anhangsdatei zu einem Element "
+"hinzuzufügen."
+
+#: ../../CommonSections.rst:1420
+msgid "Dialog box \"Attachment file\" will be displayed."
+msgstr "Dialogfeld \"Anlagen Datei\" wird angezeigt."
+
+#: ../../CommonSections.rst:1422
+msgid "Click on |iconLink| to add hyperlink to an item."
+msgstr ""
+"Klicken Sie auf |iconLink|, um einem Element einen Hyperlink hinzuzufügen."
+
+#: ../../CommonSections.rst:1424
+msgid "Dialog box \"Hyperlink\" will be displayed."
+msgstr "Das Dialogfeld „Hyperlink“ wird angezeigt."
+
+#: ../../CommonSections.rst:1428
+msgid "**Attachment file**"
+msgstr "**Anhang-Datei**"
+
+#: ../../CommonSections.rst:1430
+msgid "To upload a file"
+msgstr "So laden Sie eine Datei hoch"
+
+#: ../../CommonSections.rst:1432
+msgid ""
+"Select file with \"Browse\" button or drop the file in \"drop files here\" "
+"area."
+msgstr ""
+"Wählen Sie die Datei mit der Schaltfläche „Durchsuchen“ oder legen Sie die "
+"Datei im Bereich „Dateien hier ablegen“ ab."
+
+#: ../../CommonSections.rst:1433
+msgid "Attached files are stored on server side."
+msgstr "Angehängte Dateien werden serverseitig gespeichert."
+
+#: ../../CommonSections.rst:1434
+msgid ""
+"Attachments directory is defined in :ref:`Global parameters <file-directory-"
+"section>` screen."
+msgstr ""
+"Das Verzeichnis der Anhänge wird im Fenster :ref:`Global parameters <file-"
+"directory-section>` definiert."
+
+#: ../../CommonSections.rst:1440
+msgid "Dialog box - Attachment for file"
+msgstr "Dialogfenster - Anhang zur Datei"
+
+#: ../../CommonSections.rst:1443
+msgid "**Hyperlink**"
+msgstr "**Hyperlink**"
+
+#: ../../CommonSections.rst:1445
+msgid "Hyperlink"
+msgstr "Hyperlink"
+
+#: ../../CommonSections.rst:1447
+msgid "Enter hyperlink in «Hyperlink» field."
+msgstr "Geben Sie im Feld „Hyperlink“ einen Hyperlink ein."
+
+#: ../../CommonSections.rst:1455
+msgid "Dialog box - Attachment for hyperlink"
+msgstr "Dialogfenster - Anhang für Hyperlink"
+
+#: ../../CommonSections.rst:1460
+msgid "Fields - Attachment dialog box"
+msgstr "Felder - Dialogfenster Anlage"
+
+#: ../../CommonSections.rst:1467
+msgid "Description of attachment."
+msgstr "Beschreibung der Anlage."
+
+#: ../../CommonSections.rst:1468
+msgid "Public"
+msgstr "Öffentlich"
+
+#: ../../CommonSections.rst:1469
+msgid "Attachment is visible to anyone."
+msgstr "Anlage ist für jeden sichtbar."
+
+#: ../../CommonSections.rst:1470
+msgid "Team"
+msgstr "Team"
+
+#: ../../CommonSections.rst:1471
+msgid "Attachment is visible to every member of the creator’s team."
+msgstr "Die Anlage ist für jedes Mitglied des Ersteller-Teams sichtbar."
+
+#: ../../CommonSections.rst:1472
+msgid "Private"
+msgstr "Privat"
+
+#: ../../CommonSections.rst:1473
+msgid "Attachment is visible only to the creator."
+msgstr "Die Anlage ist nur für den Ersteller sichtbar."
+
+#: ../../CommonSections.rst:1485
+msgid "Notes section"
+msgstr "Abschnitt Anmerkungen"
+
+#: ../../CommonSections.rst:1487
+msgid "This section allows to add notes on items of elements."
+msgstr "Dieser Abschnitt ermöglicht das Hinzufügen von Notizen zu Elementen."
+
+#: ../../CommonSections.rst:1489
+msgid ""
+"Notes are comments, that can be shared to track some information or progress."
+msgstr ""
+"Notizen sind Kommentare, die ausgetauscht werden können, um Informationen "
+"oder Fortschritte zu verfolgen."
+
+#: ../../CommonSections.rst:1492
+msgid "Predefined note"
+msgstr "Vordefinierte Notiz"
+
+#: ../../CommonSections.rst:1493
+msgid ""
+"The list of values appears whether a predefined note exists for an element "
+"or an element type."
+msgstr ""
+"Sie erhalten die Ergebnisliste, ob zu einem Element oder einer Elementart "
+"eine vordefinierte Notiz existiert."
+
+#: ../../CommonSections.rst:1494
+msgid ""
+"Selecting a predefined note  will automatically fill in the note text field."
+msgstr ""
+"Die Auswahl einer vordefinierten Notiz füllt automatisch das Notiztextfeld "
+"aus."
+
+#: ../../CommonSections.rst:1495
+msgid "Predefined notes are defined in :ref:`predefined-notes` screen."
+msgstr ""
+"Vordefinierte Notizen werden im Bildschirm :ref:`predefined-notes` definiert."
+
+#: ../../CommonSections.rst:1498
+msgid "Note visibility"
+msgstr "Sichtbarkeit der Notiz"
+
+#: ../../CommonSections.rst:1499
+msgid "Public: Visible to anyone."
+msgstr "Öffentlich: Für jeden sichtbar."
+
+#: ../../CommonSections.rst:1500
+msgid "Team: Visible to every member of the creator’s team."
+msgstr "Team: Sichtbar für jedes Mitglied des Ersteller-Teams."
+
+#: ../../CommonSections.rst:1501
+msgid "Private:  Visible only to the creator."
+msgstr "Privat:  Nur für den Ersteller sichtbar."
+
+#: ../../CommonSections.rst:1504
+msgid "Notes list"
+msgstr "Notizenliste"
+
+#: ../../CommonSections.rst:1507
+msgid "Fields of notes list"
+msgstr "Liste der Notizfelder"
+
+#: ../../CommonSections.rst:1514
+msgid "Unique Id for the note."
+msgstr "Eindeutige Id für die Notiz."
+
+#: ../../CommonSections.rst:1515
+msgid "Note"
+msgstr "Anmerkung"
+
+#: ../../CommonSections.rst:1516
+msgid "Text of the note."
+msgstr "Text der Notiz."
+
+#: ../../CommonSections.rst:1518
+msgid "Date of creation or modification of the note."
+msgstr "Datum der Erstellung oder Änderung der Notiz."
+
+#: ../../CommonSections.rst:1520
+msgid "Name of the user who created the note."
+msgstr "Name des Benutzers, der die Notiz angelegt hat."
+
+#: ../../CommonSections.rst:1527
+msgid "Notes list buttons"
+msgstr "Schaltflächen für die Notizliste"
+
+#: ../../CommonSections.rst:1528
+msgid "Click on |buttonAdd| to add a note to an item."
+msgstr ""
+"Klicken Sie auf |buttonAdd|, um eine Notiz zu einem Objekt hinzuzufügen."
+
+#: ../../CommonSections.rst:1529
+msgid "Click on |buttonEdit| to edit the note."
+msgstr "Klicken Sie auf |buttonEdit|, um die Notiz zu bearbeiten."
+
+#: ../../CommonSections.rst:1530
+msgid "Click on |buttonIconDelete| to delete the note."
+msgstr "Klicken Sie auf |buttonIconDelete|, um die Notiz zu löschen."

@@ -1,0 +1,472 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2018, ProjeQtOr
+# This file is distributed under the same license as the ProjeQtOr Bedienhandbuch Deutsch package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"POT-Creation-Date: \n"
+"PO-Revision-Date: \n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=ISO-8859-1\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: de\n"
+"X-Generator: Poedit 2.0.8\n"
+
+#: ../../ProductVersion.rst:12
+msgid "Product & Component"
+msgstr "Produkt und Komponent"
+
+#: ../../ProductVersion.rst:16
+msgid ":ref:`product-concept`"
+msgstr ":ref:`product-concept`"
+
+#: ../../ProductVersion.rst:18
+msgid "The product and component management is done on screens:"
+msgstr "Die Produkt- und Komponentenverwaltung erfolgt auf Bildschirmen:"
+
+#: ../../ProductVersion.rst:20
+msgid ":ref:`product`"
+msgstr ":ref:`product`"
+
+#: ../../ProductVersion.rst:21
+msgid ":ref:`component`"
+msgstr ":ref:`component`"
+
+#: ../../ProductVersion.rst:22
+msgid ":ref:`product-version`"
+msgstr ":ref:`product-version`"
+
+#: ../../ProductVersion.rst:23
+msgid ":ref:`component-version`"
+msgstr ":ref:`component-version`"
+
+#: ../../ProductVersion.rst:34 ../../ProductVersion.rst:36
+msgid "Allows to define product and sub-product."
+msgstr "Erlaubt die Definition von Produkt und Unterprodukt."
+
+#: ../../ProductVersion.rst:38
+msgid "Allows to link components to product."
+msgstr "Erlaubt die Verknüpfung von Komponenten mit dem Produkt."
+
+#: ../../ProductVersion.rst:42 ../../ProductVersion.rst:126
+#: ../../ProductVersion.rst:200 ../../ProductVersion.rst:262
+msgid ":ref:`Attachments<attachment-section>`"
+msgstr ":ref:`Attachments<attachment-section>`"
+
+#: ../../ProductVersion.rst:43 ../../ProductVersion.rst:127
+#: ../../ProductVersion.rst:201 ../../ProductVersion.rst:263
+msgid ":ref:`Notes<note-section>`"
+msgstr ":ref:`Notes<note-section>`"
+
+#: ../../ProductVersion.rst:46 ../../ProductVersion.rst:130
+#: ../../ProductVersion.rst:204 ../../ProductVersion.rst:266
+msgid "Section: Description"
+msgstr "Sektion: Beschreibung"
+
+#: ../../ProductVersion.rst:53 ../../ProductVersion.rst:137
+#: ../../ProductVersion.rst:211 ../../ProductVersion.rst:273
+#: ../../ProductVersion.rst:386
+msgid "Field"
+msgstr "Feld"
+
+#: ../../ProductVersion.rst:54 ../../ProductVersion.rst:73
+#: ../../ProductVersion.rst:138 ../../ProductVersion.rst:155
+#: ../../ProductVersion.rst:212 ../../ProductVersion.rst:225
+#: ../../ProductVersion.rst:274 ../../ProductVersion.rst:287
+#: ../../ProductVersion.rst:387
+msgid "Description"
+msgstr "Beschreibung"
+
+#: ../../ProductVersion.rst:55 ../../ProductVersion.rst:139
+#: ../../ProductVersion.rst:213 ../../ProductVersion.rst:275
+msgid ":term:`Id`"
+msgstr ":term:`Id`"
+
+#: ../../ProductVersion.rst:56
+msgid "Unique Id for the product."
+msgstr "Unique Id für das Produkt."
+
+#: ../../ProductVersion.rst:57 ../../ProductVersion.rst:145
+#: ../../ProductVersion.rst:215 ../../ProductVersion.rst:281
+msgid "**Name**"
+msgstr "**Name**"
+
+#: ../../ProductVersion.rst:58
+msgid "Name of the product."
+msgstr "Name des Produkts."
+
+#: ../../ProductVersion.rst:59
+msgid "Product type"
+msgstr "Produktbezeichnun"
+
+#: ../../ProductVersion.rst:60
+msgid "Type of product."
+msgstr "Produkttyp."
+
+#: ../../ProductVersion.rst:61
+msgid "Designation"
+msgstr "Bezeichnung"
+
+#: ../../ProductVersion.rst:62
+msgid "Trade name of the product known outside the company."
+msgstr "Handelsname des außŸerhalb des Unternehmens bekannten Produktes."
+
+#: ../../ProductVersion.rst:63
+msgid "Customer"
+msgstr "Kunde"
+
+#: ../../ProductVersion.rst:64
+msgid "The customer the product should be delivered to."
+msgstr "Der Kunde, an den das Produkt geliefert werden soll."
+
+#: ../../ProductVersion.rst:65 ../../ProductVersion.rst:147
+msgid "Prime contractor"
+msgstr "Hauptauftragnehmer"
+
+#: ../../ProductVersion.rst:67 ../../ProductVersion.rst:149
+#: ../../ProductVersion.rst:221
+msgid "Responsible"
+msgstr "Verantwortlich"
+
+#: ../../ProductVersion.rst:68
+msgid "Person responsible for the product."
+msgstr "Verantwortlicher für das Produkt."
+
+#: ../../ProductVersion.rst:69
+msgid "Is sub-product of"
+msgstr "Ist Teilprodukt von"
+
+#: ../../ProductVersion.rst:70
+msgid "Name of the top product if this product is a sub-product."
+msgstr "Name des Top-Produkts, wenn dieses Produkt ein Unterprodukt ist."
+
+#: ../../ProductVersion.rst:71 ../../ProductVersion.rst:223
+msgid ":term:`Closed`"
+msgstr ":term:`Geschlossen`"
+
+#: ../../ProductVersion.rst:72
+msgid "Box checked indicates the product is archived."
+msgstr "Kontrollkästchen zeigt an, dass das Produkt archiviert ist."
+
+#: ../../ProductVersion.rst:74
+msgid "Complete description of the product."
+msgstr "Vollständige Beschreibung des Produkts."
+
+#: ../../ProductVersion.rst:76 ../../ProductVersion.rst:158
+#: ../../ProductVersion.rst:228 ../../ProductVersion.rst:290
+msgid "**\\* Required field**"
+msgstr "**\\* Pflichtfeld**"
+
+#: ../../ProductVersion.rst:79
+msgid "Section: Product versions"
+msgstr "Sektion: Produktversionen"
+
+#: ../../ProductVersion.rst:80
+msgid "List of versions defined for the product."
+msgstr "Liste der für das Produkt definierten Versionen."
+
+#: ../../ProductVersion.rst:81
+msgid "Product versions are defined in :ref:`product-version` screen."
+msgstr "Produktversionen werden im Bildschirm \"ref:`product-version`\" definiert."
+
+#: ../../ProductVersion.rst:84
+msgid "Section: Composition - List of sub-products used by this product"
+msgstr "Sektion: Zusammensetzung - Liste der von diesem Produkt verwendeten Unterprodukte"
+
+#: ../../ProductVersion.rst:85
+msgid "List of sub-products for the product."
+msgstr "Liste der Unterprodukte zum Produkt."
+
+#: ../../ProductVersion.rst:88
+msgid "Section: Composition - List of components used by this product"
+msgstr "Sektion: Zusammensetzung - Liste der von diesem Produkt verwendeten Komponenten"
+
+#: ../../ProductVersion.rst:89
+msgid "See: :ref:`relationship-product-component`."
+msgstr "Siehe: :ref:`relationship-product-component`."
+
+#: ../../ProductVersion.rst:93
+msgid "Displays the structure of the product."
+msgstr "Zeigt die Struktur des Produkts an."
+
+#: ../../ProductVersion.rst:107
+msgid "Product Versions"
+msgstr "Versionen"
+
+#: ../../ProductVersion.rst:109
+msgid "Allows to define versions of a product."
+msgstr "Ermöglicht die Definition von Versionen eines Produkts."
+
+#: ../../ProductVersion.rst:111
+msgid "Allows to link a component version to product version."
+msgstr "Erlaubt die Verknüpfung einer Komponentenversion mit einer Produktversion."
+
+#: ../../ProductVersion.rst:113
+msgid "Allows to link the product version to a project."
+msgstr "Ermöglicht die Verknüpfung der Produktversion mit einem Projekt."
+
+#: ../../ProductVersion.rst:116 ../../ProductVersion.rst:252
+msgid "Automatic formatting of version name"
+msgstr "Automatische Formatierung des Versionsnamens"
+
+#: ../../ProductVersion.rst:118 ../../ProductVersion.rst:254
+msgid "Set global parameters to activate this feature."
+msgstr "Globale Parameter setzen, um diese Funktion zu aktivieren."
+
+#: ../../ProductVersion.rst:119 ../../ProductVersion.rst:255
+msgid "Else, the version name will entered manually."
+msgstr "Sonst wird der Versionsname manuell eingegeben."
+
+#: ../../ProductVersion.rst:124
+msgid ":ref:`Projects linked to this version<Link-version-project-section>`"
+msgstr ":ref:`Projects linked to this version<Link-version-project-section>`"
+
+#: ../../ProductVersion.rst:140 ../../ProductVersion.rst:276
+msgid "Unique Id for the version."
+msgstr "Unique Id für die Version."
+
+#: ../../ProductVersion.rst:141
+msgid "**Product**"
+msgstr "**Produkt**"
+
+#: ../../ProductVersion.rst:142
+msgid "The product on which the version applies."
+msgstr "Das Produkt, für das die Version gilt."
+
+#: ../../ProductVersion.rst:143 ../../ProductVersion.rst:279
+msgid "**Version number**"
+msgstr "**Versionsnummer**"
+
+#: ../../ProductVersion.rst:144
+msgid "Version number of the product."
+msgstr "Versionsnummer des Produkts."
+
+#: ../../ProductVersion.rst:146 ../../ProductVersion.rst:282
+msgid "Name of the version."
+msgstr "Name der Version."
+
+#: ../../ProductVersion.rst:150
+msgid "Resource responsible of the version."
+msgstr "Verantwortliche Ressource der Version."
+
+#: ../../ProductVersion.rst:151 ../../ProductVersion.rst:283
+msgid "Entry into service"
+msgstr "Indienststellun"
+
+#: ../../ProductVersion.rst:152 ../../ProductVersion.rst:284
+msgid "Initial, planned and real entry into service date of the version."
+msgstr "Erste, geplante und tatsächliche Inbetriebnahme der Version."
+
+#: ../../ProductVersion.rst:153 ../../ProductVersion.rst:285
+#: ../../ProductVersion.rst:396
+msgid "End date"
+msgstr "Enddatum"
+
+#: ../../ProductVersion.rst:154 ../../ProductVersion.rst:286
+msgid "Initial, planned and real end dates of the version."
+msgstr "Erstes, geplantes und tatsächliches Enddatum der Version."
+
+#: ../../ProductVersion.rst:156 ../../ProductVersion.rst:288
+msgid "Complete description of the version."
+msgstr "Vollständige Beschreibung der Version."
+
+#: ../../ProductVersion.rst:164 ../../ProductVersion.rst:295
+msgid "The field \"Name\" will be read only."
+msgstr "Das Feld \"Name\" wird nur gelesen werden."
+
+#: ../../ProductVersion.rst:168
+msgid "Can be different from product prime contractor."
+msgstr "Kann sich vom Produkt Hauptauftragnehmer unterscheiden."
+
+#: ../../ProductVersion.rst:172 ../../ProductVersion.rst:300
+msgid "Specify the date of entry into service."
+msgstr "Geben Sie das Datum der Inbetriebnahme an."
+
+#: ../../ProductVersion.rst:173 ../../ProductVersion.rst:178
+#: ../../ProductVersion.rst:301 ../../ProductVersion.rst:306
+msgid "The box \"Done\" is checked when the real date field is set."
+msgstr "Das Kästchen \"Fertig\" ist markiert, wenn das echte Datumsfeld gesetzt ist."
+
+#: ../../ProductVersion.rst:177 ../../ProductVersion.rst:305
+msgid "Specify the date end-of-service."
+msgstr "Geben Sie das Datum des Endes des Dienstes an."
+
+#: ../../ProductVersion.rst:190
+msgid "Components"
+msgstr "Komponenten"
+
+#: ../../ProductVersion.rst:192
+msgid "Allows to define product components."
+msgstr "Ermöglicht die Definition von Produktkomponenten."
+
+#: ../../ProductVersion.rst:194
+msgid "Allows to define products using the component."
+msgstr "Ermöglicht die Definition von Produkten über die Komponente."
+
+#: ../../ProductVersion.rst:214
+msgid "Unique Id for the component."
+msgstr "Unique Id für die Komponente."
+
+#: ../../ProductVersion.rst:216
+msgid "Name of the component."
+msgstr "Name der Komponente."
+
+#: ../../ProductVersion.rst:217
+msgid "Component type"
+msgstr "Bauelementty"
+
+#: ../../ProductVersion.rst:218
+msgid "Type of component"
+msgstr "Art der Komponente"
+
+#: ../../ProductVersion.rst:219
+msgid "Identifier"
+msgstr "Bezeichner"
+
+#: ../../ProductVersion.rst:220
+msgid "Another name to identify the component."
+msgstr "Ein anderer Name, um die Komponente zu identifizieren."
+
+#: ../../ProductVersion.rst:222
+msgid "Person responsible for the component."
+msgstr "Verantwortlicher für das Bauteil."
+
+#: ../../ProductVersion.rst:224
+msgid "Box checked indicates the component is archived."
+msgstr "Box checked zeigt an, dass die Komponente archiviert ist."
+
+#: ../../ProductVersion.rst:226
+msgid "Complete description of the component."
+msgstr "Vollständige Beschreibung der Komponente."
+
+#: ../../ProductVersion.rst:231
+msgid "Section: Component versions"
+msgstr "Sektion: Komponentenversionen"
+
+#: ../../ProductVersion.rst:232
+msgid "List of versions defined for the component."
+msgstr "Liste der für die Komponente definierten Versionen."
+
+#: ../../ProductVersion.rst:233
+msgid "Component versions are defined in :ref:`component-version` screen."
+msgstr "Komponentenversionen werden im Bildschirm :ref:`component-version` definiert."
+
+#: ../../ProductVersion.rst:245
+msgid "Component Versions"
+msgstr "Komponentenversionen"
+
+#: ../../ProductVersion.rst:247
+msgid "Allows to define versions of a component."
+msgstr "Erlaubt die Definition von Versionen einer Komponente."
+
+#: ../../ProductVersion.rst:249
+msgid "Allows to link a product version to component version."
+msgstr "Erlaubt die Verknüpfung einer Produktversion mit einer Komponentenversion."
+
+#: ../../ProductVersion.rst:277
+msgid "**Component**"
+msgstr "**Komponente**"
+
+#: ../../ProductVersion.rst:278
+msgid "The component on which the version applies."
+msgstr "Die Komponente, für die die Version gilt."
+
+#: ../../ProductVersion.rst:280
+msgid "Version number of the component."
+msgstr "Versionsnummer der Komponente."
+
+#: ../../ProductVersion.rst:316
+msgid "Relationships between product and component elements"
+msgstr "Beziehungen zwischen Produkt und Komponentenelementen"
+
+#: ../../ProductVersion.rst:320
+msgid "See possible relationships:  :ref:`product-structure`"
+msgstr "Siehe mögliche Beziehungen: :ref:`product-structure`"
+
+#: ../../ProductVersion.rst:323
+msgid "Relationships management"
+msgstr "Beziehungsmanagement"
+
+#: ../../ProductVersion.rst:325
+msgid "Click on |buttonIconDelete| to delete the corresponding relationship."
+msgstr "Klicken Sie auf |buttonIconDelete|, um die entsprechende Beziehung zu löschen."
+
+#: ../../ProductVersion.rst:339
+msgid "Link between versions of products and components"
+msgstr "Link zwischen Versionen von Produkten und Komponenten"
+
+#: ../../ProductVersion.rst:341
+msgid "Allows to define links between versions of products and components."
+msgstr "Ermöglicht die Definition von Verknüpfungen zwischen Versionen von Produkten und Komponenten."
+
+#: ../../ProductVersion.rst:345
+msgid "Only with the elements defined in the product structure."
+msgstr "Nur mit den in der Produktstruktur definierten Elementen."
+
+#: ../../ProductVersion.rst:348
+msgid "Link management"
+msgstr "Link-Verwaltung"
+
+#: ../../ProductVersion.rst:350 ../../ProductVersion.rst:374
+msgid "Click on |buttonIconDelete| to delete the corresponding link."
+msgstr "Klicken Sie auf |buttonIconDelete|, um den entsprechenden Link zu löschen."
+
+#: ../../ProductVersion.rst:366
+msgid "Link version to projects"
+msgstr "Version mit Projekten verknüpfen"
+
+#: ../../ProductVersion.rst:371
+msgid "Link version to projects management"
+msgstr "Version mit Projektverwaltung verknüpfen"
+
+#: ../../ProductVersion.rst:372
+msgid "Click on |buttonAdd| to create a new link."
+msgstr "Klicken Sie auf |buttonAdd|, um einen neuen Link zu erstellen."
+
+#: ../../ProductVersion.rst:373
+msgid "Click on |buttonEdit| to update an existing link."
+msgstr "Klicken Sie auf |buttonEdit|, um einen bestehenden Link zu aktualisieren."
+
+#: ../../ProductVersion.rst:382
+msgid "Fields - Project-Version link dialog box"
+msgstr "Felder - Dialogfeld Projekt-Versionsverknüpfung"
+
+#: ../../ProductVersion.rst:388
+msgid "Project"
+msgstr "Projekt"
+
+#: ../../ProductVersion.rst:389
+msgid "The project linked to product version or the project list."
+msgstr "Das mit der Produktversion oder der Projektliste verknüpfte Projekt."
+
+#: ../../ProductVersion.rst:390 ../../ProductVersion.rst:391
+msgid "Product linked to the project or the list of products."
+msgstr "Produkt, das mit dem Projekt oder der Produktliste verknüpft ist."
+
+#: ../../ProductVersion.rst:392
+msgid "Version"
+msgstr "Version"
+
+#: ../../ProductVersion.rst:393
+msgid "Product version linked to the project or list of product versions."
+msgstr "Mit dem Projekt verknüpfte Produktversion oder Liste der Produktversionen."
+
+#: ../../ProductVersion.rst:394
+msgid "Start date"
+msgstr "Datum des Beginns"
+
+#: ../../ProductVersion.rst:395
+msgid "Start date for validity of the link."
+msgstr "Startdatum für die Gültigkeit des Links."
+
+#: ../../ProductVersion.rst:397
+msgid "End date for validity of the link."
+msgstr "Enddatum für die Gültigkeit des Links."
+
+#: ../../ProductVersion.rst:398
+msgid "Closed"
+msgstr "Geschlossen"

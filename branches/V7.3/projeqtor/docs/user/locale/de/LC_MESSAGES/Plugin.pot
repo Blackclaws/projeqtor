@@ -1,0 +1,181 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2018, ProjeQtOr
+# This file is distributed under the same license as the ProjeQtOr Bedienhandbuch Deutsch package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: ProjeQtOr Bedienhandbuch Deutsch 7.2\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2018-07-03 14:34+0200\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: ../../Plugin.rst:8
+msgid "Plug-ins management"
+msgstr ""
+
+#: ../../Plugin.rst:10
+msgid "Plug-ins allows to add non generic features to ProjeQtOr."
+msgstr ""
+
+#: ../../Plugin.rst:13
+msgid "Plug-in deployment"
+msgstr ""
+
+#: ../../Plugin.rst:14
+msgid "Plug-in will be deployed during installation."
+msgstr ""
+
+#: ../../Plugin.rst:15
+msgid "The result of deployment will be available in the log file (See: :ref:`admin-console`)."
+msgstr ""
+
+#: ../../Plugin.rst:18
+msgid "Section: Installed plug-ins"
+msgstr ""
+
+#: ../../Plugin.rst:19
+msgid "This section lists the installed plug-ins."
+msgstr ""
+
+#: ../../Plugin.rst:23
+msgid "Detail of installed plug-ins list"
+msgstr ""
+
+#: ../../Plugin.rst:27
+#: ../../Plugin.rst:61
+msgid "Field"
+msgstr ""
+
+#: ../../Plugin.rst:28
+#: ../../Plugin.rst:31
+#: ../../Plugin.rst:62
+msgid "Description"
+msgstr ""
+
+#: ../../Plugin.rst:29
+msgid "Name"
+msgstr ""
+
+#: ../../Plugin.rst:30
+msgid "Plug-in name."
+msgstr ""
+
+#: ../../Plugin.rst:32
+msgid "Plug-in description."
+msgstr ""
+
+#: ../../Plugin.rst:33
+msgid "Version"
+msgstr ""
+
+#: ../../Plugin.rst:34
+msgid "Plug-in version."
+msgstr ""
+
+#: ../../Plugin.rst:35
+msgid "Deployed date"
+msgstr ""
+
+#: ../../Plugin.rst:36
+msgid "Deployed date."
+msgstr ""
+
+#: ../../Plugin.rst:37
+msgid "Deployed on"
+msgstr ""
+
+#: ../../Plugin.rst:38
+msgid "The version when the module has been installed."
+msgstr ""
+
+#: ../../Plugin.rst:39
+msgid "Compatible since"
+msgstr ""
+
+#: ../../Plugin.rst:40
+msgid "Compatibility version."
+msgstr ""
+
+#: ../../Plugin.rst:47
+msgid "Section: Available plug-ins (local)"
+msgstr ""
+
+#: ../../Plugin.rst:48
+msgid "This section allows to manage local plug-ins."
+msgstr ""
+
+#: ../../Plugin.rst:50
+msgid "**Available plug-ins list**"
+msgstr ""
+
+#: ../../Plugin.rst:52
+msgid "The button allows to select plug-in file."
+msgstr ""
+
+#: ../../Plugin.rst:53
+msgid "The file will be uploaded and it will be added in plugin-ins list."
+msgstr ""
+
+#: ../../Plugin.rst:57
+msgid "Detail of available plug-ins list"
+msgstr ""
+
+#: ../../Plugin.rst:63
+msgid "File"
+msgstr ""
+
+#: ../../Plugin.rst:64
+msgid "Plug-in file name."
+msgstr ""
+
+#: ../../Plugin.rst:65
+msgid "Date"
+msgstr ""
+
+#: ../../Plugin.rst:66
+msgid "File date."
+msgstr ""
+
+#: ../../Plugin.rst:67
+msgid "Size"
+msgstr ""
+
+#: ../../Plugin.rst:68
+msgid "File size."
+msgstr ""
+
+#: ../../Plugin.rst:70
+msgid "**Plug-in installation**"
+msgstr ""
+
+#: ../../Plugin.rst:72
+msgid "Click on |buttonAdd| to install plug-in."
+msgstr ""
+
+#: ../../Plugin.rst:73
+msgid "Click on |buttonIconDisplay| to display the description of plug-in."
+msgstr ""
+
+#: ../../Plugin.rst:81
+msgid "Plug-in is removed from the list after installation."
+msgstr ""
+
+#: ../../Plugin.rst:85
+msgid "Section: Available plug-ins (remote)"
+msgstr ""
+
+#: ../../Plugin.rst:86
+msgid "This section allows to manage remote plug-ins."
+msgstr ""
+
+#: ../../Plugin.rst:90
+msgid "This feature will be available later."
+msgstr ""
+
