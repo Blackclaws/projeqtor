@@ -299,6 +299,19 @@ function deleteDuplicate() {
       $name=$par->name;
     }
   }
+  // CRONEXECUTION
+  $cronexec=new CronExecution();
+  $cronexecList=$cronexec->getSqlElementsFromCriteria(array(), false, null, 'fileExecuted, fonctionName, id');
+  $fileExecuted='';
+  $fonctionName='';
+  foreach ($cronexecList as $cronexec) {
+    if ( ($cronexec->fileExecuted==$fileExecuted and $cronexec->fonctionName==$fonctionName) or ! $cronexec->fileExecuted or ! $cronexec->fonctionName ) {
+      $cronexec->delete();
+    } else {
+      $fileExecuted=$cronexec->fileExecuted;
+      $fonctionName=$cronexec->fonctionName;
+    }
+  }
 }
 
 function formatForDbType($query,$dbType=null) {
