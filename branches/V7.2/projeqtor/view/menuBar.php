@@ -147,7 +147,7 @@
   }  
   
   function drawAllMenus($menuList) {
-    global $isLanguageActive;
+    global $isLanguageActive, $isNotificationSystemActiv;
     //echo '<td>&nbsp;</td>';
     $obj=new Menu();
     $menuList=$obj->getSqlElementsFromCriteria(null, false);
@@ -161,6 +161,7 @@
     $lastType='';
     foreach ($menuList as $menu) { 
       if (! $isLanguageActive and $menu->name=="menuLanguage") { continue; }
+      if (! $isNotificationSystemActiv and strpos($menu->name, "Notification")!==false) { continue; }
       if (securityCheckDisplayMenu($menu->id,substr($menu->name,4)) ) {
     		drawMenu($menu);
     		$lastType=$menu->type;

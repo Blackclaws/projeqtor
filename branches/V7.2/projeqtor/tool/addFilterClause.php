@@ -230,6 +230,7 @@ if ($idFilterAttribute and $idFilterOperator) {
     //$arrayDisp["value"].=")";
     $arraySql["value"].=")";
     if ($idFilterAttribute=="assignedResource__idResourceAll" and ! $filterDynamicParameter) {
+      $arraySql["attribute"]='';
       $arraySql["operator"]=' exists ';
       $ass=new Assignment();
       $assTable=$ass->getDatabaseTableName();
@@ -242,11 +243,29 @@ if ($idFilterAttribute and $idFilterOperator) {
       $arraySql["operator"]="is null";
       $arrayDisp["value"]="";
       $arraySql["value"]="";
+      if ($idFilterAttribute=="assignedResource__idResourceAll") {
+        $arraySql["attribute"]='';
+        $arraySql["operator"]=' not exists ';
+        $ass=new Assignment();
+        $assTable=$ass->getDatabaseTableName();
+        $obj=new $objectClass();
+        $objTable=$obj->getDatabaseTableName();
+        $arraySql["value"]="(select 'x' from $assTable where $assTable.refType='$objectClass' and $assTable.refId=$objTable.id )";
+      }
   } else if ($idFilterOperator=="isNotEmpty") {
       $arrayDisp["operator"]=i18n("isNotEmpty");
       $arraySql["operator"]="is not null";
       $arrayDisp["value"]="";
       $arraySql["value"]="";
+      if ($idFilterAttribute=="assignedResource__idResourceAll") {
+        $arraySql["attribute"]='';
+        $arraySql["operator"]=' exists ';
+        $ass=new Assignment();
+        $assTable=$ass->getDatabaseTableName();
+        $obj=new $objectClass();
+        $objTable=$obj->getDatabaseTableName();
+        $arraySql["value"]="(select 'x' from $assTable where $assTable.refType='$objectClass' and $assTable.refId=$objTable.id )";
+      }
   } else if ($idFilterOperator=="SORT") {
     $arrayDisp["operator"]=i18n("sortFilter");
     $arraySql["operator"]=$idFilterOperator;

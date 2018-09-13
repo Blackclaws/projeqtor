@@ -935,7 +935,7 @@ foreach (Cron::$listCronExecution as $key=>$cronExecution){
     Cron::$listCronExecution[$key]=new CronExecution($cronExecution);
     $cronExecution=Cron::$listCronExecution[$key];
   }
-  require_once $cronExecution->fileExecuted;
+  if ($cronExecution->fileExecuted) require_once $cronExecution->fileExecuted;
 }
 
 ?>
