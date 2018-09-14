@@ -1183,6 +1183,12 @@ function saveAttachment(direct) {
  * @return void
  */
 function saveAttachmentAck(dataArray) {
+  if (dataArray==undefined) {
+    dojo.style(dojo.byId('downloadProgress'), {display : 'none'});
+    dojo.byId('resultAck').value=i18n("uploadUncomplete");  
+    hideWait();
+    return;
+  }
   if (!isHtml5()) {
     resultFrame=document.getElementById("resultPost");
     resultText=resultPost.document.body.innerHTML;
@@ -1197,9 +1203,7 @@ function saveAttachmentAck(dataArray) {
   } else {
     result=dataArray;
   }
-  dojo.style(dojo.byId('downloadProgress'), {
-    display : 'none'
-  });
+  dojo.style(dojo.byId('downloadProgress'), {display : 'none'});
   dojo.byId('resultAck').value=result.message;
   loadContent("../tool/ack.php", "resultDiv", "attachmentAckForm", true,
       'attachment');
