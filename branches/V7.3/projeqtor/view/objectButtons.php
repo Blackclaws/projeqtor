@@ -515,6 +515,10 @@
 				<script type="dojo/connect" event="onProgress" args="data">
           saveAttachmentProgress(data);
 	      </script>
+	      <script type="dojo/connect" event="onError" args="data">
+          hideWait();
+          showError(i18n("uploadUncomplete"));
+	      </script>
 			</div>			
 			</span>
 			<?php } else {?>

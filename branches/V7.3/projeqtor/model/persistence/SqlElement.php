@@ -6721,17 +6721,16 @@ public function getMailDetailFromTemplate($templateToReplace, $lastChangeDate=nu
       if ($dataLength>4000) { // Big text html formatted : must be transformed into plain text
         $text=new Html2Text($value);
         $result[$fld.'Text']=$text->getText();
-// BEGIN - REPLACE BY TABARY - USE isForeignKey GENERIC FUNCTION
       } else if (isForeignKey ($fld, $this)) { // idXxx : also add nameXxx
-//      } else if ($dataType=='int' and $dataLength=='12' and substr($fld,0,2)=='id' and strlen($fld)>2) { // idXxx : also add nameXxx
-// END - REPLACE BY TABARY - USE isForeignKey GENERIC FUNCTION        
-// BEGIN - ADD BY TABARY - POSSIBILITY TO HAVE X TIMES SAME idXXXX IN THE SAME OBJECT
-          $class = substr(foreignKeyWithoutAlias($fld),2);
-// END - ADD BY TABARY - POSSIBILITY TO HAVE X TIMES SAME idXXXX IN THE SAME OBJECT
+        $class = substr(foreignKeyWithoutAlias($fld),2);
         if ($class=='Resource' or $class=='User' or $class=='Contact') {
           $result['name'.$class]=SqlList::getFieldFromId('Affectable', $value, 'fullName');
         } else if (SqlElement::class_exists($class)) {
           $result['name'.$class]=SqlList::getNameFromId($class, $value);
+        }
+        if ($fld=='id'.get_class($this).'Type') {
+          $result['idType']=$value;
+          $result['nameType']=$result['name'.$class];
         }
       } else if ($dataType=='date') {
         $result[$fld]=htmlFormatDate($value);

@@ -26,6 +26,8 @@
 include_once "../tool/projeqtor.php";
 scriptLog("saveAttachment.php");
 header ('Content-Type: text/html; charset=UTF-8');
+
+error_reporting(E_ERROR);
 /** ===========================================================================
  * Save an attachment (file) : call corresponding method in SqlElement Class
  * The new values are fetched in $_REQUEST
@@ -300,6 +302,7 @@ if ($isIE and $isIE<=9) {
   echo '</body>';
   echo '</html>';
 } else {
-  ob_end_clean();
+  $result=ob_get_clean();
   echo $jsonReturn;
-}?>
+}
+?>
