@@ -588,23 +588,67 @@ function cleanContent(destination) {
  */
 var formDivPosition = null; // to replace scrolling of detail after save.
 var editorArray = new Array();
-var loadContentRetryArray=new Array();
-function loadContent(page, destination, formName, isResultMessage,
-    validationType, directAccess, silent, callBackFunction, noFading) {
+//var loadContentRetryArray=new Array();
+var loadContentStack=new array();
+var loadContentCallSequential=false;
+function getLoadContentStackKey(page, destination, formName, isResultMessage, validationType, directAccess, silent, callBackFunction, noFading) {
+  var callKey=page+"|"+destination+"|"+formName+"|"+isResultMessage+"|"+validationType;
+  return callKey;
+}
+function storeLoadContentStack(page, destination, formName, isResultMessage, validationType, directAccess, silent, callBackFunction, noFading) {
+  var arrayStack=new Array();
+  var callKey=getLoadContentStackKey(page, destination, formName, isResultMessage, validationType, directAccess, silent, callBackFunction, noFading);
+  arrayStack['page']=page;
+  arrayStack['destination']=destination;
+  arrayStack['formName']=formName;
+  arrayStack['isResultMessage']=isResultMessage;
+  arrayStack['validationType']=validationType;
+  arrayStack['directAccess']=directAccess;
+  arrayStack['silent']=silent;
+  arrayStack['callBackFunction']=callBackFunction;
+  arrayStack['noFading']=noFading;
+  loadContentStack[callKey]=arrayStack;
+}
+function cleanLoadContentStack(page, destination, formName, isResultMessage, validationType, directAccess, silent, callBackFunction, noFading) {
+  var callKey=getLoadContentStackKey(page, destination, formName, isResultMessage, validationType, directAccess, silent, callBackFunction, noFading);
+  if (loadContentStack[callKey]!==undefined) {
+    loadContentStack.splice(callKey, 1);
+  }
+}
+function warnLoadContentError(page, destination, formName, isResultMessage, validationType, directAccess, silent, callBackFunction, noFading) {
+  console.warn("Error while calling xhrPost for loadContent()");
+  console.warn("  => page='"+page+"'");
+  console.warn("  => destination='"+destination+"'");
+  console.warn("  => formName'"+formName+"'");
+  console.warn("  => isResultMessage='"+isResultMessage+"'");
+  console.warn("  => validationType='"+validationType+"'");
+  console.warn("  => directAccess='"+directAccess+"'");
+  console.warn("  => silent='"+silent+"'");
+  console.warn("  => callBackFunction='"+"?"+"'");
+  console.warn("  => noFading='"+noFading+"'");
+}
+function loadContent(page, destination, formName, isResultMessage, validationType, directAccess, silent, callBackFunction, noFading) {
   var debugStart = (new Date()).getTime();
   // Test validity of destination : must be a node and a widget
   var contentNode = dojo.byId(destination);
   var contentWidget = dijit.byId(destination);
   var fadingMode = top.fadeLoading;
-  var callKey=page+"|"+destination+"|"+formName+"|"+isResultMessage+"|"+validationType;
-  if (loadContentRetryArray[callKey]===undefined) {
-    loadContentRetryArray[callKey]=1;
+  var callKey=getLoadContentStackKey(page, destination, formName, isResultMessage, validationType, directAccess, silent, callBackFunction, noFading);
+  //if (loadContentRetryArray[callKey]===undefined) {
+  //  loadContentRetryArray[callKey]=1;
+  //} else {
+  //  loadContentRetryArray[callKey]+=1;
+  //}
+  if (loadContentStack[callKey]===undefined) {
+    storeLoadContentStack(page, destination, formName, isResultMessage, validationType, directAccess, silent, callBackFunction, noFading);
+    // If only call sequential, wait don't process : will be triggered when current has ended
+    if (loadContentCallSequential==true && loadContentStack.length>1) return; 
   } else {
-    loadContentRetryArray[callKey]+=1;
+    // already calling same request for same target with same parameters.
+    // avoid double call
+    return;
   }
-  if (dojo.isIE && dojo.isIE <= 8) {
-    fadingMode = false;
-  }
+  
   if (dojo.byId('formDiv')) {
     formDivPosition = dojo.byId('formDiv').scrollTop;
   }
@@ -700,10 +744,15 @@ function loadContent(page, destination, formName, isResultMessage,
             }).play();
           }
           // update the destination when ajax request is received
-          if (!contentWidget) {
-            if (loadContentRetryArray[callKey]!==undefined) {
-              loadContentRetryArray.splice(callKey, 1);
-            }
+          if (!contentNode || !contentWidget) {
+            //if (loadContentRetryArray[callKey]!==undefined) {
+            //  loadContentRetryArray.splice(callKey, 1);
+            //}
+            warnLoadContentError(page, destination, formName, isResultMessage, validationType, directAccess, silent, callBackFunction, noFading)
+            console.warn("return from xhrPost for a loadContent : '"+destination+"' is not a node or not a widget");
+            console.warn(contentNode);
+            console.warn(contentWidget);
+            cleanLoadContentStack(page, destination, formName, isResultMessage, validationType, directAccess, silent, callBackFunction, noFading);
             hideWait();
             return;
           }
@@ -715,7 +764,7 @@ function loadContent(page, destination, formName, isResultMessage,
               // dijit.byId('planResultDiv').set('content',"");
             }
           }
-          // Must destroy existing instances of CKEDITOR before refreshing the
+          // Must destroy existing instances of CKEDITOR before refreshing the page
           // page.
           if (page.substr(0, 16) == 'objectDetail.php'
               && (destination == 'detailDiv' || destination == 'detailFormDiv' || destination == "formDiv") && !editorInFullScreen()) {
@@ -894,29 +943,32 @@ function loadContent(page, destination, formName, isResultMessage,
           msg += " (server:" + debugDurationServer + "ms, client:"
               + debugDurationClient + "ms)";
           consoleTraceLog(msg);
-          if (loadContentRetryArray[callKey]!==undefined) {
-            loadContentRetryArray.splice(callKey, 1);
-          }
+          cleanLoadContentStack(page, destination, formName, isResultMessage, validationType, directAccess, silent, callBackFunction, noFading)
+          //if (loadContentRetryArray[callKey]!==undefined) {
+          //  loadContentRetryArray.splice(callKey, 1);
+          //}
         },
         error : function(error, args) {
-          var retries=-1;
-          if (loadContentRetryArray[callKey]!==undefined) {
-            retries=loadContentRetryArray[callKey];
-          }
+          //var retries=-1;          
+          //if (loadContentRetryArray[callKey]!==undefined) {
+          //  retries=loadContentRetryArray[callKey];
+          //}
+          cleanLoadContentStack(page, destination, formName, isResultMessage, validationType, directAccess, silent, callBackFunction, noFading);
+          warnLoadContentError(page, destination, formName, isResultMessage, validationType, directAccess, silent, callBackFunction, noFading);
           console.warn(error);
           if (!silent) hideWait();
           finaliseButtonDisplay();
           //formChanged();
-          if (retries>0 && retries <3) { // On error, will retry ou to 3 times before raising an error
-            console.warn('['+retries+'] '+i18n("errorXhrPost", new Array(page, destination,formName, isResultMessage, error)));
-            loadContent(page, destination, formName, isResultMessage, validationType, directAccess, silent, callBackFunction);
-          } else {
+          //if (retries>0 && retries <3) { // On error, will retry ou to 3 times before raising an error
+          //  console.warn('['+retries+'] '+i18n("errorXhrPost", new Array(page, destination,formName, isResultMessage, error)));
+          //  loadContent(page, destination, formName, isResultMessage, validationType, directAccess, silent, callBackFunction);
+          //} else {
             enableWidget('saveButton');
             enableWidget('undoButton');
-            console.warn(i18n("errorXhrPost", new Array(page, destination,formName, isResultMessage, error)));
+            //console.warn(i18n("errorXhrPost", new Array(page, destination,formName, isResultMessage, error))); // No use with warnLoadContentError
             hideWait();
             //showError(i18n('errorXhrPostMessage'));
-          }
+          //}
         }
       });
   if (fadingMode) {
