@@ -217,7 +217,9 @@
           } else if ($objectClass=='Document') {
             $app=new Approver();
             $appTable=$app->getDatabaseTableName();
-          	$queryWhere.= "(" . $table . ".idProject in " . getVisibleProjectsList(! $showIdleProjects) . " or " . $table . ".idProject is null or exists (select 'x' from $appTable app where app.refType='Document' and app.refId=$table.id and app.idAffectable=$user->id ))";
+            // Fix : do not systematically show documents where user is approver if project is selected
+          	//$queryWhere.= "(" . $table . ".idProject in " . getVisibleProjectsList(! $showIdleProjects) . " or " . $table . ".idProject is null or exists (select 'x' from $appTable app where app.refType='Document' and app.refId=$table.id and app.idAffectable=$user->id ))";
+            $queryWhere.= "(" . $table . ".idProject in " . getVisibleProjectsList(! $showIdleProjects) .")";
           } else if ($obj->isAttributeSetToField('idProject','required') ){
             $queryWhere.= $table . ".idProject in " . getVisibleProjectsList(! $showIdleProjects) ;
           } else {
