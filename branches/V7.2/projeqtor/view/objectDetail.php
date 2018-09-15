@@ -2440,7 +2440,10 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false, $pare
           echo ' constraints="{min:2000,max:2100,pattern:\'###0\'}" ';
         } else if ($max) {
           //gautier min amount
-          if(($isAmount or $isCost) and $col != 'update3Amount' and $col != 'update3FullAmount' and $col != 'update4Amount' and $col != 'update4FullAmount' and $col != 'addUntaxedAmount' and $col != 'addFullAmount'){
+          if(($isAmount or $isCost) 
+              and $col != 'update3Amount' and $col != 'update3FullAmount' and $col != 'update4Amount' and $col != 'update4FullAmount' 
+              and $col != 'addUntaxedAmount' and $col != 'addFullAmount'
+              and $col != "reserveAmount" and $col!="marginCost"){
               echo ' constraints="{min:0,max:'.$max.(($isAmount)?',places:2':'').'}" ';
           } else {
             echo ' constraints="{min:-'.$max.',max:'.$max.(($isAmount)?',places:2':'').'}" ';
