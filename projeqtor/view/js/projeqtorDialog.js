@@ -8538,6 +8538,7 @@ function getMaxHeight(document){
 
 function planningToCanvasToPDF(){
 
+  console.log("planningToCanvasToPDF - START");
   var iframe = document.createElement('iframe');
   
   //this onload is for firefox but also work on others browsers
@@ -8548,21 +8549,35 @@ function planningToCanvasToPDF(){
   var repeatIconTask=document.getElementById("printRepeat").checked; // If true this will repeat on each page the icon
   loadContent("../tool/submitPlanningPdf.php", "planResultDiv", 'planningPdfForm', false,null,null,null,function(){showWait();});
   var sizeElements=[];
-  var marge=0;
+  var marge=30;
   var widthIconTask=0; // the width that icon+task represent
-  var heightColumn=parseInt(document.getElementById('leftsideTop').offsetHeight)*ratio;
-  var heightRow=21*ratio;
-  var widthRow=(parseInt(dojo.query('.ganttRightTitle')[0].offsetWidth)-1)*ratio;
+  //var heightColumn=parseInt(document.getElementById('leftsideTop').offsetHeight)*ratio;
+  var heightColumn=parseInt(document.getElementById('leftsideTop').offsetHeight);
+  //var heightRow=21*ratio;
+  var heightRow=21;
+  //var widthRow=(parseInt(dojo.query('.ganttRightTitle')[0].offsetWidth)-1)*ratio;
+  var widthRow=(parseInt(dojo.query('.ganttRightTitle')[0].offsetWidth)-1);
   var nbRowTotal=0;
   var nbColTotal=0;
   // init max width/height by orientation
-  var maxWidth=(540-marge)*1.25;
-  var maxHeight=(737-marge)*1.25;
-  if(orientation=="landscape"){
-    maxWidth=(850-marge)*1.25;
-    maxHeight=(450-marge)*1.25;
+  var pageFormat='A4';
+  if(document.getElementById("printFormatA3").checked)pageFormat="A3";
+  var imageZoomIn=1.3/ratio;
+  var imageZoomOut=1/imageZoomIn;
+  ratio=1;
+  var maxWidth=(596-(2*marge))*imageZoomIn;
+  var maxHeight=(842-(2*marge))*imageZoomIn;
+  if (pageFormat=='A3') {
+    var maxTemp=maxWidth;
+    maxWidth=maxHeight;
+    maxHeight=2*maxTemp;
   }
-  
+  if(orientation=="landscape"){
+    var maxTemp=maxWidth;
+    maxWidth=maxHeight;
+    maxHeight=maxTemp;
+  }
+
   //We create an iframe will which contain the planning to transform it in image
   var frameContent=document.getElementById("iframeTmpPlanning");
   
@@ -8622,6 +8637,7 @@ function planningToCanvasToPDF(){
   }
   
   widthIconTask=sizeElements[0]+sizeElements[1];
+  if (widthIconTask>parseInt(document.getElementById('leftGanttChartDIV').style.width)) widthIconTask=parseInt(document.getElementById('leftGanttChartDIV').style.width);
   
   sizeColumn=parseInt(dojo.query(".ganttRightTitle")[0].style.width)*ratio;
   
@@ -8643,16 +8659,18 @@ function planningToCanvasToPDF(){
   
   //Start the 4 prints function
   //Print image activities and projects
+  console.log("planningToCanvasToPDF - BEFORE html2Canvas");
   html2canvas(frameContent.contentWindow.document.getElementById('leftside')).then(function(leftElement) {
-    
+    console.log("planningToCanvasToPDF - html2Canvas - Step 1 - leftside");
     //Print image column left side
     html2canvas(frameContent.contentWindow.document.getElementById('leftsideTop')).then(function(leftColumn) { 
-      
+      console.log("planningToCanvasToPDF - html2Canvas - Step 2 - leftsideTop");
       //Print right Line
       html2canvas(frameContent.contentWindow.document.getElementById('rightGanttChartDIV')).then(function(rightElement) {
-        
+        console.log("planningToCanvasToPDF - html2Canvas - Step 3 - rightGanttChartDIV");
         //Print right column
         html2canvas(frameContent.contentWindow.document.getElementById('rightside')).then(function(rightColumn) {
+          console.log("planningToCanvasToPDF - html2Canvas - Step 4 - rightside");
           if(ratio!=1){
             leftElement=cropCanvas(leftElement,0,0,leftElement.width,leftElement.height,ratio);
             leftColumn=cropCanvas(leftColumn,0,0,leftColumn.width,leftColumn.height,ratio);
@@ -8662,12 +8680,14 @@ function planningToCanvasToPDF(){
           //Init number of total rows
           nbRowTotal=Math.round(leftElement.height/heightRow); 
           //frameContent.parentNode.removeChild(frameContent);
-          
+          console.log("planningToCanvasToPDF - start picture calculation");
           //Start pictures's calcul
           firstEnterHeight=true;
           var EHeightValue=0; //Height pointer cursor
           var EHeight=leftElement.height; //total height
+          console.log("step 1");
           while((Math.ceil(EHeight/maxHeight)>=1 || firstEnterHeight) && EHeight>heightRow){
+            console.log("planningToCanvasToPDF - EHeight="+EHeight+", maxHeight"+maxHeight+", EHeight/maxHeight="+Math.ceil(EHeight/maxHeight));
             var calculHeight=maxHeight;
             var ELeftWidth=leftElement.width; //total width
             var ERightWidth=rightElement.width; //total width
@@ -8687,12 +8707,14 @@ function planningToCanvasToPDF(){
             var imageRepeat=null;
             if(repeatIconTask){
               imageRepeat=combineCanvasIntoOne(
-                              cropCanvas(leftColumn,0,0,sizeElements[0]+sizeElements[1],heightColumn),
-                              cropCanvas(leftElement,0,EHeightValue,sizeElements[0]+sizeElements[1],heightElement),
+                              cropCanvas(leftColumn,0,0,widthIconTask,heightColumn),
+                              cropCanvas(leftElement,0,EHeightValue,widthIconTask,heightElement),
                               true);
             }
             var canvasList=[];
+            console.log("step 2");
             while(ELeftWidth/maxWidth>=1 || (!firstEnterWidth && ELeftWidth>0)){
+              console.log("planningToCanvasToPDF - ELeftWidth="+ELeftWidth+", maxWidth"+maxWidth+", ELeftWidth/maxWidth="+Math.ceil(ELeftWidth/maxWidth));
               firstEnterWidth2=true;
               oldWidthElement=widthElement;
               while(iterateurColumnLeft<sizeElements.length && ELeftWidth>=sizeElements[iterateurColumnLeft]){
@@ -8736,6 +8758,7 @@ function planningToCanvasToPDF(){
               }
               firstEnterWidth=false;
             }
+            console.log("step 3");
             if(canvasList.length==0){
               if(firstEnterHeight || repeatIconTask){
                 canvasList.push(combineCanvasIntoOne(
@@ -8749,8 +8772,8 @@ function planningToCanvasToPDF(){
             firstEnterWidth=true;
             if(repeatIconTask && leftColumn.width>widthIconTask){
               imageRepeat=combineCanvasIntoOne(combineCanvasIntoOne(
-                                                    cropCanvas(leftColumn,0,0,sizeElements[0]+sizeElements[1],heightColumn),
-                                                    cropCanvas(leftElement,0,EHeightValue,sizeElements[0]+sizeElements[1],heightElement),
+                                                    cropCanvas(leftColumn,0,0,widthIconTask,heightColumn),
+                                                    cropCanvas(leftElement,0,EHeightValue,widthIconTask,heightElement),
                                                     true),
                                                combineCanvasIntoOne(
                                                     cropCanvas(leftColumn,leftColumn.width-4,0,4,heightColumn),
@@ -8763,7 +8786,12 @@ function planningToCanvasToPDF(){
             var canvasList2=[];
             //Init number of total cols
             nbColTotal=Math.round(rightElement.width/widthRow); 
+            console.log("step 4");
+            var countIteration=0;
             while((Math.ceil(ERightWidth/maxWidth)>=1 || (!firstEnterWidth && ERightWidth>0)) && nbColTotal>0){
+              countIteration++;
+              console.log("planningToCanvasToPDF - ERightWidth="+ERightWidth+", maxWidth"+maxWidth+", ERightWidth/maxWidth="+Math.ceil(ERightWidth/maxWidth));
+              console.log("nbColTotal="+nbColTotal);
               firstEnterWidth2=true;
               oldWidthElement=widthElement;
               limit=0;
@@ -8778,8 +8806,10 @@ function planningToCanvasToPDF(){
                 nbColTotal--;
               }
               if(!firstEnterWidth){
-                if(currentWidthElm!=0 && widthElement!=oldWidthElement)if(repeatIconTask){
-                  canvasList2.push(combineCanvasIntoOne(imageRepeat,
+                console.log("! firstEnterWidth");
+                if(currentWidthElm!=0 && widthElement!=oldWidthElement)
+                  if(repeatIconTask){
+                    canvasList2.push(combineCanvasIntoOne(imageRepeat,
                                        combineCanvasIntoOne(
                                            cropCanvas(rightColumn,oldWidthElement+1,0,currentWidthElm,heightColumn),
                                            cropCanvas(rightElement,oldWidthElement,EHeightValue,currentWidthElm,heightElement),
@@ -8796,6 +8826,7 @@ function planningToCanvasToPDF(){
                   }
                 }
               }else{
+                console.log("firstEnterWidth");
                 if(widthElement==0){
                   canvasList2.push(canvasList[canvasList.length-1]);
                 }else if(firstEnterHeight || repeatIconTask){
@@ -8811,11 +8842,12 @@ function planningToCanvasToPDF(){
                                         false));
                 }
               }
-              if(nbColTotal==0){
+              if(nbColTotal==0 || countIteration>100){
                 ERightWidth=0;
               }
               firstEnterWidth=false;
             }
+            console.log("step 5");
             var baseIterateur=tabImage.length;
             for(var i=0;i<canvasList.length-1;i++){
               
@@ -8823,44 +8855,48 @@ function planningToCanvasToPDF(){
               mapImage["image"+(i+baseIterateur)]=canvasList[i].toDataURL();
               
               //Add to tabImage an array wich contain parameters to put an image into a pdf page with a pagebreak if necessary
-              ArrayToPut={image: "image"+(i+baseIterateur),width: canvasList[i].width*0.75,height:canvasList[i].height*0.75};
+              ArrayToPut={image: "image"+(i+baseIterateur),width: canvasList[i].width*imageZoomOut,height:canvasList[i].height*imageZoomOut};
               if(!(canvasList2.length==0 && i==canvasList.length-1)){
                 ArrayToPut['pageBreak']='after';
               }
               tabImage.push(ArrayToPut);
             }
+            console.log("step 6");
             for(var i=0;i<canvasList2.length;i++){
               if(canvasList2[i].width-widthIconTask>4){
                 //Add image to mapImage in base64 format
                 mapImage["image"+(i+canvasList.length+baseIterateur)]=canvasList2[i].toDataURL();
                 
                 //Add to tabImage an array wich contain parameters to put an image into a pdf page with a pagebreak if necessary
-                ArrayToPut={image: "image"+(i+canvasList.length+baseIterateur),width: canvasList2[i].width*0.75,height:canvasList2[i].height*0.75};
+                ArrayToPut={image: "image"+(i+canvasList.length+baseIterateur),width: canvasList2[i].width*imageZoomOut,height:canvasList2[i].height*imageZoomOut};
                 if(i!=canvasList2.length-1){
                   ArrayToPut['pageBreak']='after';
                 }
                 tabImage.push(ArrayToPut);
               }
             }
+            console.log("step 7");
             EHeight-=maxHeight-calculHeight;
             EHeightValue+=maxHeight-calculHeight;
             firstEnterHeight=false;
           }
+          console.log("planningToCanvasToPDF - end of picture calculation");
           var dd = {
+             pageMargins: [ marge, marge, marge, marge ],
              pageOrientation: orientation,
              content: tabImage,
-             images: mapImage
+             images: mapImage,
+             footer: function(currentPage, pageCount) {  return { fontSize : 8, text: currentPage.toString() + ' / ' + pageCount , alignment: 'center' };},
+             pageSize: pageFormat
           };
           if( !dojo.isIE ) {
-
-            var userAgent = navigator.userAgent.toLowerCase(); var IEReg = /(msie\s|trident.*rv:)([\w.]+)/; var match = IEReg.exec(userAgent); if( match )
-
-            dojo.isIE = match[2] - 0;
-
+            var userAgent = navigator.userAgent.toLowerCase(); 
+            var IEReg = /(msie\s|trident.*rv:)([\w.]+)/; 
+            var match = IEReg.exec(userAgent); 
+            if( match )
+              dojo.isIE = match[2] - 0;
             else
-
-            dojo.isIE = undefined;
-
+              dojo.isIE = undefined;
           }
           var pdfFileName='ProjeQtOr_Planning';
           var now = new Date();
@@ -8871,6 +8907,7 @@ function planningToCanvasToPDF(){
           }else{
             pdfMake.createPdf(dd).download(pdfFileName);
           }
+          console.log("planningToCanvasToPDF - almost finished");
           // open the PDF in a new window
           //pdfMake.createPdf(dd).open();
           // print the PDF (temporarily Chrome-only)
@@ -8879,11 +8916,13 @@ function planningToCanvasToPDF(){
           dijit.byId('dialogPlanningPdf').hide();
           iframe.parentNode.removeChild(iframe);
           setTimeout('hideWait();',100);
+          console.log("planningToCanvasToPDF - after hidewait");
         });
       });
     });
   });
   };
+  console.log("planningToCanvasToPDF - OK");
   iframe.id="iframeTmpPlanning";
   document.body.appendChild(iframe);
 }

@@ -46,7 +46,11 @@ if (array_key_exists('printRepeat',$_REQUEST)) {
   $printRepeat="repeat";
 }
 
+$printFormat=RequestHandler::getValue('printFormat');
+if (! $printFormat) $printFormat="A4";
+
 Parameter::storeUserParameter("printOrientation", $printOrientation);
 Parameter::storeUserParameter("printZoom", $printZoom);
 Parameter::storeUserParameter("printRepeat", $printRepeat);
+Parameter::storeUserParameter("printFormat", $printFormat);
 ?>
