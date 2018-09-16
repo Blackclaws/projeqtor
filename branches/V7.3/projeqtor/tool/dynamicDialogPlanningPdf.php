@@ -34,25 +34,21 @@ if($printOrientation=="landscape" || $printOrientation==""){
 }
 
 $printZoom=Parameter::getUserParameter("printZoom");
-$select100="";
-$select90="";
-$select75="";
-$select50="";
-if($printZoom=="100" && $printZoom==""){
-  $select100='selected="selected"';
-}else if($printZoom=="90"){
-  $select90='selected="selected"';
-}else if($printZoom=="75"){
-  $select75='selected="selected"';
-}else if($printZoom=="50"){
-  $select50='selected="selected"';
-}
 
 $printRepeat=Parameter::getUserParameter("printRepeat");
 if($printRepeat=="repeat" || $printRepeat==""){
   $printRepeat='checked="checked"';
 }else{
   $printRepeat="";
+}
+
+$printFormat=Parameter::getUserParameter("printFormat");
+$printFormatA4="";
+$printFormatA3="";
+if ($printFormat=="A3") {
+  $printFormatA3='checked="checked"';
+} else {
+  $printFormatA4='checked="checked"';
 }
 ?>
   <table>
@@ -86,16 +82,39 @@ if($printRepeat=="repeat" || $printRepeat==""){
            <tr><td>&nbsp;</td><td>&nbsp;</td></tr>
            <tr>
              <td class="dialogLabel"  >
+               <label for="printFormat" ><?php echo i18n("printFormat") ?>&nbsp;:&nbsp;</label>
+             </td>
+             <td>
+               <table><tr>
+                <td style="text-align:right; width:5%">
+                  <input type="radio" dojoType="dijit.form.RadioButton" 
+                   name="printFormat" id="printFormatA4" <?php echo $printFormatA4;?>
+                   value="A4" style="background-color:white;float:right;"/>
+                </td><td style="text-align:left;">    
+                  <label style="text-align: left;" class="smallRadioLabel" for="printFormatA4">A4&nbsp;</label>
+                </td>
+                <td style="text-align:right; width:5%;">
+                  <input type="radio" dojoType="dijit.form.RadioButton" 
+                   name="printFormat" id="printFormatA3" <?php echo $printFormatA3;?>
+                   value="A3" style="background-color:white;"/>
+                </td><td style="text-align:left;"> 
+                  <label style="text-align: left;" class="smallRadioLabel" for="printFormatA3">A3&nbsp;</label>
+                </td>
+              </tr></table>
+             </td>
+           </tr>
+           <tr><td>&nbsp;</td><td>&nbsp;</td></tr>
+           <tr>
+             <td class="dialogLabel"  >
                <label for="printZoom" ><?php echo i18n("printZoom") ?>&nbsp;:&nbsp;</label>
              </td>
              <td>
                <select dojoType="dijit.form.FilteringSelect" 
                <?php echo autoOpenFilteringSelect();?>
                 id="printZoom" name="printZoom" style="width:65px;" required class="input">
-                <option <?php echo $select100;?> value="100">100%</option>
-                <option <?php echo $select90;?> value="90">90%</option>
-                <option <?php echo $select75;?> value="75">75%</option>
-                <option <?php echo $select50;?> value="50">50%</option>
+                 <?php for ($i=100;$i>=10;$i-=10) {?>
+                <option <?php if ($printZoom==$i) { echo 'selected="selected"';}?> value="<?php echo $i;?>"><?php echo $i;?>%</option>
+                <?php }?>
                </select>
              </td>
            </tr>
