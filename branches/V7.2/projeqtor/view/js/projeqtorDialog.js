@@ -8557,10 +8557,10 @@ function planningToCanvasToPDF(){
   var nbColTotal=0;
   // init max width/height by orientation
   var maxWidth=(540-marge)*1.25;
-  var maxHeight=(737-marge)*1.25;
+  var maxHeight=(842-marge)*1.25;
   if(orientation=="landscape"){
     maxWidth=(850-marge)*1.25;
-    maxHeight=(450-marge)*1.25;
+    maxHeight=(570-marge)*1.25;
   }
   
   //We create an iframe will which contain the planning to transform it in image
@@ -8622,6 +8622,7 @@ function planningToCanvasToPDF(){
   }
   
   widthIconTask=sizeElements[0]+sizeElements[1];
+  if (widthIconTask>parseInt(document.getElementById('leftGanttChartDIV').style.width)) widthIconTask=parseInt(document.getElementById('leftGanttChartDIV').style.width);
   
   sizeColumn=parseInt(dojo.query(".ganttRightTitle")[0].style.width)*ratio;
   
@@ -8644,13 +8645,10 @@ function planningToCanvasToPDF(){
   //Start the 4 prints function
   //Print image activities and projects
   html2canvas(frameContent.contentWindow.document.getElementById('leftside')).then(function(leftElement) {
-    
     //Print image column left side
     html2canvas(frameContent.contentWindow.document.getElementById('leftsideTop')).then(function(leftColumn) { 
-      
       //Print right Line
       html2canvas(frameContent.contentWindow.document.getElementById('rightGanttChartDIV')).then(function(rightElement) {
-        
         //Print right column
         html2canvas(frameContent.contentWindow.document.getElementById('rightside')).then(function(rightColumn) {
           if(ratio!=1){
@@ -8662,7 +8660,6 @@ function planningToCanvasToPDF(){
           //Init number of total rows
           nbRowTotal=Math.round(leftElement.height/heightRow); 
           //frameContent.parentNode.removeChild(frameContent);
-          
           //Start pictures's calcul
           firstEnterHeight=true;
           var EHeightValue=0; //Height pointer cursor
@@ -8687,8 +8684,8 @@ function planningToCanvasToPDF(){
             var imageRepeat=null;
             if(repeatIconTask){
               imageRepeat=combineCanvasIntoOne(
-                              cropCanvas(leftColumn,0,0,sizeElements[0]+sizeElements[1],heightColumn),
-                              cropCanvas(leftElement,0,EHeightValue,sizeElements[0]+sizeElements[1],heightElement),
+                              cropCanvas(leftColumn,0,0,widthIconTask,heightColumn),
+                              cropCanvas(leftElement,0,EHeightValue,widthIconTask,heightElement),
                               true);
             }
             var canvasList=[];
@@ -8749,8 +8746,8 @@ function planningToCanvasToPDF(){
             firstEnterWidth=true;
             if(repeatIconTask && leftColumn.width>widthIconTask){
               imageRepeat=combineCanvasIntoOne(combineCanvasIntoOne(
-                                                    cropCanvas(leftColumn,0,0,sizeElements[0]+sizeElements[1],heightColumn),
-                                                    cropCanvas(leftElement,0,EHeightValue,sizeElements[0]+sizeElements[1],heightElement),
+                                                    cropCanvas(leftColumn,0,0,widthIconTask,heightColumn),
+                                                    cropCanvas(leftElement,0,EHeightValue,widthIconTask,heightElement),
                                                     true),
                                                combineCanvasIntoOne(
                                                     cropCanvas(leftColumn,leftColumn.width-4,0,4,heightColumn),
@@ -8763,7 +8760,9 @@ function planningToCanvasToPDF(){
             var canvasList2=[];
             //Init number of total cols
             nbColTotal=Math.round(rightElement.width/widthRow); 
+            var countIteration=0;
             while((Math.ceil(ERightWidth/maxWidth)>=1 || (!firstEnterWidth && ERightWidth>0)) && nbColTotal>0){
+              countIteration++;
               firstEnterWidth2=true;
               oldWidthElement=widthElement;
               limit=0;
@@ -8778,8 +8777,9 @@ function planningToCanvasToPDF(){
                 nbColTotal--;
               }
               if(!firstEnterWidth){
-                if(currentWidthElm!=0 && widthElement!=oldWidthElement)if(repeatIconTask){
-                  canvasList2.push(combineCanvasIntoOne(imageRepeat,
+                if(currentWidthElm!=0 && widthElement!=oldWidthElement)
+                  if(repeatIconTask){
+                    canvasList2.push(combineCanvasIntoOne(imageRepeat,
                                        combineCanvasIntoOne(
                                            cropCanvas(rightColumn,oldWidthElement+1,0,currentWidthElm,heightColumn),
                                            cropCanvas(rightElement,oldWidthElement,EHeightValue,currentWidthElm,heightElement),
@@ -8811,7 +8811,7 @@ function planningToCanvasToPDF(){
                                         false));
                 }
               }
-              if(nbColTotal==0){
+              if(nbColTotal==0 || countIteration>1000){
                 ERightWidth=0;
               }
               firstEnterWidth=false;
@@ -8852,15 +8852,13 @@ function planningToCanvasToPDF(){
              images: mapImage
           };
           if( !dojo.isIE ) {
-
-            var userAgent = navigator.userAgent.toLowerCase(); var IEReg = /(msie\s|trident.*rv:)([\w.]+)/; var match = IEReg.exec(userAgent); if( match )
-
-            dojo.isIE = match[2] - 0;
-
+            var userAgent = navigator.userAgent.toLowerCase(); 
+            var IEReg = /(msie\s|trident.*rv:)([\w.]+)/; 
+            var match = IEReg.exec(userAgent); 
+            if( match )
+              dojo.isIE = match[2] - 0;
             else
-
-            dojo.isIE = undefined;
-
+              dojo.isIE = undefined;
           }
           var pdfFileName='ProjeQtOr_Planning';
           var now = new Date();
