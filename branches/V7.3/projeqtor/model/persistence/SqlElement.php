@@ -4521,6 +4521,20 @@ abstract class SqlElement {
               $objects .= "<br/>&nbsp;-&nbsp;" . i18n ( $object ) . " (" . $nb . ")";
             }
           }
+          if (get_class($this)=='Contact') { 
+            // Also search for sponsor
+            $crit = array('idSponsor' => $this->id);
+            $nb = $obj->countSqlElementsFromCriteria ( $crit, $where );
+            if ($nb > 0) {
+              if ($mode == "control")
+                $error = true;
+              if ($mode == "confirm" and self::isDeleteConfirmed ()) {
+                // If mode confirm and message of confirmation occured : OK
+              } else {
+                $objects .= "<br/>&nbsp;-&nbsp;" . i18n ( $object ) . " (" . $nb . ")";
+              }
+            }
+          }
         }
       }
       if ($objects != "") {
