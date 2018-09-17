@@ -896,7 +896,7 @@ CREATE TABLE `${prefix}parameter` (
 --
 
 INSERT INTO `${prefix}parameter` (`id`, `idUser`, `idProject`, `parameterCode`, `parameterValue`) VALUES
-(1, NULL, NULL, 'dbVersion', 'V0.3.0'),
+(1, NULL, NULL, 'dbVersion', 'V0.0.0'),
 (2, 1, NULL, 'destinationWidth', '847'),
 (3, 1, NULL, 'theme', 'ProjectOrRia'),
 (4, 1, NULL, 'lang', 'en'),

@@ -33,6 +33,8 @@
   scriptLog('   ->/tool/loginCheck.php');
   $login="";
   $password="";
+  $dbVersion=Sql::getDbVersion();
+  debugTraceLog("loginCheck : current db version = '$dbVersion'");
   if (array_key_exists('login',$_POST)) {
     $login=$_POST['login'];
     $login=AesCtr::decrypt($login, getSessionValue('sessionSalt'), Parameter::getGlobalParameter('aesKeyLength'));
@@ -48,8 +50,6 @@
     debugTraceLog("loginCheck : no password or not encrypted / $password /".getSessionValue('sessionSalt'));
     loginError();
   }
-  $dbVersion=Sql::getDbVersion();
-  debugTraceLog("loginCheck : current db version = '$dbVersion'");
   if (! $dbVersion or $dbVersion=='0.0.0') {
 	  $password=AesCtr::decrypt($password, getSessionValue('sessionSalt'), Parameter::getGlobalParameter('aesKeyLength'));
 	  debugTraceLog("login for maintenance with '$login' / '$password'");
