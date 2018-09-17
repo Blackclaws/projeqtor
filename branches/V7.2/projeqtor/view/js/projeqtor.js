@@ -624,14 +624,10 @@ function storeLoadContentStack(page, destination, formName, isResultMessage, val
 }
 function cleanLoadContentStack(page, destination, formName, isResultMessage, validationType, directAccess, silent, callBackFunction, noFading) {
   var callKey=getLoadContentStackKey(page, destination, formName, isResultMessage, validationType, directAccess, silent, callBackFunction, noFading);
-  console.log("before clean key "+callKey);
-  for (var i in loadContentStack) console.log("  =>"+i);
   if (loadContentStack[callKey]!==undefined) {
     //loadContentStack.splice(callKey,1);
     delete loadContentStack[callKey];
   }
-  console.log("after clean key "+callKey);
-  for (var i in loadContentStack) console.log("  =>"+i);
   if (loadContentCallSequential==true) {
     // Call next
     for (var arrKey in loadContentStack) {
@@ -639,7 +635,6 @@ function cleanLoadContentStack(page, destination, formName, isResultMessage, val
       break;
     }
     var firstItem=loadContentStack[firstItemKey];
-    console.log("clean done must call next ");
     if (firstItem===undefined) return;
     delete loadContentStack[firstItemKey];
     loadContent(firstItem['page'], firstItem['destination'], firstItem['formName'], firstItem['isResultMessage'], firstItem['validationType'], firstItem['directAccess'], firstItem['silent'], firstItem['callBackFunction'], firstItem['noFading']);
@@ -664,7 +659,6 @@ function loadContent(page, destination, formName, isResultMessage, validationTyp
   var contentWidget = dijit.byId(destination);
   var fadingMode = top.fadeLoading;
   var callKey=getLoadContentStackKey(page, destination, formName, isResultMessage, validationType, directAccess, silent, callBackFunction, noFading);
-  console.log("* loadContent ENTRY for key "+callKey);
   //if (loadContentRetryArray[callKey]===undefined) {
   //  loadContentRetryArray[callKey]=1;
   //} else {
@@ -673,15 +667,12 @@ function loadContent(page, destination, formName, isResultMessage, validationTyp
   if (loadContentStack[callKey]===undefined) {
     storeLoadContentStack(page, destination, formName, isResultMessage, validationType, directAccess, silent, callBackFunction, noFading);
     // If only call sequential, wait don't process : will be triggered when current has ended
-    console.log("items in loadContentStack = "+Object.keys(loadContentStack).length);
     if (loadContentCallSequential==true && Object.keys(loadContentStack).length>1) {
-      console.log("* loadContent EXIT 01 (sequential) for key "+callKey);
       return; 
     }
   } else {
     // already calling same request for same target with same parameters.
     // avoid double call
-    console.log("* loadContent EXIT 02 (duplicate) for key "+callKey);
     return;
   }
   
@@ -708,7 +699,6 @@ function loadContent(page, destination, formName, isResultMessage, validationTyp
         formName, isResultMessage, destination)));
     hideWait();
     cleanLoadContentStack(page, destination, formName, isResultMessage, validationType, directAccess, silent, callBackFunction, noFading)
-    console.log("* loadContent EXIT 03 (contenNode error) for key "+callKey);
     return;
   }
   if (contentNode && page.indexOf("destinationWidth=")<0) {
@@ -792,7 +782,6 @@ function loadContent(page, destination, formName, isResultMessage, validationTyp
             console.warn(contentWidget);
             cleanLoadContentStack(page, destination, formName, isResultMessage, validationType, directAccess, silent, callBackFunction, noFading);
             hideWait();
-            console.log("* loadContent EXIT 04 (contenNode error after xhrPost) for key "+callKey);
             return;
           }
           if (dijit.byId('planResultDiv')) {
@@ -983,7 +972,6 @@ function loadContent(page, destination, formName, isResultMessage, validationTyp
               + debugDurationClient + "ms)";
           consoleTraceLog(msg);
           cleanLoadContentStack(page, destination, formName, isResultMessage, validationType, directAccess, silent, callBackFunction, noFading);
-          console.log("* loadContent EXIT 05 (normal exit) for key "+callKey);
           //if (loadContentRetryArray[callKey]!==undefined) {
           //  loadContentRetryArray.splice(callKey, 1);
           //}
@@ -1009,7 +997,6 @@ function loadContent(page, destination, formName, isResultMessage, validationTyp
             hideWait();
             //showError(i18n('errorXhrPostMessage'));
           //}
-          console.log("* loadContent EXIT 06 (exit on error on xhrPost) for key "+callKey);
         }
       });
   if (fadingMode) {
