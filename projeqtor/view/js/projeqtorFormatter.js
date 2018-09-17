@@ -465,19 +465,24 @@ function thumb64(value) {
   return thumb(value, 64);
 }
 function thumbName16(value) {
-  return thumb(value, 16);
+  return thumbNameSize(value, 16);
 }
 function thumbName22(value) {
-  return thumb(value, 22);
+  return thumbNameSize(value, 22);
 }
 function thumbName32(value) {
-  return thumb(value, 32);
+  return thumbNameSize(value, 32);
 }
 function thumbName48(value) {
-  return thumb(value, 48);
+  return thumbNameSize(value, 48);
 }
 function thumbName64(value) {
-  return thumb(value, 64);
+  return thumbNameSize(value, 64);
+}
+function thumbNameSize(value,size) {
+  var tab=value.split('#!#');
+  if (tab.length>1) value=tab[1];
+  return thumb(value, size);
 }
 function thumb(value, size) {
   if (value == "##" || value == "####")

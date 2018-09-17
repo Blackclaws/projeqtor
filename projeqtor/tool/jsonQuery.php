@@ -851,9 +851,9 @@
             	  $nameClass=substr($id,4);
             	  if (Sql::isPgsql()) $nameClass=strtolower($nameClass);
             	  if ($val and $showThumb) {
-            	    $val=Affectable::getThumbUrl('Affectable',$line['id'.$nameClass], substr($formatter[$nbFields],9)).'#'.$val;
+            	    $val=$val.'#!#'.Affectable::getThumbUrl('Affectable',$line['id'.$nameClass], substr($formatter[$nbFields],9)).'#'.$val;
             	  } else {
-            	    $val="####$val";
+            	    $val=$val.'#!#'."####$val";
             	  }  	  
             	} else if (Affectable::isAffectable($objectClass)) {
             		$val=Affectable::getThumbUrl($objectClass,$line['id'], $val).'##'.strtoupper(mb_substr(SqlList::getNameFromId('Affectable', $line['id']),0,1,'UTF-8'));
