@@ -37,6 +37,10 @@
   $value=$_REQUEST["value"];
   $ctrl=$_REQUEST["ctrls"];
   
+  // Force DbName and DbPrefix to lowercase
+  $param['DbName']=strtolower($param['DbName']);
+  $param['DbPrefix']=strtolower($param['DbPrefix']);
+  
   if (file_exists('../tool/parametersLocation.php')) {
   	traceHack("direct access to configCheck.php where parametersLocation.php exists");
   	exit;
