@@ -59,7 +59,7 @@ if ($action=='validate' or $action=='unvalidate') {
   }
 }
 if ($action=='submit' or $action=='unsubmit') {
-  if ($user->id!=$resource) {
+  if ($user->id!=$resource and ! ImputationLine::getValidationRight($resource)) {
     throwError('invalid rights to submit work');
   }
 }
