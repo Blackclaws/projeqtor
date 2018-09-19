@@ -61,9 +61,13 @@
         $printPage="objectDetail.php"; // If template must be downloaded, do not use it for print
       } else if ($tmpMode=='show') {
         $modePdf='download'; // If template can be shown print will show, pdf will download
+      } else if ($tmpMode=='multi') {
+        $modePdf='download multi';
+        $printPage="objectDetail.php";
       } // else : keep default behavior
     }
   }
+  debugLog("$modePdf / $printPage / $printPagePdf");
   $createRight=securityGetAccessRightYesNo('menu' . $class, 'create');
   if (!$obj->id) {
     $updateRight=$createRight;
@@ -189,7 +193,11 @@
         dojo.byId("printButton").blur();
         hideExtraButtons('extraButtonsDetail');
         if (dojo.byId("printPdfButton")) {dojo.byId("printPdfButton").blur();}
+        <?php if (substr($modePdf,-5)=="multi" and SqlElement::class_exists('TemplateReport') ) {?>
+        selectTemplateForReport('<?php echo $class?>','detail');
+        <?php } else { ?> 
         showPrint("<?php echo $printPagePdf;?>", null, null, '<?php echo $modePdf;?>', 'P');
+        <?php } ?>
         </script>
       </button>   
 <?php } 
