@@ -43,6 +43,8 @@ use Spipu\Html2Pdf\Html2Pdf;
    if (array_key_exists('orientation', $_REQUEST)) {
    	$orientation=$_REQUEST['orientation'];
    }
+   $download=(substr($outMode,0,8)=='download' and $outMode!='download')?true:false; // Attention, download without extend is not like other download outmode
+   if ($outMode=='downloadPdf') $outMode='pdf';
    if ($outMode=='pdf') {
      $printInNewPage=getPrintInNewWindow('pdf');
      $memoryLimitForPDF=Parameter::getGlobalParameter('paramMemoryLimitForPDF');
@@ -62,7 +64,8 @@ use Spipu\Html2Pdf\Html2Pdf;
      } else {
       projeqtor_set_memory_limit($limit.'M');
      }
-   } else if ($outMode=='csv')  {
+   } 
+   if ($outMode=='csv')  {
      $contentType="application/force-download";
      $nameReport=RequestHandler::getValue('reportCodeName');
      $objectClass=RequestHandler::getValue('objectClass');
@@ -84,8 +87,33 @@ use Spipu\Html2Pdf\Html2Pdf;
      header("Expires: 0"); 
      header("Cache-Control: no-cache, must-revalidate");
      header("Pragma: no-cache");
-   } else if ($outMode=='word' or $outMode=='excel' || $outMode == "download")  {
+   } else if ($outMode=='word' or $outMode=='excel' or $outMode == "download")  {
      
+   } else if ($download)  { // all downloadXxx except download
+     $printInNewPage=true;
+     debugLog($download);
+     $contentType="application/force-download";
+     $nameReport=RequestHandler::getValue('reportCodeName');
+     $objectClass=RequestHandler::getValue('objectClass');
+     $objectId=RequestHandler::getValue('objectId');
+     $ext=strtolower(str_replace('download','',$outMode));
+     if ($objectClass) {
+       if ($objectId) {
+         $name=i18n($objectClass).'_'.intval($objectId);
+       } else {
+         $name=i18n('menu'.$objectClass);
+       }
+     } else {
+       $name="export";
+     }
+     $name.="_".date('Ymd_His').'.'.$ext;
+     header("Content-Type: " . $contentType . "; name=\"" . $name . "\""); 
+	   header("Content-Transfer-Encoding: binary"); 
+	   //header("Content-Length: $size"); 
+	   header("Content-Disposition: attachment; filename=\"" .$name . "\""); 
+	   header("Expires: 0"); 
+	   header("Cache-Control: no-cache, must-revalidate");
+	   header("Pragma: no-cache");
    } else {
      header ('Content-Type: text/html; charset=UTF-8');
    }
@@ -93,11 +121,11 @@ use Spipu\Html2Pdf\Html2Pdf;
    if (array_key_exists('detail', $_REQUEST)) {
    	$detail=true;
    }
-  if ($outMode!='pdf' and $outMode!='csv' and $outMode!='mpp' and $outMode!='word' and $outMode!='excel' and $outMode!='download') {?> 
+  if ($outMode!='pdf' and $outMode!='csv' and $outMode!='mpp' and $outMode!='word' and $outMode!='excel' and !$download) {?> 
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" 
   "http://www.w3.org/TR/html4/strict.dtd">
 <?php }
-   if ($outMode!='csv' and $outMode!='mpp' and $outMode!='word' and $outMode!='excel' and $outMode!='download') {?>
+   if ($outMode!='csv' and $outMode!='mpp' and $outMode!='word' and $outMode!='excel' and (!$download or $outMode=='pdf')) {?>
 <html>
 <head>   
   <title><?php echo getPrintTitle();?></title>
@@ -179,7 +207,7 @@ use Spipu\Html2Pdf\Html2Pdf;
     }
   }
   include $includeFile;
-  if ($outMode!='csv' and $outMode!='mpp' and $outMode!='word' and $outMode!='excel' and $outMode!='download') {?>
+  if ($outMode!='csv' and $outMode!='mpp' and $outMode!='word' and $outMode!='excel' and (!$download or $outMode=='pdf')) {?>
 </<?php echo ($printInNewPage or $outMode=='pdf')?'body':'div';?>>
 </page>
 </html>
@@ -188,7 +216,7 @@ use Spipu\Html2Pdf\Html2Pdf;
   finalizePrint();
 ?>
 <?php function finalizePrint() {
-  global $outMode, $includeFile, $orientation;
+  global $outMode, $download, $includeFile, $orientation;
   $pdfLib='html2pdf';
   //$pdfLib='dompdf';
   $outputFileName=null;
@@ -237,7 +265,6 @@ use Spipu\Html2Pdf\Html2Pdf;
       //$html2pdf->setModeDebug(); 
       //$content=str_replace("à","&agrave;",$content);
 //traceExecutionTime($includeFile,true);
-
      $html2pdf->writeHTML($content);
      // $html2pdf->writeHTML($html2pdf->getHtmlFromPage($content)); 
      
@@ -245,7 +272,11 @@ use Spipu\Html2Pdf\Html2Pdf;
         ob_end_clean();
       }
       if (!$outputFileName) $outputFileName='document.pdf';
-      $html2pdf->Output($outputFileName);
+      if ($download) {
+        $html2pdf->Output($outputFileName,'D');
+      } else {
+        $html2pdf->Output($outputFileName);
+      }
 //traceExecutionTime($includeFile);
     } else if ($pdfLib=='dompdf') {
     /* DOMPDF way */
