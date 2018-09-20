@@ -280,7 +280,7 @@ function showPrint(page, context, comboName, outMode, orientation) {
   if (outMode == "mpp") {
     printInNewWin=true;
   }
-  if (outMode == "word" || outMode == "excel" || outMode == "download") {
+  if (outMode == "word" || outMode == "excel" || outMode.substr(0,8) == "download") {
     printInNewWin=true;
   }
   if (context=='favorite' || context=='admin') {
@@ -4402,8 +4402,14 @@ function removeResourceCost(id, idRole, nameRole, startDate) {
     showAlert(i18n('alertOngoingChange'));
     return;
   }
-  dojo.byId("resourceCostId").value=id;
+  var params="&idResource="+dijit.byId('id').get("value");
+  params+="&funcList=";
+  params+="&idRole="+idRole;
+  params+="&mode=delete";
+  var callBack=function(){dojo.byId("resourceCostId").value=id;}
+  loadDialog('dialogResourceCost',callBack,false,params,false); // Ticket #3584 : be sure dialog has been loaded at least once
   actionOK=function() {
+    
     loadContent("../tool/removeResourceCost.php", "resultDiv",
         "resourceCostForm", true, 'resourceCost');
   };
