@@ -605,7 +605,11 @@ function getLoadContentStackKey(page, destination, formName, isResultMessage, va
   page=truncUrlFromParameter(page,'isIE');
   page=truncUrlFromParameter(page,'xhrPostDestination');
   page=truncUrlFromParameter(page,'xhrPostTimestamp');
-  var callKey=page+"|"+destination+"|"+((formName==undefined)?'':formName)+"|"+((isResultMessage==undefined)?'false':isResultMessage)+"|"+((validationType==undefined)?'':validationType);
+  var callKey=page
+         +"|"+destination
+         +"|"+((formName==undefined || formName==null || formName==false)?'':formName)
+         +"|"+((isResultMessage==undefined || isResultMessage==null || isResultMessage==false)?'false':isResultMessage)
+         +"|"+((validationType==undefined || validationType==null || validationType==false)?'':validationType);
   return callKey;
 }
 function storeLoadContentStack(page, destination, formName, isResultMessage, validationType, directAccess, silent, callBackFunction, noFading) {
@@ -624,8 +628,10 @@ function storeLoadContentStack(page, destination, formName, isResultMessage, val
 }
 function cleanLoadContentStack(page, destination, formName, isResultMessage, validationType, directAccess, silent, callBackFunction, noFading) {
   var callKey=getLoadContentStackKey(page, destination, formName, isResultMessage, validationType, directAccess, silent, callBackFunction, noFading);
+//  console.log("cleanLoadContentStack("+callKey+")");
   if (loadContentStack[callKey]!==undefined) {
     //loadContentStack.splice(callKey,1);
+//    console.log("  => OK, delete");
     delete loadContentStack[callKey];
   }
   if (loadContentCallSequential==true) {
@@ -659,6 +665,7 @@ function loadContent(page, destination, formName, isResultMessage, validationTyp
   var contentWidget = dijit.byId(destination);
   var fadingMode = top.fadeLoading;
   var callKey=getLoadContentStackKey(page, destination, formName, isResultMessage, validationType, directAccess, silent, callBackFunction, noFading);
+//  console.log("loadContentStack("+callKey+")");
   //if (loadContentRetryArray[callKey]===undefined) {
   //  loadContentRetryArray[callKey]=1;
   //} else {
@@ -673,6 +680,7 @@ function loadContent(page, destination, formName, isResultMessage, validationTyp
   } else {
     // already calling same request for same target with same parameters.
     // avoid double call
+//    console.log(" => loadContentStack["+callKey+"] already exists : exit");
     return;
   }
   
@@ -698,7 +706,7 @@ function loadContent(page, destination, formName, isResultMessage, validationTyp
     consoleTraceLog(i18n("errorLoadContent", new Array(page, destination,
         formName, isResultMessage, destination)));
     hideWait();
-    cleanLoadContentStack(page, destination, formName, isResultMessage, validationType, directAccess, silent, callBackFunction, noFading)
+    cleanLoadContentStack(page, destination, formName, isResultMessage, validationType, directAccess, silent, callBackFunction, noFading);
     return;
   }
   if (contentNode && page.indexOf("destinationWidth=")<0) {
@@ -3135,10 +3143,10 @@ function gotoElement(eltClass, eltId, noHistory, forceListRefresh, target) {
     if ( ( (!dojo.byId('objectClass') || dojo.byId('objectClass').value != eltClass) && (!dojo.byId('objectClassList') || dojo.byId('objectClassList').value != eltClass))
         || forceListRefresh || dojo.byId('titleKanban')) {
       var callBack=null;
-      if (dijit.byId("detailRightDiv")) callBack=function(){loadContent("objectStream.php", "detailRightDiv", "listForm");}; 
+      if (dijit.byId("detailRightDiv")) callBack=function(){loadContent("objectStream.php", "detailRightDiv", "listForm");};
+      
       loadContent("objectMain.php?objectClass=" + eltClass, "centerDiv", false,
           false, false, eltId,false,callBack);
-      
     } else {
       if (eltClass=='GlobalView') {
         var explode=eltId.split('|');
@@ -4194,10 +4202,10 @@ function getExtraHiddenFields(idType,idStatus,idProfile) {
     handleAs : "text",
     load : function(data) {
       var obj = JSON.parse(data);
-      dojo.query(".generalRowClass").style("display", "table-row");
-      dojo.query(".generalColClass").style("display", "inline-block");
+      dojo.query(".generalRowClass:not(.dijitTooltipData)").style("display", "table-row");
+      dojo.query(".generalColClass:not(.dijitTooltipData)").style("display", "inline-block");
       for (key in obj) {
-        dojo.query("." + obj[key] + "Class").style("display", "none");
+        dojo.query("." + obj[key] + "Class:not(.dijitTooltipData)").style("display", "none");
       }
     }
   });
