@@ -292,7 +292,7 @@ class CommandMain extends SqlElement {
   	    } else {
   	      $amount+=$line->amount;
   	      if ($line->numberDays) {
-  	        $work = $line->numberDays;
+  	        $work += $line->numberDays;
   	      } else if ($line->idMeasureUnit==3) {
   	        $work+=$line->quantity;
   	      }
