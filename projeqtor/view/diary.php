@@ -181,7 +181,6 @@ function drawDay($date,$ress,$inScopeDay,$period,$calendar=1) {
 		echo '<td><a style="position:absolute;left:15px;width:18px;top:3px;height:17px;z-index:20;">'.formatIcon($item['class'], 16,null,false).'</a></td>';
 		echo '<td style="color:#555555">';
 		//Modification ici , typename ne marche pas...
-		
 		echo '<div style="cursor:pointer;height:100%;word-wrap:break-word;margin-left:27px;" onClick="gotoElement(\''.$item['class'].'\', '.$item['id'].', false);" >';
 		echo '<div style="float:right;width:22px;height:22px;position:relative;margin-right:10px;" id="userThumb'.$item['id'].'">'.formatUserThumb($item['responsibleId'],$item['responsibleName'], "", 22, 'left', false).'</div>';
 		if ($item['real']) {
@@ -246,11 +245,14 @@ function getAllActivities($startDate, $endDate, $ress, $showDone=false, $showIdl
 	    $assTable=$ass->getDatabaseTableName();
 	    $meet=new Meeting();
 	    $meetTable=$meet->getDatabaseTableName();
-	    $critWhere="exists (select 'x' from $assTable ass where ass.refType='Meeting' and ass.refId = $meetTable.refId and idResource=".Sql::fmtId($ress).')';
-	  } else {
+	    $mpe=new MeetingPlanningElement();
+	    $mpeTable=$mpe->getDatabaseTableName();
+	    $critWhere=" ( exists (select 'x' from $assTable ass where ass.refType='Meeting' and ass.refId = $mpeTable.refId and ass.idResource=".Sql::fmtId($ress).")";
+	    $critWhere.="  or exists (select 'x' from $meetTable meet where id=$mpeTable.refId and meet.idResource=".Sql::fmtId($ress).") )";
+	  } else { 
 		  $critWhere="idResource=".Sql::fmtId($ress);
 	  }
-		if (!$showDone) {
+		if (!$showDone and !$showIdle) {
 		  $critWhere.=" and done=0 ";
 		}
 		if (!$showIdle) {
@@ -268,7 +270,7 @@ function getAllActivities($startDate, $endDate, $ress, $showDone=false, $showIdl
 	     ." )";
 		} else if (property_exists($obj, 'validatedEndDate') ) {
 		  $refType=str_replace('PlanningElement', '', get_class($obj));
-		  $critWhere=" refType='$refType' and validatedEndDate>='$startDate' and validatedEndDate<='$endDate' ";
+		  $critWhere.=" and refType='$refType' and validatedEndDate>='$startDate' and validatedEndDate<='$endDate' ";
 		  $critWhere.=" and idProject in ".transformListIntoInClause(getSessionUser()->getVisibleProjects(true));
 			if ($refType=='Milestone' and $ress!=getSessionUser()->id) {
 			  $lstMile=SqlList::getListWithCrit('Milestone', array('idResource'=>$ress));
@@ -277,7 +279,6 @@ function getAllActivities($startDate, $endDate, $ress, $showDone=false, $showIdl
 	  } else {
 	  	$critWhere.=" and 1=0";
 	  }
-	  
 		$lst=$obj->getSqlElementsFromCriteria(null,false,$critWhere);
 		
 		foreach ($lst as $o) {	

@@ -124,16 +124,16 @@ function refreshJsonList(className, keepUrl) {
     }
     //ADD qCazelles - Filter by status
     if (dojo.byId('countStatus')) {
-    	var filteringByStatus = false;
-    	for (var i = 1; i <= dojo.byId('countStatus').value; i++) {
-    		if (dijit.byId('showStatus' + i).checked) {
-    			url = url + "&objectStatus" + i + "=" + dijit.byId('showStatus' + i).value;
-    			filteringByStatus = true;
-    		}
-    	}
-    	if (filteringByStatus) {
-    		url = url + "&countStatus=" + dojo.byId('countStatus').value;
-    	}
+      var filteringByStatus = false;
+      for (var i = 1; i <= dojo.byId('countStatus').value; i++) {
+        if (dijit.byId('showStatus' + i).checked) {
+          url = url + "&objectStatus" + i + "=" + dijit.byId('showStatus' + i).value;
+          filteringByStatus = true;
+        }
+      }
+      if (filteringByStatus) {
+        url = url + "&countStatus=" + dojo.byId('countStatus').value;
+      }
     }
     //END ADD qCazelles - Filter by status
     if (dijit.byId('quickSearchValue')) {
@@ -184,7 +184,7 @@ function refreshJsonPlanning() {
   if (dojo.byId("resourcePlanning")) {
     url = "../tool/jsonResourcePlanning.php";
   } else if (dojo.byId("versionsPlanning")) {
-	  url = "../tool/jsonVersionsPlanning.php";
+    url = "../tool/jsonVersionsPlanning.php";
   } else if (dojo.byId("globalPlanning")) {
     url = "../tool/jsonPlanning.php?global=true";
     param=true;
@@ -194,16 +194,16 @@ function refreshJsonPlanning() {
   
   //ADD qCazelles - GANTT
   if (dojo.byId('nbPvs')) {
-	  url += (param) ? "&" : "?";
-	  for (var i = 0; i < dojo.byId('nbPvs').value; i++) {
-		  if (i != 0) {
-			  url += "&";
-		  }
-		  url += "pvNo" + i + "=" + dojo.byId('pvNo' + i).value;
-	  }
-	  if (dojo.byId('nbPvs').value != 0) {
-		  param = true;
-	  }
+    url += (param) ? "&" : "?";
+    for (var i = 0; i < dojo.byId('nbPvs').value; i++) {
+      if (i != 0) {
+        url += "&";
+      }
+      url += "pvNo" + i + "=" + dojo.byId('pvNo' + i).value;
+    }
+    if (dojo.byId('nbPvs').value != 0) {
+      param = true;
+    }
   }
   //END ADD qCazelles - GANTT
   
@@ -248,12 +248,12 @@ function refreshJsonPlanning() {
     param = true;
   }
   if (dijit.byId('listShowNullAssignment')) {
-	  if (dojo.byId('listShowNullAssignment').checked) {
-	    url += (param) ? "&" : "?";
-	    url += "listShowNullAssignment=true";
-	    param = true;
-	  }
-	} 
+    if (dojo.byId('listShowNullAssignment').checked) {
+      url += (param) ? "&" : "?";
+      url += "listShowNullAssignment=true";
+      param = true;
+    }
+  } 
   loadContent(url, "planningJsonData", 'listForm', false);
 }
 
@@ -475,7 +475,7 @@ function changeBrowserLocaleForDates(newFormat) {
   saveUserParameter('browserLocaleDateFormat', newFormat);
   // #2887
   var callBack = function() { 
-	showWait();
+  showWait();
     noDisconnect = true;
     quitConfirmed = true;
     dojo.byId("directAccessPage").value = "parameter.php";
@@ -491,14 +491,14 @@ function changeBrowserLocaleTimeFormat(newFormat) {
   saveUserParameter('browserLocaleTimeFormat', newFormat);
   //#2887
   var callBack = function() { 
-	showWait();
-	noDisconnect = true;
-	quitConfirmed = true;
-	dojo.byId("directAccessPage").value = "parameter.php";
-	dojo.byId("menuActualStatus").value = menuActualStatus;
-	dojo.byId("p1name").value = "type";
-	dojo.byId("p1value").value = "userParameter";
-	dojo.byId("directAccessForm").submit();
+  showWait();
+  noDisconnect = true;
+  quitConfirmed = true;
+  dojo.byId("directAccessPage").value = "parameter.php";
+  dojo.byId("menuActualStatus").value = menuActualStatus;
+  dojo.byId("p1name").value = "type";
+  dojo.byId("p1value").value = "userParameter";
+  dojo.byId("directAccessForm").submit();
   };
   saveDataToSession('browserLocaleTimeFormat', newFormat,null, callBack);
 }
@@ -588,23 +588,102 @@ function cleanContent(destination) {
  */
 var formDivPosition = null; // to replace scrolling of detail after save.
 var editorArray = new Array();
-var loadContentRetryArray=new Array();
-function loadContent(page, destination, formName, isResultMessage,
-    validationType, directAccess, silent, callBackFunction, noFading) {
+//var loadContentRetryArray=new Array();
+var loadContentStack=new Array();
+var loadContentCallSequential=false; // Should be ok to false, if errors, place to true
+function truncUrlFromParameter(page,param) {
+  if (page.indexOf("?"+param+"=") > 0) {
+    page=page.substring(0,page.indexOf("?"+param+"="));
+  } else if (page.indexOf("&"+param+"=") > 0) {
+    page=page.substring(0,page.indexOf("&"+param+"="));
+  }
+  return page;
+}
+function getLoadContentStackKey(page, destination, formName, isResultMessage, validationType, directAccess, silent, callBackFunction, noFading) {
+  page=truncUrlFromParameter(page,'destinationWidth');
+  page=truncUrlFromParameter(page,'directAccessIndex');
+  page=truncUrlFromParameter(page,'isIE');
+  page=truncUrlFromParameter(page,'xhrPostDestination');
+  page=truncUrlFromParameter(page,'xhrPostTimestamp');
+  var callKey=page
+         +"|"+destination
+         +"|"+((formName==undefined || formName==null || formName==false)?'':formName)
+         +"|"+((isResultMessage==undefined || isResultMessage==null || isResultMessage==false)?'false':isResultMessage)
+         +"|"+((validationType==undefined || validationType==null || validationType==false)?'':validationType);
+  return callKey;
+}
+function storeLoadContentStack(page, destination, formName, isResultMessage, validationType, directAccess, silent, callBackFunction, noFading) {
+  var arrayStack=new Array();
+  var callKey=getLoadContentStackKey(page, destination, formName, isResultMessage, validationType, directAccess, silent, callBackFunction, noFading);
+  arrayStack['page']=page;
+  arrayStack['destination']=destination;
+  arrayStack['formName']=formName;
+  arrayStack['isResultMessage']=isResultMessage;
+  arrayStack['validationType']=validationType;
+  arrayStack['directAccess']=directAccess;
+  arrayStack['silent']=silent;
+  arrayStack['callBackFunction']=callBackFunction;
+  arrayStack['noFading']=noFading;
+  loadContentStack[callKey]=arrayStack;
+}
+function cleanLoadContentStack(page, destination, formName, isResultMessage, validationType, directAccess, silent, callBackFunction, noFading) {
+  var callKey=getLoadContentStackKey(page, destination, formName, isResultMessage, validationType, directAccess, silent, callBackFunction, noFading);
+//  console.log("cleanLoadContentStack("+callKey+")");
+  if (loadContentStack[callKey]!==undefined) {
+    //loadContentStack.splice(callKey,1);
+//    console.log("  => OK, delete");
+    delete loadContentStack[callKey];
+  }
+  if (loadContentCallSequential==true) {
+    // Call next
+    for (var arrKey in loadContentStack) {
+      firstItemKey=arrKey;
+      break;
+    }
+    var firstItem=loadContentStack[firstItemKey];
+    if (firstItem===undefined) return;
+    delete loadContentStack[firstItemKey];
+    loadContent(firstItem['page'], firstItem['destination'], firstItem['formName'], firstItem['isResultMessage'], firstItem['validationType'], firstItem['directAccess'], firstItem['silent'], firstItem['callBackFunction'], firstItem['noFading']);
+  }
+}
+function warnLoadContentError(page, destination, formName, isResultMessage, validationType, directAccess, silent, callBackFunction, noFading) {
+  console.warn("Error while calling xhrPost for loadContent()");
+  console.warn("  => page='"+page+"'");
+  console.warn("  => destination='"+destination+"'");
+  console.warn("  => formName'"+formName+"'");
+  console.warn("  => isResultMessage='"+isResultMessage+"'");
+  console.warn("  => validationType='"+validationType+"'");
+  console.warn("  => directAccess='"+directAccess+"'");
+  console.warn("  => silent='"+silent+"'");
+  console.warn("  => callBackFunction='"+"?"+"'");
+  console.warn("  => noFading='"+noFading+"'");
+}
+function loadContent(page, destination, formName, isResultMessage, validationType, directAccess, silent, callBackFunction, noFading) {
   var debugStart = (new Date()).getTime();
   // Test validity of destination : must be a node and a widget
   var contentNode = dojo.byId(destination);
   var contentWidget = dijit.byId(destination);
   var fadingMode = top.fadeLoading;
-  var callKey=page+"|"+destination+"|"+formName+"|"+isResultMessage+"|"+validationType;
-  if (loadContentRetryArray[callKey]===undefined) {
-    loadContentRetryArray[callKey]=1;
+  var callKey=getLoadContentStackKey(page, destination, formName, isResultMessage, validationType, directAccess, silent, callBackFunction, noFading);
+//  console.log("loadContentStack("+callKey+")");
+  //if (loadContentRetryArray[callKey]===undefined) {
+  //  loadContentRetryArray[callKey]=1;
+  //} else {
+  //  loadContentRetryArray[callKey]+=1;
+  //}
+  if (loadContentStack[callKey]===undefined) {
+    storeLoadContentStack(page, destination, formName, isResultMessage, validationType, directAccess, silent, callBackFunction, noFading);
+    // If only call sequential, wait don't process : will be triggered when current has ended
+    if (loadContentCallSequential==true && Object.keys(loadContentStack).length>1) {
+      return; 
+    }
   } else {
-    loadContentRetryArray[callKey]+=1;
+    // already calling same request for same target with same parameters.
+    // avoid double call
+//    console.log(" => loadContentStack["+callKey+"] already exists : exit");
+    return;
   }
-  if (dojo.isIE && dojo.isIE <= 8) {
-    fadingMode = false;
-  }
+  
   if (dojo.byId('formDiv')) {
     formDivPosition = dojo.byId('formDiv').scrollTop;
   }
@@ -627,6 +706,7 @@ function loadContent(page, destination, formName, isResultMessage,
     consoleTraceLog(i18n("errorLoadContent", new Array(page, destination,
         formName, isResultMessage, destination)));
     hideWait();
+    cleanLoadContentStack(page, destination, formName, isResultMessage, validationType, directAccess, silent, callBackFunction, noFading);
     return;
   }
   if (contentNode && page.indexOf("destinationWidth=")<0) {
@@ -700,10 +780,15 @@ function loadContent(page, destination, formName, isResultMessage,
             }).play();
           }
           // update the destination when ajax request is received
-          if (!contentWidget) {
-            if (loadContentRetryArray[callKey]!==undefined) {
-              loadContentRetryArray.splice(callKey, 1);
-            }
+          if (!contentNode || !contentWidget) {
+            //if (loadContentRetryArray[callKey]!==undefined) {
+            //  loadContentRetryArray.splice(callKey, 1);
+            //}
+            warnLoadContentError(page, destination, formName, isResultMessage, validationType, directAccess, silent, callBackFunction, noFading)
+            console.warn("return from xhrPost for a loadContent : '"+destination+"' is not a node or not a widget");
+            console.warn(contentNode);
+            console.warn(contentWidget);
+            cleanLoadContentStack(page, destination, formName, isResultMessage, validationType, directAccess, silent, callBackFunction, noFading);
             hideWait();
             return;
           }
@@ -715,7 +800,7 @@ function loadContent(page, destination, formName, isResultMessage,
               // dijit.byId('planResultDiv').set('content',"");
             }
           }
-          // Must destroy existing instances of CKEDITOR before refreshing the
+          // Must destroy existing instances of CKEDITOR before refreshing the page
           // page.
           if (page.substr(0, 16) == 'objectDetail.php'
               && (destination == 'detailDiv' || destination == 'detailFormDiv' || destination == "formDiv") && !editorInFullScreen()) {
@@ -856,8 +941,8 @@ function loadContent(page, destination, formName, isResultMessage,
               //ADD qCazelles - GANTT
               || page.indexOf("versionsPlanningMain.php") >= 0 || page.indexOf("versionsPlanningList.php") >= 0
               || (page.indexOf("jsonVersionsPlanning.php") >= 0 && dijit.byId("startDatePlanView"))) {
-        	  //END ADD qCazelles - GANTT
-        	  drawGantt();
+            //END ADD qCazelles - GANTT
+            drawGantt();
             selectPlanningRow();
             if (!silent)
               hideWait();
@@ -894,29 +979,32 @@ function loadContent(page, destination, formName, isResultMessage,
           msg += " (server:" + debugDurationServer + "ms, client:"
               + debugDurationClient + "ms)";
           consoleTraceLog(msg);
-          if (loadContentRetryArray[callKey]!==undefined) {
-            loadContentRetryArray.splice(callKey, 1);
-          }
+          cleanLoadContentStack(page, destination, formName, isResultMessage, validationType, directAccess, silent, callBackFunction, noFading);
+          //if (loadContentRetryArray[callKey]!==undefined) {
+          //  loadContentRetryArray.splice(callKey, 1);
+          //}
         },
         error : function(error, args) {
-          var retries=-1;
-          if (loadContentRetryArray[callKey]!==undefined) {
-            retries=loadContentRetryArray[callKey];
-          }
+          //var retries=-1;          
+          //if (loadContentRetryArray[callKey]!==undefined) {
+          //  retries=loadContentRetryArray[callKey];
+          //}
+          cleanLoadContentStack(page, destination, formName, isResultMessage, validationType, directAccess, silent, callBackFunction, noFading);
+          warnLoadContentError(page, destination, formName, isResultMessage, validationType, directAccess, silent, callBackFunction, noFading);
           console.warn(error);
           if (!silent) hideWait();
           finaliseButtonDisplay();
           //formChanged();
-          if (retries>0 && retries <3) { // On error, will retry ou to 3 times before raising an error
-            console.warn('['+retries+'] '+i18n("errorXhrPost", new Array(page, destination,formName, isResultMessage, error)));
-            loadContent(page, destination, formName, isResultMessage, validationType, directAccess, silent, callBackFunction);
-          } else {
+          //if (retries>0 && retries <3) { // On error, will retry ou to 3 times before raising an error
+          //  console.warn('['+retries+'] '+i18n("errorXhrPost", new Array(page, destination,formName, isResultMessage, error)));
+          //  loadContent(page, destination, formName, isResultMessage, validationType, directAccess, silent, callBackFunction);
+          //} else {
             enableWidget('saveButton');
             enableWidget('undoButton');
-            console.warn(i18n("errorXhrPost", new Array(page, destination,formName, isResultMessage, error)));
+            //console.warn(i18n("errorXhrPost", new Array(page, destination,formName, isResultMessage, error))); // No use with warnLoadContentError
             hideWait();
             //showError(i18n('errorXhrPostMessage'));
-          }
+          //}
         }
       });
   if (fadingMode) {
@@ -1176,7 +1264,7 @@ function finalizeMessageDisplay(destination, validationType) {
       if (validationType == 'note') {
         if(!dijit.byId('dialogKanbanGetObjectStream')) loadContent("objectDetail.php?refreshNotes=true", dojo.byId('objectClass').value+ '_Note', 'listForm');
         if (dijit.byId('detailRightDiv')) loadContent("objectStream.php", "detailRightDiv", "listForm");
-        if (dijit.byId('dialogKanbanGetObjectStream')) loadContent("../tool/dynamicDialogKanbanGetObjectStream.php","dialogKanbanGetObjectStream","noteFormStreamKanban");   	
+        if (dijit.byId('dialogKanbanGetObjectStream')) loadContent("../tool/dynamicDialogKanbanGetObjectStream.php","dialogKanbanGetObjectStream","noteFormStreamKanban");    
         if (dojo.byId('buttonDivCreationInfo')) {
           var url = '../tool/getObjectCreationInfo.php?objectClass='+ dojo.byId('objectClass').value +'&objectId='+dojo.byId('objectId').value;
           loadDiv(url, 'buttonDivCreationInfo', null);
@@ -1432,7 +1520,7 @@ function finalizeMessageDisplay(destination, validationType) {
           if(dojo.byId('detailRightDiv')){
             loadContent("objectStream.php", "detailRightDiv", "listForm");  
           } else if (validationType == 'noteKanban' ){
-          	loadContent("../tool/dynamicDialogKanbanGetObjectStream.php","dialogKanbanGetObjectStream","noteFormStreamKanban");   	
+            loadContent("../tool/dynamicDialogKanbanGetObjectStream.php","dialogKanbanGetObjectStream","noteFormStreamKanban");     
           } 
           // Need also to refresh History
           if (dojo.byId(dojo.byId('objectClass').value + '_history') && dojo.byId(dojo.byId('objectClass').value + '_history').style.display!='none') {
@@ -2362,7 +2450,7 @@ function setSelectedProject(idProject, nameProject, selectionField,resetPrevious
   }
   currentSelectedProject = idProject;
   if (idProject != "") {
-  	var callBack = function(){
+    var callBack = function(){
         addMessage(i18n("Project") + "=" + nameProject);
         if (dojo.byId("GanttChartDIV")) {
           if (dojo.byId("resourcePlanning")) {
@@ -2394,8 +2482,8 @@ function setSelectedProject(idProject, nameProject, selectionField,resetPrevious
         if (dijit.byId('imputationButtonDiv') && dijit.byId('limitResByProj') && dijit.byId('limitResByProj').get('value')=="on"){
           refreshList('imputationResource', null, null, dijit.byId('userName').get('value'), 'userName', true); 
         }
-  	};
-  	saveDataToSession('project', idProject, null, callBack);
+    };
+    saveDataToSession('project', idProject, null, callBack);
   }
   if (idProject != "" && idProject != "*" && dijit.byId("idProjectPlan")) {
     dijit.byId("idProjectPlan").set("value", idProject);
@@ -2422,7 +2510,7 @@ function disconnect(cleanCookieHash) {
     }
     //#2887
     var callBack = function(){
-    	window.location = "../index.php";
+      window.location = "../index.php";
     }
     saveDataToSession("disconnect", extUrl, null, callBack);
   };
@@ -2650,10 +2738,10 @@ function drawGantt() {
       }
       
       if (item.redElement == '1') {
-    	  pColor = 'BB5050';
+        pColor = 'BB5050';
       }
       else if(item.redElement == '0') {
-    	  pColor = '50BB50';
+        pColor = '50BB50';
       }      
       
       // pMile : is it a milestone ?      
@@ -2712,10 +2800,10 @@ function runScript(refType, refId, id) {
   }
   //ADD by qCazelles - GANTT
   if (refType == 'ProductVersionhasChild') {
-	  refType = 'ProductVersion';
+    refType = 'ProductVersion';
   }
   if (refType == 'ComponentVersionhasChild') {
-	  refType = 'ComponentVersion';
+    refType = 'ComponentVersion';
   }
   //END ADD qCazelles - GANTT
   if (waitingForReply) {
@@ -3055,10 +3143,10 @@ function gotoElement(eltClass, eltId, noHistory, forceListRefresh, target) {
     if ( ( (!dojo.byId('objectClass') || dojo.byId('objectClass').value != eltClass) && (!dojo.byId('objectClassList') || dojo.byId('objectClassList').value != eltClass))
         || forceListRefresh || dojo.byId('titleKanban')) {
       var callBack=null;
-      if (dijit.byId("detailRightDiv")) callBack=function(){loadContent("objectStream.php", "detailRightDiv", "listForm");}; 
+      if (dijit.byId("detailRightDiv")) callBack=function(){loadContent("objectStream.php", "detailRightDiv", "listForm");};
+      
       loadContent("objectMain.php?objectClass=" + eltClass, "centerDiv", false,
           false, false, eltId,false,callBack);
-      
     } else {
       if (eltClass=='GlobalView') {
         var explode=eltId.split('|');
@@ -4114,10 +4202,10 @@ function getExtraHiddenFields(idType,idStatus,idProfile) {
     handleAs : "text",
     load : function(data) {
       var obj = JSON.parse(data);
-      dojo.query(".generalRowClass").style("display", "table-row");
-      dojo.query(".generalColClass").style("display", "inline-block");
+      dojo.query(".generalRowClass:not(.dijitTooltipData)").style("display", "table-row");
+      dojo.query(".generalColClass:not(.dijitTooltipData)").style("display", "inline-block");
       for (key in obj) {
-        dojo.query("." + obj[key] + "Class").style("display", "none");
+        dojo.query("." + obj[key] + "Class:not(.dijitTooltipData)").style("display", "none");
       }
     }
   });
@@ -4754,7 +4842,7 @@ function saveDataToSession(param, value, saveUserParameter, callBack) {
     url : url,
     load : function(data, args) {
       if(callBack){
-    	setTimeout(callBack, 10);
+      setTimeout(callBack, 10);
       }
     },
     error : function () {
@@ -4796,58 +4884,58 @@ function hideExtraButtons(location) {
 
 //ADD qCazelles - Predefined Action
 function loadPredefinedAction(editorType) {
-	
-	dojo.xhrPost({
-		url : "../tool/getPredefinedAction.php?idPA=" + dijit.byId('listPredefinedActions').get("value"),
-		handleAs : "text",
-		load: function(data,args) {
-			if (data) {
-				var pa = JSON.parse(data);
+  
+  dojo.xhrPost({
+    url : "../tool/getPredefinedAction.php?idPA=" + dijit.byId('listPredefinedActions').get("value"),
+    handleAs : "text",
+    load: function(data,args) {
+      if (data) {
+        var pa = JSON.parse(data);
 
-				if (dijit.byId('name')) {
-					dijit.byId('name').set('value', pa.name);
-					dijit.byId('idActionType').set('value', pa.idActionType);
-					dijit.byId('idProject').set('value', pa.idProject);
-					dijit.byId('idPriority').set('value', pa.idPriority);
-					dijit.byId('idContact').set('value', pa.idContact);
-					dijit.byId('idResource').set('value', pa.idResource);
-					dijit.byId('idEfficiency').set('value', pa.idEfficiency);
-					
-					if (pa.isPrivate == 1) {
-						dijit.byId('isPrivate').set('checked', true);
-					}
+        if (dijit.byId('name')) {
+          dijit.byId('name').set('value', pa.name);
+          dijit.byId('idActionType').set('value', pa.idActionType);
+          dijit.byId('idProject').set('value', pa.idProject);
+          dijit.byId('idPriority').set('value', pa.idPriority);
+          dijit.byId('idContact').set('value', pa.idContact);
+          dijit.byId('idResource').set('value', pa.idResource);
+          dijit.byId('idEfficiency').set('value', pa.idEfficiency);
+          
+          if (pa.isPrivate == 1) {
+            dijit.byId('isPrivate').set('checked', true);
+          }
 
-					dijit.byId('initialDueDate').set('value', null);
-					if (Number(pa.initialDueDateDelay) != 0) {
-						var myDate = new Date();
-						myDate.setDate(myDate.getDate() + Number(pa.initialDueDateDelay));
-						dijit.byId('initialDueDate').set('value', myDate);
-					}
+          dijit.byId('initialDueDate').set('value', null);
+          if (Number(pa.initialDueDateDelay) != 0) {
+            var myDate = new Date();
+            myDate.setDate(myDate.getDate() + Number(pa.initialDueDateDelay));
+            dijit.byId('initialDueDate').set('value', myDate);
+          }
 
-					dijit.byId('actualDueDate').set('value', null);
-					if (Number(pa.actualDueDateDelay) != 0) {
-						var myDateBis = myDate;
-						myDateBis.setDate(myDateBis.getDate() + Number(pa.actualDueDateDelay));
-						dijit.byId('actualDueDate').set('value', myDateBis);
-					}
+          dijit.byId('actualDueDate').set('value', null);
+          if (Number(pa.actualDueDateDelay) != 0) {
+            var myDateBis = myDate;
+            myDateBis.setDate(myDateBis.getDate() + Number(pa.actualDueDateDelay));
+            dijit.byId('actualDueDate').set('value', myDateBis);
+          }
 
-	   				if (editorType=="CK" || editorType=="CKInline") { // CKeditor type
-	    				CKEDITOR.instances['description'].setData(pa.description);
-						CKEDITOR.instances['result'].setData(pa.result);
-					}
-					else if (editorType=="text") {
-	        			dijit.byId('description').set('value', pa.description);
-						dijit.byId('result').set('value', pa.result);
-	     			}
-					else if (editorType=="Dojo") {   //NOT FUNCTIONNAL
-						//dojo.byId('descriptionEditor').value = pa.description;
-						//dojo.byId('dijitE').value = pa.description;
-					}
+            if (editorType=="CK" || editorType=="CKInline") { // CKeditor type
+              CKEDITOR.instances['description'].setData(pa.description);
+            CKEDITOR.instances['result'].setData(pa.result);
+          }
+          else if (editorType=="text") {
+                dijit.byId('description').set('value', pa.description);
+            dijit.byId('result').set('value', pa.result);
+            }
+          else if (editorType=="Dojo") {   //NOT FUNCTIONNAL
+            //dojo.byId('descriptionEditor').value = pa.description;
+            //dojo.byId('dijitE').value = pa.description;
+          }
 
-				}
-			}
-		}
-	});
+        }
+      }
+    }
+  });
 }
 //END ADD qCazelles - Predefined Action
 
@@ -4945,7 +5033,7 @@ function focusStream() {
     dijit.byId("noteNoteStream").set('value',"");
   }
   if(dijit.byId("noteStreamKanban") && dijit.byId("noteStreamKanban").get('value')==trim(i18n("textareaEnterText"))){
-	dijit.byId("noteStreamKanban").set('value',"");
+  dijit.byId("noteStreamKanban").set('value',"");
   }
 }
 
