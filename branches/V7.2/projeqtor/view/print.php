@@ -28,6 +28,16 @@ use Spipu\Html2Pdf\Html2Pdf;
 /* ============================================================================
  * Print page of application.
  */
+/* Possible outMode
+ *  - html     : printing of detail or list or report (it is default value)
+ *  - pdf      : pdf printing
+ *  - csv      : CSV export of list
+ *  - mpp      : export of planning to project xml format
+ *  - word     : export to word (TBS)
+ *  - excel    : export to excel (TBS)
+ *  - download : direct download, whatever the file
+ *  - downloadPdf : transform to pdf (like "pdf") and direct download file
+ */
    require_once "../tool/projeqtor.php";
    scriptLog('   ->/view/print.php'); 
    projeqtor_set_time_limit(300);
@@ -43,7 +53,8 @@ use Spipu\Html2Pdf\Html2Pdf;
    if (array_key_exists('orientation', $_REQUEST)) {
    	$orientation=$_REQUEST['orientation'];
    }
-   $download=(substr($outMode,0,8)=='download' and $outMode!='download')?true:false; // Attention, download without extend is not like other download outmode
+   $download=(RequestHandler::getValue('context')=='download')?true:false; // Attention, download without extend is not like other download outmode
+   $noHeader=(RequestHandler::getValue('context')=='noheader')?true:false;
    if ($outMode=='downloadPdf') $outMode='pdf';
    if ($outMode=='pdf') {
      $printInNewPage=getPrintInNewWindow('pdf');
@@ -91,7 +102,6 @@ use Spipu\Html2Pdf\Html2Pdf;
      
    } else if ($download)  { // all downloadXxx except download
      $printInNewPage=true;
-     debugLog($download);
      $contentType="application/force-download";
      $nameReport=RequestHandler::getValue('reportCodeName');
      $objectClass=RequestHandler::getValue('objectClass');
@@ -121,11 +131,11 @@ use Spipu\Html2Pdf\Html2Pdf;
    if (array_key_exists('detail', $_REQUEST)) {
    	$detail=true;
    }
-  if ($outMode!='pdf' and $outMode!='csv' and $outMode!='mpp' and $outMode!='word' and $outMode!='excel' and !$download) {?> 
+  if ($outMode!='pdf' and $outMode!='csv' and $outMode!='mpp' and $outMode!='word' and $outMode!='excel' and $outMode!='txt' and !$download and !$noHeader) {?> 
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" 
   "http://www.w3.org/TR/html4/strict.dtd">
 <?php }
-   if ($outMode!='csv' and $outMode!='mpp' and $outMode!='word' and $outMode!='excel' and (!$download or $outMode=='pdf')) {?>
+   if ($outMode!='csv' and $outMode!='mpp' and $outMode!='word' and $outMode!='excel' and $outMode!='txt' and (!$download or $outMode=='pdf') and !$noHeader) {?>
 <html>
 <head>   
   <title><?php echo getPrintTitle();?></title>
@@ -207,7 +217,7 @@ use Spipu\Html2Pdf\Html2Pdf;
     }
   }
   include $includeFile;
-  if ($outMode!='csv' and $outMode!='mpp' and $outMode!='word' and $outMode!='excel' and (!$download or $outMode=='pdf')) {?>
+  if ($outMode!='csv' and $outMode!='mpp' and $outMode!='word' and $outMode!='excel' and $outMode!='txt' and (!$download or $outMode=='pdf') and !$noHeader) {?>
 </<?php echo ($printInNewPage or $outMode=='pdf')?'body':'div';?>>
 </page>
 </html>
