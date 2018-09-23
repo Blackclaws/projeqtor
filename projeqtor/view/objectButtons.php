@@ -67,7 +67,6 @@
       } // else : keep default behavior
     }
   }
-  debugLog("$modePdf / $printPage / $printPagePdf");
   $createRight=securityGetAccessRightYesNo('menu' . $class, 'create');
   if (!$obj->id) {
     $updateRight=$createRight;
