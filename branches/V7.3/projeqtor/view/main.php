@@ -565,6 +565,9 @@ $keyDownEventScript=NumberFormatter52::getKeyDownEvent();
   <div id="disconnectionMessage" style="display:none;z-index:999;text-align:center;position:fixed;width:300px;left:50%;top:10px;margin-left:-150px">
     <div id="disconnectionMessageText" style="text-align:center;cursor:pointer;" onClick="quitConfirmed = true;window.location = '../index.php';"></div>
   </div>
+  <div id="temporaryMessage" style="display:none;z-index:999;text-align:center;position:fixed;width:500px;left:50%;top:10px;margin-left:-250px">
+    <div id="temporaryMessageText" style="text-align:center;cursor:pointer;" onClick="dojo.byId('temporaryMessage').style.display='none';"></div>
+  </div>
   <div dojoType="dijit/ProgressBar" id="downloadProgress" data-dojo-props="maximum:1">
   </div>
   <?php $leftWidth=Parameter::getUserParameter('contentPaneLeftDivWidth');
@@ -1088,7 +1091,7 @@ $keyDownEventScript=NumberFormatter52::getKeyDownEvent();
       <tr>
         <td>   
           <iframe width="100%" height="<?php echo $printHeight;?>px"
-            scrolling="auto" frameborder="0px" name="printFrame" id="printFrame" src="">
+            scrolling="auto" frameborder="0px" name="printFrame" id="printFrame" src="" onload="hideWait();" onreadystatechange="hideWait();">
           </iframe>
         </td>
       </tr>
