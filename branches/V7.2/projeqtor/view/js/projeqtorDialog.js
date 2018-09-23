@@ -280,15 +280,16 @@ function showPrint(page, context, comboName, outMode, orientation) {
   if (outMode == "mpp") {
     printInNewWin=true;
   }
-  if (outMode == "word" || outMode == "excel" || outMode.substr(0,8) == "download") {
-    printInNewWin=true;
-  }
   if (context=='favorite' || context=='admin') {
     printInNewWin=false;
+  }
+  if (outMode == "csv" || outMode == "word" || outMode == "excel" || outMode == "download" || context=="download") {
+    printInNewWin=true; // Will not show print frame
   }
   if (!printInNewWin) {
     dijit.byId("dialogPrint").show();
   }
+  
   cl='';
   if (context == 'list' && dojo.byId('objectClassList')) {
     cl=dojo.byId('objectClassList').value;
@@ -434,22 +435,25 @@ function showPrint(page, context, comboName, outMode, orientation) {
       params+="&sortWay=" + sortWay;
     }
   }
-  if (outMode == "download" && context=='template') {
+  if (outMode=="download" && context=='template') {
     dojo.byId("printFrame").src="print.php?print=true&page=" + page;
     hideWait();
-  } else if (outMode == "csv" || outMode == "word" || outMode == "excel" || outMode == "download") {
+  } else if (outMode == "csv" || outMode == "word" || outMode == "excel" || outMode == "download" || context=="download") {
     dojo.byId("printFrame").src="print.php?print=true&page=" + page
+        + "&context="+context
         + "&objectClass=" + cl + "&objectId=" + id + params;
     hideWait();
   } else if (printInNewWin) {
     var newWin=window.open("print.php?print=true&page=" + page
+        + "&context="+context
         + "&objectClass=" + cl + "&objectId=" + id + params);
     hideWait();
   } else {
     dojo.byId("printFrame").src="print.php?print=true&page=" + page
+        + "&context="+context
         + "&objectClass=" + cl + "&objectId=" + id + params;
     if (outMode == 'pdf') {
-      hideWait();
+      //hideWait();
     } 
   }
   quitConfirmed=false;

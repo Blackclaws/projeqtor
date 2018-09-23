@@ -63,7 +63,6 @@ if ($action=='submit' or $action=='unsubmit') {
     throwError('invalid rights to submit work');
   }
 }
-debugLog($action);
 
 Sql::beginTransaction();
 // get the modifications (from request)
