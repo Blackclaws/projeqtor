@@ -1452,20 +1452,23 @@ scriptLog("storeListPlan(listPlan,$plan->id)");
   
   private static function sortPlanningElements($list,$listProjectsPriority) {
   	// first sort on simple criterias
-    foreach ($list as $id=>$elt) {
+    $mainPriority="priority"; // Mey be set to "endDate"
+    $str01=($mainPriority=='endDate')?'.00000000':'';
+    $str02=($mainPriority=='priority')?'.00000000':'';
+    foreach ($list as $id=>$elt) {    
     	if ($elt->idPlanningMode=='16' or $elt->idPlanningMode=='6') { // FIXED
-    		$crit='100000000';
+    		$crit='1'.$str01;
     	} else if ($elt->idPlanningMode=='2' or  $elt->idPlanningMode=='3' or  $elt->idPlanningMode=='7' or  $elt->idPlanningMode=='20'
     	  or $elt->idPlanningMode=='10' or $elt->idPlanningMode=='11' or $elt->idPlanningMode=='13') { // REGUL or FULL or HALF or QUART)
-    	  $crit='200000000';
-    	} else if ($elt->idPlanningMode=='4' and $elt->validatedEndDate) {
-    		$crit='5'.str_replace('-','',$elt->validatedEndDate);
+    	  $crit='2'.$str01;
     	} else if ($elt->idPlanningMode=='8' or  $elt->idPlanningMode=='14') { // FDUR  
-    	  $crit='400000000';
+    	  $crit='4'.$str01;
     	} else if ($elt->idPlanningMode=='22') { // RECW
-    	  $crit='600000000'; // Lower priority (availability will be reserved)
+    	  $crit='6'.$str01; // Lower priority (availability will be reserved)
+    	} else if ($elt->idPlanningMode=='4' and $elt->validatedEndDate and $mainPriority=='endDate') {
+    		$crit='5'.'.'.str_replace('-','',$elt->validatedEndDate);
     	} else { // Others (includes GROUP, wich is not a priority but a constraint)
-        $crit='500000000';
+        $crit='5'.$str01;
     	}
       $crit.='.';
       $prio=$elt->priority;
@@ -1475,7 +1478,13 @@ scriptLog("storeListPlan(listPlan,$plan->id)");
       	$projPrio=500;
       }
       if (! $elt->leftWork or $elt->leftWork==0) {$prio=0;}
-      $crit.=str_pad($projPrio,5,'0',STR_PAD_LEFT).'.'.str_pad($prio,5,'0',STR_PAD_LEFT).'.'.$elt->wbsSortable;
+      $crit.=str_pad($projPrio,5,'0',STR_PAD_LEFT).'.'.str_pad($prio,5,'0',STR_PAD_LEFT);
+      if ($elt->idPlanningMode=='4' and $elt->validatedEndDate and $mainPriority=='priority') {
+        $crit.='.'.str_replace('-','',$elt->validatedEndDate);
+      } else {
+        $crit.=$str02;
+      }
+      $crit.='.'.$elt->wbsSortable;
       $elt->_sortCriteria=$crit;
       $list[$id]=$elt;
     }
