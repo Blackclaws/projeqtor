@@ -2075,7 +2075,7 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false, $pare
             $critVal=SqlList::getNameFromId('Textable', $obj->idTextable, false);
           }
         }
-        if (get_class($obj)=='StatusMail') {
+        if (get_class($obj)=='StatusMail' or property_exists($obj,'idMailable')) {
           if ($col=='idType') {
             $critFld='scope';
             $critVal=SqlList::getNameFromId('Mailable', $obj->idMailable, false);
