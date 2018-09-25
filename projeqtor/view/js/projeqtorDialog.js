@@ -283,7 +283,7 @@ function showPrint(page, context, comboName, outMode, orientation) {
   if (context=='favorite' || context=='admin') {
     printInNewWin=false;
   }
-  if (outMode == "csv" || outMode == "word" || outMode == "excel" || outMode == "download" || context=="download") {
+  if (outMode == "csv" || outMode == "word" || outMode == "excel" || outMode == "download" || context=="download" || context=="downloadList") {
     printInNewWin=true; // Will not show print frame
   }
   if (!printInNewWin) {
@@ -291,7 +291,7 @@ function showPrint(page, context, comboName, outMode, orientation) {
   }
   
   cl='';
-  if (context == 'list' && dojo.byId('objectClassList')) {
+  if ( (context == 'list' || context == 'downloadList') && dojo.byId('objectClassList')) {
     cl=dojo.byId('objectClassList').value;
   } else if (dojo.byId('objectClass')) {
     cl=dojo.byId('objectClass').value;
@@ -317,7 +317,7 @@ function showPrint(page, context, comboName, outMode, orientation) {
   }
 // END ADD BY Marc TABARY - 2017-03-10 - PERIODIC YEAR BUDGET ELEMENT
   
-  if (context == 'list') {
+  if (context == 'list' || context == 'downloadList') {
     if (dijit.byId("listShowIdle")) {
       if (dijit.byId("listShowIdle").get('checked')) {
         params+="&idle=true";
@@ -438,7 +438,7 @@ function showPrint(page, context, comboName, outMode, orientation) {
   if (outMode=="download" && context=='template') {
     dojo.byId("printFrame").src="print.php?print=true&page=" + page;
     hideWait();
-  } else if (outMode == "csv" || outMode == "word" || outMode == "excel" || outMode == "download" || context=="download") {
+  } else if (outMode == "csv" || outMode == "word" || outMode == "excel" || outMode == "download" || context=="download" || context == 'downloadList') {
     dojo.byId("printFrame").src="print.php?print=true&page=" + page
         + "&context="+context
         + "&objectClass=" + cl + "&objectId=" + id + params;
