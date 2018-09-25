@@ -500,15 +500,21 @@ class WorkflowMain extends SqlElement {
       }
       //gautier tableauWorkflow
     }  else if ($item=='listTypeUsingWorkflow') {
-      $maxWidth=preg_replace('/[^0-9]/','', $detailWidth);
-      $maxWidth= $maxWidth/2;
+      if (array_key_exists('destinationWidth', $_REQUEST)) {
+        $maxWidth=preg_replace('/[^0-9]/','', $detailWidth);
+        $maxWidth= $maxWidth/2;
+        $maxWidth =  $maxWidth.'px';
+      } else {
+        $maxWidth =  '978px';
+      }
+      if($this->id){
       $type=new Type();
       $typeList=$type->getSqlElementsFromCriteria(array('idWorkflow'=>$this->id),null,null,'scope asc',null,true);
       $tab = array();
       foreach ($typeList as $val){
         $tab[$val->scope][$val->name]=$this->id;
       }
-      $result.=' <div style="width:'.$maxWidth.'px; overflow:auto;">';
+      $result.=' <div style="width:'.$maxWidth.'; overflow:auto;">';
       $result.='  <table>';
       $result.=' <tr>';
       $scopeName = "";
@@ -528,6 +534,7 @@ class WorkflowMain extends SqlElement {
       $result.= ' </tr>';
       $result.='  </table>';
       $result.=' </div>';
+      }
     }
     return $result;
   }

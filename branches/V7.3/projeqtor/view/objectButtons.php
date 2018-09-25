@@ -61,6 +61,13 @@
         $printPage="objectDetail.php"; // If template must be downloaded, do not use it for print
       } else if ($tmpMode=='show') {
         $modePdf='download'; // If template can be shown print will show, pdf will download
+      } else if ($tmpMode=='multi') {
+        $modePdf='download multi';
+        $printPage="objectDetail.php";
+      } else if ($tmpMode=='revert') {
+        // detected some inconsistent custom report
+        $printPage="objectDetail.php";
+        $printPagePdf="objectDetail.php";
       } // else : keep default behavior
     }
   }
@@ -179,7 +186,10 @@
         showPrint("<?php echo $printPage;?>", null, null, null, 'P');
         </script>
       </button>  
-<?php if ($_REQUEST['objectClass']!='Workflow' and $_REQUEST['objectClass']!='Mail') {?>    
+<?php if ($_REQUEST['objectClass']!='Workflow' and $_REQUEST['objectClass']!='Mail') {
+     // Disable PDF Export for :
+     //    - Wokflow : too complex and systematically fails in timeout
+     //    - Mail : description is content of email possibly truncated, so tags may be not closed?>    
      <?php organizeButtons();?>
      <button id="printButtonPdf" dojoType="dijit.form.Button" showlabel="false"
        title="<?php echo i18n('reportPrintPdf');?>"
@@ -189,7 +199,11 @@
         dojo.byId("printButton").blur();
         hideExtraButtons('extraButtonsDetail');
         if (dojo.byId("printPdfButton")) {dojo.byId("printPdfButton").blur();}
+        <?php if (substr($modePdf,-5)=="multi" and SqlElement::class_exists('TemplateReport') ) {?>
+        selectTemplateForReport('<?php echo $class?>','detail');
+        <?php } else { ?> 
         showPrint("<?php echo $printPagePdf;?>", null, null, '<?php echo $modePdf;?>', 'P');
+        <?php } ?>
         </script>
       </button>   
 <?php } 
