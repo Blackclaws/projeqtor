@@ -233,13 +233,16 @@ class Consistency {
     // Direct Query : valid here for technical needs on grouping
     $work=new Work();
     $workTable=$work->getDatabaseTableName();
-    $query="SELECT idAssignment as idassignment, day as day, count(*) as cpt from $workTable group by idAssignment, day having count(*)>1";
+    $query="SELECT idAssignment as idassignment, refType as reftype, refId as refid, idWorkElement as idworkelement, day as day, count(*) as cpt from $workTable group by idAssignment, refType, refId, idWorkElement, day having count(*)>1";
     $result=Sql::query($query);
     while ($line = Sql::fetchLine($result)) {
       $idAss=$line['idassignment'];
+      $refType=$line['reftype'];
+      $refId=$line['refid'];
+      $idWork=$line['idworkelement'];
       $day=$line['day'];
       $cpt=$line['cpt'];
-      $lstWork=$work->getSqlElementsFromCriteria(array('idAssignment'=>$idAss,'day'=>$day),null,'id asc');
+      $lstWork=$work->getSqlElementsFromCriteria(array('idAssignment'=>$idAss,'day'=>$day, 'refType'=>$refType, 'refId'=>$refId, 'idWorkElement'=>$idWork),null,'id asc');
       $wk=reset($lstWork);
       $resName=SqlList::getNameFromId('Affectable', $wk->idResource);
       displayError(i18n("checkDuplicateWorkFound",array($resName,htmlFormatDate($wk->workDate),i18n($wk->refType),$wk->refId)));
