@@ -1325,7 +1325,7 @@ class PlanningElement extends SqlElement {
     }
     
     $habil=SqlElement::getSingleSqlElementFromCriteria('HabilitationOther',array('idProfile'=>$profile,'scope'=>'changeValidatedData'));
-      if ($habil and $habil->rightAccess == 2) {
+    if ($habil and $habil->rightAccess == 2) {
       self::$_fieldsAttributes['validatedStartDate']='readonly';
       self::$_fieldsAttributes['validatedEndDate']='readonly';    
       self::$_fieldsAttributes['validatedWork']='readonly';

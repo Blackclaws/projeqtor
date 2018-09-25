@@ -566,14 +566,25 @@ if (RequestHandler::getValue('objectClass')=='Project' and RequestHandler::getVa
               </button>
               </td>
 <?php }?>            
-<?php if (! $comboDetail) {?>        
+<?php if (! $comboDetail) {?> 
+<?php   $modePdf='Pdf';
+        if (SqlElement::class_exists('TemplateReport')) {
+          $tmpMode=TemplateReport::getMode($objectClass,null,'list');
+          if ($tmpMode=='multi') {$modePdf='download multi';}
+          else if ($tmpMode=='download' or $tmpMode=='show') {$modePdf='download';}
+        }
+      ?>       
              <td width="36px">
               <button title="<?php echo i18n('reportPrintPdf')?>"  
                dojoType="dijit.form.Button" 
                id="listPrintPdf" name="listPrintPdf"
-               iconClass="dijitButtonIcon dijitButtonIconPdf" class="detailButton" showLabel="false">
+               iconClass="dijitButtonIcon dijitButtonIcon<?php echo ucfirst($modePdf);?>" class="detailButton" showLabel="false">
                 <script type="dojo/connect" event="onClick" args="evt">
+                 <?php if (substr($modePdf,-5)=="multi" and SqlElement::class_exists('TemplateReport') ) {?>
+                  selectTemplateForReport('<?php echo $objectClass?>','list');
+                 <?php } else { ?> 
                   showPrint("../tool/jsonQuery.php", 'list', null, 'pdf');
+                 <?php } ?>
                 </script>
               </button>              
             </td>
