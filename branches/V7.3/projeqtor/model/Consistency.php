@@ -268,6 +268,78 @@ class Consistency {
       
     }
   }
-}
-
-?>
+  
+  // =================================================================================================================
+  // Work On Ticket
+  // =================================================================================================================
+  
+  public static function checkWorkOnTicket($correct=false,$trace=false) {
+    $errors=0;
+    // Direct Query : valid here for technical needs on grouping
+    $work=new Work();
+    $workTable=$work->getDatabaseTableName();
+    $we=new workElement();
+    $weTable=$we->getDatabaseTableName();
+    $query="SELECT we.refType as reftype, we.refId as refid, we.realWork as realwork, (select sum(work) from $workTable w where w.idWorkElement=we.id) as sumwork from $weTable we where realwork!=(select sum(work) from $workTable w where w.idWorkElement=we.id) ";
+    $result=Sql::query($query);
+    while ($line = Sql::fetchLine($result)) {
+      $refType=$line['reftype'];
+      $refId=$line['refid'];
+      $realWork=$line['realwork'];
+      $sumWork=$line['sumwork'];
+      displayError(i18n("checkIncorrectWork",array(i18n($refType),$refId,Work::displayWorkWithUnit($realWork),Work::displayWorkWithUnit($sumWork))));
+      $errors++;
+      if ($correct) {
+        displayMsg(i18n("checkNotFixed"),true);
+        $query="SELECT idResource as idres, sum(work) as sumwork from $workTable w where w.refType='$refType' and w.refId=$refId group by idResource";
+        $resultRes=Sql::query($query);
+        while ($lineRes = Sql::fetchLine($resultRes)) {
+          $idRes=$lineRes['idres'];
+          $sumWork=$lineRes['sumwork'];
+          displayMsg('&nbsp;-&nbsp;'.SqlList::getNameFromId('Affectable', $idRes).' : '.Work::displayWorkWithUnit($sumWork),true);
+        }
+      }
+    }
+    if (!$errors) {
+      displayOK(i18n("checkNoError"));
+  
+    }
+  }
+  
+  // =================================================================================================================
+  // Work On Ticket
+  // =================================================================================================================
+  
+  public static function checkWorkOnActivity($correct=false,$trace=false) {
+    $errors=0;
+    // Direct Query : valid here for technical needs on grouping
+    $work=new Work();
+    $workTable=$work->getDatabaseTableName();
+    $pe=new PlanningElement();
+    $peTable=$pe->getDatabaseTableName();
+    $query="SELECT pe.refType as reftype, pe.refId as refid, pe.realWork as realwork, (select sum(work) from $workTable w where w.refType=pe.refType and w.refId=pe.refId) as sumwork from $peTable pe where realwork!=(select sum(work) from $workTable w where w.refType=pe.refType and w.refId=pe.refId) ";
+    $result=Sql::query($query);
+    while ($line = Sql::fetchLine($result)) {
+      $refType=$line['reftype'];
+      $refId=$line['refid'];
+      $realWork=$line['realwork'];
+      $sumWork=$line['sumwork'];
+      displayError(i18n("checkIncorrectWork",array(i18n($refType),$refId,Work::displayWorkWithUnit($realWork),Work::displayWorkWithUnit($sumWork))));
+      $errors++;
+      if ($correct) {
+        displayMsg(i18n("checkNotFixed"),true);
+        $query="SELECT idResource as idres, sum(work) as sumwork from $workTable w where w.refType='$refType' and w.refId=$refId group by idResource";
+        $resultRes=Sql::query($query);
+        while ($lineRes = Sql::fetchLine($resultRes)) {
+          $idRes=$lineRes['idres'];
+          $sumWork=$lineRes['sumwork'];
+          displayMsg('&nbsp;-&nbsp;'.SqlList::getNameFromId('Affectable', $idRes).' : '.Work::displayWorkWithUnit($sumWork),true);
+        }
+      }
+    }
+    if (!$errors) {
+      displayOK(i18n("checkNoError"));
+  
+    }
+  }
+}?>

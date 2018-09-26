@@ -89,10 +89,13 @@ if ($adminFunctionality=='sendAlert') {
 } else if ($adminFunctionality=='checkConsistency') {
   $correct=RequestHandler::getBoolean('correct');
   echo "<div class='consistencySection' style='background-color:#A0A0C0;'>".i18n('sectionCheckWbs')."</div>";
-  //echo $correct;
   Consistency::checkWbs($correct,false);
   echo "<div class='consistencySection' style=''>".i18n('sectionCheckWorkDuplicate')."</div>";
   Consistency::checkDuplicateWork($correct, false);
+  echo "<div class='consistencySection' style=''>".i18n('sectionCheckWorkOnTicket')."</div>";
+  Consistency::checkWorkOnTicket($correct, false);
+  echo "<div class='consistencySection' style=''>".i18n('sectionCheckWorkOnActivity')."</div>";
+  Consistency::checkWorkOnActivity($correct, false);
   $result=false;
   Sql::commitTransaction();
 } else {
@@ -270,4 +273,8 @@ function displayError($msg,$indent=false){
 function displayOK($msg,$indent=false){
   if ($indent) echo "<span style='display:inline-block;padding-left:50px'>&nbsp;</span>";
   echo "<span class='messageOK' style='position:relative;top:4px;left:20px;'>$msg</span><br/><br/>";
+}
+function displayMsg($msg,$indent=false){
+  if ($indent) echo "<span style='display:inline-block;padding-left:50px'>&nbsp;</span>";
+  echo "<span class='messageNO_CHANGE' style='position:relative;top:4px;left:20px;'>$msg</span><br/><br/>";
 }
