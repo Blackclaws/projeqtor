@@ -417,7 +417,7 @@ List window
 .. _quick-search:
 
 Global list
-^^^^^^^^^^^^
+^^^^^^^^^^^
 "Global List" screen that lists all the main project objects in the same list. The "Global List" view allows you to search among all the types of elements available in a single query. Just select what must be dispayed.
 
 .. figure:: /images/GUI/screenshot.460.png
@@ -1580,8 +1580,45 @@ Just move the mouse over the red line to display, which indicator has been raise
 
     \newpage
 
+Themes
+======
+
+Users can select Theme to display the interface. 
+
+.. rubric:: User parameter “Theme”
+* This parameter defines the theme to display.
+* The new theme is automatically applied when selected.
+
+.. figure:: /images/GUI/theme.png
+
+.. note:: Default theme
+
+  * By default your selected theme is "ProjeQtOr 'Flat Desgin' Blue".
+  * Screenshoots has been taken with "ProjeQtOr Standard" theme. 
+
+Multilingual
+============
+
+ProjeQtOr is multilingual.
+
+Each user can choose the language to display all the captions.
 
 
+.. note:: User parameter “Language”
+
+   * This parameter defines the language used to display captions.
 
 
+Keyboard functionality
+======================
+
+.. rubric:: Shortcut keys
+
+* :kbd:`Control-s` to save the changes. 
+* :kbd:`F1` to open the online user manual, to the page corresponding to the actual screen.
+* :kbd:`ESC` to exit full screen mode of CK Editor.
+
+.. rubric:: Numeric keypad
+
+* The point will be replaced by a comma if the numeric format requires it.
 
