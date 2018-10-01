@@ -7,8 +7,8 @@
  * This TBS plug-in can open a zip file, read the central directory,
  * and retrieve the content of a zipped file which is not compressed.
  *
- * @version 1.9.9
- * @date 2017-05-28
+ * @version 1.9.6
+ * @date 2016-03-24
  * @see     http://www.tinybutstrong.com/plugins.php
  * @author  Skrol29 http://www.tinybutstrong.com/onlyyou.html
  * @license LGPL-3.0
@@ -31,7 +31,6 @@ define('OPENTBS_DELETEFILE','clsOpenTBS.DeleteFile'); // command to delete a fil
 define('OPENTBS_REPLACEFILE','clsOpenTBS.ReplaceFile'); // command to replace a file in the archive
 define('OPENTBS_EDIT_ENTITY','clsOpenTBS.EditEntity'); // command to force an attribute
 define('OPENTBS_FILEEXISTS','clsOpenTBS.FileExists');
-define('OPENTBS_GET_FILES','clsOpenTBS.GetFiles');
 define('OPENTBS_CHART','clsOpenTBS.Chart');
 define('OPENTBS_CHART_INFO','clsOpenTBS.ChartInfo');
 define('OPENTBS_DEFAULT','');   // Charset
@@ -60,7 +59,6 @@ define('OPENTBS_SELECT_FILE','clsOpenTBS.SelectFile');
 define('OPENTBS_ADD_CREDIT','clsOpenTBS.AddCredit');
 define('OPENTBS_SYSTEM_CREDIT','clsOpenTBS.SystemCredit');
 define('OPENTBS_RELATIVE_CELLS','clsOpenTBS.RelativeCells');
-define('OPENTBS_MAKE_OPTIMIZED_TEMPLATE','clsOpenTBS.MakeOptimizedTemplate');
 define('OPENTBS_FIRST',1); // 
 define('OPENTBS_GO',2);    // = TBS_GO
 define('OPENTBS_ALL',4);   // = TBS_ALL
@@ -93,7 +91,7 @@ class clsOpenTBS extends clsTbsZip {
 		if (!isset($TBS->OtbsClearMsPowerpoint))    $TBS->OtbsClearMsPowerpoint = true;
 		if (!isset($TBS->OtbsGarbageCollector))     $TBS->OtbsGarbageCollector = true;
 		if (!isset($TBS->OtbsMsExcelCompatibility)) $TBS->OtbsMsExcelCompatibility = true;
-		$this->Version = '1.9.9';
+		$this->Version = '1.9.6';
 		$this->DebugLst = false; // deactivate the debug mode
 		$this->ExtInfo = false;
 		$TBS->TbsZip = &$this; // a shortcut
@@ -302,10 +300,8 @@ class clsOpenTBS extends clsTbsZip {
 			$this->TbsPicPrepare($Txt, $Loc, false);
 			$this->TbsPicAdd($Value, $PrmLst, $Txt, $Loc, 'ope=changepic');
 		} elseif ($ope==='delcol') {
-			// Delete the TBS field otherwise « return false » will produce a TBS error « doesn't have any subname » with [onload] fields.
-			$Txt = substr_replace($Txt, '', $PosBeg, $PosEnd - $PosBeg + 1);
-			$this->TbsDeleteColumns($Txt, $Value, $PrmLst, $PosBeg);
-			return false; // prevent TBS from actually merging the field
+			$this->TbsDeleteColumns($Txt, $Value, $PrmLst, $PosBeg, $PosEnd);
+			return false; // prevent TBS from merging the field
 		} elseif ($ope==='mergecell') {
 			if (isset($this->PrevVals[$Loc->FullName])) {
 				if ($Value==$this->PrevVals[$Loc->FullName]) {
@@ -338,44 +334,6 @@ class clsOpenTBS extends clsTbsZip {
 			if (is_null($x1)) $x1 = true;
 			$this->TbsDebug_Info($x1);
 			return true;
-		}
-
-		if($Cmd==OPENTBS_MAKE_OPTIMIZED_TEMPLATE) {
-				
-			// save options
-			$s_onload = $this->TBS->GetOption('onload');
-			$s_onshow = $this->TBS->GetOption('onshow');
-			
-			// change options
-			$this->TBS->SetOption('onload', false);
-			$this->TBS->SetOption('onshow', false);
-			
-			// load the template
-			$this->TBS->LoadTemplate($x1);
-			
-			if ($this->ExtEquiv == 'xlsx') {
-				// load all sheets
-				$this->MsExcel_SheetInit();
-				foreach($this->MsExcel_Sheets as $o) {
-					$this->TbsLoadSubFileAsTemplate('xl/'.$o->file);
-				}
-			} elseif ($this->ExtEquiv == 'pptx') {
-				// load all slides
-				$this->MsPowerpoint_InitSlideLst();
-				foreach ($this->OpenXmlSlideLst as $s) {
-					$this->TbsLoadSubFileAsTemplate($s['file']);
-				}
-			}
-
-			// save the result
-			$this->TBS->Show(OPENTBS_FILE + OPENTBS_DEBUG_AVOIDAUTOFIELDS, $x2);
-			
-			// restore options
-			$this->TBS->SetOption('onload', $s_onload);
-			$this->TBS->SetOption('onshow', $s_onshow);
-			
-			return true;
-			
 		}
 		
 		// Check that a template is loaded
@@ -724,15 +682,6 @@ class clsOpenTBS extends clsTbsZip {
 			$AddElIfMissing = (boolean) $x5;
 			return $this->XML_ForceAtt($x1, $x2, $x3, $x4, $AddElIfMissing);
 			
-		} elseif ($Cmd==OPENTBS_GET_FILES) {
-	
-			$files = array();
-			// All files in the archive
-			foreach ($this->CdFileLst as $f) {
-				$files[] = $f['v_name'];
-			}
-			return $files;
-	
 		}
 
 	}
@@ -990,16 +939,14 @@ class clsOpenTBS extends clsTbsZip {
 	}
 
 	/**
-	 * Tells if optimisation marker is prensent in the current source, eventually add it if it is not.
-	 * The optimization marker is a simple space (' ') before the closing chars of the "<? ?>" element.
-	 * @param  string  $Txt  The text source to check
-	 * @param  boolean $mark Set to true to mark the source as done if it is not the case.
-	 * @return boolean True if the current source has just been marked done. Null if it is not possible to telle if it is done or note. Fasle if is is done before.
+	 * Tells if optimisation can be applied on the current content.
+	 * @param  boolean $mark true to mark the doc as done because optim will be processed.
+	 * @return boolean True if the current doc is just been marked done. Null if the mark cannot be read.
 	 */
 	function TbsApplyOptim(&$Txt, $mark) {
 		if (substr($Txt, 0, 2) === '<?') {
 			$p = strpos($Txt, '?>');
-			if (substr($Txt, $p-1, 1) === ' ') {
+			if (substr($Txt, $p-1) === ' ') {
 				return false;
 			} else {
 				if ($mark) {
@@ -1212,17 +1159,6 @@ If they are blank spaces, line beaks, or other unexpected characters, then you h
 		return false;
 	}
 
-	/**
-	 * Return the item of an array if exits, or the default value.
-	 */
-	function getItem($array, $item, $default) {
-		if (isset($array[$item])) {
-			return $array[$item];
-		} else {
-			return $default;
-		}
-	}
-	
 	// Found the relevant attribute for the image source, and then add parameter 'att' to the TBS locator.
 	function TbsPicPrepare(&$Txt, &$Loc, $IsCaching) {
 
@@ -1746,13 +1682,12 @@ If they are blank spaces, line beaks, or other unexpected characters, then you h
 	 * @return string The merged value of the parameter.
 	 */
 	function TbsMergeVarFields($PrmVal, $FldVal) {
-        if ($PrmVal === true) $PrmVal = ''; // TBS set the value to true if no value set, but it is converted into '1'.
 		$this->TBS->meth_Merge_AutoVar($PrmVal, true);
 		$PrmVal = str_replace($this->TBS->_ChrVal, $FldVal, $PrmVal);
 		return $PrmVal;
 	}
 
-	function TbsDeleteColumns(&$Txt, $Value, $PrmLst, $PosBeg) {
+	function TbsDeleteColumns(&$Txt, $Value, $PrmLst, $PosBeg, $PosEnd) {
 
 		$ext = $this->ExtEquiv;
 		if ($ext==='docx') {
@@ -1770,17 +1705,17 @@ If they are blank spaces, line beaks, or other unexpected characters, then you h
 		} else {
 			return false;
 		}
-		
+
 		if (is_array($Value)) $Value = implode(',', $Value);
 
 		// Retreive the list of columns id to delete
-		$col_lst = $this->TbsMergeVarFields($PrmLst['colnum'], $Value); // prm equal to true if value is not given
+		$col_lst = $this->TbsMergeVarFields($PrmLst['colnum'], $Value);
 		$col_lst = str_replace(' ', '', $col_lst);
 		if ( ($col_lst=='') || ($col_lst=='0') ) return false; // there is nothing to do
 		$col_lst = explode(',', $col_lst);
 		$col_nbr = count($col_lst);
 		for ($c=0; $c<$col_nbr; $c++) $col_lst[$c] = intval($col_lst[$c]); // Conversion into numerical
-		
+
 		// Add columns by shifting
 		if (isset($PrmLst['colshift'])) {
 			$col_shift = intval($this->TbsMergeVarFields($PrmLst['colshift'], $Value));
@@ -1796,13 +1731,10 @@ If they are blank spaces, line beaks, or other unexpected characters, then you h
 		$col_lst = array_unique($col_lst, SORT_NUMERIC); // Delete duplicated columns
 		sort($col_lst, SORT_NUMERIC); // Sort colmun id in order
 		$col_max = $col_lst[(count($col_lst)-1)]; // Last column to delete
-        
-        // Delete impossible col num (like zero)
-        while ( (count($col_lst) > 0) && ($col_lst[0] <= 0) ) {
-            array_shift($col_lst);
-        }
-        if (count($col_lst) == 0) return false;
-        
+
+		// Delete the TBS tag
+		$Txt = substr_replace($Txt, '', $PosBeg, $PosEnd - $PosBeg + 1);
+
 		// Look for the source of the table
 		$Loc = clsTbsXmlLoc::FindElement($Txt, $el_table, $PosBeg, false);
 		if ($Loc===false) return false;
@@ -2375,7 +2307,7 @@ If they are blank spaces, line beaks, or other unexpected characters, then you h
 		if ($idx===false) return false;
 		
 		// prevent from XML injection
-		$NewCredit = htmlspecialchars($NewCredit, ENT_NOQUOTES); // ENT_NOQUOTES because target is an element's content
+		$NewCredit = htmlspecialchars($NewCredit);
 		
 		$Txt = $this->TbsStoreGet($idx, "EditCredits");
 		
@@ -2949,7 +2881,7 @@ If they are blank spaces, line beaks, or other unexpected characters, then you h
 		if ($this->OpenXmlCharts===false) $this->OpenXML_ChartInit();
 
 		echo $nl;
-		echo $nl."Charts technically stored in the document: (use command OPENTBS_CHART_INFO to get series's names and data)";
+		echo $nl."Charts technically stored in the document:";
 		echo $nl."------------------------------------------";
 
 		// list of supported charts
@@ -3003,7 +2935,7 @@ If they are blank spaces, line beaks, or other unexpected characters, then you h
 			$p = strpos($Txt, '<c:order val="'.($SeriesNameOrNum-1).'"/>');
 			if ($p===false) return "Number of the series not found.";
 		} else {
-			$SeriesNameOrNum = htmlspecialchars($SeriesNameOrNum, ENT_NOQUOTES); // ENT_NOQUOTES because target is an element's content
+			$SeriesNameOrNum = htmlentities($SeriesNameOrNum);
 			$p = strpos($Txt, '>'.$SeriesNameOrNum.'<');
 			if ($p===false) return "Name of the series not found.";
 			$p++;
@@ -3181,7 +3113,7 @@ If they are blank spaces, line beaks, or other unexpected characters, then you h
 			$Txt = substr_replace($Txt, $point2, $p+$ser['point2_p'], $ser['point2_l']);
 			$Txt = substr_replace($Txt, $point1, $p+$ser['point1_p'], $ser['point1_l']);
 			if ( (is_string($NewLegend)) && isset($ser['leg_p']) && ($ser['leg_p']<$ser['point1_p']) ) {
-				$NewLegend = htmlspecialchars($NewLegend, ENT_NOQUOTES); // ENT_NOQUOTES because target is an element's content
+				$NewLegend = htmlspecialchars($NewLegend);
 				$Txt = substr_replace($Txt, $NewLegend, $p+$ser['leg_p'], $ser['leg_l']);
 			}
 
@@ -3596,7 +3528,7 @@ If they are blank spaces, line beaks, or other unexpected characters, then you h
 			if (substr($Txt_Curr, 0 + $tag_pc, 1) == '/') {
 
 				// It's an empty item => Delete the item
-				$Txt_Done .= substr($Txt_Curr, 0 + $tag_pc + 2); // +2 is for the tail '/>'
+				$Txt_Done .= substr($Txt_Curr, $p);
 
 			} else {
 
@@ -3788,12 +3720,12 @@ If they are blank spaces, line beaks, or other unexpected characters, then you h
 			} else {
 				$t = $Value;
 			}
-			if (($t===-1) || ($t===false)|| ($t===null)) { // Date not recognized
+			if (($t===-1) or ($t===false)) { // Date not recognized
 				$Value = '';
 			} elseif ($t===943916400) { // Date to zero
 				$Value = '';
 			} else { // It's a date
-				$Value = ($t/86400.00)+25569; // unix: 1 means 01/01/1970, xlsx: 1 means 01/01/1900
+				$Value = ($t/86400.00)+25569; // unix: 1 means 01/01/1970, xls: 1 means 01/01/1900
 			}
 			break;
 		default:
@@ -3990,71 +3922,6 @@ If they are blank spaces, line beaks, or other unexpected characters, then you h
 		return $lst;
 	}
 
-	/**
-	 * Return the array of the cells
-	 * Problem to solve: the results of formulas are deleted because of OtbsMsExcelConsistent
-	 */
-	function MsExcel_AsArray($Txt, $options = array()) {
-	
-		$rBeg = $this->getItem($options, 'row_beg', 1);
-		$rEnd = $this->getItem($options, 'row_end', 0);
-		$cBeg = $this->getItem($options, 'col_beg', 1);
-		$cEnd = $this->getItem($options, 'col_end', 0);
-		$formulas = $this->getItem($options, 'formulas', false);
-		$fill = $this->getItem($options, 'fill', true);
-		
-		$result = array();
-	
-		$rp = 0;
-		$rn = -1;
-		while ($re=clsTbsXmlLoc::FindElement($Txt, 'row', $rp, true) ) {
-			$rn++;
-			$row = array();
-			if ($re->GetInnerStart() !== false) {
-				$cn = -1;
-				$cp = 0;
-				while ($ce=clsTbsXmlLoc::FindElement($re, 'c', $cp, true) ) {
-					$cn++;
-					$x = null;
-					if ($ce->GetInnerStart() !== false) {
-						$type = $ce->GetAttLazy('t');
-						$vtag = ($type === 'inlineStr') ? 't' : 'v';
-						$ve = clsTbsXmlLoc::FindElement($ce, $vtag, 0, true);
-						if ($ve === false) {
-							$x = "(tag $vtag not found)";
-						} else {
-							$v = $ve->GetInnerSrc();
-							switch ($type) {
-							case 'b': // boolean: 0=false
-								$x = (boolean) $v; break;
-							case 's': // shared string
-								$x = $this->OpenXML_SharedStrings_GetVal($v); break;
-							case 'inlineStr': // inline string
-								$x = $v;
-							case 'str': // formula returning a string				
-								$x = $v;
-							case 'd': // date
-							    $t = ($v-25569.0) * 86400.0; // unix: 1 means 01/01/1970, xlsx: 1 means 01/01/1900
-								$x = date('Y-m-d h:i:s', $t);
-							case 'e': // error, example of value: #DIV/0!
-								$x = $v;
-							default: // false or 'n' : number
-								$x = $v;
-							}
-						}
-					}
-					$row[] = $x;
-					$cp = $ce->PosEnd;
-				}
-			}
-			$result[]= $row;
-			$rp = $re->PosEnd;
-		}
-
-		return $result;
-		
-	}
-	
 	/**
 	 * Return the list of slides in the Ms Powerpoint presentation.
 	 * @param {boolean} $Master Trye to operate on master slides.
@@ -5182,7 +5049,7 @@ If they are blank spaces, line beaks, or other unexpected characters, then you h
 		} else {
 			$ChartCaption = 'with title "'.$ChartRef.'"';
 			$idx = false;
-			$x = htmlspecialchars($ChartRef, ENT_NOQUOTES); // ENT_NOQUOTES because target is an element's content
+			$x = htmlspecialchars($ChartRef);
 			foreach($this->OpenDocCharts as $i=>$c) {
 				if ($c['title']==$x) $idx = $i;
 			}
@@ -5323,8 +5190,7 @@ If they are blank spaces, line beaks, or other unexpected characters, then you h
 					}
 				} else {
 					if ($s_use_cat && ($i==$col_cat) ) {
-						// ENT_NOQUOTES because target is an element's content
-						$x .= '<table:table-cell office:value-type="string"><text:p>'.htmlspecialchars($cat, ENT_NOQUOTES).'</text:p></table:table-cell>';
+						$x .= '<table:table-cell office:value-type="string"><text:p>'.htmlspecialchars($cat).'</text:p></table:table-cell>';
 					} else {
 						$x .= $x_nan;
 					}
@@ -5500,7 +5366,7 @@ If they are blank spaces, line beaks, or other unexpected characters, then you h
 
 	function OpenDoc_ChartRenameSeries(&$Txt, &$series, $NewName) {
 
-		$NewName = htmlspecialchars($NewName, ENT_NOQUOTES); // ENT_NOQUOTES because target is an element's content
+		$NewName = htmlspecialchars($NewName);
 		$col_name = $series['col_name'];
 
 		$el = clsTbsXmlLoc::FindStartTag($Txt, 'table:table-header-rows', 0);
@@ -5604,7 +5470,7 @@ If they are blank spaces, line beaks, or other unexpected characters, then you h
 		$ChartLst = $this->OpenDocCharts;
 
 		echo $nl;
-		echo $nl."Charts found in the contents: (use command OPENTBS_CHART_INFO to get series's names and data)";
+		echo $nl."Charts found in the contents:";
 		echo $nl."-----------------------------";
 		foreach ($ChartLst as $i=>$c) {
 			$title = ($c['title']===false) ? '(not found)' : var_export($c['title'], true);
@@ -6666,7 +6532,7 @@ class clsTbsZip {
 		// Output "end of central directory record"
 		$b2 = $this->CdInfo['bin'];
 		$DelNbr = count($DelLst);
-		if ( ($AddNbr>0) || ($DelNbr>0) ) {
+		if ( ($AddNbr>0) or ($DelNbr>0) ) {
 			// total number of entries in the central directory on this disk
 			$n = $this->_GetDec($b2, 8, 2);
 			$this->_PutDec($b2, $n + $AddNbr - $DelNbr,  8, 2);

@@ -6688,19 +6688,19 @@ public function getMailDetailFromTemplate($templateToReplace, $lastChangeDate=nu
   }
   //END ADD qCazelles - Filter by status
 
-  public static function toArrayList($list,$parent=null) {
+  public static function toArrayList($list,$parent=null,$outputHtml=false) {
     $result=array();
     foreach ($list as $obj) {
-      $result[]=$obj->toArrayFields($parent);
+      $result[]=$obj->toArrayFields($parent,$outputHtml);
     }
     return $result;
   }
-  public function toArrayFields($parent=null) {
+  public function toArrayFields($parent=null,$outputHtml=false) {
     $result=array();
     foreach ($this as $fld=>$value) {
       if (is_object($value)) {
         if (SqlElement::is_a($value,'SqlElement')) {
-          $sub=$value->toArrayFields($this);
+          $sub=$value->toArrayFields($this,$outputHtml);
           $result[strtolower($fld)]=array($sub);
         }
         continue;
@@ -6752,6 +6752,8 @@ public function getMailDetailFromTemplate($templateToReplace, $lastChangeDate=nu
         $result[$fld]=htmlFormatTime($value);
       } else if ($dataType=='datetime') {
         $result[$fld]=htmlFormatDateTime($value);
+      } else if ($dataType=='varchar' and $outputHtml) {
+        $result[$fld]=htmlEncode($value);
       }
     }
     if (property_exists($this, 'refType') and property_exists($this, 'refId') and !property_exists($this, 'refName')) {
