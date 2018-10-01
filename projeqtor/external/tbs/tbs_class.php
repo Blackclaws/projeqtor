@@ -2993,8 +2993,8 @@ function meth_Conv_Prepare(&$Loc, $StrConv) {
 // Convert a string with charset or custom function
 function meth_Conv_Str(&$Txt,$ConvBr=true) {
 	if ($this->Charset==='') { // Html by default
-		//$Txt = htmlspecialchars($Txt); // PROJEQTOR - Do not convert HTML
-		//if ($ConvBr) $Txt = nl2br($Txt); // PROJEQTOR - Do not convert HTML
+		//$Txt = htmlspecialchars($Txt);
+		//if ($ConvBr) $Txt = nl2br($Txt);
 	} elseif ($this->_CharsetFct) {
 		$Txt = call_user_func($this->Charset,$Txt,$ConvBr);
 	} else {

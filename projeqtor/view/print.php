@@ -54,7 +54,7 @@ use Spipu\Html2Pdf\Html2Pdf;
    	$orientation=$_REQUEST['orientation'];
    }
    $download=(RequestHandler::getValue('context')=='download' or RequestHandler::getValue('context')=='downloadList')?true:false; // Attention, download without extend is not like other download outmode
-   $noHeader=(RequestHandler::getValue('context')=='noheader' or RequestHandler::getValue('context')=='noheaderList')?true:false;
+   $noHeader=(RequestHandler::getValue('context')=='noheader' or RequestHandler::getValue('context')=='noheaderList')?true:false;   
    if ($outMode=='downloadPdf') $outMode='pdf';
    if ($outMode=='pdf') {
      $printInNewPage=getPrintInNewWindow('pdf');
