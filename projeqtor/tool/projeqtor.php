@@ -1896,7 +1896,7 @@ function sendMail_phpmailer($to, $title, $message, $object=null, $headers=null, 
   $phpmailer->WordWrap=70; // Set word wrap to 70 characters
   $phpmailer->isHTML(true); // Set email format to HTML
   $phpmailer->Subject=$title; //
-                                // $phpmailer->AltBody = 'Your email client does not support HTML format. The message body cannot be displayed';
+  // $phpmailer->AltBody = 'Your email client does not support HTML format. The message body cannot be displayed';
                                 
   // TODO : FOR OUTLOOK // TEST PBE FOR V7.0
   if ($headers) {
