@@ -42,14 +42,14 @@ function cronPlanningDifferential(){
   }
   traceLog(i18n("sectionAutomaticPlanning").' : '.i18n("paramAutomaticPlanningDifferential")." - ".i18n('projects').' : ' .((count($arrayProj))?implode(',',$arrayProj):i18n('paramNone')));
   if (count($arrayProj)>0) {
-    Sql::beginTransaction();
+    //Sql::beginTransaction(); #3601 : management of transaction in now included in PlannedWork::plan()
     $result=PlannedWork::plan($arrayProj, $startDatePlan);
     $status = getLastOperationStatus ( $result );
-    if ($status == "OK" or $status=="NO_CHANGE" or $status=="INCOMPLETE") {
-      Sql::commitTransaction ();
-    } else {
-      Sql::rollbackTransaction ();
-    }
+    //if ($status == "OK" or $status=="NO_CHANGE" or $status=="INCOMPLETE") {
+    //  Sql::commitTransaction ();
+    //} else {
+    //  Sql::rollbackTransaction ();
+    //}
     traceLog(i18n("sectionAutomaticPlanning").' : '.i18n("paramAutomaticPlanningDifferential")." - $status");
   } else {
     $status='NO_CHANGE';
@@ -58,14 +58,14 @@ function cronPlanningDifferential(){
 function cronPlanningComplete(){
   $startDatePlan=cronPlanningStartDate(Parameter::getGlobalParameter("automaticPlanningCompleteDate"));
   traceLog(i18n("sectionAutomaticPlanning").' : '.i18n("paramAutomaticPlanningComplete")." - ".i18n('projects').' : '.i18n('all'));
-  Sql::beginTransaction();
+  //Sql::beginTransaction(); #3601 : management of transaction in now included in PlannedWork::plan()
   $result=PlannedWork::plan(array(' '), $startDatePlan);
   $status = getLastOperationStatus ( $result );
-  if ($status == "OK" or $status=="NO_CHANGE" or $status=="INCOMPLETE") {
-    Sql::commitTransaction ();
-  } else {
-    Sql::rollbackTransaction ();
-  }
+  //if ($status == "OK" or $status=="NO_CHANGE" or $status=="INCOMPLETE") {
+  //  Sql::commitTransaction ();
+  //} else {
+  //  Sql::rollbackTransaction ();
+  //}
   traceLog(i18n("sectionAutomaticPlanning").' : '.i18n("paramAutomaticPlanningComplete")." - $status");
 }
 function cronPlanningStartDate($param) {
