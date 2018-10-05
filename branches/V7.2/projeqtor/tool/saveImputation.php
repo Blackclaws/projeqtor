@@ -100,7 +100,7 @@ for ($i=0; $i<$nbLines; $i++) {
         $work=new Work($workId);
       } else {
         $crit=array('idAssignment'=>$line->idAssignment,
-                    'workDate'=>$workDate, 'idWorkElement'=>null);
+                    'workDate'=>$workDate, 'idWorkElement'=>null, 'idResource'=>$line->idResource);
         $work=SqlElement::getSingleSqlElementFromCriteria('Work', $crit);
       } 
       $arrayWork[$j]=$work;
