@@ -17,6 +17,8 @@ Planning management
 
 ProjeQtOr  provides all the elements needed to build a planning from workload, constraints between tasks and resources availability.
 
+* Multiple Access: People can edit the same item (if they get the right to do it) at the same time, without disturbing each other, as long as they do not change the same fields.
+
 .. index:: Planning management (Project)
 
 .. rubric:: Project
