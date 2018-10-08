@@ -221,11 +221,7 @@ Logo area
    :align: center
 
 
-.. rubric:: Online user manual
-
-* Click on |buttonIconHelp| or use shortcut key :kbd:`F1` will open the online user manual, to the page corresponding to the current screen. 
-
-  .. note:: 
+ .. note:: 
 
      * You can change logo with your own.
      * Refer to administration guide to replace the logo.
@@ -279,7 +275,7 @@ Logo area
 
 .. _message-link-window:
 
-«External shortcuts» and «Console messages» windows
+«External shortcuts»,«Console messages» windows and «Shortcuts»
 ---------------------------------------------------
 
 .. figure:: /images/GUI/ZONE_ShortcutMessage.png
@@ -305,10 +301,15 @@ Logo area
 * Displays information about main actions: insert, update, delete. 
 * The timestamp indicates when the action was done.
 
-
  .. note::
 
     * Messages displayed here are not stored and will be flushed when user logout.
+
+.. rubric:: 3 -  Shortcuts windows
+
+* [CTRL] +S = save the current element
+* [F1]= Opens the online manual (contextual opening on the current screen)
+* Click on |buttonIconHelp| ( into the logo zone ) or use shortcut key F1 is the same
 
 .. raw:: latex
 
