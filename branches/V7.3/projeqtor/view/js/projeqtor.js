@@ -1353,9 +1353,9 @@ function finalizeMessageDisplay(destination, validationType) {
           var url = '../tool/getObjectCreationInfo.php?objectClass='+ dojo.byId('objectClass').value +'&objectId='+dojo.byId('objectId').value;
           loadDiv(url, 'buttonDivCreationInfo', null);  
         }
-        if(refTypeName && dijit.byId(dojo.byId('objectClass').value+'_Link'+refTypeName)){
+        if(refTypeName && dijit.byId(dojo.byId('objectClass').value+'_Link_'+refTypeName)){
           var url = "objectDetail.php?refreshLinks="+refTypeName;
-          loadContent("objectDetail.php?refreshLinks="+refTypeName,dojo.byId('objectClass').value+ '_Link'+refTypeName,'listForm');  
+          loadContent("objectDetail.php?refreshLinks="+refTypeName,dojo.byId('objectClass').value+ '_Link_'+refTypeName,'listForm');  
           //gautier #2947
           loadContent("objectDetail.php?refresh=true", "detailFormDiv",'listForm');
         }else{
