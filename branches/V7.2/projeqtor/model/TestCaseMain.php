@@ -77,7 +77,7 @@ class TestCaseMain extends SqlElement {
   public $_Dependency_Predecessor=array();
   public $_sec_successor;
   public $_Dependency_Successor=array();
-  public $_sec_LinkRequirement;
+  public $_sec_Link_Requirement;
   public $_Link_Requirement=array();
   public $_sec_Link;
   public $_Link=array();

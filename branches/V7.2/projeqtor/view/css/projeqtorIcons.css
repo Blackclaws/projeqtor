@@ -654,8 +654,8 @@
 .iconPaymentMode16 { background-image: url(images/iconPaymentMode16.png);  background-repeat: no-repeat; width: 16px; height: 16px; }
 
 .iconPaymentType32 { background-image: url(images/iconClientPaymentType32.png);  background-repeat: no-repeat; width: 32px; height: 32px; background-size: 32px 32px;}
-.iconPaymentType22 { background-image: url(images/iconClientPaymentType22.png);  background-repeat: no-repeat; width: 22px; height: 22px; background-size: 22px 22px;}
-.iconPaymentType16 { background-image: url(images/iconClientPaymentType16.png);  background-repeat: no-repeat; width: 16px; height: 16px; background-size: 16px 16px;}
+.iconPaymentType22 { background-image: url(images/iconClientPaymentType32.png);  background-repeat: no-repeat; width: 22px; height: 22px; background-size: 22px 22px;}
+.iconPaymentType16 { background-image: url(images/iconClientPaymentType32.png);  background-repeat: no-repeat; width: 16px; height: 16px; background-size: 16px 16px;}
 
 .iconPeriodicMeeting32 { background-image: url(images/iconPeriodicMeeting32.png);  background-repeat: no-repeat; width: 32px; height: 32px; }
 .iconPeriodicMeeting22 { background-image: url(images/iconPeriodicMeeting22.png);  background-repeat: no-repeat; width: 22px; height: 22px; }
@@ -776,8 +776,8 @@
 .iconQuotation16 { background-image: url(images/iconClientQuotation32.png);  background-repeat: no-repeat; width: 16px; height: 16px; background-size: 16px 16px;}
 
 .iconQuotationType32 { background-image: url(images/iconClientQuotationType32.png);  background-repeat: no-repeat; width: 32px; height: 32px; background-size: 32px 32px;}
-.iconQuotationType22 { background-image: url(images/iconClientQuotationType22.png);  background-repeat: no-repeat; width: 22px; height: 22px; background-size: 22px 22px;}
-.iconQuotationType16 { background-image: url(images/iconClientQuotationType16.png);  background-repeat: no-repeat; width: 16px; height: 16px; background-size: 16px 16px;}
+.iconQuotationType22 { background-image: url(images/iconClientQuotationType32.png);  background-repeat: no-repeat; width: 22px; height: 22px; background-size: 22px 22px;}
+.iconQuotationType16 { background-image: url(images/iconClientQuotationType32.png);  background-repeat: no-repeat; width: 16px; height: 16px; background-size: 16px 16px;}
 
 .iconRecipient32 { background-image: url(images/iconRecipient32.png);  background-repeat: no-repeat; width: 32px; height: 32px; }
 .iconRecipient22 { background-image: url(images/iconRecipient22.png);  background-repeat: no-repeat; width: 22px; height: 22px; }
