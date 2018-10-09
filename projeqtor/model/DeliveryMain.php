@@ -72,10 +72,10 @@ class DeliveryMain extends SqlElement {
   //END ADD qCazelles
   public $idDeliverableStatus;
   public $result;
-  public $_sec_LinkDeliverable;
+  public $_sec_Link_Deliverable;
   public $_Link_Deliverable=array();
   //ADD qCazelles
-  public $_sec_LinkActivity;
+  public $_sec_Link_Activity;
   public $_Link_Activity=array();
   //END ADD qCazelles
   public $_sec_Link;
