@@ -289,6 +289,24 @@ class ImputationLine {
       $plan=null;
       if ($ass->id) {
         $plan=SqlElement::getSingleSqlElementFromCriteria('PlanningElement', $crit);
+        if (! $plan->id and $plan->refType and SqlElement::class_exists($plan->refType) and $plan->refId) {
+          // This is unconsistency that we'll try and fix, if planning element does not exist : save main item will recreate it
+          $refType=$plan->refType;
+          $peNameForRefObj=$refType."PlanningElement";
+          $pmNameForRefObj="id".$refType."PlanningMode";
+          $refObjFromPlan=new $refType($plan->refId);
+          if (!$refObjFromPlan->$peNameForRefObj->$pmNameForRefObj) {
+            $planningModeList=SqlList::getList('PlanningMode','applyTo');
+            foreach ($planningModeList as $pmId=>$pmApplyTo) {      
+              if ($pmApplyTo==$refType) {
+                $refObjFromPlan->$peNameForRefObj->$pmNameForRefObj=$pmId;
+                break;
+              }
+            }
+          }
+          $resultSaveObjFromPlan=$refObjFromPlan->save();
+          $plan=$refObjFromPlan->$peNameForRefObj;
+        }
       }
       if ($plan and $plan->id and isset($ass->_topRefType) and isset($ass->_topRefId)) {
         $elt->wbs=$plan->wbs.'.'.htmlEncode($elt->refType).'#'.$elt->refId;
@@ -328,7 +346,7 @@ class ImputationLine {
         if (isset($ass->name)) {
           $elt->name=$ass->name;
         } else {
-          $elt->name='<span style="color:red;"><i>'.i18n('notAssignedWork').'</i></span>';
+          $elt->name='<span style="color:red;"><i>'.i18n('notAssignedWork').' (3)</i></span>';
           if ($ass->refType and $ass->refId) {
             $elt->comment=i18n($ass->refType).' #'.$ass->refId;
           } else {
