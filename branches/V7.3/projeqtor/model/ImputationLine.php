@@ -295,7 +295,8 @@ class ImputationLine {
           $peNameForRefObj=$refType."PlanningElement";
           $pmNameForRefObj="id".$refType."PlanningMode";
           $refObjFromPlan=new $refType($plan->refId);
-          if (!$refObjFromPlan->$peNameForRefObj->$pmNameForRefObj) {
+          if (property_exists($refObjFromPlan,$peNameForRefObj) and is_object($refObjFromPlan->$peNameForRefObj) 
+              and property_exists($refObjFromPlan->$peNameForRefObj, $pmNameForRefObj) and !$refObjFromPlan->$peNameForRefObj->$pmNameForRefObj) {
             $planningModeList=SqlList::getList('PlanningMode','applyTo');
             foreach ($planningModeList as $pmId=>$pmApplyTo) {      
               if ($pmApplyTo==$refType) {

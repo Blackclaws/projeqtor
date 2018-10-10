@@ -342,4 +342,68 @@ class Consistency {
   
     }
   }
+  
+  // =================================================================================================================
+  // Missing (or Extra) Planning Elements
+  // =================================================================================================================
+  
+  public static function checkMissingPlanningElement($correct=false,$trace=false) {
+    $errors=0;
+    // Direct Query : valid here for technical needs on grouping
+    $work=new Work();
+    $workTable=$work->getDatabaseTableName();
+    $pe=new PlanningElement();
+    $peTable=$pe->getDatabaseTableName();
+    $ass=new Assignment();
+    $assTable=$ass->getDatabaseTableName();
+    
+    $query="SELECT ass.refType as reftype, ass.refId as refid, ass.idResource as idresource, ass.id as id from $assTable ass"
+         . "  WHERE (select count(*) from $peTable pe where pe.refType=ass.refType and pe.refId=ass.refId )!=1";
+    $result=Sql::query($query);
+    while ($line = Sql::fetchLine($result)) {
+      $refType=$line['reftype'];
+      $refId=$line['refid'];
+      $assId=$line['id'];
+      $listPe=$pe->getSqlElementsFromCriteria(array('refType'=>$refType,"refId"=>$refId));
+      if (count($listPe)==0) {
+        displayError(i18n("checkPlanningElementMissing",array(i18n($refType),$refId)));
+        $errors++;
+        if ($correct) {
+          
+          $peNameForRefObj=$refType."PlanningElement";
+          $pmNameForRefObj="id".$refType."PlanningMode";
+          $refObjFromPlan=new $refType($refId);
+          if (property_exists($refObjFromPlan,$peNameForRefObj) and is_object($refObjFromPlan->$peNameForRefObj)
+          and property_exists($refObjFromPlan->$peNameForRefObj, $pmNameForRefObj) and !$refObjFromPlan->$peNameForRefObj->$pmNameForRefObj) {
+            $planningModeList=SqlList::getList('PlanningMode','applyTo');
+            foreach ($planningModeList as $pmId=>$pmApplyTo) {
+              if ($pmApplyTo==$refType) {
+                $refObjFromPlan->$peNameForRefObj->$pmNameForRefObj=$pmId;
+                break;
+              }
+            }
+          }
+          $resultSaveObjFromPlan=$refObjFromPlan->save();
+          if (getLastOperationStatus($resultSaveObjFromPlan=="OK")) {
+            displayOK(i18n("checkFixed"),true);
+          } else {
+            displayMsg(i18n("checkNotFixed"),true);
+          }
+        }
+      } else {
+        displayError(i18n("checkPlanningElementMissing",array(i18n($refType),$refId,count($listPe))));
+        $errors++;
+        if ($correct) {
+          displayMsg(i18n("checkNotFixed"),true);
+        
+        }
+      }
+      
+      
+    }
+    if (!$errors) {
+      displayOK(i18n("checkNoError"));
+  
+    }
+  }
 }?>

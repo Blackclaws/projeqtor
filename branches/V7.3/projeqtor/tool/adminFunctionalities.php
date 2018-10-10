@@ -96,6 +96,8 @@ if ($adminFunctionality=='sendAlert') {
   Consistency::checkWorkOnTicket($correct, false);
   echo "<div class='consistencySection' style=''>".i18n('sectionCheckWorkOnActivity')."</div>";
   Consistency::checkWorkOnActivity($correct, false);
+  echo "<div class='consistencySection' style=''>".i18n('sectionCheckMissingPlanningElement')."</div>";
+  Consistency::checkMissingPlanningElement($correct, false);
   $result=false;
   Sql::commitTransaction();
 } else {
