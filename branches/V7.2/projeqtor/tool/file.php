@@ -167,6 +167,8 @@ function createThumb($imageFile,$size,$thumb=null, $square=false) {
       $nx=$x;
       $ny=$y;
     }
+    if ($nx<1) $nx=1;
+    if ($ny<1) $ny=1;
     $nimg = imagecreatetruecolor($nx,$ny);
     // preserve transparency for PNG and GIF images 
     if ($imgFmt == 'png' or $imgFmt == 'gif'){ 
