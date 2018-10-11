@@ -71,6 +71,7 @@ $userLink['KpiDefinition']='ControlAutomation.html#kpi-definitions';
 $userLink['JoblistDefinition']='ControlAutomation.html#jobList';
 //AlainForma
 $userLink['Notification']='ControlAutomation.html#notification-system';
+$userLink['NotificationDefinition']='ControlAutomation.html#notification-system';
 $userLink['DashboardRequirement']='RequirementsDashBoard.html';
 $userLink['PredefinedNote']='ControlAutomation.html#predefined-notes';
 $userLink['ChecklistDefinition']='ControlAutomation.html#checklist-definition';
