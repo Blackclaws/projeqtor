@@ -702,7 +702,6 @@ if (beforeVersion($currVersion,'V7.2.0')) {
         $cronExec->idle=(Parameter::getGlobalParameter('imputationAlertSendTo'.$dest)=="NO" || $alertControlDay=="NEVER" || $dest=="OrganismManager") ? 1 : 0;
         $cronExec->save();
     }
-    Cron::restart();
 }
 
 
@@ -714,6 +713,7 @@ deleteDuplicate();
 Sql::saveDbVersion($version);
 Parameter::clearGlobalParameters();
 unsetSessionValue('_tablesFormatList');
+Cron::restart();
 
 traceLog('=====================================');
 traceLog("");
