@@ -391,7 +391,7 @@ function addTab($param){
       if (!$object->id and property_exists($object, '_constructForName')) {
         if ($param["groupBy"]=='TargetProductVersion') $classObject='OriginalProductVersion';
         if ($param["groupBy"]=='TargetComponentVersion') $classObject='OriginalComponentVersion';
-        $object=new $classObject($line['idneed'], true);
+        if ($classObject) $object=new $classObject($line['idneed'], true);
       }
       //END - ADD qCazelles - Dashboard : filter by type - Ticket 154
       $idU=$object->name;
