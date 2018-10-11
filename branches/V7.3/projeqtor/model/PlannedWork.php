@@ -1242,7 +1242,7 @@ class PlannedWork extends GeneralWork {
       } else {
    	    $resPe=$pe->simpleSave();
       }
-   	  if ($pe->refType=='Milestone') {
+   	  if ($pe->refType=='Milestone' and SqlElement::is_a($pe,'MilestonePlanningElement')) {
    	    $pe->updateMilestonableItems();
    	  }
      }

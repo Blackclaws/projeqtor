@@ -1265,12 +1265,16 @@
     echo '<MicrosoftProjectServerURL>1</MicrosoftProjectServerURL>' . $nl;
     echo '<Autolink>1</Autolink>' . $nl;
     echo '<NewTaskStartDate>0</NewTaskStartDate>' . $nl;
+    echo '<NewTasksAreManual>1</NewTasksAreManual>'. $nl;
     echo '<DefaultTaskEVMethod>0</DefaultTaskEVMethod>' . $nl;
     echo '<ProjectExternallyEdited>0</ProjectExternallyEdited>' . $nl;
     echo '<ExtendedCreationDate>1984-01-01T00:00:00</ExtendedCreationDate>' . $nl;
     echo '<ActualsInSync>0</ActualsInSync>' . $nl;
     echo '<RemoveFileProperties>0</RemoveFileProperties>' . $nl;
     echo '<AdminProject>0</AdminProject>' . $nl;
+    echo '<UpdateManuallyScheduledTasksWhenEditingLinks>0</UpdateManuallyScheduledTasksWhenEditingLinks>'. $nl;
+	  echo '<KeepTaskOnNearestWorkingTimeWhenMadeAutoScheduled>0</KeepTaskOnNearestWorkingTimeWhenMadeAutoScheduled>'. $nl;
+	
     echo '<OutlineCodes/>' . $nl;
     echo '<WBSMasks/>' . $nl;
     echo '<ExtendedAttributes/>' . $nl;
@@ -1285,6 +1289,7 @@
     echo '<UID>0</UID>' . $nl;
     echo '<Name>Standard</Name>' . $nl;
     echo '<IsBaseCalendar>1</IsBaseCalendar>' . $nl;
+    echo '<IsBaselineCalendar>0</IsBaselineCalendar>' .$nl;
     echo '<BaseCalendarUID>-1</BaseCalendarUID>' . $nl;
     echo '<WeekDays>' . $nl;
     for ($i=1;$i<=7;$i++) {
@@ -1314,6 +1319,7 @@
       echo "<UID>" . htmlEncode($resource->id,'xml') . "</UID>" . $nl;
       echo "<Name>" . htmlEncode($resource->name,'xml') . "</Name>" . $nl;
       echo "<IsBaseCalendar>0</IsBaseCalendar>" . $nl;
+      echo "<IsBaselineCalendar>0</IsBaselineCalendar>". $nl;
       echo "<BaseCalendarUID>0</BaseCalendarUID>" . $nl;
       echo "</Calendar>" . $nl;
     }
