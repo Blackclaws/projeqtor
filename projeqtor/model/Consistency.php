@@ -360,42 +360,59 @@ class Consistency {
     $query="SELECT ass.refType as reftype, ass.refId as refid, ass.idResource as idresource, ass.id as id from $assTable ass"
          . "  WHERE (select count(*) from $peTable pe where pe.refType=ass.refType and pe.refId=ass.refId )!=1";
     $result=Sql::query($query);
+    $stockRefType='';
+    $stockRefId='';
     while ($line = Sql::fetchLine($result)) {
       $refType=$line['reftype'];
       $refId=$line['refid'];
       $assId=$line['id'];
+      if ($refType==$stockRefType and $refId==$stockRefId) continue;
+      $stockRefType=$refType;
+      $stockRefId=$refId;
       $listPe=$pe->getSqlElementsFromCriteria(array('refType'=>$refType,"refId"=>$refId));
       if (count($listPe)==0) {
         displayError(i18n("checkPlanningElementMissing",array(i18n($refType),$refId)));
         $errors++;
         if ($correct) {
-          
           $peNameForRefObj=$refType."PlanningElement";
           $pmNameForRefObj="id".$refType."PlanningMode";
           $refObjFromPlan=new $refType($refId);
-          if (property_exists($refObjFromPlan,$peNameForRefObj) and is_object($refObjFromPlan->$peNameForRefObj)
-          and property_exists($refObjFromPlan->$peNameForRefObj, $pmNameForRefObj) and !$refObjFromPlan->$peNameForRefObj->$pmNameForRefObj) {
-            $planningModeList=SqlList::getList('PlanningMode','applyTo');
-            foreach ($planningModeList as $pmId=>$pmApplyTo) {
-              if ($pmApplyTo==$refType) {
-                $refObjFromPlan->$peNameForRefObj->$pmNameForRefObj=$pmId;
-                break;
+          if ($refObjFromPlan->id) { // Assignment refers to existing item
+            if (property_exists($refObjFromPlan,$peNameForRefObj) and is_object($refObjFromPlan->$peNameForRefObj)
+            and property_exists($refObjFromPlan->$peNameForRefObj, $pmNameForRefObj) and !$refObjFromPlan->$peNameForRefObj->$pmNameForRefObj) {
+              $planningModeList=SqlList::getList('PlanningMode','applyTo');
+              foreach ($planningModeList as $pmId=>$pmApplyTo) {
+                if ($pmApplyTo==$refType) {
+                  $refObjFromPlan->$peNameForRefObj->$pmNameForRefObj=$pmId;
+                  break;
+                }
               }
             }
-          }
-          $resultSaveObjFromPlan=$refObjFromPlan->save();
-          if (getLastOperationStatus($resultSaveObjFromPlan=="OK")) {
-            displayOK(i18n("checkFixed"),true);
-          } else {
-            displayMsg(i18n("checkNotFixed"),true);
+            $resultSaveObjFromPlan=$refObjFromPlan->save();
+            if (getLastOperationStatus($resultSaveObjFromPlan=="OK")) {
+              displayOK(i18n("checkFixed"),true);
+            } else {
+              displayMsg(i18n("checkNotFixed"),true);
+            }
+          } else { // Assignment refers to no existing item : delete
+            $ass=new Assignment($assId);
+            if ($ass->id) {
+            	$resultDeleteInvalidAssignement=$ass->delete();
+              if (getLastOperationStatus($resultDeleteInvalidAssignement=="OK")) {
+                displayOK(i18n("checkFixed"),true);
+              } else {
+                displayMsg(i18n("checkNotFixed"),true);
+              }
+            } else {
+            	displayMsg(i18n("checkNotFixed"),true);
+            }
           }
         }
       } else {
-        displayError(i18n("checkPlanningElementMissing",array(i18n($refType),$refId,count($listPe))));
+        displayError(i18n("checkPlanningElementExtra",array(i18n($refType),$refId,count($listPe))));
         $errors++;
         if ($correct) {
           displayMsg(i18n("checkNotFixed"),true);
-        
         }
       }
       
