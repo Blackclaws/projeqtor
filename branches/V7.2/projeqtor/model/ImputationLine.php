@@ -295,22 +295,33 @@ class ImputationLine {
           $peNameForRefObj=$refType."PlanningElement";
           $pmNameForRefObj="id".$refType."PlanningMode";
           $refObjFromPlan=new $refType($plan->refId);
-          if (property_exists($refObjFromPlan,$peNameForRefObj)) {
-          	$refObjFromPlan->$peNameForRefObj=new $peNameForRefObj();
-            $refObjFromPlan->$peNameForRefObj->refType=$refType;
-            $refObjFromPlan->$peNameForRefObj->refId=$plan->refId;
-            if (property_exists($refObjFromPlan->$peNameForRefObj, $pmNameForRefObj) and !$refObjFromPlan->$peNameForRefObj->$pmNameForRefObj) {
-              $planningModeList=SqlList::getList('PlanningMode','applyTo');
-              foreach ($planningModeList as $pmId=>$pmApplyTo) {      
-                if ($pmApplyTo==$refType) {
-                  $refObjFromPlan->$peNameForRefObj->$pmNameForRefObj=$pmId;
-                  break;
+          if ($refObjFromPlan->id) { // Assignment refers to existing item
+            if (property_exists($refObjFromPlan,$peNameForRefObj)) {
+            	$refObjFromPlan->$peNameForRefObj=new $peNameForRefObj();
+              $refObjFromPlan->$peNameForRefObj->refType=$refType;
+              $refObjFromPlan->$peNameForRefObj->refId=$plan->refId;
+              if (property_exists($refObjFromPlan->$peNameForRefObj, $pmNameForRefObj) and !$refObjFromPlan->$peNameForRefObj->$pmNameForRefObj) {
+                $planningModeList=SqlList::getList('PlanningMode','applyTo');
+                foreach ($planningModeList as $pmId=>$pmApplyTo) {      
+                  if ($pmApplyTo==$refType) {
+                    $refObjFromPlan->$peNameForRefObj->$pmNameForRefObj=$pmId;
+                    break;
+                  }
                 }
               }
             }
+            $resultSaveObjFromPlan=$refObjFromPlan->save();
+            traceLog("Assignment #$ass->id for resource #$ass->idResource refers to $refType #$plan->refId that does not have a planning element");
+            traceLog("   Save $refType #$plan->refId to generate planning element.");
+            traceLog("   Result = ".$resultSaveObjFromPlan);
+            $plan=$refObjFromPlan->$peNameForRefObj;
+          } else { // Assignment refers to no existing item : delete
+            $resultDeleteInvalidAssignement=$ass->delete();
+            traceLog("Assignment #$ass->id for resource #$ass->idResource refers to not existing item $refType #$plan->refId");
+            traceLog("   Delete unconsistent assignment.");
+            traceLog("   Result = ".$resultDeleteInvalidAssignement);
+            continue;
           }
-          $resultSaveObjFromPlan=$refObjFromPlan->save();
-          $plan=$refObjFromPlan->$peNameForRefObj;
         }
       }
       if ($plan and $plan->id and isset($ass->_topRefType) and isset($ass->_topRefId)) {
