@@ -6640,6 +6640,12 @@ function endBuffering($prevSection, $included) {
     $sectionName=strtolower($prevSection);
     if (isset($sectionPosition[$sectionName]) and isset($sectionPosition[$sectionName][$nbColMax])) {
       $position=$sectionPosition[$sectionName][$nbColMax];
+    } else {
+      if (substr($sectionName,-5)=='_left') {
+        $position='left';
+      } else if (substr($sectionName,-5)=='_center') {
+        $position='center';
+      } 
     }
     if ($position=='extra') {
       $extraPane.=$display;
