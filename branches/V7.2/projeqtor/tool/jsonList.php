@@ -299,7 +299,7 @@ if ($type == 'empty') {
       $listProjs = $proj->getRecursiveSubProjectsFlatList ( false, true );
       $clauseWhere = 'idProject in (0';
       foreach ( $listProjs as $idProj => $nameProj ) {
-        $clauseWhere .= ", $idProj";
+        if ($idProj) $clauseWhere .= ", $idProj";
       }
       $clauseWhere .= ')';
       $versionProject = new VersionProject ();
