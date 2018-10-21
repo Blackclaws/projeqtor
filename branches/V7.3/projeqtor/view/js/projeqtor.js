@@ -1220,26 +1220,26 @@ function finalizeMessageDisplay(destination, validationType) {
     if (!contentNode) {
       consoleTraceLog("contentNode unknown");
     } else {
-      consoleTraceLog("contentNode=" + contentNode.innerHTML);
+      consoleTraceLog("contentNode='" + contentNode.innerHTML+"'");
     }
     if (!contentWidget) {
       consoleTraceLog("contentWidget unknown");
     } else {
-      consoleTraceLog("contentWidget=" + contentWidget.get("content"));
+      consoleTraceLog("contentWidget='" + contentWidget.get("content")+"'");
     }
     if (!lastOperationStatus) {
       consoleTraceLog("lastOperationStatus unknown");
     } else {
-      consoleTraceLog("lastOperationStatus=" + lastOperationStatus.value);
+      consoleTraceLog("lastOperationStatus='" + lastOperationStatus.value+"'");
     }
     if (!lastOperation) {
       consoleTraceLog("lastOperation unknown");
     } else {
-      consoleTraceLog("lastOperation=" + lastOperation.value);
+      consoleTraceLog("lastOperation='" + lastOperation.value+"'");
     }
     hideWait();
-    showError(i18n("errorFinalizeMessage",
-        new Array(destination, returnMessage)));
+    //showError(i18n("errorFinalizeMessage", new Array(destination, returnMessage)));
+    formInitialize();
     return;
   }
   if (!contentWidget) {
