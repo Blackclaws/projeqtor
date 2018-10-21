@@ -73,6 +73,13 @@
     $week=weekNumber($firstDay);
   	$lastWeek=weekNumber($year.'-'.$month.'-'.$lastDayOfMonth);
   	//$lastWeek=weekNumber('2017-04-30');
+  	if ($lastWeek==1) {
+  	  while ($lastWeek==1) {
+    	  $lastDayOfMonth--;
+    	  $lastWeek=weekNumber($year.'-'.$month.'-'.$lastDayOfMonth);
+  	  }
+  	  $lastWeek+=1;
+  	}
 	  if ($lastWeek>$week) {
 		  $trHeight=floor(($totalHeight-20)/($lastWeek-$week+1));
 	  } else {
@@ -90,7 +97,8 @@
   	  $currentDay=date('Y-m-d',firstDayofWeek($week,$year));
     }
   	$lastDayOfMonth=date('t',strtotime($year.'-'.$month.'-01'));
-	  $weekOfLastDayOfMonth=date('W',strtotime($year.'-'.$month.'-'.$lastDayOfMonth));
+	  //$weekOfLastDayOfMonth=date('W',strtotime($year.'-'.$month.'-'.$lastDayOfMonth));
+  	$weekOfLastDayOfMonth=$lastWeek;
   	$firstDayOfLastWeek=date('Y-m-d',firstDayofWeek($weekOfLastDayOfMonth, $year ));
   	$endDay=addDaysToDate($firstDayOfLastWeek, 6);
   	$inScopeDay=false;	
@@ -249,6 +257,8 @@ function getAllActivities($startDate, $endDate, $ress, $showDone=false, $showIdl
 	    $mpeTable=$mpe->getDatabaseTableName();
 	    $critWhere=" ( exists (select 'x' from $assTable ass where ass.refType='Meeting' and ass.refId = $mpeTable.refId and ass.idResource=".Sql::fmtId($ress).")";
 	    $critWhere.="  or exists (select 'x' from $meetTable meet where id=$mpeTable.refId and meet.idResource=".Sql::fmtId($ress).") )";
+	  } else if (get_class($obj)=='MilestonePlanningElement') {
+	    $critWhere="1=1";
 	  } else { 
 		  $critWhere="idResource=".Sql::fmtId($ress);
 	  }
