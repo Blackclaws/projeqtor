@@ -60,8 +60,6 @@ class GeneralWork extends SqlElement {
     <th field="id" formatter="numericFormatter" width="10%" ># ${id}</th>
     <th field="nameResource" formatter="thumbName22" width="35%" >${resourceName}</th>
     <th field="nameProject" width="35%" >${projectName}</th>
-    <th field="rate" width="15%" formatter="percentFormatter">${rate}</th>  
-    <th field="idle" width="5%" formatter="booleanFormatter" >${idle}</th>
     ';
 
   
