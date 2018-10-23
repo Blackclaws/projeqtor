@@ -252,8 +252,9 @@ class GlobalPlanningElement extends SqlElement {
     if (count($itemsToDisplayArray)==0 or (count($itemsToDisplayArray)==1 and $itemsToDisplayArray[0]=='none')) return $pe->getDatabaseTableName();
     $excludedProjectsListClause="idProject not in ".transformValueListIntoInClause(SqlList::getListWithCrit("Project", array('excludeFromGlobalPlanning'=>'1'),"id"));
     $query="\n  ( ";
+    $formatChar=(Sql::isPgsql())?'VARCHAR':'CHAR';
     if (!$limitToClass) {
-      $query.="SELECT id,idProject,refType,refId,refName,topId,topRefType,topRefId,
+      $query.="SELECT cast(id as $formatChar) as id,idProject,refType,refId,refName,topId,topRefType,topRefId,
         priority,elementary,idle,done,cancelled,idPlanningMode,idBill,
         initialStartDate,validatedStartDate,validatedStartFraction,plannedStartDate,plannedStartFraction,realStartDate,
         initialEndDate,validatedEndDate,validatedEndFraction,plannedEndDate,plannedEndFraction,realEndDate,
@@ -278,12 +279,12 @@ class GlobalPlanningElement extends SqlElement {
       $table=$clsObj->getDatabaseTableName();
       $convert=self::$_globalizables[$class];
       if (!$limitToClass) {$query.="\n  UNION ";}
-      $query.="\n    SELECT coalesce(pex.id+$pexRef,concat('$class','_',$table.id)) as id";
+      $query.="\n    SELECT coalesce(cast( (pex.id+$pexRef) AS $formatChar),concat('$class','_',$table.id)) as id";
       foreach ($obj as $fld=>$val) {
         if (substr($fld,0,1)=='_' or $fld=='id') continue;        
         $query.=", ";
         if ($fld=='priority' or $fld=='initialStartDate' or $fld=='initialEndDate' or $fld=='initialDuration' or $fld=='initialWork' or $fld=='validatedCost' or $fld=='progress') $query.="\n      ";
-        if ($fld=='refType') $query.="'$class'";
+        if ($fld=='refType') $query.="cast('$class' AS $formatChar)";
         else if ($fld=='isGlobal') $query.="1";
         else if ($fld=='plannedStartFraction' or $fld=='validatedStartFraction') $query.="0";
         else if ($fld=='plannedEndFraction' or $fld=='validatedEndFraction') $query.="1";

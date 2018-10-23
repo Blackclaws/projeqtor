@@ -543,7 +543,12 @@
         } else {
           echo ',"resource":""';
         }
-        $crit=array('successorId'=>$idPe);
+        if (floatval($idPe)==$idPe) {
+          debugLog("$idPe is numeric");
+          $crit=array('successorId'=>$idPe);
+        } else {
+          $crit=array('successorId'=>'0');
+        }
         $listPred="";
         $depList=$d->getSqlElementsFromCriteria($crit,false);
         foreach ($depList as $dep) {
