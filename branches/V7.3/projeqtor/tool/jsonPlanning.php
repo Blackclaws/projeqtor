@@ -543,7 +543,11 @@
         } else {
           echo ',"resource":""';
         }
-        $crit=array('successorId'=>$idPe);
+        if (floatval($idPe)==$idPe) {
+          $crit=array('successorId'=>$idPe);
+        } else {
+          $crit=array('successorId'=>'0');
+        }
         $listPred="";
         $depList=$d->getSqlElementsFromCriteria($crit,false);
         foreach ($depList as $dep) {
