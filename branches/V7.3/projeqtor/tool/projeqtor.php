@@ -2856,6 +2856,7 @@ function removeWorkDaysToDate($date, $days) {
 function addDaysToDate($date, $days) {
   // if (strlen($date)>10) $date=substr($date,0,10);
   if (!trim($date)) return null;
+  if (strlen($date>10)) $date=substr($date,0,10);
   $tDate=explode("-", $date);
   if (count($tDate)<3) return null;
   return date("Y-m-d", mktime(0, 0, 0, $tDate[1], $tDate[2]+$days, $tDate[0]));
