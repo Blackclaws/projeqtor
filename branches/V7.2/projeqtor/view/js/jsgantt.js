@@ -1983,8 +1983,14 @@ JSGantt.formatDateStr = function(pDate,pFormatStr, vMonthArray) {
     case 'yy':
         return( vYear2Str );
     case 'week-long':
+      if (vMonthStr=='12' && vWeekNum==1) {
+        vYear4Str=(parseInt(vYear4Str)+1)+'';
+      }
       return ( '' + vYear4Str + " #" + vWeekNum + ' ('  + vMonthArray[pDate.getMonth()].substr(0,4) + ') ');
     case 'week-short':
+      if (vMonthStr=='12' && vWeekNum==1) {
+        vYear2Str=(parseInt(vYear2Str)+1)+'';
+      }
       return ( vYear2Str + ' #'  + vWeekNum  );
     case 'week-firstday':
       fmt=top.getBrowserLocaleDateFormatJs();

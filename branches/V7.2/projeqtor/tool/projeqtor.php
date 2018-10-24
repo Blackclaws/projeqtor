@@ -48,8 +48,8 @@ if (is_session_started()===FALSE) {
 // === Application data : version, dependencies, about message, ...
 $applicationName = "ProjeQtOr"; // Name of the application
 $copyright = $applicationName; // Copyright to be displayed
-$version = "V7.2.5"; // Version of application : Major / Minor / Release
-$build = "0212"; // Build number. To be increased on each release
+$version = "V7.2.6"; // Version of application : Major / Minor / Release
+$build = "0213"; // Build number. To be increased on each release
 $website = "http://www.projeqtor.org"; // ProjeQtOr site url
 if (!isset($aesKeyLength)) { // one can define key lenth to 256 in parameters.php with $aesKeyLength=256; // valid values are 128, 192 and 256
   $aesKeyLength=128;
@@ -2856,6 +2856,7 @@ function removeWorkDaysToDate($date, $days) {
 function addDaysToDate($date, $days) {
   // if (strlen($date)>10) $date=substr($date,0,10);
   if (!trim($date)) return null;
+  if (strlen($date>10)) $date=substr($date,0,10);
   $tDate=explode("-", $date);
   if (count($tDate)<3) return null;
   return date("Y-m-d", mktime(0, 0, 0, $tDate[1], $tDate[2]+$days, $tDate[0]));
