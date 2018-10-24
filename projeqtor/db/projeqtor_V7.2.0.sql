@@ -474,7 +474,7 @@ CREATE TABLE `${prefix}planningelementextension` (
 
 CREATE INDEX planningelementextensionReference ON `${prefix}planningelementextension` (refType,refId);
 CREATE INDEX planningelementextensionTopReference ON `${prefix}planningelementextension` (topRefType,topRefId);
-CREATE INDEX planningelementextensionWbsSortable ON `${prefix}planningelementextension` (wbsSortable);
+CREATE INDEX planningelementextensionWbsSortable ON `${prefix}planningelementextension` (wbsSortable(255));
 
 ALTER TABLE `${prefix}project`
 ADD `excludeFromGlobalPlanning` int(1) UNSIGNED DEFAULT 0;

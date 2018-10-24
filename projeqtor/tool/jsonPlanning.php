@@ -544,7 +544,6 @@
           echo ',"resource":""';
         }
         if (floatval($idPe)==$idPe) {
-          debugLog("$idPe is numeric");
           $crit=array('successorId'=>$idPe);
         } else {
           $crit=array('successorId'=>'0');
