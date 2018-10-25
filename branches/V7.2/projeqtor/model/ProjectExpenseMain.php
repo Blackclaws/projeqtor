@@ -211,43 +211,48 @@ class ProjectExpenseMain extends Expense {
     if($this->id){
       $provOrder = new ProviderOrder();
       $listProvOrd=$provOrder->getSqlElementsFromCriteria(array("idProjectExpense"=>$this->id));
-      $hasProvOrder=false;
       if($this->isCalculated or count($listProvOrd)>0){
-        $this->realAmount = 0;
-        $this->realTaxAmount = 0;
-        $this->realFullAmount =0;
+        $this->plannedAmount = 0;
+        $this->plannedTaxAmount = 0;
+        $this->plannedFullAmount =0;
       }
       foreach ($listProvOrd as $prov){
-        $hasProvOrder = true;
-        $this->realAmount += $prov->totalUntaxedAmount;
-        $this->realTaxAmount += $prov->totalTaxAmount;
-        $this->realFullAmount += $prov->totalFullAmount;
+        $this->plannedAmount += $prov->totalUntaxedAmount;
+        $this->plannedTaxAmount += $prov->totalTaxAmount;
+        $this->plannedFullAmount += $prov->totalFullAmount;
+        if (!$this->expensePlannedDate) $this->expensePlannedDate=$prov->creationDate;
         $this->isCalculated = 1;
       }
       if (count($listProvOrd)==0) {
         $this->isCalculated = 0;
+        if (! $this->plannedAmount and !$this->plannedFullAmount) {
+          $this->expensePlannedDate=null;
+        }
       }
-      if($hasProvOrder == false){
-        $provBill = new ProviderBill();
-        $listProvBill=$provBill->getSqlElementsFromCriteria(array("idProjectExpense"=>$this->id));
-        if($this->isCalculated or count($listProvBill)>0){
-          $this->realAmount = 0;
-          $this->realTaxAmount = 0;
-          $this->realFullAmount =0;
+      if ($this->isCalculated==1 and !$this->expensePlannedDate) $this->expensePlannedDate=date('Y-m-d');
+      $provBill = new ProviderBill();
+      $listProvBill=$provBill->getSqlElementsFromCriteria(array("idProjectExpense"=>$this->id));
+      if($this->isCalculated or count($listProvBill)>0){
+        $this->realAmount = 0;
+        $this->realTaxAmount = 0;
+        $this->realFullAmount =0;
+      }
+      foreach ($listProvBill as $prov){
+        $this->realAmount += $prov->totalUntaxedAmount;
+        $this->realTaxAmount += $prov->totalTaxAmount;
+        $this->realFullAmount += $prov->totalFullAmount;
+        $this->isCalculated = 1;
+        if (!$this->expenseRealDate) $this->expenseRealDate=$prov->creationDate;
+      }
+      if (count($listProvBill)==0) {
+        $this->isCalculated = 0;
+        if (! $this->realAmount and !$this->realFullAmount) {
+          $this->expenseRealDate=null;
         }
-        foreach ($listProvBill as $prov){
-          $this->realAmount += $prov->totalUntaxedAmount;
-          $this->realTaxAmount += $prov->totalTaxAmount;
-          $this->realFullAmount += $prov->totalFullAmount;
-          $this->isCalculated = 1;
-        }
-        if (count($listProvBill)==0) {
-          $this->isCalculated = 0;
-          if (count($this->getExpenseDetail())>0) {
-            if($old->isCalculated==1){
-              foreach ($this->getExpenseDetail() as $expenseD){
-                $this->realAmount += $expenseD->amount;
-              }
+        if (count($this->getExpenseDetail())>0) {
+          if($old->isCalculated==1){
+            foreach ($this->getExpenseDetail() as $expenseD){
+              $this->realAmount += $expenseD->amount;
             }
           }
         }
@@ -397,6 +402,7 @@ class ProjectExpenseMain extends Expense {
     }
     if($this->isCalculated == 1){
       self::$_fieldsAttributes["realAmount"]='readonly';
+      self::$_fieldsAttributes["plannedAmount"]='readonly';
     }
   }
   

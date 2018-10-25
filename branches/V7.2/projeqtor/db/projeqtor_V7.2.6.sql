@@ -9,3 +9,6 @@
 
 DELETE FROM `${prefix}columnselector` WHERE objectClass='Work';
 
+ALTER TABLE `${prefix}budget`
+ADD `targetAmount` decimal(14,2) UNSIGNED,
+ADD `targetFullAmount` decimal(14,2) UNSIGNED;

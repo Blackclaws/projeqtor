@@ -196,6 +196,7 @@ class ProviderBillMain extends SqlElement {
   }
   
   public function save() {
+    $old=$this->getOld();
    if (trim($this->idProvider)) {
       $provider=new Provider($this->idProvider);
       if ($provider->taxPct!='' and !$this->taxPct) {
@@ -319,7 +320,22 @@ class ProviderBillMain extends SqlElement {
     if ($this->paymentAmount==$this->totalFullAmount and $this->totalFullAmount>0) {
       $this->paymentDone=1;
     }
-    
+    if($old->idProjectExpense != null and $old->idProjectExpense!=$this->idProjectExpense){
+      $projExpense = new ProjectExpense($old->idProjectExpense);
+      $projExpense->save();
+    }
+    // Update expense linked to bill
+    if($this->idProjectExpense){ 
+      $projExpense = new ProjectExpense($this->idProjectExpense);
+      if (!$projExpense->expenseRealDate) {
+        if($this->date){
+          $projExpense->expensePlannedDate = $this->date;
+        }else{
+          $projExpense->expenseRealDate = date('Y-m-d');
+        }
+      }
+      $projExpense->save();
+    }
     parent::simpleSave();
     return $result;
   }
