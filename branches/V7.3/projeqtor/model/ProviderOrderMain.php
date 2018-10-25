@@ -317,21 +317,17 @@ class ProviderOrderMain extends SqlElement {
     
     if($old->idProjectExpense != null and $old->idProjectExpense!=$this->idProjectExpense){
       $projExpense = new ProjectExpense($old->idProjectExpense);
-      $projExpense->realAmount -= $this->totalUntaxedAmount;
-      $projExpense->realTaxAmount -= $this->totalTaxAmount;
-      $projExpense->realFullAmount -= $this->totalFullAmount;
       $projExpense->save();
     }
-    if($this->idProjectExpense){
+    // Update expense linked to order
+    if($this->idProjectExpense){ 
       $projExpense = new ProjectExpense($this->idProjectExpense);
-      if($this->deliveryDoneDate){
-        $projExpense->expenseRealDate = $this->deliveryDoneDate;
-      }else if($this->deliveryExpectedDate){
-        $projExpense->expenseRealDate = $this->deliveryExpectedDate;
-      }else{
-        $currentDate = new DateTime();
-        $theCurrentDate = $currentDate->format('Y-m-d');
-        $projExpense->expenseRealDate = $theCurrentDate;
+      if (!$projExpense->expensePlannedDate) {
+        if($this->deliveryExpectedDate){
+          $projExpense->expensePlannedDate = $this->deliveryExpectedDate;
+        }else{
+          $projExpense->expensePlannedDate = date('Y-m-d');
+        }
       }
       $projExpense->save();
     }

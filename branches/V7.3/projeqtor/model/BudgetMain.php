@@ -70,7 +70,9 @@ class BudgetMain extends SqlElement {
   public $budgetEndDate;
   public $bbs;
   public $bbsSortable;
-  public $_tab_2_12=array('untaxedAmount','fullAmount','estimateAmount','initialAmount','update1Amount','update2Amount','update3Amount','update4Amount','updatedAmount','subBudgetsAmount','engagedAmount','availableAmount','billedAmount','leftAmount');
+  public $_tab_2_13=array('untaxedAmount','fullAmount','targetAmount','estimateAmount','initialAmount','update1Amount','update2Amount','update3Amount','update4Amount','updatedAmount','engagedAmount','availableAmount','billedAmount','leftAmount','availableTransferedAmount');
+  public $targetAmount;
+  public $targetFullAmount;
   public $plannedAmount;
   public $plannedFullAmount;
   public $initialAmount;
@@ -85,8 +87,8 @@ class BudgetMain extends SqlElement {
   public $update4FullAmount;
   public $actualAmount;
   public $actualFullAmount;
-  public $actualSubAmount;
-  public $actualSubFullAmount;
+  //public $actualSubAmount;
+  //public $actualSubFullAmount;
   public $usedAmount;
   public $usedFullAmount;
   public $availableAmount;
@@ -95,6 +97,8 @@ class BudgetMain extends SqlElement {
   public $billedFullAmount;
   public $leftAmount;
   public $leftFullAmount;
+  public $availableTransferedAmount;
+  public $availableTransferedFullAmount;
   public $_sec_Link;
   public $_Link=array();
   public $_Attachment=array();
@@ -112,7 +116,7 @@ class BudgetMain extends SqlElement {
     <th field="articleNumber" width="10%" >${articleNumber}</th>
     <th field="actualAmount" width="8%" formatter="costFormatter">${updatedAmount}</th>
     <th field="usedAmount" width="8%" formatter="costFormatter">${engagedAmount}</th>
-  <th field="availableAmount" width="8%" formatter="costFormatter">${availableAmount}</th>
+    <th field="availableAmount" width="8%" formatter="costFormatter">${availableAmount}</th>
     <th field="billedAmount" width="8%" formatter="costFormatter">${billedAmount}</th>
     <th field="leftAmount" width="8%" formatter="costFormatter">${leftAmount}</th>
     ';
@@ -133,18 +137,22 @@ class BudgetMain extends SqlElement {
                                   "bbs"=>"display,noImport", 
                                   "bbsSortable"=>"hidden,noImport",
                                   "elementary"=>"readonly",
-      "actualAmount"=>"readonly,noimport",
-      "actualFullAmount"=>"readonly,noimport",
-      "actualSubAmount"=>"readonly,noimport",
-      "actualSubFullAmount"=>"readonly,noimport",
-      "billedAmount"=>"readonly,noimport",
-      "billedFullAmount"=>"readonly,noimport",
-      "availableAmount"=>"readonly,noimport",
-      "availableFullAmount"=>"readonly,noimport",
-      "usedAmount"=>"readonly,noimport",
-      "usedFullAmount"=>"readonly,noimport",
-      "leftAmount"=>"readonly,noimport",
-      "leftFullAmount"=>"readonly,noimport",
+                                  "actualAmount"=>"readonly,noimport",
+                                  "actualFullAmount"=>"readonly,noimport",
+                                  "actualSubAmount"=>"hidden",
+                                  "actualSubFullAmount"=>"hidden",
+                                  "billedAmount"=>"readonly,noimport",
+                                  "billedFullAmount"=>"readonly,noimport",
+                                  "availableAmount"=>"readonly,noimport",
+                                  "availableFullAmount"=>"readonly,noimport",
+                                  "usedAmount"=>"readonly,noimport",
+                                  "usedFullAmount"=>"readonly,noimport",
+                                  "leftAmount"=>"readonly,noimport",
+                                  "leftFullAmount"=>"readonly,noimport",
+                                  "targetFullAmount"=>"hidden",
+                                  "targetAmount"=>"hidden",
+                                  "availableTransferedAmount"=>"calculated,readonly,noimport",
+                                  "availableTransferedFullAmount"=>"calculated,readonly,noimport"
   );   
  
   private static $_colCaptionTransposition = array('idResource'=>'manager',
@@ -152,13 +160,13 @@ class BudgetMain extends SqlElement {
    'done'=>'approved',
    'doneDate'=>'dateApproved',
    'idUser'=>'issuer',
-  		'plannedAmount'=>'estimateAmount',
-  		'plannedFullAmount'=>'estimateFullAmount',
-      'actualAmount'=>'updatedAmount',
-      'actualFullAmount'=>'updatedFullAmount',
-      'usedAmount'=>'engagedAmount',
-      'usedFullAmount'=>'engagedFullAmount',
-      'elementary'=>'isBudgetItem'
+   'plannedAmount'=>'estimateAmount',
+   'plannedFullAmount'=>'estimateFullAmount',
+   'actualAmount'=>'updatedAmount',
+   'actualFullAmount'=>'updatedFullAmount',
+   'usedAmount'=>'engagedAmount',
+   'usedFullAmount'=>'engagedFullAmount',
+   'elementary'=>'isBudgetItem'
   );
   
    /** ==========================================================================
@@ -223,6 +231,13 @@ class BudgetMain extends SqlElement {
     if (substr($colName,-6)=='Amount') {
     	$colScript .= '<script type="dojo/connect" event="onChange" >';
     	$colScript.="    var actual=0;";  
+    	if ($colName=='plannedAmount') {
+    	  $colScript.="  if (this.value && ! dijit.byId('initialAmount').get('value')) dijit.byId('initialAmount').set('value',this.value);";
+    	}
+    	if ($colName=='plannedFullAmount') {
+    	  $colScript.="  if (this.value && ! dijit.byId('initialFullAmount').get('value')) dijit.byId('initialFullAmount').set('value',this.value);";
+    	}
+    	 
     	$colScript.="    if (dijit.byId('initialAmount').get('value')) actual+=dijit.byId('initialAmount').get('value');";
     	$colScript.="    if (dijit.byId('update1Amount').get('value')) actual+=dijit.byId('update1Amount').get('value');";
     	$colScript.="    if (dijit.byId('update2Amount').get('value')) actual+=dijit.byId('update2Amount').get('value');";
@@ -343,41 +358,88 @@ class BudgetMain extends SqlElement {
     if(SqlList::getFieldFromId("Status", $this->idStatus, "setHandledStatus")!=0) {
       $this->isUnderConstruction=0;
     } 
-    $this->actualAmount=$this->initialAmount
-                           +$this->update1Amount
-                           +$this->update2Amount
-                           +$this->update3Amount
-                           +$this->update4Amount;
-    $this->actualFullAmount=$this->initialFullAmount
-                            +$this->update1FullAmount
-                            +$this->update2FullAmount
-                            +$this->update3FullAmount
-                            +$this->update4FullAmount;
-    $this->usedAmount=0;
-    $this->usedFullAmount=0;
-    $this->billedAmount=0;
-    $this->billedFullAmount=0;
-    $this->actualSubAmount=0;
-    $this->actualSubFullAmount=0;
+    
     $bud=new Budget();
     $budList=($this->id)?$bud->getSqlElementsFromCriteria(array('idBudget'=>$this->id)):array();
-    foreach ($budList as $bud) {
-      $this->actualSubAmount+=$bud->actualAmount;
-      $this->actualSubFullAmount+=$bud->actualFullAmount;
-      $this->usedAmount+=$bud->usedAmount;
-      $this->usedFullAmount+=$bud->usedFullAmount;
-      $this->billedAmount+=$bud->billedAmount;
-      $this->billedFullAmount+=$bud->billedFullAmount;
-    }
     $this->elementary=(count($budList)==0)?1:0;
+    if (! $this->elementary) {
+      $this->usedAmount=0;
+      $this->usedFullAmount=0;
+      $this->billedAmount=0;
+      $this->billedFullAmount=0;
+      //$this->actualSubAmount=0;
+      //$this->actualSubFullAmount=0;
+      $this->plannedAmount=0;
+      $this->plannedFullAmount=0;
+      $this->initialAmount=0;
+      $this->initialFullAmount=0;
+      $this->update1Amount=0;
+      $this->update1FullAmount=0;
+      $this->update2Amount=0;
+      $this->update2FullAmount=0;
+      $this->update3Amount=0;
+      $this->update3FullAmount=0;
+      $this->update4Amount=0;
+      $this->update4FullAmount=0;
+      foreach ($budList as $bud) {
+        //$this->actualSubAmount+=$bud->actualAmount;
+        //$this->actualSubFullAmount+=$bud->actualFullAmount;
+        if ($bud->actualAmount) {
+          $this->usedAmount+=$bud->usedAmount;
+          $this->billedAmount+=$bud->billedAmount;
+          $this->plannedAmount+=$bud->plannedAmount;
+          $this->initialAmount+=$bud->initialAmount;
+          $this->update1Amount+=$bud->update1Amount;
+          $this->update2Amount+=$bud->update2Amount;
+          $this->update3Amount+=$bud->update3Amount;
+          $this->update4Amount+=$bud->update4Amount;
+        }
+        if ($bud->actualFullAmount) {
+          $this->usedFullAmount+=$bud->usedFullAmount;
+          $this->billedFullAmount+=$bud->billedFullAmount;
+          $this->plannedFullAmount+=$bud->plannedFullAmount;
+          $this->initialFullAmount+=$bud->initialFullAmount;
+          $this->update1FullAmount+=$bud->update1FullAmount;
+          $this->update2FullAmount+=$bud->update2FullAmount;
+          $this->update3FullAmount+=$bud->update3FullAmount;
+          $this->update4FullAmount+=$bud->update4FullAmount;
+        }
+      }
+      if (!$this->update1Amount) $this->update1Amount=null;
+      if (!$this->update1FullAmount) $this->update1FullAmount=null;
+      if (!$this->update2Amount) $this->update2Amount=null;
+      if (!$this->update2FullAmount) $this->update2FullAmount=null;
+      if (!$this->update3Amount) $this->update3Amount=null;
+      if (!$this->update3FullAmount) $this->update3FullAmount=null;
+      if (!$this->update4Amount) $this->update4Amount=null;
+      if (!$this->update4FullAmount) $this->update4FullAmount=null;
+    }
+    $this->actualAmount=$this->initialAmount
+      +$this->update1Amount
+      +$this->update2Amount
+      +$this->update3Amount
+      +$this->update4Amount;
+    $this->actualFullAmount=$this->initialFullAmount
+      +$this->update1FullAmount
+      +$this->update2FullAmount
+      +$this->update3FullAmount
+      +$this->update4FullAmount;
     if ($this->elementary) {
       $exp=new Expense();
       $expList=($this->id)?$exp->getSqlElementsFromCriteria(array('idBudgetItem'=>$this->id)):array();
+      $this->usedAmount=0;
+      $this->usedFullAmount=0;
+      $this->billedAmount=0;
+      $this->billedFullAmount=0;
       foreach ($expList as $exp) {
-        $this->usedAmount+=$exp->plannedAmount;
-        $this->usedFullAmount+=$exp->plannedFullAmount;
-        $this->billedAmount+=$exp->realAmount;
-        $this->billedFullAmount+=$exp->realFullAmount;
+        if ($this->actualAmount) {
+          $this->usedAmount+=$exp->plannedAmount;
+          $this->billedAmount+=$exp->realAmount;
+        }
+        if ($this->actualFullAmount) {
+          $this->usedFullAmount+=$exp->plannedFullAmount;
+          $this->billedFullAmount+=$exp->realFullAmount;
+        }
       }
     }
     $this->availableAmount=$this->actualAmount-$this->usedAmount;
@@ -385,6 +447,20 @@ class BudgetMain extends SqlElement {
     $this->leftAmount=$this->actualAmount-$this->billedAmount;
     $this->leftFullAmount=$this->actualFullAmount-$this->billedFullAmount;
     
+    if (!$this->initialAmount) $this->initialAmount=null;
+    if (!$this->initialFullAmount) $this->initialFullAmount=null;
+    if (!$this->plannedAmount) $this->plannedAmount=null;
+    if (!$this->plannedFullAmount) $this->plannedFullAmount=null;
+    if (!$this->usedAmount) $this->usedAmount=null;
+    if (!$this->usedFullAmount) $this->usedFullAmount=null;
+    if (!$this->billedAmount) $this->billedAmount=null;
+    if (!$this->billedFullAmount) $this->billedFullAmount=null;
+    if (!$this->actualAmount) $this->actualAmount=null;
+    if (!$this->actualFullAmount) $this->actualFullAmount=null;
+    if (!$this->availableAmount) $this->availableAmount=null;
+    if (!$this->availableFullAmount) $this->availableFullAmount=null;
+    if (!$this->leftAmount) $this->leftAmount=null;
+    if (!$this->leftFullAmount) $this->leftFullAmount=null;
     // CALCULATE WBS
     $result = parent::save();
     if (! strpos($result,'id="lastOperationStatus" value="OK"')) {
@@ -402,8 +478,10 @@ class BudgetMain extends SqlElement {
     if (!$this->bbs or !$old->id or $old->idBudget!=$this->idBudget) {
       $parent=new Budget($this->idBudget);
       $parent->regenerateBbsLevel();
-      $parent=new Budget($old->idBudget);
-      $parent->regenerateBbsLevel();
+      if ($old->id and $this->idBudget!=$old->idBudget) {
+        $parent=new Budget($old->idBudget);
+        $parent->regenerateBbsLevel();
+      }
     }
     return $result; 
   }
@@ -412,6 +490,11 @@ class BudgetMain extends SqlElement {
   }
   public function delete() {
   	$result = parent::delete();
+  	if ($this->idBudget) {
+    	$parent=new Budget($this->idBudget);
+    	$parent->save();
+    	$parent->regenerateBbsLevel();
+  	}
     return $result;
   }
 
@@ -485,6 +568,38 @@ class BudgetMain extends SqlElement {
 
   protected function getStaticFieldsTooltip() {
     return self::$_fieldsTooltip;
+  }
+  public function setAttributes() {
+    if (! $this->elementary and $this->id) {
+      self::$_fieldsAttributes["plannedAmount"]="readonly";
+      self::$_fieldsAttributes["plannedFullAmount"]="readonly";
+      self::$_fieldsAttributes["initialAmount"]="readonly";
+      self::$_fieldsAttributes["initialFullAmount"]="readonly";
+      self::$_fieldsAttributes["update1Amount"]="readonly";
+      self::$_fieldsAttributes["update1FullAmount"]="readonly";
+      self::$_fieldsAttributes["update2Amount"]="readonly";
+      self::$_fieldsAttributes["update2FullAmount"]="readonly";
+      self::$_fieldsAttributes["update3Amount"]="readonly";
+      self::$_fieldsAttributes["update3FullAmount"]="readonly";
+      self::$_fieldsAttributes["update4Amount"]="readonly";
+      self::$_fieldsAttributes["update4FullAmount"]="readonly";
+    }
+    if ($this->id and !$this->idBudget and $this->isUnderConstruction) {
+      self::$_fieldsAttributes["targetFullAmount"]="";
+      self::$_fieldsAttributes["targetAmount"]="";
+    }
+    if (! $this->isUnderConstruction) {
+      self::$_fieldsAttributes["plannedAmount"]="readonly";
+      self::$_fieldsAttributes["plannedFullAmount"]="readonly";
+    }
+    if ($this->done) {
+      self::$_fieldsAttributes["initialAmount"]="readonly";
+      self::$_fieldsAttributes["initialFullAmount"]="readonly";
+    }
+    // Retreive value for $availableTransferedAmount and $availableTransferedFullAmount 
+    $crit=array("budgetStartDate"=>$this->budgetStartDate, "budgetEndDate"=>$this->budgetEndDate, "elementary"=>"1");
+    $this->availableTransferedAmount=(-1)*$this->sumSqlElementsFromCriteria('update4Amount', $crit);
+    $this->availableTransferedFullAmount=(-1)*$this->sumSqlElementsFromCriteria('update4FullAmount', $crit);
   }
 }
 ?>
