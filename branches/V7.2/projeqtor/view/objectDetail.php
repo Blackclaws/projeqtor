@@ -2423,12 +2423,6 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false, $pare
         } else {
           $negative=(($isCost or $isWork) and $val<0)?'color: #AA0000 !important;':'';
         }
-        if ($col=='actualSubAmount' and property_exists($obj, 'actualAmount')) {
-          if ($obj->actualSubAmount>$obj->actualAmount) $negative='background-color: #FFAAAA !important;';
-        }
-        if ($col=='actualSubFullAmount' and property_exists($obj, 'actualFullAmount')) {
-          if ($obj->actualSubFullAmount>$obj->actualFullAmount) $negative='background-color: #FFAAAA !important;';
-        }
         // END ADD BY Marc TABARY - 2017-03-01 - COLOR PERCENT WITH ATTRIBUTE 'alertOverXXXwarningOverXXXokUnderXXX'
         // COMMENT BY Marc TABARY - 2017-03-01 - COLOR PERCENT WITH ATTRIBUTE 'alertOverXXXwarningOverXXXokUnderXXX'
         // $negative=(($isCost or $isWork) and $val<0)?'background-color: #FFAAAA !important;':'';
@@ -2453,10 +2447,11 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false, $pare
           echo ' constraints="{min:2000,max:2100,pattern:\'###0\'}" ';
         } else if ($max) {
           //gautier min amount
-          if(($isAmount or $isCost) 
-              and $col != 'update3Amount' and $col != 'update3FullAmount' and $col != 'update4Amount' and $col != 'update4FullAmount' 
-              and $col != 'addUntaxedAmount' and $col != 'addFullAmount'
-              and $col != "reserveAmount" and $col!="marginCost"){
+        	$arrayPossibleNegativeAmounts=array('update3Amount','update3FullAmount','update4Amount','update4FullAmount',
+                                              'addUntaxedAmount','addFullAmount','availableAmount','availableFullAmount',
+                                              'leftAmount','leftFullAmount'
+          );
+          if(($isAmount or $isCost) and ! in_array($col,$arrayPossibleNegativeAmounts) ){
               echo ' constraints="{min:0,max:'.$max.(($isAmount)?',places:2':'').'}" ';
           } else {
             echo ' constraints="{min:-'.$max.',max:'.$max.(($isAmount)?',places:2':'').'}" ';
