@@ -215,7 +215,7 @@ function calculListToSend($startDate, $endDate, &$lstRes){
     // Initialize list of resources
     foreach ($lstResource as $id=>$name) {
         $userTmp=new User($id);
-        if (!$userTmp->id or securityCheckDisplayMenu(null,'Imputation',$userTmp)==false) continue; // #2506 : do not send alert on Real work input if resource does not have access to Timesheet screen 
+        if (!$userTmp->id or ! securityCheckDisplayMenu(null,'Imputation',$userTmp)) continue; // #2506 : do not send alert on Real work input if resource does not have access to Timesheet screen 
         $emptyArray['name']=$name;
         if(!isset($lstRes[$id])){
             $lstRes[$id]=array(
@@ -251,7 +251,7 @@ function calculListToSend($startDate, $endDate, &$lstRes){
     $wk=new Work();
     $workList=$wk->getSqlElementsFromCriteria(null,false,$where);
     foreach ($workList as $wk) {
-        if (!isset($lstRes[$wk->idResource])) $lstRes[$wk->idResource]=$emptyArray;
+        if (!isset($lstRes[$wk->idResource])) continue; // $lstRes[$wk->idResource]=$emptyArray; // Keep exclusion from access rights, as defined line 218
         if (!isset($lstRes[$wk->idResource]['days'])) $lstRes[$wk->idResource]['days']=array();
         if (!isset($lstRes[$wk->idResource]['days'][$wk->workDate])) $lstRes[$wk->idResource]['days'][$wk->workDate]=array();
         if (!isset($lstRes[$wk->idResource]['days'][$wk->workDate]['work'])) $lstRes[$wk->idResource]['days'][$wk->workDate]['work']=0;

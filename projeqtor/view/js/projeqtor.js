@@ -1211,8 +1211,7 @@ function finalizeMessageDisplay(destination, validationType) {
     if (contentWidget) {
       returnMessage = contentWidget.get('content');
     }
-    consoleTraceLog("***** ERROR ***** on finalizeMessageDisplay("
-        + destination + ", " + validationType + ")");
+    consoleTraceLog("***** ERROR ***** on finalizeMessageDisplay(" + destination + ", " + validationType + ")");
     if (!contentNode) {
       consoleTraceLog("contentNode unknown");
     } else {
