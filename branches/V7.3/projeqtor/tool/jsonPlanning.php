@@ -543,7 +543,7 @@
         } else {
           echo ',"resource":""';
         }
-        if (floatval($idPe)==$idPe) {
+        if (is_numeric($idPe) and floatval($idPe)==$idPe) {
           $crit=array('successorId'=>$idPe);
         } else {
           $crit=array('successorId'=>'0');
