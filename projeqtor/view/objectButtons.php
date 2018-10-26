@@ -510,7 +510,9 @@
       <input type="hidden" id="createRight" name="createRight" value="<?php echo $createRight;?>" />
       <input type="hidden" id="updateRight" name="updateRight" value="<?php echo (!$obj->id)?$createRight:$updateRight;?>" />
       <input type="hidden" id="deleteRight" name="deleteRight" value="<?php echo $deleteRight;?>" />
-       <?php if ($isAttachmentEnabled and property_exists($obj,'_Attachment') and $updateRight=='YES' and isHtml5() and ! $readOnly ) {?>
+       <?php if ($isAttachmentEnabled and property_exists($obj,'_Attachment') and $updateRight=='YES' and isHtml5() and ! $readOnly ) {
+         $labelAttachmentFileDirect=i18n("Attachment").'<br/><i>('.i18n("dragAndDrop").')</i>';
+         ?>
 			<span id="attachmentFileDirectDiv" style="position:relative;<?php echo (!$obj->id or $comboDetail)?'visibility:hidden;':'';?>">
 			<div dojoType="dojox.form.Uploader" type="file" id="attachmentFileDirect" name="attachmentFile" 
 			MAX_FILE_SIZE="<?php echo Parameter::getGlobalParameter('paramAttachmentMaxSize');?>"
@@ -522,7 +524,7 @@
 			onError="dojo.style(dojo.byId('downloadProgress'), {display:'none'});"
 			style="font-size:60%;height:21px; width:100px; border-radius: 5px; border: 1px dashed #EEEEEE; padding:1px 7px 5px 1px; color: #000000;
 			 text-align: center; vertical-align:middle;font-size: 7pt; background-color: #FFFFFF; opacity: 0.8;z-index:9999"
-			label="<?php echo i18n("Attachment");?><br/><i>(<?php echo i18n("dragAndDrop");?>)</i>">		 
+			label="<?php echo $labelAttachmentFileDirect;?>">		 
 			  <script type="dojo/connect" event="onComplete" args="dataArray">
           saveAttachmentAck(dataArray);
 	      </script>
