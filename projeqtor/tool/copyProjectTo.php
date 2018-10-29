@@ -141,19 +141,17 @@ if (!$error and $copyStructure) {
   if ($res!='OK') {
     $result=$res;
     $error=true;
-  } else {
-    PlanningElement::copyStructureFinalize();
   }
 }
-
 if (!$error and $copyOtherStructure) {
   $res=PlanningElement::copyOtherStructure($proj, $newProj, false, false, $copyToWithAttachments,$copyToWithLinks,$copyAssignments, $copyAffectations,$newProj->id,$copySubProjects,$copyToWithVersionProjects,$copyStructure);
   if ($res!='OK') {
     $result=$res;
     $error=true;
-  } else {
-    PlanningElement::copyStructureFinalize();
   }
+}
+if (!$error and ($copyStructure or $copyOtherStructure)) {
+  PlanningElement::copyStructureFinalize();
 }
 // copy affectations
 if (!$error and $copyAffectations) {

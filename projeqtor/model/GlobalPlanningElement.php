@@ -209,7 +209,7 @@ class GlobalPlanningElement extends SqlElement {
          $pe->$fld=$this->$fld;
       }
       return $pe->simpleSave();
-    } else {
+    } else if (isset(self::$_globalizables[$this->refType])) {
       $class=$this->refType;
       $item=new $class($this->refId);
       $globalizableItem=self::$_globalizables[$class];
@@ -322,6 +322,7 @@ class GlobalPlanningElement extends SqlElement {
       $query.="and $table.$excludedProjectsListClause";
     }
     $query.=')';
+    if (strlen($query)<10) $query="(select * from $pexTable)";
     return $query;
   }
   
