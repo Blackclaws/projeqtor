@@ -53,6 +53,7 @@ if ($mode=='after') {
   $arrayFrom=array_reverse($arrayFrom);
 }
   
+PlanningElement::$_noDispatch=true;
 $needRefreshInserted=false;
 Sql::beginTransaction();
 foreach ($arrayFrom as $from) {
@@ -74,5 +75,6 @@ foreach ($arrayFrom as $from) {
     $needRefreshInserted=true;
   }
 }
+if (isset($result) and getLastOperationStatus($result)=='OK') PlanningElement::moveTaskFinalize();
 displayLastOperationStatus($result);
 ?>

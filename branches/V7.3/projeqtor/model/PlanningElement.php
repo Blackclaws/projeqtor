@@ -259,6 +259,7 @@ class PlanningElement extends SqlElement {
    */
   public function save() {
     global $canForceClose;
+    debugLog("save for pe #$this->id - $this->wbs - $this->refType #$this->refId - $this->refName");
   	// Get old element (stored in database) : must be fetched before saving
     $old=new PlanningElement($this->id);
     if (! $this->idProject) {
@@ -415,7 +416,7 @@ class PlanningElement extends SqlElement {
       return $result;     
     }
     // Update dependant objects
-    if ($dispatchNeeded and ! self::$_noDispatch) {
+    if ($dispatchNeeded) { // and ! self::$_noDispatch // Criteria removed : must dispatch for move task 
     	projeqtor_set_time_limit(600);
       $cpt=0;
       foreach ($lstElt as $elt) {
@@ -434,7 +435,7 @@ class PlanningElement extends SqlElement {
           $topElt->save();   
       	} else {
       	  if ($this->elementary) { // noDispatch (for copy) and elementary : store top in array for updateSynthesis
-            self::$_noDispatchArray[$topElt->id]=$topElt;
+            self::$_noDispatchArray[$topElt->id]=array('refType'=>$topElt->refType,'refId'=>$topElt->refId);
       	  }
       	}
       }
@@ -442,8 +443,14 @@ class PlanningElement extends SqlElement {
     //if ($this->topId!=$old->topId)
     
     // save old parent (for synthesis update) if parent has changed
-    if ($old->topId!='' and $old->topId!=$this->topId and ! self::$_noDispatch) {
-      $this->updateSynthesis($old->topRefType, $old->topRefId);
+    if ($old->topId!='' and $old->topId!=$this->topId) {
+      if (! self::$_noDispatch) {
+        $this->updateSynthesis($old->topRefType, $old->topRefId);
+      } else {
+        $crit=array("refType"=>$old->topRefType, "refId"=>$old->topRefId);
+        $oldTopElt=SqlElement::getSingleSqlElementFromCriteria('PlanningElement',$crit);
+        self::$_noDispatchArray[$oldTopElt->id]=array('refType'=>$oldTopElt->refType,'refId'=>$oldTopElt->refId);
+      }
     }
     // save new parent (for synthesis update) if parent has changed
     // #2995 : a previous version changed the following condition so that updateSynthesis is always called for parent
@@ -451,8 +458,16 @@ class PlanningElement extends SqlElement {
     //         and would lead to re-update synthesis several times (as many as project WBS level)
     //         Call in ProjectPlanningElement::updateSynthesisProject has been removed. 
     //         DO NOT CHANGE CONDITION TO PREVIOUS VERSION UNLESS YOU REACTIVATE CALL IN ProjectPlanningElement::updateSynthesisProject
-    if ($this->topId!='' and ! self::$_noDispatch) { // and ($old->topId!=$this->topId or $old->cancelled!=$this->cancelled)) {
-      $this->updateSynthesis($this->topRefType, $this->topRefId);
+    if ($this->topId!='') { // and ($old->topId!=$this->topId or $old->cancelled!=$this->cancelled)) {
+      if (! self::$_noDispatch) {
+        $this->updateSynthesis($this->topRefType, $this->topRefId);
+      } else {
+        if (!$topElt or !$topElt->id) {
+          $crit=array("refType"=>$old->topRefType, "refId"=>$old->topRefId);
+          $topElt=SqlElement::getSingleSqlElementFromCriteria('PlanningElement',$crit);
+        }
+        self::$_noDispatchArray[$topElt->id]=array('refType'=>$topElt->refType,'refId'=>$topElt->refId);
+      }
     }
     
     if ($this->wbsSortable!=$old->wbsSortable) {
@@ -481,7 +496,7 @@ class PlanningElement extends SqlElement {
     if ($old->leftWork!=0 and $this->leftWork==0 and $this->realWork>0 and $this->refType) {
       $this->setDoneOnNoLeftWork('save');
     }
-    if ($old->topId!=$this->topId  and ! self::$_noDispatch) { // This renumbering is to avoid holes in numbering
+    if ($old->topId!=$this->topId) { // and ! self::$_noDispatch removed constraitn for move // This renumbering is to avoid holes in numbering // 
     	$pe=new PlanningElement($old->topId);
     	$pe->renumberWbs();
     }
@@ -586,6 +601,7 @@ class PlanningElement extends SqlElement {
   
   // Save without extra save() feature and without controls
   public function simpleSave() {
+    debugLog("simpleSave for pe #$this->id - $this->wbs - $this->refType #$this->refId - $this->refName");
     if ($this->plannedStartDate>$this->plannedEndDate) $this->plannedEndDate=$this->plannedStartDate;
     $this->plannedDuration=workDayDiffDates($this->plannedStartDate, $this->plannedEndDate);
     if ($this->validatedStartDate and $this->validatedEndDate) {
@@ -603,6 +619,7 @@ class PlanningElement extends SqlElement {
 
   public function wbsSave() {
   	//
+    debugLog("wbsSave for pe #$this->id - $this->wbs - $this->refType #$this->refId - $this->refName");
   	$this->_noHistory=true;
   	$this->wbsSortable=formatSortableWbs($this->wbs);
   	$resTmp=$this->saveForced();
@@ -763,7 +780,7 @@ class PlanningElement extends SqlElement {
     	}
     } 
     if (! $doNotSave) {
-	    $this->save();
+	    return $this->save();
 	    // Dispath to top element
 	    // #2995 : a previous version changed the condition in save() in PlanningElement so that updateSynthesis is always called for parent
 	    //         so now calling updateSynthesis for parent in ProjectPlanningElement::updateSynthesisProject is obsolete
@@ -1150,7 +1167,7 @@ class PlanningElement extends SqlElement {
           //$root=$parent->wbs;
           $pe->wbs=($root=='')?$idx:$root.'.'.$idx;
           if ($pe->refType) {
-            $pe->save();
+            $pe->wbsSave();
           }
           if ($pe->id==$destId and $mode=="after") {
             $idx++;
@@ -1706,12 +1723,7 @@ class PlanningElement extends SqlElement {
     self::$_noDispatch=false;
     // Update synthesys for non elementary item (will just be done once ;)
     foreach (PlanningElement::$_noDispatchArray as $pe) {
-      $method='updateSynthesis'.$pe->refType;
-      if (method_exists($pe,$method )) {
-        $res=$pe->$method();
-      } else {
-        $res=$pe->updateSynthesisObj();
-      }
+      $res=PlanningElement::updateSynthesis($pe['refType'], $pe['refId']);
     }
     // copy dependencies
     $critWhere="";
@@ -1748,11 +1760,25 @@ class PlanningElement extends SqlElement {
       $tmpRes=$dep->save();
       if (! stripos($tmpRes,'id="lastOperationStatus" value="OK"')>0 ) {
         errorLog($tmpRes); // Will not raise an error but will trace it in log
+        errorLog("for predecessor $dep->predecessorRefType #$dep->predecessorRefId, successor $dep->successorRefType #$dep->successorRefId");
       }
     }
     $result="OK";
   }
   
+  public static function moveTaskFinalize() {
+    self::$_noDispatch=true;
+    // Update synthesys for non elementary item (will just be done once ;)
+    $list=PlanningElement::$_noDispatchArray;
+    PlanningElement::$_noDispatchArray=array();
+    foreach ($list as $pe) {
+      $res=PlanningElement::updateSynthesis($pe['refType'], $pe['refId']);
+    }
+    if (count(PlanningElement::$_noDispatchArray)>0) {
+      self::moveTaskFinalize();
+    }
+  }
+    
   public static function getMilestonableList() {
     $dir='../model/';
     $handle = opendir($dir);
