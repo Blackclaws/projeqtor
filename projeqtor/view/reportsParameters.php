@@ -102,13 +102,13 @@ foreach ($listParam as $param) {
        id="weekSpinner" name="weekSpinner" >
        <script type="dojo/method" event="onChange" >
          var year=dijit.byId('yearSpinner').get('value');
-         if (this.value>getWeek(31, 12, year) && this.value>50) {
+         if (this.value>getWeek(31, 12, year) && this.value>getWeek(28, 12, year)) {
           dijit.byId('weekSpinner').set('value',1);
           year=parseInt(year)+1;
           dijit.byId('yearSpinner').set('value',year);
          } else if (this.value==0) {
           year=parseInt(year)-1;          
-          dijit.byId('weekSpinner').set('value',getWeek(31, 12, year));
+          dijit.byId('weekSpinner').set('value',Math.max(getWeek(31, 12, year),getWeek(28, 12, year)));
           dijit.byId('yearSpinner').set('value',year);
          }
          var week=dijit.byId('weekSpinner').get('value') + '';

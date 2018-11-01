@@ -97,12 +97,12 @@ if (!$error) {
   } else {
     $uploadfile = $uploaddir . $pathSeparator . $fileName;
   }
-  if (substr($ext,0,3)=='php' or substr($ext,0,4)=='phtm') {
-    if(@!getimagesize($uploadedFile['tmp_name'])) {
-      $error=i18n('errorNotAnImage');
-    } else {
+  if (substr($ext,0,3)=='php' or substr($ext,0,4)=='phtm' or substr($ext,0,4)=='shtm') {
+    //if(@!getimagesize($uploadedFile['tmp_name'])) {
+    //  $error=i18n('errorNotAnImage');
+    //} else {
       traceHack("Try to upload php file as image in CKEditor");
-    }
+    //}
   } else {
     if ( ! move_uploaded_file($uploadedFile['tmp_name'], $uploadfile)) {
       $error = htmlGetErrorMessage(i18n('errorUploadFile','hacking ?'));
@@ -113,6 +113,7 @@ if (!$error) {
 if (!$error) {
   if(@!getimagesize($uploadfile)) {
     $error=i18n('errorNotAnImage');
+    kill($uploadfile);
   }
 }
 
