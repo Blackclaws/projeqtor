@@ -1973,7 +1973,7 @@ abstract class SqlElement {
     if (property_exists ( $newObj, "isCopyStatus" )) {
       $newObj->isCopyStatus = 0;
     }
-    $result = $newObj->saveSqlElement ();
+    $result = $newObj->save();
     Sql::$lastCopyId = $newObj->id;
     if (stripos ( $result, 'id="lastOperationStatus" value="OK"' ) > 0) {
       $returnValue = i18n ( get_class ( $this ) ) . ' #' . htmlEncode ( $this->id ) . ' ' . i18n ( 'resultCopied' ) . ' #' . $newObj->id;
