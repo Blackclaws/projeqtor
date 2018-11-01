@@ -41,6 +41,7 @@ if (! array_key_exists('updateInitialDates',$_REQUEST)) {
 	throwError('updateInitialDates parameter not found in REQUEST');
 }
 $updateInitialDates=$_REQUEST['updateInitialDates']; // only used in comparison with fixed values
+$updateInitialDates="NEVER";
 
 projeqtor_set_time_limit(600);
 Sql::beginTransaction();
