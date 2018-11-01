@@ -56,10 +56,10 @@
            <tr><td colspan="2" style="width:100%; text-align: center;">
              
              <table width="100%">
-               <tr><td colspan="5"><b><?php echo i18n("reportPlannedDates");?><br/></b></td></tr>
+               <tr style="display:none;"><td colspan="5" ><b><?php echo i18n("reportPlannedDates");?><br/></b></td></tr>
                <tr><td colspan="5">&nbsp;</td>
-               <tr>
-                 <td style="width:35%;text-align: right;"><b><?php echo i18n('updateInitialDates');?></b></td>
+               <tr style="display:none">
+                 <td style="display:none;width:35%;text-align: right;"><b><?php echo i18n('updateInitialDates');?></b></td>
                  <td style="width:5%">&nbsp;</td> 
                  <td style="width:20%">
                     <input type="radio" dojoType="dijit.form.RadioButton" name="updateInitialDates" id="updateInitialDatesAlways" 
@@ -73,7 +73,7 @@
                </tr>
                <tr><td colspan="5">&nbsp;</td>	
                <tr>
-                 <td style="width:35%;text-align: right;"><b><?php echo i18n('updateValidatedDates');?></b></td>
+                 <td style="display:none;width:35%;text-align: right;"><b><?php echo i18n('updateValidatedDates');?></b></td>
                  <td style="width:5%">&nbsp;</td> 
                  <td style="width:20%">
                     <input type="radio" dojoType="dijit.form.RadioButton" name="updateValidatedDates" id="updateValidatedDatesAlways" 
@@ -81,7 +81,7 @@
                  <td style="width:20%">
                     <input type="radio" dojoType="dijit.form.RadioButton" name="updateValidatedDates" id="updateValidatedDatesIfEmpty" 
 	                     value="IFEMPTY" /><?php echo i18n('ifEmpty');?></td>
-                 <td style="width:20%">
+                 <td style="display:none;width:20%">
                     <input type="radio" dojoType="dijit.form.RadioButton" name="updateValidatedDates" id="updateValidatedDatesNever"  
 	                    value="NEVER" /><?php echo i18n('never');?></td>
                </tr> 
