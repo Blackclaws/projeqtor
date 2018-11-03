@@ -1237,8 +1237,8 @@ class PlannedWork extends GeneralWork {
       if (!$pe->refType) continue;
       if ($pe->refType!='Project') $arrayProj[$pe->idProject]=$pe->idProject;
       if (property_exists($pe,'_profile') and $pe->_profile=='RECW') { 
-        PlanningElement::updateSynthesis($pe->refType, $pe->refId);
         $resPe=$pe->simpleSave();
+        PlanningElement::updateSynthesis($pe->refType, $pe->refId);
       } else {
    	    $resPe=$pe->simpleSave();
       }
