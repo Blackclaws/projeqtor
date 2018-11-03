@@ -411,7 +411,9 @@ class PlanningElement extends SqlElement {
     	if ($this->plannedStartDate>$this->plannedEndDate) $this->plannedEndDate=$this->plannedStartDate;
     	$this->plannedDuration=workDayDiffDates($this->plannedStartDate, $this->plannedEndDate);
     }
+    debugLog("save for pe #$this->id - before save");
     $result=parent::save();
+    debugLog("save for pe #$this->id - after save");
     if (! strpos($result,'id="lastOperationStatus" value="OK"')) {
       return $result;     
     }
@@ -432,7 +434,7 @@ class PlanningElement extends SqlElement {
     if ($topElt) {
       if ($topElt->refId and $topElt->refType) {
         if (! self::$_noDispatch) {
-          $topElt->save();   
+          // $topElt->save(); // No need to save, will call UpdateSynthesis   
       	} else {
       	  if ($this->elementary) { // noDispatch (for copy) and elementary : store top in array for updateSynthesis
             self::$_noDispatchArray[$topElt->id]=array('refType'=>$topElt->refType,'refId'=>$topElt->refId);
@@ -445,7 +447,7 @@ class PlanningElement extends SqlElement {
     // save old parent (for synthesis update) if parent has changed
     if ($old->topId!='' and $old->topId!=$this->topId) {
       if (! self::$_noDispatch) {
-        $this->updateSynthesis($old->topRefType, $old->topRefId);
+        self::updateSynthesis($old->topRefType, $old->topRefId);
       } else {
         $crit=array("refType"=>$old->topRefType, "refId"=>$old->topRefId);
         $oldTopElt=SqlElement::getSingleSqlElementFromCriteria('PlanningElement',$crit);
@@ -460,7 +462,9 @@ class PlanningElement extends SqlElement {
     //         DO NOT CHANGE CONDITION TO PREVIOUS VERSION UNLESS YOU REACTIVATE CALL IN ProjectPlanningElement::updateSynthesisProject
     if ($this->topId!='') { // and ($old->topId!=$this->topId or $old->cancelled!=$this->cancelled)) {
       if (! self::$_noDispatch) {
-        $this->updateSynthesis($this->topRefType, $this->topRefId);
+        debugLog("save for pe #$this->id - before updateSynthesis of top $this->topRefType, $this->topRefId");
+        self::updateSynthesis($this->topRefType, $this->topRefId);
+        debugLog("save for pe #$this->id - before updateSynthesis of top $this->topRefType, $this->topRefId");
       } else {
         if (!$topElt or !$topElt->id) {
           $crit=array("refType"=>$old->topRefType, "refId"=>$old->topRefId);
@@ -655,7 +659,8 @@ class PlanningElement extends SqlElement {
    * @return a boolean 
    */
   protected function updateSynthesisObj ($doNotSave=false) {
-  	$consolidateValidated=Parameter::getGlobalParameter('consolidateValidated');
+  	debugLog("updateSynthesisObj for $this->refType #$this->refId");
+    $consolidateValidated=Parameter::getGlobalParameter('consolidateValidated');
   	$this->validatedCalculated=0;
   	$this->validatedExpenseCalculated=0;
     $assignedWork=0;
@@ -684,6 +689,7 @@ class PlanningElement extends SqlElement {
     $plannedStartDate=null;
     $plannedEndDate=null;
     foreach ($assList as $ass) {
+      debugLog("  updateSynthesisObj for $this->refType #$this->refId on assignement $ass->refType #$ass->refId on resource $ass->idResource");
     	$assignedWork+=$ass->assignedWork;
       $leftWork+=$ass->leftWork;
       $plannedWork+=$ass->plannedWork;
@@ -713,6 +719,7 @@ class PlanningElement extends SqlElement {
       $plaList=$planningElement->getSqlElementsFromCriteria($critPla, false);
       // Add data from other planningElements dependant from this one    
       foreach ($plaList as $pla) {
+        debugLog("  updateSynthesisObj for $this->refType #$this->refId on planningelement $pla->refType #$pla->refId work=$pla->validatedWork");
         $assignedWork+=$pla->assignedWork;
         $leftWork+=$pla->leftWork;
         $plannedWork+=$pla->plannedWork;
@@ -740,6 +747,7 @@ class PlanningElement extends SqlElement {
         }
         if (!$pla->cancelled and $pla->validatedWork) $validatedWork+=$pla->validatedWork;
         if (!$pla->cancelled and $pla->validatedCost) $validatedCost+=$pla->validatedCost;
+        debugLog("  updateSynthesisObj for $this->refType #$this->refId on planningelement $pla->refType #$pla->refId work=$pla->validatedWork");
       }
     }
     $this->realStartDate=$realStartDate;
@@ -765,20 +773,22 @@ class PlanningElement extends SqlElement {
     $this->leftCost=$leftCost;
     $this->plannedCost=$plannedCost;
     $this->realCost=$realCost;
-    if ($consolidateValidated=="ALWAYS") {
-    	$this->validatedWork=$validatedWork;
-    	$this->validatedCost=$validatedCost;
-    	$this->validatedCalculated=1;
-    } else if ($consolidateValidated=="IFSET") {
-    	if ($validatedWork) {
-    		$this->validatedWork=$validatedWork;
-    		$this->validatedCalculated=1;
-    	}
-    	if ($validatedCost) {
-    		$this->validatedCost=$validatedCost;
-    		$this->validatedCalculated=1;
-    	}
-    } 
+    if (! $this->elementary) {
+      if ($consolidateValidated=="ALWAYS") {
+      	$this->validatedWork=$validatedWork;
+      	$this->validatedCost=$validatedCost;
+      	$this->validatedCalculated=1;
+      } else if ($consolidateValidated=="IFSET") {
+      	if ($validatedWork) {
+      		$this->validatedWork=$validatedWork;
+      		$this->validatedCalculated=1;
+      	}
+      	if ($validatedCost) {
+      		$this->validatedCost=$validatedCost;
+      		$this->validatedCalculated=1;
+      	}
+      } 
+    }
     if (! $doNotSave) {
 	    return $this->save();
 	    // Dispath to top element
@@ -1740,6 +1750,8 @@ class PlanningElement extends SqlElement {
     $dep=New dependency();
     $deps=$dep->getSqlElementsFromCriteria(null, false, $clauseWhere);
     foreach ($deps as $dep) {      
+      // Do not copy link with globalizable items as they are not copied
+      if (GlobalPlanningElement::isGlobalizable($dep->predecessorRefType) or GlobalPlanningElement::isGlobalizable($dep->successorRefType)) continue; 
       if (array_key_exists($dep->predecessorRefType . "#" . $dep->predecessorRefId, self::$_copiedItems) ) {
         $to=self::$_copiedItems[$dep->predecessorRefType . "#" . $dep->predecessorRefId]['to'];
         $dep->predecessorRefType=get_class($to);
