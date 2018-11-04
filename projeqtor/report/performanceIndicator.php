@@ -105,11 +105,11 @@ $proj=new Project($idProject,true);
 if($element == 'activities' or $element =='both'){
   $ass=new Assignment();
   $assTable=$ass->getDatabaseTableName();
-  $querySelect = " SELECT DISTINCT  $assTable.idResource,
-                                    $assTable.refId as idActivite,
-          			                    $assTable.plannedWork,
-                                    $assTable.assignedWork,
-                                    $assTable.realEndDate ";
+  $querySelect = " SELECT DISTINCT  $assTable.idResource as idresource,
+                                    $assTable.refId as idactivity,
+          			                    $assTable.plannedWork as plannedwork,
+                                    $assTable.assignedWork as assignedwork,
+                                    $assTable.realEndDate as realenddate";
   
   $queryFrom = "   FROM $assTable ";
   
@@ -133,26 +133,26 @@ if($element == 'activities' or $element =='both'){
     $queryWhere .= "      OR $assTable.realStartDate IS NULL )";
  }
 
-  $queryOrder = " order by idResource, idActivite ;";
+  $queryOrder = " order by idresource, idactivity ;";
 
   $query=$querySelect.$queryFrom.$queryWhere.$queryOrder;
   $result=Sql::query($query);
   
   $tabResource = array();
   while ($line = Sql::fetchLine($result)) {
-     $idResource = $line['idResource'];
-     if($line['realEndDate'] == null){
-       $line['realEndDate'] = $today;
+     $idResource = $line['idresource'];
+     if($line['realenddate'] == null){
+       $line['realenddate'] = $today;
      }
-     if($line['assignedWork'] == 0){
-       if($line['plannedWork'] != 0){
-         $line['assignedWork'] = $line['plannedWork'];
+     if($line['assignedwork'] == 0){
+       if($line['plannedwork'] != 0){
+         $line['assignedwork'] = $line['plannedwork'];
        }else{
          continue;
        }
      }
-     $tabResource[$idResource][$line['idActivite']][1] = $line['realEndDate'] ;
-     $tabResource[$idResource][$line['idActivite']][2] = ($line['plannedWork']) / ($line['assignedWork']) ;
+     $tabResource[$idResource][$line['idactivity']][1] = $line['realenddate'] ;
+     $tabResource[$idResource][$line['idactivity']][2] = ($line['plannedwork']) / ($line['assignedwork']) ;
   }
   
 }elseif($element == 'tickets'){
@@ -712,19 +712,19 @@ function ticket($resource,$idProject,$startDateReport,$endDateReport,$today){
   $result=Sql::query($query);
   $tabResource = array();
   while ($line = Sql::fetchLine($result)) {
-    $idResource = $line['idResource'];
+    $idResource = $line['idresource'];
     if($line['date'] == null){
       $line['date'] = $today;
     }
-    if($line['plannedWork'] == 0){
+    if($line['plannedwork'] == 0){
       if($line['realwork'] != 0){
-        $line['plannedWork'] = $line['realwork'];
+        $line['plannedwork'] = $line['realwork'];
       }else{
         continue;
       }
     }
-      $tabResource[$idResource][$line['idTicket']][1] = date('Y-m-d',strtotime($line['date']));
-      $tabResource[$idResource][$line['idTicket']][2] = ($line['realwork'] + $line['leftWork'] ) / ($line['plannedWork']) ;
+      $tabResource[$idResource][$line['idticket']][1] = date('Y-m-d',strtotime($line['date']));
+      $tabResource[$idResource][$line['idticket']][2] = ($line['realwork'] + $line['leftwork'] ) / ($line['plannedwork']) ;
   }
   
   return $tabResource;

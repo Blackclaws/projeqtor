@@ -568,13 +568,14 @@ class Plugin extends SqlElement {
       $errorClass=array();
       foreach ($list as $class) {
         $obj=new $class();
+        if (method_exists($obj,'setAttributes')) $obj->setAttributes();
         $last=false;
         foreach ($obj as $fld=>$val) {
           if ($fld=='_Note' or $fld=='_Link' or $fld=='_Attachment' or $fld=='_sec_Link') {
             $last=true;
           } else if (substr($fld, 0,1)=='_') {
             continue; // specific field
-          } else if ($last and !$obj->isAttributeSetToField($fld,'hidden')) { // not a specific field, after $last (notes, attachment, link)
+          } else if ($last and ! $obj->isAttributeSetToField($fld,'hidden')) { // not a specific field, after $last (notes, attachment, link)
             $errorClass[]=$class;
             break;
           }

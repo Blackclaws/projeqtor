@@ -319,9 +319,7 @@ class ActivityMain extends SqlElement {
       $this->ActivityPlanningElement->wbs = null;
       $this->ActivityPlanningElement->wbsSortable = null;
     }
-    debugLog("save for Activity #$this->id before save");
     $result = parent::save ();
-    debugLog("save for Activity #$this->id after save");
     if (! strpos ( $result, 'id="lastOperationStatus" value="OK"' )) {
       return $result;
     }
@@ -361,7 +359,6 @@ class ActivityMain extends SqlElement {
         }
       }
     }
-    debugLog("save for Activity #$this->id step 1 ?");    
     // Change idle or idProject value => update idle and idProject for assignments
     if (($this->idle != $oldIdle) or ($this->idProject != $oldIdProject)) {
       // Add assignment for responsible
@@ -393,7 +390,6 @@ class ActivityMain extends SqlElement {
         }
       }
     }
-    debugLog("save for Activity #$this->id step 2 ?");
     if ($this->idProject != $oldIdProject) {
       $lstElt = array('Activity', 'Ticket', 'Milestone', 'PeriodicMeeting', 'Meeting', 'TestSession');
       foreach ( $lstElt as $elt ) {
@@ -407,7 +403,6 @@ class ActivityMain extends SqlElement {
         }
       }
     }
-    debugLog("save for Activity #$this->id step 3 ?");
     if ($oldTargetProductVersion != $this->idTargetProductVersion) {
       $vers = new Version ( $this->idTargetProductVersion );
       $idProduct = ($vers->idProduct) ? $vers->idProduct : null;

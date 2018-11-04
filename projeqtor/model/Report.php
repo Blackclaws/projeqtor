@@ -43,6 +43,7 @@ class Report extends SqlElement {
   public $hasCsv;
   public $hasWord;
   public $hasExcel;
+  public $filterClass;
   public $sortOrder;
   public $idle; 
   public $orientation;
