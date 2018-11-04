@@ -411,9 +411,7 @@ class PlanningElement extends SqlElement {
     	if ($this->plannedStartDate>$this->plannedEndDate) $this->plannedEndDate=$this->plannedStartDate;
     	$this->plannedDuration=workDayDiffDates($this->plannedStartDate, $this->plannedEndDate);
     }
-    debugLog("save for pe #$this->id - before save");
     $result=parent::save();
-    debugLog("save for pe #$this->id - after save");
     if (! strpos($result,'id="lastOperationStatus" value="OK"')) {
       return $result;     
     }
@@ -462,9 +460,7 @@ class PlanningElement extends SqlElement {
     //         DO NOT CHANGE CONDITION TO PREVIOUS VERSION UNLESS YOU REACTIVATE CALL IN ProjectPlanningElement::updateSynthesisProject
     if ($this->topId!='') { // and ($old->topId!=$this->topId or $old->cancelled!=$this->cancelled)) {
       if (! self::$_noDispatch) {
-        debugLog("save for pe #$this->id - before updateSynthesis of top $this->topRefType, $this->topRefId");
         self::updateSynthesis($this->topRefType, $this->topRefId);
-        debugLog("save for pe #$this->id - before updateSynthesis of top $this->topRefType, $this->topRefId");
       } else {
         if (!$topElt or !$topElt->id) {
           $crit=array("refType"=>$old->topRefType, "refId"=>$old->topRefId);
@@ -622,7 +618,6 @@ class PlanningElement extends SqlElement {
   }
 
   public function wbsSave() {
-  	//
     debugLog("wbsSave for pe #$this->id - $this->wbs - $this->refType #$this->refId - $this->refName");
   	$this->_noHistory=true;
   	$this->wbsSortable=formatSortableWbs($this->wbs);
@@ -689,7 +684,6 @@ class PlanningElement extends SqlElement {
     $plannedStartDate=null;
     $plannedEndDate=null;
     foreach ($assList as $ass) {
-      debugLog("  updateSynthesisObj for $this->refType #$this->refId on assignement $ass->refType #$ass->refId on resource $ass->idResource");
     	$assignedWork+=$ass->assignedWork;
       $leftWork+=$ass->leftWork;
       $plannedWork+=$ass->plannedWork;
@@ -719,7 +713,6 @@ class PlanningElement extends SqlElement {
       $plaList=$planningElement->getSqlElementsFromCriteria($critPla, false);
       // Add data from other planningElements dependant from this one    
       foreach ($plaList as $pla) {
-        debugLog("  updateSynthesisObj for $this->refType #$this->refId on planningelement $pla->refType #$pla->refId work=$pla->validatedWork");
         $assignedWork+=$pla->assignedWork;
         $leftWork+=$pla->leftWork;
         $plannedWork+=$pla->plannedWork;
@@ -747,7 +740,6 @@ class PlanningElement extends SqlElement {
         }
         if (!$pla->cancelled and $pla->validatedWork) $validatedWork+=$pla->validatedWork;
         if (!$pla->cancelled and $pla->validatedCost) $validatedCost+=$pla->validatedCost;
-        debugLog("  updateSynthesisObj for $this->refType #$this->refId on planningelement $pla->refType #$pla->refId work=$pla->validatedWork");
       }
     }
     $this->realStartDate=$realStartDate;

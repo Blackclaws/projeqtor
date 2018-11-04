@@ -50,6 +50,7 @@ if (! array_key_exists('filterObjectClass',$_REQUEST)) {
 }
 $filterObjectClass=$_REQUEST['filterObjectClass'];
 $objectClass=($filterObjectClass=='Planning')?'Activity':$filterObjectClass;
+$objectClass=(substr($objectClass,0,7)=='Report_')?substr($objectClass,7):$objectClass;
 
 // Get existing filter info
 if (!$comboDetail and array_key_exists($filterObjectClass,$user->_arrayFilters)) {

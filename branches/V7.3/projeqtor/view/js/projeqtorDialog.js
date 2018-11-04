@@ -3627,6 +3627,7 @@ function showFilterDialog() {
     if (dojo.byId('objectClassList') && dojo.byId('objectClassList').value) objectClass=dojo.byId('objectClassList').value;
     else if (dojo.byId("objectClassManual") && dojo.byId("objectClassManual").value && dojo.byId("objectClassManual").value=='Planning') objectClass='Activity';
     else if (dojo.byId('objectClass') && dojo.byId('objectClass').value) objectClass=dojo.byId('objectClass').value;
+    if (objectClass.substr(0,7)=='Report_') objectClass=objectClass.substr(7);
     refreshListSpecific('object', 'idFilterAttribute', 'objectClass', objectClass);
     dijit.byId("dialogFilter").show();
   }
@@ -4117,6 +4118,8 @@ function selectFilterContinue() {
   } else if (!dijit.byId('filterDynamicParameter').get("checked")) {
     if (dojo.byId("objectClassManual") && dojo.byId("objectClassManual").value=='Planning' && ! top.dijit.byId('dialogDetail').open) {
       refreshJsonPlanning();
+    } else if (dojo.byId("objectClassManual") && dojo.byId("objectClassManual").value=='Report') {
+      dojo.byId('outMode').value='';runReport();
     } else {
       doc.refreshJsonList(objectClass);
     }
@@ -4316,6 +4319,8 @@ function selectDynamicFilterContinue() {
 	      false, 'returnFromFilter', false);
 	  if (dojo.byId("objectClassManual") && dojo.byId("objectClassManual").value=='Planning' && ! top.dijit.byId('dialogDetail').open) {
       refreshJsonPlanning();
+	  } else if (dojo.byId("objectClassManual") && dojo.byId("objectClassManual").value=='Report') {
+	    dojo.byId('outMode').value='';runReport();
 	  } else if (doc.dojo.byId('objectClassList')) {
       doc.refreshJsonList(doc.dojo.byId('objectClassList').value);
 	  } else {

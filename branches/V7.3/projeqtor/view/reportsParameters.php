@@ -31,6 +31,7 @@
 require_once "../tool/projeqtor.php";
 scriptLog('   ->/view/reportsList.php');
 ?>
+<div style="height:175px;width:100%;overflow-x:hidden; overflow-y:auto" >
 <form id='reportForm' name='reportForm' onSubmit="return false;">
 <table><tr><td>
 <table style="width:100%;min-width:292px;">
@@ -1030,6 +1031,54 @@ foreach ($listParam as $param) {
            </script>
       </button>
 		  <?php }?>
+		   <?php if($report->filterClass) { 
+		     $activeFilter=false;
+		     if (is_array(getSessionUser()->_arrayFilters)) {
+		       if (array_key_exists('Report_'.$report->filterClass, getSessionUser()->_arrayFilters)) {
+		         if (count(getSessionUser()->_arrayFilters['Report_'.$report->filterClass])>0) {
+		           foreach (getSessionUser()->_arrayFilters['Report_'.$report->filterClass] as $filter) {
+		             if (!isset($filter['isDynamic']) or $filter['isDynamic']=="0") {
+		               $activeFilter=true;
+		             }
+		           }
+		         }
+		       }
+		     }
+		     ?>
+		   <input type="hidden" id="objectClassList" name="objectClassList" value="Report_<?php echo $report->filterClass;?>"/>
+       <button 
+         title="<?php echo i18n('advancedFilter')?>"  
+         class="comboButton detailButton whiteBackground"
+         dojoType="dijit.form.DropDownButton" 
+         id="listFilterFilter" name="listFilterFilter"
+         iconClass="icon<?php echo($activeFilter)?'Active':'';?>Filter" showLabel="false">
+          <script type="dojo/connect" event="onClick" args="evt">
+                              showFilterDialog();
+                            </script>
+          <script type="dojo/method" event="onMouseEnter" args="evt">
+                              clearTimeout(closeFilterListTimeout);
+                              clearTimeout(openFilterListTimeout);
+                              openFilterListTimeout=setTimeout("dijit.byId('listFilterFilter').openDropDown();",popupOpenDelay);
+                            </script>
+          <script type="dojo/method" event="onMouseLeave" args="evt">
+                              clearTimeout(openFilterListTimeout);
+                              closeFilterListTimeout=setTimeout("dijit.byId('listFilterFilter').closeDropDown();",2000);
+                            </script>
+          <div dojoType="dijit.TooltipDialog" id="directFilterList" style="z-index: 999999;<!-- display:none; --> position: absolute;">
+          <?php 
+          //RequestHandler::setValue('filterObjectClass','Planning');
+          $objectClass='Report_'.$report->filterClass;
+          include "../tool/displayFilterList.php";?>
+            <script type="dojo/method" event="onMouseEnter" args="evt">
+                                clearTimeout(closeFilterListTimeout);
+                                clearTimeout(openFilterListTimeout);
+                              </script>
+            <script type="dojo/method" event="onMouseLeave" args="evt">
+                                dijit.byId('listFilterFilter').closeDropDown();
+                              </script>
+          </div> 
+        </button>
+		  <?php }?>
         <input type="hidden" id="page" name="page" value="<?php echo ((substr($report->file,0,3)=='../')?'':'../report/') . $report->file;?>"/>
         <input type="hidden" id="print" name="print" value=true />
         <input type="hidden" id="report" name="report" value=true />
@@ -1042,3 +1091,4 @@ foreach ($listParam as $param) {
 <div id="resultDiv" dojoType="dijit.layout.ContentPane" region="top" style="display:none"></div>
 </td></tr></table>
 </form>
+</div>
