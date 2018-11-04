@@ -17,6 +17,7 @@ $filterObjectClass=RequestHandler::getValue('filterObjectClass');
 if (!$filterObjectClass) $filterObjectClass=$filter->refType;
 $objectClass=$filterObjectClass;
 if ($objectClass=='Planning' or $objectClass=='Planning') $objectClass='Activity';
+else if (substr($objectClass,0,7)=='Report_') $objectClass=substr($objectClass,7);
 Security::checkValidClass($objectClass);
 ?>
 <table xstyle="border: 1px solid grey;">

@@ -25,6 +25,7 @@ $idFilter=RequestHandler::getId('idFilter',true);
 $filterObjectClass=RequestHandler::getValue('filterObjectClass',true);
 if (!isset($objectClass) or !$objectClass) $objectClass=$filterObjectClass;
 if ($objectClass=='Planning' or $objectClass=='GlobalPlanning') $objectClass='Activity';
+else if (substr($objectClass,0,7)=='Report_') $objectClass=substr($objectClass,7);
 Security::checkValidClass($objectClass);
 
 $nbDynamicFilterClauses=RequestHandler::getNumeric('nbDynamicFilterClauses',true);
