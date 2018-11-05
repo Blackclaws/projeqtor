@@ -241,8 +241,8 @@ class Html2Pdf
     {
         return array(
             'major'     => 5,
-            'minor'     => 1,
-            'revision'  => 1
+            'minor'     => 2,
+            'revision'  => 2
         );
     }
 
@@ -477,11 +477,30 @@ class Html2Pdf
      * @param  boolean $displayPage   display the page numbers
      * @param  int     $onPage        if null : at the end of the document on a new page, else on the $onPage page
      * @param  string  $fontName      font name to use
+     * @param  string  $marginTop     margin top to use on the index page
      * @return null
      */
-    public function createIndex($titre = 'Index', $sizeTitle = 20, $sizeBookmark = 15, $bookmarkTitle = true, $displayPage = true, $onPage = null, $fontName = 'helvetica')
-    {
+    public function createIndex(
+        $titre = 'Index',
+        $sizeTitle = 20,
+        $sizeBookmark = 15,
+        $bookmarkTitle = true,
+        $displayPage = true,
+        $onPage = null,
+        $fontName = null,
+        $marginTop = null
+    ) {
+        if ($fontName === null) {
+            $fontName = 'helvetica';
+        }
+
         $oldPage = $this->_INDEX_NewPage($onPage);
+
+        if ($marginTop !== null) {
+            $marginTop = $this->cssConverter->convertToMM($marginTop);
+            $this->pdf->SetY($this->pdf->GetY() + $marginTop);
+        }
+
         $this->pdf->createIndex($this, $titre, $sizeTitle, $sizeBookmark, $bookmarkTitle, $displayPage, $onPage, $fontName);
         if ($oldPage) {
             $this->pdf->setPage($oldPage);
@@ -523,9 +542,6 @@ class Html2Pdf
      */
     public function output($name = 'document.pdf', $dest = 'I')
     {
-        // close the pdf and clean up
-        $this->clean();
-
         // if on debug mode
         if (!is_null($this->debug)) {
             $this->debug->stop();
@@ -556,7 +572,12 @@ class Html2Pdf
         }
 
         // call the output of TCPDF
-        return $this->pdf->Output($name, $dest);
+        $output = $this->pdf->Output($name, $dest);
+        
+        // close the pdf and clean up
+        $this->clean();
+
+        return $output;
     }
 
     /**
@@ -713,8 +734,14 @@ class Html2Pdf
                     $this->pdf->Rect(0, 0, $this->pdf->getW(), $this->pdf->getH(), 'F');
                 }
 
-                if (isset($this->_background['img']) && $this->_background['img']) {
-                    $this->pdf->Image($this->_background['img'], $this->_background['posX'], $this->_background['posY'], $this->_background['width']);
+                if (isset($this->_background['img']) && is_array($this->_background['img'])) {
+                    $imageWidth  = $this->cssConverter->convertToMM($this->_background['width'], $this->pdf->getW());
+                    $imageHeight = $imageWidth * $this->_background['img']['height'] / $this->_background['img']['width'];
+
+                    $posX = $this->cssConverter->convertToMM($this->_background['posX'], $this->pdf->getW() - $imageWidth);
+                    $posY = $this->cssConverter->convertToMM($this->_background['posY'], $this->pdf->getH() - $imageHeight);
+
+                    $this->pdf->Image($this->_background['img']['file'], $posX, $posY, $imageWidth);
                 }
             }
 
@@ -2411,9 +2438,22 @@ class Html2Pdf
         $sw = array();
         for ($x=0; $x<$amountCorr0; $x++) {
             $m=0;
+            $found = false;
             for ($y=0; $y<$amountCorr; $y++) {
                 if (isset($corr[$y][$x]) && is_array($corr[$y][$x]) && $corr[$y][$x][2] == 1) {
+                    $found = true;
                     $m = max($m, $cases[$corr[$y][$x][1]][$corr[$y][$x][0]]['w']);
+                }
+            }
+            if (!$found) {
+                for ($y=0; $y<$amountCorr; $y++) {
+                    for ($previousCell = 0; $previousCell <= $x; $previousCell++) {
+                        $xPrevious = $x - $previousCell;
+                        if (isset($corr[$y][$xPrevious]) && is_array($corr[$y][$xPrevious]) && $corr[$y][$xPrevious][2] > ($previousCell)) {
+                            $m = max($m, $cases[$corr[$y][$xPrevious][1]][$corr[$y][$xPrevious][0]]['w'] / $corr[$y][$xPrevious][2]);
+                            break 1;
+                        }
+                    }
                 }
             }
             $sw[$x] = $m;
@@ -2627,12 +2667,11 @@ class Html2Pdf
                     // WARNING : if URL, "allow_url_fopen" must turned to "on" in php.ini
                     $infos=@getimagesize($background['img']);
                     if (is_array($infos) && count($infos)>1) {
-                        $imageWidth = $this->cssConverter->convertToMM($background['width'], $this->pdf->getW());
-                        $imageHeight = $imageWidth*$infos[1]/$infos[0];
-
-                        $background['width'] = $imageWidth;
-                        $background['posX']  = $this->cssConverter->convertToMM($background['posX'], $this->pdf->getW() - $imageWidth);
-                        $background['posY']  = $this->cssConverter->convertToMM($background['posY'], $this->pdf->getH() - $imageHeight);
+                        $background['img'] = [
+                            'file'   => $background['img'],
+                            'width'  => (int) $infos[0],
+                            'height' => (int) $infos[1]
+                        ];
                     } else {
                         $background = array();
                     }
@@ -4042,7 +4081,7 @@ class Html2Pdf
         $this->parsingCss->value['margin']['r'] = 0;
         $this->parsingCss->value['margin']['t'] = $this->cssConverter->convertToMM('16px');
         $this->parsingCss->value['margin']['b'] = $this->cssConverter->convertToMM('16px');
-        $this->parsingCss->value['font-size'] = $this->cssConverter->convertToMM($size[$other]);
+        $this->parsingCss->value['font-size'] = $this->cssConverter->convertFontSize($size[$other]);
 
         $this->parsingCss->analyse($other, $param);
         $this->parsingCss->setPosition();
@@ -5144,6 +5183,8 @@ class Html2Pdf
         for ($k=0; $k<$span; $k++) {
             self::$_tables[$param['num']]['cols'][] = $param;
         }
+
+        return true;
     }
 
     /**
@@ -5154,6 +5195,34 @@ class Html2Pdf
      * @return boolean
      */
     protected function _tag_close_COL($param)
+    {
+        // there is nothing to do here
+
+        return true;
+    }
+
+    /**
+     * tag : COLGROUP
+     * mode : OPEN
+     *
+     * @param  array $param
+     * @return boolean
+     */
+    protected function _tag_open_COLGROUP($param)
+    {
+        // there is nothing to do here
+
+        return true;
+    }
+
+    /**
+     * tag : COLGROUP
+     * mode : CLOSE
+     *
+     * @param  array $param
+     * @return boolean
+     */
+    protected function _tag_close_COLGROUP($param)
     {
         // there is nothing to do here
 
@@ -5703,6 +5772,72 @@ class Html2Pdf
         return true;
     }
 
+   /**
+     * tag : SIGN
+     * mode : OPEN
+     *
+     * @param  array $param
+     * @return boolean
+     */
+    protected function _tag_open_CERT($param)
+    {
+        $res = $this->_tag_open_DIV($param);
+        if (!$res) {
+            return $res;
+        }
+
+        // set certificate file
+        $certificate = $param['src'];
+        if(!file_exists($certificate)) {
+            return true;
+        }
+
+        // Set private key
+        $privkey = $param['privkey'];
+        if(strlen($privkey)==0 || !file_exists($privkey)) {
+            $privkey = $certificate;
+        }
+
+        $certificate = 'file://'.realpath($certificate);
+        $privkey = 'file://'.realpath($privkey);
+
+        // set additional information
+        $info = array(
+            'Name'        => $param['name'],
+            'Location'    => $param['location'],
+            'Reason'      => $param['reason'],
+            'ContactInfo' => $param['contactinfo'],
+        );
+
+        // set document signature
+        $this->pdf->setSignature($certificate, $privkey, '', '', 2, $info);
+
+        // define active area for signature appearance
+        $x = $this->parsingCss->value['x'];
+        $y = $this->parsingCss->value['y'];
+        $w = $this->parsingCss->value['width'];
+        $h = $this->parsingCss->value['height'];
+
+        $this->pdf->setSignatureAppearance($x, $y, $w, $h);
+
+        return true;
+    }
+
+    /**
+     * tag : SIGN
+     * mode : CLOSE
+     *
+     * @param    array $param
+     * @return boolean
+     */
+    protected function _tag_close_CERT($param)
+    {
+        $this->_tag_close_DIV($param);
+        // nothing to do here
+
+        return true;
+    }
+
     /**
      * tag : SELECT
      * mode : OPEN
@@ -5945,7 +6080,7 @@ class Html2Pdf
 
         switch ($param['type']) {
             case 'checkbox':
-                $w = 3;
+                $w = 4;
                 $h = $w;
                 if ($h<$f) {
                     $y+= ($f-$h)*0.5;
@@ -5955,7 +6090,7 @@ class Html2Pdf
                 break;
 
             case 'radio':
-                $w = 3;
+                $w = 4;
                 $h = $w;
                 if ($h<$f) {
                     $y+= ($f-$h)*0.5;

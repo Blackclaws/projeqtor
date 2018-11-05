@@ -917,14 +917,17 @@ function planningPDFBox(copyType) {
  * Display a add note Box
  * 
  */
-// Hack to remove on.focus on body, to be able to interact with ck_editor popups
-// NEEDS TO CHANGE projeqtorDojo.js the 
-//                 var fih=on(body,'focus'...
-//              to 
-//                 var fih=null; //(external to main line) 
-//                 fih=on.pausable(body,'focus'...
-function pauseBodyFocus() {if (fih) { fih.pause(); }}      
-function resumeBodyFocus() {if (fih) { fih.resume(); }}   
+// DOJO HACK
+// Hack to be able to interact with ck_editor popups in Notes
+// NEEDS TO CHANGE dijit/Dialog.js, in focus.watch
+// Replace
+//   if(node == topDialog.domNode || domClass.contains(node, "dijitPopup")){ return; }
+// With
+//   if(node == topDialog.domNode || domClass.contains(node, "dijitPopup") || domClass.contains(node, "cke_dialog_body")){ return; }
+// And then rebuild dojo
+// 7.3.0 Not usefull anymore with dojo 1.14 and 2 lines below
+function pauseBodyFocus() { dojo.query(".cke_dialog_body").addClass("dijitPopup");}      
+function resumeBodyFocus() { dojo.query(".cke_dialog_body").removeClass("dijitPopup");}   
 function addNote() {
   if (dijit.byId("noteToolTip")) {
     dijit.byId("noteToolTip").destroy();
@@ -4096,7 +4099,7 @@ function selectFilterContinue() {
   var compUrl=(top.dijit.byId("dialogDetail").open) ? '&comboDetail=true' : '';
   dojo.xhrPost({
     url : "../tool/backupFilter.php?valid=true" + compUrl,
-    form : dojo.byId('dialogFilterForm'),
+    form : 'dialogFilterForm',
     handleAs : "text",
     load : function(data, args) {
     }
@@ -4137,7 +4140,7 @@ function cancelFilter() {
   var compUrl=(top.dijit.byId("dialogDetail").open) ? '&comboDetail=true' : '';
   dojo.xhrPost({
     url : "../tool/backupFilter.php?cancel=true" + compUrl,
-    form : dojo.byId('dialogFilterForm'),
+    form : 'dialogFilterForm',
     handleAs : "text",
     load : function(data, args) {
     }
@@ -4202,6 +4205,7 @@ function saveFilter() {
  * 
  */
 function selectStoredFilter(idFilter, context, contentLoad, container) {  
+  console.log("selectStoredFilter("+idFilter+", "+context+", "+contentLoad+", "+container+")");
   var compUrl=(top.dijit.byId("dialogDetail").open) ? '&comboDetail=true' : '';
   if (context == 'directFilterList') {
     if (dojo.byId('noFilterSelected')) {
@@ -4235,6 +4239,10 @@ function selectStoredFilter(idFilter, context, contentLoad, container) {
           + "&context=" + context + "&filterObjectClass="
           + objectClass + compUrl, "directFilterList", null,
           false);
+      if (dojo.byId("objectClassList") && dojo.byId("objectClassList").value.substr(0,7)=='Report_') {
+        dojo.byId('outMode').value='';
+        runReport();
+      }
     }
   } else {
 	  if (dojo.byId('filterLogicalOperator') && dojo.byId('filterLogicalOperator').style.display=='none') {
