@@ -4,6 +4,7 @@
  */
 
 include_once '../tool/projeqtor.php';
+include_once "../tool/jsonFunctions.php";
 
 if (! isset($includedReport)) {
   include("../external/pChart2/class/pData.class.php");
@@ -92,6 +93,16 @@ if (! isset($includedReport)) {
 }
 
 $where=getAccesRestrictionClause('Ticket',false);
+// Adapt clause on filter
+$arrayFilter=jsonGetFilterArray('Report_Ticket', false);
+if (count($arrayFilter)>0) {
+  $obj=new Ticket();
+  $querySelect="";
+  $queryFrom="";
+  $queryOrderBy="";
+  $idTab=0;
+  jsonBuildWhereCriteria($querySelect,$queryFrom,$where,$queryOrderBy,$idTab,$arrayFilter,$obj);
+}
 
 if ($paramProject!="") {
 	$where.=" and idProject in " .  getVisibleProjectsList(false, $paramProject);

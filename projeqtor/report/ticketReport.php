@@ -25,6 +25,7 @@
  *** DO NOT REMOVE THIS NOTICE ************************************************/
 
 include_once '../tool/projeqtor.php';
+include_once "../tool/jsonFunctions.php";
 //echo 'ticketReport.php';
 
 if (! isset($includedReport)) {
@@ -160,6 +161,17 @@ if (! isset($includedReport)) {
   include "header.php";
 }
 $where=getAccesRestrictionClause('Ticket',false);
+// Adapt clause on filter
+$arrayFilter=jsonGetFilterArray('Report_Ticket', false);
+if (count($arrayFilter)>0) {
+  $obj=new Ticket();
+  $querySelect="";
+  $queryFrom="";
+  $queryOrderBy="";
+  $idTab=0;
+  jsonBuildWhereCriteria($querySelect,$queryFrom,$where,$queryOrderBy,$idTab,$arrayFilter,$obj);
+}
+
 if ($periodType) {
   $start=date('Y-m-d');
   $end=date('Y-m-d');
