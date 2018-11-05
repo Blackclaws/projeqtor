@@ -24,6 +24,8 @@
  *     
  *** DO NOT REMOVE THIS NOTICE ************************************************/
 include_once '../tool/projeqtor.php';
+include_once "../tool/jsonFunctions.php";
+
 $print = false;
 if (array_key_exists('print', $_REQUEST)) {
     $print = true;
@@ -74,6 +76,16 @@ if (! $paramProduct && ! $paramProductVersion) {
     echo i18n('messageNoData',array(i18n('Product').' / '.i18n('ProductVersion'))); 
     echo '</div>';
     exit;
+}
+
+$arrayFilter=jsonGetFilterArray('Report_Ticket', false);
+if (count($arrayFilter)>0) {
+  $obj=new Ticket();
+  $querySelect="";
+  $queryFrom="";
+  $queryOrderBy="";
+  $idTab=0;
+  jsonBuildWhereCriteria($querySelect,$queryFrom,$crit,$queryOrderBy,$idTab,$arrayFilter,$obj);
 }
 
 $outMode=RequestHandler::getValue('outMode',false,'html');

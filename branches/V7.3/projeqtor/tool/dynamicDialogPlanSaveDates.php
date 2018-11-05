@@ -53,11 +53,10 @@
              </td>
            </tr>
            <tr><td>&nbsp;</td><td>&nbsp;</td></tr>
-           <tr><td colspan="2" style="width:100%; text-align: center;">
-             
+           <tr><td colspan="2" style="width:100%; text-align: center;">         
              <table width="100%">
                <tr style="display:none;"><td colspan="5" ><b><?php echo i18n("reportPlannedDates");?><br/></b></td></tr>
-               <tr><td colspan="5">&nbsp;</td>
+               <tr style="display:none;"><td colspan="5">&nbsp;</td>
                <tr style="display:none">
                  <td style="display:none;width:35%;text-align: right;"><b><?php echo i18n('updateInitialDates');?></b></td>
                  <td style="width:5%">&nbsp;</td> 
@@ -66,24 +65,31 @@
 	                    value="ALWAYS" /><?php echo i18n('always');?></td>
                  <td style="width:20%">
                     <input type="radio" dojoType="dijit.form.RadioButton" name="updateInitialDates" id="updateInitialDatesIfEmpty" 
-	                    checked value="IFEMPTY" /><?php echo i18n('ifEmpty');?></td>
+	                   value="IFEMPTY" /><?php echo i18n('ifEmpty');?></td>
                  <td style="width:20%">
                     <input type="radio" dojoType="dijit.form.RadioButton" name="updateInitialDates" id="updateInitialDatesNever"  
-	                    value="NEVER" /><?php echo i18n('never');?></td>
+	                   checked value="NEVER" /><?php echo i18n('never');?></td>
                </tr>
-               <tr><td colspan="5">&nbsp;</td>	
+               <tr style="display:none;"><td colspan="5">&nbsp;</td>	
                <tr>
                  <td style="display:none;width:35%;text-align: right;"><b><?php echo i18n('updateValidatedDates');?></b></td>
                  <td style="width:5%">&nbsp;</td> 
                  <td style="width:20%">
                     <input type="radio" dojoType="dijit.form.RadioButton" name="updateValidatedDates" id="updateValidatedDatesAlways" 
-	                    checked value="ALWAYS" /><?php echo i18n('always');?></td>
+	                    value="ALWAYS" /><?php echo i18n('always');?></td>
                  <td style="width:20%">
                     <input type="radio" dojoType="dijit.form.RadioButton" name="updateValidatedDates" id="updateValidatedDatesIfEmpty" 
-	                     value="IFEMPTY" /><?php echo i18n('ifEmpty');?></td>
+	                    checked value="IFEMPTY" /><?php echo i18n('ifEmpty');?></td>
                  <td style="display:none;width:20%">
                     <input type="radio" dojoType="dijit.form.RadioButton" name="updateValidatedDates" id="updateValidatedDatesNever"  
 	                    value="NEVER" /><?php echo i18n('never');?></td>
+               </tr> 
+               <tr>
+                 <td style="display:none;width:35%;text-align: right;"></td>
+                 <td style="width:5%">&nbsp;</td> 
+                 <td style="width:20%;font-size:80%"><?php echo i18n('alwaysHelp');?></td>
+                 <td style="width:20%;font-size:80%"><?php echo i18n('ifEmptyHelp');?></td>
+                 <td style="display:none;width:20%"></td>
                </tr> 
              </table>
            </td></tr>

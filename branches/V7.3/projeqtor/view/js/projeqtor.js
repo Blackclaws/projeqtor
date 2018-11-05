@@ -748,7 +748,7 @@ function loadContent(page, destination, formName, isResultMessage, validationTyp
     page += '&xhrPostTimestamp='+Date.now();
     dojo.xhrPost({
         url : page,
-        form : dojo.byId(formName),
+        form : formName,
         handleAs : "text",
         load : function(data, args) {       
           var sourceUrl=args['url'];
@@ -1039,7 +1039,7 @@ function loadDiv(page, destinationDiv, formName, callback) {
   }
   dojo.xhrPost({
     url : page,
-    form : dojo.byId(formName),
+    form : formName,
     handleAs : "text",
     load : function(data, args) {
       contentNode.innerHTML = data;
@@ -4130,7 +4130,7 @@ function showHideMoveButtons() {
 function getExtraRequiredFields() {
   dojo.xhrPost({
     url : "../tool/getExtraRequiredFields.php",
-    form : dojo.byId('objectForm'),
+    form : 'objectForm',
     handleAs : "text",
     load : function(data) {
       dojo.query(".generalColClassNotRequired").forEach(function(domNode){

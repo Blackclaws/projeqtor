@@ -26,7 +26,7 @@
 
 //echo "ticketYearlyReport.php";
 include_once '../tool/projeqtor.php';
-require_once "../tool/jsonFunctions.php";
+include_once "../tool/jsonFunctions.php";
 
 if (! isset($includedReport)) {
   include("../external/pChart2/class/pData.class.php");
