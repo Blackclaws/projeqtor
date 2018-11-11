@@ -253,8 +253,9 @@ class GlobalPlanningElement extends SqlElement {
     $excludedProjectsListClause="idProject not in ".transformValueListIntoInClause(SqlList::getListWithCrit("Project", array('excludeFromGlobalPlanning'=>'1'),"id"));
     $query="\n  ( ";
     $formatChar=(Sql::isPgsql())?'VARCHAR':'CHAR';
+    $formatCollation=(Sql::isPgsql())?'':'COLLATE utf8_general_ci';
     if (!$limitToClass) {
-      $query.="SELECT cast(id as $formatChar) as id,idProject,refType,refId,refName,topId,topRefType,topRefId,
+      $query.="SELECT cast(id as $formatChar) $formatCollation as id,idProject,cast(refType AS $formatChar) $formatCollation as refType,refId,refName,topId,topRefType,topRefId,
         priority,elementary,idle,done,cancelled,idPlanningMode,idBill,
         initialStartDate,validatedStartDate,validatedStartFraction,plannedStartDate,plannedStartFraction,realStartDate,
         initialEndDate,validatedEndDate,validatedEndFraction,plannedEndDate,plannedEndFraction,realEndDate,
@@ -279,12 +280,12 @@ class GlobalPlanningElement extends SqlElement {
       $table=$clsObj->getDatabaseTableName();
       $convert=self::$_globalizables[$class];
       if (!$limitToClass) {$query.="\n  UNION ";}
-      $query.="\n    SELECT coalesce(cast( (pex.id+$pexRef) AS $formatChar),concat('$class','_',$table.id)) as id";
+      $query.="\n    SELECT coalesce(cast( (pex.id+$pexRef) AS $formatChar) $formatCollation,concat('$class','_',$table.id)) as id";
       foreach ($obj as $fld=>$val) {
         if (substr($fld,0,1)=='_' or $fld=='id') continue;        
         $query.=", ";
         if ($fld=='priority' or $fld=='initialStartDate' or $fld=='initialEndDate' or $fld=='initialDuration' or $fld=='initialWork' or $fld=='validatedCost' or $fld=='progress') $query.="\n      ";
-        if ($fld=='refType') $query.="cast('$class' AS $formatChar)";
+        if ($fld=='refType') $query.="cast('$class' AS $formatChar) $formatCollation";
         else if ($fld=='isGlobal') $query.="1";
         else if ($fld=='plannedStartFraction' or $fld=='validatedStartFraction') $query.="0";
         else if ($fld=='plannedEndFraction' or $fld=='validatedEndFraction') $query.="1";
