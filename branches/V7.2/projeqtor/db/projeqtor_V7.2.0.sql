@@ -193,16 +193,16 @@ INSERT INTO `${prefix}accessright` (`idProfile`, `idMenu`, `idAccessProfile`) VA
 (1,202,8);
 
 ALTER TABLE `${prefix}tender`
-CHANGE `initialAmount` `untaxedAmount` DECIMAL(11,2) UNSIGNED NULL DEFAULT NULL,
-CHANGE `initialTaxAmount` `taxAmount` DECIMAL(11,2) UNSIGNED NULL DEFAULT NULL,
-CHANGE `initialFullAmount` `fullAmount` DECIMAL(11,2) UNSIGNED NULL DEFAULT NULL,
-CHANGE `plannedAmount` `totalUntaxedAmount` DECIMAL(11,2) UNSIGNED NULL DEFAULT NULL,
-CHANGE `plannedTaxAmount` `totalTaxAmount` DECIMAL(11,2) UNSIGNED NULL DEFAULT NULL,
-CHANGE `plannedFullAmount` `totalFullAmount` DECIMAL(11,2) UNSIGNED NULL DEFAULT NULL;
+CHANGE `initialAmount` `untaxedAmount` DECIMAL(11,2) UNSIGNED,
+CHANGE `initialTaxAmount` `taxAmount` DECIMAL(11,2) UNSIGNED,
+CHANGE `initialFullAmount` `fullAmount` DECIMAL(11,2) UNSIGNED,
+CHANGE `plannedAmount` `totalUntaxedAmount` DECIMAL(11,2) UNSIGNED,
+CHANGE `plannedTaxAmount` `totalTaxAmount` DECIMAL(11,2) UNSIGNED,
+CHANGE `plannedFullAmount` `totalFullAmount` DECIMAL(11,2) UNSIGNED;
 ALTER TABLE `${prefix}tender`
 ADD `discountAmount` DECIMAL(11,2),
 ADD `discountRate`   DECIMAL(5,2),
-ADD `idProjectExpense` int(12) UNSIGNED DEFAULT NULL,
+ADD `idProjectExpense` int(12) unsigned DEFAULT NULL,
 ADD `discountFrom`   varchar(10);
 
 INSERT INTO `${prefix}type` (`scope`, `name`, `sortOrder`, `idle`, `color`, idWorkflow, lockHandled, lockDone, lockIdle, lockCancelled) VALUES
