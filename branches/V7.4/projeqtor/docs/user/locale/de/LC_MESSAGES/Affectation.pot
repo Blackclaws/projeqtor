@@ -1,0 +1,154 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2018, ProjeQtOr
+# This file is distributed under the same license as the ProjeQtOr Bedienhandbuch Deutsch package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: ProjeQtOr Bedienhandbuch Deutsch 7.2\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2018-07-03 14:34+0200\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: ../../Affectation.rst:12
+msgid "Allocations"
+msgstr ""
+
+#: ../../Affectation.rst:17
+msgid ":ref:`profiles-definition`"
+msgstr ""
+
+#: ../../Affectation.rst:18
+msgid ":ref:`user-ress-contact-demystify`"
+msgstr ""
+
+#: ../../Affectation.rst:19
+msgid ":ref:`allocation-to-project`"
+msgstr ""
+
+#: ../../Affectation.rst:22
+msgid "Allows to manage allocations to project."
+msgstr ""
+
+#: ../../Affectation.rst:24
+msgid "Offers a global view of allocation."
+msgstr ""
+
+#: ../../Affectation.rst:28
+msgid "You can use filters."
+msgstr ""
+
+#: ../../Affectation.rst:32
+msgid "Section: Description"
+msgstr ""
+
+#: ../../Affectation.rst:39
+msgid "Field"
+msgstr ""
+
+#: ../../Affectation.rst:40
+msgid "Description"
+msgstr ""
+
+#: ../../Affectation.rst:41
+msgid ":term:`Id`"
+msgstr ""
+
+#: ../../Affectation.rst:42
+msgid "Unique Id for the allocation."
+msgstr ""
+
+#: ../../Affectation.rst:43
+msgid "Resource"
+msgstr ""
+
+#: ../../Affectation.rst:44
+msgid "Name of the allocated resource."
+msgstr ""
+
+#: ../../Affectation.rst:45
+msgid "Or contact"
+msgstr ""
+
+#: ../../Affectation.rst:46
+msgid "Name of the allocated contact."
+msgstr ""
+
+#: ../../Affectation.rst:47
+msgid "**Profile**"
+msgstr ""
+
+#: ../../Affectation.rst:48
+msgid "Selected profile."
+msgstr ""
+
+#: ../../Affectation.rst:49
+msgid "**Project**"
+msgstr ""
+
+#: ../../Affectation.rst:50
+msgid "Project allocated to."
+msgstr ""
+
+#: ../../Affectation.rst:51
+msgid "Rate"
+msgstr ""
+
+#: ../../Affectation.rst:52
+msgid "Allocation rate for the project (%)."
+msgstr ""
+
+#: ../../Affectation.rst:53
+msgid "Start date"
+msgstr ""
+
+#: ../../Affectation.rst:54
+msgid "Start date of allocation."
+msgstr ""
+
+#: ../../Affectation.rst:55
+msgid "End date"
+msgstr ""
+
+#: ../../Affectation.rst:56
+msgid "End date of allocation."
+msgstr ""
+
+#: ../../Affectation.rst:57
+msgid ":term:`Closed`"
+msgstr ""
+
+#: ../../Affectation.rst:58
+msgid "Flag to indicate that the allocation is archived."
+msgstr ""
+
+#: ../../Affectation.rst:59
+msgid ":term:`Description`"
+msgstr ""
+
+#: ../../Affectation.rst:60
+msgid "Complete description of the allocation."
+msgstr ""
+
+#: ../../Affectation.rst:62
+msgid "**\\* Required field**"
+msgstr ""
+
+#: ../../Affectation.rst:66
+msgid "You can select resource or contact."
+msgstr ""
+
+#: ../../Affectation.rst:67
+msgid "If none is selected then the user connected is used to define the allocation."
+msgstr ""
+
+#: ../../Affectation.rst:68
+msgid "If a contact is a resource and inversely, then resource or contact name will be selected too."
+msgstr ""
+

@@ -1,0 +1,1036 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2018, ProjeQtOr
+# This file is distributed under the same license as the ProjeQtOr Bedienhandbuch Deutsch package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: ProjeQtOr Bedienhandbuch Deutsch 7.2\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2018-07-03 14:34+0200\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: ../../ListsOfValues.rst:5
+msgid "Each screen in List of values allows to define your own values."
+msgstr ""
+
+#: ../../ListsOfValues.rst:7
+msgid "Then you will be able to select them in corresponding screens."
+msgstr ""
+
+#: ../../ListsOfValues.rst:11
+msgid "By default, some lists are not visible on their corresponding screen like Languages in Product and Component screen."
+msgstr ""
+
+#: ../../ListsOfValues.rst:13
+msgid "To use them you must enable their parameter in global parameters."
+msgstr ""
+
+#: ../../ListsOfValues.rst:18
+msgid "Functions"
+msgstr ""
+
+#: ../../ListsOfValues.rst:20
+msgid "The function defines the generic competency of a resource."
+msgstr ""
+
+#: ../../ListsOfValues.rst:23
+#: ../../ListsOfValues.rst:90
+#: ../../ListsOfValues.rst:151
+#: ../../ListsOfValues.rst:188
+#: ../../ListsOfValues.rst:238
+#: ../../ListsOfValues.rst:284
+#: ../../ListsOfValues.rst:325
+#: ../../ListsOfValues.rst:365
+#: ../../ListsOfValues.rst:420
+#: ../../ListsOfValues.rst:457
+#: ../../ListsOfValues.rst:497
+#: ../../ListsOfValues.rst:535
+#: ../../ListsOfValues.rst:576
+#: ../../ListsOfValues.rst:610
+#: ../../ListsOfValues.rst:650
+#: ../../ListsOfValues.rst:684
+#: ../../ListsOfValues.rst:725
+#: ../../ListsOfValues.rst:755
+#: ../../ListsOfValues.rst:793
+#: ../../ListsOfValues.rst:823
+#: ../../ListsOfValues.rst:859
+#: ../../ListsOfValues.rst:887
+#: ../../ListsOfValues.rst:919
+#: ../../ListsOfValues.rst:950
+#: ../../ListsOfValues.rst:983
+#: ../../ListsOfValues.rst:1021
+msgid "Section: Description"
+msgstr ""
+
+#: ../../ListsOfValues.rst:30
+#: ../../ListsOfValues.rst:97
+#: ../../ListsOfValues.rst:158
+#: ../../ListsOfValues.rst:195
+#: ../../ListsOfValues.rst:245
+#: ../../ListsOfValues.rst:291
+#: ../../ListsOfValues.rst:332
+#: ../../ListsOfValues.rst:372
+#: ../../ListsOfValues.rst:427
+#: ../../ListsOfValues.rst:464
+#: ../../ListsOfValues.rst:504
+#: ../../ListsOfValues.rst:542
+#: ../../ListsOfValues.rst:583
+#: ../../ListsOfValues.rst:617
+#: ../../ListsOfValues.rst:657
+#: ../../ListsOfValues.rst:691
+#: ../../ListsOfValues.rst:732
+#: ../../ListsOfValues.rst:762
+#: ../../ListsOfValues.rst:800
+#: ../../ListsOfValues.rst:830
+#: ../../ListsOfValues.rst:866
+#: ../../ListsOfValues.rst:894
+#: ../../ListsOfValues.rst:926
+#: ../../ListsOfValues.rst:957
+#: ../../ListsOfValues.rst:990
+#: ../../ListsOfValues.rst:1028
+msgid "Field"
+msgstr ""
+
+#: ../../ListsOfValues.rst:31
+#: ../../ListsOfValues.rst:40
+#: ../../ListsOfValues.rst:98
+#: ../../ListsOfValues.rst:159
+#: ../../ListsOfValues.rst:196
+#: ../../ListsOfValues.rst:246
+#: ../../ListsOfValues.rst:292
+#: ../../ListsOfValues.rst:333
+#: ../../ListsOfValues.rst:373
+#: ../../ListsOfValues.rst:428
+#: ../../ListsOfValues.rst:465
+#: ../../ListsOfValues.rst:505
+#: ../../ListsOfValues.rst:543
+#: ../../ListsOfValues.rst:584
+#: ../../ListsOfValues.rst:618
+#: ../../ListsOfValues.rst:658
+#: ../../ListsOfValues.rst:692
+#: ../../ListsOfValues.rst:733
+#: ../../ListsOfValues.rst:763
+#: ../../ListsOfValues.rst:801
+#: ../../ListsOfValues.rst:831
+#: ../../ListsOfValues.rst:867
+#: ../../ListsOfValues.rst:895
+#: ../../ListsOfValues.rst:927
+#: ../../ListsOfValues.rst:958
+#: ../../ListsOfValues.rst:991
+#: ../../ListsOfValues.rst:1029
+msgid "Description"
+msgstr ""
+
+#: ../../ListsOfValues.rst:32
+#: ../../ListsOfValues.rst:99
+#: ../../ListsOfValues.rst:160
+#: ../../ListsOfValues.rst:197
+#: ../../ListsOfValues.rst:247
+#: ../../ListsOfValues.rst:293
+#: ../../ListsOfValues.rst:334
+#: ../../ListsOfValues.rst:374
+#: ../../ListsOfValues.rst:429
+#: ../../ListsOfValues.rst:466
+#: ../../ListsOfValues.rst:506
+#: ../../ListsOfValues.rst:544
+#: ../../ListsOfValues.rst:585
+#: ../../ListsOfValues.rst:619
+#: ../../ListsOfValues.rst:659
+#: ../../ListsOfValues.rst:693
+#: ../../ListsOfValues.rst:734
+#: ../../ListsOfValues.rst:764
+#: ../../ListsOfValues.rst:802
+#: ../../ListsOfValues.rst:832
+#: ../../ListsOfValues.rst:868
+#: ../../ListsOfValues.rst:896
+#: ../../ListsOfValues.rst:928
+#: ../../ListsOfValues.rst:959
+#: ../../ListsOfValues.rst:992
+#: ../../ListsOfValues.rst:1030
+msgid ":term:`Id`"
+msgstr ""
+
+#: ../../ListsOfValues.rst:33
+#: ../../ListsOfValues.rst:100
+#: ../../ListsOfValues.rst:161
+#: ../../ListsOfValues.rst:198
+#: ../../ListsOfValues.rst:248
+#: ../../ListsOfValues.rst:294
+#: ../../ListsOfValues.rst:335
+#: ../../ListsOfValues.rst:375
+#: ../../ListsOfValues.rst:430
+#: ../../ListsOfValues.rst:467
+#: ../../ListsOfValues.rst:507
+#: ../../ListsOfValues.rst:545
+#: ../../ListsOfValues.rst:586
+#: ../../ListsOfValues.rst:660
+#: ../../ListsOfValues.rst:694
+#: ../../ListsOfValues.rst:735
+#: ../../ListsOfValues.rst:765
+#: ../../ListsOfValues.rst:803
+#: ../../ListsOfValues.rst:833
+#: ../../ListsOfValues.rst:869
+#: ../../ListsOfValues.rst:897
+#: ../../ListsOfValues.rst:929
+#: ../../ListsOfValues.rst:960
+#: ../../ListsOfValues.rst:993
+#: ../../ListsOfValues.rst:1031
+msgid "Unique Id for this value."
+msgstr ""
+
+#: ../../ListsOfValues.rst:34
+#: ../../ListsOfValues.rst:101
+#: ../../ListsOfValues.rst:162
+#: ../../ListsOfValues.rst:199
+#: ../../ListsOfValues.rst:249
+#: ../../ListsOfValues.rst:295
+#: ../../ListsOfValues.rst:336
+#: ../../ListsOfValues.rst:376
+#: ../../ListsOfValues.rst:431
+#: ../../ListsOfValues.rst:468
+#: ../../ListsOfValues.rst:508
+#: ../../ListsOfValues.rst:546
+#: ../../ListsOfValues.rst:587
+#: ../../ListsOfValues.rst:621
+#: ../../ListsOfValues.rst:661
+#: ../../ListsOfValues.rst:695
+#: ../../ListsOfValues.rst:736
+#: ../../ListsOfValues.rst:766
+#: ../../ListsOfValues.rst:804
+#: ../../ListsOfValues.rst:834
+#: ../../ListsOfValues.rst:870
+#: ../../ListsOfValues.rst:898
+#: ../../ListsOfValues.rst:930
+#: ../../ListsOfValues.rst:961
+#: ../../ListsOfValues.rst:994
+#: ../../ListsOfValues.rst:1032
+msgid "**Name**"
+msgstr ""
+
+#: ../../ListsOfValues.rst:35
+#: ../../ListsOfValues.rst:102
+#: ../../ListsOfValues.rst:163
+#: ../../ListsOfValues.rst:200
+#: ../../ListsOfValues.rst:250
+#: ../../ListsOfValues.rst:296
+#: ../../ListsOfValues.rst:337
+#: ../../ListsOfValues.rst:377
+#: ../../ListsOfValues.rst:432
+#: ../../ListsOfValues.rst:469
+#: ../../ListsOfValues.rst:509
+#: ../../ListsOfValues.rst:547
+#: ../../ListsOfValues.rst:588
+#: ../../ListsOfValues.rst:662
+#: ../../ListsOfValues.rst:696
+#: ../../ListsOfValues.rst:737
+#: ../../ListsOfValues.rst:767
+#: ../../ListsOfValues.rst:805
+#: ../../ListsOfValues.rst:835
+#: ../../ListsOfValues.rst:871
+#: ../../ListsOfValues.rst:899
+#: ../../ListsOfValues.rst:931
+#: ../../ListsOfValues.rst:962
+#: ../../ListsOfValues.rst:995
+#: ../../ListsOfValues.rst:1033
+msgid "Name of this value."
+msgstr ""
+
+#: ../../ListsOfValues.rst:36
+#: ../../ListsOfValues.rst:113
+#: ../../ListsOfValues.rst:168
+#: ../../ListsOfValues.rst:205
+#: ../../ListsOfValues.rst:255
+#: ../../ListsOfValues.rst:297
+#: ../../ListsOfValues.rst:342
+#: ../../ListsOfValues.rst:384
+#: ../../ListsOfValues.rst:437
+#: ../../ListsOfValues.rst:474
+#: ../../ListsOfValues.rst:514
+#: ../../ListsOfValues.rst:552
+#: ../../ListsOfValues.rst:591
+#: ../../ListsOfValues.rst:625
+#: ../../ListsOfValues.rst:665
+#: ../../ListsOfValues.rst:701
+#: ../../ListsOfValues.rst:738
+#: ../../ListsOfValues.rst:768
+#: ../../ListsOfValues.rst:808
+#: ../../ListsOfValues.rst:846
+#: ../../ListsOfValues.rst:872
+#: ../../ListsOfValues.rst:904
+#: ../../ListsOfValues.rst:936
+#: ../../ListsOfValues.rst:967
+#: ../../ListsOfValues.rst:1000
+#: ../../ListsOfValues.rst:1036
+msgid "Sort order"
+msgstr ""
+
+#: ../../ListsOfValues.rst:37
+#: ../../ListsOfValues.rst:114
+#: ../../ListsOfValues.rst:169
+#: ../../ListsOfValues.rst:206
+#: ../../ListsOfValues.rst:256
+#: ../../ListsOfValues.rst:298
+#: ../../ListsOfValues.rst:343
+#: ../../ListsOfValues.rst:385
+#: ../../ListsOfValues.rst:438
+#: ../../ListsOfValues.rst:475
+#: ../../ListsOfValues.rst:515
+#: ../../ListsOfValues.rst:553
+#: ../../ListsOfValues.rst:592
+#: ../../ListsOfValues.rst:626
+#: ../../ListsOfValues.rst:666
+#: ../../ListsOfValues.rst:702
+#: ../../ListsOfValues.rst:739
+#: ../../ListsOfValues.rst:769
+#: ../../ListsOfValues.rst:809
+#: ../../ListsOfValues.rst:847
+#: ../../ListsOfValues.rst:873
+#: ../../ListsOfValues.rst:905
+#: ../../ListsOfValues.rst:937
+#: ../../ListsOfValues.rst:968
+#: ../../ListsOfValues.rst:1001
+#: ../../ListsOfValues.rst:1037
+msgid "Number to define order of display in lists."
+msgstr ""
+
+#: ../../ListsOfValues.rst:38
+#: ../../ListsOfValues.rst:115
+#: ../../ListsOfValues.rst:170
+#: ../../ListsOfValues.rst:207
+#: ../../ListsOfValues.rst:257
+#: ../../ListsOfValues.rst:299
+#: ../../ListsOfValues.rst:344
+#: ../../ListsOfValues.rst:386
+#: ../../ListsOfValues.rst:439
+#: ../../ListsOfValues.rst:476
+#: ../../ListsOfValues.rst:516
+#: ../../ListsOfValues.rst:554
+#: ../../ListsOfValues.rst:593
+#: ../../ListsOfValues.rst:627
+#: ../../ListsOfValues.rst:667
+#: ../../ListsOfValues.rst:703
+#: ../../ListsOfValues.rst:740
+#: ../../ListsOfValues.rst:770
+#: ../../ListsOfValues.rst:810
+#: ../../ListsOfValues.rst:848
+#: ../../ListsOfValues.rst:874
+#: ../../ListsOfValues.rst:906
+#: ../../ListsOfValues.rst:938
+#: ../../ListsOfValues.rst:969
+#: ../../ListsOfValues.rst:1002
+#: ../../ListsOfValues.rst:1038
+msgid ":term:`Closed`"
+msgstr ""
+
+#: ../../ListsOfValues.rst:39
+#: ../../ListsOfValues.rst:116
+#: ../../ListsOfValues.rst:171
+#: ../../ListsOfValues.rst:208
+#: ../../ListsOfValues.rst:258
+#: ../../ListsOfValues.rst:300
+#: ../../ListsOfValues.rst:345
+#: ../../ListsOfValues.rst:387
+#: ../../ListsOfValues.rst:440
+#: ../../ListsOfValues.rst:477
+#: ../../ListsOfValues.rst:517
+#: ../../ListsOfValues.rst:555
+#: ../../ListsOfValues.rst:594
+#: ../../ListsOfValues.rst:668
+#: ../../ListsOfValues.rst:704
+#: ../../ListsOfValues.rst:741
+#: ../../ListsOfValues.rst:771
+#: ../../ListsOfValues.rst:811
+#: ../../ListsOfValues.rst:849
+#: ../../ListsOfValues.rst:875
+#: ../../ListsOfValues.rst:907
+#: ../../ListsOfValues.rst:939
+#: ../../ListsOfValues.rst:970
+#: ../../ListsOfValues.rst:1003
+#: ../../ListsOfValues.rst:1039
+msgid "Flag to indicate this value is archived."
+msgstr ""
+
+#: ../../ListsOfValues.rst:41
+msgid "Complete description of this value."
+msgstr ""
+
+#: ../../ListsOfValues.rst:44
+#: ../../ListsOfValues.rst:118
+#: ../../ListsOfValues.rst:173
+#: ../../ListsOfValues.rst:210
+#: ../../ListsOfValues.rst:260
+#: ../../ListsOfValues.rst:302
+#: ../../ListsOfValues.rst:347
+#: ../../ListsOfValues.rst:389
+#: ../../ListsOfValues.rst:442
+#: ../../ListsOfValues.rst:479
+#: ../../ListsOfValues.rst:519
+#: ../../ListsOfValues.rst:557
+#: ../../ListsOfValues.rst:596
+#: ../../ListsOfValues.rst:630
+#: ../../ListsOfValues.rst:670
+#: ../../ListsOfValues.rst:706
+#: ../../ListsOfValues.rst:743
+#: ../../ListsOfValues.rst:773
+#: ../../ListsOfValues.rst:813
+#: ../../ListsOfValues.rst:851
+#: ../../ListsOfValues.rst:877
+#: ../../ListsOfValues.rst:909
+#: ../../ListsOfValues.rst:941
+#: ../../ListsOfValues.rst:972
+#: ../../ListsOfValues.rst:1005
+#: ../../ListsOfValues.rst:1041
+msgid "**\\* Required field**"
+msgstr ""
+
+#: ../../ListsOfValues.rst:55
+msgid "Status"
+msgstr ""
+
+#: ../../ListsOfValues.rst:57
+msgid "The status is an important element of items lifecycle."
+msgstr ""
+
+#: ../../ListsOfValues.rst:59
+msgid "It defines the progress of the treatment of the element."
+msgstr ""
+
+#: ../../ListsOfValues.rst:61
+msgid "Some automations are implemented, depending on status definition, to set on items."
+msgstr ""
+
+#: ../../ListsOfValues.rst:63
+msgid "See: :ref:`workflow`."
+msgstr ""
+
+#: ../../ListsOfValues.rst:66
+msgid "Handled status"
+msgstr ""
+
+#: ../../ListsOfValues.rst:69
+msgid "This status specifies that the treatment of item is taken over."
+msgstr ""
+
+#: ../../ListsOfValues.rst:70
+msgid "A :term:`responsible` can be determined."
+msgstr ""
+
+#: ../../ListsOfValues.rst:71
+msgid "It is possible to require the appointment of a responsible when the status change to \"handled\"."
+msgstr ""
+
+#: ../../ListsOfValues.rst:72
+msgid "Done status"
+msgstr ""
+
+#: ../../ListsOfValues.rst:75
+msgid "This status specifies that the treatment of item is done."
+msgstr ""
+
+#: ../../ListsOfValues.rst:76
+msgid "A :term:`result` can be specify."
+msgstr ""
+
+#: ../../ListsOfValues.rst:77
+msgid "It is possible to require a result when the status change to \"done\"."
+msgstr ""
+
+#: ../../ListsOfValues.rst:78
+msgid "Closed status"
+msgstr ""
+
+#: ../../ListsOfValues.rst:81
+msgid "This status specifies that the item is closed."
+msgstr ""
+
+#: ../../ListsOfValues.rst:82
+msgid "This item is archived, and it disappeared in the list."
+msgstr ""
+
+#: ../../ListsOfValues.rst:83
+msgid "Item can reappear when \"show closed item\" is checked."
+msgstr ""
+
+#: ../../ListsOfValues.rst:84
+msgid "Cancelled status"
+msgstr ""
+
+#: ../../ListsOfValues.rst:87
+msgid "This status specifies that the item is cancelled."
+msgstr ""
+
+#: ../../ListsOfValues.rst:103
+msgid ":term:`Handled status`"
+msgstr ""
+
+#: ../../ListsOfValues.rst:104
+msgid "Defines whether ‘handled’ flag is automatically set for this status."
+msgstr ""
+
+#: ../../ListsOfValues.rst:105
+msgid ":term:`Done status`"
+msgstr ""
+
+#: ../../ListsOfValues.rst:106
+msgid "Defines whether ‘done’ flag is automatically set for this status."
+msgstr ""
+
+#: ../../ListsOfValues.rst:107
+msgid ":term:`Closed status`"
+msgstr ""
+
+#: ../../ListsOfValues.rst:108
+msgid "Defines whether ‘closed’ flag is automatically set for this status."
+msgstr ""
+
+#: ../../ListsOfValues.rst:109
+msgid ":term:`Cancelled status`"
+msgstr ""
+
+#: ../../ListsOfValues.rst:110
+msgid "Defines whether ‘cancelled’ flag is automatically set for this status."
+msgstr ""
+
+#: ../../ListsOfValues.rst:111
+#: ../../ListsOfValues.rst:166
+#: ../../ListsOfValues.rst:201
+#: ../../ListsOfValues.rst:251
+#: ../../ListsOfValues.rst:338
+#: ../../ListsOfValues.rst:382
+#: ../../ListsOfValues.rst:435
+#: ../../ListsOfValues.rst:472
+#: ../../ListsOfValues.rst:512
+#: ../../ListsOfValues.rst:550
+#: ../../ListsOfValues.rst:589
+#: ../../ListsOfValues.rst:623
+#: ../../ListsOfValues.rst:663
+#: ../../ListsOfValues.rst:836
+#: ../../ListsOfValues.rst:902
+#: ../../ListsOfValues.rst:934
+#: ../../ListsOfValues.rst:965
+#: ../../ListsOfValues.rst:998
+msgid "Color"
+msgstr ""
+
+#: ../../ListsOfValues.rst:112
+#: ../../ListsOfValues.rst:837
+msgid "Color to display the status in element lists."
+msgstr ""
+
+#: ../../ListsOfValues.rst:123
+msgid "Consolidation of status changes"
+msgstr ""
+
+#: ../../ListsOfValues.rst:124
+msgid "We have a parameter which allows to auto set parent item status. It depends on children item status and available status in the workflow."
+msgstr ""
+
+#: ../../ListsOfValues.rst:129
+msgid "Select YES 'auto set parent activity status' in global parameters to use it."
+msgstr ""
+
+#: ../../ListsOfValues.rst:131
+msgid "If an activity changes to a \"handled\" status, all parents move to the first \"handled\" status available in the workflow."
+msgstr ""
+
+#: ../../ListsOfValues.rst:132
+msgid "If an activity changes to a \"done\", \"closed\" or \"canceled\" status, moving of each parent to the first \"done\" or \"closed\" status according to the status of all its children."
+msgstr ""
+
+#: ../../ListsOfValues.rst:135
+msgid "If parents items status has not been changed auto, please check your controls like required fields."
+msgstr ""
+
+#: ../../ListsOfValues.rst:146
+msgid "Resolutions"
+msgstr ""
+
+#: ../../ListsOfValues.rst:148
+msgid "Allows to define different kinds of resolution for tickets."
+msgstr ""
+
+#: ../../ListsOfValues.rst:164
+msgid "Solved"
+msgstr ""
+
+#: ../../ListsOfValues.rst:165
+msgid "Box checked indicates the ticket will be automatically marked as “solved” when this resolution is selected."
+msgstr ""
+
+#: ../../ListsOfValues.rst:167
+msgid "Color to display the resolution in element lists."
+msgstr ""
+
+#: ../../ListsOfValues.rst:181
+msgid "Quality levels"
+msgstr ""
+
+#: ../../ListsOfValues.rst:183
+msgid "The quality is a manual indicator for the conformity of a project to quality processes."
+msgstr ""
+
+#: ../../ListsOfValues.rst:185
+msgid "It defines in a visual way the global conformity of the project."
+msgstr ""
+
+#: ../../ListsOfValues.rst:202
+msgid "Color to display the quality level in element lists and on today screen."
+msgstr ""
+
+#: ../../ListsOfValues.rst:203
+#: ../../ListsOfValues.rst:253
+#: ../../ListsOfValues.rst:340
+msgid "Icon"
+msgstr ""
+
+#: ../../ListsOfValues.rst:204
+msgid "Icon that can be displayed for this quality level."
+msgstr ""
+
+#: ../../ListsOfValues.rst:214
+#: ../../ListsOfValues.rst:264
+#: ../../ListsOfValues.rst:351
+msgid "If no icon is defined, color is used."
+msgstr ""
+
+#: ../../ListsOfValues.rst:215
+#: ../../ListsOfValues.rst:265
+#: ../../ListsOfValues.rst:352
+msgid "You can define your own icons list (see: administration guide)."
+msgstr ""
+
+#: ../../ListsOfValues.rst:228
+msgid "Health status"
+msgstr ""
+
+#: ../../ListsOfValues.rst:230
+msgid "The health status is a manual indicator for the health of a project."
+msgstr ""
+
+#: ../../ListsOfValues.rst:232
+msgid "It defines in a visual way the global health of the project."
+msgstr ""
+
+#: ../../ListsOfValues.rst:234
+msgid "It is displayed on Today screen, for each project, as a Red / Amber / Green traffic light."
+msgstr ""
+
+#: ../../ListsOfValues.rst:252
+msgid "Color to display the health status in element lists and on today screen."
+msgstr ""
+
+#: ../../ListsOfValues.rst:254
+msgid "Icon that can be displayed for this health status."
+msgstr ""
+
+#: ../../ListsOfValues.rst:274
+msgid "Overall progress"
+msgstr ""
+
+#: ../../ListsOfValues.rst:276
+msgid "The overall progress is a manual indicator for global progress of a project."
+msgstr ""
+
+#: ../../ListsOfValues.rst:278
+msgid "It defines in a visual way the global progress of the project, independently from work progress."
+msgstr ""
+
+#: ../../ListsOfValues.rst:280
+#: ../../ListsOfValues.rst:321
+msgid "It is displayed on Today screen, for each project."
+msgstr ""
+
+#: ../../ListsOfValues.rst:315
+msgid "Trends"
+msgstr ""
+
+#: ../../ListsOfValues.rst:317
+msgid "The trend is a manual indicator for the global trend of project health."
+msgstr ""
+
+#: ../../ListsOfValues.rst:319
+msgid "It defines in a visual way the health trend of the project."
+msgstr ""
+
+#: ../../ListsOfValues.rst:339
+msgid "Color to display the trend in element lists and on today screen."
+msgstr ""
+
+#: ../../ListsOfValues.rst:341
+msgid "Icon that can be displayed for this trend."
+msgstr ""
+
+#: ../../ListsOfValues.rst:360
+msgid "Likelihoods"
+msgstr ""
+
+#: ../../ListsOfValues.rst:362
+msgid "The likelihood is the probability of a risk or an opportunity to occur."
+msgstr ""
+
+#: ../../ListsOfValues.rst:378
+#: ../../ListsOfValues.rst:433
+#: ../../ListsOfValues.rst:470
+#: ../../ListsOfValues.rst:510
+#: ../../ListsOfValues.rst:548
+msgid "Value"
+msgstr ""
+
+#: ../../ListsOfValues.rst:379
+msgid "Value of likelihood."
+msgstr ""
+
+#: ../../ListsOfValues.rst:380
+msgid "% value"
+msgstr ""
+
+#: ../../ListsOfValues.rst:381
+msgid "Value in percent."
+msgstr ""
+
+#: ../../ListsOfValues.rst:383
+msgid "Color to display the likelihood in element lists"
+msgstr ""
+
+#: ../../ListsOfValues.rst:393
+msgid "This field is used to calculate a reserve amount according to the likelihood of risk or opportunity."
+msgstr ""
+
+#: ../../ListsOfValues.rst:406
+msgid "Criticalities"
+msgstr ""
+
+#: ../../ListsOfValues.rst:408
+msgid "The criticality is the importance of an element to its context."
+msgstr ""
+
+#: ../../ListsOfValues.rst:412
+msgid "The criticality designs the level of impact the risk or opportunity may have to the project."
+msgstr ""
+
+#: ../../ListsOfValues.rst:416
+msgid "The criticality is the estimated impact that the subject of the ticket may have for the product."
+msgstr ""
+
+#: ../../ListsOfValues.rst:434
+msgid "Value of criticality."
+msgstr ""
+
+#: ../../ListsOfValues.rst:436
+msgid "Color to display the criticality in element lists."
+msgstr ""
+
+#: ../../ListsOfValues.rst:451
+msgid "Severities"
+msgstr ""
+
+#: ../../ListsOfValues.rst:453
+msgid "The severity designs the level of negative or positive impact the risk or opportunity may have for the product."
+msgstr ""
+
+#: ../../ListsOfValues.rst:471
+msgid "Value of severity."
+msgstr ""
+
+#: ../../ListsOfValues.rst:473
+msgid "Color to display the severity in element lists."
+msgstr ""
+
+#: ../../ListsOfValues.rst:492
+msgid "Urgencies"
+msgstr ""
+
+#: ../../ListsOfValues.rst:494
+msgid "The ticket urgency is an element given by the requestor to indicate the quickness of treatment needed for the ticket."
+msgstr ""
+
+#: ../../ListsOfValues.rst:511
+msgid "Value of urgency."
+msgstr ""
+
+#: ../../ListsOfValues.rst:513
+msgid "Color to display the urgency in element lists."
+msgstr ""
+
+#: ../../ListsOfValues.rst:529
+msgid "Priorities"
+msgstr ""
+
+#: ../../ListsOfValues.rst:531
+msgid "The ticket priority defines the order to treat different tickets."
+msgstr ""
+
+#: ../../ListsOfValues.rst:549
+msgid "Value of priority."
+msgstr ""
+
+#: ../../ListsOfValues.rst:551
+msgid "Color to display the priority in element lists."
+msgstr ""
+
+#: ../../ListsOfValues.rst:570
+msgid "Risk levels"
+msgstr ""
+
+#: ../../ListsOfValues.rst:572
+msgid "The risk level measures the technical risk of implementation of a requirement."
+msgstr ""
+
+#: ../../ListsOfValues.rst:590
+msgid "Color to display the risk level in element lists."
+msgstr ""
+
+#: ../../ListsOfValues.rst:604
+msgid "Feasibilities"
+msgstr ""
+
+#: ../../ListsOfValues.rst:606
+msgid "The feasibility defines the first analysis of implementation of a requirement."
+msgstr ""
+
+#: ../../ListsOfValues.rst:620
+msgid "Unique Id for this status."
+msgstr ""
+
+#: ../../ListsOfValues.rst:622
+msgid "Name of this status."
+msgstr ""
+
+#: ../../ListsOfValues.rst:624
+msgid "Color to display the feasibility in element lists."
+msgstr ""
+
+#: ../../ListsOfValues.rst:628
+msgid "Flag to indicate this status is archived."
+msgstr ""
+
+#: ../../ListsOfValues.rst:644
+msgid "Efficiencies"
+msgstr ""
+
+#: ../../ListsOfValues.rst:646
+msgid "The efficiency measures the result of an action."
+msgstr ""
+
+#: ../../ListsOfValues.rst:664
+msgid "Color to display the efficiency in element lists."
+msgstr ""
+
+#: ../../ListsOfValues.rst:678
+msgid "Payment deadlines"
+msgstr ""
+
+#: ../../ListsOfValues.rst:680
+msgid "The payment deadline is stated on the bill."
+msgstr ""
+
+#: ../../ListsOfValues.rst:697
+msgid "Number of days"
+msgstr ""
+
+#: ../../ListsOfValues.rst:698
+msgid "Delay in payment (in days)."
+msgstr ""
+
+#: ../../ListsOfValues.rst:699
+msgid "End of month"
+msgstr ""
+
+#: ../../ListsOfValues.rst:700
+msgid "Flag to indicate that delay for payment is set at the end of month."
+msgstr ""
+
+#: ../../ListsOfValues.rst:719
+msgid "Payment methods"
+msgstr ""
+
+#: ../../ListsOfValues.rst:721
+msgid "The mode of payment."
+msgstr ""
+
+#: ../../ListsOfValues.rst:750
+msgid "Delivery modes"
+msgstr ""
+
+#: ../../ListsOfValues.rst:752
+msgid "The mode of delivery."
+msgstr ""
+
+#: ../../ListsOfValues.rst:775
+msgid "Add dates on deliveries to follow dates : initial, planned, real, validation"
+msgstr ""
+
+#: ../../ListsOfValues.rst:788
+msgid "Measure units"
+msgstr ""
+
+#: ../../ListsOfValues.rst:790
+msgid "The measure units."
+msgstr ""
+
+#: ../../ListsOfValues.rst:806
+msgid "Plural of name"
+msgstr ""
+
+#: ../../ListsOfValues.rst:807
+msgid "Plural form of name."
+msgstr ""
+
+#: ../../ListsOfValues.rst:816
+msgid "Tender status"
+msgstr ""
+
+#: ../../ListsOfValues.rst:818
+msgid "Allows to define or create your own tender status list."
+msgstr ""
+
+#: ../../ListsOfValues.rst:820
+msgid "Tender status displayed on Tenders screen and in the table Submissions of tenders"
+msgstr ""
+
+#: ../../ListsOfValues.rst:838
+msgid "Waiting tender"
+msgstr ""
+
+#: ../../ListsOfValues.rst:839
+msgid "Status information."
+msgstr ""
+
+#: ../../ListsOfValues.rst:840
+msgid "Tender received"
+msgstr ""
+
+#: ../../ListsOfValues.rst:841
+#: ../../ListsOfValues.rst:843
+#: ../../ListsOfValues.rst:845
+msgid "status information."
+msgstr ""
+
+#: ../../ListsOfValues.rst:842
+msgid "Tender not selected"
+msgstr ""
+
+#: ../../ListsOfValues.rst:844
+msgid "Tender selected"
+msgstr ""
+
+#: ../../ListsOfValues.rst:854
+msgid "Categories of project"
+msgstr ""
+
+#: ../../ListsOfValues.rst:856
+msgid "Define your categories of project and you are able to select one in Project screen."
+msgstr ""
+
+#: ../../ListsOfValues.rst:880
+msgid "Incoming weights"
+msgstr ""
+
+#: ../../ListsOfValues.rst:882
+msgid "Define your incoming weights list and select it in Incoming screen."
+msgstr ""
+
+#: ../../ListsOfValues.rst:884
+msgid "That is useful to calculate weighting between different parameters in Reports->KPIs->KPI-incoming-for-project screen."
+msgstr ""
+
+#: ../../ListsOfValues.rst:900
+#: ../../ListsOfValues.rst:932
+#: ../../ListsOfValues.rst:963
+#: ../../ListsOfValues.rst:996
+#: ../../ListsOfValues.rst:1034
+msgid "**Value**"
+msgstr ""
+
+#: ../../ListsOfValues.rst:901
+msgid "Value of incoming weights."
+msgstr ""
+
+#: ../../ListsOfValues.rst:903
+msgid "Color to display the incoming weights in element lists."
+msgstr ""
+
+#: ../../ListsOfValues.rst:912
+msgid "Deliverable weights"
+msgstr ""
+
+#: ../../ListsOfValues.rst:914
+msgid "Define your deliverable weights list and select it in Deliverable screen."
+msgstr ""
+
+#: ../../ListsOfValues.rst:916
+msgid "That is useful to calculate weighting between different parameters in Reports->KPIs->KPI-deliverable-for-project screen."
+msgstr ""
+
+#: ../../ListsOfValues.rst:933
+msgid "Value of deliverable weights."
+msgstr ""
+
+#: ../../ListsOfValues.rst:935
+msgid "Color to display the deliverable weights in element lists."
+msgstr ""
+
+#: ../../ListsOfValues.rst:945
+msgid "Incoming status"
+msgstr ""
+
+#: ../../ListsOfValues.rst:947
+msgid "Define your incoming status list and select it in Incoming screen."
+msgstr ""
+
+#: ../../ListsOfValues.rst:964
+msgid "Value of incoming status."
+msgstr ""
+
+#: ../../ListsOfValues.rst:966
+msgid "Color to display the incoming status in element lists."
+msgstr ""
+
+#: ../../ListsOfValues.rst:974
+msgid "*Add dates on incomings to follow dates : initial, planned, real, validation"
+msgstr ""
+
+#: ../../ListsOfValues.rst:978
+msgid "Deliverable status"
+msgstr ""
+
+#: ../../ListsOfValues.rst:980
+msgid "Define your deliverable status list and select it in Deliverable screen."
+msgstr ""
+
+#: ../../ListsOfValues.rst:997
+#: ../../ListsOfValues.rst:1035
+msgid "Value of deliverable status."
+msgstr ""
+
+#: ../../ListsOfValues.rst:999
+msgid "Color to display the deliverable status in element lists."
+msgstr ""
+
+#: ../../ListsOfValues.rst:1007
+msgid "*Add dates on deliverables to follow dates : initial, planned, real, validation"
+msgstr ""
+
+#: ../../ListsOfValues.rst:1010
+msgid "Languages"
+msgstr ""
+
+#: ../../ListsOfValues.rst:1012
+msgid "Allows to define and create your own languages list."
+msgstr ""
+
+#: ../../ListsOfValues.rst:1014
+msgid "Then in Product or Component screen you can select your languages values."
+msgstr ""
+
+#: ../../ListsOfValues.rst:1018
+msgid "you have to active 'display language in Product/Component' in global parameters."
+msgstr ""
+

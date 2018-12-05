@@ -1,0 +1,1235 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2018, ProjeQtOr
+# This file is distributed under the same license as the ProjeQtOr Bedienhandbuch Deutsch package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: ProjeQtOr Bedienhandbuch Deutsch 7.2\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2018-07-03 14:34+0200\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: ../../ControlAutomation.rst:10
+msgid "Workflows"
+msgstr ""
+
+#: ../../ControlAutomation.rst:14
+msgid ":ref:`profiles-definition`"
+msgstr ""
+
+#: ../../ControlAutomation.rst:16
+msgid "A workflow defines the possibility to go from one status to another one, and who (depending on profile) can do this operation for each status."
+msgstr ""
+
+#: ../../ControlAutomation.rst:18
+msgid "Once defined, a workflow can be linked to any type of any item."
+msgstr ""
+
+#: ../../ControlAutomation.rst:21
+#: ../../ControlAutomation.rst:105
+#: ../../ControlAutomation.rst:177
+#: ../../ControlAutomation.rst:230
+#: ../../ControlAutomation.rst:286
+#: ../../ControlAutomation.rst:342
+#: ../../ControlAutomation.rst:390
+#: ../../ControlAutomation.rst:520
+#: ../../ControlAutomation.rst:581
+#: ../../ControlAutomation.rst:656
+msgid "Section: Description"
+msgstr ""
+
+#: ../../ControlAutomation.rst:28
+#: ../../ControlAutomation.rst:184
+#: ../../ControlAutomation.rst:237
+#: ../../ControlAutomation.rst:293
+#: ../../ControlAutomation.rst:349
+#: ../../ControlAutomation.rst:397
+#: ../../ControlAutomation.rst:427
+#: ../../ControlAutomation.rst:527
+#: ../../ControlAutomation.rst:588
+#: ../../ControlAutomation.rst:663
+#: ../../ControlAutomation.rst:681
+msgid "Field"
+msgstr ""
+
+#: ../../ControlAutomation.rst:29
+#: ../../ControlAutomation.rst:38
+#: ../../ControlAutomation.rst:185
+#: ../../ControlAutomation.rst:238
+#: ../../ControlAutomation.rst:294
+#: ../../ControlAutomation.rst:350
+#: ../../ControlAutomation.rst:398
+#: ../../ControlAutomation.rst:428
+#: ../../ControlAutomation.rst:528
+#: ../../ControlAutomation.rst:535
+#: ../../ControlAutomation.rst:589
+#: ../../ControlAutomation.rst:664
+#: ../../ControlAutomation.rst:682
+msgid "Description"
+msgstr ""
+
+#: ../../ControlAutomation.rst:30
+#: ../../ControlAutomation.rst:186
+#: ../../ControlAutomation.rst:239
+#: ../../ControlAutomation.rst:295
+#: ../../ControlAutomation.rst:351
+#: ../../ControlAutomation.rst:399
+#: ../../ControlAutomation.rst:529
+#: ../../ControlAutomation.rst:590
+msgid ":term:`Id`"
+msgstr ""
+
+#: ../../ControlAutomation.rst:31
+msgid "Unique Id for the workflow."
+msgstr ""
+
+#: ../../ControlAutomation.rst:32
+#: ../../ControlAutomation.rst:353
+msgid "**Name**"
+msgstr ""
+
+#: ../../ControlAutomation.rst:33
+msgid "Name of the workflow."
+msgstr ""
+
+#: ../../ControlAutomation.rst:34
+#: ../../ControlAutomation.rst:431
+msgid "Sort order"
+msgstr ""
+
+#: ../../ControlAutomation.rst:35
+msgid "Number to define the order of display in lists."
+msgstr ""
+
+#: ../../ControlAutomation.rst:36
+#: ../../ControlAutomation.rst:124
+#: ../../ControlAutomation.rst:196
+#: ../../ControlAutomation.rst:247
+#: ../../ControlAutomation.rst:307
+#: ../../ControlAutomation.rst:359
+#: ../../ControlAutomation.rst:405
+msgid ":term:`Closed`"
+msgstr ""
+
+#: ../../ControlAutomation.rst:37
+msgid "Flag to indicate that workflow is archived."
+msgstr ""
+
+#: ../../ControlAutomation.rst:39
+msgid "Complete description of the workflow."
+msgstr ""
+
+#: ../../ControlAutomation.rst:41
+#: ../../ControlAutomation.rst:250
+#: ../../ControlAutomation.rst:364
+msgid "**\\* Required field**"
+msgstr ""
+
+#: ../../ControlAutomation.rst:48
+msgid "Button: Select status to show or hide"
+msgstr ""
+
+#: ../../ControlAutomation.rst:49
+msgid "This button |buttonIconParameter|  can be used to hide some unnecessary status."
+msgstr ""
+
+#: ../../ControlAutomation.rst:57
+msgid "Section: Workflow Diagram"
+msgstr ""
+
+#: ../../ControlAutomation.rst:58
+msgid "The workflow diagram presents a visual representation of the workflow displaying all possible transitions (independently to profile rights)."
+msgstr ""
+
+#: ../../ControlAutomation.rst:64
+msgid "Workflow Diagram"
+msgstr ""
+
+#: ../../ControlAutomation.rst:72
+msgid "Section: Habilitation to change from a status to another"
+msgstr ""
+
+#: ../../ControlAutomation.rst:73
+msgid "The habilitation table helps defining who can move from one status to another one."
+msgstr ""
+
+#: ../../ControlAutomation.rst:74
+msgid "Each line corresponds to the status from which you want to be able to move."
+msgstr ""
+
+#: ../../ControlAutomation.rst:75
+msgid "Each column corresponds to the status to which you want to be able to go."
+msgstr ""
+
+#: ../../ControlAutomation.rst:76
+msgid "It is not possible to go from one status to itself (these cells are blank)."
+msgstr ""
+
+#: ../../ControlAutomation.rst:77
+msgid "Just check the profile (or “all”) who is allowed to pass from one status to the other."
+msgstr ""
+
+#: ../../ControlAutomation.rst:83
+msgid "**In the upper example:**"
+msgstr ""
+
+#: ../../ControlAutomation.rst:85
+msgid "Anyone can move an item from “recorded” to “assigned” and from “recorded” to “cancelled”."
+msgstr ""
+
+#: ../../ControlAutomation.rst:86
+msgid "No one can move an item from “qualified” status to any other status. In this case, pay attention that it must never be possible to move an item to “qualified” status, because it will not be possible to leave this status."
+msgstr ""
+
+#: ../../ControlAutomation.rst:97
+msgid "Email Templates"
+msgstr ""
+
+#: ../../ControlAutomation.rst:99
+msgid "The user is able to format mails that are sent automaticaly on events (see Mails on event). When using template, the standard email formating is replaced with selected one. Just define your templates, and select it on the \"Mail on Events\""
+msgstr ""
+
+#: ../../ControlAutomation.rst:112
+msgid "`Id`"
+msgstr ""
+
+#: ../../ControlAutomation.rst:113
+msgid "Unique Id for the template."
+msgstr ""
+
+#: ../../ControlAutomation.rst:114
+msgid "name"
+msgstr ""
+
+#: ../../ControlAutomation.rst:115
+msgid "email template name"
+msgstr ""
+
+#: ../../ControlAutomation.rst:116
+#: ../../ControlAutomation.rst:188
+msgid "Element updated"
+msgstr ""
+
+#: ../../ControlAutomation.rst:117
+msgid "elements that will be able to use this template"
+msgstr ""
+
+#: ../../ControlAutomation.rst:118
+#: ../../ControlAutomation.rst:190
+#: ../../ControlAutomation.rst:299
+#: ../../ControlAutomation.rst:357
+#: ../../ControlAutomation.rst:403
+#: ../../ControlAutomation.rst:669
+msgid "Type"
+msgstr ""
+
+#: ../../ControlAutomation.rst:119
+msgid "Type of the selected element that will be able to use this template"
+msgstr ""
+
+#: ../../ControlAutomation.rst:120
+msgid "title"
+msgstr ""
+
+#: ../../ControlAutomation.rst:121
+msgid "title of sent mails"
+msgstr ""
+
+#: ../../ControlAutomation.rst:122
+msgid "template"
+msgstr ""
+
+#: ../../ControlAutomation.rst:123
+msgid "template of sent mails"
+msgstr ""
+
+#: ../../ControlAutomation.rst:125
+msgid "Flag to indicate that email template is archived."
+msgstr ""
+
+#: ../../ControlAutomation.rst:131
+msgid "If not set, the template is valid for every type of the element"
+msgstr ""
+
+#: ../../ControlAutomation.rst:132
+msgid "If element is set, only these elements will be able to select the template"
+msgstr ""
+
+#: ../../ControlAutomation.rst:133
+msgid "if element and type are set, only these elements of the correspondiong type will be able to select the template"
+msgstr ""
+
+#: ../../ControlAutomation.rst:137
+msgid "in the template, user can use any property of the updated object to show in the mail, just use ${propertyName} for instance ${name} will display the name of the item, ${id} will display its id"
+msgstr ""
+
+#: ../../ControlAutomation.rst:139
+msgid "for properties referencing external item, such as idXxxxx, use ${nameXxxxx} to display name of item instead of its id for instance ${nameProject} will display the name of the project, as ${idProject} will display the id of the project"
+msgstr ""
+
+#: ../../ControlAutomation.rst:141
+msgid "other tags are available as parameters for email titles (see Global Parameters > emails)"
+msgstr ""
+
+#: ../../ControlAutomation.rst:142
+msgid "some specific tags can also be used"
+msgstr ""
+
+#: ../../ControlAutomation.rst:144
+msgid "${item} : class of the item"
+msgstr ""
+
+#: ../../ControlAutomation.rst:145
+msgid "${dbName} : display name of current instance"
+msgstr ""
+
+#: ../../ControlAutomation.rst:146
+msgid "${responsible} : synonym for ${nameResource}"
+msgstr ""
+
+#: ../../ControlAutomation.rst:147
+msgid "${sender} : name of user sending the email"
+msgstr ""
+
+#: ../../ControlAutomation.rst:148
+msgid "${project} : synonym for ${nameProject}"
+msgstr ""
+
+#: ../../ControlAutomation.rst:149
+msgid "${url} : url to get the direct link to the item"
+msgstr ""
+
+#: ../../ControlAutomation.rst:150
+msgid "${goto} : display Class and Id of item, clickable to have direct link to the item"
+msgstr ""
+
+#: ../../ControlAutomation.rst:151
+msgid "3 other tags are available except in the mail title because they display a table."
+msgstr ""
+
+#: ../../ControlAutomation.rst:153
+msgid "${HISTORY} : displays the last changes of an object."
+msgstr ""
+
+#: ../../ControlAutomation.rst:154
+msgid "${LINK} : list linked elements to the item"
+msgstr ""
+
+#: ../../ControlAutomation.rst:155
+msgid "${NOTE} : lists the notes of the item"
+msgstr ""
+
+#: ../../ControlAutomation.rst:163
+msgid "Mails on event"
+msgstr ""
+
+#: ../../ControlAutomation.rst:165
+msgid "The application is able to automatically send mails on updating event."
+msgstr ""
+
+#: ../../ControlAutomation.rst:167
+msgid "Events are defined on an element and element type."
+msgstr ""
+
+#: ../../ControlAutomation.rst:172
+msgid "The mail message is formatted to display item information."
+msgstr ""
+
+#: ../../ControlAutomation.rst:173
+msgid "Mail titles is defined in :ref:`Global parameters<mail-titles>` screen."
+msgstr ""
+
+#: ../../ControlAutomation.rst:174
+msgid "Selecting a Template will use the formating of the template instead of default standard formating."
+msgstr ""
+
+#: ../../ControlAutomation.rst:187
+msgid "Unique Id for the event."
+msgstr ""
+
+#: ../../ControlAutomation.rst:189
+msgid "Type of elements that will be concerned by automatic emailing."
+msgstr ""
+
+#: ../../ControlAutomation.rst:191
+msgid "Type of the selected element updated."
+msgstr ""
+
+#: ../../ControlAutomation.rst:192
+msgid "New status"
+msgstr ""
+
+#: ../../ControlAutomation.rst:193
+msgid "Positioning the elements to this status will generate an email."
+msgstr ""
+
+#: ../../ControlAutomation.rst:194
+msgid "Or other event"
+msgstr ""
+
+#: ../../ControlAutomation.rst:195
+msgid "Other event that will possibly generate an email."
+msgstr ""
+
+#: ../../ControlAutomation.rst:197
+msgid "Flag to indicate that status mail is archived."
+msgstr ""
+
+#: ../../ControlAutomation.rst:202
+msgid "If not set, the event is valid for every type of the element."
+msgstr ""
+
+#: ../../ControlAutomation.rst:206
+#: ../../ControlAutomation.rst:311
+msgid "Section: Mail receivers"
+msgstr ""
+
+#: ../../ControlAutomation.rst:207
+#: ../../ControlAutomation.rst:312
+msgid "List of addresses of the mails."
+msgstr ""
+
+#: ../../ControlAutomation.rst:208
+#: ../../ControlAutomation.rst:313
+#: ../../ControlAutomation.rst:320
+msgid "The list is not nominative, but defined as roles on the element."
+msgstr ""
+
+#: ../../ControlAutomation.rst:209
+#: ../../ControlAutomation.rst:314
+msgid "Each addressee will receive mail only once, even if a person has several “checked” roles on the element."
+msgstr ""
+
+#: ../../ControlAutomation.rst:210
+msgid "See: :ref:`receivers-list` for receivers detail."
+msgstr ""
+
+#: ../../ControlAutomation.rst:221
+msgid "Delays for tickets"
+msgstr ""
+
+#: ../../ControlAutomation.rst:223
+msgid "It is possible to define a default delay for tickets, for each ticket type and each ticket urgency."
+msgstr ""
+
+#: ../../ControlAutomation.rst:227
+msgid "On creation, the due date will automatically be calculated as creation date + delay."
+msgstr ""
+
+#: ../../ControlAutomation.rst:240
+msgid "Unique Id for the delay definition."
+msgstr ""
+
+#: ../../ControlAutomation.rst:241
+msgid "**Ticket type**"
+msgstr ""
+
+#: ../../ControlAutomation.rst:242
+msgid "Ticket type the delay applies to."
+msgstr ""
+
+#: ../../ControlAutomation.rst:243
+msgid "**Urgency**"
+msgstr ""
+
+#: ../../ControlAutomation.rst:244
+msgid "Urgency of ticket the delay applied to."
+msgstr ""
+
+#: ../../ControlAutomation.rst:245
+msgid "**Value**"
+msgstr ""
+
+#: ../../ControlAutomation.rst:246
+msgid "Value of delay."
+msgstr ""
+
+#: ../../ControlAutomation.rst:248
+#: ../../ControlAutomation.rst:308
+#: ../../ControlAutomation.rst:360
+msgid "Flag to indicate that delay definition is archived."
+msgstr ""
+
+#: ../../ControlAutomation.rst:254
+msgid "Unit for the value can be :"
+msgstr ""
+
+#: ../../ControlAutomation.rst:256
+msgid "Days : simple calculation as days."
+msgstr ""
+
+#: ../../ControlAutomation.rst:257
+msgid "Hours : simple calculation as hours."
+msgstr ""
+
+#: ../../ControlAutomation.rst:258
+msgid "Open days : calculation excluding days off (weekends and days off defined on “calendar”)."
+msgstr ""
+
+#: ../../ControlAutomation.rst:259
+msgid "Open hours : calculation only on the “standard open hours” defined in :ref:`Global parameters<daily-work-hours-section>` screen."
+msgstr ""
+
+#: ../../ControlAutomation.rst:275
+msgid "Indicators"
+msgstr ""
+
+#: ../../ControlAutomation.rst:277
+msgid "It is possible to define indicators on each type of element."
+msgstr ""
+
+#: ../../ControlAutomation.rst:279
+msgid "Depending on type of elements the type of indicators that can be selected in list differs."
+msgstr ""
+
+#: ../../ControlAutomation.rst:281
+msgid "Some indicators are based on delay (due date), some on work, some on cost."
+msgstr ""
+
+#: ../../ControlAutomation.rst:283
+msgid "For each indicator a warning value and an alert value can be defined."
+msgstr ""
+
+#: ../../ControlAutomation.rst:296
+msgid "Unique Id for the indicator definition."
+msgstr ""
+
+#: ../../ControlAutomation.rst:297
+#: ../../ControlAutomation.rst:355
+#: ../../ControlAutomation.rst:401
+msgid "Element"
+msgstr ""
+
+#: ../../ControlAutomation.rst:298
+msgid "The elements the indicator applies to."
+msgstr ""
+
+#: ../../ControlAutomation.rst:300
+msgid "Type of the elements the indicator applies to."
+msgstr ""
+
+#: ../../ControlAutomation.rst:301
+msgid "Indicator"
+msgstr ""
+
+#: ../../ControlAutomation.rst:302
+msgid "Indicator applies to."
+msgstr ""
+
+#: ../../ControlAutomation.rst:303
+msgid "Reminder"
+msgstr ""
+
+#: ../../ControlAutomation.rst:304
+msgid "Delay before due date or % of work or % or cost to send a warning."
+msgstr ""
+
+#: ../../ControlAutomation.rst:305
+msgid "Alert"
+msgstr ""
+
+#: ../../ControlAutomation.rst:306
+msgid "Delay before due date or % of work or % or cost to send an alert."
+msgstr ""
+
+#: ../../ControlAutomation.rst:315
+#: ../../ControlAutomation.rst:321
+msgid "See : :ref:`receivers-list` for receivers detail."
+msgstr ""
+
+#: ../../ControlAutomation.rst:318
+msgid "Section: Internal alert receivers"
+msgstr ""
+
+#: ../../ControlAutomation.rst:319
+msgid "List of addresses of the internal alert."
+msgstr ""
+
+#: ../../ControlAutomation.rst:333
+msgid "Predefined notes"
+msgstr ""
+
+#: ../../ControlAutomation.rst:335
+msgid "The predefined note set the possibility to define some predefined texts for notes."
+msgstr ""
+
+#: ../../ControlAutomation.rst:337
+msgid "When some predefined notes are defined for an element and / or type a list will appear on note creation."
+msgstr ""
+
+#: ../../ControlAutomation.rst:339
+msgid "Selecting an item in the list will automatically fill in the note text field."
+msgstr ""
+
+#: ../../ControlAutomation.rst:352
+msgid "Unique Id for the predefined note."
+msgstr ""
+
+#: ../../ControlAutomation.rst:354
+msgid "Name of the predefined note."
+msgstr ""
+
+#: ../../ControlAutomation.rst:356
+msgid "Kind of item (Ticket, Activity, …) for which this predefined note will be proposed on note creation."
+msgstr ""
+
+#: ../../ControlAutomation.rst:358
+msgid "Type of element for which this predefined note will be proposed on note creation."
+msgstr ""
+
+#: ../../ControlAutomation.rst:361
+msgid "Text"
+msgstr ""
+
+#: ../../ControlAutomation.rst:362
+msgid "Predefined text for notes."
+msgstr ""
+
+#: ../../ControlAutomation.rst:368
+msgid "If not set, predefined note is valid for every element type."
+msgstr ""
+
+#: ../../ControlAutomation.rst:372
+msgid "If not set, predefined note is valid for every type of the element."
+msgstr ""
+
+#: ../../ControlAutomation.rst:383
+msgid "Checklists"
+msgstr ""
+
+#: ../../ControlAutomation.rst:385
+msgid "It is possible to define checklist forms for each type of element."
+msgstr ""
+
+#: ../../ControlAutomation.rst:387
+msgid "When a checklist form exists for a given element, the checklist is available for the element."
+msgstr ""
+
+#: ../../ControlAutomation.rst:400
+msgid "Unique Id for the checklist definition."
+msgstr ""
+
+#: ../../ControlAutomation.rst:402
+msgid "The elements the checklist applies to."
+msgstr ""
+
+#: ../../ControlAutomation.rst:404
+msgid "Type of the elements the checklist applies to."
+msgstr ""
+
+#: ../../ControlAutomation.rst:406
+msgid "Flag to indicate that checklist definition is archived."
+msgstr ""
+
+#: ../../ControlAutomation.rst:409
+msgid "Section: Checklist lines"
+msgstr ""
+
+#: ../../ControlAutomation.rst:410
+msgid "A checklist is built from checklist lines."
+msgstr ""
+
+#: ../../ControlAutomation.rst:412
+msgid "Click on |buttonAdd|  to create a new checklist line."
+msgstr ""
+
+#: ../../ControlAutomation.rst:413
+msgid "Click on |buttonEdit| to update an existing checklist line."
+msgstr ""
+
+#: ../../ControlAutomation.rst:414
+msgid "Click on |buttonIconDelete| to delete the corresponding checklist line."
+msgstr ""
+
+#: ../../ControlAutomation.rst:423
+msgid "Fields - Choices for the checklist lines"
+msgstr ""
+
+#: ../../ControlAutomation.rst:429
+#: ../../ControlAutomation.rst:531
+msgid "Name"
+msgstr ""
+
+#: ../../ControlAutomation.rst:430
+msgid "Name of the subject of the checklist line."
+msgstr ""
+
+#: ../../ControlAutomation.rst:432
+msgid "Order of the line in the list."
+msgstr ""
+
+#: ../../ControlAutomation.rst:433
+msgid "Choice #n"
+msgstr ""
+
+#: ../../ControlAutomation.rst:434
+msgid "Possible choices (checks) for the list (up to 5 choices)."
+msgstr ""
+
+#: ../../ControlAutomation.rst:435
+msgid "Exclusive"
+msgstr ""
+
+#: ../../ControlAutomation.rst:436
+msgid "Are the choices exclusive (select one will unselect others)."
+msgstr ""
+
+#: ../../ControlAutomation.rst:440
+msgid "Each line has a name, an order and up to 5 check choices."
+msgstr ""
+
+#: ../../ControlAutomation.rst:441
+msgid "A line with no check choice will be displayed as a **section title**."
+msgstr ""
+
+#: ../../ControlAutomation.rst:442
+msgid "Name and Choices have 2 fields :"
+msgstr ""
+
+#: ../../ControlAutomation.rst:444
+msgid "Displayed caption."
+msgstr ""
+
+#: ../../ControlAutomation.rst:445
+msgid "Help text that will be displayed as tooltip."
+msgstr ""
+
+#: ../../ControlAutomation.rst:447
+msgid "Checks can be exclusive (select one will unselect others) or not (multi selection is then possible)."
+msgstr ""
+
+#: ../../ControlAutomation.rst:463
+msgid "Receivers list"
+msgstr ""
+
+#: ../../ControlAutomation.rst:465
+msgid "Receivers can receive email and alert."
+msgstr ""
+
+#: ../../ControlAutomation.rst:467
+msgid "A description of receivers below."
+msgstr ""
+
+#: ../../ControlAutomation.rst:470
+msgid "Requestor"
+msgstr ""
+
+#: ../../ControlAutomation.rst:471
+msgid "The contact defined as :term:`requestor` on current item; sometimes appears as “contact” (on quotation and order, for instance) and sometimes have no meaning (for instance for milestone)."
+msgstr ""
+
+#: ../../ControlAutomation.rst:474
+msgid "Issuer"
+msgstr ""
+
+#: ../../ControlAutomation.rst:475
+msgid "The user defined as :term:`Issuer`."
+msgstr ""
+
+#: ../../ControlAutomation.rst:478
+msgid "Responsible"
+msgstr ""
+
+#: ../../ControlAutomation.rst:479
+msgid "The resource defined as :term:`responsible`."
+msgstr ""
+
+#: ../../ControlAutomation.rst:482
+msgid "Project team"
+msgstr ""
+
+#: ../../ControlAutomation.rst:483
+msgid "All resources allocated to the project."
+msgstr ""
+
+#: ../../ControlAutomation.rst:486
+msgid "Project leader"
+msgstr ""
+
+#: ../../ControlAutomation.rst:487
+msgid "The resource(s) allocated to the project with a “Project Leader” profile."
+msgstr ""
+
+#: ../../ControlAutomation.rst:490
+msgid "Project manager"
+msgstr ""
+
+#: ../../ControlAutomation.rst:491
+msgid "The resource defined as the manager on a project."
+msgstr ""
+
+#: ../../ControlAutomation.rst:494
+msgid "Assigned resource"
+msgstr ""
+
+#: ../../ControlAutomation.rst:495
+msgid "All resources assigned."
+msgstr ""
+
+#: ../../ControlAutomation.rst:498
+msgid "Other"
+msgstr ""
+
+#: ../../ControlAutomation.rst:499
+msgid "Provides an extra field to manually enter email addresses."
+msgstr ""
+
+#: ../../ControlAutomation.rst:500
+msgid "If “other” is checked, an input box is displayed to enter a static mail address list."
+msgstr ""
+
+#: ../../ControlAutomation.rst:501
+msgid "Several addresses can be entered, separated by semicolon."
+msgstr ""
+
+#: ../../ControlAutomation.rst:513
+msgid "KPI definitions"
+msgstr ""
+
+#: ../../ControlAutomation.rst:515
+msgid "A performance indicator or key performance indicator (KPI) is a type of performance measurement."
+msgstr ""
+
+#: ../../ControlAutomation.rst:517
+msgid "It is possible to define Kpi on incomings and deliverables items."
+msgstr ""
+
+#: ../../ControlAutomation.rst:530
+msgid "Unique Id for the KPI."
+msgstr ""
+
+#: ../../ControlAutomation.rst:532
+msgid "Name of the KPI."
+msgstr ""
+
+#: ../../ControlAutomation.rst:533
+msgid "Code"
+msgstr ""
+
+#: ../../ControlAutomation.rst:534
+msgid "code of the KPI."
+msgstr ""
+
+#: ../../ControlAutomation.rst:536
+msgid "Complete description of the KPI."
+msgstr ""
+
+#: ../../ControlAutomation.rst:537
+#: ../../ControlAutomation.rst:596
+msgid "Idle"
+msgstr ""
+
+#: ../../ControlAutomation.rst:538
+msgid "Statut of the KPI."
+msgstr ""
+
+#: ../../ControlAutomation.rst:542
+msgid "Description integrates the formula used to calculate the KPI."
+msgstr ""
+
+#: ../../ControlAutomation.rst:545
+msgid "Section: Tresholds"
+msgstr ""
+
+#: ../../ControlAutomation.rst:546
+msgid "It is possible to attributes tresholds lines to KPI."
+msgstr ""
+
+#: ../../ControlAutomation.rst:548
+#: ../../ControlAutomation.rst:603
+msgid "Click on |buttonAdd|  to create a new JobList line."
+msgstr ""
+
+#: ../../ControlAutomation.rst:549
+#: ../../ControlAutomation.rst:604
+msgid "Click on |buttonEdit| to update an existing JobList line."
+msgstr ""
+
+#: ../../ControlAutomation.rst:550
+#: ../../ControlAutomation.rst:605
+msgid "Click on |buttonIconDelete| to delete the corresponding JobList line."
+msgstr ""
+
+#: ../../ControlAutomation.rst:556
+msgid "Keep in mind KPI is an indicator of performance at project level (opposite to indicator which is calculated at item level)."
+msgstr ""
+
+#: ../../ControlAutomation.rst:557
+msgid "to display the indicator, use Kpi report. See: :ref:`report`"
+msgstr ""
+
+#: ../../ControlAutomation.rst:572
+msgid "JobList"
+msgstr ""
+
+#: ../../ControlAutomation.rst:574
+msgid "Management of the JobList can be used for each element but it usually used to detail an Activity or Ticket."
+msgstr ""
+
+#: ../../ControlAutomation.rst:576
+msgid "When a Joblist form exists for a given element, the Joblist is available for the element"
+msgstr ""
+
+#: ../../ControlAutomation.rst:578
+msgid "It is an indicator to follow the respect of dates values."
+msgstr ""
+
+#: ../../ControlAutomation.rst:591
+msgid "Unique Id for the KPI.."
+msgstr ""
+
+#: ../../ControlAutomation.rst:592
+msgid "IdChecklistable"
+msgstr ""
+
+#: ../../ControlAutomation.rst:593
+msgid "Unique Id for the Checklistable."
+msgstr ""
+
+#: ../../ControlAutomation.rst:594
+msgid "idType"
+msgstr ""
+
+#: ../../ControlAutomation.rst:595
+msgid "Type of the elements the joblist applies to."
+msgstr ""
+
+#: ../../ControlAutomation.rst:597
+msgid "idle."
+msgstr ""
+
+#: ../../ControlAutomation.rst:600
+msgid "Section: JobList lines"
+msgstr ""
+
+#: ../../ControlAutomation.rst:601
+msgid "A JobList is built from JobList lines."
+msgstr ""
+
+#: ../../ControlAutomation.rst:611
+msgid "Looking like CheckLists with no choice."
+msgstr ""
+
+#: ../../ControlAutomation.rst:618
+msgid "Notification system"
+msgstr ""
+
+#: ../../ControlAutomation.rst:620
+msgid "This system also allows you to generate notifications manually or according to some very \"powerful\" rules (defined as \"where\" clauses). We now have 2 systems for generating alerts or reminders :  indicators and notifications."
+msgstr ""
+
+#: ../../ControlAutomation.rst:623
+msgid "The concept of user notification has been incorporated into projeqtor. A notification has a title, a content, a remitter. If it is generated by the notification system (see following paragraph), it is linked to an element of the system (Action, Invoice,…)."
+msgstr ""
+
+#: ../../ControlAutomation.rst:625
+msgid "In order to automatically generate notifications based on certain field values of a system element, a notification system has been implemented. This notification system, whose purpose is to automatically generate notifications, is based on notification generation definitions."
+msgstr ""
+
+#: ../../ControlAutomation.rst:629
+msgid "Creation _________________"
+msgstr ""
+
+#: ../../ControlAutomation.rst:632
+msgid "The definition of notification generation is based on the following:"
+msgstr ""
+
+#: ../../ControlAutomation.rst:634
+msgid "The element of the system that determines the notification, called \"Notifiable Element\" (notifiable)"
+msgstr ""
+
+#: ../../ControlAutomation.rst:636
+msgid "The notification rule notifying the elements related to the generation of a notification"
+msgstr ""
+
+#: ../../ControlAutomation.rst:638
+msgid "The date (referred to as the reference date) at which the notification must be generated. This is one of the dates of the notifiable item that is not the creation date."
+msgstr ""
+
+#: ../../ControlAutomation.rst:640
+msgid "The generated notification receivers. Fields of the notifiable element or its sub-elements that refer to users."
+msgstr ""
+
+#: ../../ControlAutomation.rst:643
+msgid "The type of notification (Alert, Warning, Information)"
+msgstr ""
+
+#: ../../ControlAutomation.rst:645
+msgid "The title that can contain the field values of the notifiable element or its sub-elements"
+msgstr ""
+
+#: ../../ControlAutomation.rst:647
+msgid "The content may also contain the field values of the notifiable element or its sub-elements."
+msgstr ""
+
+#: ../../ControlAutomation.rst:649
+msgid "The choice to send, or not, to all the sending of emails at the same time as the notifications."
+msgstr ""
+
+#: ../../ControlAutomation.rst:652
+msgid "**\\* Definition of notifications**"
+msgstr ""
+
+#: ../../ControlAutomation.rst:665
+msgid ":term:`Name`"
+msgstr ""
+
+#: ../../ControlAutomation.rst:666
+msgid "appears on level 3 of the unread notification tree."
+msgstr ""
+
+#: ../../ControlAutomation.rst:667
+msgid "Notif. item"
+msgstr ""
+
+#: ../../ControlAutomation.rst:668
+msgid "Type of the element the list applies to ."
+msgstr ""
+
+#: ../../ControlAutomation.rst:670
+msgid "Type represents level 1 of the unread notification tree."
+msgstr ""
+
+#: ../../ControlAutomation.rst:674
+msgid "Section: Notification title"
+msgstr ""
+
+#: ../../ControlAutomation.rst:683
+msgid ":term:`Title`"
+msgstr ""
+
+#: ../../ControlAutomation.rst:684
+msgid "Can add dynamics fields."
+msgstr ""
+
+#: ../../ControlAutomation.rst:687
+msgid "This is the screen used to define the \"programmed\" parameters of the programming generation."
+msgstr ""
+
+#: ../../ControlAutomation.rst:689
+msgid "Section 'Description':"
+msgstr ""
+
+#: ../../ControlAutomation.rst:691
+msgid "◦ Closed: As everywhere in projeQtor."
+msgstr ""
+
+#: ../../ControlAutomation.rst:693
+msgid "Section \"Title of the notification\""
+msgstr ""
+
+#: ../../ControlAutomation.rst:695
+msgid "◦ Title: The title of the notification (the subject of the email is the option 'Send email' is selected). It can contain fields of the \"notifiable\" element and its linked elements through an idXXX (where XXX represents the name of the linked element). In this case, the syntax must be: # {the field name}. Example: # {billId} - Invoice not paid - Sent on # {sendDate} If the rule (see below) of the instruction on the invoice of 'billId' 2017-10-30-0001 whose sending date is 30-10-2017 then the title of the notification SERA: 2017-10-30-0001 - Invoice not paid - Submitted on 10-30-2017"
+msgstr ""
+
+#: ../../ControlAutomation.rst:701
+msgid "The following elements allow you to integrate dynamic fields: The comboBox 'Element' allows you to choose the selected notifiable element or one of its key linked elements. The comboxBox 'Field' allows you to choose the dynamic field of the element selected in 'Element'. The 'Insert' button allows you to insert where the cursor is in the title the dynamic field with the right synthax."
+msgstr ""
+
+#: ../../ControlAutomation.rst:706
+msgid "◦ Content: This is the content of the notification (to the email, if the 'Send Email' option is selected). In the same way as for the title, it can contain fields of the \"notifiable\" element and its elements leas by an idXXXX."
+msgstr ""
+
+#: ../../ControlAutomation.rst:709
+msgid "Rule to apply:"
+msgstr ""
+
+#: ../../ControlAutomation.rst:714
+msgid "This rule determines which instance of the item will generate a notification. The syntax is the one we take for a WHERE clause in an SQL statement. Example: Declares a notification for all invoices whose amount has been paid <total amount AND whose project name is 'ACME' # {paymentAmount} <# {fullAmount} AND # {idProject.name} = 'ACME' AND isnull (# {paymentDate)"
+msgstr ""
+
+#: ../../ControlAutomation.rst:725
+msgid "The rule to apply is not mandatory. If the rule is empty, then only the reference date is used to determine whether or not a notification is generated."
+msgstr ""
+
+#: ../../ControlAutomation.rst:726
+msgid "In addition to choosing a dynamic field, you can choose to use an operator or function with the following elements:"
+msgstr ""
+
+#: ../../ControlAutomation.rst:731
+msgid "Notification content : Mandatory"
+msgstr ""
+
+#: ../../ControlAutomation.rst:734
+msgid "Start as:"
+msgstr ""
+
+#: ../../ControlAutomation.rst:736
+msgid "Reference Date : This is the notification date of the creation of the notification."
+msgstr ""
+
+#: ../../ControlAutomation.rst:737
+msgid "Example: 'Due date' (paymentDueDate) is selected. For all invoices that are not the previous rule, a notification will be generated if the due date is greater than or equal to the current date."
+msgstr ""
+
+#: ../../ControlAutomation.rst:739
+msgid "Month: If checked, the generator (notification) applies to the year from the reference date to the reference day."
+msgstr ""
+
+#: ../../ControlAutomation.rst:741
+msgid "Fixed Day: If a day is chosen (not empty), the generator (if the rule applies)."
+msgstr ""
+
+#: ../../ControlAutomation.rst:743
+msgid "Year: If the year is checked, the generator is a notification every year to the month and the day of the reference date"
+msgstr ""
+
+#: ../../ControlAutomation.rst:745
+msgid "Fixed month: If a month is chosen, the generator (a rule) a notification each year to the fixed month and the day of the reference date"
+msgstr ""
+
+#: ../../ControlAutomation.rst:747
+msgid "Fixed day: If a day is chosen, the data generator (not apply) is notified each year to the year of the reference date on the day fixed."
+msgstr ""
+
+#: ../../ControlAutomation.rst:751
+msgid "If Year Checked, month and day corrects, then it is a birthday. The statement generator a notification every year to come in the month and on the set day. The reference date is no longer used for anything in this case."
+msgstr ""
+
+#: ../../ControlAutomation.rst:753
+msgid "Notify before: This is a number of days before the notification date for which the notification is to be generated"
+msgstr ""
+
+#: ../../ControlAutomation.rst:755
+msgid "Send to: These are the types of people who are notified."
+msgstr ""
+
+#: ../../ControlAutomation.rst:756
+msgid "The syntax is as follows: One of the words in the \"Help - Authorized Recipients\" section separated by a '; The following items allow you to choose the type of remitter."
+msgstr ""
+
+#: ../../ControlAutomation.rst:762
+msgid "Sent e-mail: If checked, an e-mail will be generated even if the notification for each type of person has been defined."
+msgstr ""
+
+#: ../../ControlAutomation.rst:765
+msgid "Miscellaneous ____________________"
+msgstr ""
+
+#: ../../ControlAutomation.rst:767
+msgid "The parameterization"
+msgstr ""
+
+#: ../../ControlAutomation.rst:769
+msgid "There are 2 global settings for the notification system:"
+msgstr ""
+
+#: ../../ControlAutomation.rst:771
+msgid "notificationSystemActiv"
+msgstr ""
+
+#: ../../ControlAutomation.rst:772
+msgid "If YES, the notification system is implemented."
+msgstr ""
+
+#: ../../ControlAutomation.rst:774
+msgid "CronCheckNotifications"
+msgstr ""
+
+#: ../../ControlAutomation.rst:775
+msgid "Gives in seconds, the time interval between two generations of notification (and the Cron system is active) and between two the refresh of notifications on the HMI."
+msgstr ""
+
+#: ../../ControlAutomation.rst:778
+msgid "Generation of notifications"
+msgstr ""
+
+#: ../../ControlAutomation.rst:780
+msgid "Made by the CRON every hour Made at each change (creation, modification, deletion) of rule definition Not done on changes of other classes"
+msgstr ""
+
+#: ../../ControlAutomation.rst:785
+msgid "The authorizations"
+msgstr ""
+
+#: ../../ControlAutomation.rst:787
+msgid "The access rights for the 'Notification' menu were given to the 'standard' projeqtor profiles (idProfile = 1 to 7). The access rights for the 'Notification Definition' menu have been given for the administrator profile (idProfile = 1)."
+msgstr ""
+
+#: ../../ControlAutomation.rst:790
+msgid "Access Rights"
+msgstr ""
+
+#: ../../ControlAutomation.rst:792
+msgid "For notifications, rights:"
+msgstr ""
+
+#: ../../ControlAutomation.rst:794
+msgid "'full' were given to the administrator profile."
+msgstr ""
+
+#: ../../ControlAutomation.rst:796
+msgid "'modifiers'"
+msgstr ""
+
+#: ../../ControlAutomation.rst:798
+msgid "For the definition of the notification rules (notificationDefinition), the rights:"
+msgstr ""
+
+#: ../../ControlAutomation.rst:800
+msgid "\"update\" was given to the administrator profile."
+msgstr ""
+
+#: ../../ControlAutomation.rst:802
+msgid "'read only' for other profiles"
+msgstr ""
+
+#: ../../ControlAutomation.rst:805
+msgid "The IHMs ____________________"
+msgstr ""
+
+#: ../../ControlAutomation.rst:808
+msgid "After logging in, a message generated after \"Login accepted\" that tells you that you have unread notifications:"
+msgstr ""
+
+#: ../../ControlAutomation.rst:816
+msgid "Display of unread notifications It is done at 2 levels on the main screen:"
+msgstr ""
+
+#: ../../ControlAutomation.rst:819
+msgid "Bottom right A notification icon appears as soon as a notification is not intended for the user."
+msgstr ""
+
+#: ../../ControlAutomation.rst:822
+msgid "Clicking on the icon gives direct access to the notifications screen."
+msgstr ""
+
+#: ../../ControlAutomation.rst:824
+msgid "Below the menus"
+msgstr ""
+
+#: ../../ControlAutomation.rst:828
+msgid "A tree whose title indicates the number of unread notifications intended for the user."
+msgstr ""
+
+#: ../../ControlAutomation.rst:830
+msgid "This tree has the following levels:"
+msgstr ""
+
+#: ../../ControlAutomation.rst:832
+msgid "Level 1: The types of notifications"
+msgstr ""
+
+#: ../../ControlAutomation.rst:834
+msgid "Level 2: The trigger for notifications"
+msgstr ""
+
+#: ../../ControlAutomation.rst:836
+msgid "Level 3: The Notification Definition to Product Notifications"
+msgstr ""
+
+#: ../../ControlAutomation.rst:838
+msgid "Level 4: The id of the element that generated the notification. The icon allows direct access to the item."
+msgstr ""
+
+#: ../../ControlAutomation.rst:840
+msgid "The icon allows you to refresh notifications without waiting for the scheduled update. The icon provides direct access to the notifications screen."
+msgstr ""
+

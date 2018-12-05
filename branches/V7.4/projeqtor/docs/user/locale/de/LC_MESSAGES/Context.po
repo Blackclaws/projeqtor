@@ -1,0 +1,121 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2018, ProjeQtOr
+# This file is distributed under the same license as the ProjeQtOr Bedienhandbuch Deutsch package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: ProjeQtOr Bedienhandbuch Deutsch 7.2\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2018-07-03 14:34+0200\n"
+"PO-Revision-Date: 2018-07-19 14:38+0200\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 2.0.8\n"
+"Last-Translator: \n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"Language: de\n"
+
+#: ../../Context.rst:14
+msgid "Contexts"
+msgstr "Kontexte"
+
+#: ../../Context.rst:16
+msgid ""
+"The contexts defines a list of elements selectable to define ticket context "
+"and test case environment."
+msgstr ""
+"Der Kontext definiert eine Liste von Elementen, die zur Definition des "
+"Ticketkontextes und der Testfallumgebung ausgewählt werden können."
+
+#: ../../Context.rst:18
+msgid ""
+"Contexts are initially set to be able to define contexts for IT Projects, "
+"for three context types :"
+msgstr ""
+"Kontexte sind zunächst so eingestellt, dass sie Kontexte für IT-Projekte "
+"definieren können, und zwar für drei Kontexttypen:"
+
+#: ../../Context.rst:20
+msgid "Environment"
+msgstr "Umgebung"
+
+#: ../../Context.rst:22
+msgid "Operating System"
+msgstr "Betriebssystem"
+
+#: ../../Context.rst:24
+msgid "Browser"
+msgstr "Browser"
+
+#: ../../Context.rst:26
+msgid "They can be changed to be adapted to any kind of project."
+msgstr "Sie können für jede Art von Projekt angepasst werden."
+
+#: ../../Context.rst:29
+msgid "Section: Description"
+msgstr "Abschnitt: Beschreibung"
+
+#: ../../Context.rst:36
+msgid "Field"
+msgstr "Feld"
+
+#: ../../Context.rst:37
+msgid "Description"
+msgstr "Beschreibung"
+
+#: ../../Context.rst:38
+msgid ":term:`Id`"
+msgstr ":term:`Id`"
+
+#: ../../Context.rst:39
+msgid "Unique Id for the context."
+msgstr "Eindeutige Id für den Kontext."
+
+#: ../../Context.rst:40
+msgid "Context type"
+msgstr "Kontexttyp"
+
+#: ../../Context.rst:41
+msgid "One of the three context type."
+msgstr "Eines der drei Kontexttypen."
+
+#: ../../Context.rst:42
+msgid "**Name**"
+msgstr "**Name**"
+
+#: ../../Context.rst:43
+msgid "Name of the context."
+msgstr "Name des Kontexts."
+
+#: ../../Context.rst:44
+msgid "Sort order"
+msgstr "Sortierreihenfolge"
+
+#: ../../Context.rst:45
+msgid "Number to define the order of display in lists"
+msgstr "Nummer zur Festlegung der Reihenfolge der Anzeige in Listen"
+
+#: ../../Context.rst:46
+msgid ":term:`Closed`"
+msgstr ":term:`Geschlossen`"
+
+#: ../../Context.rst:47
+msgid "Flag to indicate that the context is archived."
+msgstr "Kennzeichen, das angibt, dass der Kontext archiviert wird."
+
+#: ../../Context.rst:49
+msgid "**\\* Required field**"
+msgstr "**\\* Pflichtfeld**"
+
+#: ../../Context.rst:53
+msgid "The list is fixed."
+msgstr "Die Liste ist festgelegt."
+
+#: ../../Context.rst:54
+msgid "Captions are translated and so can be changed in language file."
+msgstr ""
+"Bildunterschriften werden übersetzt und können so in einer Sprachdatei "
+"geändert werden."
