@@ -85,7 +85,7 @@ class Attachment extends SqlElement {
       $id = $this->refId;
       $obj = new $class( $id );
   
-      if ($obj and $obj->id and property_exists ( $class, 'lastUpdateDateTime' )) {
+      if ($obj and $obj->id and property_exists ( $class, 'lastUpdateDateTime' ) and !SqlElement::$_doNotSaveLastUpdateDateTime) {
         $obj->lastUpdateDateTime = date ( "Y-m-d H:i:s" );
         $resObj=$obj->saveForced();
       }
@@ -116,7 +116,7 @@ class Attachment extends SqlElement {
       $class = $this->refType;
       $id = $this->refId;
       $obj = new $class( $id );
-      if ($obj and $obj->id and property_exists ( $class, 'lastUpdateDateTime' ) ) {
+      if ($obj and $obj->id and property_exists( $class, 'lastUpdateDateTime' ) and !SqlElement::$_doNotSaveLastUpdateDateTime) { 
         $obj->lastUpdateDateTime = date ( "Y-m-d H:i:s" );
         $resObj=$obj->saveForced();
       }

@@ -134,8 +134,9 @@ if (RequestHandler::isCodeSet('destinationWidth')) {
                            type="text" maxlength="10"
                            style="width:100px; text-align: center;" class="input roundedLeft"
                            hasDownArrow="true"
-                           value="<?php echo $startDate;?>" >
+                           value="<?php if(sessionValueExists('startDatePlanView')){ echo getSessionValue('startDatePlanView'); }else{ echo $startDate; }?>" >
                            <script type="dojo/method" event="onChange" >
+                            saveDataToSession('startDatePlanView',formatDate(dijit.byId('startDatePlanView').get("value")), false);
                             refreshJsonPlanning();
                            </script>
                          </div>
@@ -153,8 +154,9 @@ if (RequestHandler::isCodeSet('destinationWidth')) {
                            type="text" maxlength="10"
                            style="width:100px; text-align: center;" class="input roundedLeft"
                            hasDownArrow="true"
-                           value="<?php echo $endDate;?>" >
+                           value="<?php if(sessionValueExists('endDatePlanView')){ echo getSessionValue('endDatePlanView'); }else{ echo $endDate; } ?>" >
                            <script type="dojo/method" event="onChange" >
+                            saveDataToSession('endDatePlanView',formatDate(dijit.byId('endDatePlanView').get("value")), false);
                             refreshJsonPlanning();
                            </script>
                         </div>
@@ -249,10 +251,11 @@ if (RequestHandler::isCodeSet('destinationWidth')) {
                       <td>
                       <select dojoType="dijit.form.FilteringSelect" class="input roundedLeft" 
                         style="width: <?php echo ($displayWidthPlan>1030)?150:100;?>px;"
-                        name="selectResourceName" id="selectResourceName"
-                        <?php echo autoOpenFilteringSelect();?>
-                        >
+                        name="selectResourceName" id="selectResourceName" value="<?php if(sessionValueExists('selectResourceName')){ echo getSessionValue('selectResourceName'); }?>"
+                        <?php echo autoOpenFilteringSelect();?>  
+                      >
                         <script type="dojo/method" event="onChange" >
+                           saveDataToSession('selectResourceName', dijit.byId('selectResourceName').get("value"), false);
                            refreshJsonPlanning();
                         </script>
                          <option value=""></option>
@@ -260,6 +263,7 @@ if (RequestHandler::isCodeSet('destinationWidth')) {
                          $specific='imputation';
                          $includePool=true;
                          $specificDoNotInitialize=true;
+                         
                          include '../tool/drawResourceListForSpecificAccess.php';?>  
                       </select>
                       </td>
@@ -269,10 +273,11 @@ if (RequestHandler::isCodeSet('destinationWidth')) {
                       <td>
                       <select dojoType="dijit.form.FilteringSelect" class="input roundedLeft" 
                         style="width:  <?php echo ($displayWidthPlan>1030)?150:100;?>px;"
-                        name="teamName" id="teamName"
+                        name="teamName" id="teamName" value="<?php if(sessionValueExists('teamName')){ echo getSessionValue('teamName'); }?>"
                         <?php echo autoOpenFilteringSelect();?>
                         >
-                        <script type="dojo/method" event="onChange" >                           
+                        <script type="dojo/method" event="onChange" > 
+                           saveDataToSession('teamName', dijit.byId('teamName').get("value"), false);                          
                            refreshJsonPlanning();
                         </script>
                         <?php 

@@ -267,7 +267,83 @@ class ActivityMain extends SqlElement {
     }
     return $result;
   }
+  public function startDateActivity($parentVersion = null){
+    
+    $pe=new planningElement();
+    $where = "refType ='Activity' and refId = $this->id";
+    
+    $pe = $pe->getSqlElementsFromCriteria(null,null,$where);
+    if ($pe[0]->realStartDate) {
+      $startDate = $pe[0]->realStartDate;
+    }
+    elseif ($pe[0]->plannedStartDate) {
+      $startDate = $pe[0]->plannedStartDate;
+    }
+    elseif ($pe[0]->initialStartDate) {
+      $startDate = $pe[0]->initialStartDate;
+    }
+    else{
+      $startDate = null;
+    }
+    
+    if ($parentVersion != NULL and empty($startDate)) {
+      if ($parentVersion->realStartDate) {
+        $startDate = $parentVersion->realStartDate;
+      }
+      elseif ($parentVersion->plannedStartDate) {
+        $startDate = $parentVersion->plannedStartDate;
+      }
+      elseif ($parentVersion->initialStartDate) {
+        $startDate = $parentVersion->initialStartDate;
+      }
+      else {
+        $startDate = $parentVersion->myStartDate;
+      }
+      $this->ownDate = false;
+    }
+    
+    return $startDate;
+  }
   
+  public function endDateActivity($parentVersion = null){
+    
+    $pe=new planningElement();
+    $where = "refType ='Activity' and refId = $this->id";
+    
+    $pe = $pe->getSqlElementsFromCriteria(null,null,$where);
+    
+    if ($pe[0]->realEndDate) {
+      $endDate = $pe[0]->realEndDate;
+    }
+    elseif ($pe[0]->plannedEndDate) {
+      $endDate = $pe[0]->plannedEndDate;
+    }
+    elseif ($pe[0]->initialEndDate) {
+      $endDate = $pe[0]->initialEndDate;
+    }
+    else{
+      $endDate = null;
+    }
+    
+    if ($parentVersion != NULL and empty($endDate)) {
+      if ($parentVersion->realDeliveryDate) {
+        $endDate= $parentVersion->realDeliveryDate;
+      }
+      elseif ($parentVersion->plannedDeliveryDate) {
+        $endDate= $parentVersion->plannedDeliveryDate;
+      }
+      elseif ($parentVersion->initialDeliveryDate) {
+        $endDate= $parentVersion->initialDeliveryDate;
+      }
+      else {
+        $endDate= $parentVersion->myEndDate;
+      }
+      $this->ownDate = false;
+    }
+    
+    
+    return $endDate;
+  }
   /**
    * =========================================================================
    * Overrides SqlElement::save() function to add specific treatments
@@ -284,7 +360,6 @@ class ActivityMain extends SqlElement {
    * @return the return message of persistence/SqlElement#save() method
    */
   public function save() {
-    debugLog("save for Activity #$this->id");
     $oldResource = null;
     $oldIdle = null;
     $oldIdProject = null;
@@ -368,8 +443,7 @@ class ActivityMain extends SqlElement {
       foreach ( $assList as $ass ) {
         $ass->idle = $this->idle;
         $ass->idProject = $this->idProject;
-        $ass->save ();
-        
+        $resAssSave=$ass->save();
         // Change idProject value => update idProject for work
         // update not done to PlannedWork : new planning must be calculated
         if ($this->idProject != $oldIdProject) {

@@ -51,7 +51,31 @@
     $showIdle=(isset($_REQUEST['showIdle']))?true:false;
     $showDone=(isset($_REQUEST['showDone']))?true:false;
   }
-
+  
+  if(sessionValueExists('diaryResource')) {
+    $idRessource = getSessionValue('diaryResource');
+  }
+  if(sessionValueExists('showIdleDiary')) {
+    if(getSessionValue('showIdleDiary')=='on'){
+      $showIdle = true;
+    }else{
+      $showIdle = false;
+    }
+  }
+  if(sessionValueExists('showDoneDiary')) {
+    if(getSessionValue('showDoneDiary')=='on'){
+      $showDone = true;
+    }else{
+      $showDone = false;
+    }
+  }
+  if(sessionValueExists('dateSelectorDiary')) {
+    $day = getSessionValue('dateSelectorDiary');
+    $year= date('Y',strtotime($day));
+    $month= date('m',strtotime($day));
+    $week= date('W',strtotime($day));
+  }
+  
   $ress=new Resource($idRessource);
   $calendar=$ress->idCalendarDefinition;
   $weekDaysCaption=array(

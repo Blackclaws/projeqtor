@@ -58,6 +58,8 @@ var pluginMenuPage = new Array();
 
 var previousSelectedProject=null;
 var previousSelectedProjectName=null;
+
+var mustApplyFilter=false;
 // =============================================================================
 // = Functions
 // =============================================================================
@@ -101,22 +103,26 @@ function refreshJsonList(className, keepUrl) {
       }
     }
     if (dojo.byId('listShowIdle')) {
+      saveDataToSession('listShowIdle'+className, dijit.byId('listShowIdle').get("value"), false);
       if (dojo.byId('listShowIdle').checked) {
         url = url + "&idle=true";
       }
     }
     if (dijit.byId('listTypeFilter')) {
+      saveDataToSession('listTypeFilter'+className, dijit.byId('listTypeFilter').get("value"), false);
       if (dijit.byId('listTypeFilter').get("value") != '') {
         url = url + "&objectType=" + dijit.byId('listTypeFilter').get("value");
       }
     }
     if (dijit.byId('listClientFilter')) {
+      saveDataToSession('listClientFilter'+className, dijit.byId('listClientFilter').get("value"), false);
       if (dijit.byId('listClientFilter').get("value") != '') {
         url = url + "&objectClient="
             + dijit.byId('listClientFilter').get("value");
       }
     }
     if (dijit.byId('listElementableFilter')) {
+      saveDataToSession('listElementableFilter'+className, dijit.byId('listElementableFilter').get("value"), false);
       if (dijit.byId('listElementableFilter').get("value") != '') {
         url = url + "&objectElementable="
             + dijit.byId('listElementableFilter').get("value");
@@ -126,6 +132,7 @@ function refreshJsonList(className, keepUrl) {
     if (dojo.byId('countStatus')) {
       var filteringByStatus = false;
       for (var i = 1; i <= dojo.byId('countStatus').value; i++) {
+        saveDataToSession('showStatus'+dijit.byId('showStatus' + i).value+className, dijit.byId('showStatus'+i).checked, false);
         if (dijit.byId('showStatus' + i).checked) {
           url = url + "&objectStatus" + i + "=" + dijit.byId('showStatus' + i).value;
           filteringByStatus = true;
@@ -154,8 +161,7 @@ function refreshJsonList(className, keepUrl) {
     }
     store = grid.store;
     store.close();
-    store
-        .fetch({
+    store.fetch({
           onComplete : function() {
             grid._refresh();
             hideBigImage(); // Will avoid resident pop-up always displayed
@@ -167,7 +173,7 @@ function refreshJsonList(className, keepUrl) {
             setTimeout('selectRowById("objectGrid", '
                 + parseInt(objectId.value) + ');', 30);
             setTimeout('hideWait();', 40);
-            filterJsonList();
+            filterJsonList(className);
           }
         });
   }
@@ -263,7 +269,7 @@ function refreshJsonPlanning() {
  * 
  * @return void
  */
-function filterJsonList() {
+function filterJsonList(myObjectClass) {
   var filterId = dojo.byId('listIdFilter');
   var filterName = dojo.byId('listNameFilter');
   var grid = dijit.byId("objectGrid");
@@ -272,11 +278,13 @@ function filterJsonList() {
     unselectAllRows("objectGrid");
     filter.id = '*'; // delfault
     if (filterId) {
+      saveDataToSession('listIdFilter'+myObjectClass, dojo.byId('listIdFilter').value, false);
       if (filterId.value && filterId.value != '') {
         filter.id = '*' + filterId.value + '*';
       }
     }
     if (filterName) {
+      saveDataToSession('listNameFilter'+myObjectClass, dojo.byId('listNameFilter').value, false);
       if (filterName.value && filterName.value != '') {
         filter.name = '*' + filterName.value + '*';
       }
@@ -628,10 +636,8 @@ function storeLoadContentStack(page, destination, formName, isResultMessage, val
 }
 function cleanLoadContentStack(page, destination, formName, isResultMessage, validationType, directAccess, silent, callBackFunction, noFading) {
   var callKey=getLoadContentStackKey(page, destination, formName, isResultMessage, validationType, directAccess, silent, callBackFunction, noFading);
-//  console.log("cleanLoadContentStack("+callKey+")");
   if (loadContentStack[callKey]!==undefined) {
     //loadContentStack.splice(callKey,1);
-//    console.log("  => OK, delete");
     delete loadContentStack[callKey];
   }
   if (loadContentCallSequential==true) {
@@ -659,13 +665,14 @@ function warnLoadContentError(page, destination, formName, isResultMessage, vali
   console.warn("  => noFading='"+noFading+"'");
 }
 function loadContent(page, destination, formName, isResultMessage, validationType, directAccess, silent, callBackFunction, noFading) {
+  if (formName && formName!=undefined && formName.id) formName=formName.id;
+  if (!dojo.byId(formName)) formName=null;
   var debugStart = (new Date()).getTime();
   // Test validity of destination : must be a node and a widget
   var contentNode = dojo.byId(destination);
   var contentWidget = dijit.byId(destination);
   var fadingMode = top.fadeLoading;
   var callKey=getLoadContentStackKey(page, destination, formName, isResultMessage, validationType, directAccess, silent, callBackFunction, noFading);
-//  console.log("loadContentStack("+callKey+")");
   //if (loadContentRetryArray[callKey]===undefined) {
   //  loadContentRetryArray[callKey]=1;
   //} else {
@@ -680,7 +687,6 @@ function loadContent(page, destination, formName, isResultMessage, validationTyp
   } else {
     // already calling same request for same target with same parameters.
     // avoid double call
-//    console.log(" => loadContentStack["+callKey+"] already exists : exit");
     return;
   }
   
@@ -850,6 +856,9 @@ function loadContent(page, destination, formName, isResultMessage, validationTyp
           }
           if (destination == "centerDiv" && switchedMode && !directAccess) {
             showList();
+          }
+          if (destination == "centerDiv" && dijit.byId('objectGrid')) {
+            mustApplyFilter=true;
           }
           if (destination == "dialogLinkList") {
             selectLinkItem();
@@ -1031,6 +1040,8 @@ function loadContent(page, destination, formName, isResultMessage, validationTyp
  */
 
 function loadDiv(page, destinationDiv, formName, callback) {
+  if (formName && formName!=undefined && formName.id) formName=formName.id;
+  if (!dojo.byId(formName)) formName=null;
   var contentNode = dojo.byId(destinationDiv);
   if (page.indexOf('getObjectCreationInfo')>=0 && dijit.byId('detailDiv') && page.indexOf('destinationWidth')<0) {
     var destinationWidth = dojo.style(dojo.byId('detailDiv'), "width");
@@ -1041,7 +1052,7 @@ function loadDiv(page, destinationDiv, formName, callback) {
     url : page,
     form : formName,
     handleAs : "text",
-    load : function(data, args) {
+    load : function(data) {
       contentNode.innerHTML = data;
       if (callback)
         setTimeout(callback, 10);
@@ -3620,6 +3631,45 @@ function updateCommandTotal() {
 
   cancelRecursiveChange_OnGoingChange = false;
 }
+
+function updateCommandTotalTTC() {
+  if (cancelRecursiveChange_OnGoingChange)
+    return;
+  cancelRecursiveChange_OnGoingChange = true;
+  // Retrieve values used for calculation
+  var fullAmount = dijit.byId("fullAmount").get("value");
+  if (!fullAmount)
+    fullAmount = 0;
+  var taxPct = dijit.byId("taxPct").get("value");
+  if (!taxPct)
+    taxPct = 0;
+  var addFullAmount = dijit.byId("addFullAmount").get("value");
+  if (!addFullAmount)
+    addFullAmount = 0;
+  var initialWork = dijit.byId("initialWork").get("value");
+  var addWork = dijit.byId("addWork").get("value");
+  // Calculated values
+  var untaxedAmount = Math.round( fullAmount / ( 1 + ( taxPct / 100 )));
+  var taxAmount = fullAmount - untaxedAmount;
+  var addUntaxedAmount = Math.round( addFullAmount / ( 1 + ( taxPct / 100 )));
+  var addTaxAmount =  addFullAmount - addUntaxedAmount;
+  var totalUntaxedAmount = untaxedAmount + addUntaxedAmount;
+  var totalTaxAmount = taxAmount + addTaxAmount;
+  var totalFullAmount = fullAmount + addFullAmount;
+  var validatedWork = initialWork + addWork;
+  // Set values to fields
+  dijit.byId("taxAmount").set('value', taxAmount);
+  dijit.byId("untaxedAmount").set('value', untaxedAmount);
+  dijit.byId("addTaxAmount").set('value', addTaxAmount);
+  dijit.byId("addUntaxedAmount").set('value', addUntaxedAmount);
+  dijit.byId("totalUntaxedAmount").set('value', totalUntaxedAmount);
+  dijit.byId("totalTaxAmount").set('value', totalTaxAmount);
+  dijit.byId("totalFullAmount").set('value', totalFullAmount);
+  dijit.byId("validatedWork").set('value', validatedWork);
+
+  cancelRecursiveChange_OnGoingChange = false;
+}
+
 //gautier
 function providerPaymentIdProviderBill() {
   var idBill=dijit.byId("idProviderBill").get("value");
@@ -3650,48 +3700,85 @@ function providerPaymentIdProviderTerm() {
   });
 }
 
-function updateFinancialTotal() {
-  if (cancelRecursiveChange_OnGoingChange)
+function updateFinancialTotal(mode, col) {
+  if (cancelRecursiveChange_OnGoingChange){
     return;
+  }
   cancelRecursiveChange_OnGoingChange = true;
-  // Retrieve values used for calculation
-  var untaxedAmount = dijit.byId("untaxedAmount").get("value");
-  if (!untaxedAmount)
-    untaxedAmount = 0;
-  var taxPct = dijit.byId("taxPct").get("value");
-  if (!taxPct)
-    taxPct = 0;
-  var discount=dijit.byId("discountAmount").get("value");
-  var rate=dijit.byId("discountRate").get("value");
-  if (!isNaN(discount)) {
-    var rateNew=Math.round(10000*discount/untaxedAmount)/100;
-    if (!isNaN(rate)) {
-      if(Math.round(rate*100)!= Math.round(rateNew*100)){
-        dijit.byId("discountRate").set("value",rateNew);
+  if(mode == 'HT'){
+    // Retrieve values used for calculation
+    var untaxedAmount = dijit.byId("untaxedAmount").get("value");
+    var fullAmount = dijit.byId("fullAmount").get("value");
+    if (!untaxedAmount) untaxedAmount = 0;
+    var taxPct = dijit.byId("taxPct").get("value");
+    if (!taxPct) taxPct = 0;
+    var discount=dijit.byId("discountAmount").get("value");
+    var discountRate=dijit.byId("discountRate").get("value");
+    if (!isNaN(discount) && (!dijit.byId('discountFrom') || dijit.byId('discountFrom').get('value')=='amount') ) {
+      if (col!='discountRate') {
+        discountRate=Math.round(10000*discount/untaxedAmount)/100;
+        dijit.byId("discountRate").set("value",discountRate);
       }
-    }else{
-      dijit.byId("discountRate").set("value",rateNew);
+    } else if (!isNaN(discountRate) ) {
+      if (col!='discountAmount') {
+        discount=Math.round(discountRate*untaxedAmount)/100;
+        dijit.byId("discountAmount").set("value",discount);
+      }
     }
+    if (!discount) discount=0;
+    // Calculated values
+    var taxAmount = Math.round(untaxedAmount * taxPct) / 100;
+    var fullAmount = taxAmount + untaxedAmount;
+    var totalUntaxedAmount = untaxedAmount - discount;
+    var totalTaxAmount = Math.round(totalUntaxedAmount * taxPct) / 100;
+    var totalFullAmount = totalUntaxedAmount + totalTaxAmount;
+    var discountFull= fullAmount-totalFullAmount;
+    // Set values to fields
+    dijit.byId("taxAmount").set('value', taxAmount);
+    dijit.byId("fullAmount").set('value', fullAmount);
+    dijit.byId("totalUntaxedAmount").set('value', totalUntaxedAmount);
+    dijit.byId("totalTaxAmount").set('value', totalTaxAmount);
+    dijit.byId("totalFullAmount").set('value', totalFullAmount);
+    dijit.byId("discountFullAmount").set("value",discountFull);
+  }else{ // TTC
+    var fullAmount = dijit.byId("fullAmount").get("value");
+    var untaxedAmount = dijit.byId("untaxedAmount").get("value");
+    if (!fullAmount) fullAmount = 0;
+    var taxPct = dijit.byId("taxPct").get("value");
+    if (!taxPct) taxPct = 0;
+    var discountFull=dijit.byId("discountFullAmount").get("value");
+    var discountRate=dijit.byId("discountRate").get("value");
+    if (!isNaN(discountFull) && (!dijit.byId('discountFrom') || dijit.byId('discountFrom').get('value')=='amount') ) {  
+      if (col!='discountRate') {
+        discountRate=Math.round(10000*discountFull/fullAmount)/100;
+        dijit.byId("discountRate").set("value",discountRate);
+      }
+    } else if (!isNaN(discountRate) ) {
+      if (col!='discountFullAmount') {
+        discountFull=Math.round(discountRate*fullAmount)/100;
+        dijit.byId("discountFullAmount").set("value",discountFull);
+      }
+    }
+    if (!discountFull) discountFull=0;
+    // Calculated values
+    var untaxedAmount =  Math.round(fullAmount / ( 1 + ( taxPct / 100 ))*100)/100;
+    var taxAmount = fullAmount - untaxedAmount;
+    var totalFullAmount = fullAmount - discountFull;
+    var totalUntaxedAmount = Math.round(totalFullAmount / ( 1 + ( taxPct / 100 ))*100)/100;
+    var totalTaxAmount = totalFullAmount - totalUntaxedAmount;
+    var discount= untaxedAmount-totalUntaxedAmount;
+    // Set values to fields
+    dijit.byId("taxAmount").set('value', taxAmount);
+    dijit.byId("untaxedAmount").set('value', untaxedAmount);
+    dijit.byId("totalUntaxedAmount").set('value', totalUntaxedAmount);
+    dijit.byId("totalTaxAmount").set('value', totalTaxAmount);
+    dijit.byId("totalFullAmount").set('value', totalFullAmount);
+    dijit.byId("discountAmount").set("value",discount);
   }
-  if (!discount){
-    discount=0;
-  }
-  // Calculated values
-  var taxAmount = Math.round(untaxedAmount * taxPct) / 100;
-  var fullAmount = taxAmount + untaxedAmount;
-  var totalUntaxedAmount = untaxedAmount - discount;
-  var totalTaxAmount = Math.round(totalUntaxedAmount * taxPct) / 100;
-  var totalFullAmount = totalUntaxedAmount + totalTaxAmount;
-  // Set values to fields
-  dijit.byId("taxAmount").set('value', taxAmount);
-  dijit.byId("fullAmount").set('value', fullAmount);
-  dijit.byId("totalUntaxedAmount").set('value', totalUntaxedAmount);
-  dijit.byId("totalTaxAmount").set('value', totalTaxAmount);
-  dijit.byId("totalFullAmount").set('value', totalFullAmount);
-  setTimeout("cancelRecursiveChange_OnGoingChange = false;",50);
+  setTimeout("cancelRecursiveChange_OnGoingChange = false;",5);
 }
 //end
-function updateBillTotal() { // Also used for Qutation !!!
+function updateBillTotal() { // Also used for Quotation !!!
   if (cancelRecursiveChange_OnGoingChange)
     return;
   cancelRecursiveChange_OnGoingChange = true;
@@ -3708,6 +3795,28 @@ function updateBillTotal() { // Also used for Qutation !!!
   // Set values to fields
   dijit.byId("taxAmount").set('value', taxAmount);
   dijit.byId("fullAmount").set('value', fullAmount);
+  cancelRecursiveChange_OnGoingChange = false;
+}
+
+function updateBillTotalTTC() { // Also used for Quotation !!!
+  if (cancelRecursiveChange_OnGoingChange)
+    return;
+  cancelRecursiveChange_OnGoingChange = true;
+  // Retrieve values used for calculation
+  var fullAmount = dijit.byId("fullAmount").get("value");
+  if (!fullAmount)
+    fullAmount = 0;
+  var taxPct = dijit.byId("taxPct").get("value");
+  if (!taxPct)
+    taxPct = 0;
+  // Calculated values
+  var untaxedAmount = Math.round( fullAmount / ( 1 + ( taxPct / 100 )));
+  var taxAmount = fullAmount - untaxedAmount;
+  
+  // Set values to fields
+  dijit.byId("taxAmount").set('value', taxAmount);
+  dijit.byId("untaxedAmount").set('value', untaxedAmount);
+  
   cancelRecursiveChange_OnGoingChange = false;
 }
 
@@ -3787,7 +3896,7 @@ function connect(resetPassword) {
     urlCompl = '?resetPassword=true';
   }
   if (!dojo.byId('isLoginPage')) {
-    urlCompl = ((urlCompl == "") ? '?' : '&') + 'isLoginPage=true'; // Patch
+    urlCompl += ((urlCompl == "") ? '?' : '&') + 'isLoginPage=true'; // Patch
                                                                     // (try) for
                                                                     // looping
                                                                     // connections
@@ -3828,7 +3937,7 @@ function addNewItem(item) {
   if (switchedMode) {
     setTimeout("hideList(null,true);", 1);
   }
-  loadContent("objectDetail.php", "detailDiv", dojo.byId('listForm'));
+  loadContent("objectDetail.php", "detailDiv", 'listForm');
   dijit.byId('planningNewItem').closeDropDown();
 }
 

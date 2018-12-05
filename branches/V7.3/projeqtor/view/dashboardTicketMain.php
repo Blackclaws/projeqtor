@@ -142,6 +142,7 @@
 <input type="hidden" name="objectClassManual" id="objectClassManual" value="DashboardTicket" />
 	<div dojo-type="dijit.layout.ContentPane" id="parameterButtonDiv"
 		class="listTitle" style="z-index: 9999; overflow: visible" region="top">
+		<form dojoType="dijit.form.Form" id="dashboardTicketMainForm" action="" method="post" >
 <?php /* CHANGE qCazelles - Dashboard : filter by type - Ticket 154
     Old
 		<div id="resultDiv" region="top"
@@ -226,6 +227,7 @@
     		</tr>
     	</table>
     </div>
+    </form>
   </div>
   <?php //END - ADD qCazelles - Dashboard : filter by type - Ticket 154 ?>
 	<div dojo-type="dijit.layout.ContentPane" region="center" style="height:100%;overflow:auto;">

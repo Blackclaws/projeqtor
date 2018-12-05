@@ -315,8 +315,8 @@ class DocumentVersionMain extends SqlElement {
     }
     enableCatchErrors();
     if ( ! copy($this->importFile,$uploadfile) ) {
-      $error=htmlGetErrorMessage(i18n('errorUploadFile','hacking ?'));
-      errorLog(i18n('errorUploadFile','hacking ?'));
+      $error=htmlGetErrorMessage(i18n('errorUploadFile',array('hacking')));
+      errorLog(i18n('errorUploadFile',array('hacking')));
       return $error;
     }
     if ($this->target=='DELETE') {

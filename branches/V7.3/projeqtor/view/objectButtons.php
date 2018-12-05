@@ -157,7 +157,7 @@
 	        if (id) { 	
 		        id.value="";
 		        unselectAllRows("objectGrid");
-            loadContent("objectDetail.php", "detailDiv", dojo.byId('listForm'));
+            loadContent("objectDetail.php", "detailDiv", 'listForm');
             if (dijit.byId('detailRightDiv')) loadContent("objectStream.php", "detailRightDiv", "listForm");
           } else { 
             showError(i18n("errorObjectId"));

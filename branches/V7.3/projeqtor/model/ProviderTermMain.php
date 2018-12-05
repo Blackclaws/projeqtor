@@ -164,9 +164,17 @@ class ProviderTermMain extends SqlElement {
    */
   public function getValidationScript($colName) {
     $colScript = parent::getValidationScript($colName);
-    if ($colName=="untaxedAmount" || $colName=="taxPct") {
+    if ($colName=="untaxedAmount" || $colName=="taxPct" || $colName=="fullAmount" ) {
       $colScript .= '<script type="dojo/connect" event="onChange" >';
-      $colScript .= '  updateBillTotal();';
+      $paramImputOfAmountProvider = Parameter::getGlobalParameter('ImputOfAmountProvider');
+      //if (count($this->_BillLine)) {
+        //$paramImputOfAmountProvider = Parameter::getGlobalParameter('ImputOfBillLineProvider');
+      //}
+      if($paramImputOfAmountProvider == 'HT'){
+        $colScript .= '  updateBillTotal();';
+      }else{
+        $colScript .= '  updateBillTotalTTC();';
+      }
       $colScript .= '  formChanged();';
       $colScript .= '</script>';
     } 
@@ -230,6 +238,7 @@ class ProviderTermMain extends SqlElement {
         $cpt=$billLine->countSqlElementsFromCriteria(array('refType'=>'ProviderTerm','refId'=>$this->id));
         if ($cpt>0) { 
           self::$_fieldsAttributes['untaxedAmount']='readonly';
+          self::$_fieldsAttributes['fullAmount']="readonly";
         }
       }
     }
@@ -240,7 +249,14 @@ class ProviderTermMain extends SqlElement {
       }
     }
     self::$_fieldsAttributes['taxAmount']='readonly';
-    self::$_fieldsAttributes['fullAmount']='readonly';
+    
+    $paramImputOfAmountProvider = Parameter::getGlobalParameter('ImputOfAmountProvider');
+    if($paramImputOfAmountProvider == 'HT'){
+      self::$_fieldsAttributes['fullAmount']="readonly";
+    }else{
+      self::$_fieldsAttributes['untaxedAmount']="readonly";
+    }
+    
   }
   
 }

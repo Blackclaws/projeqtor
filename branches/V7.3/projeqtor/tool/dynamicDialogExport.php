@@ -49,14 +49,16 @@ foreach ($csList as $cs) {
 }
 $arrayDependantObjects=array('Document'=>array('_DocumentVersion'=>'withSection'));
 $htmlresult='<td valign="top" style="width:1px">';
-$FieldsArray=$obj->getFieldsArray(true);
-foreach($FieldsArray as $key => $val) {
+$fieldsArray=$obj->getfieldsArray(true);
+if (isset($fieldsArray['_sec_description']))  $fieldsArray = array('_sec_description' => '_sec_description') + array('hyperlink' => 'Hyperlink') + $fieldsArray;
+else $fieldsArray = array('_sec_Description' => '_sec_description') + $fieldsArray; // Fix : do nopt show link for item without description (Work for instance)
+foreach($fieldsArray as $key => $val) {
 	if ( ! SqlElement::isVisibleField($val) ) {
-		unset($FieldsArray[$key]);
+		unset($fieldsArray[$key]);
     continue;
 	}
 	if ($objectClass=='GlobalView' and $key=='id') {
-	  unset($FieldsArray[$key]);
+	  unset($fieldsArray[$key]);
 	  continue;
 	}
 	if (substr($val,0,5)=='_sec_') {
@@ -66,10 +68,10 @@ foreach($FieldsArray as $key => $val) {
        or $section=='Subprojects' or $section=='Approver' or $section=='ExpenseDetail' 
        or $section=='predecessor' or $section=='successor' or $section =='TestCaseRun'
        or $section=='Projects' or $section=='Link' or $section=='Note' or $section=='Attachment') {
-			  unset($FieldsArray[$key]);
+			  unset($fieldsArray[$key]);
 			  continue;
 			}
-			$FieldsArray[$key]=i18n('section' . ucfirst($section));
+			$fieldsArray[$key]=i18n('section' . ucfirst($section));
 		}
   } else if (substr($key,0,1)=='_' or strtoupper(substr($key,0,1))==substr($key,0,1) ){ // Object
     if (isset($arrayDependantObjects[$objectClass]) and isset($arrayDependantObjects[$objectClass][$key])) {
@@ -83,54 +85,54 @@ foreach($FieldsArray as $key => $val) {
           }
         }
         if ($arrayDependantObjects[$objectClass][$key]=='withSection') {   
-          $FieldsArray['_sec_'.$included]=i18n('_sec_'.$included);//i18n('section' . ltrim($key,'_'));
+          $fieldsArray['_sec_'.$included]=i18n('_sec_'.$included);//i18n('section' . ltrim($key,'_'));
         }
         $incObj=new $included();
         foreach ($incObj as $incKey=>$incVal) {
           if (substr($incKey,0,1)=='_') continue;
           if ($incKey=='refType' or $incKey=='refId' or $incKey=='id'.$objectClass) continue;
           if ($incObj->isAttributeSetToField($incKey,'noExport')) continue;
-          $FieldsArray[$included.'_'.$incKey]=i18n('col'.ucfirst($incKey));
+          $fieldsArray[$included.'_'.$incKey]=i18n('col'.ucfirst($incKey));
         }
       }
     }
-    unset($FieldsArray[$key]);
+    unset($fieldsArray[$key]);
     continue;
 	} else {
-	  $FieldsArray[$key]=$obj->getColCaption($val);
+	  $fieldsArray[$key]=$obj->getColCaption($val);
 	}
-	if(isset($FieldsArray[$key]) and substr($FieldsArray[$key],0,1)=="["){
-		unset($FieldsArray[$key]);
+	if(isset($fieldsArray[$key]) and substr($fieldsArray[$key],0,1)=="["){
+		unset($fieldsArray[$key]);
 		continue;
 	}
 }
 
 // ADD BY Marc TABARY - 2017-03-20 - EXPORT - DON'T DRAW SECTION WITHOUT FIELD
-$FieldsArrayNext = $FieldsArray;
-foreach($FieldsArray as $key=>$val) {
+$fieldsArrayNext = $fieldsArray;
+foreach($fieldsArray as $key=>$val) {
     if(substr($key,0,5)=="_sec_") {
-        reset($FieldsArrayNext);
+        reset($fieldsArrayNext);
         $next_=true;
-        while(current($FieldsArrayNext)!=$val and $next_!==false) {
-            $next_ = next($FieldsArrayNext);
+        while(current($fieldsArrayNext)!=$val and $next_!==false) {
+            $next_ = next($fieldsArrayNext);
         }
-        $next_ = next($FieldsArrayNext);
+        $next_ = next($fieldsArrayNext);
         if ($next_!==false) {
-            $next_key = key($FieldsArrayNext);
+            $next_key = key($fieldsArrayNext);
             if(substr($next_key,0,5)=='_sec_') {
-                unset($FieldsArray[$key]);
+                unset($fieldsArray[$key]);
             }
         }
     }    
 }
 // END ADD BY Marc TABARY - 2017-03-20 - EXPORT - DON'T DRAW SECTION WITHOUT FIELD
 
-$countFields=count($FieldsArray);
+$countFields=count($fieldsArray);
 $htmlresult.='<input type="hidden" dojoType="dijit.form.TextBox" id="column0" name="column0" value="'.$countFields.'">';
 $index=1;
-$last_key = end($FieldsArray);
+$last_key = end($fieldsArray);
 $allChecked="checked";
-foreach($FieldsArray as $key => $val){
+foreach($fieldsArray as $key => $val){
 	if(substr($key,0,5)=="_sec_"){
 		if($val!=$last_key) {
 			$htmlresult.='</td><td style="vertical-align:top;width: 200px;" valign="top">';
@@ -150,7 +152,7 @@ foreach($FieldsArray as $key => $val){
 	} else if(substr($key,0,5)=="input"){
 	}else {
 		$checked='checked';
-		if (array_key_exists($key, $hiddenFields)) {
+		if (array_key_exists($key, $hiddenFields) or $key=='hyperlink') {
 			$checked='';
 			$allChecked='';
 		}

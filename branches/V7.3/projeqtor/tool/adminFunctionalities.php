@@ -94,10 +94,15 @@ if ($adminFunctionality=='sendAlert') {
   Consistency::checkDuplicateWork($correct, false);
   echo "<div class='consistencySection' style=''>".i18n('sectionCheckWorkOnTicket')."</div>";
   Consistency::checkWorkOnTicket($correct, false);
-  echo "<div class='consistencySection' style=''>".i18n('sectionCheckWorkOnActivity')."</div>";
-  Consistency::checkWorkOnActivity($correct, false);
+  echo "<div class='consistencySection' style=''>".i18n('sectionCheckWorkOnAssignment')."</div>";
+  Consistency::checkWorkOnAssignment($correct, false);
+  echo "<div class='consistencySection' style=''>".i18n('sectionCheckIdlePropagation')."</div>";
+  Consistency::checkIdlePropagation($correct, false);
   echo "<div class='consistencySection' style=''>".i18n('sectionCheckMissingPlanningElement')."</div>";
   Consistency::checkMissingPlanningElement($correct, false);
+  echo "<div class='consistencySection' style=''>".i18n('sectionCheckWorkOnActivity')."</div>";
+  Consistency::checkWorkOnActivity($correct, false);
+  
   $result=false;
   Sql::commitTransaction();
 } else {

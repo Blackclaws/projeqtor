@@ -143,8 +143,9 @@ if (RequestHandler::isCodeSet('destinationWidth')) {
                            type="text" maxlength="10"
                            style="width:100px; text-align: center;" class="input roundedLeft"
                            hasDownArrow="true"
-                           value="<?php echo $startDate;?>" >
+                           value="<?php if(sessionValueExists('startDatePlanView')){ echo getSessionValue('startDatePlanView'); }else{ echo $startDate; } ?>" >
                            <script type="dojo/method" event="onChange" >
+                            saveDataToSession('startDatePlanView',formatDate(dijit.byId('startDatePlanView').get("value")), false);
                             refreshJsonPlanning();
                            </script>
                          </div>
@@ -162,8 +163,9 @@ if (RequestHandler::isCodeSet('destinationWidth')) {
                            type="text" maxlength="10"
                            style="width:100px; text-align: center;" class="input roundedLeft"
                            hasDownArrow="true"
-                           value="<?php echo $endDate;?>" >
+                           value="<?php if(sessionValueExists('endDatePlanView')){ echo getSessionValue('endDatePlanView'); }else{ echo $endDate; } ?>" >
                            <script type="dojo/method" event="onChange" >
+                            saveDataToSession('endDatePlanView',formatDate(dijit.byId('endDatePlanView').get("value")), false);
                             refreshJsonPlanning();
                            </script>
                         </div>

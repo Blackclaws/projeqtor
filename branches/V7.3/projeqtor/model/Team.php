@@ -91,15 +91,26 @@ class Team extends SqlElement {
   }
   
   public function drawSpecificItem($item){
-    $result="";
+    $showClosedResources=(Parameter::getUserParameter('showClosedResources')!='0')?TRUE:FALSE;
+    $result = "";
     if ($item=='members') {
       $result .="<table><tr><td class='label' valign='top'><label>" . i18n('members') . "&nbsp;:&nbsp;</label>";
       $result .="</td><td>";
       if ($this->id) {
         $ress=new Resource();
-        $result .= $ress->drawMemberList($this->id);
+        $result .= $ress->drawMemberList($this->id, $showClosedResources);
       }
-      $result .="</td></tr></table>";
+      $result .="</td></tr><tr>";
+      $result.='<td style="white-space:nowrap;padding-right:10px;">';
+      $result.='<div style="position:absolute;top:2px;right:5px" >';
+      $result.='<label for="showClosedResources" class="dijitTitlePaneTitle" style="font-weight:normal !important;height:10px;width:250px">'.i18n('labelShowIdle').'&nbsp;</label>';
+      $result.='<div class="whiteCheck" id="showClosedResources" dojoType="dijit.form.CheckBox" type="checkbox" '.(($showClosedResources)?'checked':'').' >';
+      $result.='<script type="dojo/connect" event="onChange" args="evt">';
+      $result.=' saveUserParameter("showClosedResources",((this.checked)?"1":"0"));';
+      $result.=' if (checkFormChangeInProgress()) {return false;}';
+      $result.=' loadContent("objectDetail.php", "detailDiv", "listForm");';
+      $result.='</script>';
+      $result.='</div></div></td></tr></table>';
       return $result;
     } else if ($item=='affectMembers') {
     	

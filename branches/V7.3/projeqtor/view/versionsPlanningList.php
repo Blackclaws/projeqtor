@@ -32,6 +32,10 @@ $saveShowClosed=$saveShowClosedObj->parameterValue;
 $saveShowMilestoneObj=SqlElement::getSingleSqlElementFromCriteria('Parameter',array('idUser'=>$user->id,'idProject'=>null,'parameterCode'=>'planningShowMilestone'));
 $saveShowMilestone=$saveShowMilestoneObj->parameterValue;
 
+$displayProductVersionActivity = Parameter::getUserParameter('planningVersionDisplayProductVersionActivity');
+$displayComponentVersionActivity = Parameter::getUserParameter('planningVersionDisplayComponentVersionActivity');
+$showClosedPlanningVersion = Parameter::getUserParameter('planningVersionShowClosed');
+
 if ($saveShowClosed) {
 	$_REQUEST['idle']=true;
 }
@@ -103,8 +107,9 @@ echo '<input type="hidden" id="nbPvs" name="nbPvs" value="'.$nbPvs.'" />';
                            type="text" maxlength="10"
                            style="width:100px; text-align: center;" class="input roundedLeft"
                            hasDownArrow="true"
-                           value="<?php echo $startDate;?>" >
+                           value="<?php if(sessionValueExists('startDatePlanView')){ echo getSessionValue('startDatePlanView'); }else{ echo $startDate; } ?>" >
                            <script type="dojo/method" event="onChange" >
+                            saveDataToSession('startDatePlanView',formatDate(dijit.byId('startDatePlanView').get("value")), false);
                             refreshJsonPlanning();
                            </script>
                          </div>
@@ -122,8 +127,9 @@ echo '<input type="hidden" id="nbPvs" name="nbPvs" value="'.$nbPvs.'" />';
                            type="text" maxlength="10"
                            style="width:100px; text-align: center;" class="input roundedLeft"
                            hasDownArrow="true"
-                           value="<?php echo $endDate;?>" >
+                           value="<?php if(sessionValueExists('endDatePlanView')){ echo getSessionValue('endDatePlanView'); }else{ echo $endDate; }  ?>" >
                            <script type="dojo/method" event="onChange" >
+                            saveDataToSession('endDatePlanView',formatDate(dijit.byId('endDatePlanView').get("value")), false);
                             refreshJsonPlanning();
                            </script>
                         </div>
@@ -151,7 +157,7 @@ echo '<input type="hidden" id="nbPvs" name="nbPvs" value="'.$nbPvs.'" />';
                           </script>
                         </button>
                       </td>
-                      <td width="32px">
+                      <td width="200px">
                         <button title="<?php echo i18n('reportPrintPdf')?>"
                          dojoType="dijit.form.Button"
                          id="listPrintPdf" name="listPrintPdf"
@@ -163,9 +169,21 @@ echo '<input type="hidden" id="nbPvs" name="nbPvs" value="'.$nbPvs.'" />';
                           </script>
                         </button>
                       </td>
+                       <td style="padding-right:5px;padding-left:20px;text-align: right;">
+                        <?php echo i18n('displayComponentVersionActivity');?>
+                        </td><td>
+                        <div title="<?php echo i18n('displayComponentVersionActivity')?>" dojoType="dijit.form.CheckBox" 
+                          class="whiteCheck" type="checkbox" id="listDisplayComponentVersionActivity" name="listDisplayComponentVersionActivity"
+                          <?php if ($displayComponentVersionActivity=='1') { echo ' checked="checked" '; }?> >
+                          <script type="dojo/method" event="onChange" >
+                            saveUserParameter('planningVersionDisplayComponentVersionActivity',((this.checked)?'1':'0'));
+                            refreshJsonPlanning();
+                          </script>
+                        </div>
+               		  </td>   
                     </tr>
                     <tr>
-                      <td colspan="4" style="white-space:nowrap;">
+                      <td colspan="2" style="white-space:nowrap;">
                         <span title="<?php echo i18n('saveDates')?>" dojoType="dijit.form.CheckBox"
                            type="checkbox" id="listSaveDates" name="listSaveDates" class="whiteCheck"
                            <?php if ( $saveDates) {echo 'checked="checked"'; } ?>  >
@@ -176,6 +194,32 @@ echo '<input type="hidden" id="nbPvs" name="nbPvs" value="'.$nbPvs.'" />';
                         </span>
                         <span for="listSaveDates"><?php echo i18n("saveDates");?></span>
                       </td>
+                       <td style="padding-right:5px;padding-left:20px;text-align: right;">
+                      <?php echo i18n('displayProductVersionActivity');?>
+                      </td><td>
+                      <div title="<?php echo i18n('displayProductVersionActivity')?>" dojoType="dijit.form.CheckBox" 
+                        class="whiteCheck" type="checkbox" id="listDisplayProductVersionActivity" name="listDisplayProductVersionActivity"
+                        <?php if ($displayProductVersionActivity=='1') { echo ' checked="checked" '; }?> >
+                        <script type="dojo/method" event="onChange" >
+                          saveUserParameter('planningVersionDisplayProductVersionActivity',((this.checked)?'1':'0'));
+                          refreshJsonPlanning();
+                        </script>
+                      </div>
+                      </td>
+                      
+                       <td  style="padding-right:5px;padding-left:20px;text-align: right;" >
+                      <?php echo i18n('labelShowIdle');?>
+                      </td><td>
+                      <div title="<?php echo i18n('labelShowIdle')?>" dojoType="dijit.form.CheckBox" 
+                        class="whiteCheck" type="checkbox" id="showClosedPlanningVersion" name="showClosedPlanningVersion"
+                        <?php if ($showClosedPlanningVersion=='1') { echo ' checked="checked" '; }?> >
+                        <script type="dojo/method" event="onChange" >
+                          saveUserParameter('planningVersionShowClosed',((this.checked)?'1':'0'));
+                          refreshJsonPlanning();
+                        </script>
+                      </div>
+                      </td>
+                      
                     </tr>
                   </table>
                 </td>

@@ -36,7 +36,6 @@ $comboDetail=false;
 if (array_key_exists('comboDetail',$_REQUEST)) {
   $comboDetail=true;
 }
-
 if (! $comboDetail and ! $user->_arrayFilters) {
   $user->_arrayFilters=array();
 } else if ($comboDetail and ! $user->_arrayFiltersDetail) {
@@ -300,7 +299,7 @@ if ($idFilterAttribute and $idFilterOperator) {
     }
     //ADD qCazelles - Dynamic filter - Ticket #78
   } else if ($idFilterOperator=="startBy") {
-  	$arrayDisp["operator"]="startBy";
+  	$arrayDisp["operator"]=i18n("startBy");
   	$arraySql["operator"]="LIKE";
   	$arrayDisp["value"]="'".htmlEncode($filterValue)."'";
   	$arraySql["value"]="'".htmlEncode($filterValue)."%'";

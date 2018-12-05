@@ -112,6 +112,7 @@ if(isset($_REQUEST['goToRequirement'])){
 <input type="hidden" name="objectClassManual" id="objectClassManual" value="DashboardRequirement" />
 	<div dojo-type="dijit.layout.ContentPane" id="parameterButtonDiv"
 		class="listTitle" style="z-index: 3; overflow: visible" region="top">
+		<form dojoType="dijit.form.Form" id="dashboardRequirementMainForm" action="" method="post" >
 		<div id="resultDiv" region="top"
 			style="padding: 5px; padding-bottom: 20px; max-height: 100px; padding-left: 300px; z-index: -1;padding-right: 800px"></div>
 		<table width="40%">
@@ -184,6 +185,7 @@ if(isset($_REQUEST['goToRequirement'])){
     		</tr>
     	</table>
     </div>
+    </form>
   </div>
 	
 	<div dojo-type="dijit.layout.ContentPane" region="center" style="height:100%;overflow:auto;">

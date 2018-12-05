@@ -516,6 +516,9 @@
     $decision= new Decision();
     $listDecision=$decision->getSqlElementsFromCriteria(null, null, $where, $order, null, true,$cptMax+1);
     $list=array_merge($list, $listDecision); 
+    $requirement= new Requirement();
+    $listRequirement=$requirement->getSqlElementsFromCriteria(null, null, $where, $order, null, true,$cptMax+1);
+    $list=array_merge($list, $listRequirement);
     $quotation= new Quotation();
     $listQuotation=$quotation->getSqlElementsFromCriteria(null, null, $where, $order, null, true,$cptMax+1);
     $list=array_merge($list, $listQuotation); 
