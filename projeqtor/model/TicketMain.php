@@ -297,6 +297,21 @@ class TicketMain extends SqlElement {
       
       $colScript .= '</script>';
     }
+    if ($colName=="done") {
+      $colScript .= '<script type="dojo/connect" event="onChange" >';
+      $colScript .= '  var done=dijit.byId("done").get("checked");';
+      $colScript .= '  var real=dijit.byId("WorkElement_realWork").get("value");';
+      $colScript .= '  var planned=dijit.byId("WorkElement_plannedWork").get("value");';
+      $colScript .= '  if (done) {';
+      $colScript .= '    dijit.byId("WorkElement_leftWork").set("value", 0);';
+      $colScript .= '  } else {';
+      $colScript .= '    var left=planned-real;';
+      $colScript .= '    if (left<0) left=0;';
+      $colScript .= '    dijit.byId("WorkElement_leftWork").set("value", left);';
+      $colScript .= '  } ';
+      $colScript .= '  formChanged();';
+      $colScript .= '</script>';
+    }
     return $colScript;
   }
 

@@ -317,7 +317,8 @@ class BudgetMain extends SqlElement {
         if ($outMode=='html' or $outMode=='pdf') $clickEvent='';
         $result .= '<td><div ' . $clickEvent . ' class="'.(($outMode=='html' or $outMode=='pdf')?'':'menuTree').'" style="width:100%;color:black">';
         $result .= htmlEncode($bdg->name);
-        if ($bdg->actualAmount) $result.='<div style="float:right">&nbsp;&nbsp;&nbsp;<i>('.htmlDisplayCurrency($bdg->actualAmount).')</i></div>';
+        $amount=(Parameter::getGlobalParameter('ImputOfAmountProvider')=='TTC')?$bdg->actualFullAmount:$bdg->actualAmount;
+        if ($bdg->actualAmount) $result.='<div style="float:right">&nbsp;&nbsp;&nbsp;<i>('.htmlDisplayCurrency($amount).')</i></div>';
         $result .= '</div>';
         $result .= $bdg->drawSubBudgets(true);
         $result .= '</td></tr>';
@@ -384,7 +385,7 @@ class BudgetMain extends SqlElement {
       foreach ($budList as $bud) {
         //$this->actualSubAmount+=$bud->actualAmount;
         //$this->actualSubFullAmount+=$bud->actualFullAmount;
-        if ($bud->actualAmount) {
+        if ($bud->actualAmount or $bud->initialAmount) {
           $this->usedAmount+=$bud->usedAmount;
           $this->billedAmount+=$bud->billedAmount;
           $this->plannedAmount+=$bud->plannedAmount;
@@ -394,7 +395,7 @@ class BudgetMain extends SqlElement {
           $this->update3Amount+=$bud->update3Amount;
           $this->update4Amount+=$bud->update4Amount;
         }
-        if ($bud->actualFullAmount) {
+        if ($bud->actualFullAmount or $bud->initialFullAmount) {
           $this->usedFullAmount+=$bud->usedFullAmount;
           $this->billedFullAmount+=$bud->billedFullAmount;
           $this->plannedFullAmount+=$bud->plannedFullAmount;

@@ -91,8 +91,7 @@ class Link extends SqlElement {
       $class1 = $this->ref1Type;
       $id1 = $this->ref1Id;
       $obj = new $class1( $id1 );
-      if (property_exists ( $class1, 'lastUpdateDateTime' )) {
-        $obj->lastUpdateDateTime = date ( "Y-m-d H:i:s" );
+      if (property_exists ( $class1, 'lastUpdateDateTime' ) and !SqlElement::$_doNotSaveLastUpdateDateTime) { 
         $resObj=$obj->saveForced();
       }
     }
@@ -101,7 +100,7 @@ class Link extends SqlElement {
       $class2 = $this->ref2Type;
       $id2 = $this->ref2Id;
       $obj = new $class2( $id2 );
-      if (property_exists ( $class2, 'lastUpdateDateTime' )) {
+      if (property_exists ( $class2, 'lastUpdateDateTime' )and !SqlElement::$_doNotSaveLastUpdateDateTime) {
         $obj->lastUpdateDateTime = date ( "Y-m-d H:i:s" );
         $resObj=$obj->saveForced();
       }
@@ -128,7 +127,7 @@ class Link extends SqlElement {
       $class1 = $this->ref1Type;
       $id1 = $this->ref1Id;
       $obj = new $class1( $id1 );
-      if (property_exists ( $class1, 'lastUpdateDateTime' )) {
+      if (property_exists ( $class1, 'lastUpdateDateTime' ) and !SqlElement::$_doNotSaveLastUpdateDateTime) {
         $obj->lastUpdateDateTime = date ( "Y-m-d H:i:s" );
         $resObj=$obj->saveForced();
       }
@@ -138,7 +137,7 @@ class Link extends SqlElement {
       $class2 = $this->ref2Type;
       $id2 = $this->ref2Id;
       $obj = new $class2( $id2 );
-      if (property_exists ( $class2, 'lastUpdateDateTime' )) {
+      if (property_exists ( $class2, 'lastUpdateDateTime' ) and !SqlElement::$_doNotSaveLastUpdateDateTime) {
         $obj->lastUpdateDateTime = date ( "Y-m-d H:i:s" );
         $resObj=$obj->saveForced();
       }

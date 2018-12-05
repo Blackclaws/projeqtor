@@ -339,6 +339,7 @@ function formatForDbType($query,$dbType=null) {
     $from[]=' int(12) unsigned AUTO_INCREMENT';           $to[]=' serial';
     $from[]=' int(12) UNSIGNED AUTO_INCREMENT';           $to[]=' serial';
     $from[]=' int(12) AUTO_INCREMENT';                    $to[]=' serial';
+    $from[]=' BIGINT(';                                   $to[]=' numeric(';
     $from[]=' int(';                                      $to[]=' numeric(';
     $from[]=' datetime';                                  $to[]=' timestamp';
     $from[]=' double';                                    $to[]=' double precision';

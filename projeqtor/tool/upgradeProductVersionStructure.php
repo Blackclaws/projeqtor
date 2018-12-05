@@ -57,36 +57,14 @@ foreach ($strList as $str) {
 	$oldLabel=$vers->name;
 	$newLabel='<i>'.i18n('noChange').'</i>';
 	$change=false;
-	if ($vers->isEis) $oldLabel.=' <i>('.htmlFormatDate($vers->realEisDate).')</i>';
-	//ADD qCazelles
-	else if ($vers->isDelivered) $oldLabel.=' <i>('.htmlFormatDate($vers->realDeliveryDate).')</i>';
-  //END ADD qCazelles
-	$crit="idProduct=$vers->idComponent and isEis=1 and realEisDate is not null";
-	$lstCompVers=$vers->getSqlElementsFromCriteria(null,false,$crit,'realEisDate desc');
+	$crit="idProduct=$vers->idComponent AND (isEis=1 OR isDelivered=1) AND versionNumber IS NOT NULL";
+	$lstCompVers=$vers->getSqlElementsFromCriteria(null,false,$crit,'versionNumber DESC');
 	if (count($lstCompVers)>0) {
 		$new=reset($lstCompVers);
-		//ADD qCazelles
-		if (Parameter::getGlobalParameter('displayMilestonesStartDelivery') == 'YES') {
-  		$crit="idProduct=$vers->idComponent and isDelivered=1 and realDeliveryDate is not null";
-  		$lstCompVers=$vers->getSqlElementsFromCriteria(null,false,$crit,'realDeliveryDate desc');
-  		if (count($lstCompVers)>0) {
-  		  $newBis=reset($lstCompVers);
-  		  if (strtotime($newBis->realDeliveryDate) > strtotime($new->realEisDate)) {
-  		    $new=$newBis;
-  		  }
-  		}
-		}
-		//END ADD qCazelles
 		if ($new->id!=$vers->id) {
 			$change=true;
 			$str->idComponentVersion=$new->id;
-			//CHANGE qCazelles
-			if ($new->isEis) {
-			 $newLabel=$new->name.' <i>('.htmlFormatDate($new->realEisDate).')</i>';
-			} else if ($new->isDelivered) {
-			 $newLabel=$new->name.' <i>('.htmlFormatDate($new->realDeliveryDate).')</i>';
-			}
-			//END CHANGE qCazelles
+			$newLabel=$new->name;
 		}
 	}
 	if ($confirm) {

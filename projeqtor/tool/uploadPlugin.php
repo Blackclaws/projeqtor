@@ -116,6 +116,7 @@ foreach ($uploadedFileArray as $uploadedFile) {
   }
 }
 $pathSeparator=Parameter::getGlobalParameter('paramPathSeparator');
+$message='';
 if (!$error) {
   foreach ($uploadedFileArray as $uploadedFile) {
     $fileName=$uploadedFile['name'];
@@ -124,6 +125,7 @@ if (!$error) {
     $mimeType=Security::checkValidMimeType($mimeType);
 	  $fileSize=$uploadedFile['size'];   
     $uploaddir = Plugin::getDir();
+    $ext = strtolower ( pathinfo ( $fileName, PATHINFO_EXTENSION ) );
     /*if (! file_exists($uploaddir)) {
       mkdir($uploaddir,0777,true);
     }*/
@@ -133,12 +135,26 @@ if (!$error) {
     } else {
       $uploadfile = $uploaddir . $pathSeparator . $fileName;
     }
-    if ( ! move_uploaded_file($uploadedFile['tmp_name'], $uploadfile)) {
-      $error = htmlGetErrorMessage(i18n('errorUploadFile','hacking ?'));
-      errorLog(i18n('errorUploadFile','hacking ?'));
+    $ext = strtolower ( pathinfo ( $fileName, PATHINFO_EXTENSION ) );
+    if ($ext!='zip') {
+      $error = htmlGetErrorMessage(i18n('msgInvalidFileFormat',array('zip')));
+      traceLog(i18n('errorUploadFile',array(i18n('msgInvalidFileFormat',array('zip')))));
+      if (substr($ext,0,3)=='php' or substr($ext,0,3)=='pht' or substr($ext,0,3)=='sht') {
+        traceHack(i18n('msgInvalidFileFormat',array('zip')));
+        exit;
+      }
+    }
+    if (!$error and ! move_uploaded_file($uploadedFile['tmp_name'], $uploadfile)) {
+      $error = htmlGetErrorMessage(i18n('errorUploadFile',array('hacking')));
+      errorLog(i18n('errorUploadFile',array('hacking')));
     } 
-    $message="<div class='messageOK' >" . i18n('pluginFileUploaded') . "</div>"
+    if ($error) {
+      $message="<div class='messageError' >" . $error . "</div>"
+          ."<input type='hidden' value='resultERROR' />";
+    } else {
+      $message="<div class='messageOK' >" . i18n('pluginFileUploaded') . "</div>"
       	      ."<input type='hidden' value='resultOK' />";
+    }
   }
 }
 $jsonReturn = json_encode(array('file' => $fileName, 'name' => $fileName, 'type' => $mimeType, 'size' => $fileSize, 'message' => $message));

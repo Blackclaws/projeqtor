@@ -428,5 +428,48 @@ class Sql {
     self::$dbPassword = NULL;
     self::$dbName = NULL;
   }
+  
+  public static function getDbCollation() {
+    global $paramDbCollation;
+    if (isset($paramDbCollation) and $paramDbCollation) return $paramDbCollation;
+   	$value=getSessionTableValue('globalParametersArray', 'paramDbCollation');
+   	if ($value) return $value;
+  
+   	// Not retreived, get from db
+   	if (Sql::isMysql()) {
+   		$value="utf8_general_ci"; // default
+     	$dbName=Parameter::getGlobalParameter('paramDbName');
+     	$query="SELECT DEFAULT_CHARACTER_SET_NAME as dbcharset, DEFAULT_COLLATION_NAME as dbcollation FROM INFORMATION_SCHEMA.SCHEMATA WHERE SCHEMA_NAME = '$dbName';";
+      $result=Sql::query($query);
+     	if (Sql::$lastQueryNbRows > 0) {
+     	  $line = Sql::fetchLine($result);
+     	  $value=$line['dbcollation'];
+     	}
+     	setSessionTableValue('globalParametersArray', 'paramDbCollation', $value);
+   	}
+    return $value;
+  }
+  public static function getColumnCollation($table, $column) {
+    global $paramDbCollation;
+    if (isset($paramDbCollation) and $paramDbCollation) return $paramDbCollation; 
+    $value=getSessionTableValue('globalParametersArray', 'paramDbCollation_'.$table.'_'.$column);
+    if ($value) return $value;
+  
+    // Not retreived, get from db
+    if (Sql::isMysql()) {
+      $value="utf8_general_ci"; // default
+      $dbName=Parameter::getGlobalParameter('paramDbName');
+      $query="SELECT COLLATION_NAME as collationname FROM information_schema.columns "
+           ."  WHERE TABLE_SCHEMA = '$dbName' AND TABLE_NAME = '$table' AND COLUMN_NAME = '$column'";
+      $result=Sql::query($query);
+      if (Sql::$lastQueryNbRows > 0) {
+        $line = Sql::fetchLine($result);
+        $value=$line['collationname'];
+      }
+      setSessionTableValue('globalParametersArray', 'paramDbCollation_'.$table.'_'.$column, $value);
+    }
+    return $value;
+  }
+
 }
 ?>

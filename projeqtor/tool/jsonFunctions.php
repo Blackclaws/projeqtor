@@ -130,6 +130,9 @@ function jsonBuildWhereCriteria(&$querySelect, &$queryFrom, &$queryWhere, &$quer
           }
           $critSqlValue.=')';
         }
+        if ($crit['sql']['operator']=='IN' and $critSqlValue==='0') {
+        	$critSqlValue='(0)';
+        }
         if (count($split)>1) {
           $externalClass=$split[0];
           $externalObj=new $externalClass();

@@ -259,7 +259,6 @@ class PlanningElement extends SqlElement {
    */
   public function save() {
     global $canForceClose;
-    debugLog("save for pe #$this->id - $this->wbs - $this->refType #$this->refId - $this->refName");
   	// Get old element (stored in database) : must be fetched before saving
     $old=new PlanningElement($this->id);
     if (! $this->idProject) {
@@ -325,7 +324,7 @@ class PlanningElement extends SqlElement {
       $topElt=SqlElement::getSingleSqlElementFromCriteria('PlanningElement',$crit);
       if ($topElt) {
         $this->topId=$topElt->id;
-        $topElt->elementary=0;        
+        //$topElt->elementary=0; // No need, will be done in updateSynthesis        
       }
     }
     
@@ -432,24 +431,21 @@ class PlanningElement extends SqlElement {
     if ($topElt) {
       if ($topElt->refId and $topElt->refType) {
         if (! self::$_noDispatch) {
-          // $topElt->save(); // No need to save, will call UpdateSynthesis   
+          // $topElt->save(); // No need to save, will call Update Synthesis   
       	} else {
-      	  if ($this->elementary) { // noDispatch (for copy) and elementary : store top in array for updateSynthesis
-            self::$_noDispatchArray[$topElt->id]=array('refType'=>$topElt->refType,'refId'=>$topElt->refId);
+      	  if ($this->elementary) { // noDispatch (for copy) and elementary : store top in array for Update Synthesis
+      	    self::updateSynthesisNoDispatch($topElt->refType, $topElt->refId);
       	  }
       	}
       }
     }
-    //if ($this->topId!=$old->topId)
     
     // save old parent (for synthesis update) if parent has changed
     if ($old->topId!='' and $old->topId!=$this->topId) {
       if (! self::$_noDispatch) {
         self::updateSynthesis($old->topRefType, $old->topRefId);
       } else {
-        $crit=array("refType"=>$old->topRefType, "refId"=>$old->topRefId);
-        $oldTopElt=SqlElement::getSingleSqlElementFromCriteria('PlanningElement',$crit);
-        self::$_noDispatchArray[$oldTopElt->id]=array('refType'=>$oldTopElt->refType,'refId'=>$oldTopElt->refId);
+        self::updateSynthesisNoDispatch($old->topRefType, $old->topRefId);
       }
     }
     // save new parent (for synthesis update) if parent has changed
@@ -460,13 +456,11 @@ class PlanningElement extends SqlElement {
     //         DO NOT CHANGE CONDITION TO PREVIOUS VERSION UNLESS YOU REACTIVATE CALL IN ProjectPlanningElement::updateSynthesisProject
     if ($this->topId!='') { // and ($old->topId!=$this->topId or $old->cancelled!=$this->cancelled)) {
       if (! self::$_noDispatch) {
-        self::updateSynthesis($this->topRefType, $this->topRefId);
-      } else {
-        if (!$topElt or !$topElt->id) {
-          $crit=array("refType"=>$old->topRefType, "refId"=>$old->topRefId);
-          $topElt=SqlElement::getSingleSqlElementFromCriteria('PlanningElement',$crit);
+        if (!isset(self::$_noDispatchArray[$this->topRefType.'#'.$this->topRefId])) {
+          self::updateSynthesis($this->topRefType, $this->topRefId);
         }
-        self::$_noDispatchArray[$topElt->id]=array('refType'=>$topElt->refType,'refId'=>$topElt->refId);
+      } else {
+        self::updateSynthesisNoDispatch($this->topRefType, $this->topRefId);
       }
     }
     
@@ -496,7 +490,7 @@ class PlanningElement extends SqlElement {
     if ($old->leftWork!=0 and $this->leftWork==0 and $this->realWork>0 and $this->refType) {
       $this->setDoneOnNoLeftWork('save');
     }
-    if ($old->topId!=$this->topId) { // and ! self::$_noDispatch removed constraitn for move // This renumbering is to avoid holes in numbering // 
+    if ($old->topId and $old->topId!=$this->topId) { // and ! self::$_noDispatch removed constraitn for move // This renumbering is to avoid holes in numbering // 
     	$pe=new PlanningElement($old->topId);
     	$pe->renumberWbs();
     }
@@ -601,7 +595,6 @@ class PlanningElement extends SqlElement {
   
   // Save without extra save() feature and without controls
   public function simpleSave() {
-    debugLog("simpleSave for pe #$this->id - $this->wbs - $this->refType #$this->refId - $this->refName");
     if ($this->plannedStartDate>$this->plannedEndDate) $this->plannedEndDate=$this->plannedStartDate;
     $this->plannedDuration=workDayDiffDates($this->plannedStartDate, $this->plannedEndDate);
     if ($this->validatedStartDate and $this->validatedEndDate) {
@@ -618,7 +611,6 @@ class PlanningElement extends SqlElement {
   }
 
   public function wbsSave() {
-    debugLog("wbsSave for pe #$this->id - $this->wbs - $this->refType #$this->refId - $this->refName");
   	$this->_noHistory=true;
   	$this->wbsSortable=formatSortableWbs($this->wbs);
   	$resTmp=$this->saveForced();
@@ -654,7 +646,6 @@ class PlanningElement extends SqlElement {
    * @return a boolean 
    */
   protected function updateSynthesisObj ($doNotSave=false) {
-  	debugLog("updateSynthesisObj for $this->refType #$this->refId");
     $consolidateValidated=Parameter::getGlobalParameter('consolidateValidated');
   	$this->validatedCalculated=0;
   	$this->validatedExpenseCalculated=0;
@@ -707,41 +698,41 @@ class PlanningElement extends SqlElement {
       }      
     }
     // Add data from other planningElements dependant from this one
-    if (! $this->elementary) {
-      $critPla=array("topId"=>$this->id);
-      $planningElement=new PlanningElement();
-      $plaList=$planningElement->getSqlElementsFromCriteria($critPla, false);
-      // Add data from other planningElements dependant from this one    
-      foreach ($plaList as $pla) {
-        $assignedWork+=$pla->assignedWork;
-        $leftWork+=$pla->leftWork;
-        $plannedWork+=$pla->plannedWork;
-        $notPlannedWork+=$pla->notPlannedWork;
-        $realWork+=$pla->realWork;
-        if (!$pla->cancelled and $pla->assignedCost) $assignedCost+=$pla->assignedCost;
-        if (!$pla->cancelled and $pla->leftCost) $leftCost+=$pla->leftCost;
-        if ($pla->plannedCost) $plannedCost+=$pla->plannedCost;
-        if ($pla->realCost) $realCost+=$pla->realCost;
-        if ( !$pla->cancelled and $pla->realStartDate and (! $realStartDate or $pla->realStartDate<$realStartDate )) {
-          $realStartDate=$pla->realStartDate;
-        }
-        if ( !$pla->cancelled and $pla->realEndDate and (! $realEndDate or $pla->realEndDate>$realEndDate )) {
-          $realEndDate=$pla->realEndDate;
-        }  
-        if ( !$pla->cancelled and $pla->plannedStartDate and (! $plannedStartDate or $pla->plannedStartDate<$plannedStartDate )) {
-          $plannedStartDate=$pla->plannedStartDate;
-        }
-        if ( !$pla->cancelled and $pla->plannedEndDate and (! $plannedEndDate or $pla->plannedEndDate>$plannedEndDate )) {
-          $plannedEndDate=$pla->plannedEndDate;
-        }  
-        // If realEnd calculated, but left task with no work, keep real not set
-        if ($realEndDate and !$pla->realEndDate and $pla->assignedWork==0 and $pla->leftWork==0 and $pla->plannedEndDate>$realEndDate) {
-          $realEndDate="";
-        }
-        if (!$pla->cancelled and $pla->validatedWork) $validatedWork+=$pla->validatedWork;
-        if (!$pla->cancelled and $pla->validatedCost) $validatedCost+=$pla->validatedCost;
+    $critPla=array("topId"=>$this->id);
+    $planningElement=new PlanningElement();
+    $plaList=$planningElement->getSqlElementsFromCriteria($critPla, false);
+    // Add data from other planningElements dependant from this one
+    $this->elementary=(count($plaList)==0)?1:0;
+    foreach ($plaList as $pla) {
+      $assignedWork+=$pla->assignedWork;
+      $leftWork+=$pla->leftWork;
+      $plannedWork+=$pla->plannedWork;
+      $notPlannedWork+=$pla->notPlannedWork;
+      $realWork+=$pla->realWork;
+      if (!$pla->cancelled and $pla->assignedCost) $assignedCost+=$pla->assignedCost;
+      if (!$pla->cancelled and $pla->leftCost) $leftCost+=$pla->leftCost;
+      if ($pla->plannedCost) $plannedCost+=$pla->plannedCost;
+      if ($pla->realCost) $realCost+=$pla->realCost;
+      if ( !$pla->cancelled and $pla->realStartDate and (! $realStartDate or $pla->realStartDate<$realStartDate )) {
+        $realStartDate=$pla->realStartDate;
       }
+      if ( !$pla->cancelled and $pla->realEndDate and (! $realEndDate or $pla->realEndDate>$realEndDate )) {
+        $realEndDate=$pla->realEndDate;
+      }  
+      if ( !$pla->cancelled and $pla->plannedStartDate and (! $plannedStartDate or $pla->plannedStartDate<$plannedStartDate )) {
+        $plannedStartDate=$pla->plannedStartDate;
+      }
+      if ( !$pla->cancelled and $pla->plannedEndDate and (! $plannedEndDate or $pla->plannedEndDate>$plannedEndDate )) {
+        $plannedEndDate=$pla->plannedEndDate;
+      }  
+      // If realEnd calculated, but left task with no work, keep real not set
+      if ($realEndDate and !$pla->realEndDate and $pla->assignedWork==0 and $pla->leftWork==0 and $pla->plannedEndDate>$realEndDate) {
+        $realEndDate="";
+      }
+      if (!$pla->cancelled and $pla->validatedWork) $validatedWork+=$pla->validatedWork;
+      if (!$pla->cancelled and $pla->validatedCost) $validatedCost+=$pla->validatedCost;
     }
+    
     $this->realStartDate=$realStartDate;
     if ($realWork>0 or $leftWork>0) {
       if ($leftWork==0) {
@@ -1291,6 +1282,7 @@ class PlanningElement extends SqlElement {
   }
   
   public function renumberWbs() {
+    return;
   	if ($this->id) {
   		$where="topRefType='" . $this->refType . "' and topRefId=" . Sql::fmtId($this->refId) ;
   	} else {
@@ -1628,7 +1620,7 @@ class PlanningElement extends SqlElement {
   static function copyStructure($obj, $newObj, $copyToOrigin=false, 
       $copyToWithNotes=false, $copyToWithAttachments, $copyToWithLinks=false, 
       $copyAssignments=false, $copyAffectations=false, $toProject=null, $copySubProjects=false) {
-    self::$_noDispatch=true; // avoid recursive updates on each item, will be done only al elementary level
+    //self::$_noDispatch=true; // avoid recursive updates on each item, will be done only at elementary level
     $pe=new PlanningElement();
     $list=$pe->getSqlElementsFromCriteria(array('topRefType'=>get_class($obj), 'topRefId'=>$obj->id),null,null,'wbsSortable asc');
     foreach ($list as $pe) { // each planning element corresponding to item to copy
@@ -1673,7 +1665,7 @@ class PlanningElement extends SqlElement {
   static function copyOtherStructure($obj, $newObj, $copyToOrigin=false,
     $copyToWithNotes=false, $copyToWithAttachments, $copyToWithLinks=false,
     $copyAssignments=false, $copyAffectations=false, $toProject=null, $copySubProjects=false, $copyToWithVersionProjects=false, $copyStructure=false) {
-    self::$_noDispatch=true; // avoid recursive updates on each item, will be done only al elementary level
+    //self::$_noDispatch=true; // avoid recursive updates on each item, will be done only al elementary level
     $pe=new PlanningElement();
     $list=$pe->getSqlElementsFromCriteria(array('topRefType'=>get_class($obj), 'topRefId'=>$obj->id),null,null,'wbsSortable asc');
     foreach ($list as $pe) { // each planning element corresponding to item to copy
@@ -1722,11 +1714,19 @@ class PlanningElement extends SqlElement {
   }
   
   static function copyStructureFinalize() {
-    self::$_noDispatch=false;
+    self::$_noDispatch=true;
     // Update synthesys for non elementary item (will just be done once ;)
-    foreach (PlanningElement::$_noDispatchArray as $pe) {
+    foreach (array_reverse(PlanningElement::$_noDispatchArray) as $pe) {
       $res=PlanningElement::updateSynthesis($pe['refType'], $pe['refId']);
     }
+    /*while (count(PlanningElement::$_noDispatchArray)>0) {
+      $list=PlanningElement::$_noDispatchArray;
+      PlanningElement::$_noDispatchArray=array();
+      foreach ($list as $pe) {
+        $res=PlanningElement::updateSynthesis($pe['refType'], $pe['refId']);
+      }
+    }*/
+    self::$_noDispatch=false;
     // copy dependencies
     $critWhere="";
     foreach (self::$_copiedItems as $id=>$fromTo) {
@@ -1804,6 +1804,9 @@ class PlanningElement extends SqlElement {
     return $result;
   }
   
+  public static function updateSynthesisNoDispatch($refType, $refId) {
+    self::$_noDispatchArray[$refType.'#'.$refId]=array('refType'=>$refType,'refId'=>$refId);
+  }
   /**
    * Will update all items referencing the milstone to set planned date to new Milstone planned date
    * @param string $restrictType => if set will restrict to items of this class

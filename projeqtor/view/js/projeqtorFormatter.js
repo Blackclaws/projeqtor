@@ -418,6 +418,7 @@ function timeFormatter(value) {
         return value.substr(11, 5);
       }
     }
+    if (!vDate || vDate==undefined) return value;
     return dojo.date.locale.format(vDate, {
       formatLength : "time",
       timePattern : top.browserLocaleTimeFormat

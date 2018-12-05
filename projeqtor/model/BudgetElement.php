@@ -101,7 +101,7 @@ class BudgetElement extends SqlElement {
   
   private static $_databaseTableName = 'budgetelement';
   public static $_noDispatch=false;
-  public static $_noDispatchArray=array();
+  public static $_noDispatchArrayBudget=array();
 
 // ADD BY Marc TABARY - 2017-02-16 - WORK AND COST VISIBILITY 
   private static $staticCostVisibility=null;
@@ -218,7 +218,7 @@ class BudgetElement extends SqlElement {
           $topElt->save();   
       	} else {
       	  if ($this->elementary) { // noDispatch (for copy) and elementary : store top in array for updateSynthesis
-            self::$_noDispatchArray[$topElt->id]=$topElt;
+            self::$_noDispatchArrayBudget[$topElt->id]=$topElt; // TO DO : treat this
       	  }
       	}
       }

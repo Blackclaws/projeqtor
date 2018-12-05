@@ -371,6 +371,10 @@
     	$querySelect .= $clause['select'];
     	//$queryFrom .= ($queryFrom=='')?'':', ';
     	$queryFrom .= $clause['from'];
+    	if (!isset($hiddenFields['hyperlink'])) {
+    	  $querySelect .= ($querySelect=='')?'':', ';
+    	  $querySelect .= $obj->getDatabaseTableName() . '.id as hyperlink';
+    	}
     } else {
 	    foreach ($array as $val) {
 	      //$sp=preg_split('field=', $val);
@@ -538,11 +542,13 @@
       $table = getListForSpecificRights('imputation');
       $getRessource = RequestHandler::getValue('exportRessourceAs');
       $date = RequestHandler::getValue('exportDateAs');
+      $w=new Work();
+      $wTable=$w->getDatabaseTableName();
       if (substr($getRessource,0,1) == 'C') {
         $getRessource = substr($getRessource,1);
-        $queryWhere.=" and idResource = $getRessource ";
+        $queryWhere.=" and $wTable.idResource = $getRessource ";
       }else{
-        $queryWhere.=" and idResource in ".transformListIntoInClause($table);
+        $queryWhere.=" and $wTable.idResource in ".transformListIntoInClause($table);
       }
       if(substr($date,0,1) == 'W') {
         $dateWeekOrMonthOrYear = 'week';
@@ -590,7 +596,7 @@
     		$csvQuotedText=true;
     		if ($csvExportAll) {
     		  $exportReferencesAs='id';
-    		  if (isset($csvSepExportAll)) $csvSep=$csvSepExportAll; // test should qlzyqs be true
+    		  if (isset($csvSepExportAll)) $csvSep=$csvSepExportAll; // test should always be true
     		  $exportHtml=true;
     		  $headers='id';
     		  $csvQuotedText=false;
@@ -598,17 +604,29 @@
     		$obj=new $objectClass();
     		$first=true;
     		$arrayFields=array();
-        $arrayFields=$obj->getLowercaseFieldsArray();
-   	    $arrayFieldsWithCase=$obj->getFieldsArray();        
+        $arrayFields=$obj->getLowercaseFieldsArray(true);
+        $arrayFieldsWithCase=$obj->getFieldsArray(true);
+        $arrayFields['hyperlink'] = 'hyperlink';
+        $arrayFieldsWithCase['hyperlink'] = 'Hyperlink';
+        foreach($arrayFieldsWithCase as $key => $val) {
+          if (!SqlElement::isVisibleField($val)) {
+            unset($arrayFields[strtolower($key)]);
+            continue;
+          }
+          $arrayFieldsWithCase[$key]=$obj->getColCaption($val);
+          if(isset($arrayFieldsWithCase[$key]) and substr($arrayFieldsWithCase[$key], 0, 1) == "["){
+            unset($arrayFields[strtolower($key)]);
+            continue;
+          }
+        }
     		while ($line = Sql::fetchLine($result)) {
     		  if ($first) {
 	    			foreach ($line as $id => $val) {
-	    			  if ($objectClass=='GlobalView' and $id=='id') continue;   
+	    			  if (!isset($arrayFields[strtolower($id)]) || ($objectClass=='GlobalView' and $id=='id')) continue;   
 	    				$colId=$id;
 	    				if (Sql::isPgsql() and isset($arrayFields[$id])) {
 	    					$colId=$arrayFields[$id];
 	    				}
-	    				if (!isset($arrayFieldsWithCase[$colId])) continue;
 	    				if (property_exists($obj, $colId)) {
 	    				  $val=encodeCSV($obj->getColCaption($colId));
 	    				} else if (property_exists($obj, 'WorkElement') and property_exists('WorkElement', $colId)) {
@@ -650,7 +668,7 @@
     			}
     			$refType=null;
     			foreach ($line as $id => $val) {
-    			  if ($objectClass=='GlobalView' and $id=='id') continue;
+    			  if (!isset($arrayFields[strtolower($id)]) || ($objectClass=='GlobalView' and $id=='id')) continue;
     			  if ($id=='refType') $refType=$val;
     				$foreign=false;
     				$colId=$id;
@@ -661,7 +679,7 @@
     				//if (substr($id, 0,2)=='id' and strlen($id)>2) {
     				if (isForeignKey($arrayFields[strtolower($id)], $obj)) { // #3522 : Fix issue to export custom foreign items xxxx__idYyyyy 
     				  $class=substr(foreignKeyWithoutAlias($arrayFields[strtolower($id)]), 2);
-    					$class=substr($arrayFields[strtolower($id)], 2);
+    					//$class=substr($arrayFields[strtolower($id)], 2);
     					if (ucfirst($class)==$class) {
     						$foreign=true;
     						if ($class=="TargetVersion" or $class=="TargetProductVersion" or $class=="TargetComponentVersion"
@@ -694,9 +712,11 @@
               echo '"' . $val . '"'.$csvSep;
             } else if ( ($dataType[$id]=='decimal')) {
             	echo formatNumericOutput($val).$csvSep;
+            } else if ($id == 'hyperlink') {
+              echo $obj->getReferenceUrl().$val.$csvSep;
             } else {
-              $val=str_replace($csvSep,' ',$val);
-            	echo $val.$csvSep;
+                $val=str_replace($csvSep,' ',$val);
+                echo $val.$csvSep;
             }
             if ($id=='refId' and ! property_exists($objectClass,'refName') and $exportReferencesAs=='name' and $refType) {
               echo encodeCSV(SqlList::getNameFromId($refType, $val)).$csvSep;

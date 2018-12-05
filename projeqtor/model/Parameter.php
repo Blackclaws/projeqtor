@@ -325,6 +325,27 @@ class Parameter extends SqlElement {
                     'AUTO'=>i18n('displayYesShowOnMouse'),
                     'CLICK'=>i18n('displayYesShowOnClick'));
         break;
+      //gautier #financial
+      case 'ImputOfAmountClient':
+        $list=array('HT'=>i18n('imputHT'),
+                    'TTC'=>i18n('imputTTC'));
+        break;
+        
+      case 'ImputOfBillLineClient':
+        $list=array('HT'=>i18n('imputHT'),
+                    'TTC'=>i18n('imputTTC'));
+        break;
+        
+      case 'ImputOfAmountProvider':
+        $list=array('HT'=>i18n('imputHT'),
+                    'TTC'=>i18n('imputTTC'));
+        break;
+        
+      case 'ImputOfBillLineProvider':
+        $list=array('HT'=>i18n('imputHT'),
+                    'TTC'=>i18n('imputTTC'));
+        break;
+      //  
       case 'OpenDayMonday':
         $list=array('openDays'=>i18n('openDays'),
                     'offDays'=>i18n('offDays'));
@@ -764,6 +785,15 @@ class Parameter extends SqlElement {
                             'manageComponentOnRequirement'=>'list',   //ADD qCazelles - Add Component to Requirement - Ticket 171
                             'dontAddClosedDeliveredVersionToProject'=>'list', //ADD qCazelles - Dont add closed and delivered versions to Project - Ticket 181
                           'columnConfigurationRight'=>'newColumn',
+                        'tabFinancial'=>"tab",
+                          'newColumnbFinancialLeft'=>'newColumn',
+                            'sectionFinancialProvider'=>'section',
+                              'ImputOfAmountProvider'=>'list',
+                              'ImputOfBillLineProvider'=>'list',
+                            'sectionFinancialClient'=>'section',
+                              'ImputOfAmountClient'=>'list',
+                              'ImputOfBillLineClient'=>'list',
+                          'newColumnbFinancialRight'=>'newColumn',
                         'tabMail'=>"tab",   
                           'newColumnMailLeft'=>'newColumn',
                             'sectionMail'=>'section',

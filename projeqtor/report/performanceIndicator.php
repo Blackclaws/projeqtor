@@ -676,11 +676,11 @@ function ticket($resource,$idProject,$startDateReport,$endDateReport,$today){
   $tkTable=$tk->getDatabaseTableName();
   $we=new WorkElement();
   $weTable=$we->getDatabaseTableName();
-  $querySelect = " SELECT DISTINCT  $tkTable.idResource,
-                          $weTable.refId as idTicket,
-			                    $weTable.realwork,
-                          $weTable.leftWork,
-                          $weTable.plannedWork,
+  $querySelect = " SELECT DISTINCT  $tkTable.idResource as idresource,
+                          $weTable.refId as idticket,
+			                    $weTable.realwork as realwork,
+                          $weTable.leftWork  as leftwork,
+                          $weTable.plannedWork as plannedwork,
                           $tkTable.doneDateTime as date";
   
   $queryFrom = "   FROM $tkTable,$weTable ";

@@ -111,8 +111,7 @@ class QuotationMain extends SqlElement {
                                   "idle"=>"nobr",
   								                "idleDate"=>"nobr",
                                   "cancelled"=>"nobr",
-                                  "taxAmount"=>"calculated,readonly",
-                                  "fullAmount"=>"readonly"               
+                                  "taxAmount"=>"calculated,readonly"
   );  
   
   private static $_colCaptionTransposition = array('idUser'=>'issuer', 
@@ -240,6 +239,7 @@ class QuotationMain extends SqlElement {
 	    }
 	  }
     $this->name=trim($this->name);
+    $paramImputOfBillLineClient = Parameter::getGlobalParameter('ImputOfBillLineClient');
 	  $billLine=new BillLine();
 	  $crit = array("refType"=> "Quotation", "refId"=>$this->id);
 	  $billLineList = $billLine->getSqlElementsFromCriteria($crit,false);
@@ -250,11 +250,18 @@ class QuotationMain extends SqlElement {
   	    $amount+=$line->amount;
   	    $numberDays+=$line->numberDays;
   	  }
-  	  $this->untaxedAmount=$amount;
+  	  if($paramImputOfBillLineClient == 'HT'){
+    	  $this->untaxedAmount=$amount;
+  	  }else{
+  	    $this->fullAmount=$amount;
+  	  }
   	  $this->plannedWork=$numberDays;
 	  }
-    $this->fullAmount=$this->untaxedAmount*(1+$this->taxPct/100);
-    
+	  if($paramImputOfBillLineClient == 'HT'){
+      $this->fullAmount=$this->untaxedAmount*(1+$this->taxPct/100);
+	  }else{
+	    $this->untaxedAmount=$this->fullAmount/(1+$this->taxPct/100);
+	  }
     $result = parent::save();
     return $result;
   }
@@ -270,9 +277,17 @@ class QuotationMain extends SqlElement {
   public function getValidationScript($colName) {
     
     $colScript = parent::getValidationScript($colName);
-    if ($colName=="untaxedAmount" || $colName=="taxPct") {
+    if ($colName=="untaxedAmount" || $colName=="taxPct" || $colName=="fullAmount" ) {
       $colScript .= '<script type="dojo/connect" event="onChange" >';
-      $colScript .= '  updateBillTotal();';
+      $paramImputOfAmountClient = Parameter::getGlobalParameter('ImputOfAmountClient');
+      if (count($this->_BillLine)) {
+        $paramImputOfAmountClient = Parameter::getGlobalParameter('ImputOfBillLineClient');
+      }
+      if($paramImputOfAmountClient == 'HT'){
+        $colScript .= '  updateBillTotal();';
+      }else{
+        $colScript .= '  updateBillTotalTTC();';
+      }
       $colScript .= '  formChanged();';
       $colScript .= '</script>';
     } else if ($colName=="idProject") {
@@ -299,6 +314,19 @@ class QuotationMain extends SqlElement {
   	
   	return $val;
   	
+  }
+  
+  public function setAttributes() {
+    if (count($this->_BillLine)) {
+      self::$_fieldsAttributes['untaxedAmount']='readonly';
+      self::$_fieldsAttributes['fullAmount']='readonly';
+    }
+    $paramImputOfAmountClient = Parameter::getGlobalParameter('ImputOfAmountClient');
+    if($paramImputOfAmountClient == 'HT'){
+      self::$_fieldsAttributes['fullAmount']="readonly";
+    }else{
+      self::$_fieldsAttributes['untaxedAmount']="readonly";
+    }
   }
   
 }

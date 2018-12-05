@@ -109,6 +109,8 @@ if (array_key_exists('copyToVersionNumber',$_REQUEST)) {
 }
 
 Sql::beginTransaction();
+PlanningElement::$_noDispatch=true;
+SqlElement::$_doNotSaveLastUpdateDateTime=true;
 $error=false;
 // copy from existing object
 Security::checkValidId($toType); // $toType is an id !
@@ -133,6 +135,9 @@ if (!$error and $copyWithStructure and get_class($obj)=='Activity' and get_class
 	} else {
 	  PlanningElement::copyStructureFinalize();
 	}
+}
+if (!$error and $copyWithStructure) {
+  PlanningElement::copyStructureFinalize();
 }
 if (!$error and $copyToLinkOrigin) {
 	$link=new Link();

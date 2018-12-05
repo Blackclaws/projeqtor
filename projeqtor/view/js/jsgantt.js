@@ -2345,7 +2345,7 @@ function dependencyRightClick(evt){
     divNode.style.left=((evt.pageX)+7)+"px";
   }
   var url = '../tool/dynamicDialogDependency.php?id='+ id;
-  loadDiv(url, 'editDependencyDiv','dynamicRightClickDependencyForm',null,null);
+  loadDiv(url, 'editDependencyDiv',null,null,null);
   evt.preventDefault();
   evt.stopPropagation();
 }

@@ -241,7 +241,12 @@ class Expense extends SqlElement {
   		$total+=$ed->amount;
   		if ($ed->expenseDate) $date=$ed->expenseDate;
   	} 
-  	$this->realAmount=$total;
+  	$paramImputOfBillLineProvider = Parameter::getGlobalParameter('ImputOfBillLineProvider');
+  	if($paramImputOfBillLineProvider == "HT"){
+  	  $this->realAmount=$total;
+  	}else{
+  	  $this->realFullAmount=$total;
+  	}
   	if (! $this->expenseRealDate) {
   	  $this->expenseRealDate=$date;
   	}

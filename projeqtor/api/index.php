@@ -85,7 +85,7 @@ if ($_SERVER['REQUEST_METHOD']=='GET') {
     //$uri=htmlEncode($_REQUEST['uri']);
     $uri=$_REQUEST['uri'];
     $split=explode('/',$uri);
-    if (count($split)>1) {
+    if (count($split)>0) {
     	$class=ucfirst($split[0]);
     	$where="1=0";
     	if (SqlElement::class_exists($class)) {
@@ -202,7 +202,7 @@ if ($_SERVER['REQUEST_METHOD']=='GET') {
         echo ' }';
     		
     	} else {
-    		returnError($invalidQuery, "'$class' is not a known object class");
+    		returnError($invalidQuery, i18n("invalidClassName",array($class)));
     	}
     } else {
     	returnError($invalidQuery, $querySyntax);
