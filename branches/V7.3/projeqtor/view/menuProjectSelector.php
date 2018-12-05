@@ -61,7 +61,7 @@ if ($proj=='*') {
 } else {
   $projObject=new Project($proj);
   echo htmlEncode($projObject->name);
-};
+}
     ?>
     </div>
   </span>

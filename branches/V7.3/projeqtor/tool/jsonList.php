@@ -96,8 +96,7 @@ if ($type == 'empty') {
     echo ' {id:"LIKE", name:"' . i18n ( "contains" ) . '"}';
     echo ',{id:"NOT LIKE", name:"' . i18n ( "notContains" ) . '"}';
     // ADD qCazelles - Dynamic filter - Ticket #78
-    echo ',{id:"startBy", name:"' . i18n ( 'startBy' ) . '"}'; // TRANSLATION qCazelles
-                                                            // END ADD qCazelles - Dynamic filter - Ticket #78
+    echo ',{id:"startBy", name:"' . i18n ( 'startBy' ) . '"}';
     echo ',{id:"isEmpty", name:"' . i18n ( 'isEmpty' ) . '"}';
     echo ',{id:"isNotEmpty", name:"' . i18n ( 'isNotEmpty' ) . '"}';
     echo ',{id:"SORT", name:"' . i18n ( 'sortFilter' ) . '"}';

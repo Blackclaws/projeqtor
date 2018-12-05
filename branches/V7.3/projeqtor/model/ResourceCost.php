@@ -122,12 +122,14 @@ class ResourceCost extends SqlElement {
           
           if ($ass->idRole==$this->idRole) {
             $wk->dailyCost=$this->cost;
-            $wk->save();
+            $wk->cost=$wk->dailyCost*$wk->work;
+            $res=$wk->saveForced();
             $arrayAss[$ass->id]=$ass;
           }
         } else {
           $wk->dailyCost=$this->cost;
-          $wk->save();
+          $wk->cost=$wk->dailyCost*$wk->work;
+          $res=$wk->saveForced();
           if ($wk->idWorkElement) {
             if (!isset($arrayWE[$wk->idWorkElement])) {
               $arrayWE[$wk->idWorkElement]=new WorkElement($wk->idWorkElement);
@@ -192,7 +194,8 @@ class ResourceCost extends SqlElement {
       $ass=new Assignment($wk->idAssignment);
       if ($ass->idRole==$this->idRole) {
         $wk->dailyCost=$precCost;
-        $wk->save();
+        $wk->cost=$wk->dailyCost*$wk->work;
+        $res=$wk->saveForced();
       }
     }     
   

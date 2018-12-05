@@ -97,8 +97,6 @@ class ProjectExpenseMain extends Expense {
                                   "name"=>"required",
                                   "idProjectExpenseType"=>"required",
                                   "expensePlannedDate"=>"",
-                                  "plannedFullAmount"=>"readonly",
-                                  "realFullAmount"=>"readonly",
                                   "idStatus"=>"required",
   								                "idUser"=>"hidden",              
                                   "day"=>"hidden",
@@ -207,6 +205,8 @@ class ProjectExpenseMain extends Expense {
    * @return the return message of persistence/SqlElement#save() method
    */
   public function save() {
+    $paramImputOfAmountProvider = Parameter::getGlobalParameter('ImputOfAmountProvider');
+    $paramImputOfBillLineProvider = Parameter::getGlobalParameter('ImputOfBillLineProvider');
     $old=$this->getOld();
     if($this->id){
       $provOrder = new ProviderOrder();
@@ -252,33 +252,63 @@ class ProjectExpenseMain extends Expense {
         if (count($this->getExpenseDetail())>0) {
           if($old->isCalculated==1){
             foreach ($this->getExpenseDetail() as $expenseD){
-              $this->realAmount += $expenseD->amount;
+              if($paramImputOfBillLineProvider == "HT"){
+                $this->realAmount += $expenseD->amount;
+              }else{
+                $this->realFullAmount += $expenseD->amount;
+              }
             }
           }
         }
-      }
+     }
    }
     if($this->isCalculated != 1){
         // Update amounts
+      if($paramImputOfBillLineProvider == "TTC"){  
+        if ($this->realFullAmount!=null) {
+          if($this->taxPct > 0) {
+            $this->realAmount =  $this->realFullAmount / ( 1 + ( $this->taxPct / 100 ));
+            $this->realTaxAmount= $this->realFullAmount - $this->realAmount;
+          }else{
+            $this->realAmount =  $this->realFullAmount;
+            $this->realTaxAmount= 0;
+          }
+        }
+      }else{
+        if ($this->realAmount!=null) {
+          if ($this->taxPct!=null) {
+            $this->realTaxAmount=round(($this->realAmount*$this->taxPct/100),2);
+          } else {
+            $this->realTaxAmount=null;
+          } 
+          $this->realFullAmount=$this->realAmount+$this->realTaxAmount;
+        }
+      }
+      
       if ($this->realAmount!=null) {
-        if ($this->taxPct!=null) {
-          $this->realTaxAmount=round(($this->realAmount*$this->taxPct/100),2);
-        } else {
-          $this->realTaxAmount=null;
-        } 
-        $this->realFullAmount=$this->realAmount+$this->realTaxAmount;
+        if($paramImputOfAmountProvider == 'HT'){
+          if ($this->taxPct!=null) {
+            $this->realTaxAmount=round(($this->realAmount*$this->taxPct/100),2);
+          } else {
+            $this->realTaxAmount=null;
+          } 
+          $this->realFullAmount=$this->realAmount+$this->realTaxAmount;
+        }
       } else {
-        $this->realTaxAmount=null;
-        $this->realFullAmount=null;
+          $this->realTaxAmount=null;
+          $this->realFullAmount=null;
       }  
     }
+    
     if ($this->plannedAmount!=null) {
-      if ($this->taxPct!=null) {
-        $this->plannedTaxAmount=round(($this->plannedAmount*$this->taxPct/100),2);
-      } else {
-        $this->plannedTaxAmount=null;
+      if($paramImputOfAmountProvider == 'HT'){
+        if ($this->taxPct!=null) {
+          $this->plannedTaxAmount=round(($this->plannedAmount*$this->taxPct/100),2);
+        } else {
+          $this->plannedTaxAmount=null;
+        }
+        $this->plannedFullAmount=$this->plannedAmount+$this->plannedTaxAmount;
       }
-      $this->plannedFullAmount=$this->plannedAmount+$this->plannedTaxAmount;
     } else {
       $this->plannedTaxAmount=null;
       $this->plannedFullAmount=null;
@@ -342,37 +372,99 @@ class ProjectExpenseMain extends Expense {
       $colScript .= '  }';
       $colScript .= '  formChanged();';
       $colScript .= '</script>';
-    } else if ($colName=="realAmount" or $colName=="plannedAmount" or $colName=="taxPct") {
+    } else if ($colName=="realAmount" or $colName=="plannedAmount" or $colName=="taxPct" or $colName=="plannedFullAmount" or $colName=="realFullAmount") {
       $colScript .= '<script type="dojo/connect" event="onChange" >';
-      $colScript .= '  var init=dijit.byId("realAmount").get("value");';
-      $colScript .= '  var plan=dijit.byId("plannedAmount").get("value");';
       $colScript .= '  var tax=dijit.byId("taxPct").get("value");';
-      $colScript .= '  var initTax=null;';
-      $colScript .= '  var planTax=null;';
-      $colScript .= '  var initFull=null;';
-      $colScript .= '  var planFull=null;';
-      $colScript .= '  if (!isNaN(init)) {';
-      $colScript .= '    if (!isNaN(tax)) {';
-      $colScript .= '      initTax=Math.round(init*tax)/100;';
-      $colScript .= '      initFull=init+initTax;';
-      $colScript .= '    } else {';
-      $colScript .= '      initFull=init;';
-      $colScript .= '    }';
-      $colScript .= '  }';
-      $colScript .= '  if (!isNaN(plan)) {';
-      $colScript .= '    if (!isNaN(tax)) {';
-      $colScript .= '      planTax=Math.round(plan*tax)/100;';
-      $colScript .= '      planFull=plan+planTax;';
-      $colScript .= '    } else {';
-      $colScript .= '      planFull=plan;';
-      $colScript .= '    }';
-      $colScript .= '  }';
-      if($this->isCalculated == 0){
-        $colScript .= '  dijit.byId("realTaxAmount").set("value",initTax);';
-        $colScript .= '  dijit.byId("realFullAmount").set("value",initFull);';
+      $paramImputOfAmountProvider = Parameter::getGlobalParameter('ImputOfAmountProvider');
+      $paramImputOfAmountProviderBillLine = Parameter::getGlobalParameter('ImputOfBillLineProvider');
+      if (count($this->getExpenseDetail())>0 and $paramImputOfAmountProvider == 'HT' and $paramImputOfAmountProviderBillLine== 'TTC') {
+          $colScript .= '  var plan=dijit.byId("plannedAmount").get("value");';
+          $colScript .= '  var planTax=null;';
+          $colScript .= '  var planFull=null;';
+          $colScript .= '  if (!isNaN(plan)) {';
+          $colScript .= '    if (!isNaN(tax)) {';
+          $colScript .= '      planTax=Math.round(plan*tax)/100;';
+          $colScript .= '      planFull=plan+planTax;';
+          $colScript .= '    } else {';
+          $colScript .= '      planFull=plan;';
+          $colScript .= '    }';
+          $colScript .= '  }';
+          $colScript .= '  var initFull=dijit.byId("realFullAmount").get("value");';
+          $colScript .= '  var initTax=null;';
+          $colScript .= '  var init=null;';
+          $colScript .= '  if (!isNaN(initFull)) {';
+          $colScript .= '    if (!isNaN(tax)) {';
+          $colScript .= '      init = initFull / (1 +( tax / 100 ) );';
+          $colScript .= '      initTax=initFull-init;';
+          $colScript .= '    } else {';
+          $colScript .= '      init=initFull;';
+          $colScript .= '    }';
+          $colScript .= '  }';
+          if($this->isCalculated == 0){
+            $colScript .= '  dijit.byId("realTaxAmount").set("value",initTax);';
+            $colScript .= '  dijit.byId("realAmount").set("value",init);';
+          }
+          $colScript .= '  dijit.byId("plannedTaxAmount").set("value",planTax);';
+          $colScript .= '  dijit.byId("plannedFullAmount").set("value",planFull);';
+      }elseif($paramImputOfAmountProvider == 'HT' and $paramImputOfAmountProviderBillLine == 'HT' or $paramImputOfAmountProvider == 'HT' and count($this->getExpenseDetail())==0 ){
+        $colScript .= '  var init=dijit.byId("realAmount").get("value");';
+        $colScript .= '  var plan=dijit.byId("plannedAmount").get("value");';
+        $colScript .= '  var initTax=null;';
+        $colScript .= '  var planTax=null;';
+        $colScript .= '  var initFull=null;';
+        $colScript .= '  var planFull=null;';
+        $colScript .= '  if (!isNaN(init)) {';
+        $colScript .= '    if (!isNaN(tax)) {';
+        $colScript .= '      initTax=Math.round(init*tax)/100;';
+        $colScript .= '      initFull=init+initTax;';
+        $colScript .= '    } else {';
+        $colScript .= '      initFull=init;';
+        $colScript .= '    }';
+        $colScript .= '  }';
+        $colScript .= '  if (!isNaN(plan)) {';
+        $colScript .= '    if (!isNaN(tax)) {';
+        $colScript .= '      planTax=Math.round(plan*tax)/100;';
+        $colScript .= '      planFull=plan+planTax;';
+        $colScript .= '    } else {';
+        $colScript .= '      planFull=plan;';
+        $colScript .= '    }';
+        $colScript .= '  }';
+        if($this->isCalculated == 0){
+          $colScript .= '  dijit.byId("realTaxAmount").set("value",initTax);';
+          $colScript .= '  dijit.byId("realFullAmount").set("value",initFull);';
+        }
+        $colScript .= '  dijit.byId("plannedTaxAmount").set("value",planTax);';
+        $colScript .= '  dijit.byId("plannedFullAmount").set("value",planFull);';
+      }else{
+        $colScript .= '  var initFull=dijit.byId("realFullAmount").get("value");';
+        $colScript .= '  var planFull=dijit.byId("plannedFullAmount").get("value");';
+        $colScript .= '  var initTax=null;';
+        $colScript .= '  var planTax=null;';
+        $colScript .= '  var init=null;';
+        $colScript .= '  var plan=null;';
+        $colScript .= '  if (!isNaN(planFull)) {';
+        $colScript .= '    if (!isNaN(tax)) {';
+        $colScript .= '      plan = planFull / (1 + (tax /100 ) );';
+        $colScript .= '      planTax= planFull-plan;';
+        $colScript .= '    } else {';
+        $colScript .= '      plan=planFull;';
+        $colScript .= '    }';
+        $colScript .= '  }';
+        $colScript .= '  if (!isNaN(initFull)) {';
+        $colScript .= '    if (!isNaN(tax)) {';
+        $colScript .= '      init = initFull / (1 +( tax / 100 ) );';
+        $colScript .= '      initTax=initFull-init;';
+        $colScript .= '    } else {';
+        $colScript .= '      init=initFull;';
+        $colScript .= '    }';
+        $colScript .= '  }';
+        if($this->isCalculated == 0){
+          $colScript .= '  dijit.byId("realTaxAmount").set("value",initTax);';
+          $colScript .= '  dijit.byId("realAmount").set("value",init);';
+        }
+        $colScript .= '  dijit.byId("plannedTaxAmount").set("value",planTax);';
+        $colScript .= '  dijit.byId("plannedAmount").set("value",plan);';
       }
-      $colScript .= '  dijit.byId("plannedTaxAmount").set("value",planTax);';
-      $colScript .= '  dijit.byId("plannedFullAmount").set("value",planFull);';
       $colScript .= '  formChanged();';
       $colScript .= '</script>';
     } else if ($colName=="idProvider") {
@@ -396,15 +488,23 @@ class ProjectExpenseMain extends Expense {
   }
   
   public function setAttributes() {
-    if (count($this->getExpenseDetail())>0) {
-      self::$_fieldsAttributes['realAmount']="readonly";
+    $paramImputOfAmountProvider = Parameter::getGlobalParameter('ImputOfAmountProvider');
+    if($paramImputOfAmountProvider == 'HT'){
+      self::$_fieldsAttributes['plannedFullAmount']="readonly";
       self::$_fieldsAttributes['realFullAmount']="readonly";
+    }else{
+      self::$_fieldsAttributes['realAmount']="readonly";
+      self::$_fieldsAttributes['plannedAmount']="readonly";
     }
     if($this->isCalculated == 1){
       self::$_fieldsAttributes["realAmount"]='readonly';
       self::$_fieldsAttributes["plannedAmount"]='readonly';
     }
+    if (count($this->getExpenseDetail())>0) {
+      self::$_fieldsAttributes['realAmount']="readonly";
+      self::$_fieldsAttributes['realFullAmount']="readonly";
+    }
+    
   }
-  
 }
 ?>

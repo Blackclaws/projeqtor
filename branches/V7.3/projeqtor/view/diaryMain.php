@@ -48,6 +48,12 @@
 		   $month=date('m');
 		   $week=date('W');
 		   $day=date('Y-m-d');
+		   if(sessionValueExists('dateSelectorDiary')) {
+		     $day = getSessionValue('dateSelectorDiary');
+		     $year=date('Y',strtotime($day));
+		     $month=date('m',strtotime($day));
+		     $week=date('W',strtotime($day));
+		   }
 		   echo '<div style="font-size:20px; max-height:32px;" id="diaryCaption">';
 		   if ($period=='month') {
 		     echo i18n(date("F",mktime(0,0,0,$month,1,$year))).' '.$year;
@@ -77,8 +83,9 @@
                   type="text" maxlength="10" 
                   style="width:100px; text-align: center;" class="input roundedLeft"
                   hasDownArrow="true"
-                  value="<?php echo $currentDay;?>" >
+                  value="<?php if(sessionValueExists('dateSelectorDiary')){ echo getSessionValue('dateSelectorDiary');}else{ echo $currentDay; }?>" >
                   <script type="dojo/method" event="onChange">
+                    saveDataToSession('dateSelectorDiary',formatDate(dijit.byId('dateSelector').get("value")), false);
                     return diarySelectDate(this.value);
                   </script>
                 </div>
@@ -94,8 +101,9 @@
 		   <select dojoType="dijit.form.FilteringSelect" class="input roundedLeft" style="width: 150px;"
         name="diaryResource" id="diaryResource"
         <?php echo autoOpenFilteringSelect();?>
-        value="<?php echo ($user->isResource)?$user->id:'0';?>" >
+        value="<?php if(sessionValueExists('diaryResource')){ echo getSessionValue('diaryResource');}else{ echo ($user->isResource)?$user->id:'0';}?>" >
          <script type="dojo/method" event="onChange" >
+           saveDataToSession('diaryResource',dijit.byId('diaryResource').get("value"), false);
            loadContent("../view/diary.php","detailDiv","diaryForm");
          </script>
          <?php 
@@ -107,8 +115,9 @@
            <td><?php echo i18n("labelShowDone")?>&nbsp;</td>
            <td>
              <div title="<?php echo i18n('labelShowDone')?>" dojoType="dijit.form.CheckBox" 
-                class="whiteCheck" type="checkbox" id="showDone" name="showDone">
+                class="whiteCheck" type="checkbox" id="showDone" name="showDone"  <?php if (sessionValueExists('showDoneDiary')){  if(getSessionValue('showDoneDiary')=='on'){ echo 'checked';}}?> >
                 <script type="dojo/method" event="onChange" >
+                  saveDataToSession('showDoneDiary',dijit.byId('showDone').get("value"), false);
                   loadContent("../view/diary.php","detailDiv","diaryForm");
                 </script>
               </div>
@@ -117,8 +126,10 @@
             <td><?php echo i18n("labelShowIdle")?>&nbsp;</td>
             <td>
               <div title="<?php echo i18n('showIdleElements')?>" dojoType="dijit.form.CheckBox" 
-                class="whiteCheck" type="checkbox" id="showIdle" name="showIdle">
+                class="whiteCheck" type="checkbox" id="showIdle" name="showIdle"
+                <?php if (sessionValueExists('showIdleDiary')){  if(getSessionValue('showIdleDiary')=='on'){ echo 'checked';}}?> >
                 <script type="dojo/method" event="onChange" >
+                  saveDataToSession('showIdleDiary',dijit.byId('showIdle').get("value"), false);
                   loadContent("../view/diary.php","detailDiv","diaryForm");
                 </script>
               </div>

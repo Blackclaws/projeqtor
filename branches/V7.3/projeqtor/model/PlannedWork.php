@@ -266,7 +266,7 @@ class PlannedWork extends GeneralWork {
       if (! $plan->id) {
         continue;
       }
-    	$plan=$fullListPlan['#'.$plan->id];
+    	if (isset($fullListPlan['#'.$plan->id])) $plan=$fullListPlan['#'.$plan->id];
       //-- Determine planning profile
       if ($plan->idle) {
       	$plan->_noPlan=true;

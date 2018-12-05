@@ -87,7 +87,7 @@ $keyDownEventScript=NumberFormatter52::getKeyDownEvent();
   <script type="text/javascript" src="js/projeqtorWork.js?version=<?php echo $version.'.'.$build;?>" ></script>
   <script type="text/javascript" src="js/projeqtorDialog.js?version=<?php echo $version.'.'.$build;?>" ></script>
   <script type="text/javascript" src="js/projeqtorFormatter.js?version=<?php echo $version.'.'.$build;?>" ></script>
-  <script type="text/javascript" src="../external/ckeditor/ckeditor.js"></script>
+  <script type="text/javascript" src="../external/ckeditor/ckeditor.js?version=<?php echo $version.'.'.$build;?>"></script>
    
  <script type="text/javascript" src="../external/promise/es6-promise.min.js"></script>
  <script type="text/javascript" src="../external/promise/es6-promise.auto.min.js"></script>
@@ -302,10 +302,10 @@ $keyDownEventScript=NumberFormatter52::getKeyDownEvent();
       aboutMessage+='&nbsp;&nbsp;.&nbsp;CK Editor : '+CKEDITOR.version+'<br/>';
       aboutMessage+='&nbsp;&nbsp;.&nbsp;pChart2 : <?php include_once('../external/pChart2/getVersion.php');echo pChartGetVersion();?>'+'<br/>';
       aboutMessage+='&nbsp;&nbsp;.&nbsp;phpMailer : <?php $vers=file_get_contents('../external/PHPMailer/VERSION');echo $vers;?>'+'<br/>';
-      aboutMessage+='&nbsp;&nbsp;&nbsp;pdfMake 0.1.38 '+'<br/>';
+      aboutMessage+='&nbsp;&nbsp;.&nbsp;html2canvas : <?php include_once('../external/html2canvas/getVersion.php');echo html2canvasGetVersion();?>'+'<br/>';    
+      aboutMessage+='&nbsp;&nbsp;.&nbsp;pdfMake : <?php include_once('../external/pdfmake/getVersion.php');echo pdfmakeGetVersion();?>'+'<br/>';
       
       aboutMessage+='&nbsp;&nbsp;&nbsp;CryptoJS 3.1.2 '+'<br/>';      
-      aboutMessage+='&nbsp;&nbsp;&nbsp;html2canvas 1.0.0 '+'<br/>';    
       aboutMessage+='&nbsp;&nbsp;&nbsp;phpAES '+'<br/>';
       aboutMessage+='&nbsp;&nbsp;&nbsp;TinyButStrong 3.10.1'+'<br/>';
       aboutMessage+='&nbsp;&nbsp;&nbsp;XLSReader'+'<br/>';
@@ -402,7 +402,7 @@ $keyDownEventScript=NumberFormatter52::getKeyDownEvent();
         	  $directAccessIndex=array();
           }
           $index=count($directAccessIndex)+1;
-          if ($class) $directAccessIndex[$index]=new $class($id);
+          if ($class) $directAccessIndex[$index]=$directObj;
           else $directAccessIndex[$index]='';
           setSessionValue('directAccessIndex', $directAccessIndex);
         	echo "directAccessIndex=$index;";
@@ -432,7 +432,7 @@ $keyDownEventScript=NumberFormatter52::getKeyDownEvent();
       dojo.byId("mainDiv").style.visibility="visible"; 
       setTimeout('checkAlert();',5000); //first check at 5 seco 
       <?php if ($firstPage=="welcome.php") {?>
-          setTimeout("runWelcomeAnimation();",2000);
+          //setTimeout("runWelcomeAnimation();",2000);
       <?php } ?>
       <?php // check for ongoing work on Ticket 
       if (getSessionUser()->id) {

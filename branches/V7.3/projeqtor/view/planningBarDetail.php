@@ -31,6 +31,10 @@ $work=array();
 $start=null;
 $end=null;
 
+if ($class=='Resource' or $class=='ResourceTeam') {
+  echo '<div style="background-color:#FFF0F0;padding:3px;border:1px solid #E0E0E0;">'.i18n('noDataToDisplay')."</div>";
+  return;
+}
 $crit=array('refType'=>$class,'refId'=>$id);
 
 $pe=SqlElement::getSingleSqlElementFromCriteria($class.'PlanningElement', $crit);

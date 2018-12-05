@@ -65,7 +65,7 @@ class Audit extends SqlElement {
     <th field="lastAccessDateTime" formatter="dateFormatter" width="12%"  >${lastAccess}</th>
     <th field="duration" formatter="timeFormatter" width="10%"  >${duration}</th>
     <th field="platform" width="10%" >${platform}</th>
-    <th field="browser" formatter="timeFormatter" width="10%" >${browser}</th>
+    <th field="browser" width="10%" >${browser}</th>
     <th field="requestDisconnection" width="6%" formatter="booleanFormatter" >${requestDisconnection}</th>
     <th field="idle" width="5%" formatter="booleanFormatter" >${idle}</th>
     ';

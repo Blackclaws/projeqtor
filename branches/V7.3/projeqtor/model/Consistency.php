@@ -198,7 +198,7 @@ class Consistency {
       $res=$pe->moveTo($pePrec->id,'after');
       if (getLastOperationStatus($res)=='OK' or getLastOperationStatus($res)=='NO_CHANGE') displayOK(i18n("checkFixed"),true);
       else displayError($res,true);
-    } else if ($action=="recalculateLevel") {
+    } else if ($action=="recalculateLevel" and $pe->topId) {
       $where="topId=$pe->topId";
       $levelList=$pe->getSqlElementsFromCriteria(null,null,$where,'wbsSortable');
       if (count($levelList)==1) {
@@ -207,7 +207,7 @@ class Consistency {
         $res=$pe->save();
         if (getLastOperationStatus($res)=='OK' or getLastOperationStatus($res)=='NO_CHANGE') displayOK(i18n("checkFixed"),true);
         else displayError($res,true);
-      } else {
+      } else if (count($levelList)>1) {
         $first=$levelList[0];
         $second=$levelList[1];
         $res=$second->moveTo($first->id,'before');
@@ -290,14 +290,28 @@ class Consistency {
       displayError(i18n("checkIncorrectWork",array(i18n($refType),$refId,Work::displayWorkWithUnit($realWork),Work::displayWorkWithUnit($sumWork))));
       $errors++;
       if ($correct) {
-        displayMsg(i18n("checkNotFixed"),true);
-        $query="SELECT idResource as idres, sum(work) as sumwork from $workTable w where w.refType='$refType' and w.refId=$refId group by idResource";
-        $resultRes=Sql::query($query);
-        while ($lineRes = Sql::fetchLine($resultRes)) {
-          $idRes=$lineRes['idres'];
-          $sumWork=$lineRes['sumwork'];
-          displayMsg('&nbsp;-&nbsp;'.SqlList::getNameFromId('Affectable', $idRes).' : '.Work::displayWorkWithUnit($sumWork),true);
+        $elt=new $refType($refId);
+        $res=$elt->save();
+        $we=SqlElement::getSingleSqlElementFromCriteria('WorkElement', array('refType'=>$refType, 'refId'=>$refId));
+        if ($we->id) {
+          $we->realWork=$sumWork;
+          $resWe=$we->simpleSave();
         }
+        if (getLastOperationStatus($res)=='OK' or (isset($resWe) and getLastOperationStatus($resWe)=='OK') ) {
+          displayOK(i18n("checkFixed"),true);
+        } else {
+          displayMsg(i18n("checkNotFixed"),true);
+          $query="SELECT idResource as idres, sum(work) as sumwork from $workTable w where w.refType='$refType' and w.refId=$refId group by idResource";
+          $resultRes=Sql::query($query);
+          while ($lineRes = Sql::fetchLine($resultRes)) {
+            $idRes=$lineRes['idres'];
+            $sumWork=$lineRes['sumwork'];
+            displayMsg('&nbsp;-&nbsp;'.SqlList::getNameFromId('Affectable', $idRes).' : '.Work::displayWorkWithUnit($sumWork),true);
+          }
+        
+          
+        }
+        
       }
     }
     if (!$errors) {
@@ -307,7 +321,7 @@ class Consistency {
   }
   
   // =================================================================================================================
-  // Work On Ticket
+  // Work On Activity
   // =================================================================================================================
   
   public static function checkWorkOnActivity($correct=false,$trace=false) {
@@ -317,16 +331,21 @@ class Consistency {
     $workTable=$work->getDatabaseTableName();
     $pe=new PlanningElement();
     $peTable=$pe->getDatabaseTableName();
-    $query="SELECT pe.refType as reftype, pe.refId as refid, pe.realWork as realwork, "
-          ."  (select sum(work) from $workTable w where w.refType=pe.refType and w.refId=pe.refId)+(select pesum.sum(realWork) from $peTable pesum where pesum.topId=pe.id) as sumwork "
-          ."FROM $peTable pe where realwork!=(select sum(work) from $workTable w where w.refType=pe.refType and w.refId=pe.refId) ";
+    $query="SELECT pe.refType as reftype, pe.refId as refid, pe.realWork as realwork, pe.leftWork as leftwork, pe.plannedWork as plannedwork,"
+          ."  (select sum(work) from $workTable w where w.refType=pe.refType and w.refId=pe.refId)+(select sum(pesum.realWork) from $peTable pesum where pesum.topId=pe.id) as sumwork "
+          ."FROM $peTable pe "
+          ."WHERE realwork!=(select sum(work) from $workTable w where w.refType=pe.refType and w.refId=pe.refId)+(select sum(pesum.realWork) from $peTable pesum where pesum.topId=pe.id) "
+          ."   OR (pe.realWork+pe.leftWork)!=pe.plannedWork ";
     $result=Sql::query($query);
     while ($line = Sql::fetchLine($result)) {
       $refType=$line['reftype'];
       $refId=$line['refid'];
       $realWork=$line['realwork'];
+      $leftWork=$line['leftwork'];
+      $plannedWork=$line['plannedwork'];
       $sumWork=$line['sumwork'];
-      displayError(i18n("checkIncorrectWork",array(i18n($refType),$refId,Work::displayWorkWithUnit($realWork),Work::displayWorkWithUnit($sumWork))));
+      if ($realWork!=$sumWork) displayError(i18n("checkIncorrectWork",array(i18n($refType),$refId,Work::displayWorkWithUnit($realWork),Work::displayWorkWithUnit($sumWork))));
+      if ($realWork+$leftWork!=$plannedWork) displayError(i18n("checkIncorrectSumWork",array(i18n($refType),$refId,Work::displayWorkWithUnit($realWork),Work::displayWorkWithUnit($leftWork),Work::displayWorkWithUnit($plannedWork))));
       $errors++;
       if ($correct) {
         $res=PlanningElement::updateSynthesis($refType,$refId);
@@ -338,6 +357,107 @@ class Consistency {
             $idRes=$lineRes['idres'];
             $sumWork=$lineRes['sumwork'];
             displayMsg('&nbsp;-&nbsp;'.SqlList::getNameFromId('Affectable', $idRes).' : '.Work::displayWorkWithUnit($sumWork),true);
+          }
+        } else {
+          displayOK(i18n("checkFixed"),true);
+        }
+      }
+    }
+    if (!$errors) {
+      displayOK(i18n("checkNoError"));
+  
+    }
+  }
+  
+  // =================================================================================================================
+  // Work On Assignment
+  // =================================================================================================================
+  
+  public static function checkWorkOnAssignment($correct=false,$trace=false) {
+    $errors=0;
+    // Direct Query : valid here for technical needs on grouping
+    $work=new Work();
+    $workTable=$work->getDatabaseTableName();
+    $ass=new Assignment();
+    $assTable=$ass->getDatabaseTableName();
+    $query="SELECT ass.id as id, ass.refType as reftype, ass.refId as refid, ass.realWork as realwork, ass.leftWork as leftwork, ass.plannedWork as plannedwork,"
+        ."  (select sum(work) from $workTable w where w.idAssignment=ass.id) as sumwork "
+        ."FROM $assTable ass "
+        ."WHERE realwork!=(select sum(work) from $workTable w where w.idAssignment=ass.id) "
+        ."   OR (coalesce(ass.realWork,0)+coalesce(ass.leftWork,0))!=coalesce(ass.plannedWork,0) ";
+    $result=Sql::query($query);
+    while ($line = Sql::fetchLine($result)) {
+      $id=$line['id'];
+      $refType=$line['reftype'];
+      $refId=$line['refid'];
+      $realWork=$line['realwork'];
+      $leftWork=$line['leftwork'];
+      $plannedWork=$line['plannedwork'];
+      $sumWork=$line['sumwork'];
+      if ($realWork!=$sumWork) displayError(i18n("checkIncorrectWork",array(i18n($refType),$refId,Work::displayWorkWithUnit($realWork),Work::displayWorkWithUnit($sumWork))));
+      if ($realWork+$leftWork!=$plannedWork) displayError(i18n("checkIncorrectSumWork",array(i18n($refType),$refId,Work::displayWorkWithUnit($realWork),Work::displayWorkWithUnit($leftWork),Work::displayWorkWithUnit($plannedWork))));
+      $errors++;
+      if ($correct) {
+        $ass=new Assignment($id);
+        $res=$ass->saveWithRefresh();
+        if (getLastOperationStatus($res)!='OK') {
+          displayMsg(i18n("checkNotFixed"),true);
+        } else {
+          displayOK(i18n("checkFixed"),true);
+        }
+      }
+    }
+    if (!$errors) {
+      displayOK(i18n("checkNoError"));
+  
+    }
+  }
+  
+  // =================================================================================================================
+  // Idle consistency from Activity / PlanningElement / Assignment
+  // =================================================================================================================
+  
+  public static function checkIdlePropagation($correct=false,$trace=false) {
+    $errors=0;
+    // Direct Query : valid here for technical needs on grouping
+    $actArray=array('Activity','Meeting','TestSession');
+    foreach ($actArray as $type) {
+      $ass=new Assignment();
+      $assTable=$ass->getDatabaseTableName();
+      $act=new $type();
+      $actTable=$act->getDatabaseTableName();
+      $pe=new PlanningElement();
+      $peTable=$pe->getDatabaseTableName();
+      $query="SELECT act.id as actid, pe.id as peid, ass.id as assid, act.idle as actidle, pe.idle as peidle, ass.idle as assidle "
+          ." FROM $actTable as act left join $peTable as pe on (pe.refType='$type' and pe.refId=act.id) left join $assTable ass on (ass.refType='$type' and ass.refId=act.id)"
+          ." WHERE act.idle!=pe.idle or (act.idle!=ass.idle and ass.idle is not null)";
+      $result=Sql::query($query);
+      while ($line = Sql::fetchLine($result)) {
+        $actId=$line['actid'];
+        $peId=$line['peid'];
+        $assId=$line['assid'];
+        $actIdle=$line['actidle'];
+        $peIdle=$line['peidle'];
+        $assIdle=$line['assidle'];
+        displayError(i18n("checkIncorrectIdle",array(i18n($type),$actId,$actIdle,$peIdle,$assIdle)));
+        $errors++;
+        if ($correct) {
+          if ($assId) {
+            $ass=new Assignment($assId);
+            $ass->idle=$actIdle;
+            $resAss=$ass->save();
+          }
+          if ($peId) {
+            $pe=new PlanningElement($peId);
+            $pe->idle=$actIdle;
+            $resPe=$pe->save();
+          }
+          $act=new $type($actId);
+          $resAct=$act->save();
+          if (getLastOperationStatus($resAct)=='OK' or (isset($resPe) and getLastOperationStatus($resPe)=='OK') or (isset($resAss) and getLastOperationStatus($resAss)=='OK') ) {
+            displayOK(i18n("checkFixed"),true);
+          } else {
+            displayMsg(i18n("checkNotFixed"),true);
           }
         }
       }
@@ -420,8 +540,6 @@ class Consistency {
           displayMsg(i18n("checkNotFixed"),true);
         }
       }
-      
-      
     }
     if (!$errors) {
       displayOK(i18n("checkNoError"));

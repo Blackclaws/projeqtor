@@ -625,15 +625,18 @@ class ResourceMain extends SqlElement {
     return $result;
   }
   
-  public function drawMemberList($team) {
+  public function drawMemberList($team, $showClosedItems) {
     $result="<table>";
-    $crit=array('idTeam'=>$team);
+    if ($showClosedItems == FALSE) $crit=array('idTeam'=>$team, 'idle'=>"0");
+    if ($showClosedItems == TRUE) $crit=array('idTeam'=>$team);
     $resList=$this->getSqlElementsFromCriteria($crit, false);
     foreach ($resList as $res) {
+      $style = "";
+      if ($res->idle == 1) $style = "color#5555;text-decoration: line-through;";
       $result.= '<a><tr><td valign="middle" width="20px">';
       $result.= formatIcon('Right', 16);
       $result.= '</td></a><td>';
-      $result.=''.$res->getPhotoThumb(32).'&nbsp;</td><td>';
+      $result.=''.$res->getPhotoThumb(32).'&nbsp;</td><td style="'.$style.'">';
       $result.=htmlDrawLink($res);
       $result.='</td></tr>';
     }

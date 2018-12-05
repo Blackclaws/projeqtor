@@ -324,8 +324,8 @@ class BillLine extends SqlElement {
       			$work = new Work();
             $crit = "idProject='".$bill->idProject . "'";
             $crit.=" and idResource='".Sql::fmtId($this->idResource). "'";    
-            $crit.=" and workDate>=\"".$this->startDate."\"";
-            $crit.=" and workDate<=\"".$this->endDate."\"";
+            $crit.=" and workDate>='".$this->startDate."'";
+            $crit.=" and workDate<='".$this->endDate."'";
             $crit.=" and idAssignment='".Sql::fmtId($ass->id)."'";
             $crit.=" and idBill is null";   
             $workList = $work->getSqlElementsFromCriteria(null,false,$crit, "idAssignment asc");

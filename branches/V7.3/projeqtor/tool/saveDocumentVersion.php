@@ -237,8 +237,8 @@ if (! $documentVersionId) {
 	    }
 		}
 	  if ( ! move_uploaded_file($uploadedFile['tmp_name'], $uploadfile)) {
-	     $error=htmlGetErrorMessage(i18n('errorUploadFile','hacking ?'));
-	     errorLog(i18n('errorUploadFile','hacking ?'));
+	     $error=htmlGetErrorMessage(i18n('errorUploadFile',array('hacking')));
+	     errorLog(i18n('errorUploadFile',array('hacking')));
 	     //$error=true;
 	     $dv->delete(); 
 	  } else {

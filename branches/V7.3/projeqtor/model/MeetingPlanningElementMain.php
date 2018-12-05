@@ -224,9 +224,10 @@ class MeetingPlanningElementMain extends PlanningElement {
   }
 // END - ADD BY Marc TABARY - 2017-02-16 - WORK AND COST VISIBILITY 
 
-  public function setAttributes($workVisibility, $costVisibility) {
+  public function setAttributes($workVisibility=null, $costVisibility=null) {
 // MODIFY BY Marc TABARY - 2017-02-16 - WORK AND COST VISIBILITY
-      $wcVisibility = $workVisibility.$costVisibility;
+    if (!$workVisibility or !$costVisibility) return;
+    $wcVisibility = $workVisibility.$costVisibility;
     switch ($wcVisibility) {
         case "NONO" :
         $this->hideWorkCost();

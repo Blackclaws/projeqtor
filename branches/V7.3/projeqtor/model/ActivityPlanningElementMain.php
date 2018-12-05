@@ -207,7 +207,7 @@ class ActivityPlanningElementMain extends PlanningElement {
    * @return the return message of persistence/SqlElement#save() method
    */
   public function save() {
-    $this->updateWorkElementSummary(true);
+    if (! PlanningElement::$_noDispatch) $this->updateWorkElementSummary(true);
     return parent::save();
   }
   

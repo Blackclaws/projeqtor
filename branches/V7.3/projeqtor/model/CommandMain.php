@@ -121,9 +121,7 @@ class CommandMain extends SqlElement {
                                   "idle"=>"nobr",
                                   "idPaymentDelay"=>"hidden",
 						  							      "taxAmount"=>"calculated,readonly",
-                                  "fullAmount"=>"readonly",
                                   "addTaxAmount"=>"calculated,readonly",
-                                  "addFullAmount"=>"readonly",
                                   "totalTaxAmount"=>"calculated,readonly",
                                   "totalFullAmount"=>"readonly",
                                   "totalUntaxedAmount"=>"readonly",
@@ -161,13 +159,6 @@ class CommandMain extends SqlElement {
     if ($status->isCopyStatus) {
     	self::$_fieldsAttributes["externalReference"]="";
     }*/
-    if (count($this->_BillLine)) {
-      self::$_fieldsAttributes['untaxedAmount']='readonly';
-      self::$_fieldsAttributes['addUntaxedAmount']='readonly';
-      self::$_fieldsAttributes['totalUntaxedAmount']='readonly';
-      self::$_fieldsAttributes['initialWork']='readonly';
-      self::$_fieldsAttributes['addWork']='readonly';
-    }
     if ($this->fullAmount) {
       $this->taxAmount=$this->fullAmount-$this->untaxedAmount;
       $this->addTaxAmount=$this->addFullAmount-$this->addUntaxedAmount;
@@ -276,7 +267,7 @@ class CommandMain extends SqlElement {
   	    $this->taxPct=$client->taxPct;
   	  }
   	}
-  	
+  	$paramImputOfBillLineClient = Parameter::getGlobalParameter('ImputOfBillLineClient');
   	$billLine=new BillLine();
   	$crit = array("refType"=> "Command", "refId"=>$this->id);
   	$billLineList = $billLine->getSqlElementsFromCriteria($crit,false);
@@ -298,20 +289,34 @@ class CommandMain extends SqlElement {
   	      }
   	    }
   	  }
-  	  $this->untaxedAmount=$amount;
-  	  $this->addUntaxedAmount=$addAmount;
+  	  if($paramImputOfBillLineClient == 'HT'){
+    	  $this->untaxedAmount=$amount;
+    	  $this->addUntaxedAmount=$addAmount;
+  	  }else{
+  	    $this->fullAmount=$amount;
+  	    $this->addFullAmount=$addAmount;
+  	  }
   	  $this->initialWork=$work;
   	  $this->addWork=$addWork;
   	}
-  	if (!$this->untaxedAmount) $this->untaxedAmount=0;
-  	if (!$this->addUntaxedAmount) $this->addUntaxedAmount=0;
-  	$this->totalUntaxedAmount=$this->untaxedAmount+$this->addUntaxedAmount;
+  	
   	$this->validatedWork=$this->initialWork+$this->addWork;
   	
-  	$this->fullAmount=$this->untaxedAmount*(1+$this->taxPct/100);
-  	$this->addFullAmount=$this->addUntaxedAmount*(1+$this->taxPct/100);
-  	$this->totalFullAmount=$this->totalUntaxedAmount*(1+$this->taxPct/100);
-  	
+  	if($paramImputOfBillLineClient == 'HT'){
+  	  if (!$this->untaxedAmount) $this->untaxedAmount=0;
+  	  if (!$this->addUntaxedAmount) $this->addUntaxedAmount=0;
+  	  $this->totalUntaxedAmount=$this->untaxedAmount+$this->addUntaxedAmount;
+    	$this->fullAmount=$this->untaxedAmount*(1+$this->taxPct/100);
+    	$this->addFullAmount=$this->addUntaxedAmount*(1+$this->taxPct/100);
+    	$this->totalFullAmount=$this->totalUntaxedAmount*(1+$this->taxPct/100);
+  	}else{
+  	  if (!$this->fullAmount) $this->fullAmount=0;
+  	  if (!$this->addFullAmount) $this->addFullAmount=0;
+  	  $this->totalFullAmount=$this->fullAmount+$this->addFullAmount;
+  	  $this->untaxedAmount=$this->fullAmount/(1+$this->taxPct/100);
+  	  $this->addUntaxedAmount=$this->addFullAmount/(1+$this->taxPct/100);
+  	  $this->totalUntaxedAmount=$this->totalFullAmount/(1+$this->taxPct/100);
+  	}
   	$this->validatedPricePerDayAmount=($this->validatedWork!=0)?($this->totalUntaxedAmount/$this->validatedWork):0;
   	$this->initialPricePerDayAmount=($this->initialWork!=0)?($this->untaxedAmount/$this->initialWork):0;
   	  	
@@ -359,9 +364,17 @@ class CommandMain extends SqlElement {
     
     $colScript = parent::getValidationScript($colName);
     if ($colName=="untaxedAmount" || $colName=="taxPct" || $colName=="initialWork"
-  	 || $colName=="addUntaxedAmount" || $colName=="addWork") {
+  	 || $colName=="addUntaxedAmount" || $colName=="addWork" || $colName=="addFullAmount" || $colName=="fullAmount") {
       $colScript .= '<script type="dojo/connect" event="onChange" >';
-      $colScript .= '  updateCommandTotal();';
+      $paramImputOfAmountClient = Parameter::getGlobalParameter('ImputOfAmountClient');
+      if (count($this->_BillLine)) {
+        $paramImputOfAmountClient = Parameter::getGlobalParameter('ImputOfBillLineClient');
+      }
+      if($paramImputOfAmountClient == 'HT'){
+        $colScript .= '  updateCommandTotal();';
+      }else{
+        $colScript .= '  updateCommandTotalTTC();';
+      }
       $colScript .= '  formChanged();';
       $colScript .= '</script>';
     } else if ($colName=="idProject") {
@@ -388,6 +401,26 @@ class CommandMain extends SqlElement {
   	
   	return $val;
   	
+  }
+  
+  public function setAttributes() {
+    if (count($this->_BillLine)) {
+      self::$_fieldsAttributes['untaxedAmount']='readonly';
+      self::$_fieldsAttributes['fullAmount']='readonly';
+      self::$_fieldsAttributes['addUntaxedAmount']='readonly';
+      self::$_fieldsAttributes['addFullAmount']='readonly';
+      self::$_fieldsAttributes['totalUntaxedAmount']='readonly';
+      self::$_fieldsAttributes['initialWork']='readonly';
+      self::$_fieldsAttributes['addWork']='readonly';
+    }
+    $paramImputOfAmountClient = Parameter::getGlobalParameter('ImputOfAmountClient');
+    if($paramImputOfAmountClient == 'HT'){
+      self::$_fieldsAttributes['fullAmount']="readonly";
+      self::$_fieldsAttributes['addFullAmount']="readonly";
+    }else{
+      self::$_fieldsAttributes['untaxedAmount']="readonly";
+      self::$_fieldsAttributes['addUntaxedAmount']="readonly";
+    }
   }
   
 }

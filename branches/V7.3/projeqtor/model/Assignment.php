@@ -136,8 +136,6 @@ class Assignment extends SqlElement {
     if (! $this->realWork) { $this->realWork=0; }
     // if cost has changed, update work 
     
-    $this->plannedWork = $this->realWork + $this->leftWork;
-    
     if ($this->refType=='Meeting' and ! $this->plannedStartDate) {
       $meeting=new $this->refType($this->refId);
       $this->plannedStartDate=$meeting->meetingDate;
@@ -154,6 +152,7 @@ class Assignment extends SqlElement {
     if($this->idle){
       $this->leftWork=0;
     }
+    
     $newCost=$r->getActualResourceCost($this->idRole);
     $this->newDailyCost=$newCost;
     $this->leftCost=$this->leftWork*$newCost;
@@ -188,6 +187,9 @@ class Assignment extends SqlElement {
     	$refObj=new $this->refType($this->refId);
     	$this->idProject=$refObj->idProject;
     }
+    
+    $this->plannedWork = $this->realWork + $this->leftWork;
+    
     // Dispatch value
     $result = parent::save();
     if (! strpos($result,'id="lastOperationStatus" value="OK"')) {
@@ -226,8 +228,12 @@ class Assignment extends SqlElement {
         $resAss=$ass->save();
       }
     }
-    
-    PlanningElement::updateSynthesis($this->refType, $this->refId);
+    if (! PlanningElement::$_noDispatch) {
+      PlanningElement::updateSynthesis($this->refType, $this->refId);
+    } else {
+      PlanningElement::updateSynthesisNoDispatch($this->refType, $this->refId);
+    }
+
     // Recalculate indicators
     if (SqlList::getIdFromTranslatableName('Indicatorable',$this->refType)) {
       $indDef=new IndicatorDefinition();
@@ -316,6 +322,7 @@ class Assignment extends SqlElement {
   // Save without extra save() feature and without controls
   public function simpleSave() {
   	$result = parent::saveForced();
+  	return $result;
   }
   /**
    * Delete object and dispatch updates to top 

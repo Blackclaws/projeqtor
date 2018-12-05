@@ -174,38 +174,38 @@ class ComponentMain extends ProductOrComponent {
    *  must be redefined in the inherited class
    */
   public function drawSpecificItem($item){
-  	global $print, $showClosedItems;
-  	if (! $print) $print=RequestHandler::getBoolean('print');
-  	$result="";
+    global $print, $showClosedItems;
+    $result="";
     if ($item=='versions' or $item=='versionsWithProjects') {
-    	$showClosedVersions=(Parameter::getUserParameter('showClosedVersions')!='0')?true:false;
-    	$page="objectDetail";
-    	if (isset($_REQUEST['page'])) $page=substr( basename($_REQUEST['page']) , 0, strpos(basename($_REQUEST['page']),'.php'));
-    	if ($page!='objectDetail') $showClosedVersions=(Parameter::getUserParameter('structureShowClosedItems')!='0')?true:false;
-    	$result .="<table><tr>";
-      //echo "<td class='label' valign='top'><label>" . i18n('versions') . "&nbsp;:&nbsp;</label></td>";
-      $result .="<td>";
+      $showClosedVersions=(Parameter::getUserParameter('showClosedVersions')!='0')?true:false;
+      $page="objectDetail";
+      $result='<table style="width:100%;"><tr>';
+      $result.= '<td class="linkHeader" style="width:15%">'.i18n('colId').'</td>';
+      $result.= '<td class="linkHeader" style="width:60%">'.i18n('colName').'</td>';
+      $result.= '<td class="linkHeader" style="width:20%">'.i18n('Status').'</td>';
+      $result.= '</tr>';
+      if (isset($_REQUEST['page'])) $page=substr( basename($_REQUEST['page']) , 0, strpos(basename($_REQUEST['page']),'.php'));
+      if ($page!='objectDetail') $showClosedVersions=(Parameter::getUserParameter('structureShowClosedItems')!='0')?true:false;
       if ($this->id) {
         $vers=new ComponentVersion();
         $crit=array('idComponent'=>$this->id);
         if (! $showClosedVersions) $crit['idle']='0';
-      	$result .= $vers->drawVersionsList($crit,($item=='versionsWithProjects')?true:false);
-      }
-      $result .="</td></tr>";
-      if (! $print) {
-      	$result.='<tr>';
-      	$result.='<td style="white-space:nowrap;padding-right:10px;"><label for="showClosedVersions" style="width:250px">'.i18n('labelShowIdle').'&nbsp;</label>';
-      	$result.='<div id="showClosedVersions" dojoType="dijit.form.CheckBox" type="checkbox" '.(($showClosedVersions)?'checked':'').' >';
-      	$result.='<script type="dojo/connect" event="onChange" args="evt">';
-      	$result.=' saveUserParameter("showClosedVersions",((this.checked)?"1":"0"));';
-      	$result.=' if (checkFormChangeInProgress()) {return false;}';
-      	$result.=' loadContent("objectDetail.php", "detailDiv", "listForm");';
-      	$result.='</script>';
-      	$result.='</div></td>';
-      	$result.='</tr>';
+        $result .= $vers->drawVersionsList($crit,($item=='versionsWithProjects')?true:false);
       }
       $result.="</table>";
-      return $result;
+      // $resultSC is here to store the "Show Closed" part, it allows to move the checkbox more easily
+      if (!$print) {
+        $resultSC='<div style="position:absolute;right:5px;top:2px;">';
+        $resultSC.='<label for="showClosedVersions"  class="dijitTitlePaneTitle" style="font-weight:normal !important;height:10px;width:250px">'.i18n('labelShowIdle').'&nbsp;</label>';
+        $resultSC.='<div class="whiteCheck" id="showClosedVersions" dojoType="dijit.form.CheckBox" type="checkbox" '.(($showClosedVersions)?'checked':'').' >';
+        $resultSC.='<script type="dojo/connect" event="onChange" args="evt">';
+        $resultSC.=' saveUserParameter("showClosedVersions",((this.checked)?"1":"0"));';
+        $resultSC.=' if (checkFormChangeInProgress()) {return false;}';
+        $resultSC.=' loadContent("objectDetail.php", "detailDiv", "listForm");';
+        $resultSC.='</script>';
+        $resultSC.='</div>';
+      }
+      return $result.$resultSC;
     } else {
       if ($item=='tenders') {
         Tender::drawListFromCriteria('id'.get_class($this),$this->id);

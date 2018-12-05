@@ -52,7 +52,7 @@ if (array_key_exists('upload',$_FILES)) {
 
 if (! $error) {
   if ( $uploadedFile['error']!=0) {
-    errorLog("[".$uploadedFile['error']."] uploadPlugin.php");
+    errorLog("[".$uploadedFile['error']."] uploadImage.php");
     switch ($uploadedFile['error']) {
     	case 1:
     	  $error.=htmlGetErrorMessage("[".$uploadedFile['error']."] ".i18n('errorTooBigFile',array(ini_get('upload_max_filesize'),'upload_max_filesize')));
@@ -97,16 +97,18 @@ if (!$error) {
   } else {
     $uploadfile = $uploaddir . $pathSeparator . $fileName;
   }
-  if (substr($ext,0,3)=='php' or substr($ext,0,4)=='phtm' or substr($ext,0,4)=='shtm') {
-    //if(@!getimagesize($uploadedFile['tmp_name'])) {
-    //  $error=i18n('errorNotAnImage');
-    //} else {
-      traceHack("Try to upload php file as image in CKEditor");
-    //}
+  $allowedExtensions=array('jpg','jpeg','gif','tiff','png','bmp','svg','ico');
+  if (! in_array($ext,$allowedExtensions)) {
+    if (substr($ext,0,3)=='php' or substr($ext,0,3)=='pht' or substr($ext,0,3)=='sht') {
+      traceHack("Try to upload non image file as image in CKEditor");
+      exit;
+    }
+    $error=htmlGetWarningMessage(i18n('msgInvalidFileFormat',array(implode(',',$allowedExtensions))));
+    errorLog(i18n('msgInvalidFileFormat',array(implode(',',$allowedExtensions))));
   } else {
     if ( ! move_uploaded_file($uploadedFile['tmp_name'], $uploadfile)) {
-      $error = htmlGetErrorMessage(i18n('errorUploadFile','hacking ?'));
-      errorLog(i18n('errorUploadFile','hacking ?'));
+      $error = htmlGetErrorMessage(i18n('errorUploadFile',array('hacking')));
+      errorLog(i18n('errorUploadFile',array('hacking')));
     } 
   }
 }

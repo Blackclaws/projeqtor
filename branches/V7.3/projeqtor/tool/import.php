@@ -103,11 +103,20 @@ if (! file_exists($uploaddir)) {
 }
 $uploadfile = $uploaddir . basename($uploadedFile['name']);
 if ( ! move_uploaded_file($uploadedFile['tmp_name'], $uploadfile)) {
-   echo htmlGetErrorMessage(i18n('errorUploadFile','hacking ?'));
-   errorLog(i18n('errorUploadFile','hacking ?'));
+   echo htmlGetErrorMessage(i18n('errorUploadFile',array('hacking')));
+   errorLog(i18n('errorUploadFile',array('hacking')));
    exit; 
 }
-
+$ext = strtolower ( pathinfo ( $uploadfile, PATHINFO_EXTENSION ) );
+if ($ext!='csv' and $ext!='xlsx') {
+   echo htmlGetErrorMessage(i18n('msgInvalidFileFormat',array('csv,xlsx')));
+   errorLog(i18n('msgInvalidFileFormat',array('csv,xlsx')));
+   kill($uploadfile);
+   if (substr($ext,0,3)=='php' or substr($ext,0,3)=='pht' or substr($ext,0,3)=='sht') {
+     traceHack("Try to upload non image file as image in CKEditor");
+   }
+   exit; 
+}
 //// V2.6 : extracted the import function to Importable class to use it from Cron
 $result=Importable::import($uploadfile, $class);
 

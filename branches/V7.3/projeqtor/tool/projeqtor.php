@@ -48,8 +48,8 @@ if (is_session_started()===FALSE) {
 // === Application data : version, dependencies, about message, ...
 $applicationName = "ProjeQtOr"; // Name of the application
 $copyright = $applicationName; // Copyright to be displayed
-$version = "V7.3.0"; // Version of application : Major / Minor / Release
-$build = "0215"; // Build number. To be increased on each release
+$version = "V7.3.1"; // Version of application : Major / Minor / Release
+$build = "0216"; // Build number. To be increased on each release
 $website = "http://www.projeqtor.org"; // ProjeQtOr site url
 if (!isset($aesKeyLength)) { // one can define key lenth to 256 in parameters.php with $aesKeyLength=256; // valid values are 128, 192 and 256
   $aesKeyLength=128;
@@ -3680,6 +3680,20 @@ function getSessionValue($code, $default=null, $global=false) {
     return $default;
   }
   return $_SESSION[$projeqtorSession][$code];
+}
+function getAllSessionValues($global=false) {
+  // Global parameter is forced when "whatever the databse" is required
+  // it is mostly used to cases "also when database is not set yet" ;)
+  global $paramDbName, $paramDbPrefix;
+  if ($global) {
+    $projeqtorSession='ProjeQtOr';
+  } else {
+    $projeqtorSession='ProjeQtOr_'.$paramDbName.(($paramDbPrefix)?'_'.$paramDbPrefix:'');
+  }
+  if (!isset($_SESSION[$projeqtorSession])) {
+    return array();
+  }
+  return $_SESSION[$projeqtorSession];
 }
 
 // Gautier #2512

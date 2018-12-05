@@ -1,39 +1,39 @@
-<?php 
+<?php
 /*** COPYRIGHT NOTICE *********************************************************
  *
  * Copyright 2009-2017 ProjeQtOr - Pascal BERNARD - support@projeqtor.org
  * Contributors : -
  *
  * This file is part of ProjeQtOr.
- * 
- * ProjeQtOr is free software: you can redistribute it and/or modify it under 
- * the terms of the GNU Affero General Public License as published by the Free 
- * Software Foundation, either version 3 of the License, or (at your option) 
+ *
+ * ProjeQtOr is free software: you can redistribute it and/or modify it under
+ * the terms of the GNU Affero General Public License as published by the Free
+ * Software Foundation, either version 3 of the License, or (at your option)
  * any later version.
- * 
+ *
  * ProjeQtOr is distributed in the hope that it will be useful, but WITHOUT ANY
- * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS 
- * FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for 
+ * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for
  * more details.
  *
  * You should have received a copy of the GNU Affero General Public License along with
  * ProjeQtOr. If not, see <http://www.gnu.org/licenses/>.
  *
  * You can get complete code of ProjeQtOr, other resource, help and information
- * about contributors at http://www.projeqtor.org 
- *     
+ * about contributors at http://www.projeqtor.org
+ *
  *** DO NOT REMOVE THIS NOTICE ************************************************/
 
 /** ============================================================================
  * Project is the main object of the project managmement.
  * Almost all other objects are linked to a given project.
- */ 
+ */
 require_once('_securityCheck.php');
 class Version extends SqlElement {
-
+  
   // List of fields that will be exposed in general user interface
   public $_sec_Description;
-  public $id;    // redefine $id to specify its visible place 
+  public $id;    // redefine $id to specify its visible place
   public $scope;
   public $idProduct;
   public $versionNumber;
@@ -82,36 +82,36 @@ class Version extends SqlElement {
     <th field="isEis" width="5%" formatter="booleanFormatter" >${isEis}</th>
     <th field="idle" width="5%" formatter="booleanFormatter" >${idle}</th>
     ';
-
-  private static $_fieldsAttributes=array("name"=>"required", 
+  
+  private static $_fieldsAttributes=array("name"=>"required",
       "idProduct"=>"required",
       "idStatus"=>"required" //ADD qCazelles - Ticket #53
-  );   
-
+  );
+  
   private static $_colCaptionTransposition = array('idContact'=>'contractor', 'idResource'=>'responsible'
   );
   
   
-   /** ==========================================================================
+  /** ==========================================================================
    * Constructor
    * @param $id the id of the object in the database (null if not stored yet)
    * @return void
-   */ 
+   */
   function __construct($id = NULL, $withoutDependentObjects=false) {
     parent::__construct($id,$withoutDependentObjects);
   }
-
-   /** ==========================================================================
+  
+  /** ==========================================================================
    * Destructor
    * @return void
-   */ 
+   */
   function __destruct() {
     parent::__destruct();
   }
-
-// ============================================================================**********
-// GET STATIC DATA FUNCTIONS
-// ============================================================================**********
+  
+  // ============================================================================**********
+  // GET STATIC DATA FUNCTIONS
+  // ============================================================================**********
   
   /** ==========================================================================
    * Return the specific layout
@@ -126,18 +126,18 @@ class Version extends SqlElement {
    */
   protected function getStaticColCaptionTransposition($fld=null) {
     return self::$_colCaptionTransposition;
-  }  
+  }
   
-    /** ==========================================================================
+  /** ==========================================================================
    * Return the specific fieldsAttributes
    * @return the fieldsAttributes
    */
   protected function getStaticFieldsAttributes() {
     return self::$_fieldsAttributes;
   }
-// ============================================================================**********
-// GET VALIDATION SCRIPT
-// ============================================================================**********
+  // ============================================================================**********
+  // GET VALIDATION SCRIPT
+  // ============================================================================**********
   
   /** ==========================================================================
    * Return the validation sript for some fields
@@ -145,33 +145,33 @@ class Version extends SqlElement {
    */
   public function getValidationScript($colName) {
     $colScript = parent::getValidationScript($colName);
-    if ($colName=="initialEisDate") {   
+    if ($colName=="initialEisDate") {
       $colScript .= '<script type="dojo/connect" event="onChange" >';
-      $colScript .= 'if (! dijit.byId("plannedEisDate").get("value")) {'; 
-      $colScript .= '  dijit.byId("plannedEisDate").set("value",this.value);'; 
+      $colScript .= 'if (! dijit.byId("plannedEisDate").get("value")) {';
+      $colScript .= '  dijit.byId("plannedEisDate").set("value",this.value);';
       $colScript .= '};';
       $colScript .= '  formChanged();';
       $colScript .= '</script>';
     }
-    if ($colName=="initialEndDate") {   
+    if ($colName=="initialEndDate") {
       $colScript .= '<script type="dojo/connect" event="onChange" >';
-      $colScript .= 'if (! dijit.byId("plannedEndDate").get("value")) {'; 
-      $colScript .= '  dijit.byId("plannedEndDate").set("value",this.value);'; 
+      $colScript .= 'if (! dijit.byId("plannedEndDate").get("value")) {';
+      $colScript .= '  dijit.byId("plannedEndDate").set("value",this.value);';
       $colScript .= '};';
       $colScript .= '  formChanged();';
       $colScript .= '</script>';
     }
-    if ($colName=="realEisDate") {   
+    if ($colName=="realEisDate") {
       $colScript .= '<script type="dojo/connect" event="onChange" >';
-      $colScript .= 'if (this.value) {'; 
+      $colScript .= 'if (this.value) {';
       $colScript .= '  dijit.byId("isEis").set("checked",true);';
       $colScript .= '} else {;';
       $colScript .= '  dijit.byId("isEis").set("checked",false);';
-      $colScript .= '};'; 
+      $colScript .= '};';
       $colScript .= '  formChanged();';
       $colScript .= '</script>';
     }
-    if ($colName=="isEis") { 
+    if ($colName=="isEis") {
       $colScript .= '<script type="dojo/connect" event="onChange" >';
       $colScript .= 'if (this.checked) { ';
       $colScript .= '  if (! dijit.byId("realEisDate").get("value")) {';
@@ -192,7 +192,7 @@ class Version extends SqlElement {
       $colScript .= '  dijit.byId("realEisDate").set("readOnly", true);';
       $colScript .= '  dijit.byId("isDelivered").set("readOnly", true);';
       //END - ADD qCazelles #187
-      $colScript .= '} else {;';    
+      $colScript .= '} else {;';
       $colScript .= '  dijit.byId("realEisDate").set("value", null); ';
       //BEGIN - ADD qCazelles #187
       $colScript .= '  dijit.byId("initialEisDate").set("readOnly", false);';
@@ -202,19 +202,19 @@ class Version extends SqlElement {
       //END - ADD qCazelles #187
       $colScript .= '};';
       $colScript .= '  formChanged();';
-      $colScript .= '</script>';  
+      $colScript .= '</script>';
     }
-    if ($colName=="realEndDate") {   
+    if ($colName=="realEndDate") {
       $colScript .= '<script type="dojo/connect" event="onChange" >';
-      $colScript .= 'if (this.value) {'; 
-      $colScript .= '  dijit.byId("idle").set("checked",true);'; 
+      $colScript .= 'if (this.value) {';
+      $colScript .= '  dijit.byId("idle").set("checked",true);';
       $colScript .= '} else {;';
       $colScript .= '  dijit.byId("idle").set("checked",false);';
-      $colScript .= '};'; 
+      $colScript .= '};';
       $colScript .= '  formChanged();';
       $colScript .= '</script>';
     }
-    if ($colName=="idle") { 
+    if ($colName=="idle") {
       $colScript .= '<script type="dojo/connect" event="onChange" >';
       $colScript .= 'if (this.checked) { ';
       $colScript .= '  if (! dijit.byId("realEndDate").get("value")) {';
@@ -227,8 +227,8 @@ class Version extends SqlElement {
       $colScript .= '  dijit.byId("realEndDate").set("readOnly", true);';
       $colScript .= '  dijit.byId("isEis").set("readOnly", true);';
       //END - ADD qCazelles #187
-      $colScript .= '} else {;';    
-      $colScript .= '  dijit.byId("realEndDate").set("value", null); '; 
+      $colScript .= '} else {;';
+      $colScript .= '  dijit.byId("realEndDate").set("value", null); ';
       //BEGIN - ADD qCazelles #187
       $colScript .= '  dijit.byId("initialEndDate").set("readOnly", false);';
       $colScript .= '  dijit.byId("plannedEndDate").set("readOnly", false);';
@@ -237,97 +237,97 @@ class Version extends SqlElement {
       //END - ADD qCazelles #187
       $colScript .= '};';
       $colScript .= '  formChanged();';
-      $colScript .= '</script>';  
+      $colScript .= '</script>';
     }
     //ADD qCazelles - dateComposition
     if ($colName=="initialStartDate") {
-    	$colScript .= '<script type="dojo/connect" event="onChange" >';
-    	$colScript .= 'if (! dijit.byId("plannedStartDate").get("value")) {';
-    	$colScript .= '  dijit.byId("plannedStartDate").set("value",this.value);';
-    	$colScript .= '};';
-    	$colScript .= '  formChanged();';
-    	$colScript .= '</script>';
+      $colScript .= '<script type="dojo/connect" event="onChange" >';
+      $colScript .= 'if (! dijit.byId("plannedStartDate").get("value")) {';
+      $colScript .= '  dijit.byId("plannedStartDate").set("value",this.value);';
+      $colScript .= '};';
+      $colScript .= '  formChanged();';
+      $colScript .= '</script>';
     }
     if ($colName=="realStartDate") {
-    	$colScript .= '<script type="dojo/connect" event="onChange" >';
-    	$colScript .= 'if (this.value) {';
-    	$colScript .= '  dijit.byId("isStarted").set("checked",true);';
-    	$colScript .= '} else {;';
-    	$colScript .= '  dijit.byId("isStarted").set("checked",false);';
-    	$colScript .= '};';
-    	$colScript .= '  formChanged();';
-    	$colScript .= '</script>';
+      $colScript .= '<script type="dojo/connect" event="onChange" >';
+      $colScript .= 'if (this.value) {';
+      $colScript .= '  dijit.byId("isStarted").set("checked",true);';
+      $colScript .= '} else {;';
+      $colScript .= '  dijit.byId("isStarted").set("checked",false);';
+      $colScript .= '};';
+      $colScript .= '  formChanged();';
+      $colScript .= '</script>';
     }
     if ($colName=="isStarted") {
-    	$colScript .= '<script type="dojo/connect" event="onChange" >';
-    	$colScript .= 'if (this.checked) { ';
-    	$colScript .= '  if (! dijit.byId("realStartDate").get("value")) {';
-    	$colScript .= '    var curDate = new Date();';
-    	$colScript .= '    dijit.byId("realStartDate").set("value", curDate); ';
-    	$colScript .= '  }';
-    	//BEGIN - ADD qCazelles #187
-    	$colScript .= '  dijit.byId("initialStartDate").set("readOnly", true);';
-    	$colScript .= '  dijit.byId("plannedStartDate").set("readOnly", true);';
-    	$colScript .= '  dijit.byId("realStartDate").set("readOnly", true);';
-    	//END - ADD qCazelles #187
-    	$colScript .= '} else {;';
-    	$colScript .= '  dijit.byId("realStartDate").set("value", null); ';
-    	//BEGIN - ADD qCazelles #187
-    	$colScript .= '  dijit.byId("initialStartDate").set("readOnly", false);';
-    	$colScript .= '  dijit.byId("plannedStartDate").set("readOnly", false);';
-    	$colScript .= '  dijit.byId("realStartDate").set("readOnly", false);';
-    	//END - ADD qCazelles #187
-    	$colScript .= '};';
-    	$colScript .= '  formChanged();';
-    	$colScript .= '</script>';
+      $colScript .= '<script type="dojo/connect" event="onChange" >';
+      $colScript .= 'if (this.checked) { ';
+      $colScript .= '  if (! dijit.byId("realStartDate").get("value")) {';
+      $colScript .= '    var curDate = new Date();';
+      $colScript .= '    dijit.byId("realStartDate").set("value", curDate); ';
+      $colScript .= '  }';
+      //BEGIN - ADD qCazelles #187
+      $colScript .= '  dijit.byId("initialStartDate").set("readOnly", true);';
+      $colScript .= '  dijit.byId("plannedStartDate").set("readOnly", true);';
+      $colScript .= '  dijit.byId("realStartDate").set("readOnly", true);';
+      //END - ADD qCazelles #187
+      $colScript .= '} else {;';
+      $colScript .= '  dijit.byId("realStartDate").set("value", null); ';
+      //BEGIN - ADD qCazelles #187
+      $colScript .= '  dijit.byId("initialStartDate").set("readOnly", false);';
+      $colScript .= '  dijit.byId("plannedStartDate").set("readOnly", false);';
+      $colScript .= '  dijit.byId("realStartDate").set("readOnly", false);';
+      //END - ADD qCazelles #187
+      $colScript .= '};';
+      $colScript .= '  formChanged();';
+      $colScript .= '</script>';
     }
     if ($colName=="initialDeliveryDate") {
-    	$colScript .= '<script type="dojo/connect" event="onChange" >';
-    	$colScript .= 'if (! dijit.byId("plannedDeliveryDate").get("value")) {';
-    	$colScript .= '  dijit.byId("plannedDeliveryDate").set("value",this.value);';
-    	$colScript .= '};';
-    	$colScript .= '  formChanged();';
-    	$colScript .= '</script>';
+      $colScript .= '<script type="dojo/connect" event="onChange" >';
+      $colScript .= 'if (! dijit.byId("plannedDeliveryDate").get("value")) {';
+      $colScript .= '  dijit.byId("plannedDeliveryDate").set("value",this.value);';
+      $colScript .= '};';
+      $colScript .= '  formChanged();';
+      $colScript .= '</script>';
     }
     if ($colName=="realDeliveryDate") {
-    	$colScript .= '<script type="dojo/connect" event="onChange" >';
-    	$colScript .= 'if (this.value) {';
-    	$colScript .= '  dijit.byId("isDelivered").set("checked",true);';
-    	$colScript .= '} else {;';
-    	$colScript .= '  dijit.byId("isDelivered").set("checked",false);';
-    	$colScript .= '};';
-    	$colScript .= '  formChanged();';
-    	$colScript .= '</script>';
+      $colScript .= '<script type="dojo/connect" event="onChange" >';
+      $colScript .= 'if (this.value) {';
+      $colScript .= '  dijit.byId("isDelivered").set("checked",true);';
+      $colScript .= '} else {;';
+      $colScript .= '  dijit.byId("isDelivered").set("checked",false);';
+      $colScript .= '};';
+      $colScript .= '  formChanged();';
+      $colScript .= '</script>';
     }
     if ($colName=="isDelivered") {
-    	$colScript .= '<script type="dojo/connect" event="onChange" >';
-    	$colScript .= 'if (this.checked) { ';
-    	$colScript .= '  if (! dijit.byId("realDeliveryDate").get("value")) {';
-    	$colScript .= '    var curDate = new Date();';
-    	$colScript .= '    dijit.byId("realDeliveryDate").set("value", curDate); ';
-    	//ADD qCazelles - Ticket #53
-    	$colScript .= '    if (!dijit.byId("isStarted").checked) {';
-    	$colScript .= '       dijit.byId("isStarted").set("checked", true);';
+      $colScript .= '<script type="dojo/connect" event="onChange" >';
+      $colScript .= 'if (this.checked) { ';
+      $colScript .= '  if (! dijit.byId("realDeliveryDate").get("value")) {';
+      $colScript .= '    var curDate = new Date();';
+      $colScript .= '    dijit.byId("realDeliveryDate").set("value", curDate); ';
+      //ADD qCazelles - Ticket #53
+      $colScript .= '    if (!dijit.byId("isStarted").checked) {';
+      $colScript .= '       dijit.byId("isStarted").set("checked", true);';
       $colScript .= '    }';
       //END ADD qCazelles - Ticket #53
-    	$colScript .= '  }';
-    	//BEGIN - ADD qCazelles #187
-    	$colScript .= '  dijit.byId("initialDeliveryDate").set("readOnly", true);';
-    	$colScript .= '  dijit.byId("plannedDeliveryDate").set("readOnly", true);';
-    	$colScript .= '  dijit.byId("realDeliveryDate").set("readOnly", true);';
-    	$colScript .= '  dijit.byId("isStarted").set("readOnly", true);';
-    	//END - ADD qCazelles #187
-    	$colScript .= '} else {;';
-    	$colScript .= '  dijit.byId("realDeliveryDate").set("value", null); ';
-    	//BEGIN - ADD qCazelles #187
-    	$colScript .= '  dijit.byId("initialDeliveryDate").set("readOnly", false);';
-    	$colScript .= '  dijit.byId("plannedDeliveryDate").set("readOnly", false);';
-    	$colScript .= '  dijit.byId("realDeliveryDate").set("readOnly", false);';
-    	$colScript .= '  dijit.byId("isStarted").set("readOnly", false);';
-    	//END - ADD qCazelles #187
-    	$colScript .= '};';
-    	$colScript .= '  formChanged();';
-    	$colScript .= '</script>';
+      $colScript .= '  }';
+      //BEGIN - ADD qCazelles #187
+      $colScript .= '  dijit.byId("initialDeliveryDate").set("readOnly", true);';
+      $colScript .= '  dijit.byId("plannedDeliveryDate").set("readOnly", true);';
+      $colScript .= '  dijit.byId("realDeliveryDate").set("readOnly", true);';
+      $colScript .= '  dijit.byId("isStarted").set("readOnly", true);';
+      //END - ADD qCazelles #187
+      $colScript .= '} else {;';
+      $colScript .= '  dijit.byId("realDeliveryDate").set("value", null); ';
+      //BEGIN - ADD qCazelles #187
+      $colScript .= '  dijit.byId("initialDeliveryDate").set("readOnly", false);';
+      $colScript .= '  dijit.byId("plannedDeliveryDate").set("readOnly", false);';
+      $colScript .= '  dijit.byId("realDeliveryDate").set("readOnly", false);';
+      $colScript .= '  dijit.byId("isStarted").set("readOnly", false);';
+      //END - ADD qCazelles #187
+      $colScript .= '};';
+      $colScript .= '  formChanged();';
+      $colScript .= '</script>';
     }
     //END ADD qCazelles - dateComposition
     //ADD qCazelles - Ticket #53
@@ -376,14 +376,14 @@ class Version extends SqlElement {
     return $colScript;
   }
   
-// ============================================================================**********
-// MISCELLANOUS FUNCTIONS
-// ============================================================================**********
+  // ============================================================================**********
+  // MISCELLANOUS FUNCTIONS
+  // ============================================================================**********
   
-
+  
   /** =========================================================================
    * Draw a specific item for the current class.
-   * @param $item the item. Correct values are : 
+   * @param $item the item. Correct values are :
    *    - subprojects => presents sub-projects as a tree
    * @return an html string able to display a specific item
    *  must be redefined in the inherited class
@@ -398,23 +398,23 @@ class Version extends SqlElement {
       }
       $result .="</td></tr></table>";
       return $result;
-    } 
+    }
   }
   
   public function drawVersionsList($critArray,$withProjects=false) {
-    $result="<table>";
     $versList=$this->getSqlElementsFromCriteria($critArray,false,null,'name asc',false,true);
+    $result='';
     foreach ($versList as $vers) {
-      $result.= '<tr>';
-      $result.= '<td style="padding-left:15px;">&nbsp;&nbsp;</td>';
-      $result.= '<td valign="top" style="padding-left:5px;width:20px;height:16px;	" class="icon'.$vers->scope.'Version16" >&nbsp;</td>';
+      $result.= '<tr><td class="linkData" style="white-space:nowrap;width:15%"><table><tr>';
+      $result.= '<td>'.formatIcon(get_class($vers), 16).'</td><td style="vertical-align:top">&nbsp;'.'#'.$vers->id.'</td></tr></table>';
+      $result.= '</td>';
+      //      $result.= '<td valign="top" style="padding-left:12px;width:20px;height:16px;	" class="icon'.$vers->scope.'Version16" >&nbsp;#'.$vers->id.'</td>';
       $style="";
       if ($vers->idle) {$style='color#5555;text-decoration: line-through;';}
       else if ($vers->isEis) {$style='font-weight: bold;';}
-      $result.= '<td style="vertical-align:top;'.$style.'">';   
-      $result.="#$vers->id - ".htmlDrawLink($vers);
+      $result.= '<td class="linkData"><p style="display:inline;'.$style.'">';
+      $result.= htmlDrawLink($vers).'</p>';
       if ($withProjects) {
-        //$result.='<td>';
         $vp=new VersionProject();
         $vpList=$vp->getSqlElementsFromCriteria(array('idVersion'=>$vers->id),false,null,null,false,true);
         $result.= '<table>';
@@ -428,21 +428,29 @@ class Version extends SqlElement {
         $result.= '</table>';
         //$result.='</td>';
       }
+      $result.= formatUserThumb($vers->idUser, SqlList::getNameFromId('User', $vers->idUser), 'Creator');
+      $result.= formatDateThumb($vers->creationDate, null);
+      $query="SELECT * FROM status WHERE id = '".$vers->idStatus."'";
+      $queryResult = Sql::query($query);
+      $line = Sql::fetchLine($queryResult);
+      $result.= '</td><td class="linkData">';
+      if ($line && array_key_exists("name", $line)) {
+        $result.= colorNameFormatter($line["name"]."#split#".$line["color"]);
+      }      
       $result.= '</td></tr>';
     }
-    $result .="</table>";
-    return $result; 
+    return $result;
   }
   
   public function save() {
-  	$result=parent::save();
+    $result=parent::save();
     if (! strpos($result,'id="lastOperationStatus" value="OK"')) {
-      return $result;     
+      return $result;
     }
-  	if ($this->idle) {
-  		VersionProject::updateIdle('Version', $this->id);
-  	}
-  	return $result;
+    if ($this->idle) {
+      VersionProject::updateIdle('Version', $this->id);
+    }
+    return $result;
   }
   
   /** =========================================================================
@@ -453,14 +461,14 @@ class Version extends SqlElement {
    */
   public function control(){
     $result="";
-  
+    
     if (trim($this->versionNumber)) {
       $cpt=$this->countSqlElementsFromCriteria(null,"idProduct=".Sql::fmtId($this->idProduct)." and versionNumber='$this->versionNumber' and id!=".Sql::fmtId($this->id));
       if ($cpt>0) {
         $result.="<br/>" . i18n('errorDuplicate');
       }
     }
-  
+    
     $defaultControl=parent::control();
     if ($defaultControl!='OK') {
       $result.=$defaultControl;
@@ -508,7 +516,7 @@ class Version extends SqlElement {
     foreach ($list as $subList){
       $subList->delete();
     }
-
+    
   }
   
   public function addVersionSubProduct(){
@@ -545,91 +553,179 @@ class Version extends SqlElement {
   protected static $existingIDs = array();
   protected static $tabDirectChild = array();
   
-  public function treatmentVersionPlanning ($parentVersion) {    
+  public function treatmentVersionPlanning ($parentVersion) {
+    
+    $planningVersionShowClosed = Parameter::getUserParameter('planningVersionShowClosed');
     if ($this->directChild($parentVersion)) {
       $this->displayVersion($parentVersion);
-   
+      
       if ($this->hasChild()) {
         foreach (ProductVersionStructure::getComposition($this->id) as $key => $idComponentVersion) {
           $componentVersion = new ComponentVersion($idComponentVersion);
+          
+
           $hide=SqlList::getFieldFromId('ComponentVersionType', $componentVersion->idComponentVersionType, 'lockUseOnlyForCC');
-          if ($hide!=1) $componentVersion->treatmentVersionPlanning($this);
+          if ($hide!=1 and ( $componentVersion->idle == 0  or $planningVersionShowClosed == 1) ){
+            if ($componentVersion->isDelivered == 0 or $planningVersionShowClosed == 1 )
+              $componentVersion->treatmentVersionPlanning($this);
+          }
         }
       }
     }
   }
   
-  public function displayVersion($parentVersion = NULL) {    
-    if (self::$cpt === 1) {
-      echo ',';
-    }
+  public function displayVersion($parentVersion = NULL) {
     
-    //ADD qCazelles - Correction GANTT - Ticket #100
-    if (!in_array($this->id, self::$idVersionsDisplayed)) {
-      self::$idVersionsDisplayed[] = $this->id;
-    }
-    //END ADD qCazelles - Correction GANTT - Ticket #100
+    $planningVersionShowClosed = Parameter::getUserParameter('planningVersionShowClosed');
+    $displayComponentversionActivity = Parameter::getUserParameter('planningVersionDisplayComponentVersionActivity');
+    $displayProductversionActivity = Parameter::getUserParameter('planningVersionDisplayProductVersionActivity');
     
-    if ( !isset($this->nbOccurences)) {
-      $this->nbOccurences = 1;
+    
+    $activity = new Activity;
+    $where = "idComponentVersion = $this->id";
+    if ( $planningVersionShowClosed == 0){
+      $where.=" and idle = 0";
     }
+    $listActivity = $activity->getSqlElementsFromCriteria(null,null,$where);
+    
+    if ($displayComponentversionActivity == 0)
+      $listActivity = array();
+      
+      $where = "idVersion = $this->id and idComponentVersion IS NULL";
+      if ( $planningVersionShowClosed == 0){
+        $where.=" and idle = 0";
+      }
+      $listActivityProductVersion = $activity->getSqlElementsFromCriteria(null,null,$where);
+      
+      if ($displayProductversionActivity == 0)
+        $listActivityProductVersion = array();
+      
+        
+        
+        if (self::$cpt === 1) {
+          echo ',';
+        }
+        
+        //ADD qCazelles - Correction GANTT - Ticket #100
+        if (!in_array($this->id, self::$idVersionsDisplayed)) {
+          self::$idVersionsDisplayed[] = $this->id;
+        }
+        //END ADD qCazelles - Correction GANTT - Ticket #100
+        
+        if ( !isset($this->nbOccurences)) {
+          $this->nbOccurences = 1;
+        }
+        
+        while (in_array($this->id.'.'.$this->nbOccurences, self::$existingIDs)) {
+          $this->nbOccurences += 1;
+        }
+        
+        $idPE = $this->id.'.'.$this->nbOccurences;
+        self::$existingIDs[] = $idPE;
+        echo '{';
+        echo '"id":"'.$idPE.'"';
+        echo ',"refname":"'.$this->name.'"';
+        //echo ',"refname":"'.$this->name.' - ID : '.$idPE.' - '.(($parentVersion != NULL) ? "TOPID : $parentVersion->id.$parentVersion->nbOccurences" : "").'"';
+        
+        if ($parentVersion != NULL) {
+          echo ',"topid":"'.$parentVersion->id.'.'.$parentVersion->nbOccurences.'"';
+          echo ',"topreftype":"'.$parentVersion->scope.'VersionhasChild"';
+          echo ',"toprefid":"'.$parentVersion->id.'"';
+        }
+        
+        if ( !$this->hasChild() and count($listActivity) == 0) {
+          echo ',"reftype":"'.$this->scope.'Version"';
+        }
+        else{
+          echo ',"reftype":"'.$this->scope.'VersionhasChild"';
+        }
+        
+        echo ',"refid":"'.$this->id.'"';
+        echo ',"collapsed":"0"';
+        
+        $startDate = $this->startDateVersionsPlanning($parentVersion);
+        $endDate = $this->endDateVersionsPlanning($parentVersion);
+        
+        $this->ownDate=true;
+        
+        if ($parentVersion == NULL and empty($startDate) and empty($endDate)) {
+          $this->ownDate = false;
+        }
+        
+        if ($this->isDelivered or $this->isEis) {
+          echo ',"redElement":"0"';
+        }
+        elseif (!$this->ownDate or strtotime($this->plannedDeliveryDate) < time() or $this->hasRedChild() or $this->hasRedParent()) {
+          echo ',"redElement":"1"';
+        }
+        else {
+          echo ',"redElement":"0"';
+        }
+        
+        echo ',"status":"'.$this->statusVersionPlanning().'"';
+        
+        $this->myStartDate = $startDate;
+        $this->myEndDate = $endDate;
+        
+        echo ',"realstartdate":"'.$startDate.'"';
+        echo ',"realenddate":"'.$endDate.'"';
+        echo '}';
+        self::$cpt = 1;
+        
+        
+        if (($this->scope == 'Product') and $displayProductversionActivity == 1 ) {
+          foreach($listActivityProductVersion as $lapv){
+            echo ',';
+            echo '{';
+            $idPE = $lapv->id.'.'.$this->nbOccurences;
+            self::$existingIDs[] = $idPE;
+            echo '"id":"'.$idPE.'"';
+            echo ',"refid":"'.$lapv->id.'"';
+            echo ',"refname":"'.$lapv->name.'"';
+            echo ',"reftype":"Activity"';
+            echo ',"topid":"'.$this->id.'.'.$this->nbOccurences.'"';
+            echo ',"topreftype":"'.$this->scope.'VersionhasChild"';
+            echo ',"toprefid":"'.$this->id.'"';
+            echo ',"realstartdate":"'.$lapv->startDateActivity().'"';
+            echo ',"realenddate":"'.$lapv->endDateActivity().'"';
+            if ($startDate > $lapv->startDateActivity())
+              echo ',"redElement":"1"';
+              else
+                echo ',"redElement":"0"';
+                echo ',"status":"'.SqlList::getNameFromId('Status', $lapv->idStatus).'"';
+                echo '}';
+                
+          }
+        }
+        
+        foreach($listActivity as $la){
+          echo ',';
+          echo '{';
+          $idPE = $la->id.'.'.$this->nbOccurences;
+          echo '"id":"'.$idPE.'"';
+                  
+          $search = array("\"","\>","\<");
+          $replace = array ("\\\"","\\\>","\\\<");
 
-    while (in_array($this->id.'.'.$this->nbOccurences, self::$existingIDs)) {
-      $this->nbOccurences += 1;
-    }
-    
-    $idPE = $this->id.'.'.$this->nbOccurences;
-    self::$existingIDs[] = $idPE;
-    
-    echo '{';
-    echo '"id":"'.$idPE.'"';
-    echo ',"refname":"'.$this->name.'"';
-    //echo ',"refname":"'.$this->name.' - ID : '.$idPE.' - '.(($parentVersion != NULL) ? "TOPID : $parentVersion->id.$parentVersion->nbOccurences" : "").'"';
-    
-    if ($parentVersion != NULL) {
-      echo ',"topid":"'.$parentVersion->id.'.'.$parentVersion->nbOccurences.'"';
-      echo ',"topreftype":"'.$parentVersion->scope.'VersionhasChild"';
-      echo ',"toprefid":"'.$parentVersion->id.'"';
-    }
-    
-    if ( !$this->hasChild()) {
-      echo ',"reftype":"'.$this->scope.'Version"';
-    }
-    else {
-      echo ',"reftype":"'.$this->scope.'VersionhasChild"';
-    }
-    
-    echo ',"refid":"'.$this->id.'"';
-    echo ',"collapsed":"0"';
-    
-    $startDate = $this->startDateVersionsPlanning($parentVersion);
-    $endDate = $this->endDateVersionsPlanning($parentVersion);
-    
-    $this->ownDate=true;
-
-    if ($parentVersion == NULL and empty($startDate) and empty($endDate)) {
-      $this->ownDate = false;
-    }
-
-    if ($this->isDelivered or $this->isEis) {
-      echo ',"redElement":"0"';
-    }
-    elseif (!$this->ownDate or strtotime($this->plannedDeliveryDate) < time() or $this->hasRedChild() or $this->hasRedParent()) {
-      echo ',"redElement":"1"';
-    }
-    else {
-      echo ',"redElement":"0"';
-    }
-
-    echo ',"status":"'.$this->statusVersionPlanning().'"';
-    
-    $this->myStartDate = $startDate;
-    $this->myEndDate = $endDate;
-    
-    echo ',"realstartdate":"'.$startDate.'"';
-    echo ',"realenddate":"'.$endDate.'"';
-    echo '}';
-    self::$cpt = 1;
+          echo ',"refname":"'.str_replace($search, $replace, $la->name).'"';
+          echo ',"refid":"'.$la->id.'"';
+        
+          echo ',"reftype":"Activity"';
+          echo ',"topid":"'.$this->id.'.'.$this->nbOccurences.'"';
+          
+          echo ',"topreftype":"'.$this->scope.'VersionhasChild"';
+          echo ',"toprefid":"'.$this->id.'"';
+          echo ',"realstartdate":"'.$la->startDateActivity($this).'"';
+          echo ',"realenddate":"'.$la->endDateActivity($this).'"';
+          if ($startDate > $la->startDateActivity())
+            echo ',"redElement":"1"';
+            else
+              echo ',"redElement":"0"';
+              echo ',"status":"'.SqlList::getNameFromId('Status', $la->idStatus).'"';
+              
+              echo '}';
+        }
+        
   }
   //ADD qCazelles - Correction GANTT - Ticket #100
   protected function startDateVersionsPlanning($parentVersion=null) {
@@ -714,7 +810,7 @@ class Version extends SqlElement {
     if ($way == 'structure') {
       return strtotime($this->plannedDeliveryDate) < strtotime($version->plannedDeliveryDate);
     }
-
+    
   }
   
   protected function hasRedChild() {
@@ -725,7 +821,7 @@ class Version extends SqlElement {
         return true;
       }
     }
-   return false;
+    return false;
   }
   
   protected function hasRedParent() {
@@ -774,16 +870,16 @@ class Version extends SqlElement {
     }
     //CHANGE qCazelles - Correction GANTT - Ticket #100
     //Old
-//     $query = 'select id from productversionstructure where idComponentVersion = "'.$this->id.'" and idProductVersion="'.$parentVersion->id.'"';
-//     $result = Sql::query($query);
-//     $line = Sql::fetchLine($result);
-//     if ($line) {
+    //     $query = 'select id from productversionstructure where idComponentVersion = "'.$this->id.'" and idProductVersion="'.$parentVersion->id.'"';
+    //     $result = Sql::query($query);
+    //     $line = Sql::fetchLine($result);
+    //     if ($line) {
     //New
     $pvs=new ProductVersionStructure();
     $crit=array('idComponentVersion'=>$this->id,'idProductVersion'=>$parentVersion->id);
     $list=$pvs->getSqlElementsFromCriteria($crit,null,null,null,null,true);
     if (count($list)>0) {
-    //END CHANGE qCazelles - Correction GANTT - Ticket #100
+      //END CHANGE qCazelles - Correction GANTT - Ticket #100
       $directChild = true;
     }
     else {
@@ -800,16 +896,27 @@ class Version extends SqlElement {
     }
     //CHANGE qCazelles - Correction GANTT - Ticket #100
     //Old
-//     $query = 'select * from productversionstructure where idProductVersion = "'.$this->id.'"';
-//     $result = Sql::query($query);
-//     $line = Sql::fetchLine($result);
-//     if ($line) {
+    //     $query = 'select * from productversionstructure where idProductVersion = "'.$this->id.'"';
+    //     $result = Sql::query($query);
+    //     $line = Sql::fetchLine($result);
+    //     if ($line) {
     //New
     $pvs=new ProductVersionStructure();
     $crit=array('idProductVersion'=>$this->id);
+    
     $list=$pvs->getSqlElementsFromCriteria($crit,null,null,null,null,true);
-    if (count($list)>0) {
-    //END CHANGE qCazelles - Correction GANTT - Ticket #100
+    $countHide=0;
+    foreach ($list as $l){
+      $cv = new ComponentVersion($l->idComponentVersion);
+      $hide=SqlList::getFieldFromId('ComponentVersionType', $cv->idComponentVersionType, 'lockUseOnlyForCC');
+      if ($hide != 1)
+        $countHide++;
+    }
+    
+    
+    
+    if (count($list)>0 and $countHide != 0) {
+      //END CHANGE qCazelles - Correction GANTT - Ticket #100
       $hasChild = true;
     }
     else {
@@ -820,6 +927,6 @@ class Version extends SqlElement {
   }
   
   //END ADD qCazelles - GANTT
-
+  
 }
 ?>

@@ -2363,10 +2363,10 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false, $pare
         if ($isCost) {
           $possibleWidth=intval($widthPct)-80;
           if ($internalTable) {
-            $possibleWidth=round($possibleWidth/$internalTableCols, 0)-12;
+            $possibleWidth=round($possibleWidth/$internalTableCols, 0)-($internalTableCols*3);
           }
           $expected=100;
-          if ($isAmount) $expected+=20;
+          //if ($isAmount) $expected+=20;
           if ($possibleWidth>$expected) {
             $fieldWidth=$expected;
           } else {
@@ -2384,7 +2384,7 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false, $pare
         $ent=intval($spl[0])-$dec;
         $max=substr('99999999999999999999', 0, $ent);
         if ($isCost and $currencyPosition=='before') {
-          echo '<span class="generalColClass '.$col.'Class" style="display:inline-block;height:100%;'.$specificStyleWithoutCustom.$labelStyle.'">'.$currency.'</span>';
+         	echo '<span class="generalColClass '.$col.'Class" style="display:inline-block;'.$specificStyleWithoutCustom.$labelStyle.';position:relative;top:2px">&nbsp'.$currency.'</span>';
         }
         // ADD BY Marc TABARY - 2017-03-01 - COLOR PERCENT WITH ATTRIBUTE 'alertOverXXXwarningOverXXXokUnderXXX'
         if ($isPercent and (strpos($obj->getFieldAttributes($col), 'alertOver')!==false or strpos($obj->getFieldAttributes($col), 'warningOver')!==false or strpos($obj->getFieldAttributes($col), 'okUnder')!==false)) {
@@ -2479,10 +2479,10 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false, $pare
         echo $colScript;
         echo '</div>';
         if ($isCost and $currencyPosition=='after') {
-          echo '<span class="generalColClass '.$col.'Class" style="'.$specificStyleWithoutCustom.'">'.$currency.'</span>';
+          echo '<span class="generalColClass '.$col.'Class" style="'.$specificStyleWithoutCustom.';position:relative;top:2px">'.$currency.'&nbsp'.'</span>';
         }
         if ($isWork or $isDuration or $isPercent) {
-          echo '<span class="generalColClass '.$col.'Class" style="'.$specificStyleWithoutCustom.'">';
+          echo '<span class="generalColClass '.$col.'Class" style="'.$specificStyleWithoutCustom.';position:relative;top:2px">';
         }
         if ($isWork) {
           if ($classObj=='WorkElement') {
@@ -2495,7 +2495,7 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false, $pare
           echo i18n("shortDay");
         }
         if ($isPercent) {
-          echo '%';
+            echo '%&nbsp;';
         }
         if ($isWork or $isDuration or $isPercent) {
           echo '</span>';
@@ -4609,9 +4609,13 @@ function drawVersionStructureFromObject($obj, $refresh=false, $way, $item) {
   if (!$print) {
     echo '<td class="linkHeader" style="width:5%">';
     if ($obj->id!=null and !$print and $canUpdate) {
-      echo '<a onClick="addProductVersionStructure(\''.$way.'\');" title="'.i18n('addProductVersionStructure').'" > '.formatSmallButton('Add').'</a>';
-      if ($way=='composition' and count($list)>0) {
-        echo '<a onClick="upgradeProductVersionStructure(null,false);" title="'.i18n('upgradeProductVersionStructure').'" > '.formatSmallButton('Switch').'</a>';
+      $critStatus = array('id' => $obj->idStatus);
+      $actualStatus = SqlElement::getSingleSqlElementFromCriteria ( 'status', $critStatus);
+      if ( ( (get_class($obj)!='ComponentVersion' && get_class($obj)!='ProductVersion') || $actualStatus->setIntoserviceStatus!=1) || ($way!='composition')) {
+        echo '<a onClick="addProductVersionStructure(\''.$way.'\');" title="'.i18n('addProductVersionStructure').'" > '.formatSmallButton('Add').'</a>';
+        if ($way=='composition' and count($list)>0) {
+          echo '<a onClick="upgradeProductVersionStructure(null,false);" title="'.i18n('upgradeProductVersionStructure').'" > '.formatSmallButton('Switch').'</a>';
+        }
       }
     }
     echo '</td>';
@@ -4637,9 +4641,8 @@ function drawVersionStructureFromObject($obj, $refresh=false, $way, $item) {
     $classCompName=i18n(get_class($compObj));
     if (!$print) {
       echo '<td class="linkData" style="text-align:center;width:5%;white-space:nowrap;">';
-      if ($canUpdate) {
+      if ($canUpdate&&(((get_class($obj)!='ComponentVersion'&&get_class($obj)!='ProductVersion')||$actualStatus->setIntoserviceStatus!=1)||($way!='composition'))) {
         echo '  <a onClick="editProductVersionStructure(\''.$way.'\','.htmlEncode($comp->id).');" '.'title="'.i18n('editProductStructure').'" > '.formatSmallButton('Edit').'</a>';
-        
         echo '  <a onClick="removeProductVersionStructure('."'".htmlEncode($comp->id)."','".get_class($compObj)."','".htmlEncode($compObj->id)."','".$classCompName."'".');" '.'title="'.i18n('removeProductStructure').'" > '.formatSmallButton('Remove').'</a>';
         if ($way=='composition') {
           echo '<a onClick="upgradeProductVersionStructure(\''.$comp->id.'\',false);" title="'.i18n('upgradeProductVersionStructureSingle').'" > '.formatSmallButton('Switch').'</a>';
@@ -4935,6 +4938,15 @@ function drawApproverFromObject($list, $obj, $refresh=false) {
   echo '</table></td></tr>';
 }
 
+function compareByTimeStamp($time1, $time2){
+  if (strtotime($time1) < strtotime($time2))
+    return 1;
+  else if (strtotime($time1) > strtotime($time2))
+    return -1;
+  else
+    return 0;
+}
+
 function drawDependenciesFromObject($list, $obj, $depType, $refresh=false) {
   global $cr, $print, $user, $comboDetail;
   if ($comboDetail) {
@@ -4962,8 +4974,43 @@ function drawDependenciesFromObject($list, $obj, $depType, $refresh=false) {
     echo '</td>';
   }
   echo '<td class="dependencyHeader" style="width:'.(($print)?'30':'20').'%">'.i18n('colElement').'</td>';
-  echo '<td class="dependencyHeader" style="width:55%">'.i18n('colName').'</td>';
+  echo '<td class="dependencyHeader" style="width:40%">'.i18n('colName').'</td>';
   echo '<td class="dependencyHeader" style="width:15%">'.i18n('colIdStatus').'</td>';
+  //gautier #3562
+  if($depType=="Predecessor"){
+    echo '<td class="dependencyHeader" style="width:15%">'.i18n('colEndDate').'</td>';
+    $datePredecessor = array();
+    $allTabSameDate = false;
+    $endDateObj = array();
+    $endDateDelay = null;
+    foreach ($list as $dep) {
+      $depObj=new $dep->predecessorRefType($dep->predecessorRefId);
+      $planningObj=SqlElement::getSingleSqlElementFromCriteria('PlanningElement', array('refId'=>$depObj->id, 'refType'=>get_class($depObj),'idProject'=>$depObj->idProject));
+      if($planningObj->realEndDate){
+        $endDate = $planningObj->realEndDate;
+      }elseif ($planningObj->plannedEndDate){
+        $endDate = $planningObj->plannedEndDate;
+      }elseif ($planningObj->validatedEndDate){
+        $endDate = $planningObj->validatedEndDate;
+      }else{
+        $endDate = null;
+      }
+      if($dep->dependencyDelay>1){
+        $datePredecessor[$planningObj->id]=addWorkDaysToDate($endDate,$dep->dependencyDelay+1);
+      }else{
+        $datePredecessor[$planningObj->id]=addWorkDaysToDate($endDate,$dep->dependencyDelay);
+      }
+      $endDateObj[$dep->id.get_class($depObj)]= $endDate;
+    }
+    usort($datePredecessor, "compareByTimeStamp");
+    if(count($datePredecessor)>1){
+      foreach ($datePredecessor as $val){
+        if($val != $datePredecessor[0]){
+          $allTabSameDate = true;
+        }
+      }
+    }
+  }
   echo '</tr>';
   foreach ($list as $dep) {
     $depObj=null;
@@ -5017,6 +5064,13 @@ function drawDependenciesFromObject($list, $obj, $depType, $refresh=false) {
     // echo '<td class="dependencyData"><table><tr><td style="background-color: ' . htmlEncode($objStatus->color) . '; color:' . $foreColor . ';">' . htmlEncode($objStatus->name) . '</td></tr></table></td>';
     // echo '<td class="dependencyData" style="background-color: ' . htmlEncode($objStatus->color) . '; color:' . $foreColor . ';">' . htmlEncode($objStatus->name) . '</td>';
     echo '<td class="dependencyData" style="width:15%">'.colorNameFormatter($objStatus->name."#split#".$objStatus->color).'</td>';
+    if($depType=="Predecessor"){    
+      if($allTabSameDate==true and $datePredecessor and count($datePredecessor)>1 and $datePredecessor[0]== addWorkDaysToDate($endDateObj[$dep->id.get_class($depObj)],($dep->dependencyDelay>1)?$dep->dependencyDelay+1:$dep->dependencyDelay)){
+        echo '<td class="dependencyData" style="text-align:center; width:15%; color:red">'.htmlFormatDate($endDateObj[$dep->id.get_class($depObj)]).'</td>';
+      }else{
+        echo '<td class="dependencyData" style="text-align:center; width:15%">'.htmlFormatDate($endDateObj[$dep->id.get_class($depObj)]).'</td>';
+      }
+    }
     echo '</tr>';
   }
   echo '</table>';
