@@ -596,7 +596,7 @@
     		$csvQuotedText=true;
     		if ($csvExportAll) {
     		  $exportReferencesAs='id';
-    		  if (isset($csvSepExportAll)) $csvSep=$csvSepExportAll; // test should always be true
+    		  if (isset($csvSepExportAll)) $csvSep=$csvSepExportAll; // test should qlzyqs be true
     		  $exportHtml=true;
     		  $headers='id';
     		  $csvQuotedText=false;
