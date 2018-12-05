@@ -1,0 +1,369 @@
+# 
+msgid ""
+msgstr ""
+"Project-Id-Version: ProjeQtOr User guide 5.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2015-07-08 14:45-0400\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: ../../ProductVersion.rst:0
+msgid "Product & Version"
+msgstr ""
+
+#: ../../ProductVersion.rst:19 ../../ProductVersion.rst:16
+msgid "Product"
+msgstr ""
+
+#: ../../ProductVersion.rst:21
+msgid "Product is the element de project is built for."
+msgstr ""
+
+#: ../../ProductVersion.rst:23 ../../ProductVersion.rst:94
+msgid "A project works on one or more versions of the product ."
+msgstr ""
+
+#: ../../ProductVersion.rst:25
+msgid ""
+"A product is any element delivered by the project. For IT/IS Projects, "
+"products are generally Applications."
+msgstr ""
+
+#: ../../ProductVersion.rst:0 ../../ProductVersion.rst:0
+msgid "Other sections"
+msgstr ""
+
+#: ../../ProductVersion.rst:29 ../../ProductVersion.rst:106
+msgid ":ref:`gui-chg-history-section-label`"
+msgstr ""
+
+#: ../../ProductVersion.rst:39 ../../ProductVersion.rst:116
+msgid "Field"
+msgstr ""
+
+#: ../../ProductVersion.rst:40 ../../ProductVersion.rst:73
+#: ../../ProductVersion.rst:117 ../../ProductVersion.rst:132
+msgid "Description"
+msgstr ""
+
+#: ../../ProductVersion.rst:41 ../../ProductVersion.rst:118
+msgid ":term:`Id`"
+msgstr ""
+
+#: ../../ProductVersion.rst:42
+msgid "Unique Id for the product."
+msgstr ""
+
+#: ../../ProductVersion.rst:43
+msgid "**Real name**"
+msgstr ""
+
+#: ../../ProductVersion.rst:44
+msgid "Name of the resource. Can contain first and last name."
+msgstr ""
+
+#: ../../ProductVersion.rst:45
+msgid "User name"
+msgstr ""
+
+#: ../../ProductVersion.rst:46
+msgid "User name."
+msgstr ""
+
+#: ../../ProductVersion.rst:47
+msgid "Initials"
+msgstr ""
+
+#: ../../ProductVersion.rst:48
+msgid "Initials of the resource."
+msgstr ""
+
+#: ../../ProductVersion.rst:49
+msgid "Email address"
+msgstr ""
+
+#: ../../ProductVersion.rst:50
+msgid "Email address of the resource."
+msgstr ""
+
+#: ../../ProductVersion.rst:51
+msgid "Profile"
+msgstr ""
+
+#: ../../ProductVersion.rst:52
+msgid "Profile of the user."
+msgstr ""
+
+#: ../../ProductVersion.rst:53
+msgid "Capacity (FTE)"
+msgstr ""
+
+#: ../../ProductVersion.rst:54
+msgid "Capacity of the resource, in Full Time Equivalent."
+msgstr ""
+
+#: ../../ProductVersion.rst:55
+msgid "Calendar"
+msgstr ""
+
+#: ../../ProductVersion.rst:56
+msgid "Calendar defining the availability of the resource (off days)."
+msgstr ""
+
+#: ../../ProductVersion.rst:57
+msgid "Team"
+msgstr ""
+
+#: ../../ProductVersion.rst:58
+msgid "The team to which the resource belongs."
+msgstr ""
+
+#: ../../ProductVersion.rst:59
+msgid "Phone"
+msgstr ""
+
+#: ../../ProductVersion.rst:60
+msgid "Phone number of the resource."
+msgstr ""
+
+#: ../../ProductVersion.rst:61
+msgid "Mobile"
+msgstr ""
+
+#: ../../ProductVersion.rst:62
+msgid "Mobile phone number of the resource."
+msgstr ""
+
+#: ../../ProductVersion.rst:63
+msgid "Fax"
+msgstr ""
+
+#: ../../ProductVersion.rst:64
+msgid "Fax number of the resource."
+msgstr ""
+
+#: ../../ProductVersion.rst:65
+msgid "Is a contact"
+msgstr ""
+
+#: ../../ProductVersion.rst:66
+msgid "Is this resource also a contact ?"
+msgstr ""
+
+#: ../../ProductVersion.rst:67
+msgid "Is a user"
+msgstr ""
+
+#: ../../ProductVersion.rst:68
+msgid "Is this resource also a user ?"
+msgstr ""
+
+#: ../../ProductVersion.rst:71
+msgid ":term:`Closed`"
+msgstr ""
+
+#: ../../ProductVersion.rst:72
+msgid "Flag to indicate that product is archived."
+msgstr ""
+
+#: ../../ProductVersion.rst:74
+msgid "Complete description of the product."
+msgstr ""
+
+#: ../../ProductVersion.rst:76 ../../ProductVersion.rst:135
+msgid "**\\* Required field**"
+msgstr ""
+
+#: ../../ProductVersion.rst:80
+msgid "List of the versions defined for the product."
+msgstr ""
+
+#: ../../ProductVersion.rst:90 ../../ProductVersion.rst:87
+msgid "Version"
+msgstr ""
+
+#: ../../ProductVersion.rst:92
+msgid "Version is the declination of the product life."
+msgstr ""
+
+#: ../../ProductVersion.rst:96
+msgid ""
+"A version of product is any stable status of the element delivered by the "
+"project."
+msgstr ""
+
+#: ../../ProductVersion.rst:98
+msgid "For IT/IS Projects, versions are generally Applications Versions."
+msgstr ""
+
+#: ../../ProductVersion.rst:102
+msgid ":ref:`gui-attachment-section-label`"
+msgstr ""
+
+#: ../../ProductVersion.rst:104
+msgid ":ref:`gui-note-section-label`"
+msgstr ""
+
+#: ../../ProductVersion.rst:119
+msgid "Unique Id for the version."
+msgstr ""
+
+#: ../../ProductVersion.rst:120
+msgid "**Product**"
+msgstr ""
+
+#: ../../ProductVersion.rst:121
+msgid "The product on which the version applies."
+msgstr ""
+
+#: ../../ProductVersion.rst:122
+msgid "**Name**"
+msgstr ""
+
+#: ../../ProductVersion.rst:123
+msgid "Name of the version."
+msgstr ""
+
+#: ../../ProductVersion.rst:124
+msgid "Prime contractor"
+msgstr ""
+
+#: ../../ProductVersion.rst:125
+msgid ""
+"The contact, into customer organization, who will be responsible for the "
+"version delivery."
+msgstr ""
+
+#: ../../ProductVersion.rst:126
+msgid "Responsible"
+msgstr ""
+
+#: ../../ProductVersion.rst:127
+msgid "Resource responsible of the version."
+msgstr ""
+
+#: ../../ProductVersion.rst:128
+msgid "Entry into service"
+msgstr ""
+
+#: ../../ProductVersion.rst:129
+msgid "Initial, planned and real entry into service date of the version."
+msgstr ""
+
+#: ../../ProductVersion.rst:130
+msgid "End date"
+msgstr ""
+
+#: ../../ProductVersion.rst:131
+msgid "Initial, planned and real end dates of the version."
+msgstr ""
+
+#: ../../ProductVersion.rst:133
+msgid "Complete description of the version."
+msgstr ""
+
+#: ../../ProductVersion.rst:139
+msgid "Can be different from Product prime contractor."
+msgstr ""
+
+#: ../../ProductVersion.rst:143
+msgid "Done is checked when real is set."
+msgstr ""
+
+#: ../../ProductVersion.rst:147
+msgid ""
+"Done is checked when real is set, corresponding to :term:`closed` version."
+msgstr ""
+
+#: ../../ProductVersion.rst:152
+msgid "Projects can be directly linked to version."
+msgstr ""
+
+#: ../../ProductVersion.rst:154
+msgid ""
+"Click |buttonAdd| on to create a new link to project. A “Project – Version "
+"link” pop up will be displayed."
+msgstr ""
+
+#: ../../ProductVersion.rst:156
+msgid "Click on |buttonEdit| to update an existing link to project."
+msgstr ""
+
+#: ../../ProductVersion.rst:158
+msgid "Click on |buttonRemove| to delete the corresponding link to project."
+msgstr ""
+
+#: ../../ProductVersion.rst:0
+msgid "Pop up “Project – Version link”"
+msgstr ""
+
+#: ../../ProductVersion.rst:162
+msgid "Project  - Project linked to the version."
+msgstr ""
+
+#: ../../ProductVersion.rst:164
+msgid "Version - Current version."
+msgstr ""
+
+#: ../../ProductVersion.rst:166
+msgid "Start date - Start date for validity of the link."
+msgstr ""
+
+#: ../../ProductVersion.rst:168
+msgid "End date - End date for validity of the link."
+msgstr ""
+
+#: ../../ProductVersion.rst:170
+msgid ""
+"Closed - Flag to indicate that link is not active any more, without deleting"
+" it."
+msgstr ""
+
+#: ../../ProductVersion.rst:32 ../../ProductVersion.rst:109
+msgid "Section: Description"
+msgstr ""
+
+#: ../../ProductVersion.rst:79
+msgid "Section: Product versions"
+msgstr ""
+
+#: ../../ProductVersion.rst:0
+msgid "Field: Prime contractor"
+msgstr ""
+
+#: ../../ProductVersion.rst:0
+msgid "Field: Entry into service"
+msgstr ""
+
+#: ../../ProductVersion.rst:0
+msgid "Field: End date"
+msgstr ""
+
+#: ../../ProductVersion.rst:151
+msgid "Section: Projects linked to this version"
+msgstr ""
+
+#~ msgid "Description section"
+#~ msgstr ""
+
+#~ msgid "Product versions section"
+#~ msgstr ""
+
+#~ msgid "Details of fields"
+#~ msgstr ""
+
+#~ msgid "**Prime contractor**"
+#~ msgstr ""
+
+#~ msgid "**Entry into service**"
+#~ msgstr ""
+
+#~ msgid "**End date**"
+#~ msgstr ""
+
+#~ msgid "Projects linked to this version section"
+#~ msgstr ""

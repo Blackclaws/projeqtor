@@ -1,0 +1,949 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2018, ProjeQtOr
+# This file is distributed under the same license as the ProjeQtOr Bedienhandbuch Deutsch package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: ProjeQtOr Bedienhandbuch Deutsch 7.2\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2018-07-03 14:34+0200\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: ../../Gantt.rst:10
+#: ../../Gantt.rst:15
+msgid "Gantt charts"
+msgstr ""
+
+#: ../../Gantt.rst:22
+msgid "Planning"
+msgstr ""
+
+#: ../../Gantt.rst:24
+msgid "This screen allows to define project planning and follow progress."
+msgstr ""
+
+#: ../../Gantt.rst:26
+msgid "It is composed with two areas:"
+msgstr ""
+
+#: ../../Gantt.rst:28
+msgid ":ref:`task-list-area` |one|"
+msgstr ""
+
+#: ../../Gantt.rst:29
+msgid ":ref:`gantt-chart-view` |two|"
+msgstr ""
+
+#: ../../Gantt.rst:33
+msgid "This screen offers many features that will be described in the next sections."
+msgstr ""
+
+#: ../../Gantt.rst:39
+msgid "Gantt (Planning)"
+msgstr ""
+
+#: ../../Gantt.rst:42
+msgid "3 - Activity planning calculation"
+msgstr ""
+
+#: ../../Gantt.rst:43
+msgid "Click on  |calculatePlanning| to start the activity planning calculation.  (See: :ref:`project-planning`)"
+msgstr ""
+
+#: ../../Gantt.rst:51
+msgid "All modifications about assignement (rate, name or numbers of resources, dates...) done from an  **activity**  are not displayed on the planning screen (with the new recalculated mode) until having for this purpose activited the planning calculation, either in an automatic run plan or not."
+msgstr ""
+
+#: ../../Gantt.rst:56
+msgid "4 - Buttons"
+msgstr ""
+
+#: ../../Gantt.rst:57
+msgid "Click on |iconEnableCalendar| to validate planning."
+msgstr ""
+
+#: ../../Gantt.rst:58
+msgid "Click on |storePlannedDates| to save baseline of planning. (See: :ref:`project-planning`)"
+msgstr ""
+
+#: ../../Gantt.rst:59
+msgid "Click on |buttonIconPrint| to get a printable version of the Gantt chart."
+msgstr ""
+
+#: ../../Gantt.rst:60
+msgid "Click on |buttonIconPdf| to export Gantt chart in PDF format. (See: :ref:`export-Gantt-PDF`)"
+msgstr ""
+
+#: ../../Gantt.rst:61
+msgid "Click on |msProject| to export planning to MS-Project xml format."
+msgstr ""
+
+#: ../../Gantt.rst:62
+msgid "Click on |buttonIconColumn| to define the columns of progress data that will be displayed. (See: :ref:`progress-data-view`)"
+msgstr ""
+
+#: ../../Gantt.rst:63
+msgid "Click on |createNewItem| to create a new item. (See: :ref:`project-planning`)"
+msgstr ""
+
+#: ../../Gantt.rst:65
+msgid "Click on |buttonIconFilter| to filter the list."
+msgstr ""
+
+#: ../../Gantt.rst:66
+msgid "**Check the box** \"save date\" to keep registered displayed date of the overview planning, otherwise dates removing to general mode, after navigating away from this page."
+msgstr ""
+
+#: ../../Gantt.rst:69
+msgid "5 - Show Baseline"
+msgstr ""
+
+#: ../../Gantt.rst:70
+msgid "Allows to display one baseline on top and one on bottom of the Gantt chart."
+msgstr ""
+
+#: ../../Gantt.rst:74
+msgid "Ability to display two baselines on the Gantt chart."
+msgstr ""
+
+#: ../../Gantt.rst:75
+msgid "Baseline can be saved with |storePlannedDates|."
+msgstr ""
+
+#: ../../Gantt.rst:79
+msgid "6 - Show Critical path"
+msgstr ""
+
+#: ../../Gantt.rst:80
+msgid "Activating the box, calculated and displayed in red color into the Gantt planning."
+msgstr ""
+
+#: ../../Gantt.rst:89
+msgid "Task list area"
+msgstr ""
+
+#: ../../Gantt.rst:91
+msgid "The task list area is composed with:"
+msgstr ""
+
+#: ../../Gantt.rst:93
+msgid ":ref:`task-list` |one|"
+msgstr ""
+
+#: ../../Gantt.rst:94
+msgid ":ref:`progress-data-view` |two|"
+msgstr ""
+
+#: ../../Gantt.rst:100
+#: ../../Gantt.rst:135
+msgid "Task list & progress data view"
+msgstr ""
+
+#: ../../Gantt.rst:104
+msgid "3 - Area splitter"
+msgstr ""
+
+#: ../../Gantt.rst:105
+msgid "The splitter is used to show or hide the progress data view."
+msgstr ""
+
+#: ../../Gantt.rst:109
+msgid "The progress data view is hidden by default."
+msgstr ""
+
+#: ../../Gantt.rst:110
+msgid "Move the splitter on your right to display them."
+msgstr ""
+
+#: ../../Gantt.rst:119
+msgid "Task list"
+msgstr ""
+
+#: ../../Gantt.rst:121
+msgid "The task list displayed planning elements in hierarchical form."
+msgstr ""
+
+#: ../../Gantt.rst:123
+msgid "Tasks are regrouped by project and activity."
+msgstr ""
+
+#: ../../Gantt.rst:126
+msgid "Projects displayed"
+msgstr ""
+
+#: ../../Gantt.rst:127
+msgid "Projects displayed depends on selection done with the project selector."
+msgstr ""
+
+#: ../../Gantt.rst:128
+msgid "See: :ref:`top-bar`"
+msgstr ""
+
+#: ../../Gantt.rst:138
+msgid "1 - Hierarchical level"
+msgstr ""
+
+#: ../../Gantt.rst:139
+msgid "Click on |minusButton| or |plusButton| to adjust the hierarchical level displayed."
+msgstr ""
+
+#: ../../Gantt.rst:142
+msgid "2 - Icon of element"
+msgstr ""
+
+#: ../../Gantt.rst:143
+msgid "An icon is displayed on the left of the corresponding element."
+msgstr ""
+
+#: ../../Gantt.rst:146
+msgid "3 - Group row"
+msgstr ""
+
+#: ../../Gantt.rst:147
+msgid "Click on |minusButton| or |plusButton| on the group row to expand or shrink the group."
+msgstr ""
+
+#: ../../Gantt.rst:151
+msgid "4 - Show WBS"
+msgstr ""
+
+#: ../../Gantt.rst:152
+msgid "Click on \"Show WBS\" to display the WBS number before the names."
+msgstr ""
+
+#: ../../Gantt.rst:155
+msgid "5 - Item name"
+msgstr ""
+
+#: ../../Gantt.rst:156
+msgid "Click on a row will display the detail of the item in the detail window."
+msgstr ""
+
+#: ../../Gantt.rst:159
+msgid "6 - Checkbox «Show closed items»"
+msgstr ""
+
+#: ../../Gantt.rst:160
+msgid "Flag on «Show closed items» allows to list also closed items."
+msgstr ""
+
+#: ../../Gantt.rst:168
+msgid "Filter on the planning: possibility to filter the activities to be displayed on the Gantt Planning view"
+msgstr ""
+
+#: ../../Gantt.rst:170
+msgid "The \"parents\" of the selected activities are also displayed to maintain the WBS structure.."
+msgstr ""
+
+#: ../../Gantt.rst:176
+#: ../../Gantt.rst:187
+msgid "Progress data view"
+msgstr ""
+
+#: ../../Gantt.rst:178
+msgid "The progress data view allows to show progress on project elements."
+msgstr ""
+
+#: ../../Gantt.rst:180
+msgid "For each planning element, the progress data are displayed at them right."
+msgstr ""
+
+#: ../../Gantt.rst:190
+msgid "1 - Group row"
+msgstr ""
+
+#: ../../Gantt.rst:191
+msgid "The group row has a gray background."
+msgstr ""
+
+#: ../../Gantt.rst:192
+msgid "Used to display consolidated progress data for tasks."
+msgstr ""
+
+#: ../../Gantt.rst:195
+msgid "2 - Task row"
+msgstr ""
+
+#: ../../Gantt.rst:196
+msgid "The task row has a white background."
+msgstr ""
+
+#: ../../Gantt.rst:197
+msgid "Used to display task progress data."
+msgstr ""
+
+#: ../../Gantt.rst:204
+msgid "3 -  Define the columns of progress data that will be displayed"
+msgstr ""
+
+#: ../../Gantt.rst:205
+msgid "Click on |buttonIconColumn| to define the columns displayed."
+msgstr ""
+
+#: ../../Gantt.rst:206
+msgid "Click on **OK** button to apply changes."
+msgstr ""
+
+#: ../../Gantt.rst:208
+msgid "**Column selection**"
+msgstr ""
+
+#: ../../Gantt.rst:210
+msgid "Use checkboxes to select or unselect columns to display."
+msgstr ""
+
+#: ../../Gantt.rst:212
+msgid "**Columns order**"
+msgstr ""
+
+#: ../../Gantt.rst:214
+msgid "Use the |buttonIconDrag| to reorder columns with drag & drop feature."
+msgstr ""
+
+#: ../../Gantt.rst:221
+msgid "Popup list - Select columns"
+msgstr ""
+
+#: ../../Gantt.rst:230
+#: ../../Gantt.rst:240
+msgid "Gantt chart view"
+msgstr ""
+
+#: ../../Gantt.rst:232
+msgid "The Gantt chart view is a graphic representation of progress data."
+msgstr ""
+
+#: ../../Gantt.rst:234
+msgid "For each planning element, a Gantt bar is displayed at them right."
+msgstr ""
+
+#: ../../Gantt.rst:243
+msgid "1 - Scale"
+msgstr ""
+
+#: ../../Gantt.rst:244
+msgid "Scale available: daily, weekly, monthly or quarter"
+msgstr ""
+
+#: ../../Gantt.rst:245
+msgid "The Gantt chart view will be adjusted according to scale selected."
+msgstr ""
+
+#: ../../Gantt.rst:248
+msgid "2 - Start and end dates"
+msgstr ""
+
+#: ../../Gantt.rst:249
+msgid "Change the starting or ending date to limit the display of Gantt chart view."
+msgstr ""
+
+#: ../../Gantt.rst:252
+msgid "3 - Saving dates"
+msgstr ""
+
+#: ../../Gantt.rst:253
+msgid "Save previous dates to retrieve them on every connection."
+msgstr ""
+
+#: ../../Gantt.rst:260
+msgid "4- Gantt bars"
+msgstr ""
+
+#: ../../Gantt.rst:261
+msgid "Overdue tasks appear in red, others in green."
+msgstr ""
+
+#: ../../Gantt.rst:263
+msgid "**Red bar**"
+msgstr ""
+
+#: ../../Gantt.rst:267
+msgid "Planned end date or (Real end date if completed task)  > Validated end date"
+msgstr ""
+
+#: ../../Gantt.rst:269
+msgid "**Purple bar**"
+msgstr ""
+
+#: ../../Gantt.rst:271
+msgid "The planning calculator tries to plan, the remaining work on the task assigned to a resource within the allocation to project period."
+msgstr ""
+
+#: ../../Gantt.rst:272
+msgid "If remaining work on the task can't be planned, a purple bar appears in the Gantt view."
+msgstr ""
+
+#: ../../Gantt.rst:275
+msgid "**Consolidation bar**"
+msgstr ""
+
+#: ../../Gantt.rst:280
+msgid "Displayed at group row level."
+msgstr ""
+
+#: ../../Gantt.rst:281
+msgid "Graphic display of consolidated dates for planning elements group."
+msgstr ""
+
+#: ../../Gantt.rst:282
+msgid "Start with the smallest start date and end with the biggest end date, either with planned or real dates."
+msgstr ""
+
+#: ../../Gantt.rst:285
+msgid "**Real work progress**"
+msgstr ""
+
+#: ../../Gantt.rst:290
+msgid "The line that cross a Gantt bar displays the percentage of actual progress."
+msgstr ""
+
+#: ../../Gantt.rst:291
+msgid "The length of the line represents the percentage of completion, based on the percentage of actual progress against the length of Gantt bar."
+msgstr ""
+
+#: ../../Gantt.rst:293
+msgid "Lighter bar"
+msgstr ""
+
+#: ../../Gantt.rst:295
+msgid "Activities without assigned work are lighter bar, pale red or pale green as appropriate."
+msgstr ""
+
+#: ../../Gantt.rst:301
+msgid "Move the cursor over the bar to display item name and planned dates."
+msgstr ""
+
+#: ../../Gantt.rst:304
+msgid "5 - Dependency links"
+msgstr ""
+
+#: ../../Gantt.rst:305
+msgid "Dependencies between planning elements are displayed with an arrow."
+msgstr ""
+
+#: ../../Gantt.rst:307
+msgid "To modify dependency link, click on dependency to displays a pop-up"
+msgstr ""
+
+#: ../../Gantt.rst:313
+msgid "3 dependency types are managed:"
+msgstr ""
+
+#: ../../Gantt.rst:315
+msgid "End-Start. The second activity can not start before the end of the first activity."
+msgstr ""
+
+#: ../../Gantt.rst:316
+msgid "Start-Start: the successor can not begin before the beginning of the predecessor. Anyway, the successor can begin after the beginning of the predecessor."
+msgstr ""
+
+#: ../../Gantt.rst:317
+msgid "End-End: The successor should not end after the end of the predecessor, which leads to planning \"as late as possible\". Anyway, the successor can end before the predecessor. Note that the successor \"should\" not end after the end of predecessor, but in some cases this will not be respected:"
+msgstr ""
+
+#: ../../Gantt.rst:319
+msgid "if the resource is already 100% used until the end of the successor"
+msgstr ""
+
+#: ../../Gantt.rst:320
+msgid "if the successor has another predecessor of type \"End-Start\" or \"Start-Start\" and the remaining time is not enough to complete the task"
+msgstr ""
+
+#: ../../Gantt.rst:321
+msgid "if the delay from the planning start date does not allow to complete the task"
+msgstr ""
+
+#: ../../Gantt.rst:323
+msgid "Pop-up"
+msgstr ""
+
+#: ../../Gantt.rst:325
+msgid "Right click on a dependency link (when its color is orange) will show update pop-up"
+msgstr ""
+
+#: ../../Gantt.rst:326
+msgid "You can modify the delay, add a comment or remove the dependency."
+msgstr ""
+
+#: ../../Gantt.rst:328
+msgid "Graphical add dependency"
+msgstr ""
+
+#: ../../Gantt.rst:330
+msgid "You can easily add a dependency with drag and drop from predecessor bar to successor bar"
+msgstr ""
+
+#: ../../Gantt.rst:331
+msgid "These dependencies are always End-Start, but you can change their type afterwards"
+msgstr ""
+
+#: ../../Gantt.rst:339
+msgid "6 - Milestone"
+msgstr ""
+
+#: ../../Gantt.rst:340
+msgid "Milestones appear as diamonds, filled if completed, empty if not."
+msgstr ""
+
+#: ../../Gantt.rst:341
+msgid "Color of  diamond depends on milestone progress."
+msgstr ""
+
+#: ../../Gantt.rst:343
+msgid "**Ongoing milestone and in times**"
+msgstr ""
+
+#: ../../Gantt.rst:348
+msgid "**Completed milestone and in times**"
+msgstr ""
+
+#: ../../Gantt.rst:353
+msgid "**Ongoing milestone and delayed**"
+msgstr ""
+
+#: ../../Gantt.rst:360
+msgid "Planned end date > Validate end date"
+msgstr ""
+
+#: ../../Gantt.rst:362
+msgid "**Completed milestone and delayed**"
+msgstr ""
+
+#: ../../Gantt.rst:369
+msgid "Real end date > Validated end date"
+msgstr ""
+
+#: ../../Gantt.rst:375
+msgid "7 - Show resources"
+msgstr ""
+
+#: ../../Gantt.rst:376
+msgid "Click on “Show resources” to display resources assigned to tasks."
+msgstr ""
+
+#: ../../Gantt.rst:380
+msgid "This parameter defines the option availability and whether the resource name or initial is displayed."
+msgstr ""
+
+#: ../../Gantt.rst:383
+msgid "8 - Current date"
+msgstr ""
+
+#: ../../Gantt.rst:384
+msgid "Yellow column indicates the current day, week, month or quarter, according to scale selected."
+msgstr ""
+
+#: ../../Gantt.rst:385
+msgid "Red bar in yellow collumn display the current day and time."
+msgstr ""
+
+#: ../../Gantt.rst:388
+msgid "9 - Detail of the work"
+msgstr ""
+
+#: ../../Gantt.rst:389
+msgid "Right click on a bar to displays the detail of the work for this bar."
+msgstr ""
+
+#: ../../Gantt.rst:395
+msgid "*warning: You have to selected week or day scale to display detail or a message will ask you to switch to smaller scale."
+msgstr ""
+
+#: ../../Gantt.rst:407
+#: ../../Gantt.rst:417
+msgid "Project planning"
+msgstr ""
+
+#: ../../Gantt.rst:409
+msgid "Project planning and activity planning calculation can be done in the Gantt."
+msgstr ""
+
+#: ../../Gantt.rst:420
+msgid "1 - Add a new planning element"
+msgstr ""
+
+#: ../../Gantt.rst:421
+msgid "Allows to create a new planning element."
+msgstr ""
+
+#: ../../Gantt.rst:422
+msgid "The created element is added in the Gantt and detail window is opened."
+msgstr ""
+
+#: ../../Gantt.rst:423
+msgid "The detail window allows to complete entry."
+msgstr ""
+
+#: ../../Gantt.rst:430
+msgid "Popup menu - Create a new item"
+msgstr ""
+
+#: ../../Gantt.rst:432
+msgid "Planning elements management"
+msgstr ""
+
+#: ../../Gantt.rst:434
+msgid "Planning elements can be managed with their own dedicated screen."
+msgstr ""
+
+#: ../../Gantt.rst:435
+msgid "Test session and Meeting elements can be added to the planning with their own dedicated screen."
+msgstr ""
+
+#: ../../Gantt.rst:438
+msgid "2 - Reorder planning elements"
+msgstr ""
+
+#: ../../Gantt.rst:439
+msgid "The selector |buttonIconDrag| allows to reorder the planning elements."
+msgstr ""
+
+#: ../../Gantt.rst:440
+msgid "Ability to move multiple tasks at one time from one location to another using the key control to select the lines and then dragging and dropping them."
+msgstr ""
+
+#: ../../Gantt.rst:444
+msgid "3 - Indenting element"
+msgstr ""
+
+#: ../../Gantt.rst:445
+msgid "Click on an element, the detail window will be displayed."
+msgstr ""
+
+#: ../../Gantt.rst:446
+msgid "Two new buttons are displayed in the header, they allow to increase or decrease indent of an element."
+msgstr ""
+
+#: ../../Gantt.rst:448
+msgid "**Increase indent**"
+msgstr ""
+
+#: ../../Gantt.rst:450
+msgid "The element will become the child of the previous element."
+msgstr ""
+
+#: ../../Gantt.rst:452
+msgid "**Decrease indent**"
+msgstr ""
+
+#: ../../Gantt.rst:454
+msgid "The element will be moved at the same level than the previous element."
+msgstr ""
+
+#: ../../Gantt.rst:458
+msgid "4 - Dependency links"
+msgstr ""
+
+#: ../../Gantt.rst:459
+msgid "To create a dependency link, clicked and hold on a graphic element, the mouse cursor changes to |dndLink|."
+msgstr ""
+
+#: ../../Gantt.rst:460
+msgid "Move mouse cursor on graphic element that will be linked and release the button."
+msgstr ""
+
+#: ../../Gantt.rst:462
+msgid "Dependency links management"
+msgstr ""
+
+#: ../../Gantt.rst:464
+msgid "Dependency links can be managed in element screen."
+msgstr ""
+
+#: ../../Gantt.rst:465
+msgid "See: :ref:`predSuces-element-section`."
+msgstr ""
+
+#: ../../Gantt.rst:469
+msgid "5 - Activity planning calculation"
+msgstr ""
+
+#: ../../Gantt.rst:470
+msgid "Click on |calculatePlanning| to start the activity planning calculation."
+msgstr ""
+
+#: ../../Gantt.rst:472
+msgid "**Automatic run plan**"
+msgstr ""
+
+#: ../../Gantt.rst:474
+msgid "Check the box to activate automatic calculation on each change."
+msgstr ""
+
+#: ../../Gantt.rst:483
+msgid "All modifications about assignement (rate, name or numbers of resources, dates...) done are not displayed on the new planning screen until having, for this purpose, activited the planning calculation, either in an automatic run plan or not. On the contrary, the screen planning will not change even if modifications have been loaded yet."
+msgstr ""
+
+#: ../../Gantt.rst:486
+msgid "**Automatic calculation **"
+msgstr ""
+
+#: ../../Gantt.rst:488
+msgid "Differential calculation = calculation of projects that require a recalculation."
+msgstr ""
+
+#: ../../Gantt.rst:489
+msgid "Complete calculation = calculation of all projects"
+msgstr ""
+
+#: ../../Gantt.rst:491
+msgid "The calculations are programmed according to a frequency of CRON type (every minute, every hour, at a given hour every day, at a given time on a given week day, ...)"
+msgstr ""
+
+#: ../../Gantt.rst:494
+msgid "6 - Store planned dates"
+msgstr ""
+
+#: ../../Gantt.rst:495
+msgid "Allows to store planned dates into requested and validated dates."
+msgstr ""
+
+#: ../../Gantt.rst:496
+msgid "In other words, this feature allows to set baseline dates and preliminary dates from calculated planning."
+msgstr ""
+
+#: ../../Gantt.rst:498
+msgid "**Action available**"
+msgstr ""
+
+#: ../../Gantt.rst:500
+msgid "**Always:** Always overwrite existing values."
+msgstr ""
+
+#: ../../Gantt.rst:501
+msgid "**If empty:** Store only if the value is empty."
+msgstr ""
+
+#: ../../Gantt.rst:502
+msgid "**Never:** Values are not stored."
+msgstr ""
+
+#: ../../Gantt.rst:518
+msgid "Projects portfolio"
+msgstr ""
+
+#: ../../Gantt.rst:520
+msgid "This screen displays Gantt chart from projects portfolio point of view."
+msgstr ""
+
+#: ../../Gantt.rst:522
+msgid "It displays projects synthesis and project's dependencies, without project activities."
+msgstr ""
+
+#: ../../Gantt.rst:526
+#: ../../Gantt.rst:574
+msgid "This section describes specific behavior for this screen."
+msgstr ""
+
+#: ../../Gantt.rst:527
+#: ../../Gantt.rst:575
+msgid "All others behaviors are similar to :ref:`gantt-planning` screen."
+msgstr ""
+
+#: ../../Gantt.rst:534
+msgid "Gantt (Projects portfolio)"
+msgstr ""
+
+#: ../../Gantt.rst:537
+msgid "1 - Show milestones"
+msgstr ""
+
+#: ../../Gantt.rst:538
+msgid "It is possible to define whether milestones are displayed or not."
+msgstr ""
+
+#: ../../Gantt.rst:539
+msgid "If they are displayed, then It is possible to define the type of milestone to be displayed or displayed all."
+msgstr ""
+
+#: ../../Gantt.rst:550
+msgid "Resource Planning"
+msgstr ""
+
+#: ../../Gantt.rst:552
+msgid "This screen displays Gantt chart from the resources point of view."
+msgstr ""
+
+#: ../../Gantt.rst:554
+msgid "Assigned tasks are grouped under resource level."
+msgstr ""
+
+#: ../../Gantt.rst:557
+msgid "Gantt bars"
+msgstr ""
+
+#: ../../Gantt.rst:558
+msgid "For activities, the Gantt bar is split in two:"
+msgstr ""
+
+#: ../../Gantt.rst:560
+msgid "Real work in grey."
+msgstr ""
+
+#: ../../Gantt.rst:561
+msgid "Reassessed work in green."
+msgstr ""
+
+#: ../../Gantt.rst:565
+msgid "This makes appear some planning gap between started work and reassessed work."
+msgstr ""
+
+#: ../../Gantt.rst:568
+msgid "Dependencies behavior"
+msgstr ""
+
+#: ../../Gantt.rst:569
+msgid "Links between activities are displayed only in the resource group."
+msgstr ""
+
+#: ../../Gantt.rst:570
+msgid "Links existing between tasks on different resources are not displayed."
+msgstr ""
+
+#: ../../Gantt.rst:582
+msgid "Gantt (Resource planning)"
+msgstr ""
+
+#: ../../Gantt.rst:586
+msgid "|one| - Show project level"
+msgstr ""
+
+#: ../../Gantt.rst:587
+msgid "Tasks can be grouped by project."
+msgstr ""
+
+#: ../../Gantt.rst:588
+msgid "Click on “Show project level” to display project level."
+msgstr ""
+
+#: ../../Gantt.rst:591
+msgid "|two| - Show left work"
+msgstr ""
+
+#: ../../Gantt.rst:592
+msgid "Left work can be displayed at right from Gantt bar."
+msgstr ""
+
+#: ../../Gantt.rst:593
+msgid "Click on “Show left work” to display left work for each item."
+msgstr ""
+
+#: ../../Gantt.rst:596
+msgid "|three| - Limit display to selected ressource or team"
+msgstr ""
+
+#: ../../Gantt.rst:597
+msgid "Click and select one ressource to display only his data."
+msgstr ""
+
+#: ../../Gantt.rst:598
+msgid "Click and select one team to display only data of resources of this team."
+msgstr ""
+
+#: ../../Gantt.rst:607
+msgid "Export planning to PDF"
+msgstr ""
+
+#: ../../Gantt.rst:609
+msgid "Allows to export planning to PDF format."
+msgstr ""
+
+#: ../../Gantt.rst:611
+msgid "Export contains all details and links between tasks."
+msgstr ""
+
+#: ../../Gantt.rst:620
+msgid "Fields - Export planning to PDF dialog box"
+msgstr ""
+
+#: ../../Gantt.rst:624
+msgid "Field"
+msgstr ""
+
+#: ../../Gantt.rst:625
+msgid "Description"
+msgstr ""
+
+#: ../../Gantt.rst:626
+msgid "Orientation"
+msgstr ""
+
+#: ../../Gantt.rst:627
+msgid "Page orientation."
+msgstr ""
+
+#: ../../Gantt.rst:628
+msgid "Zoom"
+msgstr ""
+
+#: ../../Gantt.rst:629
+msgid "Allows to fit planning on page."
+msgstr ""
+
+#: ../../Gantt.rst:630
+msgid "Repeat headers"
+msgstr ""
+
+#: ../../Gantt.rst:631
+msgid "Planning can be  span multiple pages."
+msgstr ""
+
+#: ../../Gantt.rst:633
+msgid "Technical points"
+msgstr ""
+
+#: ../../Gantt.rst:635
+msgid "This new feature will execute export on client side, in your browser."
+msgstr ""
+
+#: ../../Gantt.rst:636
+msgid "Thus the server will not be *heavy loaded* like *standard* PDF export does."
+msgstr ""
+
+#: ../../Gantt.rst:637
+msgid "It is highly faster than *standard* PDF export."
+msgstr ""
+
+#: ../../Gantt.rst:638
+msgid "Therefore, this feature is hightly dependant to browser compatibility."
+msgstr ""
+
+#: ../../Gantt.rst:640
+msgid "Browser compatibility"
+msgstr ""
+
+#: ../../Gantt.rst:642
+msgid "This new feature is technically complex and it is not compatible with all browsers."
+msgstr ""
+
+#: ../../Gantt.rst:643
+msgid "Compatible with IE11, Firefox, Edge and Chrome."
+msgstr ""
+
+#: ../../Gantt.rst:644
+msgid "Else, the old export feature will be used."
+msgstr ""
+
+#: ../../Gantt.rst:646
+msgid "Forced feature activation (deactivation)"
+msgstr ""
+
+#: ../../Gantt.rst:648
+msgid "To enable this feature for all browsers, add the parameter **$pdfPlanningBeta='true';** in parameters.php file."
+msgstr ""
+
+#: ../../Gantt.rst:649
+msgid "To disable if for all brosers (including Chrome), add the parameter **$pdfPlanningBeta='false';**"
+msgstr ""
+
+#: ../../Gantt.rst:650
+msgid "Default (when **$pdfPlanningBeta** parameter is not set) is *enabled with Chrome, disabled with other browsers*"
+msgstr ""
+

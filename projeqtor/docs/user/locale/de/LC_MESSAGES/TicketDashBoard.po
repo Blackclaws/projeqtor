@@ -1,0 +1,149 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2018, ProjeQtOr
+# This file is distributed under the same license as the ProjeQtOr Bedienhandbuch Deutsch package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"POT-Creation-Date: \n"
+"PO-Revision-Date: \n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=ISO-8859-1\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: de\n"
+"X-Generator: Poedit 2.0.8\n"
+
+#: ../../TicketDashBoard.rst:15
+msgid "Tickets dashboard"
+msgstr "Tickets Dashboard"
+
+#: ../../TicketDashBoard.rst:17
+msgid "Allows user to have a tickets global view of his projects."
+msgstr "Ermöglicht dem Benutzer eine globale Sicht auf seine Projekte."
+
+#: ../../TicketDashBoard.rst:19
+msgid "Shows several small reports, listing the number of tickets by item."
+msgstr "Zeigt mehrere kleine Berichte an, die die Anzahl der Tickets pro Artikel auflisten."
+
+#: ../../TicketDashBoard.rst:21
+msgid "Filters are available to limit scope."
+msgstr "Filter sind verfügbar, um den Umfang einzuschränken."
+
+#: ../../TicketDashBoard.rst:24
+msgid "Direct access to the list of tickets"
+msgstr "Direkter Zugriff auf die Liste der Tickets"
+
+#: ../../TicketDashBoard.rst:28
+msgid "Parameters"
+msgstr "Parameter"
+
+#: ../../TicketDashBoard.rst:29
+msgid "Click on |buttonIconParameter| to access parameters."
+msgstr "Klicken Sie auf |buttonIconParameter|, um auf die Parameter zuzugreifen."
+
+#: ../../TicketDashBoard.rst:30
+msgid "Allows to define reports displayed on the screen."
+msgstr "Erlaubt die Definition von Berichten, die auf dem Bildschirm angezeigt werden."
+
+#: ../../TicketDashBoard.rst:35
+msgid "Arrange reports on left and right on screen."
+msgstr "Berichte links und rechts am Bildschirm anordnen."
+
+#: ../../TicketDashBoard.rst:43
+msgid "Filter clauses"
+msgstr "Filterklausel"
+
+#: ../../TicketDashBoard.rst:45
+msgid "Report: Synthesis by status"
+msgstr "Bericht: Synthese nach Status"
+
+#: ../../TicketDashBoard.rst:47
+msgid "For this report, filter clauses are not applicable."
+msgstr "Für diesen Bericht gelten keine Filterklauseln."
+
+#: ../../TicketDashBoard.rst:51
+msgid "Scope filters"
+msgstr "Scope-Filter"
+
+#: ../../TicketDashBoard.rst:52
+msgid "**All issues**"
+msgstr "**Alle Ausgaben**"
+
+#: ../../TicketDashBoard.rst:54
+msgid "All tickets."
+msgstr "Alle Karten."
+
+#: ../../TicketDashBoard.rst:56
+msgid "**Not closed issues**"
+msgstr "**Nicht abgeschlossene Ausgaben**"
+
+#: ../../TicketDashBoard.rst:58
+msgid "Tickets not closed. (Status <> 'closed')"
+msgstr "Tickets nicht geschlossen. (Status <> 'geschlossen')"
+
+#: ../../TicketDashBoard.rst:60
+msgid "**Not resolved issues**"
+msgstr "**Nicht gelöste Probleme**"
+
+#: ../../TicketDashBoard.rst:62
+msgid "Tickets not resolved. (Status <> 'done')"
+msgstr "Tickets nicht gelöst. (Status <> 'fertig')"
+
+#: ../../TicketDashBoard.rst:65
+msgid "Recently updated"
+msgstr "Kürzlich aktualisiert"
+
+#: ../../TicketDashBoard.rst:66
+msgid "**Added recently**"
+msgstr "**Kürzlich hinzugefügt**"
+
+#: ../../TicketDashBoard.rst:68
+msgid "Tickets created within *x* last days."
+msgstr "Tickets erstellt innerhalb der letzten *x* Tage."
+
+#: ../../TicketDashBoard.rst:70
+msgid "**Resolved recently**"
+msgstr "**Kürzlich aufgelöst**"
+
+#: ../../TicketDashBoard.rst:72
+msgid "Tickets treated within *x* last days."
+msgstr "Tickets behandelt innerhalb der letzten *x* Tage."
+
+#: ../../TicketDashBoard.rst:74
+msgid "**Updated recently**"
+msgstr "**Kürzlich aktualisiert**"
+
+#: ../../TicketDashBoard.rst:76
+msgid "Tickets updated within *x* last days."
+msgstr "Tickets aktualisiert innerhalb *x* der letzten Tage."
+
+#: ../../TicketDashBoard.rst:79
+msgid "Linked to the user"
+msgstr "Mit dem Benutzer verbunden"
+
+#: ../../TicketDashBoard.rst:80
+msgid "**Assigned to me**"
+msgstr "**Assigned to me**"
+
+#: ../../TicketDashBoard.rst:82
+msgid "Tickets that you are responsible for their treatment."
+msgstr "Tickets, für deren Behandlung Sie verantwortlich sind."
+
+#: ../../TicketDashBoard.rst:84
+msgid "**Reported by me**"
+msgstr "**Berichtet von mir**"
+
+#: ../../TicketDashBoard.rst:86
+msgid "Tickets that you are the issuer."
+msgstr "Tickets, dass Sie der Aussteller sind."
+
+#: ../../TicketDashBoard.rst:89
+msgid "No resolution scheduled"
+msgstr "Keine Auflösung geplant"
+
+#: ../../TicketDashBoard.rst:90
+msgid "**Unscheduled**"
+msgstr "**Ungeplant**"

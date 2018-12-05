@@ -1,0 +1,106 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2018, ProjeQtOr
+# This file is distributed under the same license as the ProjeQtOr Bedienhandbuch Deutsch package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: ProjeQtOr Bedienhandbuch Deutsch 7.2\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2018-07-03 14:34+0200\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: ../../FinancialGallery.rst:13
+msgid "Financial Gallery"
+msgstr ""
+
+#: ../../FinancialGallery.rst:15
+msgid "Allows to display attachments on a financial element as Quotation, Order and Bill."
+msgstr ""
+
+#: ../../FinancialGallery.rst:17
+msgid "Attachments are displayed grouped by element."
+msgstr ""
+
+#: ../../FinancialGallery.rst:19
+msgid "Click on |buttonIconDisplay| to display attachment list."
+msgstr ""
+
+#: ../../FinancialGallery.rst:22
+msgid "Filters"
+msgstr ""
+
+#: ../../FinancialGallery.rst:27
+msgid "Financial Gallery Parameters"
+msgstr ""
+
+#: ../../FinancialGallery.rst:30
+msgid "Filters can be applied to the list."
+msgstr ""
+
+#: ../../FinancialGallery.rst:32
+msgid "**Element**"
+msgstr ""
+
+#: ../../FinancialGallery.rst:34
+msgid "Displays attachments for this element."
+msgstr ""
+
+#: ../../FinancialGallery.rst:36
+msgid "**Start and end date**"
+msgstr ""
+
+#: ../../FinancialGallery.rst:38
+msgid "Displays attachments for this period."
+msgstr ""
+
+#: ../../FinancialGallery.rst:39
+msgid "Attachments will be displayed according a date defined in the element."
+msgstr ""
+
+#: ../../FinancialGallery.rst:41
+msgid "**Quotation**"
+msgstr ""
+
+#: ../../FinancialGallery.rst:43
+msgid "Done date"
+msgstr ""
+
+#: ../../FinancialGallery.rst:45
+msgid "**Order**"
+msgstr ""
+
+#: ../../FinancialGallery.rst:47
+msgid "Validated start date"
+msgstr ""
+
+#: ../../FinancialGallery.rst:49
+msgid "**Bill**"
+msgstr ""
+
+#: ../../FinancialGallery.rst:51
+msgid "Bill date"
+msgstr ""
+
+#: ../../FinancialGallery.rst:54
+msgid "**Customer**"
+msgstr ""
+
+#: ../../FinancialGallery.rst:56
+msgid "Displays attachments for this customer name."
+msgstr ""
+
+#: ../../FinancialGallery.rst:58
+msgid "**Type**"
+msgstr ""
+
+#: ../../FinancialGallery.rst:60
+msgid "Displays attachments for this element type."
+msgstr ""
+

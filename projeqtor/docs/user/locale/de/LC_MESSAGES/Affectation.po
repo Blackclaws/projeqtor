@@ -1,0 +1,162 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2018, ProjeQtOr
+# This file is distributed under the same license as the ProjeQtOr Bedienhandbuch Deutsch package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: ProjeQtOr Bedienhandbuch Deutsch 7.2\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2018-07-03 14:34+0200\n"
+"PO-Revision-Date: 2018-07-17 14:46+0200\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 2.0.8\n"
+"Last-Translator: \n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"Language: de\n"
+
+#: ../../Affectation.rst:12
+msgid "Allocations"
+msgstr "Zuordnungen"
+
+#: ../../Affectation.rst:17
+msgid ":ref:`profiles-definition`"
+msgstr ":ref:`profiles-definition`"
+
+#: ../../Affectation.rst:18
+msgid ":ref:`user-ress-contact-demystify`"
+msgstr ":ref:`user-ress-contact-demystify`"
+
+#: ../../Affectation.rst:19
+msgid ":ref:`allocation-to-project`"
+msgstr ":ref:`allocation-to-project`"
+
+#: ../../Affectation.rst:22
+msgid "Allows to manage allocations to project."
+msgstr "Ermöglicht die Verwaltung von Zuordnungen zum Projekt."
+
+#: ../../Affectation.rst:24
+msgid "Offers a global view of allocation."
+msgstr "Bietet eine globale Sicht auf die Zuordnungen."
+
+#: ../../Affectation.rst:28
+msgid "You can use filters."
+msgstr "Sie können Filter verwenden."
+
+#: ../../Affectation.rst:32
+msgid "Section: Description"
+msgstr "Abschnitt: Beschreibung"
+
+#: ../../Affectation.rst:39
+msgid "Field"
+msgstr "Feld"
+
+#: ../../Affectation.rst:40
+msgid "Description"
+msgstr "Beschreibung"
+
+#: ../../Affectation.rst:41
+msgid ":term:`Id`"
+msgstr ":term:`Id`"
+
+#: ../../Affectation.rst:42
+msgid "Unique Id for the allocation."
+msgstr "Eindeutige Id für die Zuordnung."
+
+#: ../../Affectation.rst:43
+msgid "Resource"
+msgstr "Ressource"
+
+#: ../../Affectation.rst:44
+msgid "Name of the allocated resource."
+msgstr "Name der zugeordneten Ressource."
+
+#: ../../Affectation.rst:45
+msgid "Or contact"
+msgstr "Oder Kontakt"
+
+#: ../../Affectation.rst:46
+msgid "Name of the allocated contact."
+msgstr "Name des zugeordneten Kontakts."
+
+#: ../../Affectation.rst:47
+msgid "**Profile**"
+msgstr "**Profil**"
+
+#: ../../Affectation.rst:48
+msgid "Selected profile."
+msgstr "Ausgewähltes Profil."
+
+#: ../../Affectation.rst:49
+msgid "**Project**"
+msgstr "**Projekt**"
+
+#: ../../Affectation.rst:50
+msgid "Project allocated to."
+msgstr "Projekt zugeordnet zu."
+
+#: ../../Affectation.rst:51
+msgid "Rate"
+msgstr "Bewerten"
+
+#: ../../Affectation.rst:52
+msgid "Allocation rate for the project (%)."
+msgstr "Zuordnungsrate für das Projekt (%)."
+
+#: ../../Affectation.rst:53
+msgid "Start date"
+msgstr "Startdatum"
+
+#: ../../Affectation.rst:54
+msgid "Start date of allocation."
+msgstr "Startdatum der Zuordnung."
+
+#: ../../Affectation.rst:55
+msgid "End date"
+msgstr "Endedatum"
+
+#: ../../Affectation.rst:56
+msgid "End date of allocation."
+msgstr "Endedatum der Zuordnung."
+
+#: ../../Affectation.rst:57
+msgid ":term:`Closed`"
+msgstr ":term:`Geschlossen`"
+
+#: ../../Affectation.rst:58
+msgid "Flag to indicate that the allocation is archived."
+msgstr "Kennzeichen, dass die Zuordnung archiviert wird."
+
+#: ../../Affectation.rst:59
+msgid ":term:`Description`"
+msgstr ":term:`Beschreibung`"
+
+#: ../../Affectation.rst:60
+msgid "Complete description of the allocation."
+msgstr "Vollständige Beschreibung der Zuordnung."
+
+#: ../../Affectation.rst:62
+msgid "**\\* Required field**"
+msgstr "**\\* Pflichtfeld**"
+
+#: ../../Affectation.rst:66
+msgid "You can select resource or contact."
+msgstr "Sie können eine Ressource oder einen Kontakt auswählen."
+
+#: ../../Affectation.rst:67
+msgid ""
+"If none is selected then the user connected is used to define the allocation."
+msgstr ""
+"Wenn „keine“ ausgewählt ist, wird der angeschlossene Benutzer zur Definition "
+"der Zuordnung verwendet."
+
+#: ../../Affectation.rst:68
+msgid ""
+"If a contact is a resource and inversely, then resource or contact name will "
+"be selected too."
+msgstr ""
+"Wenn ein Kontakt eine Ressource ist und umgekehrt, dann wird auch die "
+"Ressource oder der Kontaktname ausgewählt."

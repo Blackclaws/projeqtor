@@ -1,0 +1,101 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2018, ProjeQtOr
+# This file is distributed under the same license as the ProjeQtOr Bedienhandbuch Deutsch package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"POT-Creation-Date: \n"
+"PO-Revision-Date: \n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=ISO-8859-1\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: de\n"
+"X-Generator: Poedit 2.0.8\n"
+
+#: ../../FinancialGallery.rst:13
+msgid "Financial Gallery"
+msgstr "Finanzielle Galerie"
+
+#: ../../FinancialGallery.rst:17
+msgid "Attachments are displayed grouped by element."
+msgstr "Anhänge werden nach Elementen gruppiert angezeigt."
+
+#: ../../FinancialGallery.rst:19
+msgid "Click on |buttonIconDisplay| to display attachment list."
+msgstr "Klicken Sie auf |buttonIconDisplay|, um die Anlagenliste anzuzeigen."
+
+#: ../../FinancialGallery.rst:22
+msgid "Filters"
+msgstr "Filter"
+
+#: ../../FinancialGallery.rst:27
+msgid "Financial Gallery Parameters"
+msgstr "Parameter der Finanzgalerie"
+
+#: ../../FinancialGallery.rst:30
+msgid "Filters can be applied to the list."
+msgstr "Filter können auf die Liste angewendet werden."
+
+#: ../../FinancialGallery.rst:32
+msgid "**Element**"
+msgstr "**Element**"
+
+#: ../../FinancialGallery.rst:34
+msgid "Displays attachments for this element."
+msgstr "Zeigt Anhänge für dieses Element an."
+
+#: ../../FinancialGallery.rst:36
+msgid "**Start and end date**"
+msgstr "**Start- und Enddatum**"
+
+#: ../../FinancialGallery.rst:38
+msgid "Displays attachments for this period."
+msgstr "Zeigt Anhänge für diesen Zeitraum an."
+
+#: ../../FinancialGallery.rst:39
+msgid "Attachments will be displayed according a date defined in the element."
+msgstr "Anhänge werden nach einem im Element definierten Datum angezeigt."
+
+#: ../../FinancialGallery.rst:41
+msgid "**Quotation**"
+msgstr "**Zitat**"
+
+#: ../../FinancialGallery.rst:43
+msgid "Done date"
+msgstr "Fertig Datum"
+
+#: ../../FinancialGallery.rst:45
+msgid "**Order**"
+msgstr "**Bestellen**"
+
+#: ../../FinancialGallery.rst:47
+msgid "Validated start date"
+msgstr "Bestätigtes Startdatum"
+
+#: ../../FinancialGallery.rst:49
+msgid "**Bill**"
+msgstr "**Rechnung**"
+
+#: ../../FinancialGallery.rst:51
+msgid "Bill date"
+msgstr "Rechnungsdatum"
+
+#: ../../FinancialGallery.rst:54
+msgid "**Customer**"
+msgstr "**Kunde**"
+
+#: ../../FinancialGallery.rst:56
+msgid "Displays attachments for this customer name."
+msgstr "Zeigt Anhänge zu diesem Kundennamen an."
+
+#: ../../FinancialGallery.rst:58
+msgid "**Type**"
+msgstr "**Typ**"
+
+#: ../../FinancialGallery.rst:60
+msgid "Displays attachments for this element type."
+msgstr "Zeigt Anhänge für diesen Elementtyp an."
