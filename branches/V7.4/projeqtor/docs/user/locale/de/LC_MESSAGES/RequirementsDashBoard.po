@@ -1,0 +1,182 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2018, ProjeQtOr
+# This file is distributed under the same license as the ProjeQtOr Bedienhandbuch Deutsch package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: ProjeQtOr Bedienhandbuch Deutsch 7.2\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2018-07-03 14:34+0200\n"
+"PO-Revision-Date: 2018-07-16 11:55+0200\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 2.0.8\n"
+"Last-Translator: \n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"Language: de\n"
+
+#: ../../RequirementsDashBoard.rst:15
+msgid "Requirements dashboard"
+msgstr "Anforderungen Dashboard"
+
+#: ../../RequirementsDashBoard.rst:17
+msgid "Allows user to have a requirement global view of his projects."
+msgstr "Ermöglicht dem Benutzer eine globale Sicht auf seine Projekte."
+
+#: ../../RequirementsDashBoard.rst:19
+msgid ""
+"Shows several small reports, listing the number of requirements by item."
+msgstr ""
+"Zeigt mehrere kleine Berichte an, die die Anzahl der Anforderungen pro "
+"Artikel auflisten."
+
+#: ../../RequirementsDashBoard.rst:21
+msgid "Filters are available to limit scope."
+msgstr "Es stehen Filter zur Verfügung, um den Umfang einzuschränken."
+
+#: ../../RequirementsDashBoard.rst:24
+msgid "Direct access to the list of requirements"
+msgstr "Direktzugriff auf die Liste der Anforderungen"
+
+#: ../../RequirementsDashBoard.rst:25
+msgid ""
+"In reports, click on an item to get list of requirement corresponding to "
+"this item."
+msgstr ""
+"Klicken Sie in Berichten auf ein Element, um eine Liste der "
+"Anforderungen zu erhalten, die diesem Element entsprechen."
+
+#: ../../RequirementsDashBoard.rst:28
+msgid "Parameters"
+msgstr "Parameter"
+
+#: ../../RequirementsDashBoard.rst:29
+msgid "Click on |buttonIconParameter| to access parameters."
+msgstr ""
+"Klicken Sie auf |buttonIconParameter|, um auf die Parameter zuzugreifen."
+
+#: ../../RequirementsDashBoard.rst:30
+msgid "Allows to define reports displayed on the screen."
+msgstr ""
+"Ermöglicht die Definition von Berichten, die auf dem Bildschirm "
+"angezeigt werden."
+
+#: ../../RequirementsDashBoard.rst:31
+msgid ""
+"Allows to reorder reports displayed with drag & drop feature. Using the "
+"selector area button |buttonIconDrag|."
+msgstr ""
+"Ermöglicht die Neuanordnung von Berichten, die per Drag & Drop angezeigt "
+"werden. Mit der Auswahlbereichstaste |buttonIconDrag|."
+
+#: ../../RequirementsDashBoard.rst:35
+msgid "Arrange reports on left and right on screen."
+msgstr "Ordnen Sie die Berichte links und rechts am Bildschirm an."
+
+#: ../../RequirementsDashBoard.rst:43
+msgid "Filter clauses"
+msgstr "Filterklauseln"
+
+#: ../../RequirementsDashBoard.rst:45
+msgid "Report: Synthesis by status"
+msgstr "Bericht: Synthese nach Status"
+
+#: ../../RequirementsDashBoard.rst:47
+msgid "For this report, filter clauses are not applicable."
+msgstr "Für diesen Bericht gelten keine Filterklauseln."
+
+#: ../../RequirementsDashBoard.rst:51
+msgid "Scope filters"
+msgstr "Bereichsfilter"
+
+#: ../../RequirementsDashBoard.rst:52
+msgid "**All requirements**"
+msgstr "**Alle Anforderungen**"
+
+#: ../../RequirementsDashBoard.rst:54
+msgid "All requirements."
+msgstr "Alle Anforderungen."
+
+#: ../../RequirementsDashBoard.rst:56
+msgid "**Not closed requirements**"
+msgstr "** Nicht geschlossene Anforderungen **"
+
+#: ../../RequirementsDashBoard.rst:58
+msgid "Requirements not closed. (Status <> 'closed')"
+msgstr "Anforderungen nicht geschlossen. (Status <> ‚geschlossen‘)"
+
+#: ../../RequirementsDashBoard.rst:60
+msgid "**Not resolved requirements**"
+msgstr "**Nicht erfüllte Anforderungen**"
+
+#: ../../RequirementsDashBoard.rst:62
+msgid "Requirements not resolved. (Status <> 'done')"
+msgstr "Anforderungen nicht erfüllt (Status <> 'erledigt')"
+
+#: ../../RequirementsDashBoard.rst:65
+msgid "Recently updated"
+msgstr "Kürzlich aktualisiert"
+
+#: ../../RequirementsDashBoard.rst:66
+msgid "**Added recently**"
+msgstr "**Kürzlich hinzugefügt**"
+
+#: ../../RequirementsDashBoard.rst:68
+msgid "Requirements created within *x* last days."
+msgstr "Anforderungen, die innerhalb der letzten *x* Tage erstellt wurden."
+
+#: ../../RequirementsDashBoard.rst:70
+msgid "**Resolved recently**"
+msgstr "**Kürzlich behoben**"
+
+#: ../../RequirementsDashBoard.rst:72
+msgid "Requirements treated within *x* last days."
+msgstr ""
+"Anforderungen, die innerhalb der letzten *x* Tage behandelt wurden."
+
+#: ../../RequirementsDashBoard.rst:74
+msgid "**Updated recently**"
+msgstr "**Vor kurzem aktualisiert**"
+
+#: ../../RequirementsDashBoard.rst:76
+msgid "Requirements updated within *x* last days."
+msgstr "Die Anforderungen wurden in den letzten *x* Tagen aktualisiert."
+
+#: ../../RequirementsDashBoard.rst:79
+msgid "Linked to the user"
+msgstr "Mit dem Benutzer verbunden"
+
+#: ../../RequirementsDashBoard.rst:80
+msgid "**Assigned to me**"
+msgstr "**Mir zugewiesen**"
+
+#: ../../RequirementsDashBoard.rst:82
+msgid "Requirements that you are responsible for their treatment."
+msgstr "Anforderungen, für deren Behandlung Sie verantwortlich sind."
+
+#: ../../RequirementsDashBoard.rst:84
+msgid "**Reported by me**"
+msgstr "**Von mir gemeldet**"
+
+#: ../../RequirementsDashBoard.rst:86
+msgid "Requirements that you are the issuer."
+msgstr "Anforderungen, deren Ersteller Sie sind."
+
+#: ../../RequirementsDashBoard.rst:89
+msgid "No resolution scheduled"
+msgstr "Keine Lösung geplant"
+
+#: ../../RequirementsDashBoard.rst:90
+msgid "**Unscheduled**"
+msgstr "**Nicht geplant**"
+
+#: ../../RequirementsDashBoard.rst:92
+msgid ""
+"Requirements whose resolution is not scheduled in a next product version "
+"(target product version not set)."
+msgstr ""
+"Anforderungen, deren Realisierung nicht in einer nächsten Produktversion "
+"eingeplant sind (Zielproduktversion nicht gesetzt)."

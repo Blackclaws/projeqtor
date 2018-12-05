@@ -1,0 +1,664 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2018, ProjeQtOr
+# This file is distributed under the same license as the ProjeQtOr Bedienhandbuch Deutsch package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: ProjeQtOr Bedienhandbuch Deutsch 7.2\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2018-07-03 14:34+0200\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: ../../ConfigurationManagement.rst:12
+msgid "Configuration Management"
+msgstr ""
+
+#: ../../ConfigurationManagement.rst:16
+msgid ":ref:`ConfigurationManagement`"
+msgstr ""
+
+#: ../../ConfigurationManagement.rst:18
+msgid "The product and component is done on screens:"
+msgstr ""
+
+#: ../../ConfigurationManagement.rst:20
+msgid ":ref:`product`"
+msgstr ""
+
+#: ../../ConfigurationManagement.rst:21
+msgid ":ref:`component`"
+msgstr ""
+
+#: ../../ConfigurationManagement.rst:22
+msgid ":ref:`product-version`"
+msgstr ""
+
+#: ../../ConfigurationManagement.rst:23
+msgid ":ref:`component-version`"
+msgstr ""
+
+#: ../../ConfigurationManagement.rst:24
+msgid ":ref:`versions-planning`"
+msgstr ""
+
+#: ../../ConfigurationManagement.rst:35
+msgid "Products"
+msgstr ""
+
+#: ../../ConfigurationManagement.rst:37
+msgid "Allows to define product and sub-product."
+msgstr ""
+
+#: ../../ConfigurationManagement.rst:39
+msgid "Allows to link components to product."
+msgstr ""
+
+#: ../../ConfigurationManagement.rst:43
+#: ../../ConfigurationManagement.rst:131
+#: ../../ConfigurationManagement.rst:210
+#: ../../ConfigurationManagement.rst:274
+msgid ":ref:`Attachments<attachment-section>`"
+msgstr ""
+
+#: ../../ConfigurationManagement.rst:44
+#: ../../ConfigurationManagement.rst:132
+#: ../../ConfigurationManagement.rst:211
+#: ../../ConfigurationManagement.rst:275
+msgid ":ref:`Notes<note-section>`"
+msgstr ""
+
+#: ../../ConfigurationManagement.rst:47
+#: ../../ConfigurationManagement.rst:135
+#: ../../ConfigurationManagement.rst:214
+#: ../../ConfigurationManagement.rst:278
+msgid "Section: Description"
+msgstr ""
+
+#: ../../ConfigurationManagement.rst:54
+#: ../../ConfigurationManagement.rst:142
+#: ../../ConfigurationManagement.rst:221
+#: ../../ConfigurationManagement.rst:285
+#: ../../ConfigurationManagement.rst:400
+msgid "Field"
+msgstr ""
+
+#: ../../ConfigurationManagement.rst:55
+#: ../../ConfigurationManagement.rst:143
+#: ../../ConfigurationManagement.rst:162
+#: ../../ConfigurationManagement.rst:222
+#: ../../ConfigurationManagement.rst:237
+#: ../../ConfigurationManagement.rst:286
+#: ../../ConfigurationManagement.rst:301
+#: ../../ConfigurationManagement.rst:401
+msgid "Description"
+msgstr ""
+
+#: ../../ConfigurationManagement.rst:56
+#: ../../ConfigurationManagement.rst:144
+#: ../../ConfigurationManagement.rst:223
+#: ../../ConfigurationManagement.rst:287
+msgid ":term:`Id`"
+msgstr ""
+
+#: ../../ConfigurationManagement.rst:57
+msgid "Unique Id for the product."
+msgstr ""
+
+#: ../../ConfigurationManagement.rst:58
+#: ../../ConfigurationManagement.rst:150
+#: ../../ConfigurationManagement.rst:225
+#: ../../ConfigurationManagement.rst:293
+msgid "**Name**"
+msgstr ""
+
+#: ../../ConfigurationManagement.rst:59
+msgid "Name of the product."
+msgstr ""
+
+#: ../../ConfigurationManagement.rst:60
+msgid "Product type"
+msgstr ""
+
+#: ../../ConfigurationManagement.rst:61
+msgid "Type of product."
+msgstr ""
+
+#: ../../ConfigurationManagement.rst:62
+msgid "Designation"
+msgstr ""
+
+#: ../../ConfigurationManagement.rst:63
+msgid "Trade name of the product known outside the company."
+msgstr ""
+
+#: ../../ConfigurationManagement.rst:64
+msgid "Customer"
+msgstr ""
+
+#: ../../ConfigurationManagement.rst:65
+msgid "The customer the product should be delivered to."
+msgstr ""
+
+#: ../../ConfigurationManagement.rst:66
+#: ../../ConfigurationManagement.rst:152
+msgid "Prime contractor"
+msgstr ""
+
+#: ../../ConfigurationManagement.rst:67
+msgid "The contact, into customer organization, who will be responsible for the product delivery."
+msgstr ""
+
+#: ../../ConfigurationManagement.rst:68
+#: ../../ConfigurationManagement.rst:154
+#: ../../ConfigurationManagement.rst:231
+msgid "Responsible"
+msgstr ""
+
+#: ../../ConfigurationManagement.rst:69
+msgid "Person responsible for the product."
+msgstr ""
+
+#: ../../ConfigurationManagement.rst:70
+msgid "sub-product"
+msgstr ""
+
+#: ../../ConfigurationManagement.rst:71
+msgid "Name of the top product if this product is a sub-product."
+msgstr ""
+
+#: ../../ConfigurationManagement.rst:72
+#: ../../ConfigurationManagement.rst:160
+#: ../../ConfigurationManagement.rst:412
+msgid "Status"
+msgstr ""
+
+#: ../../ConfigurationManagement.rst:73
+msgid "State to be registered."
+msgstr ""
+
+#: ../../ConfigurationManagement.rst:74
+#: ../../ConfigurationManagement.rst:235
+msgid ":term:`Closed`"
+msgstr ""
+
+#: ../../ConfigurationManagement.rst:75
+msgid "item is closed if checked"
+msgstr ""
+
+#: ../../ConfigurationManagement.rst:76
+msgid "Description :"
+msgstr ""
+
+#: ../../ConfigurationManagement.rst:77
+msgid "Box checked indicates the product is archived."
+msgstr ""
+
+#: ../../ConfigurationManagement.rst:79
+#: ../../ConfigurationManagement.rst:165
+#: ../../ConfigurationManagement.rst:240
+#: ../../ConfigurationManagement.rst:304
+msgid "**\\* Required field**"
+msgstr ""
+
+#: ../../ConfigurationManagement.rst:82
+msgid "Section: Product versions"
+msgstr ""
+
+#: ../../ConfigurationManagement.rst:83
+msgid "List of versions defined for the product."
+msgstr ""
+
+#: ../../ConfigurationManagement.rst:84
+msgid "Product versions are defined in :ref:`product-version` screen."
+msgstr ""
+
+#: ../../ConfigurationManagement.rst:87
+msgid "Section: Composition - List of sub-products used by this product"
+msgstr ""
+
+#: ../../ConfigurationManagement.rst:88
+msgid "List of sub-products for the product."
+msgstr ""
+
+#: ../../ConfigurationManagement.rst:91
+msgid "Section: Composition - List of components used by this product"
+msgstr ""
+
+#: ../../ConfigurationManagement.rst:92
+msgid "See: :ref:`relationship-product-component`."
+msgstr ""
+
+#: ../../ConfigurationManagement.rst:96
+msgid "Displays the structure of the product."
+msgstr ""
+
+#: ../../ConfigurationManagement.rst:97
+msgid "Box checked \"Show versions for all structure\" allows to display versions of sub-products and components."
+msgstr ""
+
+#: ../../ConfigurationManagement.rst:98
+msgid "Box checked \"Show projects linked to versions\" allows to display projects linked."
+msgstr ""
+
+#: ../../ConfigurationManagement.rst:110
+msgid "Product Versions"
+msgstr ""
+
+#: ../../ConfigurationManagement.rst:112
+msgid "Allows to define versions of a product."
+msgstr ""
+
+#: ../../ConfigurationManagement.rst:114
+msgid "Allows to link a component version to product version."
+msgstr ""
+
+#: ../../ConfigurationManagement.rst:116
+msgid "Allows to link the product version to a project."
+msgstr ""
+
+#: ../../ConfigurationManagement.rst:118
+msgid "Ability to define the compatibility between product versions (feature activated through a global parameter)"
+msgstr ""
+
+#: ../../ConfigurationManagement.rst:121
+#: ../../ConfigurationManagement.rst:264
+msgid "Automatic formatting of version name"
+msgstr ""
+
+#: ../../ConfigurationManagement.rst:122
+msgid "Possibility to define if the version name is automatically produced from the product name and version number."
+msgstr ""
+
+#: ../../ConfigurationManagement.rst:123
+#: ../../ConfigurationManagement.rst:266
+msgid "Set global parameters to activate this feature."
+msgstr ""
+
+#: ../../ConfigurationManagement.rst:124
+#: ../../ConfigurationManagement.rst:267
+msgid "Else, the version name will entered manually."
+msgstr ""
+
+#: ../../ConfigurationManagement.rst:129
+msgid ":ref:`Projects linked to this version<Link-version-project-section>`"
+msgstr ""
+
+#: ../../ConfigurationManagement.rst:130
+msgid ":ref:`Composition - List of component versions used this version<version-product-component>`"
+msgstr ""
+
+#: ../../ConfigurationManagement.rst:145
+#: ../../ConfigurationManagement.rst:288
+msgid "Unique Id for the version."
+msgstr ""
+
+#: ../../ConfigurationManagement.rst:146
+msgid "**Product**"
+msgstr ""
+
+#: ../../ConfigurationManagement.rst:147
+msgid "The product on which the version applies."
+msgstr ""
+
+#: ../../ConfigurationManagement.rst:148
+#: ../../ConfigurationManagement.rst:291
+msgid "**Version number**"
+msgstr ""
+
+#: ../../ConfigurationManagement.rst:149
+msgid "Version number of the product."
+msgstr ""
+
+#: ../../ConfigurationManagement.rst:151
+#: ../../ConfigurationManagement.rst:294
+msgid "Name of the version."
+msgstr ""
+
+#: ../../ConfigurationManagement.rst:153
+msgid "The contact, into customer organization, who will be responsible for the version delivery."
+msgstr ""
+
+#: ../../ConfigurationManagement.rst:155
+msgid "Resource responsible of the version."
+msgstr ""
+
+#: ../../ConfigurationManagement.rst:156
+#: ../../ConfigurationManagement.rst:295
+msgid "Entry into service"
+msgstr ""
+
+#: ../../ConfigurationManagement.rst:157
+#: ../../ConfigurationManagement.rst:296
+msgid "Initial, planned and real entry into service date of the version."
+msgstr ""
+
+#: ../../ConfigurationManagement.rst:158
+#: ../../ConfigurationManagement.rst:297
+#: ../../ConfigurationManagement.rst:410
+msgid "End date"
+msgstr ""
+
+#: ../../ConfigurationManagement.rst:159
+#: ../../ConfigurationManagement.rst:298
+msgid "Initial, planned and real end dates of the version."
+msgstr ""
+
+#: ../../ConfigurationManagement.rst:161
+#: ../../ConfigurationManagement.rst:234
+#: ../../ConfigurationManagement.rst:300
+msgid "State to be registered"
+msgstr ""
+
+#: ../../ConfigurationManagement.rst:163
+#: ../../ConfigurationManagement.rst:302
+msgid "Complete description of the version."
+msgstr ""
+
+#: ../../ConfigurationManagement.rst:170
+#: ../../ConfigurationManagement.rst:308
+msgid "The field \"Version number\" appears only if the global parameter \"Automatic format of version name\" is set to Yes."
+msgstr ""
+
+#: ../../ConfigurationManagement.rst:171
+#: ../../ConfigurationManagement.rst:309
+msgid "The field \"Name\" will be read only."
+msgstr ""
+
+#: ../../ConfigurationManagement.rst:175
+msgid "Can be different from product prime contractor."
+msgstr ""
+
+#: ../../ConfigurationManagement.rst:179
+#: ../../ConfigurationManagement.rst:314
+msgid "Specify the date of entry into service."
+msgstr ""
+
+#: ../../ConfigurationManagement.rst:180
+#: ../../ConfigurationManagement.rst:185
+#: ../../ConfigurationManagement.rst:315
+#: ../../ConfigurationManagement.rst:320
+msgid "The box \"Done\" is checked when the real date field is set."
+msgstr ""
+
+#: ../../ConfigurationManagement.rst:184
+#: ../../ConfigurationManagement.rst:319
+msgid "Specify the date end-of-service."
+msgstr ""
+
+#: ../../ConfigurationManagement.rst:197
+msgid "Components"
+msgstr ""
+
+#: ../../ConfigurationManagement.rst:199
+msgid "Allows to define product components."
+msgstr ""
+
+#: ../../ConfigurationManagement.rst:201
+msgid "Allows to define products using the component."
+msgstr ""
+
+#: ../../ConfigurationManagement.rst:203
+msgid "Possibility to define component types and component versions that will only be used for definition of structure (not for Version Planning or Tickets)"
+msgstr ""
+
+#: ../../ConfigurationManagement.rst:208
+msgid ":ref:`Structure - List of products or components using this component<relationship-product-component>`"
+msgstr ""
+
+#: ../../ConfigurationManagement.rst:209
+msgid ":ref:`Composition - List of components used by this component<relationship-product-component>`"
+msgstr ""
+
+#: ../../ConfigurationManagement.rst:224
+msgid "Unique Id for the component."
+msgstr ""
+
+#: ../../ConfigurationManagement.rst:226
+msgid "Name of the component."
+msgstr ""
+
+#: ../../ConfigurationManagement.rst:227
+msgid "Component type"
+msgstr ""
+
+#: ../../ConfigurationManagement.rst:228
+msgid "Type of component"
+msgstr ""
+
+#: ../../ConfigurationManagement.rst:229
+msgid "Identifier"
+msgstr ""
+
+#: ../../ConfigurationManagement.rst:230
+msgid "Another name to identify the component."
+msgstr ""
+
+#: ../../ConfigurationManagement.rst:232
+msgid "Person responsible for the component."
+msgstr ""
+
+#: ../../ConfigurationManagement.rst:233
+#: ../../ConfigurationManagement.rst:299
+msgid "Statut"
+msgstr ""
+
+#: ../../ConfigurationManagement.rst:236
+msgid "Box checked indicates the component is archived."
+msgstr ""
+
+#: ../../ConfigurationManagement.rst:238
+msgid "Complete description of the component."
+msgstr ""
+
+#: ../../ConfigurationManagement.rst:243
+msgid "Section: Component versions"
+msgstr ""
+
+#: ../../ConfigurationManagement.rst:244
+msgid "List of versions defined for the component."
+msgstr ""
+
+#: ../../ConfigurationManagement.rst:245
+msgid "Component versions are defined in :ref:`component-version` screen."
+msgstr ""
+
+#: ../../ConfigurationManagement.rst:257
+msgid "Component Versions"
+msgstr ""
+
+#: ../../ConfigurationManagement.rst:259
+msgid "Allows to define versions of a component."
+msgstr ""
+
+#: ../../ConfigurationManagement.rst:261
+msgid "Allows to link a product version to component version."
+msgstr ""
+
+#: ../../ConfigurationManagement.rst:265
+msgid "Possibility to define if the version name is automatically produced from the component name and version number."
+msgstr ""
+
+#: ../../ConfigurationManagement.rst:272
+msgid ":ref:`Structure - List of product or component versions using this component version<version-product-component>`"
+msgstr ""
+
+#: ../../ConfigurationManagement.rst:273
+msgid ":ref:`Composition - List of component versions used by this version<version-product-component>`"
+msgstr ""
+
+#: ../../ConfigurationManagement.rst:289
+msgid "**Component**"
+msgstr ""
+
+#: ../../ConfigurationManagement.rst:290
+msgid "The component on which the version applies."
+msgstr ""
+
+#: ../../ConfigurationManagement.rst:292
+msgid "Version number of the component."
+msgstr ""
+
+#: ../../ConfigurationManagement.rst:330
+msgid "Relationships between product and component elements"
+msgstr ""
+
+#: ../../ConfigurationManagement.rst:332
+msgid "Allows to manage relationships between products and components to define product structure."
+msgstr ""
+
+#: ../../ConfigurationManagement.rst:334
+msgid "See possible relationships:  :ref:`product-structure`"
+msgstr ""
+
+#: ../../ConfigurationManagement.rst:337
+msgid "Relationships management"
+msgstr ""
+
+#: ../../ConfigurationManagement.rst:338
+msgid "Click on |buttonAdd| to create a new relationship. The dialog box \"Structure\" appear."
+msgstr ""
+
+#: ../../ConfigurationManagement.rst:339
+msgid "Click on |buttonIconDelete| to delete the corresponding relationship."
+msgstr ""
+
+#: ../../ConfigurationManagement.rst:353
+msgid "Link between versions of products and components"
+msgstr ""
+
+#: ../../ConfigurationManagement.rst:355
+msgid "Allows to define links between versions of products and components."
+msgstr ""
+
+#: ../../ConfigurationManagement.rst:359
+msgid "Only with the elements defined in the product structure."
+msgstr ""
+
+#: ../../ConfigurationManagement.rst:362
+msgid "Link management"
+msgstr ""
+
+#: ../../ConfigurationManagement.rst:363
+msgid "Click on |buttonAdd| to create a new link. The dialog box \"Version Structure\" appear."
+msgstr ""
+
+#: ../../ConfigurationManagement.rst:364
+#: ../../ConfigurationManagement.rst:388
+msgid "Click on |buttonIconDelete| to delete the corresponding link."
+msgstr ""
+
+#: ../../ConfigurationManagement.rst:380
+msgid "Link version to projects"
+msgstr ""
+
+#: ../../ConfigurationManagement.rst:382
+msgid "This section allows to manage links between projects and versions of products."
+msgstr ""
+
+#: ../../ConfigurationManagement.rst:385
+msgid "Link version to projects management"
+msgstr ""
+
+#: ../../ConfigurationManagement.rst:386
+msgid "Click on |buttonAdd| to create a new link."
+msgstr ""
+
+#: ../../ConfigurationManagement.rst:387
+msgid "Click on |buttonEdit| to update an existing link."
+msgstr ""
+
+#: ../../ConfigurationManagement.rst:396
+msgid "Fields - Project-Version link dialog box"
+msgstr ""
+
+#: ../../ConfigurationManagement.rst:402
+msgid "Project"
+msgstr ""
+
+#: ../../ConfigurationManagement.rst:403
+msgid "The project linked to product version or the project list."
+msgstr ""
+
+#: ../../ConfigurationManagement.rst:404
+msgid "Product"
+msgstr ""
+
+#: ../../ConfigurationManagement.rst:405
+msgid "Product linked to the project or the list of products."
+msgstr ""
+
+#: ../../ConfigurationManagement.rst:406
+msgid "Version"
+msgstr ""
+
+#: ../../ConfigurationManagement.rst:407
+msgid "Product version linked to the project or list of product versions."
+msgstr ""
+
+#: ../../ConfigurationManagement.rst:408
+msgid "Start date"
+msgstr ""
+
+#: ../../ConfigurationManagement.rst:409
+msgid "Start date for validity of the link."
+msgstr ""
+
+#: ../../ConfigurationManagement.rst:411
+msgid "End date for validity of the link."
+msgstr ""
+
+#: ../../ConfigurationManagement.rst:413
+msgid "State to be registerd"
+msgstr ""
+
+#: ../../ConfigurationManagement.rst:414
+msgid "Closed"
+msgstr ""
+
+#: ../../ConfigurationManagement.rst:415
+msgid "Box checked indicates the link is not active anymore, without deleting it."
+msgstr ""
+
+#: ../../ConfigurationManagement.rst:419
+msgid "From the screen «Projects», the fields «product and version» will be selectable."
+msgstr ""
+
+#: ../../ConfigurationManagement.rst:420
+msgid "From the screen «Product versions», the field «project» will be selectable."
+msgstr ""
+
+#: ../../ConfigurationManagement.rst:430
+msgid "Versions planning"
+msgstr ""
+
+#: ../../ConfigurationManagement.rst:432
+msgid "Select one or more product versions and the planning version is displayed."
+msgstr ""
+
+#: ../../ConfigurationManagement.rst:434
+msgid "This planning displays each version of selected product versions and their components from define start date to deliverable date."
+msgstr ""
+
+#: ../../ConfigurationManagement.rst:436
+msgid "To use it define your start and delivery date in Product Version and Component Version."
+msgstr ""
+
+#: ../../ConfigurationManagement.rst:442
+msgid "To insert values you have to Actives 'display the start and delivery milestones' in  global parameters otherwise these fields are hidden."
+msgstr ""
+
+#: ../../ConfigurationManagement.rst:444
+msgid "This screen allows to see if the delivery date of Component versions is more later than their Product versions."
+msgstr ""
+
+#: ../../ConfigurationManagement.rst:446
+msgid "Graphically, you can see any delay or incompatibility."
+msgstr ""
+

@@ -1,0 +1,442 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2018, ProjeQtOr
+# This file is distributed under the same license as the ProjeQtOr Bedienhandbuch Deutsch package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"POT-Creation-Date: \n"
+"PO-Revision-Date: \n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 2.0.8\n"
+"Last-Translator: \n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"Language: de\n"
+
+#: ../../Features.rst:9
+msgid "Features"
+msgstr "Eigenschaften"
+
+#: ../../Features.rst:16
+msgid "Planning management"
+msgstr "Planungsmanagement"
+
+#: ../../Features.rst:23
+msgid "Project"
+msgstr "Projekt"
+
+#: ../../Features.rst:24
+msgid "The project is the main element of ProjeQtOr."
+msgstr "Das Projekt ist das Hauptelement von ProjeQtOr."
+
+#: ../../Features.rst:37
+msgid "Activity"
+msgstr "Aktivität"
+
+#: ../../Features.rst:42
+msgid "Activities appear on the Gantt Planning view."
+msgstr "Aktivitäten erscheinen in der Gantt-Planungsansicht."
+
+#: ../../Features.rst:47
+msgid "Milestone"
+msgstr "Meilenstein"
+
+#: ../../Features.rst:48
+msgid "A milestone is an event or a key date of the project."
+msgstr "Ein Meilenstein ist ein Ereignis oder ein Stichtag des Projekts."
+
+#: ../../Features.rst:54
+msgid "Unlike activities , milestones have no duration and no work."
+msgstr "Im Gegensatz zu Aktivitäten haben Meilensteine keine Dauer und keine Arbeit."
+
+#: ../../Features.rst:58 ../../Features.rst:111
+msgid "Resources"
+msgstr "Ressourcen"
+
+#: ../../Features.rst:59
+msgid "Resources can be assigned to activities."
+msgstr "Ressourcen können Aktivitäten zugeordnet werden."
+
+#: ../../Features.rst:61 ../../Features.rst:128
+msgid "This means that some work is defined on this activity for the resource."
+msgstr "Das bedeutet, dass einige Arbeiten an dieser Aktivität für die Ressource definiert sind."
+
+#: ../../Features.rst:67 ../../Features.rst:147
+msgid "Real work allocation"
+msgstr "Echte Arbeitsverteilung"
+
+#: ../../Features.rst:68
+msgid "Resources enter their time spent on the Real work allocation screen."
+msgstr "Ressourcen geben die Zeit ein, die sie auf dem Bildschirm \"Echte Arbeitsverteilung\" verbracht haben."
+
+#: ../../Features.rst:70
+msgid "This allows for a real-time monitoring of work."
+msgstr "Dies ermöglicht eine Echtzeit-Überwachung der Arbeit."
+
+#: ../../Features.rst:76
+msgid "Planning"
+msgstr "Planung"
+
+#: ../../Features.rst:77
+msgid "The planning is based on all the constraints defined:"
+msgstr "Die Planung basiert auf allen definierten Randbedingungen:"
+
+#: ../../Features.rst:79
+msgid "left work on each activity"
+msgstr "links Arbeit an jeder Aktivität"
+
+#: ../../Features.rst:81
+msgid "availability of resources"
+msgstr "Verfügbarkeit von Ressourcen"
+
+#: ../../Features.rst:87
+msgid "dependencies between activities"
+msgstr "Abhängigkeiten zwischen Tätigkeiten"
+
+#: ../../Features.rst:89
+msgid "priorities of activities and projects"
+msgstr "Prioritäten der Aktivitäten und Projekte"
+
+#: ../../Features.rst:91
+msgid "The planning is displayed as a Gantt chart."
+msgstr "Die Planung wird als Gantt-Diagramm dargestellt."
+
+#: ../../Features.rst:105
+msgid "Resource management"
+msgstr "Ressourcenmanagement"
+
+#: ../../Features.rst:112
+msgid "Resources are the persons working on the project activities."
+msgstr "Ressourcen sind die Personen, die an den Projektaktivitäten arbeiten."
+
+#: ../../Features.rst:120
+msgid "Allocations"
+msgstr "Zuordnungen"
+
+#: ../../Features.rst:125
+msgid "Assignments"
+msgstr "Zuweisungen"
+
+#: ../../Features.rst:126
+msgid "Then you can assign resources to project activities."
+msgstr "Dann können Sie den Projektaktivitäten Ressourcen zuweisen."
+
+#: ../../Features.rst:134
+msgid "Calendars"
+msgstr "Kalender"
+
+#: ../../Features.rst:135
+msgid "To manage off days, you have a global calendar."
+msgstr "Um Feiertage zu verwalten, haben Sie einen globalen Kalender."
+
+#: ../../Features.rst:139
+msgid "you can create a calendar \"80% \" with every Wednesday as off day"
+msgstr "Sie können einen Kalender erstellen \"80% \" mit jedem Mittwoch als Ruhetag"
+
+#: ../../Features.rst:141
+msgid "you can manage distinct holidays when working with international teams."
+msgstr "Sie können mit internationalen Teams unterschiedliche Feiertage bewältigen."
+
+#: ../../Features.rst:143
+msgid "Each resource is then assigned to a calendar."
+msgstr "Jede Ressource wird dann einem Kalender zugeordnet."
+
+#: ../../Features.rst:160
+msgid "Tickets management"
+msgstr "Ticket-Verwaltung"
+
+#: ../../Features.rst:166
+msgid "Ticket"
+msgstr "Fahrkarte"
+
+#: ../../Features.rst:171
+msgid "For example, bugs or problems can be managed through Tickets:"
+msgstr "Zum Beispiel können Fehler oder Probleme über Tickets verwaltet werden:"
+
+#: ../../Features.rst:173
+msgid "You can not schedule the bugs before they are identified and registered"
+msgstr "Sie können die Fehler nicht einplanen, bevor sie identifiziert und registriert sind"
+
+#: ../../Features.rst:174
+msgid "You must be able to give a solution to a bug (workaround or fix)."
+msgstr "Sie müssen in der Lage sein, einen Fehler zu beheben (Workaround oder Fix)."
+
+#: ../../Features.rst:179
+msgid "Simple tickets"
+msgstr "Einfache Karten"
+
+#: ../../Features.rst:192
+msgid "Costs management"
+msgstr "Kostenmanagement"
+
+#: ../../Features.rst:198
+msgid "Projects"
+msgstr "Projekte"
+
+#: ../../Features.rst:204
+msgid "Activities"
+msgstr "Aktivitäten"
+
+#: ../../Features.rst:210
+msgid "Resource cost"
+msgstr "Ressourcenkosten"
+
+#: ../../Features.rst:216
+msgid "Project expenses"
+msgstr "Projektkosten"
+
+#: ../../Features.rst:221
+msgid "Individual expenses"
+msgstr "Einzelne Ausgaben"
+
+#: ../../Features.rst:222
+msgid "Individual expenses can record expenses generated by a given resource."
+msgstr "Individuelle Ausgaben können Ausgaben, die von einer bestimmten Ressource erzeugt werden, erfassen."
+
+#: ../../Features.rst:230
+msgid "Quote, Orders, Term, Bill"
+msgstr "Angebot, Aufträge, Laufzeit, Rechnung"
+
+#: ../../Features.rst:241
+msgid "Quality management"
+msgstr "Qualitätsmanagemen"
+
+#: ../../Features.rst:249
+msgid "Workflows"
+msgstr "Arbeitsabläufe"
+
+#: ../../Features.rst:250
+msgid "Workflows are defined to monitor changes of possible status."
+msgstr "Arbeitsabläufe werden definiert, um mögliche Statusänderungen zu überwachen."
+
+#: ../../Features.rst:258
+msgid "Delays for tickets"
+msgstr "Verspätungen für Tickets"
+
+#: ../../Features.rst:263
+msgid "Indicators"
+msgstr "Indikatoren"
+
+#: ../../Features.rst:270 ../../Features.rst:481
+msgid "Alerts"
+msgstr "Warnungen"
+
+#: ../../Features.rst:275
+msgid "Checklists"
+msgstr "Checklisten"
+
+#: ../../Features.rst:280
+msgid "Reports"
+msgstr "Berichte"
+
+#: ../../Features.rst:284
+msgid "All is traced"
+msgstr "Alles wird verfolgt"
+
+#: ../../Features.rst:285
+msgid "Finally, thanks to ProjeQtOr , everything is traced."
+msgstr "Endlich, dank ProjeQtOr, wird alles zurückverfolgt."
+
+#: ../../Features.rst:298
+msgid "Risks management"
+msgstr "Risiko-Management"
+
+#: ../../Features.rst:304
+msgid "Risks"
+msgstr "Risiken"
+
+#: ../../Features.rst:311
+msgid "identify opportunities,"
+msgstr "Chancen erkennen,"
+
+#: ../../Features.rst:312
+msgid "monitor the actions of risks contingency and mitigation,"
+msgstr "Überwachung der Maßnahmen zur Risikovorsorge und -minderung,"
+
+#: ../../Features.rst:313
+msgid "identify risks that eventually do happen (so they become issues)."
+msgstr "Risiken identifizieren, die irgendwann einmal auftreten (also zu Problemen werden)."
+
+#: ../../Features.rst:317
+msgid "Opportunities"
+msgstr "Gelegenheiten"
+
+#: ../../Features.rst:320
+msgid "They must be identified and followed-up not to be missed out."
+msgstr "Sie müssen identifiziert und verfolgt werden."
+
+#: ../../Features.rst:324
+msgid "Issues"
+msgstr "Probleme"
+
+#: ../../Features.rst:325
+msgid "Issue is a risk that happens during the project."
+msgstr "Problem ist ein Risiko, das während des Projekts auftritt."
+
+#: ../../Features.rst:331
+msgid "Actions"
+msgstr "Aktionen"
+
+#: ../../Features.rst:344
+msgid "Perimeter management"
+msgstr "Perimetermanagement\" (Perimeter-Management"
+
+#: ../../Features.rst:350
+msgid "Meetings"
+msgstr "Sitzungen"
+
+#: ../../Features.rst:355
+msgid "Periodic meetings"
+msgstr "Periodische Sitzungen"
+
+#: ../../Features.rst:360
+msgid "Decisions"
+msgstr "Entscheidungen"
+
+#: ../../Features.rst:363
+msgid "who has taken a particular decision ?"
+msgstr "wer hat eine bestimmte Entscheidung getroffen?"
+
+#: ../../Features.rst:364
+msgid "when?"
+msgstr "wann?"
+
+#: ../../Features.rst:365
+msgid "during which meeting ?"
+msgstr "während welcher Sitzung?"
+
+#: ../../Features.rst:366
+msgid "who was present at this meeting?"
+msgstr "Wer war bei diesem Treffen anwesend?"
+
+#: ../../Features.rst:372
+msgid "Questions"
+msgstr "Fragen"
+
+#: ../../Features.rst:377
+msgid "Product and Version"
+msgstr "Produkt und Version"
+
+#: ../../Features.rst:378
+msgid "ProjeQtOr includes Product management and Product Versions."
+msgstr "ProjeQtOr beinhaltet Produktmanagement und Produktversionen."
+
+#: ../../Features.rst:380
+msgid "Each version can be connected to one or more projects."
+msgstr "Jede Version kann mit einem oder mehreren Projekten verbunden werden."
+
+#: ../../Features.rst:382
+msgid "This allows you to link your activities to target version."
+msgstr "Damit können Sie Ihre Aktivitäten mit der Zielversion verknüpfen."
+
+#: ../../Features.rst:396
+msgid "Documents management"
+msgstr "Verwaltung von Dokumente"
+
+#: ../../Features.rst:398
+msgid "ProjeQtOr offers integrated **Document Management**."
+msgstr "ProjeQtOr bietet integriertes **Dokumentenmanagement**."
+
+#: ../../Features.rst:404
+msgid "Document can be versioning and an approver process can be defined."
+msgstr "Dokument kann versioniert und ein Genehmigungsprozess definiert werden."
+
+#: ../../Features.rst:407
+msgid "Directories structure management"
+msgstr "Verzeichnisse Strukturmanagement"
+
+#: ../../Features.rst:408
+msgid "Allows to define a structure for document storage."
+msgstr "Ermöglicht die Definition einer Struktur für die Dokumentenablage."
+
+#: ../../Features.rst:409
+msgid "Directories structure is defined in :ref:`document-directory` screen."
+msgstr "Verzeichnisstruktur wird im Bildschirm :ref:`document-directory` definiert."
+
+#: ../../Features.rst:412
+msgid "Document management"
+msgstr "Verwaltung von Dokumente"
+
+#: ../../Features.rst:413
+msgid ":ref:`document` screen allows to manage documents."
+msgstr ":ref:`document` Bildschirm erlaubt die Verwaltung von Dokumenten."
+
+#: ../../Features.rst:416
+msgid "Document access"
+msgstr "Dokumentenzugriff"
+
+#: ../../Features.rst:418
+msgid "See: :ref:`menu-document-window`."
+msgstr "Siehe: :ref:`menu-document-window`."
+
+#: ../../Features.rst:427
+msgid "Commitments management"
+msgstr "Engagementmanagemen"
+
+#: ../../Features.rst:437
+msgid "Requirements"
+msgstr "Anforderungen"
+
+#: ../../Features.rst:442
+msgid "Test cases"
+msgstr "Testfälle"
+
+#: ../../Features.rst:447
+msgid "Test sessions"
+msgstr "Testsitzungen"
+
+#: ../../Features.rst:448
+msgid "Test sessions group test cases to be executed for a particular purpose."
+msgstr "Testsitzungen gruppieren Testfälle, die für einen bestimmten Zweck ausgeführt werden sollen."
+
+#: ../../Features.rst:458
+msgid "Tools"
+msgstr "Werkzeuge"
+
+#: ../../Features.rst:464
+msgid "Imports"
+msgstr "Importe"
+
+#: ../../Features.rst:469
+msgid "CSV and PDF exports"
+msgstr "CSV- und PDF-Export"
+
+#: ../../Features.rst:470
+msgid "All lists of items can be printed and exported to CSV and PDF format."
+msgstr "Alle Stücklisten können ausgedruckt und im CSV- und PDF-Format exportiert werden."
+
+#: ../../Features.rst:472
+msgid "The details of each item can be printed or exported in PDF format."
+msgstr "Die Details jedes Artikels können im PDF-Format gedruckt oder exportiert werden."
+
+#: ../../Features.rst:476
+msgid "MS-Project export"
+msgstr "MS-Projektexport"
+
+#: ../../Features.rst:477
+msgid "The Gantt planning can be exported to MS-Project format (XML)."
+msgstr "Die Gantt-Planung kann in das MS-Projektformat (XML) exportiert werden."
+
+#: ../../Features.rst:482
+msgid "Internal alerts can be generated automatically based on defined events."
+msgstr "Interne Alarme können auf Basis definierter Ereignisse automatisch generiert werden."
+
+#: ../../Features.rst:486
+msgid "Emails"
+msgstr "E-Mails"
+
+#: ../../Features.rst:487
+msgid "These alerts can also be dispatched as emails."
+msgstr "Diese Benachrichtigungen können auch als E-Mail versendet werden."
+
+#: ../../Features.rst:495
+msgid "Administration"
+msgstr "Verwaltung"
+
+#: ../../Features.rst:500
+msgid "CRON"
+msgstr "CRON"
