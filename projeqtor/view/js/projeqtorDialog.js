@@ -6505,6 +6505,8 @@ function loadMenuBarItem(item, itemName, from) {
     loadContent("importData.php", "centerDiv");
   } else if (item == 'Reports') {
     loadContent("reportsMain.php", "centerDiv");
+  } else if (item == 'Absence') {
+	    loadContent("absenceMain.php", "centerDiv");
     
     //ADD qCazelles - GANTT
   } else if (item == 'VersionsPlanning') {

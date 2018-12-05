@@ -1077,3 +1077,9 @@
 .ProjeQtOrFlatRed .iconProviderPaymentType { background-image: url(customIcons/red/iconProviderPaymentType.png); }
 .ProjeQtOrFlatGreen .iconProviderPaymentType { background-image: url(customIcons/green/iconProviderPaymentType.png); }
 .ProjeQtOrFlatGrey .iconProviderPaymentType { background-image: url(customIcons/grey/iconProviderPaymentType.png); }
+
+.iconAbsence { background-image: url(images/iconAbsence32.png); }
+.ProjeQtOrFlatBlue .iconAbsence { background-image: url(customIcons/blue/iconAbsence.png); }
+.ProjeQtOrFlatRed .iconAbsence { background-image: url(customIcons/red/iconAbsence.png); }
+.ProjeQtOrFlatGreen .iconAbsence { background-image: url(customIcons/green/iconAbsence.png); }
+.ProjeQtOrFlatGrey .iconAbsence { background-image: url(customIcons/grey/iconAbsence.png); }

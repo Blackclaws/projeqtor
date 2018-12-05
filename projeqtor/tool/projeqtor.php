@@ -48,8 +48,8 @@ if (is_session_started()===FALSE) {
 // === Application data : version, dependencies, about message, ...
 $applicationName = "ProjeQtOr"; // Name of the application
 $copyright = $applicationName; // Copyright to be displayed
-$version = "V7.3.1"; // Version of application : Major / Minor / Release
-$build = "0216"; // Build number. To be increased on each release
+$version = "V7.4.0"; // Version of application : Major / Minor / Release
+$build = "0218"; // Build number. To be increased on each release
 $website = "http://www.projeqtor.org"; // ProjeQtOr site url
 if (!isset($aesKeyLength)) { // one can define key lenth to 256 in parameters.php with $aesKeyLength=256; // valid values are 128, 192 and 256
   $aesKeyLength=128;
@@ -3111,11 +3111,13 @@ function minutesToTime($time) {
  * @return string the formated sortable wbs
  */
 function formatSortableWbs($wbs) {
+  if ($wbs===null) return null;
   $exp=explode('.', $wbs);
   $result="";
   foreach ($exp as $node) {
     $result.=($result!='')?'.':'';
-    $result.=substr('000', 0, 3-strlen($node)).$node;
+    if ($node=='_#') $result.='00001.99999.00500';
+    else $result.=substr('00000', 0, 5-strlen($node)).$node;
   }
   return $result;
 }
@@ -3812,7 +3814,7 @@ function sessionUserExists() {
 }
 
 /**
- * Get list of resources depending on access rights visibility : restricted on team or or organization or without rtestriction depending on spÃ©cific access rights
+ * Get list of resources depending on access rights visibility : restricted on team or or organization or without rtestriction depending on specific access rights
  * 
  * @param string $specific
  *          : type or scope of the list. Possible values are : 'imputation', 'diary', 'planning'

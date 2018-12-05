@@ -94,7 +94,7 @@ class Consistency {
         if ($correct) {
           self::fixOrder($pe,"parent",$peList,$idx);
         }
-      } else if ($parentWbs and strlen($pe->wbsSortable)!=strlen($parentWbs)+4) {
+      } else if ($parentWbs and strlen($pe->wbsSortable)!=strlen($parentWbs)+6) {
         displayError(i18n("checkWbsParentIssue",array($pe->wbsSortable,i18n($pe->refType),$pe->refId,$parentWbs,$pe->topRefType,$pe->topRefId)));
         $errors++;
         if ($correct) {
@@ -102,7 +102,7 @@ class Consistency {
         }
       }
       // Check Order
-      $order=substr($pe->wbsSortable,-3);
+      $order=substr($pe->wbsSortable,-5);
       if ($lastWbs==$parentWbs) { // Previous is parent, so must be 001
         if (intval($order)!=1) {
           displayError(i18n("checkWbsFirst", array($pe->wbsSortable,i18n($pe->refType),$pe->refId)));
@@ -111,8 +111,8 @@ class Consistency {
             self::fixOrder($pe,"first",$peList,$idx);
           }
         }
-      } else if (substr($lastWbs,0,-4)==$parentWbs) { // Previous has same root (same parent), number must be is sequence
-        if (intval($order)!=intval(substr($lastWbs,-3))+1) {
+      } else if (substr($lastWbs,0,-6)==$parentWbs) { // Previous has same root (same parent), number must be is sequence
+        if (intval($order)!=intval(substr($lastWbs,-5))+1) {
           displayError(i18n("checkWbsOrder",array($pe->wbsSortable, i18n($pe->refType), $pe->refId, $lastWbs)));
           $errors++;
           if ($correct) {
@@ -121,7 +121,7 @@ class Consistency {
         }
       } else { // Change root, current numbering must be is sequence
         $rootPrev=substr($lastWbs,0,strlen($pe->wbsSortable));
-        if (intval($order)!=intval(substr($rootPrev,-3))+1) {
+        if (intval($order)!=intval(substr($rootPrev,-5))+1) {
           displayError(i18n("checkWbsOrder",array($pe->wbsSortable, i18n($pe->refType), $pe->refId,$lastWbs)));
           $errors++;
           if ($correct) {
@@ -176,7 +176,7 @@ class Consistency {
       $cur=$idx-1;
       while ($action=="recalculate" and $cur>=0) {
         $pePrec=$peList[$cur];
-        if (substr($pe->wbsSortable,0,strlen($pe->wbsSortable)-3)!=substr($pePrec->wbsSortable,0,strlen($pe->wbsSortable)-3)) {
+        if (substr($pe->wbsSortable,0,strlen($pe->wbsSortable)-5)!=substr($pePrec->wbsSortable,0,strlen($pe->wbsSortable)-5)) {
           $cur=-1;
           break;
         }

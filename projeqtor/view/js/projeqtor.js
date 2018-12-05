@@ -5343,3 +5343,50 @@ function directUnselectProject() {
   timeoutDirectSelectProject=null;
   hideWait();
 }
+
+//Absence refresh function
+function refreshAbsenceList() {
+	if (checkFormChangeInProgress()) {
+	    showAlert(i18n('alertOngoingChange'));
+	    return false;
+	  }
+	  formInitialize();
+	  dojo.byId('userId').value=dijit.byId('userName').get("value");
+	  dojo.byId('yearSpinnerT').value=dojo.byId('yearSpinner').value;
+	
+	  enableWidget("userName");
+	  enableWidget("yearSpinner");
+	  
+	  loadContent('../view/refreshAbsenceList.php', 'workDiv', 'listForm', false);
+	  return true;
+}
+
+function saveAbsence() {
+	enableWidget("userName");
+	enableWidget("yearSpinner");
+}
+
+function selectActivity(actRowId, actId, idProject, assId){
+	var row = dojo.byId(actRowId);
+	if (dojo.hasClass(row,'absActityRow')){
+		dojo.query('.absActityRow').removeClass('absActivityRowSlct', row);
+		dojo.addClass(row,'absActivityRowSlct');
+		dojo.setAttr('inputActId', 'value', actId);
+		dojo.setAttr('inputIdProject', 'value', idProject);
+		dojo.setAttr('inputAssId', 'value', assId);
+	}
+}
+function selectAbsenceDay(dateId, day, workDay, month, year, week, userId){
+	var workVal = dojo.byId('absenceInput').value;
+	var actId = dojo.byId('inputActId').value;
+	var idProject = dojo.byId('inputIdProject').value;
+	var assId = dojo.byId('inputAssId').value;
+	  var url='../tool/saveAbsence.php?day='+day+'&workDay='+workDay+'&month='+month+'&year='+year+'&week='+week+'&userId='+userId+'&workVal='+workVal+'&actId='+actId+'&idProject='+idProject+'&assId='+assId;
+	  dojo.xhrGet({
+	    url : url,
+	    handleAs : "text",
+	    load : function(data) {
+	    	
+	    }
+	  });
+}

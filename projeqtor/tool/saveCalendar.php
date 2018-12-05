@@ -55,6 +55,13 @@
     $currentYear=substr($day,0,4);
   }
   
+  //Damian
+  $weekDay = RequestHandler::getValue('calendarDayFrom');
+  $work = RequestHandler::getValue('calendarWorkFrom');
+  if($weekDay and $work){
+  	setDayWork($weekDay, $work, $currentYear, $idCalendarDefinition);
+  }
+  
   $cal=new Calendar;
   //$currentYear=date('YYYY');
   $cal->setDates($currentYear.'-01-01');
@@ -93,6 +100,27 @@ function copyYear($from, $to, $currentYear) {
 		$cp->isOffDay=$cal->isOffDay;
 		$cp->idle=$cal->idle;
 		$cp->save();
+	}
+}
+
+//Damian
+function setDayWork($weekDay, $work, $currentYear, $idCalendarDefinition) {
+	$y=$currentYear;
+	for ($m=1; $m<=12; $m++) {
+		$mx=($m<10)?'0'.$m:''.$m;
+		$time=mktime(0, 0, 0, $m, 1, $y);
+		for ($d=1;$d<=date('t',strtotime($y.'-'.$mx.'-01'));$d++) {
+			$dx=($d<10)?'0'.$d:''.$d;
+			$day=$y.'-'.$mx.'-'.$dx;
+			$iDay=strtotime($day);
+			if (date('l',$iDay) == $weekDay) {
+			  if($work == 'open' and isOpenDay($day,$idCalendarDefinition) != 1){
+			    switchDay ($day,$idCalendarDefinition);
+			  }elseif($work == 'off' and isOpenDay($day,$idCalendarDefinition)){
+			    switchDay ($day,$idCalendarDefinition);
+			  }
+			}
+		}
 	}
 }
 ?>

@@ -39,8 +39,8 @@ $versionHistory = array(
   "V4.0.0", "V4.0.1",  "V4.1.-",  "V4.1.0",  "V4.2.0",  "V4.2.1",  "V4.3.0.a","V4.3.0",  "V4.3.2",  "V4.4.0",  "V4.5.0", "V4.5.3", "V4.5.6",
   "V5.0.0", "V5.1.0.a","V5.1.0",  "V5.1.1",  "V5.1.4",  "V5.1.5",  "V5.2.0",  "V5.2.2.a","V5.2.2",  "V5.2.3",  "V5.2.4", "V5.2.5", "V5.3.0.a", "V5.3.0", "V5.3.2", "V5.3.3", 
   "V5.4.0", "V5.4.2", "V5.4.3", "V5.4.4", "V5.4.5", "V5.5.0", "V5.5.2", "V5.5.3", 
-  "V6.0.0", "V6.0.2", "V6.0.3", "V6.0.6", "V6.1.0", "V6.1.1", "V6.1.3", "V6.2.0", "V6.3.0", "V6.3.2", "V6.3.3", "V6.4.0", "V6.4.1", "V6.4.2", "V6.4.3", "V6.5.0", "V6.5.1", "V6.5.5",
-	"V6.6.0", "V7.0.0", "V7.0.2", "V7.1.0", "V7.1.2", "V7.1.3", "V7.2.0", "V7.2.3", "V7.2.6", "V7.3.0"
+  "V6.0.0", "V6.0.2", "V6.0.3", "V6.0.6", "V6.1.0", "V6.1.1", "V6.1.3", "V6.2.0", "V6.3.0", "V6.3.2", "V6.3.3", "V6.4.0", "V6.4.1", "V6.4.2", "V6.4.3", "V6.5.0", "V6.5.1", "V6.5.5", "V6.6.0",
+	"V7.0.0", "V7.0.2", "V7.1.0", "V7.1.2", "V7.1.3", "V7.2.0", "V7.2.3", "V7.2.6", "V7.3.0", "V7.4.0"
 );
 $versionParameters =array(
   'V1.2.0'=>array('paramMailSmtpServer'=>'localhost',
@@ -703,8 +703,79 @@ if (beforeVersion($currVersion,'V7.2.0')) {
         $cronExec->save();
     }
 }
-
-
+if (beforeVersion($currVersion,'V7.4.0')) {
+  PlanningElement::$_noDispatch=true;
+  $pe=new PlanningElement();
+  $list=$pe->getSqlElementsFromCriteria(null,null,null);
+  if (count($list)>0) {
+    traceLog("Reformat WBS for PlanningElement");
+    $cpt=0;
+    $cptCommit=100;
+    Sql::beginTransaction();
+    traceLog("   => ".count($list)." to save");
+    projeqtor_set_time_limit(1500);
+    foreach($list as $pe) {
+    		$pe->wbsSave();
+    		$cpt++;
+    		if ( ($cpt % $cptCommit) == 0) {
+    		  Sql::commitTransaction();
+    		  traceLog("   => $cpt saved...");
+    		  projeqtor_set_time_limit(1500);
+    		  Sql::beginTransaction();
+    		}
+    }
+    Sql::commitTransaction();
+    traceLog("   => $cpt saved");
+  }
+  $peb=new PlanningElementBaseline();
+  $list=$peb->getSqlElementsFromCriteria(null,null,null);
+  if (count($list)>0) {
+    traceLog("Reformat WBS for PlanningElementBaseline");
+    $cpt=0;
+    $cptCommit=100;
+    Sql::beginTransaction();
+    traceLog("   => ".count($list)." to save");
+    projeqtor_set_time_limit(1500);
+    foreach($list as $peb) {
+      $peb->_noHistory=true;
+    	$peb->wbsSortable=formatSortableWbs($peb->wbs);
+    	$resTmp=$peb->saveForced();
+      $cpt++;
+      if ( ($cpt % $cptCommit) == 0) {
+        Sql::commitTransaction();
+        traceLog("   => $cpt saved...");
+        projeqtor_set_time_limit(1500);
+        Sql::beginTransaction();
+      }
+    }
+    Sql::commitTransaction();
+    traceLog("   => $cpt saved");
+  }
+  $pex=new PlanningElementExtension();
+  $list=$pex->getSqlElementsFromCriteria(null,null,null);
+  if (count($list)>0) {
+    traceLog("Reformat WBS for PlanningElementExtension");
+    $cpt=0;
+    $cptCommit=100;
+    Sql::beginTransaction();
+    traceLog("   => ".count($list)." to save");
+    projeqtor_set_time_limit(1500);
+    foreach($list as $pex) {
+      $pex->_noHistory=true;
+      $pex->wbsSortable=formatSortableWbs($pex->wbs);
+      $resTmp=$pex->saveForced();
+      $cpt++;
+      if ( ($cpt % $cptCommit) == 0) {
+        Sql::commitTransaction();
+        traceLog("   => $cpt saved...");
+        projeqtor_set_time_limit(1500);
+        Sql::beginTransaction();
+      }
+    }
+    Sql::commitTransaction();
+    traceLog("   => $cpt saved");
+  }
+}
 // To be sure, after habilitations updates ...
 Habilitation::correctUpdates();
 Habilitation::correctUpdates();
