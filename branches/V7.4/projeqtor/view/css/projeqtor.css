@@ -3670,3 +3670,7 @@ li.section {
 #userMenuPopup .dijitReset.dijitRight.dijitButtonNode{
   height:20px;
 }
+
+.absActivityRowSlct{
+	background-color: #545281;  color: #EEEEEE;
+}

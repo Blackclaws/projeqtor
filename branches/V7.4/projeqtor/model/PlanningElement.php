@@ -349,7 +349,7 @@ class PlanningElement extends SqlElement {
         if ( !$lst[0]->wbsSortable or $lst[0]->wbsSortable=='') {
           $localSort=1;
         } else {
-          $localSort=substr($lst[0]->wbsSortable,-3,3)+1;
+          $localSort=substr($lst[0]->wbsSortable,-5,5)+1;
         }
       }
       $wbs.=$localSort;
@@ -619,6 +619,7 @@ class PlanningElement extends SqlElement {
   		$proj->sortOrder=$this->wbsSortable;
   		$resSaveProj=$proj->saveForced();
   	} 
+  	if (self::$_noDispatch) return;
   	$crit=" topId=" . Sql::fmtId($this->id);
   	$lstElt=$this->getSqlElementsFromCriteria(null, null, $crit ,'wbsSortable asc');
   	$cpt=0;

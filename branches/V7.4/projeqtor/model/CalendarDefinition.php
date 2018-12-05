@@ -122,6 +122,32 @@ class CalendarDefinition extends SqlElement {
 				htmlDrawOptionForReference('idCalendarDefinition', 1, null, true);
 				$result.=ob_get_clean();
 				$result.= '</select>';
+				
+				//Modif Damian
+				$result.='</br>';
+				$result.='<div type="button" dojoType="dijit.form.Button" showlabel="true">'
+				       . i18n('MarkEvery')
+				       . ' <script type="dojo/method" event="onClick" >'
+				       . ' 	loadContent("../tool/saveCalendar.php?calendarWorkFrom="+dijit.byId("calendarWorkFrom").get("value")+"&calendarDayFrom="+dijit.byId("calendarDayFrom").get("value")+"&idCalendarDefinition='.htmlEncode($this->id).'&year="+dijit.byId("calendartYearSpinner").get("value"),"CalendarDefinition_Calendar");'
+				       . ' </script>'
+							 . '</div>&nbsp;&nbsp;';
+				$result.= '<select dojoType="dijit.form.FilteringSelect" class="input" xlabelType="html" '
+				          . 'style="width:150px;" name="calendarDayFrom" id="calendarDayFrom" '.autoOpenFilteringSelect().'>
+        				    <option value="Monday" selected="selected">'.i18n('Monday').'</option>
+        				    <option value="Tuesday">'.i18n('Tuesday').'</option>
+        				    <option value="Wednesday">'.i18n('Wednesday').'</option>
+        				    <option value="Thursday">'.i18n('Thursday').'</option>
+        				    <option value="Friday">'.i18n('Friday').'</option>
+        				    <option value="Saturday">'.i18n('Saturday').'</option>
+        				    <option value="Sunday">'.i18n('Sunday').'</option>';
+				$result.= '</select>';
+			  $result.= '&nbsp;&nbsp;'.i18n('Like').'&nbsp;&nbsp;';
+			  $result.= '<select dojoType="dijit.form.FilteringSelect" class="input" xlabelType="html" '
+      			  		. 'style="width:150px;" name="calendarWorkFrom" id="calendarWorkFrom" '.autoOpenFilteringSelect().'>
+          				    <option value="off" selected="selected">'.i18n('offDays').'</option>
+          				    <option value="open">'.i18n('openDays').'</option>';
+			  $result.= '</select>';
+				//Fin Modif
   		}		
   	}
   	
