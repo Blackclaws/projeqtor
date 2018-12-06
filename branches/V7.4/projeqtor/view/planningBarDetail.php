@@ -5,6 +5,9 @@ $class=null;
 if (isset($_REQUEST['class'])) {
   $class=$_REQUEST['class'];
 }
+if ($class=='Replan' or $class=='Construction' or $class=='Fixed') {
+  $class='Project';
+}
 Security::checkValidClass($class);
 
 $id=null;
@@ -31,7 +34,7 @@ $work=array();
 $start=null;
 $end=null;
 
-if ($class=='Resource' or $class=='ResourceTeam') {
+if ($class=='Resource' or $class=='ResourceTeam' or $class=='Project') {
   echo '<div style="background-color:#FFF0F0;padding:3px;border:1px solid #E0E0E0;">'.i18n('noDataToDisplay')."</div>";
   return;
 }

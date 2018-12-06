@@ -336,7 +336,7 @@
               if (property_exists($obj, $fld)) {
                 $queryOrderBy .= " " . $obj->getDatabaseTableName().".".$fld . " " . $sortWay;
               } else if (property_exists($obj,$objectClass.'PlanningElement') and property_exists($objectClass.'PlanningElement',$fld) ) {
-                $queryOrderBy .= " ".$objectClass."planningelement.".$fld . " " . $sortWay;
+                $queryOrderBy .= " ".strtolower($objectClass)."planningelement.".$fld . " " . $sortWay;
               } else if (property_exists($obj,'WorkElement') and property_exists('WorkElement',$fld)) {
                 $queryOrderBy .= " workelement.".$fld . " " . $sortWay;
               } else {
