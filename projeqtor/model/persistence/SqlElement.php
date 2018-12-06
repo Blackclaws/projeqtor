@@ -964,7 +964,7 @@ abstract class SqlElement {
       if (property_exists ( $this, 'reference' ) and isset ( $old )) {
         $this->setReference ( false, $old );
       }
-      if (property_exists ( $this, 'idResource' ) and ! trim ( $this->idResource )) {
+      if (property_exists ( $this, 'idResource' ) and ! trim ( $this->idResource ) and !SqlElement::isCopyInProgress()) {
         $this->setDefaultResponsible ();
       }
       if (! $this->id and $this instanceof PlanningElement) { // For planning element , check that not existing yet
