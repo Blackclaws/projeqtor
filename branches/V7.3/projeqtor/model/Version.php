@@ -463,7 +463,7 @@ class Version extends SqlElement {
     $result="";
     
     if (trim($this->versionNumber)) {
-      $cpt=$this->countSqlElementsFromCriteria(null,"idProduct=".Sql::fmtId($this->idProduct)." and versionNumber='$this->versionNumber' and id!=".Sql::fmtId($this->id));
+      $cpt=$this->countSqlElementsFromCriteria(null,"idProduct=".Sql::fmtId($this->idProduct)." and versionNumber='$this->versionNumber' and id != ".Sql::fmtId($this->id));
       if ($cpt>0) {
         $result.="<br/>" . i18n('errorDuplicate');
       }
