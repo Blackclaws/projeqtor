@@ -565,6 +565,16 @@
       }
     }
     //end gautier
+    
+    if($objectClass = 'Budget'){
+      $idSelectedBudget = RequestHandler::getValue('budgetParent');
+      if($idSelectedBudget){
+        $budg = new Budget($idSelectedBudget);
+        $bbsSortable = $budg->bbsSortable;
+        $queryWhere.= ' and bbsSortable like "'.$bbsSortable.'%"';
+      }
+    }
+    
     if (!$queryWhere) $queryWhere='1=1';
     $query='select ' . $querySelect 
          . ' from ' . $queryFrom

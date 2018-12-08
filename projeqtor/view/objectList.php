@@ -40,6 +40,9 @@ $objectType='';
 if (array_key_exists('objectType',$_REQUEST)) {
   $objectType=$_REQUEST['objectType'];
 }
+
+$budgetParent=RequestHandler::getValue('budgetParent');
+
 $objectClient='';
 if (array_key_exists('objectClient',$_REQUEST)) {
   $objectClient=$_REQUEST['objectClient'];
@@ -97,6 +100,7 @@ $displayWidthList-=$rightWidthVal;
 
 $hideTypeSearch=false;
 $hideClientSearch=false;
+$hideParentBudgetSearch=false;
 $hideNameSearch=false;
 $hideIdSearch=false;
 $hideShowIdleSearch=false;
@@ -106,9 +110,13 @@ if ($comboDetail) {
   $screenWidth=getSessionValue('screenWidth',$displayWidthList);
   $displayWidthList=round($screenWidth*0.55,0)+150;
 }
+if ($displayWidthList<1560 and $objectClass == 'Budget' ) {
+  $hideClientSearch=true;
+}
 if ($displayWidthList<1400) {
   $referenceWidth=40;
   if ($displayWidthList<1250) {
+    $hideParentBudgetSearch=true;
     $referenceWidth=30;
     if ($displayWidthList<1165) {
       $hideClientSearch=true;
@@ -153,6 +161,11 @@ if(sessionValueExists('listElementableFilter'.$objectClass)){
 }else{
   $listElementableFilter = '';
 }
+if(sessionValueExists('listBudgetParentFilter') and $objectClass=='Budget'){
+  $listBudgetParent = getSessionValue('listBudgetParentFilter');
+}else{
+  $listBudgetParent = '';
+}
 if(sessionValueExists('listShowIdle'.$objectClass)){
   $listShowIdle = getSessionValue('listShowIdle'.$objectClass);
   if($listShowIdle == "on"){
@@ -186,6 +199,7 @@ if (property_exists($objectClass,'idStatus')) {
   url="../tool/jsonQuery.php?objectClass=<?php echo $objectClass;?>
 &objectType=<?php echo $listTypeFilter; ?>
 &objectClient=<?php echo $listClientFilter; ?>
+&budgetParent=<?php echo $listBudgetParent; ?>
 &objectElementable=<?php echo $listElementableFilter; ?>
 <?php if($filteringByStatus){ foreach ($objectStatus as $id=>$statVal){ ?>
 &objectStatus<?php echo $id;?>= <?php echo $statVal; } ?>
@@ -398,6 +412,27 @@ if (property_exists($objectClass,'idStatus')) {
               </td>
               <?php } ?>
               <!-- END ADD qCazelles -->
+              
+              <!-- gautier #budgetParent  -->
+              <?php if ( !$hideParentBudgetSearch and  $objectClass == 'Budget' ) { ?>
+               <td style="vertical-align: middle; text-align:right;" width="5px">
+                 <span class="nobr">&nbsp;&nbsp;&nbsp;
+                <?php echo i18n("colParentBudget");?>
+                &nbsp;</span>
+              </td>
+              <td width="5px">
+                <select title="<?php echo i18n('filterOnBudgetParent')?>" type="text" class="filterField roundedLeft" dojoType="dijit.form.FilteringSelect"
+                <?php echo autoOpenFilteringSelect();?> 
+                data-dojo-props="queryExpr: '*${0}*',autoComplete:false"
+                id="listBudgetParentFilter" name="listBudgetParentFilter" style="width:<?php echo $referenceWidth*4;?>px" value="<?php if(!$comboDetail and sessionValueExists('listBudgetParentFilter')){ echo getSessionValue('listBudgetParentFilter'); }?>" >
+                  <?php htmlDrawOptionForReference('idBudgetItemParent',$budgetParent,$obj,false);?>
+                  <script type="dojo/method" event="onChange" >
+                    refreshJsonList('<?php echo $objectClass;?>');
+                  </script>
+                </select>
+              </td>
+              <?php } ?>
+              <!-- end  -->
               
               <?php if ( !$hideClientSearch and property_exists($obj,'idClient') ) { ?>
               <td style="vertical-align: middle; text-align:right;" width="5px">
