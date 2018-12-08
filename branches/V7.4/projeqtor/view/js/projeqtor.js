@@ -121,6 +121,15 @@ function refreshJsonList(className, keepUrl) {
             + dijit.byId('listClientFilter').get("value");
       }
     }
+    
+    if (dijit.byId('listBudgetParentFilter')) {
+      saveDataToSession('listBudgetParentFilter', dijit.byId('listBudgetParentFilter').get("value"), false);
+      if (dijit.byId('listBudgetParentFilter').get("value") != '') {
+        url = url + "&budgetParent="
+            + dijit.byId('listBudgetParentFilter').get("value");
+      }
+    }
+    
     if (dijit.byId('listElementableFilter')) {
       saveDataToSession('listElementableFilter'+className, dijit.byId('listElementableFilter').get("value"), false);
       if (dijit.byId('listElementableFilter').get("value") != '') {

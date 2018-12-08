@@ -399,7 +399,7 @@ class Sql {
   
   public static function fmtId($id) {
   	if ($id==null or $id=='*' or $id=='' or $id==' ') {
-  		return -1;
+  		return '(-1)';
   	} else {
   	  return $id;
     }
