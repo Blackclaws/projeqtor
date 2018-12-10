@@ -55,6 +55,7 @@ class Expense extends SqlElement {
   public $month;
   public $year;
   public $idle;
+  public $scope;
   //public $_sec_Detail;
   public $_ExpenseDetail=array();
   public $_Attachment=array();
@@ -186,8 +187,9 @@ class Expense extends SqlElement {
       or (! $this->plannedAmount and $this->plannedAmount!=='0'  and $this->expensePlannedDate ) ){
       $result.= '<br/>' . i18n('msgEnterPlannedDA');	
     }
+    if ($this->realAmount==0) $this->realAmount=null;
     if ( ($this->realAmount and ! $this->expenseRealDate ) 
-      or ( ! $this->realAmount and $this->realAmount!=='0' and $this->expenseRealDate ) ){
+      or ( ! $this->realAmount and $this->realAmount!==0 and $this->expenseRealDate ) ){
       $result.= '<br/>' . i18n('msgEnterRealDA');  
     }
     if ($result=="") {
@@ -199,6 +201,7 @@ class Expense extends SqlElement {
   
   public function save() {
     $this->idUser=$this->idResource;
+    
     if ($this->expenseRealDate) {
     	$this->setDates($this->expenseRealDate);
     } else {
@@ -242,7 +245,7 @@ class Expense extends SqlElement {
   		if ($ed->expenseDate) $date=$ed->expenseDate;
   	} 
   	$paramImputOfBillLineProvider = Parameter::getGlobalParameter('ImputOfBillLineProvider');
-  	if($paramImputOfBillLineProvider == "HT"){
+  	if($paramImputOfBillLineProvider == "HT" or $this->scope=='IndividualExpense'){
   	  $this->realAmount=$total;
   	}else{
   	  $this->realFullAmount=$total;
