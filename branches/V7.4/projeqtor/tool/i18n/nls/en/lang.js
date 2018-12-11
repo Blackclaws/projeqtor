@@ -1586,6 +1586,7 @@ errorXhrPostMessage: "Technical issue occured possibly due to bad network connec
 estimated: "estimated work",
 evaluationValueAndAmount: "evaluation<br/><i>amount</i>",
 evolutive: "evolutive",
+exceedWork: "You can't put more than one absence day",
 exceptionMessage: "An exception occurred on ${1} at ${2}",
 existingBaselines: "Existing baselines",
 existingDirectoryName: "such a directory exists at this place",

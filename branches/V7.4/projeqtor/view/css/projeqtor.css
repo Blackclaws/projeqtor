@@ -3671,6 +3671,6 @@ li.section {
   height:20px;
 }
 
-.absActivityRowSlct{
-	background-color: #545281;  color: #EEEEEE;
+.absActivityRow:hover {
+	background:#eeeeee;
 }

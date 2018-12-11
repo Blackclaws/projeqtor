@@ -37,6 +37,6 @@ require_once "../tool/formatter.php";
    <?php include 'absenceList.php'?>
   </div>
   <div id="detailDiv" dojoType="dijit.layout.ContentPane" region="center">
-   <?php $noselect=true; //include 'objectDetail.php'; ?>
+   <?php $noselect=true; ?>
   </div>
 </div>  

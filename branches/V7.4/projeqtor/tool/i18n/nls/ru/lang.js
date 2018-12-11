@@ -1586,6 +1586,7 @@ errorXhrPostMessage: "Technical issue occured possibly due to bad network connec
 estimated: "Оценка работы",
 evaluationValueAndAmount: "evaluation<br/><i>amount</i>",
 evolutive: "Эволюция",
+exceedWork: "You can't put more than one absence day",
 exceptionMessage: "Исключение составляет ${1} для ${2}",
 existingBaselines: "Existing baselines",
 existingDirectoryName: "Такой каталог существует для этого места",

@@ -1586,6 +1586,7 @@ errorXhrPostMessage: "Технічна помилка&#44; ймовірно&#44;
 estimated: "оцінка роботи",
 evaluationValueAndAmount: "оцінка<br/><i>сума</i>",
 evolutive: "розвиток (evolutive)",
+exceedWork: "You can't put more than one absence day",
 exceptionMessage: "Виняткова подія відбулася на ${1} в ${2}",
 existingBaselines: "Існуючи базові рівні (baseline)",
 existingDirectoryName: "такий каталог вже існує",

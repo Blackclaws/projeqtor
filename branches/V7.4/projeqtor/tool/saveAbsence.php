@@ -44,7 +44,7 @@ $userId = RequestHandler::getId('userId');
 
 //open transaction bdd
 Sql::beginTransaction();
-
+$result = "";
 if ($workVal == 0){
     $work = new Work();
     $where = "refType = 'Activity' and refId =".$actId." and idResource =".$userId." and idProject=".$idProject." and idAssignment =".$assId." and day=".$day;
@@ -56,22 +56,45 @@ if ($workVal == 0){
     }
 }else {
   $work = new Work();
-  
-  //put parameter in work object
-  $work->refType = 'Activity';
-  $work->refId = $actId;
-  $work->day = $day;
-  $work->workDate = $workDay;
-  $work->month = $month;
-  $work->year = $year;
-  $work->week = $week;
-  $work->idResource = $userId;
-  $work->work = $workVal;
-  $work->idProject = $idProject;
-  $work->idAssignment = $assId;
-  
-  //save
-  $work->save();
+  $where = " idProject in " . Project::getAdminitrativeProjectList() ;
+  $where .= " and refType = 'Activity' and idResource =".$userId." and day=".$day;
+  $listWork = $work->getSqlElementsFromCriteria(null,false,$where);
+  $unitAbs = Parameter::getGlobalParameter('imputationUnit');
+  if($unitAbs != 'days'){
+  	$maxHour = Parameter::getGlobalParameter('dayTime');
+  	$somWork = $workVal/$maxHour;
+  }else{
+    $somWork = $workVal;
+  }
+  foreach ($listWork as $isWork){
+    $somWork += $isWork->work;
+  }
+
+  if($somWork <= 1){
+    //put parameter in work object
+    $work->refType = 'Activity';
+    $work->refId = $actId;
+    $work->day = $day;
+    $work->workDate = $workDay;
+    $work->month = $month;
+    $work->year = $year;
+    $work->week = $week;
+    $work->idResource = $userId;
+    if($unitAbs != 'days'){
+    	$workVal = $workVal/$maxHour;
+    }
+    $work->work = $workVal;
+    $work->idProject = $idProject;
+    $work->idAssignment = $assId;
+    
+    //save work
+    $work->save();
+  }else {
+    $result = 'warning';
+    echo $result;
+    //dojo.byId('warningDiv').style.display = 'block';
+  }
 }
+// commit work
 Sql::commitTransaction();
 ?>

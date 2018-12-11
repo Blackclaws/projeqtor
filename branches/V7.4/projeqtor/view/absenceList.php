@@ -42,10 +42,11 @@ $yearSpinner = $currentYear;
        id="absenceResultDiv" dojoType="dijit.layout.ContentPane" region="none" >
   </div>   
   <div dojoType="dijit.layout.ContentPane" region="top" id="absenceButtonDiv" class="listTitle" >
+  <form dojoType="dijit.form.Form" name="listForm" id="listForm" action="" method="post" >
   <table width="100%" height="64px" class="listTitle">
     <tr height="32px">
       <td width="50px" align="center">
-        <?php echo formatIcon('Imputation', 32, null, true);?>
+        <?php echo formatIcon('Absence', 32, null, true);?>
       </td>
       <td width="200px" > 
         <span class="title"><?php echo i18n('menuAbsence');?></span>
@@ -141,14 +142,14 @@ $yearSpinner = $currentYear;
       </td>
     </tr> 
   </table>
+  </form>
   </div>
-  <div style="position:relative;" dojoType="dijit.layout.ContentPane" region="center" id="workDiv" name="workDiv">
-     <form dojoType="dijit.form.Form" id="listForm" action="" method="post" >
-       <input type="hidden" name="userId" id="userId" value="<?php echo $user->id;?>"/>
-       <input type="hidden" name="yearSpinnerT" id="yearSpinnerT" value="<?php echo $yearSpinner?>"/>
-       
-      <?php if (! isset($print) ) {$print=false;}
-      Absence::drawActivityDiv($userName, $yearSpinner);?>
-     </form>
-  </div>
+  <div id="fullWorkDiv" name="fullWorkDiv" dojoType="dijit.layout.ContentPane" region="center" >
+    <div id="workDiv" name="workDiv">
+        <?php Absence::drawActivityDiv($userName, $yearSpinner);?>
+    </div>
+    <div id="calendarDiv" name="calendarDiv">
+        <?php Absence::drawCalandarDiv($userName, $yearSpinner);?>
+     </div>
+  </div>  
 </div>
