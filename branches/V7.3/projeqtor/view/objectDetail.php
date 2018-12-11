@@ -1331,6 +1331,10 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false, $pare
       } else {
         // $internalTableBorder=($print)?'border:1px dotted #A0A0A0;':'';
         $internalTableBorder='';
+        $alignForNumber='';
+        if ($dataType=='decimal' and (substr($col, -4, 4)=='Cost' or substr($col, -6, 6)=='Amount' or $col=='amount')) {
+          $alignForNumber='text-align:right;';
+        }
         if ($internalTable%$internalTableCols==0) {
           echo '</td></tr>'.$cr;
           echo '<tr class="detail">';
@@ -1348,14 +1352,14 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false, $pare
               echo '<label class="label '.$internalTableSpecial.'">'.htmlEncode($obj->getColCaption($internalTableRowsCaptions[$internalTableCurrentRow])).'&nbsp;:&nbsp;</label>';
             }
           }
-          echo '</td><td style="width:90%;white-space:nowrap;'.$internalTableBorder.'">';
+          echo '</td><td style="'.$alignForNumber.'width:90%;white-space:nowrap;'.$internalTableBorder.'">';
           $internalTableCurrentRow++;
         } else {
           if ($obj->isAttributeSetToField($col, "colspan3")) {
-            echo '</td><td class="detail" colspan="3">';
+            echo '</td><td class="detail" colspan="3" style="'.$alignForNumber.'">';
             $internalTable-=2;
           } else {
-            echo '</td><td class="detail" style="white-space:nowrap;'.$internalTableBorder.'">';
+            echo '</td><td class="detail" style="'.$alignForNumber.'white-space:nowrap;'.$internalTableBorder.'">';
           }
         }
       }
@@ -1548,11 +1552,12 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false, $pare
           echo '</span>';
         } else if ($dataType=='decimal' and (substr($col, -4, 4)=='Cost' or substr($col, -6, 6)=='Amount' or $col=='amount')) {
           echo '<span style="'.$fieldStyle.'">';
-          if ($currencyPosition=='after') {
-            echo htmlEncode($val, 'print').' '.$currency;
-          } else {
-            echo $currency.' '.htmlEncode($val, 'print');
-          }
+          echo costFormatter($val);
+          //if ($currencyPosition=='after') {
+          //  echo htmlEncode($val, 'print').' '.$currency;
+          //} else {
+          //  echo $currency.' '.htmlEncode($val, 'print');
+          //}
           echo '</span>';
         } else if ($dataType=='decimal' and substr($col, -4, 4)=='Work') {
           echo '<span style="'.$fieldStyle.'">';

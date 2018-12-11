@@ -206,7 +206,7 @@ class Cron {
       $last=fgets($handle);
       $now=time();
       fclose($handle);
-      if ( ($now-$last) > (self::getSleepTime()*5)) {
+      if ( !$last or !is_numeric($last) or ($now-$last) > (self::getSleepTime()*5)) {
         // not running for more than 5 cycles : dead process
         self::removeRunningFlag();
         return "stopped";
