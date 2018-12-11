@@ -1586,6 +1586,7 @@ errorXhrPostMessage: "Tehnički problem se dogodio vjerojatno zbog loše mrežne
 estimated: "procijenjeni rad",
 evaluationValueAndAmount: "Ocjenjivanje <br/><i> Iznos </i>",
 evolutive: "razvoj",
+exceedWork: "You can't put more than one absence day",
 exceptionMessage: "Došlo je izniman slučaj ${1} na ${2}",
 existingBaselines: "Postojeći reference planiranja",
 existingDirectoryName: "ovaj katalog već postoji",

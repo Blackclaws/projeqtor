@@ -1586,6 +1586,7 @@ errorXhrPostMessage: "ネットワーク接続不良による問題が発生し�
 estimated: "見積作業",
 evaluationValueAndAmount: "評価額",
 evolutive: "進展的",
+exceedWork: "You can't put more than one absence day",
 exceptionMessage: "${1}の${2}で例外が発生しました",
 existingBaselines: "Existing baselines",
 existingDirectoryName: "同じディレクトリが存在します",

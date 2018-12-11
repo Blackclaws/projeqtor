@@ -1586,6 +1586,7 @@ errorXhrPostMessage: "Une erreur technique est survenue probablement liée à un
 estimated: "effort estimé",
 evaluationValueAndAmount: "note<br/><i>montant</i>",
 evolutive: "évolutif",
+exceedWork: "Vous ne pouvez pas mettre plus d'un jour d'absence",
 exceptionMessage: "Une exception est survenue le ${1} à ${2}",
 existingBaselines: "Références existantes",
 existingDirectoryName: "ce répertoire existe déjà",
