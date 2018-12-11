@@ -30,15 +30,12 @@
  */
 require_once "../tool/projeqtor.php";
 require_once "../tool/formatter.php";
-scriptLog('   ->/view/refrehAbsenceList.php'); 
+scriptLog('   ->/view/refrehAbsenceCalendar.php'); 
 
-$userName= RequestHandler::getId('userName');
-$yearSpinner= RequestHandler::getYear('yearSpinner');
+$userName = RequestHandler::getId('userName');
+$yearSpinner = RequestHandler::getYear('yearSpinner');
 
 ?>
-    <div id="workDiv" name="workDiv">
-        <?php Absence::drawActivityDiv($userName, $yearSpinner);?>
-    </div>
-    <div id="calendarDiv" name="calendarDiv">
-        <?php Absence::drawCalandarDiv($userName, $yearSpinner);?>
-     </div>
+<div id="calendarDiv" name="calendarDiv">
+    <?php Absence::drawCalandarDiv($userName, $yearSpinner);?>
+</div>

@@ -1586,6 +1586,7 @@ errorXhrPostMessage: "可能因网络连接问题导致的技术故障。<br/>�
 estimated: "估计工作",
 evaluationValueAndAmount: "评估<br/><i>金额</i>",
 evolutive: "发展",
+exceedWork: "You can't put more than one absence day",
 exceptionMessage: "${1} 在 ${2}处产生意外",
 existingBaselines: "评估基线",
 existingDirectoryName: "此地有该路径",

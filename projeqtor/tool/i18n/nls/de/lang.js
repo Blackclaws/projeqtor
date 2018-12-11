@@ -1586,6 +1586,7 @@ errorXhrPostMessage: "Es ist ein technisches Problem aufgetreten. Wahrscheinlich
 estimated: "Arbeit geschätzt",
 evaluationValueAndAmount: "Auswertung",
 evolutive: "Standard",
+exceedWork: "You can't put more than one absence day",
 exceptionMessage: "Ein Ausnahmefall von ${1} bei ${2} ist aufgetreten",
 existingBaselines: "vorhandene Baselines",
 existingDirectoryName: "Dieses Verzeichnis existiert bereits",

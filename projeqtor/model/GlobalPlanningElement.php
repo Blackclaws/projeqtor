@@ -253,8 +253,7 @@ class GlobalPlanningElement extends SqlElement {
     $excludedProjectsListClause="idProject not in ".transformValueListIntoInClause(SqlList::getListWithCrit("Project", array('excludeFromGlobalPlanning'=>'1'),"id"));
     $query="\n  ( ";
 	  $formatChar=(Sql::isPgsql())?'VARCHAR':'CHAR';
-	  //$formatCollation=(Sql::isPgsql())?'':'COLLATE '.Sql::getDbCollation();
-	  $formatCollation=(Sql::isPgsql())?'':'COLLATE '.Sql::getColumnCollation($peTable,'refType');
+	  $formatCollation=(Sql::isPgsql())?'':'COLLATE '.Sql::getDbCollation();
     if (!$limitToClass) {
       $query.="SELECT cast(id as $formatChar) $formatCollation as id,idProject,cast(refType AS $formatChar) $formatCollation as refType,refId,refName,topId,topRefType,topRefId,
         priority,elementary,idle,done,cancelled,idPlanningMode,idBill,

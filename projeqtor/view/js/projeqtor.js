@@ -5353,49 +5353,68 @@ function directUnselectProject() {
   hideWait();
 }
 
-//Absence refresh function
+//Absence list refresh function
 function refreshAbsenceList() {
 	if (checkFormChangeInProgress()) {
 	    showAlert(i18n('alertOngoingChange'));
 	    return false;
 	  }
 	  formInitialize();
-	  dojo.byId('userId').value=dijit.byId('userName').get("value");
-	  dojo.byId('yearSpinnerT').value=dojo.byId('yearSpinner').value;
-	
-	  enableWidget("userName");
-	  enableWidget("yearSpinner");
-	  
-	  loadContent('../view/refreshAbsenceList.php', 'workDiv', 'listForm', false);
+	  loadContent('../view/refreshAbsenceList.php', 'fullWorkDiv', 'listForm', false);
 	  return true;
 }
 
-function saveAbsence() {
-	enableWidget("userName");
-	enableWidget("yearSpinner");
+//Absence calendar refresh function
+function refreshAbsenceCalendar(tabColor) {
+	if (checkFormChangeInProgress()) {
+	    showAlert(i18n('alertOngoingChange'));
+	    return false;
+	  }
+	  formInitialize();
+	  showWait();
+	  var callback=function() {
+	    hideWait();
+	  };
+	  loadDiv('../view/refreshAbsenceCalendar.php', 'calendarDiv', 'listForm', callback);
+	  return true;
 }
 
+// Absence activity selection function
 function selectActivity(actRowId, actId, idProject, assId){
 	var row = dojo.byId(actRowId);
-	if (dojo.hasClass(row,'absActityRow')){
-		dojo.query('.absActityRow').removeClass('absActivityRowSlct', row);
-		dojo.addClass(row,'absActivityRowSlct');
+	if (dojo.hasClass(row,'absActivityRow')){
+		dojo.query('.absActivityRow').removeClass('dojoxGridRowSelected', row);
+		dojo.addClass(row,'dojoxGridRowSelected');
 		dojo.setAttr('inputActId', 'value', actId);
 		dojo.setAttr('inputIdProject', 'value', idProject);
 		dojo.setAttr('inputAssId', 'value', assId);
 	}
+	dojo.byId('warningNoActivity').style.display = 'none';
 }
+
+// Absence day selection fonction
 function selectAbsenceDay(dateId, day, workDay, month, year, week, userId){
-	var workVal = dojo.byId('absenceInput').value;
+	var workVal = dijit.byId('absenceInput').get('value');
 	var actId = dojo.byId('inputActId').value;
 	var idProject = dojo.byId('inputIdProject').value;
 	var assId = dojo.byId('inputAssId').value;
-	  var url='../tool/saveAbsence.php?day='+day+'&workDay='+workDay+'&month='+month+'&year='+year+'&week='+week+'&userId='+userId+'&workVal='+workVal+'&actId='+actId+'&idProject='+idProject+'&assId='+assId;
-	  dojo.xhrGet({
-	    url : url,
-	    handleAs : "text",
-	    load : function(data) {
-	    	
-	    }
-	  });
+	if(actId == ""){
+		dojo.byId('warningNoActivity').style.display = 'block';
+	}else {
+	  showWait();
+		dojo.byId('warningNoActivity').style.display = 'none';
+		var url='../tool/saveAbsence.php?day='+day+'&workDay='+workDay+'&month='+month+'&year='+year+'&week='+week+'&userId='+userId+'&workVal='+workVal+'&actId='+actId+'&idProject='+idProject+'&assId='+assId;
+		  dojo.xhrGet({
+		    url : url,
+		    handleAs : "text",
+		    load : function(data){
+		      hideWait();
+		    	refreshAbsenceCalendar();
+		    	if(data == 'warning'){
+		    		dojo.byId('warningExceedWork').style.display = 'block';
+		    		setTimeout("dojo.byId('warningExceedWork').style.display = 'none'", 2000);
+		    	}
+		    }
+		  });
+	}
 }

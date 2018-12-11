@@ -1586,6 +1586,7 @@ errorXhrPostMessage: "Ocorreu um problema técnico provavelmente derivado de uma
 estimated: "trabalho estimado",
 evaluationValueAndAmount: "valor<br/><i>da avaliação</i>",
 evolutive: "evolutivo",
+exceedWork: "You can't put more than one absence day",
 exceptionMessage: "Ocorreu uma excepção em ${1} at ${2}",
 existingBaselines: "Bases de referencia existentes",
 existingDirectoryName: "já existe este directório neste lugar",

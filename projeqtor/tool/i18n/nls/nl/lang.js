@@ -1586,6 +1586,7 @@ errorXhrPostMessage: "Technical issue occured possibly due to bad network connec
 estimated: "ingeschat werk",
 evaluationValueAndAmount: "evaluation<br/><i>amount</i>",
 evolutive: "evolutieve",
+exceedWork: "You can't put more than one absence day",
 exceptionMessage: "Er is een uitzondering ontstaan op ${1} bij ${2}",
 existingBaselines: "Existing baselines",
 existingDirectoryName: "zo'n map bestaat op deze locatie",

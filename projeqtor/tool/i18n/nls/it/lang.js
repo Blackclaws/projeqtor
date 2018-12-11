@@ -1586,6 +1586,7 @@ errorXhrPostMessage: "Si è verificato un problema tecnico&#44; probabilmente a 
 estimated: "lavoro stimato",
 evaluationValueAndAmount: "valutazione <br/> quantità </i>",
 evolutive: "evolutiva",
+exceedWork: "You can't put more than one absence day",
 exceptionMessage: "Si è verificata una eccezione in ${1} al ${2}",
 existingBaselines: "Baselines esistenti",
 existingDirectoryName: "tale directory esiste in questo posto",

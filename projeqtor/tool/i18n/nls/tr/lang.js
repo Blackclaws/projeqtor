@@ -1586,6 +1586,7 @@ errorXhrPostMessage: "Teknik sorun&#44 kötü ağ bağlantısı nedeniyle oluşm
 estimated: "tahmini çalışma",
 evaluationValueAndAmount: "değerlendirme <br/> <i> miktar </ i>",
 evolutive: "evolutive",
+exceedWork: "You can't put more than one absence day",
 exceptionMessage: "${1} tarihinde ${2} tarihinde bir istisna oluştu.",
 existingBaselines: "Mevcut taban çizgileri",
 existingDirectoryName: "Böyle bir dizin bu yerde var",
