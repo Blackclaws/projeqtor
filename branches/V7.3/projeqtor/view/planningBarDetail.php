@@ -60,7 +60,11 @@ foreach($wkLst as $wk) {
   if (! isset($work[$wk->idAssignment]['resource'])) {
     $ress=new ResourceAll($wk->idResource);
     $work[$wk->idAssignment]['capacity']=($ress->capacity>1)?$ress->capacity:'1';
-    $work[$wk->idAssignment]['resource']=$ress->name;
+    //Damian #3676
+    $ass=new Assignment($wk->idAssignment);
+    $resource = new ResourceAll($ass->idResource);
+    $work[$wk->idAssignment]['resource']= SqlList::getNameFromId('ResourceAll', $ass->idResource);
+    //end
     if ($ress->isResourceTeam) {
       $ass=new Assignment($wk->idAssignment);
       $work[$wk->idAssignment]['capacity']=($ass->capacity>1)?$ass->capacity:'1';
