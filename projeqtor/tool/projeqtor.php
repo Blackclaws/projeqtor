@@ -2523,6 +2523,7 @@ function securityGetAccessRight($menuName, $accessType, $obj=null, $user=null) {
  */
 function securityGetAccessRightYesNo($menuName, $accessType, $obj=null, $user=null) {
   scriptLog("securityGetAccessRightYesNo ( menuName=$menuName, accessType=$accessType, obj=".debugDisplayObj($obj).", user=".debugDisplayObj($user).")");
+  if ($menuName=='menuCalendarDefinition') $menuName='menuCalendar';
   $class=substr($menuName, 4);
   global $remoteDb;
   if (isset($remoteDb) and $remoteDb==true) {
