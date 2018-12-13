@@ -227,6 +227,11 @@ class TenderMain extends SqlElement {
         $projExpense->plannedAmount = $this->totalUntaxedAmount;
         $projExpense->plannedTaxAmount = $this->totalTaxAmount;
         $projExpense->plannedFullAmount = $this->totalFullAmount;
+        // #3717 : also copy provider; contact, externalReference
+        $projExpense->idProvider = $this->idProvider;
+        $projExpense->idContact = $this->idContact;
+        $projExpense->externalReference = $this->externalReference;
+        // #3717 : end
         if(trim($this->receptionDateTime)){
           $projExpense->expensePlannedDate = $this->receptionDateTime;
         }else if (trim($this->requestDateTime)){

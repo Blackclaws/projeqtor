@@ -77,9 +77,8 @@
   } else {
     $updateRight=securityGetAccessRightYesNo('menu' . $class, 'update', $obj);
   }
-  $updateRight='YES';
+  //$updateRight='YES';
   $deleteRight=securityGetAccessRightYesNo('menu' . $class, 'delete', $obj);
-  
   $displayWidthButton="9999";
   if (isset($_REQUEST ['destinationWidth'])) {
     $displayWidthButton=$_REQUEST ['destinationWidth'];
