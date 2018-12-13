@@ -66,22 +66,22 @@ scriptLog('   ->/view/reportsList.php');
 </table>
 </div>
 <div dojoType="dijit.layout.ContentPane" region="center" id="gridContainerDiv">
-  <table>
+  <table style="height:100%">
     <tr>
       <td width="5px" height="35px">&nbsp;</td>
       <td class="tabLabel">
         <div style="position:relative;left:100px"><?php echo i18n('colParameters');?></div>
       </td>
     </tr>
-    <tr>
+    <tr style="height:100%">
       <td valign="top" style="width:40%" >
-        <div id="reportMenuList" style="width:558px;overflow-y:auto;overflow-x:hidden;height:170px;">
+        <div id="reportMenuList" style="width:558px;overflow-y:auto;overflow-x:hidden;height:100%;">
            <?php include "reportListMenu.php";?>
         </div>
       </td>
       <td ></td>
       <td valign="top">
-        <div id="reportParametersDiv" dojoType="dijit.layout.ContentPane" region="right" ></div>
+        <div id="reportParametersDiv" dojoType="dijit.layout.ContentPane" region="right" style="height:100%; overflow-y:auto;"></div>
       </td>   
     </tr>
     

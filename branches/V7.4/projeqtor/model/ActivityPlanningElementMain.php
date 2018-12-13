@@ -35,6 +35,7 @@ class ActivityPlanningElementMain extends PlanningElement {
   public $refType;
   public $refId;
   public $refName;
+  public $_separator_sectionDateAndDuration;
   public $_tab_5_3_smallLabel = array('validated', 'planned', 'real', '', 'requested', 'startDate', 'endDate', 'duration');
   public $validatedStartDate;
   public $plannedStartDate;
@@ -52,6 +53,7 @@ class ActivityPlanningElementMain extends PlanningElement {
   public $_void_4;
   public $initialDuration;
   public $_spe_isOnCriticalPath;
+  public $_separator_sectionCostWork_marginTop;
   public $_tab_5_2_smallLabel_1 = array('validated', 'assigned', 'real', 'left', 'reassessed', 'work', 'cost');
   public $validatedWork;
   public $assignedWork;
@@ -63,6 +65,7 @@ class ActivityPlanningElementMain extends PlanningElement {
   public $realCost;
   public $leftCost;
   public $plannedCost;
+  public $_separator_menuReview_marginTop;
   public $_tab_5_2_smallLabel_2 = array('', '', '', '', '', 'progress','priority');
   public $progress;
   public $_label_expected;

@@ -118,7 +118,7 @@ $yearSpinner = $currentYear;
                id="printButton" name="printButton"
                iconClass="dijitButtonIcon dijitButtonIconPrint" class="detailButton" showLabel="false">
                 <script type="dojo/method" event="onClick" args="evt">
-                  showPrint('../report/absence.php', 'absence');
+                  showPrint('../report/AbsenceReport.php', 'absence');
                 </script>
               </button>
               <button title="<?php echo i18n('reportPrintPdf')?>"  
@@ -126,7 +126,7 @@ $yearSpinner = $currentYear;
                id="printButtonPdf" name="printButtonPdf"
                iconClass="dijitButtonIcon dijitButtonIconPdf" class="detailButton" showLabel="false">
                 <script type="dojo/method" event="onClick" args="evt">
-                  showPrint('../report/absence.php', 'absence', null, 'pdf');
+                  showPrint('../report/AbsenceReport.php', 'absence', null, 'pdf');
                 </script>
               </button>               
               <button id="refreshButton" dojoType="dijit.form.Button" showlabel="false"

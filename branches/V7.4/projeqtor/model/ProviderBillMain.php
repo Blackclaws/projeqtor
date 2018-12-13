@@ -233,6 +233,11 @@ class ProviderBillMain extends SqlElement {
         $projExpense->realAmount = $this->totalUntaxedAmount;
         $projExpense->realTaxAmount = $this->totalTaxAmount;
         $projExpense->realFullAmount = $this->totalFullAmount;
+        // #3717 : also copy provider; contact, externalReference
+        $projExpense->idProvider = $this->idProvider;
+        $projExpense->idContact = $this->idContact;
+        $projExpense->externalReference = $this->externalReference;
+        // #3717 : end
         if($this->date){
           $projExpense->expenseRealDate = $this->date;
         }else{
