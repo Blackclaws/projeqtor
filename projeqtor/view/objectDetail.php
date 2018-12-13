@@ -650,6 +650,17 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false, $pare
     // - the x column headers
     // - the y line headers
     
+    //Doris #3687
+    if (substr($col, 0, 10)=='_separator') {
+      $decomp=explode("_", $col);
+      $name = i18n($decomp[2]);
+      $margin = "";
+      if(isset($decomp[3])){
+        $margin = "margin-top:5px;";
+      }
+      echo '<div class="assignHeader" id="'.$col.'" style="height:14px; padding: 3px; margin-bottom:5px;'.$margin.' vertical-align:middle; border:1px solid grey;">'.$name.'</div>';
+    }
+    
     // gautier #3251
     if (substr($col, 0, 4)=='_tab') {
       // BEGIN - ADD BY TABARY - FORCE HEADER TAB VISIBLE
