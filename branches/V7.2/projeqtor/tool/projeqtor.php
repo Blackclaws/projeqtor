@@ -2523,6 +2523,7 @@ function securityGetAccessRight($menuName, $accessType, $obj=null, $user=null) {
  */
 function securityGetAccessRightYesNo($menuName, $accessType, $obj=null, $user=null) {
   scriptLog("securityGetAccessRightYesNo ( menuName=$menuName, accessType=$accessType, obj=".debugDisplayObj($obj).", user=".debugDisplayObj($user).")");
+  if ($menuName=='menuCalendarDefinition') $menuName='menuCalendar';
   $class=substr($menuName, 4);
   global $remoteDb;
   if (isset($remoteDb) and $remoteDb==true) {
@@ -2567,6 +2568,7 @@ function securityGetAccessRightYesNo($menuName, $accessType, $obj=null, $user=nu
     }
   }
   $accessRight=securityGetAccessRight($menuName, $accessType, $obj, $user);
+  debugLog("securityGetAccessRight($menuName, $accessType, obj, user)=$accessRight");
   if ($accessType=='create') {
     if ((!$obj or (property_exists(substr($menuName, 4), 'name') and !$obj->name)) and property_exists(substr($menuName, 4), 'idProject')) { // Case of project dependent screen, will allow if user has some create rights on one of his profiles
       foreach ($user->getAllProfiles() as $prf) {
