@@ -55,7 +55,6 @@ class Expense extends SqlElement {
   public $month;
   public $year;
   public $idle;
-  public $scope;
   //public $_sec_Detail;
   public $_ExpenseDetail=array();
   public $_Attachment=array();
@@ -245,7 +244,7 @@ class Expense extends SqlElement {
   		if ($ed->expenseDate) $date=$ed->expenseDate;
   	} 
   	$paramImputOfBillLineProvider = Parameter::getGlobalParameter('ImputOfBillLineProvider');
-  	if($paramImputOfBillLineProvider == "HT" or $this->scope=='IndividualExpense'){
+  	if($paramImputOfBillLineProvider == "HT" or SqlElement::is_a($this,'IndividualExpense') ){
   	  $this->realAmount=$total;
   	}else{
   	  $this->realFullAmount=$total;

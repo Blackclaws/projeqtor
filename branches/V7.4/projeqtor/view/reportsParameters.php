@@ -31,7 +31,7 @@
 require_once "../tool/projeqtor.php";
 scriptLog('   ->/view/reportsList.php');
 ?>
-<div style="height:175px;width:100%;overflow-x:hidden; overflow-y:auto" >
+<div style="height:100%;width:100%;overflow-x:hidden; overflow-y:auto" >
 <form id='reportForm' name='reportForm' onSubmit="return false;">
 <table><tr><td>
 <table style="width:100%;min-width:292px;">
