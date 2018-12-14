@@ -1453,7 +1453,8 @@ function finalizeMessageDisplay(destination, validationType) {
           refreshGrid();
         }
         // loadContent("planningList.php", "listDiv", 'listForm');
-      } else if (dojo.byId('id') && lastOperation && (lastOperation.value == "insert" || forceRefreshCreationInfo)) {
+      }
+      if (dojo.byId('id') && lastOperation && (lastOperation.value == "insert" || forceRefreshCreationInfo)) {
      // last operations depending on the executed operatoin (insert, delete, ...)
         if (lastSaveId) dojo.byId('id').value=lastSaveId.value;
         if (dojo.byId('objectClass')
@@ -4013,7 +4014,6 @@ function newObject() {
 
 function saveObject() {
   if(dojo.byId('buttonDivCreationInfo')!=null){
-    dojo.byId('buttonDivCreationInfo').innerHTML="";
     forceRefreshCreationInfo=true;
   }
   if (waitingForReply) {

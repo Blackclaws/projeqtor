@@ -338,7 +338,7 @@ Priority numeric value is determined by a simple equation as follows:
    * [Priority value] = [Urgency value] X [Criticality value] / 2
    * For example:
 
-     * Critical priority (8) = Blocking (4) X Critical (8) / 2
+     * Blocking (4) X Critical (8) / 2  = Critical priority (16)for [Priority value] 
 
 .. rubric:: Default values
 
