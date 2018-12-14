@@ -124,14 +124,12 @@ class ResourceCost extends SqlElement {
             $wk->dailyCost=$this->cost;
             $wk->cost=$wk->dailyCost*$wk->work;
             $res=$wk->saveForced();
-            debugLog($res);
             $arrayAss[$ass->id]=$ass;
           }
         } else {
           $wk->dailyCost=$this->cost;
           $wk->cost=$wk->dailyCost*$wk->work;
           $res=$wk->saveForced();
-          debugLog($res);
           if ($wk->idWorkElement) {
             if (!isset($arrayWE[$wk->idWorkElement])) {
               $arrayWE[$wk->idWorkElement]=new WorkElement($wk->idWorkElement);

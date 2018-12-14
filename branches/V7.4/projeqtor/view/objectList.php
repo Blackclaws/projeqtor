@@ -805,22 +805,20 @@ if (property_exists($objectClass,'idStatus')) {
 ?>
 
 <?php
-//change height of filter status bar depending of number of status.
 $object = new $objectClass();
 $listStatus = $object->getExistingStatus();
-$height = ((floor((count($listStatus)-0.1)/10))+1)  * 20;
 ?>
   
-<div class="listTitle" id="barFilterByStatus" dojoType="dijit.layout.ContentPane" region="top" style="display: <?php echo $displayStatus;?>;height:<?php echo $height; ?>px;min-width:1250px;line-height:18px;">
-	<table style="position:absolute;top:2px">
-		<tr>
+<div class="listTitle" id="barFilterByStatus" dojoType="dijit.layout.ContentPane" region="top" style="display: <?php echo $displayStatus;?>;height:auto">
+	<table style="display: block; width: 100%">
+		<tr style="display: inlineblock; width: 100%">
 			<td style="font-weight:bold;padding-left:50px;"><?php echo i18n("colIdStatus");?>&nbsp;:&nbsp;</td>
 <?php
   $cptStatus=0;
 	foreach ($listStatus as $status) {
 		$cptStatus += 1;
 ?>		
-			<td>
+			<td style="float: left; height: 100%; width: 130px; white-space: nowrap">
 				<div id="showStatus<?php echo $cptStatus; ?>" title="<?php echo $status->name; ?>" dojoType="dijit.form.CheckBox" type="checkbox" value="<?php echo $status->id; ?>" <?php if(!$comboDetail and sessionValueExists('showStatus'.$status->id.$objectClass)){if(getSessionValue('showStatus'.$status->id.$objectClass)== 'true'){ ?>	checked=" checked "<?php } }?> >
 					<script type="dojo/method" event="onChange">
 						refreshJsonList('<?php echo $objectClass; ?>');
@@ -829,7 +827,6 @@ $height = ((floor((count($listStatus)-0.1)/10))+1)  * 20;
 				<?php echo $status->name; ?>&nbsp;&nbsp;
 			</td>
 <?php
-	echo ($cptStatus % 10 == 0) ? '</tr><tr><td></td>' : '';
 	 } ?>
 		</tr>
 	</table>

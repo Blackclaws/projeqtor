@@ -403,6 +403,14 @@ class ComponentVersionMain extends Version {
   
   
   public function save() {
+    $date_tab = array('Done', 'StartDate', 'DeliveryDate', 'EisDate', 'EndDate');
+    foreach ($date_tab as $date) {
+      $initial = 'initial' . $date;
+      $planned = 'planned' . $date;
+      $real = 'real' . $date;
+      if (!empty($this->$real) and empty($this->$planned)) $this->$planned = $this->$real;
+      if (!empty($this->$planned) and empty($this->$initial)) $this->$initial = $this->$planned;
+    }
     $this->idProduct=$this->idComponent; // idProduct set from Version parent object, but may be not set, so avoid erasing.
     $old=$this->getOld();
     $this->scope='Component';
