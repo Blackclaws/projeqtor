@@ -206,8 +206,18 @@ if (!(isset($maintenance) and $maintenance) and !(isset($batchMode) and $batchMo
         $loginSave=true;
         $user->setCookieHash();
         $user->save();
-        $user->finalizeSuccessfullConnection(true);
-        setSessionUser($user);
+        if(Parameter::getGlobalParameter('applicationStatus')=='Closed'){
+        	$prf=new Profile($user->idProfile);
+        	if ($prf->profileCode!='ADM') {
+        	  $user=false;
+        	}else{
+        	  $user->finalizeSuccessfullConnection(true);
+        	  setSessionUser($user);
+        	}
+        }else{
+          $user->finalizeSuccessfullConnection(true);
+          setSessionUser($user);
+        }
       }
     }
     if (!$user) {
