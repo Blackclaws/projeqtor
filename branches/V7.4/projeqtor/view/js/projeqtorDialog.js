@@ -8178,6 +8178,42 @@ function dialogWorkflowParameterUncheckAll() {
   workflowParameterAllChecked=!workflowParameterAllChecked;
 }
 
+//********************************************************************************************
+//WORKFLOW AUTHORIZATION PARAMETERS (selection of profile)
+//********************************************************************************************
+var workflowProfileParameterAllChecked=true;
+function showWorkflowProfileParameter(id) {
+if (checkFormChangeInProgress()) {
+ showAlert(i18n('alertOngoingChange'));
+ return;
+}
+callBack=function() {
+};
+workflowProfileParameterAllChecked=true;
+var params='&idWorkflow=' + id;
+loadDialog('dialogWorkflowProfileParameter', callBack, true, params);
+}
+
+function saveWorkflowProfileParameter() {
+loadContent("../tool/saveWorkflowProfileParameter.php", "resultDiv",
+   "dialogWorkflowProfileParameterForm", true);
+dijit.byId('dialogWorkflowProfileParameter').hide();
+}
+
+function dialogWorkflowProfileParameterUncheckAll() {
+dojo.query(".workflowProfileParameterCheckbox").forEach(function(node, index, nodelist) {
+ var id=node.getAttribute('widgetid');
+ if (dijit.byId(id) ) {
+   dijit.byId(id).set('checked',!workflowProfileParameterAllChecked);
+ }
+});
+workflowProfileParameterAllChecked=!workflowProfileParameterAllChecked;
+}
+//********************************************************************************************
+//END - WORKFLOW AUTHORIZATION PARAMETERS (selection of profile)
+//********************************************************************************************
+
+
 function changeCreationInfo() {
   toShow=false;
   if (dijit.byId('idUser')) {

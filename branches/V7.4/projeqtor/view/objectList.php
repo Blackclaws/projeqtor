@@ -664,7 +664,7 @@ if (property_exists($objectClass,'idStatus')) {
         }
       ?>       
              <td width="36px">
-              <button title="<?php echo i18n('reportPrintPdf')?>"  
+              <button title="<?php echo ($modePdf=='pdf')?i18n('reportPrintPdf'):i18n('reportPrintTemplate');?>"
                dojoType="dijit.form.Button" 
                id="listPrintPdf" name="listPrintPdf"
                iconClass="dijitButtonIcon dijitButtonIcon<?php echo ucfirst($modePdf);?>" class="detailButton" showLabel="false">

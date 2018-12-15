@@ -96,3 +96,11 @@ INSERT INTO `${prefix}habilitationreport` (`idProfile`, `idReport`, `allowAccess
 (1, 92, 1),
 (2, 92, 1),
 (3, 92, 1);
+
+CREATE TABLE `${prefix}workflowprofile` (
+  `id` int(12) unsigned NOT NULL AUTO_INCREMENT,
+  `idWorkflow` int(12) unsigned DEFAULT NULL,
+  `idProfile` int(12) unsigned DEFAULT NULL,
+  `checked` int(1) unsigned DEFAULT '0',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;

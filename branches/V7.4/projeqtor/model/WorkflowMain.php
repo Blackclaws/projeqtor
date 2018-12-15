@@ -46,6 +46,7 @@ class WorkflowMain extends SqlElement {
   public $_spe_workflowDiagram;
   public $_spe_hideStatus;
   public $_sec_WorkflowStatus;
+  public $_spe_hideProfile;
   public $_workflowStatus_colSpan="2";
   public $_spe_workflowStatus;
   public $_workflowStatus;
@@ -177,6 +178,8 @@ class WorkflowMain extends SqlElement {
     }
     $result="";
     if ($item=='workflowStatus') {
+      $wp= new workflowProfile();
+      $profileAuthorizationList=$wp->getAuthorizationProfileList($this->id);
       $width="100px";
       $statusList=$this->getStatusList();
       $profileList=SqlList::getList('Profile');
@@ -224,19 +227,26 @@ class WorkflowMain extends SqlElement {
             $result .= '/>';
             $result .= ' </td>';
             $result .= '  <td><b>' . i18n('all') . '</b></td></tr>';  
-            //$profileIdx=0;
-            foreach ($profileList as $profileCode => $profileValue) {  
-              $titleProfile=$title . "\n" . $profileValue;                          
-              $result .= '  <tr title="' . $titleProfile . '" class="workflowDetail" ><td valign="top" style="vertical-align: top;" >';
-              // dojotype not set to improve perfs
-              $result .= '  <input xdojoType="dijit.form.CheckBox" type="checkbox" ';
-              $result .= ' onclick="workflowChange('. $statLineCode . ',' . $statColumnCode . ',\'' . $profileIdList .'\');"';
-              $name = 'val_' . $statLineCode . '_' . $statColumnCode . '_' . $profileCode;
-              $result .= ' name="' . $name . '" id="' . $name . '" ';
-              if ($wsListArray[$statLineCode][$statColumnCode][$profileCode]==1) { $result .=  'checked'; }
-              $result .= ' />';
-              $result .= ' </td> ';
-              $result .= '  <td><div style="width:60px;overflow: hidden; white-space: nowrap; overflow: hidden; "><span class="nobr">' . $profileValue . '</span></div></td></tr>';  
+            foreach ($profileList as $profileCode => $profileValue) {
+              $toSkip = 0;
+              foreach ($profileAuthorizationList as $profileAuthorization) {
+                if ($profileAuthorization->idProfile == $profileCode)$toSkip = 1;
+              }
+              if ($toSkip == 0) {
+              $titleProfile=$title."\n".$profileValue;
+                $result.='  <tr title="'.$titleProfile.'" class="workflowDetail" ><td valign="top" style="vertical-align: top;" >';
+                // dojotype not set to improve perfs
+                $result.='  <input xdojoType="dijit.form.CheckBox" type="checkbox" ';
+                $result.=' onclick="workflowChange('.$statLineCode.','.$statColumnCode.',\''.$profileIdList.'\');"';
+                $name='val_'.$statLineCode.'_'.$statColumnCode.'_'.$profileCode;
+                $result.=' name="'.$name.'" id="'.$name.'" ';
+                if ($wsListArray[$statLineCode][$statColumnCode][$profileCode]==1) {
+                  $result.='checked';
+                }
+                $result.=' />';
+                $result.=' </td> ';
+                $result.='  <td><div style="width:60px;overflow: hidden; white-space: nowrap; overflow: hidden; "><span class="nobr">'.$profileValue.'</span></div></td></tr>';
+              }
             }
             $result .= '</table>';
           }
@@ -499,7 +509,17 @@ class WorkflowMain extends SqlElement {
         $result.='</button>';
       }
       //gautier tableauWorkflow
-    }  else if ($item=='listTypeUsingWorkflow') {
+    } else if ($item=='hideProfile') {
+      if (!$print and $this->id) {
+        $result.='<button id="workflowParameterProfileButton" dojoType="dijit.form.Button" showlabel="false"';
+        $result.='title="'.i18n('workflowProfileParameters').'"';
+        $result.='iconClass="iconParameter16" style="position:absolute;right:3px;top:-1px;">';
+        $result.=' <script type="dojo/connect" event="onClick" args="evt">';
+        $result.='  showWorkflowProfileParameter('.htmlEncode($this->id).');';
+        $result.=' </script>';
+        $result.='</button>';
+      }
+    }else if ($item=='listTypeUsingWorkflow') {
       if (array_key_exists('destinationWidth', $_REQUEST)) {
         $maxWidth=preg_replace('/[^0-9]/','', $detailWidth);
         $maxWidth= $maxWidth/2;
