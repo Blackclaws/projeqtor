@@ -191,7 +191,7 @@
      //    - Mail : description is content of email possibly truncated, so tags may be not closed?>    
      <?php organizeButtons();?>
      <button id="printButtonPdf" dojoType="dijit.form.Button" showlabel="false"
-       title="<?php echo i18n('reportPrintPdf');?>"
+       title="<?php echo ($modePdf=='pdf')?i18n('reportPrintPdf'):i18n('reportPrintTemplate');?>"
        <?php if ($noselect) {echo "disabled";} ?> 
        iconClass="dijitButtonIcon dijitButtonIcon<?php echo ucfirst($modePdf);?>" class="detailButton">
         <script type="dojo/connect" event="onClick" args="evt">
