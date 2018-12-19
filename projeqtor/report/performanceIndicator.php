@@ -688,9 +688,9 @@ function ticket($resource,$idProject,$startDateReport,$endDateReport,$today){
   $queryWhere = "  WHERE  $tkTable.id = $weTable.refId and $weTable.refType='Ticket'";
   $queryWhere.= " AND $tkTable.idProject in " . transformListIntoInClause($proj->getRecursiveSubProjectsFlatList(false, true));
   if($resource != ' '){
-    $queryWhere .= " AND $tkTable.idResource = ".$resource;
+    $queryWhere .= " AND $tkTable.idresource = ".$resource;
   }else{
-    $queryWhere .= " AND $tkTable.idResource is not null ";
+    $queryWhere .= " AND $tkTable.idresource is not null ";
   }
   if($startDateReport != null ){
     if($endDateReport != null && $endDateReport >= $today ){
@@ -706,7 +706,7 @@ function ticket($resource,$idProject,$startDateReport,$endDateReport,$today){
     $queryWhere .= " OR $tkTable.doneDateTime IS NULL )";
   }
   
-  $queryOrder = " order by idResource, idTicket, date ;";
+  $queryOrder = " order by idresource, idTicket, date ;";
   
   $query=$querySelect.$queryFrom.$queryWhere.$queryOrder;
   $result=Sql::query($query);
