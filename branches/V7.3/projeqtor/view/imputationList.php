@@ -348,7 +348,7 @@ if(sessionValueExists('listShowIdleTimesheet')and getSessionValue('listShowIdleT
   </div>
   <div style="position:relative;" dojoType="dijit.layout.ContentPane" region="center" id="workDiv" name="workDiv">
      <form dojoType="dijit.form.Form" id="listForm" action="" method="post" >
-       <input type="hidden" name="userId" id="userId" value="<?php echo $user->id;?>"/>
+       <input type="hidden" name="userId" id="userId" value="<?php if(sessionValueExists('userName')){ echo getSessionValue('userName');}else{ echo $user->id; } ?>"/>
        <input type="hidden" name="rangeType" id="rangeType" value="<?php echo $rangeType;?>"/>
        <input type="hidden" name="rangeValue" id="rangeValue" value="<?php echo $rangeValue;?>"/>
        <input type="checkbox" name="idle" id="idle" style="display: none;"/>     
