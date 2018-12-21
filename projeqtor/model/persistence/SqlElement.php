@@ -4527,7 +4527,7 @@ abstract class SqlElement {
               $objects .= "<br/>&nbsp;-&nbsp;" . i18n ( $object ) . " (" . $nb . ")";
             }
           }
-          if (get_class($this)=='Contact') { 
+          if (get_class($this)=='Contact' and property_exists($obj,'idSponsor')) { 
             // Also search for sponsor
             $crit = array('idSponsor' => $this->id);
             $nb = $obj->countSqlElementsFromCriteria ( $crit, $where );
