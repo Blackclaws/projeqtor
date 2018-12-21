@@ -67,6 +67,19 @@ class Consistency {
     foreach ($peList as $idx=>$pe) {
       $currentWbs=$pe->wbsSortable;
       if ($trace) echo "$pe->wbsSortable - $pe->refType #$pe->refId - $pe->refName<br/>";
+      if (!$pe->refType or !$pe->refId) {
+        displayError(i18n("checkPlanningElementEmpty",array(i18n($pe->refType),$pe->refId,$pe->id)));
+        $errors++;
+        if ($correct) {
+          $resultDeletePE=$pe->delete();
+          if (getLastOperationStatus($resultDeletePE=="OK")) {
+            displayOK(i18n("checkFixed"),true);
+          } else {
+            displayMsg(i18n("checkNotFixed"),true);
+          }
+        }
+        continue;
+      }
       // check for duplicate WBS
       if ($pe->wbsSortable==$lastWbs) {
         displayError(i18n("checkWbsDuplicate",array($lastWbs,i18n($lastPe->refType),$lastPe->refId,i18n($pe->refType),$pe->refId)));
