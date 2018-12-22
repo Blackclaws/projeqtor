@@ -713,7 +713,7 @@ deleteDuplicate();
 Sql::saveDbVersion($version);
 Parameter::clearGlobalParameters();
 unsetSessionValue('_tablesFormatList');
-if (file_exists(Parameter::getGlobalParameter('cronDirectory'))) Cron::restart();
+if (file_exists(Parameter::getGlobalParameter('cronDirectory')) and Cron::check()=='running') Cron::restart();
 
 traceLog('=====================================');
 traceLog("");

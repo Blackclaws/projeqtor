@@ -447,6 +447,19 @@ class PlanningElement extends SqlElement {
       } else {
         self::updateSynthesisNoDispatch($old->topRefType, $old->topRefId);
       }
+      // Must also renumber children for old parent
+      $oldTopElt=new PlanningElement($old->topId);
+      projeqtor_set_time_limit(600);
+      $critOldTop=" topId=" . Sql::fmtId($oldTopElt->id);
+      $lstEltOldTop=$this->getSqlElementsFromCriteria(null, null, $critOldTop ,'wbsSortable asc');
+      $cpt=0;
+      foreach ($lstEltOldTop as $elt) {
+        $cpt++;
+        $elt->wbs=$oldTopElt->wbs . '.' . $cpt;
+        if ($elt->refType) { // just security for unit testing
+          $elt->wbsSave();
+        }
+      }
     }
     // save new parent (for synthesis update) if parent has changed
     // #2995 : a previous version changed the following condition so that updateSynthesis is always called for parent
