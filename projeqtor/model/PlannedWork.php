@@ -1235,7 +1235,7 @@ class PlannedWork extends GeneralWork {
     $arrayProj=array();
     foreach ($fullListPlan as $pe) {
       if (!$pe->refType) continue;
-      if ($pe->refType!='Project') $arrayProj[$pe->idProject]=$pe->idProject;
+      if ($pe->refType!='Project' and $pe->idProject) $arrayProj[$pe->idProject]=$pe->idProject;
       if (property_exists($pe,'_profile') and $pe->_profile=='RECW') { 
         $resPe=$pe->simpleSave();
         PlanningElement::updateSynthesis($pe->refType, $pe->refId);

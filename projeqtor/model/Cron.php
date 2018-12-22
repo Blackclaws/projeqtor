@@ -291,7 +291,7 @@ class Cron {
     }
   }
   
-  // Restrart already running CRON  !!! NOT WORKING !!!
+  // Restrart already running CRON  !!! NOT WORKING WITHOUT A RELAUNCH !!!
   public static function restart() {
     error_reporting(0);
     //session_write_close();
