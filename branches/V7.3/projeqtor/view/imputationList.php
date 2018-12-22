@@ -115,7 +115,7 @@ if(sessionValueExists('listShowIdleTimesheet')and getSessionValue('listShowIdleT
                   value="<?php if(sessionValueExists('yearSpinner')){
                                 echo getSessionValue('yearSpinner') ;
                                 if(sessionValueExists('weekSpinner')){
-                                  $rangeValue = getSessionValue('yearSpinner').getSessionValue('weekSpinner');
+                                  $rangeValue = getSessionValue('yearSpinner').numericFixLengthFormatter(getSessionValue('weekSpinner'),2);
                                 }else{
                                   $rangeValue = getSessionValue('yearSpinner').$currentWeek;
                                 }
@@ -138,11 +138,11 @@ if(sessionValueExists('listShowIdleTimesheet')and getSessionValue('listShowIdleT
                   intermediateChanges="true"
                   maxlength="2" class="roundedLeft"
                   value="<?php if(sessionValueExists('weekSpinner')){
-                                echo getSessionValue('weekSpinner') ;
+                                echo numericFixLengthFormatter(getSessionValue('weekSpinner'),2) ;
                                 if(sessionValueExists('yearSpinner')){
-                                  $rangeValue = getSessionValue('yearSpinner').getSessionValue('weekSpinner');
+                                  $rangeValue = getSessionValue('yearSpinner').numericFixLengthFormatter(getSessionValue('weekSpinner'),2);
                                 }else{
-                                  $rangeValue = $currentYear.getSessionValue('weekSpinner');
+                                  $rangeValue = $currentYear.numericFixLengthFormatter(getSessionValue('weekSpinner'),2);
                                 }
                                }else{
                                 echo $currentWeek;   
