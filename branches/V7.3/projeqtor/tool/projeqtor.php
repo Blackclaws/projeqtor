@@ -206,6 +206,7 @@ if (!(isset($maintenance) and $maintenance) and !(isset($batchMode) and $batchMo
         $loginSave=true;
         $user->setCookieHash();
         $user->save();
+        //damian
       if(Parameter::getGlobalParameter('applicationStatus')=='Closed'){
         	$prf=new Profile($user->idProfile);
         	if ($prf->profileCode!='ADM') {
