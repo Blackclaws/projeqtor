@@ -586,19 +586,22 @@ class MeetingMain extends SqlElement {
       $result->_copyResult="OK";
     } 
       
-    $ass=new Assignment();
-    $crit=array('refId'=>$this->id,'refType'=>'Meeting');
-    $list=$ass->getSqlElementsFromCriteria($crit);
-    foreach ($list as $ass) {
-      $newAss = new Assignment();
-      $newAss->idResource= $ass->idResource;
-      $newAss->refId = $result->id;
-      $newAss->refType = 'Meeting';
-      $newAss->assignedWork = $ass->assignedWork;
-      $newAss->leftWork = $ass->assignedWork;
-      $newAss->idProject = $ass->idProject;
-      $newAss->save();
-    } 
+    if ($newClass=='Meeting') {
+      $ass=new Assignment();
+      $crit=array('refId'=>$this->id,'refType'=>'Meeting');
+      $list=$ass->getSqlElementsFromCriteria($crit);
+      foreach ($list as $ass) {
+        $newAss = new Assignment();
+        $newAss->idResource= $ass->idResource;
+        $newAss->refId = $result->id;
+        $newAss->refType = 'Meeting';
+        $newAss->assignedWork = $ass->assignedWork;
+        $newAss->leftWork = $ass->assignedWork;
+        $newAss->idProject = $ass->idProject;
+        $newAss->save();
+      }
+      PlanningElement::updateSynthesis('Meeting',$result->id);
+    }
     return $result;
   }
 }
