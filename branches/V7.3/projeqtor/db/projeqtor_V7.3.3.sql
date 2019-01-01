@@ -16,4 +16,5 @@ CHANGE `update2FullAmount` `update2FullAmount` decimal(14,2);
 
 INSERT INTO `${prefix}linkable` (`id`,`name`, `idle`, `idDefaultLinkable`) VALUES 
 (31,'ProviderOrder', null,0),
-(32,'ProviderBill', null,0);
+(32,'ProviderBill', null,0), 
+(33,'CallForTender', null,0);
