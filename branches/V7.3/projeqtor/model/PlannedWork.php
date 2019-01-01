@@ -191,6 +191,7 @@ class PlannedWork extends GeneralWork {
     //-- #697 : moved the administrative project clause after the purge
     //-- Remove administrative projects
     $inClause.=" and idProject not in " . Project::getAdminitrativeProjectList() ;
+    $inClause.=" and idle=0";
     //-- Get the list of all PlanningElements to plan (includes Activity, Projects, Meetings, Test Sessions)
     $pe=new PlanningElement();
     $clause=$inClause;
