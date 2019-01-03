@@ -1900,12 +1900,38 @@ function sendMail_phpmailer($to, $title, $message, $object=null, $headers=null, 
                                 
   // TODO : FOR OUTLOOK // TEST PBE FOR V7.0
   if ($headers) {
-    // $phpmailer->ContentType = 'multipart/alternative';
-    $phpmailer->addStringAttachment($message, "invite.ics", "7bit", "text/calendar; charset=utf-8; method=REQUEST");
+    /*
+    // Test V1 - Up to 7.2.7 => not opened on Outlook 2010
+    //$phpmailer->ContentType = 'multipart/alternative';
+    $phpmailer->addStringAttachment($message, "meeting.ics", "7bit", 'text/calendar; charset="utf-8"; method="REQUEST"');
     $heads=explode("\r\n", $headers);
     // PHPMailer
     $phpmailer->Body=" ";
-    // $phpmailer->Body = $message;
+    //$phpmailer->Body = $message;
+    */
+    
+     // Test VOK - Tested on Outlook, Thunderbird, Gmail, Zimbra, Sogo
+     $phpmailer->ContentType = 'text/calendar; charset="utf-8"; method="REQUEST"';
+     $heads = explode ( "\r\n", $headers );
+     $phpmailer->Body = $message;
+    
+    /*
+     // Test V3
+     $phpmailer->ContentType = 'multipart/alternative';
+     $phpmailer->addStringAttachment($message, "invite.ics", "7bit", "text/calendar; charset=utf-8; method=REQUEST");
+     $heads=explode("\r\n", $headers);
+     $phpmailer->Body = $message;
+     */
+    
+    /*
+     // Test V4
+     $phpmailer->ContentType = 'multipart/alternative';
+     $phpmailer->addStringAttachment($message, "invite.ics", "base64", "text/calendar;charset=utf-8; method=REQUEST");
+     $heads=explode("\r\n", $headers);
+     // PHPMailer
+     $phpmailer->Body=" ";
+     // $phpmailer->Body = $message;
+     */
   } else {
     $phpmailer->Body=$message; //
     $text=new Html2Text($message);
@@ -1914,21 +1940,6 @@ function sendMail_phpmailer($to, $title, $message, $object=null, $headers=null, 
   if ($references) {
     $phpmailer->addCustomHeader('References', '<'.$references.'.'.$paramMailSender.'>');
   }
-  
-  // // TODO FOR OUTLOOK // See above
-  // if ($headers) {
-  // $phpmailer->ContentType = 'text/calendar';
-  // $heads = explode ( "\r\n", $headers );
-  // //PHPMailer
-  // $phpmailer->Body = $message;
-  // } else {
-  // $phpmailer->Body = $message; //
-  // $text=new Html2Text($message);
-  // $phpmailer->AltBody = $text->getText();
-  // }
-  // if ($references) {
-  // $phpmailer->addCustomHeader('References', '<' . $references . '.' . $paramMailSender . '>');
-  // }
   
   $phpmailer->CharSet="UTF-8";
   if ($attachmentsArray) { // attachments
@@ -1963,7 +1974,14 @@ function sendMail_phpmailer($to, $title, $message, $object=null, $headers=null, 
   $mail->save();
   return $resultMail;
 }
-
+function mb_str_split($str, $split_length) {
+  $chars = array();
+  $len = mb_strlen($str, 'UTF-8');
+  for ($i = 0; $i < $len; $i+=$split_length ) {
+    $chars[] = mb_substr($str, $i, $split_length, 'UTF-8');
+  }
+  return $chars;
+}
 function sendMail_socket($to, $subject, $messageBody, $object=null, $headers=null, $sender=null, $boundary=null) {
   scriptLog('sendMail_socket');
   $paramMailSender=Parameter::getGlobalParameter('paramMailSender');
