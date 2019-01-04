@@ -1209,6 +1209,9 @@
         $line['pstart']=$pStart;
         $line['pend']=$pEnd;
         $line['pduration']=workDayDiffDates($pStart,$pEnd);
+        if ($line['reftype']=='Milestone') {
+          $line['pduration']=0;
+        }
         $resultArray[]=$line;
         if ($maxDate=='' or $maxDate<$pEnd) {$maxDate=$pEnd;}
         if ($minDate=='' or $minDate>$pStart) {$minDate=$pStart;}
@@ -1217,8 +1220,21 @@
         $maxDate=$endDate;
       }
     }
-    $res=New Resource();
-    $resourceList=$res->getSqlElementsFromCriteria(array(), false, false, " id asc");
+    if (getSessionValue('project') and getSessionValue('project')!='*') {
+      $prj=new Project(getSessionValue('project'), true);
+      $lstTopPrj=$prj->getTopProjectList(true);
+      $in=transformValueListIntoInClause($lstTopPrj);
+      $where="idProject in " . $in;
+      $aff=new Affectation();
+      $affList=$aff->getSqlElementsFromCriteria(null,false, $where, " id asc");
+      $resourceList=array();
+      foreach ($affList as $aff) {
+        if (isset($resourceList[$aff->idResource])) return;
+        $resourceList[$aff->idResource]=new Resource($aff->idResource,true);
+      }
+    } else {
+      $resourceList=$res->getSqlElementsFromCriteria(array(), false, false, " id asc");
+    }
 
     echo '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>' . $nl;
     echo '<Project xmlns="http://schemas.microsoft.com/project">' . $nl;
@@ -1233,7 +1249,7 @@
     echo '<CriticalSlackLimit>0</CriticalSlackLimit>' . $nl;
     echo '<CurrencyDigits>2</CurrencyDigits>' . $nl;
     echo '<CurrencySymbol>' . $currency . '</CurrencySymbol>' . $nl;
-    echo '<CurrencySymbolPosition>' . (($currencyPosition=='before')?'0':'1') . '</CurrencySymbolPosition>' . $nl;
+    echo '<CurrencySymbolPosition>' . (($currencyPosition=='before')?'2':'3') . '</CurrencySymbolPosition>' . $nl;
     echo '<CalendarUID>1</CalendarUID>' . $nl;
     echo '<DefaultStartTime>' . $startAM . '</DefaultStartTime>' . $nl;
     echo '<DefaultFinishTime>' . $endPM . '</DefaultFinishTime>' . $nl;
@@ -1333,12 +1349,19 @@
     $arrayTask=array();
     foreach ($resultArray as $line) {
     	$cpt++;
-    	$arrayTask[$line['reftype'].'#'.$line['refid']]=$line['id'];
+    	$arrayTask[$line['reftype'].'#'.$line['refid']]=array('id'=>$line['id']);
     	$pct=($line['plannedwork']>0)?round(100*$line['realwork']/$line['plannedwork'],0):'';
+    	if (!$pct) $pct='0';
+    	if ($line['reftype']=='Milestone') {
+    	  if ($line['realenddate']) $pct=100;
+    	  else $pct=0;
+    	}
       echo '<Task>' . $nl;
       echo '<UID>' . $line['id'] . '</UID>' . $nl;
       echo '<ID>' . $cpt . '</ID>' . $nl;  // TODO : should be order of the tack in the list
       echo '<Name>' . htmlEncode($line['refname'],'xml') . '</Name>' . $nl;
+      echo '<Active>1</Active>'. $nl;
+      echo '<Manual>0</Manual>'. $nl;
       echo '<Type>1</Type>' . $nl; // TODO : 0=Fixed Units, 1=Fixed Duration, 2=Fixed Work.
       echo '<IsNull>0</IsNull>' . $nl;
       echo '<WBS>' . $line['wbs'] . '</WBS>' . $nl;
@@ -1346,11 +1369,30 @@
       echo '<OutlineLevel>' . (substr_count($line['wbs'],'.')+1) . '</OutlineLevel>' . $nl;
       echo '<Priority>' . $line['priority'] . '</Priority>' . $nl;
       echo '<Start>' . $line['pstart'] . 'T' . $startAM . '</Start>' . $nl;
-      echo '<Finish>' . $line['pend'] . 'T' . $endPM . '</Finish>' . $nl;
+      echo '<Finish>' . $line['pend'] . 'T' . (($line['reftype']=='Milestone')?$startAM:$endPM) . '</Finish>' . $nl;
       echo '<Duration>' . formatDuration($line['pduration'],$hoursPerDay) . '</Duration>' . $nl;
+      echo '<ManualStart>' . $line['pstart'] . 'T' . $startAM . '</ManualStart>' . $nl;
+      echo '<ManualFinish>' . $line['pend'] . 'T' . (($line['reftype']=='Milestone')?$startAM:$endPM) . '</ManualFinish>' . $nl;
+      echo '<ManualDuration>' . formatDuration($line['pduration'],$hoursPerDay) . '</ManualDuration>' . $nl;
       echo '<DurationFormat>7</DurationFormat>' . $nl;
       echo '<Work>PT' . round($line['plannedwork']*$hoursPerDay,0) . 'H0M0S</Work>' . $nl;
-      //echo '<Stop>' . $line['pstart'] . 'T' . $startAM . '</Stop>' . $nl;
+      $arrayTask[$line['reftype'].'#'.$line['refid']]['start']=$line['pstart'] . 'T' . $startAM ;
+      $arrayTask[$line['reftype'].'#'.$line['refid']]['end']=$line['pend'] . 'T' . $endPM;
+      $arrayTask[$line['reftype'].'#'.$line['refid']]['duration']=formatDuration($line['pduration'],$hoursPerDay);
+      $arrayTask[$line['reftype'].'#'.$line['refid']]['pct']=$pct;
+      if ($pct) {
+        $length=dayDiffDates($line['pstart'], $line['pend'])+1;
+        $lengthPct=$length*$pct/100;
+        $lengthDays=floor($lengthPct);
+        $lengthHours=$lengthPct-$lengthDays;
+        $lengthHH=floor($lengthHours*$hoursPerDay);
+        $lengthMM=(($lengthHours*$hoursPerDay)-$lengthHH)*60;
+        $stop=addDaysToDate($line['pstart'], $lengthDays)."T".htmlFixLengthNumeric(substr($startAM,0,2)+$lengthHH,2).":".htmlFixLengthNumeric($lengthMM,2).":00";
+        echo "<Stop>" . htmlEncode($stop) . "</Stop>" . $nl;
+        $arrayTask[$line['reftype'].'#'.$line['refid']]['stop']=$stop;
+        //echo '<Stop>' . $line['pstart'] . 'T' . $startAM . '</Stop>' . $nl;
+        //echo "<Resume>2019-01-02T08:00:00</Resume>" . $nl;
+      }
       //echo '<Resume>' . $line['pstart'] . 'T' . $startAM . '</Resume>' . $nl;
       echo '<ResumeValid>0</ResumeValid>' . $nl;
       echo '<EffortDriven>1</EffortDriven>' . $nl;
@@ -1359,14 +1401,15 @@
       echo '<Estimated>0</Estimated>' . $nl;
       echo '<Milestone>' . (($line['reftype']=='Milestone')?'1':'0') . '</Milestone>' . $nl;
       echo '<Summary>' . (($line['elementary'])?'0':'1') . '</Summary>' . $nl;
+      echo '<DisplayAsSummary>' . (($line['elementary'])?'0':'1') . '</DisplayAsSummary>' . $nl;
       echo '<Critical>0</Critical>' . $nl;
       echo '<IsSubproject>0</IsSubproject>' . $nl;
       echo '<IsSubprojectReadOnly>0</IsSubprojectReadOnly>' . $nl;
       echo '<ExternalTask>0</ExternalTask>' . $nl;
       echo '<EarlyStart>' . $line['pstart'] . 'T' . $startAM . '</EarlyStart>' . $nl;
-      echo '<EarlyFinish>' . $line['pend'] . 'T' . $endPM . '</EarlyFinish>' . $nl;
+      echo '<EarlyFinish>' . $line['pend'] . 'T' . (($line['reftype']=='Milestone')?$startAM:$endPM) . '</EarlyFinish>' . $nl;
       echo '<LateStart>' . $line['pstart'] . 'T' . $startAM . '</LateStart>' . $nl;
-      echo '<LateFinish>' . $line['pend'] . 'T' . $endPM . '</LateFinish>' . $nl;
+      echo '<LateFinish>' . $line['pend'] . 'T' . (($line['reftype']=='Milestone')?$startAM:$endPM) . '</LateFinish>' . $nl;
       echo '<StartVariance>0</StartVariance>' . $nl;
       echo '<FinishVariance>0</FinishVariance>' . $nl;
       echo '<WorkVariance>0</WorkVariance>' . $nl;
@@ -1379,20 +1422,20 @@
       echo '<Cost>0</Cost>' . $nl;
       echo '<OvertimeCost>0</OvertimeCost>' . $nl;
       echo '<OvertimeWork>PT0H0M0S</OvertimeWork>' . $nl;
-      echo '<ActualStart>' .  $line['pstart'] . 'T' . $startAM . '</ActualStart>' . $nl;
-      echo '<ActualDuration>PT0H0M0S</ActualDuration>' . $nl;
+      if ($pct>0) echo '<ActualStart>' .  $line['pstart'] . 'T' . $startAM . '</ActualStart>' . $nl;
+      echo '<ActualDuration>PT'.round($line['realwork']*$hoursPerDay).'H0M0S</ActualDuration>' . $nl;
       echo '<ActualCost>0</ActualCost>' . $nl;
       echo '<ActualOvertimeCost>0</ActualOvertimeCost>' . $nl;
       echo '<ActualWork>PT' . round($line['realwork']*$hoursPerDay,0) . 'H0M0S</ActualWork>' . $nl;
       echo '<ActualOvertimeWork>PT0H0M0S</ActualOvertimeWork>' . $nl;
       echo '<RegularWork>PT' . round($line['plannedwork']*$hoursPerDay,0) . 'H0M0S</RegularWork>' . $nl;
-      echo '<RemainingDuration>PT' .  round($line['plannedduration']*$hoursPerDay,0) . 'H0M0S</RemainingDuration>' . $nl;
+      echo '<RemainingDuration>PT' .  round($line['pduration']*$hoursPerDay,0) . 'H0M0S</RemainingDuration>' . $nl;
       echo '<RemainingCost>0</RemainingCost>' . $nl;
       echo '<RemainingWork>PT' . round($line['leftwork']*$hoursPerDay,0) . 'H0M0S</RemainingWork>' . $nl;
       echo '<RemainingOvertimeCost>0</RemainingOvertimeCost>' . $nl;
       echo '<RemainingOvertimeWork>PT0H0M0S</RemainingOvertimeWork>' . $nl;
-      echo '<ACWP>0</ACWP>' . $nl;
-      echo '<CV>0</CV>' . $nl;
+      echo '<ACWP>0.00</ACWP>' . $nl;
+      echo '<CV>0.00</CV>' . $nl;
       echo '<ConstraintType>' . (($line['elementary'])?'0':'0') . '</ConstraintType>' . $nl;
       echo '<CalendarUID>-1</CalendarUID>' . $nl;
       if ($line['elementary']) { echo '<ConstraintDate>' . $line['pstart'] . 'T' . $startAM . '</ConstraintDate>' . $nl;}
@@ -1405,16 +1448,16 @@
       echo '<Rollup>0</Rollup>' . $nl;
       echo '<BCWS>0</BCWS>' . $nl;
       echo '<BCWP>0</BCWP>' . $nl;
-      echo '<PhysicalPercentComplete>0</PhysicalPercentComplete>' . $nl;
+      echo '<PhysicalPercentComplete>'.$pct.'</PhysicalPercentComplete>' . $nl;
       echo '<EarnedValueMethod>0</EarnedValueMethod>' . $nl;
       /*<ExtendedAttribute>
         <FieldID>188743731</FieldID>
         <Value>lmk</Value>
         </ExtendedAttribute>*/
-      //echo '<Active>1</Active>' . $nl;
-      //echo '<Manual>0</Manual>' . $nl;
-      echo '<ActualWorkProtected>PT0H0M0S</ActualWorkProtected>' . $nl;
-      echo '<ActualOvertimeWorkProtected>PT0H0M0S</ActualOvertimeWorkProtected>' . $nl;
+      //echo '<ActualWorkProtected>PT0H0M0S</ActualWorkProtected>' . $nl;
+      //echo '<ActualOvertimeWorkProtected>PT0H0M0S</ActualOvertimeWorkProtected>' . $nl;
+      echo '<IsPublished>1</IsPublished>' . $nl;
+      echo '<CommitmentType>0</CommitmentType>' . $nl;
       $crit=array('successorId'=>$line['id']);
       $d=new Dependency();
       $depList=$d->getSqlElementsFromCriteria($crit,false);
@@ -1427,6 +1470,16 @@
         echo '<LagFormat>7</LagFormat>' . $nl;
         echo '</PredecessorLink>' . $nl;
       }
+      //if ($pct) {
+        //echo '<TimephasedData>' . $nl;
+        //echo '<Type>11</Type>' . $nl;
+        //echo '<UID>'.$line['id'].'</UID>' . $nl;
+        //echo '<Start>' . $line['pstart'] . 'T' . $startAM . '</Start>' . $nl;
+        //echo '<Finish>' . $line['pend'] . 'T' . $endPM . '</Finish>' . $nl;
+        //echo '<Unit>2</Unit>' . $nl;
+        //echo '<Value>'.$pct.'</Value>' . $nl;
+        //echo '</TimephasedData>' . $nl;
+      //}
       echo '</Task>' . $nl;
     }
     echo '</Tasks>' . $nl;
@@ -1488,9 +1541,9 @@
       echo "<IsInactive>0</IsInactive>" . $nl;
       echo "<IsEnterprise>0</IsEnterprise>" . $nl;
       echo "<BookingType>0</BookingType>" . $nl;
-      echo "<ActualWorkProtected>PT0H0M0S</ActualWorkProtected>" . $nl;
-      echo "<ActualOvertimeWorkProtected>PT0H0M0S</ActualOvertimeWorkProtected>" . $nl;
-      echo "<CreationDate></CreationDate>" . $nl;
+      //echo "<ActualWorkProtected>PT0H0M0S</ActualWorkProtected>" . $nl;
+      //echo "<ActualOvertimeWorkProtected>PT0H0M0S</ActualOvertimeWorkProtected>" . $nl;
+      //echo "<CreationDate></CreationDate>" . $nl;
       echo "</Resource>" . $nl;
     }
     echo "</Resources>" . $nl;
@@ -1500,6 +1553,7 @@
     echo '<Assignments>' . $nl;
     foreach ($lstAss as $ass) {
     	if (array_key_exists($ass->refType . '#' . $ass->refId, $arrayTask)) {
+    	  $task=$arrayTask[$ass->refType . '#' . $ass->refId];
     	  if (isset($arrayResource[$ass->idResource])) {
           $res=$arrayResource[$ass->idResource];
     	  } else {
@@ -1508,14 +1562,21 @@
     	  }
 	      echo "<Assignment>" . $nl;
 	      echo "<UID>" . htmlEncode($ass->id) . "</UID>" . $nl;
-	      echo "<TaskUID>" . $arrayTask[$ass->refType . '#' . $ass->refId] . "</TaskUID>" . $nl;
+	      echo "<TaskUID>" . $arrayTask[$ass->refType . '#' . $ass->refId]['id'] . "</TaskUID>" . $nl;
 	      echo "<ResourceUID>" . htmlEncode($ass->idResource) . "</ResourceUID>" . $nl;
-	      //echo "<PercentWorkComplete>' (($ass->plannedWork)?round($ass->realWork/$ass->plannedWork*100,0):'0') . '</PercentWorkComplete>" . $nl;
+	      $pct=($ass->plannedWork)?round($ass->realWork/$ass->plannedWork*100,0):0;
+	      $pct=$task['pct'];
+	      echo "<PercentWorkComplete>".($pct)."</PercentWorkComplete>" . $nl;
 	      //echo "<ActualCost>0</ActualCost>" . $nl;
 	      //echo "<ActualOvertimeCost>0</ActualOvertimeCost>" . $nl;
 	      //echo "<ActualOvertimeWork>PT0H0M0S</ActualOvertimeWork>" . $nl;
-	      echo "<ActualStart>" . htmlEncode($ass->plannedStartDate) . "T" . $startAM . "</ActualStart>" . $nl;
-	      //echo "<ActualWork>PT0H0M0S</ActualWork>" . $nl;
+	      $assStart=($ass->realStartDate)?$ass->realStartDate:$ass->plannedStartDate;
+	      //$assStart=$task['start'];
+	      $assEnd=($ass->leftWork==0)?$ass->realEndDate:$ass->plannedEndDate;
+	      //$assEnd=$task['end'];
+	      
+	      echo "<ActualStart>" . htmlEncode($assStart) . "T" . $startAM . "</ActualStart>" . $nl;
+	      echo "<ActualWork>PT" . round($ass->realWork*$hoursPerDay,0) ."H0M0S</ActualWork>" . $nl;
 	      //echo "<ACWP>0</ACWP>" . $nl;
 	      //echo "<Confirmed>0</Confirmed>" . $nl;
 	      //echo "<Cost>0</Cost>" . $nl;
@@ -1523,7 +1584,11 @@
 	      //echo "<CostVariance>0</CostVariance>" . $nl;
 	      //echo "<CV>0</CV>" . $nl;
 	      //echo "<Delay>0</Delay>" . $nl;
-	      echo "<Finish>" . htmlEncode($ass->plannedEndDate) . "T" . $endPM . "</Finish>" . $nl;
+	      echo "<Finish>" . htmlEncode($assEnd) . "T" . $endPM . "</Finish>" . $nl;
+	      if (isset($task['stop'])) {
+	        echo "<Stop>" . htmlEncode($task['stop']) . "</Stop>" . $nl;
+	        //echo "<Resume>2019-01-02T08:00:00</Resume>" . $nl;
+	      }
 	      //echo "<FinishVariance>0</FinishVariance>" . $nl;
 	      //echo "<WorkVariance>0</WorkVariance>" . $nl;
 	      //echo "<HasFixedRateUnits>1</HasFixedRateUnits>" . $nl;
