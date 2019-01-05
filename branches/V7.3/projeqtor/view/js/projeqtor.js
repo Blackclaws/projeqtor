@@ -864,7 +864,7 @@ function loadContent(page, destination, formName, isResultMessage, validationTyp
             selectLinkItem();
           }
           if (destination == "directFilterList") {
-            if (!validationType && validationType != 'returnFromFilter') {
+            if (!validationType || validationType=='returnFromFilter' ) {
               if (top.dojo.byId('noFilterSelected')
                   && top.dojo.byId('noFilterSelected').value == 'true') {
                 dijit.byId("listFilterFilter").set("iconClass", "iconFilter");
@@ -872,7 +872,11 @@ function loadContent(page, destination, formName, isResultMessage, validationTyp
                 dijit.byId("listFilterFilter").set("iconClass",
                     "iconActiveFilter");
               }
-              if (dojo.byId('objectClassManual') && dojo.byId('objectClassManual').value=='Planning') {
+              if (globalSelectFilterContenLoad && globalSelectFilterContainer) {
+                loadContent(globalSelectFilterContenLoad, globalSelectFilterContainer);
+                globalSelectFilterContenLoad=null;
+                globalSelectFilterContainer=null;
+              } else if (dojo.byId('objectClassManual') && dojo.byId('objectClassManual').value=='Planning') {
                 refreshJsonPlanning();
               } else if (dojo.byId('objectClassList')) {
                 refreshJsonList(dojo.byId('objectClassList').value);
