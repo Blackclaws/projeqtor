@@ -4203,8 +4203,12 @@ function saveFilter() {
  * Select a stored filter in the list and fetch criteria
  * 
  */
+var globalSelectFilterContenLoad=null;
+var globalSelectFilterContainer=null;
 function selectStoredFilter(idFilter, context, contentLoad, container) {  
   var compUrl=(top.dijit.byId("dialogDetail").open) ? '&comboDetail=true' : '';
+  globalSelectFilterContenLoad=null;
+  globalSelectFilterContainer=null;
   if (context == 'directFilterList') {
     if (dojo.byId('noFilterSelected')) {
       if (idFilter == '0') {
@@ -4222,21 +4226,23 @@ function selectStoredFilter(idFilter, context, contentLoad, container) {
     if (dojo.byId('objectClassList') && dojo.byId('objectClassList').value) objectClass=dojo.byId('objectClassList').value;
     else if (dojo.byId("objectClassManual") && dojo.byId("objectClassManual").value) objectClass=dojo.byId("objectClassManual").value;
     else if (dojo.byId('objectClass') && dojo.byId('objectClass').value) objectClass=dojo.byId('objectClass').value;
+    var validationType=null;
     if (dojo.byId('dynamicFilterId'+idFilter)) {  		
   		var param="&idFilter="+idFilter+"&filterObjectClass="+objectClass;
   		loadDialog('dialogDynamicFilter', null, true, param, true);
-  	} 
-  	if(typeof contentLoad != 'undefined' && typeof container != 'undefined'){
+  		globalSelectFilterContenLoad=contentLoad;
+  		globalSelectFilterContainer=container;
+  		validationType='selectFilter'; // will avoid immediate refresh
+  	}
+    if(typeof contentLoad != 'undefined' && typeof container != 'undefined'){
       loadContent("../tool/selectStoredFilter.php?idFilter=" + idFilter
           + "&context=" + context + "&contentLoad="+contentLoad+"&container="+container+"&filterObjectClass="
-          + objectClass + compUrl, "directFilterList", null,
-          false);
-      loadContent(contentLoad, container);
+          + objectClass + compUrl, "directFilterList", null,false,validationType);
+      if (!dojo.byId('dynamicFilterId'+idFilter)) loadContent(contentLoad, container);
     }else{
       loadContent("../tool/selectStoredFilter.php?idFilter=" + idFilter
           + "&context=" + context + "&filterObjectClass="
-          + objectClass + compUrl, "directFilterList", null,
-          false);
+          + objectClass + compUrl, "directFilterList", null,false,validationType);
       if (dojo.byId("objectClassList") && dojo.byId("objectClassList").value.substr(0,7)=='Report_') {
         dojo.byId('outMode').value='';
         runReport();
