@@ -74,6 +74,13 @@
     $year= date('Y',strtotime($day));
     $month= date('m',strtotime($day));
     $week= date('W',strtotime($day));
+    if ($period=='week') {
+      if ($week>50 and $month==1) {
+        $year--;
+      } else if ($week==1 and $month==12) {
+        $year++;
+      }
+    }
   }
   
   $ress=new Resource($idRessource);
