@@ -8019,13 +8019,16 @@ function diarySelectDate(directDate) {
     var week=getWeek(directDate.getDate(), month, year) + '';
     if (week == 1 && month > 10) {
       year+=1;
+      month=1;
     }
     if (week > 50 && month == 1) {
       year-=1;
+      month=12;
     }
     dojo.byId("diaryWeek").value=week;
     dojo.byId("diaryYear").value=year;
     dojo.byId("diaryMonth").value=month;
+    console.log(week, month, year);
     diaryDisplayWeek(week, year);
   } else if (period == "day") {
     day=formatDate(directDate);
@@ -8135,8 +8138,9 @@ function diaryDisplayWeek(week, year) {
   var firstday=getFirstDayOfWeek(week, year);
   var lastday=new Date(firstday);
   lastday.setDate(firstday.getDate() + 6);
-  caption=year + ' #' + week + " (" + dateFormatter(formatDate(firstday))
-      + " - " + dateFormatter(formatDate(lastday)) + ")";
+  if (week<10) week='0'+parseInt(week);
+  caption=year + ' #' + week + "<span style='font-size:70%'> (" + dateFormatter(formatDate(firstday))
+      + " - " + dateFormatter(formatDate(lastday)) + ") </span>";
   dojo.byId("diaryCaption").innerHTML=caption;
   dijit.byId('dateSelector').set('value', firstday);
 }
