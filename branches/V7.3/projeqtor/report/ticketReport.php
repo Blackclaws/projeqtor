@@ -217,6 +217,8 @@ if ($periodType) {
     $end=addDaysToDate($start,6);
   }
   //echo $start . ' - ' . $end . '<br/>';
+  $start.=' 00:00:00';
+  $end.=' 23:59:59';
   $where.=" and ( (    creationDateTime>= '" . $start . "'";
   $where.="        and creationDateTime<='" . $end . "' )";
   $where.="    or (    doneDateTime>= '" . $start . "'";

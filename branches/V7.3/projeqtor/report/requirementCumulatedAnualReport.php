@@ -121,8 +121,8 @@ $includedReport = true;
 // //////////////////////////////////////////////////////////////////////////////////////////////////////
 $where = getAccesRestrictionClause ( 'Requirement', false );
 
-$where .= " and ( (    creationDateTime>= '" . $paramYear . "-$paramMonth-01'";
-$where .= "        and creationDateTime<='" . ($paramYear + 1) . "-" . ($paramMonth - 1) . "-31' ) )";
+$where .= " and ( (    creationDateTime>= '" . $paramYear . "-$paramMonth-01 00:00:00'";
+$where .= "        and creationDateTime<='" . ($paramYear + 1) . "-" . ($paramMonth - 1) . "-31 23:59:59' ) )";
 if ($paramProject != "") {
   $where .= " and idProject in " . getVisibleProjectsList ( false, $paramProject );
 }
