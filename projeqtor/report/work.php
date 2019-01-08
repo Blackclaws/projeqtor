@@ -135,8 +135,9 @@ if ($periodType=='year') {
     echo '</div>';
     exit;
   }
-  $where.=" and ((year='" . $periodValue . "' and month>='" . $periodValue.($paramMonth<10?'0':'').$paramMonth . "')".
-          " or (year='" . ($periodValue + 1) . "' and month<='" . ($periodValue + 1) . ($paramMonth<11?'0':'') . $paramMonth . "'))";
+  if ($paramMonth<10) $paramMonth='0'.intval($paramMonth);
+  $where.=" and ((year='" . $periodValue . "' and month>='" . $periodValue.$paramMonth . "')".
+          " or (year='" . ($periodValue + 1) . "' and month<'" . ($periodValue + 1) . $paramMonth . "'))";
 }
 //END CHANGE qCazelles - Report start month - Ticket #128
 
