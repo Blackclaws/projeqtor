@@ -197,11 +197,12 @@ if (count($arrayFilter)>0) {
 if(!$paramMonth){
   $paramMonth="01";
 }
+if ($paramMonth<10) $paramMonth='0'.intval($paramMonth);
 if ($paramMonth=="01") {
   $endMonth = "12";
-}
-else {
-  $endMonth = ($paramMonth<11?'0':'') . ($paramMonth - 1);
+} else {
+  $endMonth = intval($paramMonth) - 1;
+  if ($endMonth<10) $endMonth='0'.intval($endMonth);
 }
 $endYear = ($paramMonth=="01") ? $paramYear : $paramYear + 1;
 //END ADD
@@ -214,12 +215,12 @@ $endYear = ($paramMonth=="01") ? $paramYear : $paramYear + 1;
 // $where.="        and idleDateTime<='" . $paramYear . "-12-31' ) )";
 
 //New
-$where.=" and ( (    creationDateTime>= '" . $paramYear . "-" .$paramMonth . "-01'";
-$where.="        and creationDateTime<='" . $endYear. "-" . $endMonth . "-31' )";
-$where.="    or (    doneDateTime>= '" . $paramYear . "-" .$paramMonth . "-01'";
-$where.="        and doneDateTime<='" . $endYear. "-" . $endMonth . "-31' )";
-$where.="    or (    idleDateTime>= '" . $paramYear . "-" .$paramMonth . "-01'";
-$where.="        and idleDateTime<='" . $endYear. "-" . $endMonth . "-31' ) )";
+$where.=" and ( (    creationDateTime>= '" . $paramYear . "-" .$paramMonth . "-01 00:00:00'";
+$where.="        and creationDateTime<='" . $endYear. "-" . $endMonth . "-31 23:59:59' )";
+$where.="    or (    doneDateTime>= '" . $paramYear . "-" .$paramMonth . "-01 00:00:00'";
+$where.="        and doneDateTime<='" . $endYear. "-" . $endMonth . "-31 23:59:59' )";
+$where.="    or (    idleDateTime>= '" . $paramYear . "-" .$paramMonth . "-01 00:00:00'";
+$where.="        and idleDateTime<='" . $endYear. "-" . $endMonth . "-31 23:59:59' ) )";
 //END CHANGE qCazelles - Report fiscal year - Ticket #128
 
 if ($paramProject!="") {
@@ -285,7 +286,6 @@ for ($i=1; $i<=13; $i++) {
 
 $sumProj=array();
 foreach ($lstTicket as $t) {
-  
   //CHANGE qCazelles - Report fiscal year - Ticket #128
   if (substr($t->creationDateTime,0,4)==$paramYear) {
     $month=intval(substr($t->creationDateTime,5,2));
