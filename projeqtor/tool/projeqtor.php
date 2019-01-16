@@ -440,9 +440,13 @@ function getUserVisibleObjectClassesList($listScreen="List", $user=NULL) {
     $user=getSessionUser();
   }
   
+  $menu=new Menu();
+  $menuTable=$menu->getDatabaseTableName();
+  $habi=new Habilitation();
+  $habiTable=$habi->getDatabaseTableName();
   $query="SELECT substr(menu.name,5) AS class ";
-  $query.="FROM menu ";
-  $query.="INNER JOIN habilitation ON habilitation.idMenu = menu.id ";
+  $query.="FROM $menuTable menu ";
+  $query.="INNER JOIN $habiTable habilitation ON habilitation.idMenu = menu.id ";
   $query.="WHERE habilitation.allowAccess=1 AND habilitation.idProfile=";
   $query.=$user->idProfile;
   
