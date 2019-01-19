@@ -1901,6 +1901,9 @@ abstract class SqlElement {
     if (property_exists ( $newObj, "creationDateTime" )) {
       $newObj->creationDateTime = date ( 'Y-m-d H:i' );
     }
+    if (property_exists ( $newObj, "lastUpdateDateTime" )) {
+      $newObj->lastUpdateDateTime=null;
+    }
     if (property_exists ( $newObj, "done" )) {
       $newObj->done = 0;
     }
@@ -2105,6 +2108,9 @@ abstract class SqlElement {
     }
     if (property_exists ( $newObj, "creationDateTime" )) {
       $newObj->creationDateTime = date ( 'Y-m-d H:i' );
+    }
+    if (property_exists ( $newObj, "lastUpdateDateTime" )) {
+      $newObj->lastUpdateDateTime=null;
     }
     if (property_exists ( $newObj, "meetingDate" )) {
       $newObj->meetingDate = date ( 'Y-m-d' );
