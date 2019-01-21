@@ -245,6 +245,7 @@ function updateReference($element) {
 	// Sql::beginTransaction(); already done
 	foreach ($arrayElements as $elt) {
 		$obj=new $elt();
+		if(!property_exists($obj,'reference'))continue;
 		$request="update " . $obj->getDatabaseTableName() . " set reference=null";
 		SqlDirectElement::execute($request); 
 		$lst=$obj->getSqlElementsFromCriteria(null, false);
