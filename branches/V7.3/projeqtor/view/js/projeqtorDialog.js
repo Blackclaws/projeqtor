@@ -8028,7 +8028,6 @@ function diarySelectDate(directDate) {
     dojo.byId("diaryWeek").value=week;
     dojo.byId("diaryYear").value=year;
     dojo.byId("diaryMonth").value=month;
-    console.log(week, month, year);
     diaryDisplayWeek(week, year);
   } else if (period == "day") {
     day=formatDate(directDate);
@@ -8036,8 +8035,8 @@ function diarySelectDate(directDate) {
     dojo.byId("diaryYear").value=year;
     diaryDisplayDay(day);
   }
-  setTimeout("noRefreshDiaryPeriod=false;", 100);
-  loadContent("../view/diary.php", "detailDiv", "diaryForm");
+  setTimeout("noRefreshDiaryPeriod=false;", 10);
+  setTimeout('loadContent("../view/diary.php", "detailDiv", "diaryForm");',200);
   return true;
 }
 

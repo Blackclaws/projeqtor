@@ -398,6 +398,7 @@
           } else {
             $line['progress']='0';
           }
+          if (intval($line['progress'])>100) $line['progress']='100';
           if (strpos($line['wbs'],'._#')!==false) {
             $rootWbs=substr($line['wbs'],0,strpos($line['wbs'],'._#'));
             if (! isset($rootWbsArray[$rootWbs])) {
