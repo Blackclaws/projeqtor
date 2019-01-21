@@ -65,7 +65,9 @@ foreach ($notifsList as $result) {
     $not=new Notifiable($result->idNotifiable);
     $ref=$not->notifiableItem;
     //$item=new $ref($result->notifiedObjectId);
-    echo '    <div onClick="gotoElement(\''.$ref.'\',\''.htmlEncode($result->notifiedObjectId).'\')"  style="color:blue;cursor:pointer;text-align:left; font-size:90%; max-height:100px; margin-left:8px; margin-top:5px; overflow-y:auto;">'.i18n($ref) . ' #'.$result->notifiedObjectId.'</div>';
+    if ($result->notifiedObjectId) {
+      echo '    <div onClick="gotoElement(\''.$ref.'\',\''.htmlEncode($result->notifiedObjectId).'\')"  style="color:blue;cursor:pointer;text-align:left; font-size:90%; max-height:100px; margin-left:8px; margin-top:5px; overflow-y:auto;">'.i18n($ref) . ' #'.$result->notifiedObjectId.'</div>';
+    }
     echo '    <div style="text-align:left; font-size:90%; max-height:100px; margin-left:8px; margin-top:5px; overflow-y:auto;">'.$result->content.'</div>';
     echo'   </td>';
     echo' </tr>';

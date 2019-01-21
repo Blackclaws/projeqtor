@@ -520,12 +520,15 @@ function getAllActivities($startDate, $endDate, $ress, $showDone=false, $showIdl
 function drawDiaryLineHeader($currentDay, $trHeight,$period) {
 	echo '</tr>';
 	echo '<tr height="'.$trHeight.'px"><td class="buttonDiary" ';
+	$week=weekNumber($currentDay);
+	$weekYear=substr($currentDay,0,4);
+	if (intval($week)==1 and substr($currentDay,5,2)==12) $weekYear+=1;
 	if ($period=="month") {
-	  echo 'onClick="diaryWeek('.weekNumber($currentDay).','.substr($currentDay,0,4).');"';
+	  echo 'onClick="diaryWeek('.$week.','.$weekYear.');"';
 	} else if ($period=="week") {
 		echo 'onClick="diaryMonth('.substr($currentDay,5,2).','.substr($currentDay,0,4).');"';
 	} else if ($period=="day") {
-		echo 'onClick="diaryWeek('.weekNumber($currentDay).','.substr($currentDay,0,4).');"';
+		echo 'onClick="diaryWeek('.$week.','.$weekYear.');"';
 	}	
 	echo '>';
 	if ($period=='week') {
