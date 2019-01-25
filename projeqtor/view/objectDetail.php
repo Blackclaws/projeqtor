@@ -1497,7 +1497,7 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false, $pare
           echo '<span style="'.$fieldStyle.'">';
           echo htmlFormatTime($val, false);
           echo '</span>';
-        } else if ($col=='color' and $dataLength==7) { // color
+        } else if ( ($col=='color' or (substr($col,0,5)=='color' and strlen($col)>5 and strtoupper(substr($col,5,1))==substr($col,5,1) ) ) and $dataType=='varchar' and $dataLength==7) { // color
           echo '<table><tr><td style="width: 100px;">';
           echo '<div class="colorDisplay" readonly tabindex="-1" ';
           echo '  value="'.htmlEncode($val).'" ';
@@ -1701,7 +1701,7 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false, $pare
         echo ' class="display generalColClass '.$col.'Class" style="width:150px;position:relative; left: 3px;'.$specificStyle.'"';
         echo ' readonly tabindex="-1" ';
         echo ' value="'.htmlEncode($val).'" />';
-      } else if ($col=='color' and $dataLength==7) {
+      } else if (($col=='color' or (substr($col,0,5)=='color' and strlen($col)>5 and strtoupper(substr($col,5,1))==substr($col,5,1) ) ) and $dataType=='varchar' and $dataLength==7) {
         // Draw a color selector ============================================== COLOR
         echo '<table class="generalColClass '.$col.'Class" style="'.$specificStyleWithoutCustom.'"><tr><td class="detail">';
         // BEGIN - ADD BY TABARY - TOOLTIP
@@ -1723,13 +1723,13 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false, $pare
         // echo '</div>';
         echo '</td><td class="detail">';
         if (!$readOnly) {
-          echo '<div id="'.'colorButton" dojoType="dijit.form.DropDownButton"  ';
+          echo '<div id="'.'colorButton'.$col.'" dojoType="dijit.form.DropDownButton"  ';
           // echo ' style="width: 100px; background-color: ' . $val . ';"';
           echo ' showlabel="false" iconClass="colorSelector" style="position:relative;top:-2px;height:19px">';
           echo '  <span>'.i18n('selectColor').'</span>';
-          echo '  <div dojoType="dijit.ColorPalette" >';
+          echo '  <div dojoType="dijit.ColorPalette" id="colorPicker'.$col.'" >';
           echo '    <script type="dojo/method" event="onChange" >';
-          echo '      var fld=dojo.byId("color");';
+          echo '      var fld=dojo.byId("'.$col.'");';
           echo '      fld.style.color=this.value;';
           echo '      fld.style.backgroundColor=this.value;';
           echo '      fld.value=this.value;';
@@ -1740,11 +1740,11 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false, $pare
         }
         echo '</td><td>';
         if (!$readOnly) {
-          echo '<button id="resetColor" dojoType="dijit.form.Button" showlabel="true"';
+          echo '<button id="resetColor'.$col.'" dojoType="dijit.form.Button" showlabel="true"';
           echo ' title="'.i18n('helpResetColor').'" >';
           echo '<span>'.i18n('resetColor').'</span>';
           echo '<script type="dojo/connect" event="onClick" args="evt">';
-          echo '      var fld=dojo.byId("color");';
+          echo '      var fld=dojo.byId("'.$col.'");';
           echo '      fld.style.color="transparent";';
           echo '      fld.style.backgroundColor="transparent";';
           echo '      fld.value="";';
