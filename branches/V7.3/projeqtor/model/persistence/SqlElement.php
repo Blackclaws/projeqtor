@@ -2860,11 +2860,13 @@ abstract class SqlElement {
                 $dep = new Dependency ();
                 $this->{$col_name} = $dep->getSqlElementsFromCriteria ( $crit, false );
               } else {
-                $this->{$col_name} = $this->getDependantSqlElements ( $colName );
+                if (! $withoutDependentObjects and substr(get_class($this),-4)!='Main') {
+                  $this->{$col_name} = $this->getDependantSqlElements ( $colName );
+                }
               }
             }
           } else if (ucfirst ( $col_name ) == $col_name) {
-            if (! $withoutDependentObjects) {
+            if (! $withoutDependentObjects and substr(get_class($this),-4)!='Main') {
               $this->{$col_name} = $this->getDependantSqlElement ( $col_name );
             }
           } else if (strpos ( $this->getFieldAttributes ( $col_name ), 'calculated' ) !== false) {} else {
