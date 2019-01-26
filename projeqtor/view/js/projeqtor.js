@@ -97,14 +97,14 @@ function refreshJsonList(className, keepUrl) {
         dojo.byId('comboDetailId').value = '';
       }
     }
-    if (dojo.byId('showAllProjects')) {
-      if (dojo.byId('showAllProjects').checked) {
+    if (dijit.byId('showAllProjects')) {
+      if (dijit.byId('showAllProjects').get("value") != '') {
         url = url + "&showAllProjects=true";
       }
     }
-    if (dojo.byId('listShowIdle')) {
+    if (dijit.byId('listShowIdle')) {
       saveDataToSession('listShowIdle'+className, dijit.byId('listShowIdle').get("value"), false);
-      if (dojo.byId('listShowIdle').checked) {
+      if (dijit.byId('listShowIdle').get("value") != '') {
         url = url + "&idle=true";
       }
     }
