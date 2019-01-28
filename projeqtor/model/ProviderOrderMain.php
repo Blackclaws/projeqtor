@@ -342,7 +342,7 @@ class ProviderOrderMain extends SqlElement {
     
     if($old->idProjectExpense != null and $old->idProjectExpense!=$this->idProjectExpense){
       $projExpense = new ProjectExpense($old->idProjectExpense);
-      $projExpense->save();
+      if ($projExpense->id) $projExpense->save();
     }
     // Update expense linked to order
     if($this->idProjectExpense){ 
