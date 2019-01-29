@@ -625,6 +625,19 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false, $pare
         $hiddenSection=true;
       }
     }
+    if (substr($col,0,9)=='_lib_help') { // Hide if corresponding field is hidden
+      $helper=array(lcfirst(substr($col,9)), 'is'.substr($col,9));
+      $helperField=null;
+      foreach( $helper as $helpTest) {
+        if (property_exists($obj, $helpTest)) {
+          $helperField=$helpTest;
+          break;
+        }
+      }
+      if ($helperField and $obj->isAttributeSetToField($helperField, 'hidden') or in_array($helperField, $extraHiddenFields)) {
+        $hide=true;
+      }
+    }
     if (substr($col, 0, 7)=='_label_') {
       $attFld=substr($col, 7);
       if ($attFld=='expected') $attFld='expectedProgress';
