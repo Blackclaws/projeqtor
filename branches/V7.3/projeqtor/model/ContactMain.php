@@ -84,9 +84,9 @@ class ContactMain extends SqlElement {
   private static $_fieldsAttributes=array("name"=>"required, truncatedWidth100",
                                           "userName"=>"truncatedWidth100",
                                           "email"=>"truncatedWidth100",
-                                          "idProfile"=>"readonly",
-                                          "isUser"=>"readonly",
-                                          "isResource"=>"readonly",
+                                          "idProfile"=>"",
+                                          "isUser"=>"",
+                                          "isResource"=>"",
                                           "password"=>"hidden" 
   );    
   
