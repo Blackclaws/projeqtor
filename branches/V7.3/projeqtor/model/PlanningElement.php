@@ -1295,7 +1295,7 @@ class PlanningElement extends SqlElement {
   }
   
   public function renumberWbs() {
-    return;
+    if (PlanningElement::$_noDispatch) return;
   	if ($this->id) {
   		$where="topRefType='" . $this->refType . "' and topRefId=" . Sql::fmtId($this->refId) ;
   	} else {
@@ -1310,7 +1310,7 @@ class PlanningElement extends SqlElement {
   			$root=substr($pe->wbs,0,strrpos($pe->wbs,'.'));
   			$pe->wbs=($root=='')?$idx:$root.'.'.$idx;
   			if ($pe->refType) {
-  				$pe->save();
+  				$pe->wbsSave();
   			}
   	}
   }
@@ -1732,13 +1732,6 @@ class PlanningElement extends SqlElement {
     foreach (array_reverse(PlanningElement::$_noDispatchArray) as $pe) {
       $res=PlanningElement::updateSynthesis($pe['refType'], $pe['refId']);
     }
-    /*while (count(PlanningElement::$_noDispatchArray)>0) {
-      $list=PlanningElement::$_noDispatchArray;
-      PlanningElement::$_noDispatchArray=array();
-      foreach ($list as $pe) {
-        $res=PlanningElement::updateSynthesis($pe['refType'], $pe['refId']);
-      }
-    }*/
     self::$_noDispatch=false;
     // copy dependencies
     $critWhere="";
