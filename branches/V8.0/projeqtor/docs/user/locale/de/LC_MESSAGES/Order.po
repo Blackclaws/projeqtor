@@ -1,0 +1,489 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2018, ProjeQtOr
+# This file is distributed under the same license as the ProjeQtOr Bedienhandbuch Deutsch package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"POT-Creation-Date: \n"
+"PO-Revision-Date: \n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=ISO-8859-1\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: de\n"
+"X-Generator: Poedit 2.0.8\n"
+
+#: ../../Order.rst:8
+msgid "Quotation and Order"
+msgstr "Angebot und Auftrag"
+
+#: ../../Order.rst:17
+msgid "Quotations"
+msgstr "Kostenvoranschläge"
+
+#: ../../Order.rst:24
+msgid "Transform quotation to order"
+msgstr "Angebot in Auftrag umwandeln"
+
+#: ../../Order.rst:28 ../../Order.rst:167
+msgid "Bill lines section"
+msgstr "Abschnitt Rechnungszeilen"
+
+#: ../../Order.rst:29
+msgid "This section allows to detail the quotation modality."
+msgstr "Dieser Abschnitt erlaubt es, die Zitierweise zu detaillieren."
+
+#: ../../Order.rst:34 ../../Order.rst:172
+msgid ":ref:`Bill lines<manual-billing>`"
+msgstr ":ref:`Bill lines<manual-billing>`"
+
+#: ../../Order.rst:35 ../../Order.rst:173
+msgid ":ref:`Linked element<linkElement-section>`"
+msgstr ":ref:`Linked element<linkElement-section>`"
+
+#: ../../Order.rst:36 ../../Order.rst:174
+msgid ":ref:`Attachments<attachment-section>`"
+msgstr ":ref:`Attachments<attachment-section>`"
+
+#: ../../Order.rst:37 ../../Order.rst:175
+msgid ":ref:`Notes<note-section>`"
+msgstr ":ref:`Notes<note-section>`"
+
+#: ../../Order.rst:41 ../../Order.rst:178
+msgid "Section: Description"
+msgstr "Sektion: Beschreibung"
+
+#: ../../Order.rst:48 ../../Order.rst:83 ../../Order.rst:185
+#: ../../Order.rst:226
+msgid "Field"
+msgstr "Feld"
+
+#: ../../Order.rst:49 ../../Order.rst:84 ../../Order.rst:186
+#: ../../Order.rst:207 ../../Order.rst:227
+msgid "Description"
+msgstr "Beschreibung"
+
+#: ../../Order.rst:50 ../../Order.rst:187
+msgid ":term:`Id`"
+msgstr ":term:`Id`"
+
+#: ../../Order.rst:51
+msgid "Unique Id for the quotation."
+msgstr "Unique Id für das Angebot."
+
+#: ../../Order.rst:52 ../../Order.rst:189
+msgid "**Name**"
+msgstr "**Name**"
+
+#: ../../Order.rst:53
+msgid "Short description of the quotation."
+msgstr "Kurzbeschreibung des Zitats."
+
+#: ../../Order.rst:54
+msgid "**Quotation type**"
+msgstr "**Angebotsart**"
+
+#: ../../Order.rst:55
+msgid "Type of quotation."
+msgstr "Art des Zitats."
+
+#: ../../Order.rst:56
+msgid "**Project**"
+msgstr "**Projekt**"
+
+#: ../../Order.rst:57
+msgid "The project concerned by the quotation."
+msgstr "Das vom Zitat betroffene Projekt."
+
+#: ../../Order.rst:58 ../../Order.rst:205
+msgid ":term:`Origin`"
+msgstr ":term:`Ursprung`"
+
+#: ../../Order.rst:59
+msgid "Element which is the origin of the quotation."
+msgstr "Element, das der Ursprung des Zitats ist."
+
+#: ../../Order.rst:60 ../../Order.rst:195
+msgid "Customer"
+msgstr "Kunde"
+
+#: ../../Order.rst:61
+msgid "Customer concerned by the quotation."
+msgstr "Vom Angebot betroffener Kunde."
+
+#: ../../Order.rst:62 ../../Order.rst:197
+msgid "Contact"
+msgstr "Kontakt"
+
+#: ../../Order.rst:63
+msgid "Contact in customer organization to whom you sent the quotation."
+msgstr "Kontakt in der Kundenorganisation, an den Sie das Angebot geschickt haben."
+
+#: ../../Order.rst:64
+msgid ":term:`Request<Description>`"
+msgstr ":term:`Anfrage<Beschreibung>`"
+
+#: ../../Order.rst:65
+msgid "Request description."
+msgstr "Beschreibung anfordern."
+
+#: ../../Order.rst:66 ../../Order.rst:209
+msgid "Additional info."
+msgstr "Zusätzliche Informationen."
+
+#: ../../Order.rst:67
+msgid "Any additional information about the quotation."
+msgstr "Weitere Informationen zum Angebot."
+
+#: ../../Order.rst:69 ../../Order.rst:118 ../../Order.rst:212
+#: ../../Order.rst:258
+msgid "**\\* Required field**"
+msgstr "**\\* Pflichtfeld**"
+
+#: ../../Order.rst:73 ../../Order.rst:216
+msgid "Automatically updated from project field."
+msgstr "Automatisch aus dem Projektfeld aktualisiert."
+
+#: ../../Order.rst:76 ../../Order.rst:219
+msgid "Section: Treatment"
+msgstr "Sektion: Behandlung"
+
+#: ../../Order.rst:85 ../../Order.rst:228
+msgid "**Status**"
+msgstr "**Status**"
+
+#: ../../Order.rst:86
+msgid "Actual :term:`status` of the quotation."
+msgstr "Aktueller :term:`Status` des Zitats."
+
+#: ../../Order.rst:87 ../../Order.rst:230
+msgid ":term:`Responsible`"
+msgstr ":term:`Verantwortlicher`"
+
+#: ../../Order.rst:88
+msgid "Resource who is responsible for the quotation."
+msgstr "Ressource, die für das Angebot verantwortlich ist."
+
+#: ../../Order.rst:89
+msgid "Sent date"
+msgstr "Gesendetes Datum"
+
+#: ../../Order.rst:90
+msgid "Date when quotation is sent to customer contact."
+msgstr "Datum der Angebotsabgabe an den Kundenkontakt."
+
+#: ../../Order.rst:91
+msgid "Send mode"
+msgstr "Sendebetrie"
+
+#: ../../Order.rst:92 ../../Order.rst:204
+msgid "Delivery mode."
+msgstr "Liefermodus."
+
+#: ../../Order.rst:93
+msgid "Offer validity"
+msgstr "Gültigkeit des Angebotes"
+
+#: ../../Order.rst:94
+msgid "Limit date of the validity of the proposal."
+msgstr "Begrenzungsdatum der Gültigkeit des Vorschlags."
+
+#: ../../Order.rst:95
+msgid "Likelihood"
+msgstr "Wahrscheinlichkeit"
+
+#: ../../Order.rst:96
+msgid "The probability that the proposal will be accepted."
+msgstr "Die Wahrscheinlichkeit, dass der Vorschlag angenommen wird."
+
+#: ../../Order.rst:97 ../../Order.rst:232
+msgid ":term:`Handled`"
+msgstr ":term:`Behandelt`"
+
+#: ../../Order.rst:98
+msgid "Box checked indicates that the quotation is taken in charge."
+msgstr "Kästchen markiert zeigt an, dass das Angebot angenommen wird."
+
+#: ../../Order.rst:99 ../../Order.rst:234
+msgid ":term:`Done`"
+msgstr ":term:`Fertig`"
+
+#: ../../Order.rst:100
+msgid "Box checked indicates that the quotation is processed."
+msgstr "Feld markiert zeigt an, dass das Angebot bearbeitet wird."
+
+#: ../../Order.rst:101 ../../Order.rst:236
+msgid ":term:`Closed`"
+msgstr ":term:`Geschlossen`"
+
+#: ../../Order.rst:102
+msgid "Box checked indicates that the quotation is archived."
+msgstr "Feld markiert zeigt an, dass das Angebot archiviert ist."
+
+#: ../../Order.rst:103 ../../Order.rst:238
+msgid "Cancelled"
+msgstr "Abgesagt"
+
+#: ../../Order.rst:104
+msgid "Box checked indicates that the quotation is cancelled."
+msgstr "Kästchen markiert zeigt an, dass das Angebot storniert wurde."
+
+#: ../../Order.rst:105
+msgid "Planned end date"
+msgstr "Geplantes Enddatum"
+
+#: ../../Order.rst:106
+msgid "Target end date of the activity object of the quotation."
+msgstr "Zieldatum des Aktivitätsobjekts des Angebots."
+
+#: ../../Order.rst:107 ../../Order.rst:138 ../../Order.rst:240
+#: ../../Order.rst:287
+msgid "Activity type"
+msgstr "Art der Aktivitä"
+
+#: ../../Order.rst:108
+msgid "Type of the activity object of the quotation."
+msgstr "Typ des Aktivitätsobjekts des Angebots."
+
+#: ../../Order.rst:109
+msgid "Payment deadline"
+msgstr "Fälligkeit der Zahlung"
+
+#: ../../Order.rst:110
+msgid "The payment deadline is stated on the quotation."
+msgstr "Die Zahlungsfrist ist auf dem Angebot angegeben."
+
+#: ../../Order.rst:111
+msgid "Amount"
+msgstr "Betra"
+
+#: ../../Order.rst:112
+msgid "Total amount of the quotation."
+msgstr "Gesamtbetrag des Angebots."
+
+#: ../../Order.rst:113
+msgid "Estimated work"
+msgstr "Geschätzte Arbeit"
+
+#: ../../Order.rst:114
+msgid "Work days corresponding to the quotation."
+msgstr "Arbeitstage entsprechend dem Angebot."
+
+#: ../../Order.rst:115 ../../Order.rst:254
+msgid "Comments"
+msgstr "Anmerkungen"
+
+#: ../../Order.rst:116
+msgid "Comment about the treatment of the quotation."
+msgstr "Kommentar zur Behandlung des Zitats."
+
+#: ../../Order.rst:126 ../../Order.rst:262
+msgid "Columns:"
+msgstr "Spalten:"
+
+#: ../../Order.rst:128
+msgid "**Ex VAT**: Amount without taxes."
+msgstr "**Ex Mehrwertsteuer**: Betrag ohne Steuern."
+
+#: ../../Order.rst:130
+msgid "The amount is automatically updated with the sum of bill lines."
+msgstr "Der Betrag wird automatisch mit der Summe der Rechnungszeilen aktualisiert."
+
+#: ../../Order.rst:132 ../../Order.rst:268
+msgid "**Tax**: Applicable tax."
+msgstr "**Steuern**: Anzuwendende Steuer."
+
+#: ../../Order.rst:136 ../../Order.rst:272
+msgid "**Full**: Amount with taxes."
+msgstr "**Voll**: Betrag mit Steuern."
+
+#: ../../Order.rst:140 ../../Order.rst:289
+msgid "The activity should be created only after approval."
+msgstr "Die Aktivität sollte erst nach Genehmigung angelegt werden."
+
+#: ../../Order.rst:154
+msgid "Orders"
+msgstr "Bestellungen"
+
+#: ../../Order.rst:156
+msgid "An order (also called command) is the trigger to start work."
+msgstr "Ein Befehl (auch Befehl genannt) ist der Auslöser für die Arbeit."
+
+#: ../../Order.rst:161
+msgid "Scheduled work and budgeted cost of project"
+msgstr "Geplante Arbeiten und budgetierte Projektkosten"
+
+#: ../../Order.rst:164
+msgid "See: :ref:`progress-section-resource`"
+msgstr "Siehe: :ref:`progress-section-resource`"
+
+#: ../../Order.rst:168
+msgid "This section allows to detail the order modality."
+msgstr "Dieser Abschnitt erlaubt es, die Bestellmodalität zu detaillieren."
+
+#: ../../Order.rst:188
+msgid "Unique Id for the order."
+msgstr "Unique Id für den Auftrag."
+
+#: ../../Order.rst:190
+msgid "Short description of the order."
+msgstr "Kurzbeschreibung des Auftrags."
+
+#: ../../Order.rst:191
+msgid "**Order type**"
+msgstr "**Bestellungstyp**"
+
+#: ../../Order.rst:192
+msgid "Type of order."
+msgstr "Art der Bestellung."
+
+#: ../../Order.rst:193
+msgid "Project"
+msgstr "Projekt"
+
+#: ../../Order.rst:194
+msgid "The project concerned by the order."
+msgstr "Das vom Auftrag betroffene Projekt."
+
+#: ../../Order.rst:196
+msgid "Customer concerned by the order."
+msgstr "Vom Auftrag betroffener Kunde."
+
+#: ../../Order.rst:198
+msgid "Contact in customer organization to whom you sent the order."
+msgstr "Kontakt in der Kundenorganisation, an die Sie die Bestellung geschickt haben."
+
+#: ../../Order.rst:199
+msgid "**External reference**"
+msgstr "**Externe Referenz**"
+
+#: ../../Order.rst:200
+msgid ":term:`External reference` of the order (as received)."
+msgstr ":term:`Externe Referenz` der Bestellung (wie erhalten)."
+
+#: ../../Order.rst:201
+msgid "Date of receipt"
+msgstr "Datum des Eingangs"
+
+#: ../../Order.rst:202
+msgid "Receipt date."
+msgstr "Eingangsdatum."
+
+#: ../../Order.rst:203
+msgid "Receive mode"
+msgstr "Empfangsmodus"
+
+#: ../../Order.rst:206
+msgid "Element which is the origin of the order."
+msgstr "Element, das der Ursprung des Auftrags ist."
+
+#: ../../Order.rst:208
+msgid "Complete description of the order."
+msgstr "Vollständige Beschreibung des Auftrags."
+
+#: ../../Order.rst:210
+msgid "Any additional information about the order."
+msgstr "Zusätzliche Informationen zur Bestellung."
+
+#: ../../Order.rst:229
+msgid "Actual :term:`status` of the order."
+msgstr "Aktueller :term:`Status` des Auftrags."
+
+#: ../../Order.rst:231
+msgid "Resource who is responsible for the order."
+msgstr "Ressource, die für den Auftrag verantwortlich ist."
+
+#: ../../Order.rst:233
+msgid "Box checked indicates that the order is taken in charge."
+msgstr "Kästchen markiert zeigt an, dass der Auftrag ausgeführt wird."
+
+#: ../../Order.rst:235
+msgid "Box checked indicates that the order is processed."
+msgstr "Feld markiert zeigt an, dass der Auftrag bearbeitet wird."
+
+#: ../../Order.rst:237
+msgid "Box checked indicates that the order is archived."
+msgstr "Feld markiert zeigt an, dass der Auftrag archiviert ist."
+
+#: ../../Order.rst:239
+msgid "Box checked indicates that the order is cancelled."
+msgstr "Feld markiert zeigt an, dass der Auftrag storniert wurde."
+
+#: ../../Order.rst:241
+msgid "Type of the activity object of the order."
+msgstr "Typ des Aktivitätsobjekts des Auftrags."
+
+#: ../../Order.rst:242
+msgid "Linked activity"
+msgstr "Verknüpfte Aktivität"
+
+#: ../../Order.rst:243
+msgid "Activity representing the execution of the order."
+msgstr "Aktivität, die die Ausführung des Auftrags repräsentiert."
+
+#: ../../Order.rst:244
+msgid "Initial"
+msgstr "Initial"
+
+#: ../../Order.rst:245
+msgid "Initial values."
+msgstr "Anfangswerte."
+
+#: ../../Order.rst:246
+msgid "Amendment"
+msgstr "Ã„nderung"
+
+#: ../../Order.rst:247
+msgid "Additional values."
+msgstr "Zusätzliche Werte."
+
+#: ../../Order.rst:248
+msgid "Total"
+msgstr "Summe"
+
+#: ../../Order.rst:249
+msgid "Sum of the initial values and amendment."
+msgstr "Summe der Ausgangswerte und Ã„nderung."
+
+#: ../../Order.rst:250
+msgid "Start date"
+msgstr "Datum des Beginns"
+
+#: ../../Order.rst:251
+msgid "Initial start date of the execution of the order."
+msgstr "Anfangsdatum der Ausführung des Auftrags."
+
+#: ../../Order.rst:252
+msgid "End date"
+msgstr "Enddatum"
+
+#: ../../Order.rst:253
+msgid "Initial and validated end date of the execution of the order."
+msgstr "Erstes und validiertes Enddatum der Auftragsausführung."
+
+#: ../../Order.rst:255
+msgid "Comment about the treatment of the order."
+msgstr "Kommentar zur Behandlung des Auftrags."
+
+#: ../../Order.rst:264
+msgid "**Ex VAT**: Amount before taxes."
+msgstr "**Ex Mehrwertsteuer**: Betrag vor Steuern."
+
+#: ../../Order.rst:273
+msgid "**Work**: Work days corresponding to the order."
+msgstr "**Arbeiten**: Arbeitstage entsprechend der Bestellung."
+
+#: ../../Order.rst:276
+msgid "When the measure unit is \"day\"."
+msgstr "Wenn die Maßeinheit \"Tag\" ist."
+
+#: ../../Order.rst:284
+msgid "**Initial** : Initial dates"
+msgstr "**Initial** : Erste Termine"
+
+#: ../../Order.rst:285
+msgid "**Validated** : Validated dates"
+msgstr "**Validiert** : Validierte Daten"

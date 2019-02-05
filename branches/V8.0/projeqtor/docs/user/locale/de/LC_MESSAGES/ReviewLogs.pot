@@ -1,0 +1,971 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2018, ProjeQtOr
+# This file is distributed under the same license as the ProjeQtOr Bedienhandbuch Deutsch package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: ProjeQtOr Bedienhandbuch Deutsch 7.2\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2018-07-03 14:34+0200\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: ../../ReviewLogs.rst:10
+msgid "Meetings"
+msgstr ""
+
+#: ../../ReviewLogs.rst:12
+msgid "Meeting items are stored to keep track of important meetings during the project lifecycle :"
+msgstr ""
+
+#: ../../ReviewLogs.rst:14
+msgid "Progress Meetings"
+msgstr ""
+
+#: ../../ReviewLogs.rst:15
+msgid "Steering committees"
+msgstr ""
+
+#: ../../ReviewLogs.rst:16
+msgid "Functional workshops"
+msgstr ""
+
+#: ../../ReviewLogs.rst:18
+msgid "In fact, you should keep track of every meeting where decisions are taken, or questions answered."
+msgstr ""
+
+#: ../../ReviewLogs.rst:20
+msgid "This will provide an easy way to find back when, where and why a decision has been taken."
+msgstr ""
+
+#: ../../ReviewLogs.rst:24
+msgid "Meeting features"
+msgstr ""
+
+#: ../../ReviewLogs.rst:27
+msgid "Project task"
+msgstr ""
+
+#: ../../ReviewLogs.rst:28
+msgid "Meeting is a task."
+msgstr ""
+
+#: ../../ReviewLogs.rst:29
+msgid "You can assign project resources (named attendees)."
+msgstr ""
+
+#: ../../ReviewLogs.rst:30
+msgid "You have progress section that allows for followed resources work and cost."
+msgstr ""
+
+#: ../../ReviewLogs.rst:35
+#: ../../ReviewLogs.rst:168
+msgid ":ref:`Attendees<attendees-section>`"
+msgstr ""
+
+#: ../../ReviewLogs.rst:36
+#: ../../ReviewLogs.rst:169
+msgid ":ref:`Progress<progress-section-meeting>`"
+msgstr ""
+
+#: ../../ReviewLogs.rst:37
+#: ../../ReviewLogs.rst:170
+msgid ":ref:`Predecessor and Sucessor element<predSuces-element-section>`"
+msgstr ""
+
+#: ../../ReviewLogs.rst:38
+#: ../../ReviewLogs.rst:304
+#: ../../ReviewLogs.rst:396
+#: ../../ReviewLogs.rst:609
+msgid ":ref:`Linked element<linkElement-section>`"
+msgstr ""
+
+#: ../../ReviewLogs.rst:39
+#: ../../ReviewLogs.rst:305
+#: ../../ReviewLogs.rst:397
+#: ../../ReviewLogs.rst:610
+msgid ":ref:`Attachments<attachment-section>`"
+msgstr ""
+
+#: ../../ReviewLogs.rst:40
+#: ../../ReviewLogs.rst:171
+#: ../../ReviewLogs.rst:306
+#: ../../ReviewLogs.rst:398
+#: ../../ReviewLogs.rst:611
+msgid ":ref:`Notes<note-section>`"
+msgstr ""
+
+#: ../../ReviewLogs.rst:43
+#: ../../ReviewLogs.rst:178
+#: ../../ReviewLogs.rst:309
+#: ../../ReviewLogs.rst:401
+#: ../../ReviewLogs.rst:485
+#: ../../ReviewLogs.rst:582
+msgid "Section: Description"
+msgstr ""
+
+#: ../../ReviewLogs.rst:50
+#: ../../ReviewLogs.rst:94
+#: ../../ReviewLogs.rst:185
+#: ../../ReviewLogs.rst:210
+#: ../../ReviewLogs.rst:227
+#: ../../ReviewLogs.rst:316
+#: ../../ReviewLogs.rst:339
+#: ../../ReviewLogs.rst:408
+#: ../../ReviewLogs.rst:435
+#: ../../ReviewLogs.rst:492
+#: ../../ReviewLogs.rst:523
+#: ../../ReviewLogs.rst:589
+#: ../../ReviewLogs.rst:621
+msgid "Field"
+msgstr ""
+
+#: ../../ReviewLogs.rst:51
+#: ../../ReviewLogs.rst:95
+#: ../../ReviewLogs.rst:186
+#: ../../ReviewLogs.rst:211
+#: ../../ReviewLogs.rst:228
+#: ../../ReviewLogs.rst:317
+#: ../../ReviewLogs.rst:340
+#: ../../ReviewLogs.rst:409
+#: ../../ReviewLogs.rst:436
+#: ../../ReviewLogs.rst:493
+#: ../../ReviewLogs.rst:504
+#: ../../ReviewLogs.rst:590
+#: ../../ReviewLogs.rst:601
+#: ../../ReviewLogs.rst:622
+msgid "Description"
+msgstr ""
+
+#: ../../ReviewLogs.rst:52
+#: ../../ReviewLogs.rst:187
+#: ../../ReviewLogs.rst:318
+#: ../../ReviewLogs.rst:410
+#: ../../ReviewLogs.rst:494
+#: ../../ReviewLogs.rst:591
+msgid ":term:`Id`"
+msgstr ""
+
+#: ../../ReviewLogs.rst:53
+msgid "Unique Id for the meeting."
+msgstr ""
+
+#: ../../ReviewLogs.rst:54
+#: ../../ReviewLogs.rst:189
+msgid "Name"
+msgstr ""
+
+#: ../../ReviewLogs.rst:55
+#: ../../ReviewLogs.rst:190
+msgid "Short description of the meeting."
+msgstr ""
+
+#: ../../ReviewLogs.rst:56
+#: ../../ReviewLogs.rst:191
+msgid "**Meeting type**"
+msgstr ""
+
+#: ../../ReviewLogs.rst:57
+#: ../../ReviewLogs.rst:192
+msgid "Type of meeting."
+msgstr ""
+
+#: ../../ReviewLogs.rst:58
+#: ../../ReviewLogs.rst:193
+#: ../../ReviewLogs.rst:324
+#: ../../ReviewLogs.rst:416
+#: ../../ReviewLogs.rst:597
+msgid "**Project**"
+msgstr ""
+
+#: ../../ReviewLogs.rst:59
+#: ../../ReviewLogs.rst:194
+msgid "The project concerned by the meeting."
+msgstr ""
+
+#: ../../ReviewLogs.rst:60
+msgid "**Meeting date**"
+msgstr ""
+
+#: ../../ReviewLogs.rst:61
+msgid "Date of the meeting (initially expected date), including start and end time."
+msgstr ""
+
+#: ../../ReviewLogs.rst:62
+#: ../../ReviewLogs.rst:195
+msgid "Location"
+msgstr ""
+
+#: ../../ReviewLogs.rst:63
+#: ../../ReviewLogs.rst:196
+msgid "Place (room or else) when meeting will stand."
+msgstr ""
+
+#: ../../ReviewLogs.rst:64
+#: ../../ReviewLogs.rst:197
+#: ../../ReviewLogs.rst:326
+#: ../../ReviewLogs.rst:418
+msgid ":term:`Description`"
+msgstr ""
+
+#: ../../ReviewLogs.rst:65
+#: ../../ReviewLogs.rst:198
+msgid "Description of the meeting."
+msgstr ""
+
+#: ../../ReviewLogs.rst:67
+#: ../../ReviewLogs.rst:113
+#: ../../ReviewLogs.rst:200
+#: ../../ReviewLogs.rst:238
+#: ../../ReviewLogs.rst:329
+#: ../../ReviewLogs.rst:354
+#: ../../ReviewLogs.rst:421
+#: ../../ReviewLogs.rst:458
+#: ../../ReviewLogs.rst:604
+msgid "**\\* Required field**"
+msgstr ""
+
+#: ../../ReviewLogs.rst:71
+msgid "If not set, will automatically be set to meeting type completed with meeting date."
+msgstr ""
+
+#: ../../ReviewLogs.rst:73
+msgid "Description can be used to store agenda."
+msgstr ""
+
+#: ../../ReviewLogs.rst:76
+msgid "Button: Email invitation"
+msgstr ""
+
+#: ../../ReviewLogs.rst:77
+msgid "Allows to send the email to attendees."
+msgstr ""
+
+#: ../../ReviewLogs.rst:78
+msgid "They will receive the invitation in their calendar management tool."
+msgstr ""
+
+#: ../../ReviewLogs.rst:87
+#: ../../ReviewLogs.rst:203
+msgid "Section: Treatment"
+msgstr ""
+
+#: ../../ReviewLogs.rst:96
+#: ../../ReviewLogs.rst:212
+msgid "Parent activity"
+msgstr ""
+
+#: ../../ReviewLogs.rst:97
+#: ../../ReviewLogs.rst:213
+msgid "Parent activity of the meeting."
+msgstr ""
+
+#: ../../ReviewLogs.rst:98
+#: ../../ReviewLogs.rst:341
+#: ../../ReviewLogs.rst:437
+msgid "**Status**"
+msgstr ""
+
+#: ../../ReviewLogs.rst:99
+msgid "Actual :term:`status` of the meeting."
+msgstr ""
+
+#: ../../ReviewLogs.rst:100
+#: ../../ReviewLogs.rst:214
+#: ../../ReviewLogs.rst:439
+msgid ":term:`Responsible`"
+msgstr ""
+
+#: ../../ReviewLogs.rst:101
+#: ../../ReviewLogs.rst:215
+msgid "Resource who is responsible for the organization of the meeting."
+msgstr ""
+
+#: ../../ReviewLogs.rst:102
+#: ../../ReviewLogs.rst:447
+msgid ":term:`Handled`"
+msgstr ""
+
+#: ../../ReviewLogs.rst:103
+msgid "Flag to indicate that meeting has been taken into account."
+msgstr ""
+
+#: ../../ReviewLogs.rst:104
+#: ../../ReviewLogs.rst:449
+msgid ":term:`Done`"
+msgstr ""
+
+#: ../../ReviewLogs.rst:105
+msgid "Flag to indicate that meeting has been held."
+msgstr ""
+
+#: ../../ReviewLogs.rst:106
+#: ../../ReviewLogs.rst:216
+#: ../../ReviewLogs.rst:349
+#: ../../ReviewLogs.rst:451
+#: ../../ReviewLogs.rst:533
+#: ../../ReviewLogs.rst:633
+msgid ":term:`Closed`"
+msgstr ""
+
+#: ../../ReviewLogs.rst:107
+msgid "Flag to indicate that meeting is archived."
+msgstr ""
+
+#: ../../ReviewLogs.rst:108
+#: ../../ReviewLogs.rst:351
+#: ../../ReviewLogs.rst:453
+msgid "Cancelled"
+msgstr ""
+
+#: ../../ReviewLogs.rst:109
+msgid "Flag to indicate that meeting is cancelled."
+msgstr ""
+
+#: ../../ReviewLogs.rst:110
+msgid ":term:`Minutes<Result>`"
+msgstr ""
+
+#: ../../ReviewLogs.rst:111
+msgid "Minutes of the meeting."
+msgstr ""
+
+#: ../../ReviewLogs.rst:117
+msgid "In the WBS structure, under which the meeting will be displayed in the Gantt planning."
+msgstr ""
+
+#: ../../ReviewLogs.rst:121
+msgid "You can enter here only a short summary of the minutes and attach the full minutes as a file."
+msgstr ""
+
+#: ../../ReviewLogs.rst:123
+msgid "**\\* Steering**"
+msgstr ""
+
+#: ../../ReviewLogs.rst:125
+msgid "Retrieving the agenda of a meeting from the description of its type"
+msgstr ""
+
+#: ../../ReviewLogs.rst:137
+msgid "Periodic meetings"
+msgstr ""
+
+#: ../../ReviewLogs.rst:139
+msgid "Periodic meeting is a way to define some meetings that will occur on a regular basis."
+msgstr ""
+
+#: ../../ReviewLogs.rst:144
+msgid "Most fields fit, but some information is not present for periodic meetings, such as Minutes or Status."
+msgstr ""
+
+#: ../../ReviewLogs.rst:145
+msgid "It is because these fields won’t be set through periodic meeting definition, but must be set directly on the meetings."
+msgstr ""
+
+#: ../../ReviewLogs.rst:148
+msgid "Periodic meeting process"
+msgstr ""
+
+#: ../../ReviewLogs.rst:149
+msgid "When saving periodic meeting, elementary meetings are automatically created."
+msgstr ""
+
+#: ../../ReviewLogs.rst:150
+msgid "Changes can be done in elementary meetings. In most cases, these changes won't be erased by periodic meeting updates."
+msgstr ""
+
+#: ../../ReviewLogs.rst:154
+msgid "On each update of a periodic meeting, meetings are re-evaluated."
+msgstr ""
+
+#: ../../ReviewLogs.rst:155
+msgid "This may lead to deletion of some meetings."
+msgstr ""
+
+#: ../../ReviewLogs.rst:156
+msgid "This will also reposition meetings, even if their planned dates were elementary updated."
+msgstr ""
+
+#: ../../ReviewLogs.rst:159
+msgid "Attendees assignment"
+msgstr ""
+
+#: ../../ReviewLogs.rst:160
+msgid "Attendees can be defined on a periodic meeting."
+msgstr ""
+
+#: ../../ReviewLogs.rst:161
+msgid "Allocation of the entire project team to a periodic meeting (as existing for a simple meeting) is possible."
+msgstr ""
+
+#: ../../ReviewLogs.rst:162
+msgid "They will be copied on the elementary meetings."
+msgstr ""
+
+#: ../../ReviewLogs.rst:163
+msgid "The periodic meetings will not be planned, only elementary meetings will be."
+msgstr ""
+
+#: ../../ReviewLogs.rst:164
+msgid "So left work will always be set to zero on periodic meetings."
+msgstr ""
+
+#: ../../ReviewLogs.rst:188
+msgid "Unique Id for the periodic meeting."
+msgstr ""
+
+#: ../../ReviewLogs.rst:217
+msgid "Flag to indicate that periodic meeting is archived."
+msgstr ""
+
+#: ../../ReviewLogs.rst:220
+msgid "Section: Periodicity"
+msgstr ""
+
+#: ../../ReviewLogs.rst:229
+msgid "**Period**"
+msgstr ""
+
+#: ../../ReviewLogs.rst:230
+msgid "Start date and end date or number of occurrences to define the range of the periodicity."
+msgstr ""
+
+#: ../../ReviewLogs.rst:231
+msgid "Time"
+msgstr ""
+
+#: ../../ReviewLogs.rst:232
+msgid "Start and end time for all the meetings."
+msgstr ""
+
+#: ../../ReviewLogs.rst:233
+msgid "**Periodicity**"
+msgstr ""
+
+#: ../../ReviewLogs.rst:234
+msgid "Frequency of the meeting, on proposed bases (daily, weekly monthly)."
+msgstr ""
+
+#: ../../ReviewLogs.rst:235
+msgid "Only on open days"
+msgstr ""
+
+#: ../../ReviewLogs.rst:236
+msgid "Specify that meetings will not be set on off days."
+msgstr ""
+
+#: ../../ReviewLogs.rst:242
+msgid "Several periodicity is proposed:"
+msgstr ""
+
+#: ../../ReviewLogs.rst:244
+msgid "Every day"
+msgstr ""
+
+#: ../../ReviewLogs.rst:245
+msgid "Same day every week"
+msgstr ""
+
+#: ../../ReviewLogs.rst:246
+msgid "Same day every mouth"
+msgstr ""
+
+#: ../../ReviewLogs.rst:247
+msgid "Same week every mounth"
+msgstr ""
+
+#: ../../ReviewLogs.rst:259
+msgid "Attendees section"
+msgstr ""
+
+#: ../../ReviewLogs.rst:261
+msgid "This section allows to define the list of attendees to the meeting."
+msgstr ""
+
+#: ../../ReviewLogs.rst:264
+msgid "Attendee list"
+msgstr ""
+
+#: ../../ReviewLogs.rst:265
+msgid "Meeting is a task you can assign project resources."
+msgstr ""
+
+#: ../../ReviewLogs.rst:266
+msgid "A possibility to assign work to some attendees (project resources). So meeting works of these attendees are booked in the project."
+msgstr ""
+
+#: ../../ReviewLogs.rst:267
+msgid "Ability to assign to a meeting a resource or a contact or a user not member of the project team"
+msgstr ""
+
+#: ../../ReviewLogs.rst:269
+msgid "More detail about how assigned project resources, see: :ref:`assignment-section` section."
+msgstr ""
+
+#: ../../ReviewLogs.rst:272
+msgid "Other attendees"
+msgstr ""
+
+#: ../../ReviewLogs.rst:273
+msgid "Extra list of persons attending (or expecting to attend) the meeting, in completion to resource in the attendee list."
+msgstr ""
+
+#: ../../ReviewLogs.rst:277
+msgid "You can enter attendees by email address, resource or contact name, user name or initial without caring about."
+msgstr ""
+
+#: ../../ReviewLogs.rst:278
+msgid "Just separate attendees with commas or semicolons."
+msgstr ""
+
+#: ../../ReviewLogs.rst:282
+msgid "Duplicate email addresses in the attendee list will automatically be removed."
+msgstr ""
+
+#: ../../ReviewLogs.rst:296
+msgid "Decisions"
+msgstr ""
+
+#: ../../ReviewLogs.rst:298
+msgid "Decisions are stored to keep track of important decisions, when, where and why the decision was taken."
+msgstr ""
+
+#: ../../ReviewLogs.rst:300
+msgid "You can link a decision to a meeting to rapidly find the minutes where the decision is described."
+msgstr ""
+
+#: ../../ReviewLogs.rst:319
+msgid "Unique Id for the decision."
+msgstr ""
+
+#: ../../ReviewLogs.rst:320
+#: ../../ReviewLogs.rst:412
+#: ../../ReviewLogs.rst:496
+#: ../../ReviewLogs.rst:593
+msgid "**Name**"
+msgstr ""
+
+#: ../../ReviewLogs.rst:321
+msgid "Short description of the decision."
+msgstr ""
+
+#: ../../ReviewLogs.rst:322
+msgid "**Decision type**"
+msgstr ""
+
+#: ../../ReviewLogs.rst:323
+msgid "Type of decision."
+msgstr ""
+
+#: ../../ReviewLogs.rst:325
+msgid "The project concerned by the decision."
+msgstr ""
+
+#: ../../ReviewLogs.rst:327
+msgid "Complete description of the decision."
+msgstr ""
+
+#: ../../ReviewLogs.rst:332
+#: ../../ReviewLogs.rst:516
+#: ../../ReviewLogs.rst:614
+msgid "Section: Validation"
+msgstr ""
+
+#: ../../ReviewLogs.rst:342
+#: ../../ReviewLogs.rst:438
+msgid "Actual :term:`status` of the decision."
+msgstr ""
+
+#: ../../ReviewLogs.rst:343
+msgid "Decision date"
+msgstr ""
+
+#: ../../ReviewLogs.rst:344
+msgid "Date of the decision."
+msgstr ""
+
+#: ../../ReviewLogs.rst:345
+msgid "Origin"
+msgstr ""
+
+#: ../../ReviewLogs.rst:346
+msgid "Origin of the decision."
+msgstr ""
+
+#: ../../ReviewLogs.rst:347
+msgid ":term:`Accountable<result>`"
+msgstr ""
+
+#: ../../ReviewLogs.rst:348
+msgid "Resource accountable for the decision."
+msgstr ""
+
+#: ../../ReviewLogs.rst:350
+msgid "Flag to indicate that decision is archived."
+msgstr ""
+
+#: ../../ReviewLogs.rst:352
+msgid "Flag to indicate that decision is cancelled."
+msgstr ""
+
+#: ../../ReviewLogs.rst:358
+msgid "It can be either the reference to a meeting where the decision was taken (so also add the reference to the meetings list), or a short description of why the decision was taken."
+msgstr ""
+
+#: ../../ReviewLogs.rst:362
+msgid "The person who took the decision."
+msgstr ""
+
+#: ../../ReviewLogs.rst:373
+msgid "Questions"
+msgstr ""
+
+#: ../../ReviewLogs.rst:375
+msgid "Question are stored to keep track of important questions and answers."
+msgstr ""
+
+#: ../../ReviewLogs.rst:377
+msgid "In fact, you should keep trace of every question and answer that have an impact to the project."
+msgstr ""
+
+#: ../../ReviewLogs.rst:379
+msgid "The questions can also afford an easy way to track questions sent and follow-up non-answered ones."
+msgstr ""
+
+#: ../../ReviewLogs.rst:381
+msgid "This will provide an easy way to find back when, who and precise description of the answer to a question."
+msgstr ""
+
+#: ../../ReviewLogs.rst:383
+msgid "Also keep in mind that some people will (consciously or not) be able to change their mind and uphold it has always been their opinion…"
+msgstr ""
+
+#: ../../ReviewLogs.rst:385
+msgid "You can link a question to a meeting to rapidly find the minutes where the question was raised or answered."
+msgstr ""
+
+#: ../../ReviewLogs.rst:388
+msgid "Monitoring indicator"
+msgstr ""
+
+#: ../../ReviewLogs.rst:389
+msgid "Possibility to define indicators to follow the respect of dates values."
+msgstr ""
+
+#: ../../ReviewLogs.rst:411
+msgid "Unique Id for the question."
+msgstr ""
+
+#: ../../ReviewLogs.rst:413
+msgid "Short description of the question."
+msgstr ""
+
+#: ../../ReviewLogs.rst:414
+msgid "**Question type**"
+msgstr ""
+
+#: ../../ReviewLogs.rst:415
+msgid "Type of question."
+msgstr ""
+
+#: ../../ReviewLogs.rst:417
+msgid "The project concerned by the question."
+msgstr ""
+
+#: ../../ReviewLogs.rst:419
+msgid "Complete description of the question."
+msgstr ""
+
+#: ../../ReviewLogs.rst:428
+msgid "Section: Answer"
+msgstr ""
+
+#: ../../ReviewLogs.rst:440
+msgid "Resource who is responsible for the follow-up of the question."
+msgstr ""
+
+#: ../../ReviewLogs.rst:441
+msgid "Initial due date"
+msgstr ""
+
+#: ../../ReviewLogs.rst:442
+msgid "Initially expected date for the answer to the question."
+msgstr ""
+
+#: ../../ReviewLogs.rst:443
+msgid "Planned due date"
+msgstr ""
+
+#: ../../ReviewLogs.rst:444
+msgid "Updated expected date for the answer to the question."
+msgstr ""
+
+#: ../../ReviewLogs.rst:445
+msgid "Replier"
+msgstr ""
+
+#: ../../ReviewLogs.rst:446
+msgid "Name of the person who provided the answer."
+msgstr ""
+
+#: ../../ReviewLogs.rst:448
+msgid "Flag to indicate that question has been taken into account."
+msgstr ""
+
+#: ../../ReviewLogs.rst:450
+msgid "Flag to indicate that question has been answered."
+msgstr ""
+
+#: ../../ReviewLogs.rst:452
+msgid "Flag to indicate that question is archived."
+msgstr ""
+
+#: ../../ReviewLogs.rst:454
+msgid "Flag to indicate that question is cancelled."
+msgstr ""
+
+#: ../../ReviewLogs.rst:455
+msgid ":term:`Response<Result>`"
+msgstr ""
+
+#: ../../ReviewLogs.rst:456
+msgid "Complete description of the answer to the question."
+msgstr ""
+
+#: ../../ReviewLogs.rst:470
+msgid "Deliverables"
+msgstr ""
+
+#: ../../ReviewLogs.rst:472
+msgid "This section allows to define the list of deliverables items."
+msgstr ""
+
+#: ../../ReviewLogs.rst:474
+msgid "This will provide an easy way to organize your due to customers."
+msgstr ""
+
+#: ../../ReviewLogs.rst:476
+msgid "In fact, you can keep track of every deliverables."
+msgstr ""
+
+#: ../../ReviewLogs.rst:478
+msgid "Deliverables links with Milestones."
+msgstr ""
+
+#: ../../ReviewLogs.rst:482
+msgid "If you change the responsible of milestones, the responsible of deliverable will automatically changed, and vice versa."
+msgstr ""
+
+#: ../../ReviewLogs.rst:495
+msgid "Unique Id for the KPI."
+msgstr ""
+
+#: ../../ReviewLogs.rst:497
+msgid "name of the deliverable."
+msgstr ""
+
+#: ../../ReviewLogs.rst:498
+msgid "IdDeliverableType"
+msgstr ""
+
+#: ../../ReviewLogs.rst:499
+msgid "id of the Deliverable Type."
+msgstr ""
+
+#: ../../ReviewLogs.rst:500
+msgid "IdProject"
+msgstr ""
+
+#: ../../ReviewLogs.rst:501
+msgid "id of the Project."
+msgstr ""
+
+#: ../../ReviewLogs.rst:502
+msgid "externalReference"
+msgstr ""
+
+#: ../../ReviewLogs.rst:503
+#: ../../ReviewLogs.rst:600
+msgid "name of the external reference."
+msgstr ""
+
+#: ../../ReviewLogs.rst:505
+msgid "Complete description of the deliverable."
+msgstr ""
+
+#: ../../ReviewLogs.rst:509
+msgid "You can estimated quality value for deliverable and this will produce a KPI."
+msgstr ""
+
+#: ../../ReviewLogs.rst:511
+#: ../../ReviewLogs.rst:560
+msgid "See: :ref:`kpi-definitions`"
+msgstr ""
+
+#: ../../ReviewLogs.rst:524
+msgid "Validation"
+msgstr ""
+
+#: ../../ReviewLogs.rst:525
+msgid "Delivery statu"
+msgstr ""
+
+#: ../../ReviewLogs.rst:526
+#: ../../ReviewLogs.rst:624
+msgid "Actual :term:`status` of the delivery."
+msgstr ""
+
+#: ../../ReviewLogs.rst:527
+msgid "Deliverable w"
+msgstr ""
+
+#: ../../ReviewLogs.rst:528
+msgid "Weight of the quality of the deliverable."
+msgstr ""
+
+#: ../../ReviewLogs.rst:529
+msgid "Responsible"
+msgstr ""
+
+#: ../../ReviewLogs.rst:530
+msgid "to name"
+msgstr ""
+
+#: ../../ReviewLogs.rst:531
+msgid "due date"
+msgstr ""
+
+#: ../../ReviewLogs.rst:532
+msgid "as planned"
+msgstr ""
+
+#: ../../ReviewLogs.rst:534
+msgid "Box to indicate that delivery is archived."
+msgstr ""
+
+#: ../../ReviewLogs.rst:536
+msgid "To follow life cycle management on deliverables (status managed as a workflow)"
+msgstr ""
+
+#: ../../ReviewLogs.rst:543
+msgid "Incomings"
+msgstr ""
+
+#: ../../ReviewLogs.rst:545
+msgid "This section allows to define the list of incomings items from customers."
+msgstr ""
+
+#: ../../ReviewLogs.rst:547
+msgid "It can be an indicator to follow if you can begin an action. For example, if you need an item from customer."
+msgstr ""
+
+#: ../../ReviewLogs.rst:549
+msgid "Incomings links with Milestones."
+msgstr ""
+
+#: ../../ReviewLogs.rst:553
+msgid "If you change the responsible of milestones, the responsible of Incomings will automatically changed, and vice versa."
+msgstr ""
+
+#: ../../ReviewLogs.rst:558
+msgid "You can estimated quality value for incoming  and this will produce a KPI."
+msgstr ""
+
+#: ../../ReviewLogs.rst:571
+msgid "Deliveries"
+msgstr ""
+
+#: ../../ReviewLogs.rst:573
+msgid "Deliveries items are stored to keep track of deliveries."
+msgstr ""
+
+#: ../../ReviewLogs.rst:575
+msgid "Added list of deliverables integrated in delivery."
+msgstr ""
+
+#: ../../ReviewLogs.rst:579
+msgid "Automatic dispatch of delivery status to deliverables."
+msgstr ""
+
+#: ../../ReviewLogs.rst:592
+msgid "Unique Id for the delivery."
+msgstr ""
+
+#: ../../ReviewLogs.rst:594
+msgid "Short description of the delivery."
+msgstr ""
+
+#: ../../ReviewLogs.rst:595
+msgid "**Deliverable type**"
+msgstr ""
+
+#: ../../ReviewLogs.rst:596
+msgid "Type of deliverable."
+msgstr ""
+
+#: ../../ReviewLogs.rst:598
+msgid "The project concerned by the delivery."
+msgstr ""
+
+#: ../../ReviewLogs.rst:599
+msgid "ExternalReference"
+msgstr ""
+
+#: ../../ReviewLogs.rst:602
+msgid "Description of the delivery."
+msgstr ""
+
+#: ../../ReviewLogs.rst:608
+msgid ":ref:`Deliverables`"
+msgstr ""
+
+#: ../../ReviewLogs.rst:623
+msgid "Delivery status"
+msgstr ""
+
+#: ../../ReviewLogs.rst:625
+msgid "Resource"
+msgstr ""
+
+#: ../../ReviewLogs.rst:626
+msgid "resource of the delivery."
+msgstr ""
+
+#: ../../ReviewLogs.rst:627
+msgid "Planned date"
+msgstr ""
+
+#: ../../ReviewLogs.rst:628
+msgid "Expected date of delivery."
+msgstr ""
+
+#: ../../ReviewLogs.rst:629
+msgid "Real date"
+msgstr ""
+
+#: ../../ReviewLogs.rst:630
+msgid "Effective delivery date."
+msgstr ""
+
+#: ../../ReviewLogs.rst:631
+msgid "Validation date"
+msgstr ""
+
+#: ../../ReviewLogs.rst:632
+msgid "validate the delivery date."
+msgstr ""
+
+#: ../../ReviewLogs.rst:634
+msgid "Flag to indicate that delivery is archived."
+msgstr ""
+
+#: ../../ReviewLogs.rst:636
+msgid "To follow life cycle management on deliveries (status managed by a workflow)"
+msgstr ""
+

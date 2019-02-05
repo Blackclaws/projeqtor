@@ -1,0 +1,1838 @@
+# 
+msgid ""
+msgstr ""
+"Project-Id-Version: ProjeQtOr User guide 5.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2015-07-08 14:45-0400\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: ../../Gui.rst:0
+msgid "Graphic user interface"
+msgstr ""
+
+#: ../../Gui.rst:16
+msgid "ProjeQtor graphical user interface is set into several areas."
+msgstr ""
+
+#: ../../Gui.rst:18
+msgid "Those areas are :"
+msgstr ""
+
+#: ../../Gui.rst:20 ../../Gui.rst:62 ../../Gui.rst:69 ../../Gui.rst:57
+msgid "Top bar"
+msgstr ""
+
+#: ../../Gui.rst:21 ../../Gui.rst:150 ../../Gui.rst:157
+msgid "Logo area"
+msgstr ""
+
+#: ../../Gui.rst:22
+msgid "Menu and Document windows"
+msgstr ""
+
+#: ../../Gui.rst:23 ../../Gui.rst:237 ../../Gui.rst:244
+msgid "Message and Link windows"
+msgstr ""
+
+#: ../../Gui.rst:24 ../../Gui.rst:294 ../../Gui.rst:301
+msgid "List window"
+msgstr ""
+
+#: ../../Gui.rst:25 ../../Gui.rst:508 ../../Gui.rst:515
+msgid "Detail window"
+msgstr ""
+
+#: ../../Gui.rst:26 ../../Gui.rst:807 ../../Gui.rst:814
+msgid "Info bar"
+msgstr ""
+
+#: ../../Gui.rst:33
+msgid "GUI with areas"
+msgstr ""
+
+#: ../../Gui.rst:36 ../../Gui.rst:50
+msgid "Splitters"
+msgstr ""
+
+#: ../../Gui.rst:37
+msgid "Splitters allow resizing areas in graphic user interface."
+msgstr ""
+
+#: ../../Gui.rst:39
+msgid ""
+"Green splitter allows resizing Menu and Documents windows & Message and Link"
+" windows areas."
+msgstr ""
+
+#: ../../Gui.rst:41
+msgid "Red splitter allows resizing left and right side areas."
+msgstr ""
+
+#: ../../Gui.rst:43
+msgid "Orange splitter allows resizing list and detail windows areas."
+msgstr ""
+
+#: ../../Gui.rst:74
+msgid "Menu buttons"
+msgstr ""
+
+#: ../../Gui.rst:80
+msgid "Menu buttons gives rapid access to main elements."
+msgstr ""
+
+#: ../../Gui.rst:82
+msgid "Arrows allow to display buttons list."
+msgstr ""
+
+#: ../../Gui.rst:0
+msgid "Contextual menu buttons"
+msgstr ""
+
+#: ../../Gui.rst:86
+msgid ""
+"Allows to select a work context to limit the visibility on displayed "
+"buttons."
+msgstr ""
+
+#: ../../Gui.rst:95
+msgid "Project selector"
+msgstr ""
+
+#: ../../Gui.rst:101
+msgid ""
+"Allows to restrict the visibility of all objects to the dedicated project, "
+"including sub-projects if any."
+msgstr ""
+
+#: ../../Gui.rst:103
+msgid "The selection will also define de \"default\" project for new items."
+msgstr ""
+
+#: ../../Gui.rst:0
+msgid "Project selector parameters"
+msgstr ""
+
+#: ../../Gui.rst:107
+msgid ""
+"Through the project selector parameter icon |buttonIconParameter|, you can "
+"select :"
+msgstr ""
+
+#: ../../Gui.rst:109
+msgid "View closed projects."
+msgstr ""
+
+#: ../../Gui.rst:111
+msgid "Change the project selector format."
+msgstr ""
+
+#: ../../Gui.rst:113
+msgid "Refresh the list."
+msgstr ""
+
+#: ../../Gui.rst:127
+msgid "Navigation buttons"
+msgstr ""
+
+#: ../../Gui.rst:133
+msgid ""
+"The navigation buttons |buttonIconBackNavigation| "
+"|buttonIconForwardNavigation| give access to previous and next items in the "
+"history."
+msgstr ""
+
+#: ../../Gui.rst:137
+msgid "New tab button"
+msgstr ""
+
+#: ../../Gui.rst:138
+msgid "Allows to open a new tab with the same session."
+msgstr ""
+
+#: ../../Gui.rst:160
+msgid "Software information"
+msgstr ""
+
+#: ../../Gui.rst:161
+msgid "Clicking on the Logo Area will display the “About” pop-up."
+msgstr ""
+
+#: ../../Gui.rst:169
+msgid "Online user manual"
+msgstr ""
+
+#: ../../Gui.rst:170
+msgid ""
+"Click on the Help icon |buttonIconHelp| will open the online user manual, to"
+" the page corresponding to the actual screen."
+msgstr ""
+
+#: ../../Gui.rst:174
+msgid "You can change logo with your own."
+msgstr ""
+
+#: ../../Gui.rst:175
+msgid "Refer to administrative guide to replace the logo."
+msgstr ""
+
+#: ../../Gui.rst:183 ../../Gui.rst:190
+msgid "Menu and Documents windows"
+msgstr ""
+
+#: ../../Gui.rst:192 ../../Gui.rst:246
+msgid "Toggle windows"
+msgstr ""
+
+#: ../../Gui.rst:194
+msgid "You can toggle between Menu and Documents windows."
+msgstr ""
+
+#: ../../Gui.rst:196 ../../Gui.rst:250
+msgid "Just click on window header."
+msgstr ""
+
+#: ../../Gui.rst:199
+msgid "Menu window"
+msgstr ""
+
+#: ../../Gui.rst:200
+msgid "Menu is proposed as a tree view of reachable items."
+msgstr ""
+
+#: ../../Gui.rst:202
+msgid "The presented items will depend on user habilitation to the screens."
+msgstr ""
+
+#: ../../Gui.rst:204
+msgid "Click on a grouping line will expand-shrink the group."
+msgstr ""
+
+#: ../../Gui.rst:206
+msgid ""
+"Click on a item will display the corresponding screen in the main area "
+"(right side of the screen)."
+msgstr ""
+
+#: ../../Gui.rst:213
+msgid "icon size in menu"
+msgstr ""
+
+#: ../../Gui.rst:215
+msgid "This parameter defines the size of icons in menu."
+msgstr ""
+
+#: ../../Gui.rst:216 ../../Gui.rst:1232 ../../Gui.rst:1256
+msgid ""
+"See this parameter under \"Display parameters\" section in :ref:`user-"
+"parameters-label`."
+msgstr ""
+
+#: ../../Gui.rst:219
+msgid "Documents window"
+msgstr ""
+
+#: ../../Gui.rst:220
+msgid ""
+"Document directories give direct access to documents contained in the "
+"directory."
+msgstr ""
+
+#: ../../Gui.rst:0
+msgid "Document directories"
+msgstr ""
+
+#: ../../Gui.rst:230
+msgid ""
+"This icon |buttonIconDocDir| gives direct access to the directories "
+"management screen."
+msgstr ""
+
+#: ../../Gui.rst:248
+msgid ""
+"You can toggle between External shortcuts and Console messages windows."
+msgstr ""
+
+#: ../../Gui.rst:253
+msgid "External shortcuts window"
+msgstr ""
+
+#: ../../Gui.rst:254
+msgid "Displays hyperlinks to remote web pages."
+msgstr ""
+
+#: ../../Gui.rst:255
+msgid "Theses links are defined as hyperlink attachements on projects."
+msgstr ""
+
+#: ../../Gui.rst:256
+msgid "Links displayed here depend on selected project."
+msgstr ""
+
+#: ../../Gui.rst:266
+msgid "Console messages window"
+msgstr ""
+
+#: ../../Gui.rst:267
+msgid "Displays information about main actions : insert, update, delete."
+msgstr ""
+
+#: ../../Gui.rst:268
+msgid "Timestamp indicates when action was done."
+msgstr ""
+
+#: ../../Gui.rst:277
+msgid "This is only a temporary logging area."
+msgstr ""
+
+#: ../../Gui.rst:279
+msgid ""
+"Messages displayed here are not stored and will not live more than user "
+"connection."
+msgstr ""
+
+#: ../../Gui.rst:286
+msgid "Main area"
+msgstr ""
+
+#: ../../Gui.rst:288
+msgid ""
+"The main area (right side of the screen) is generally divided in two parts :"
+" List window and Detail window."
+msgstr ""
+
+#: ../../Gui.rst:310 ../../Gui.rst:525
+msgid "Element identified"
+msgstr ""
+
+#: ../../Gui.rst:311
+msgid "Identifies the element and the number of listed items is displayed."
+msgstr ""
+
+#: ../../Gui.rst:312 ../../Gui.rst:527
+msgid "Each element are associated to a distinctive icon."
+msgstr ""
+
+#: ../../Gui.rst:315
+msgid "Rapid filter"
+msgstr ""
+
+#: ../../Gui.rst:316
+msgid "Rapid filtering fields are proposed : “id”, “name” and “type”."
+msgstr ""
+
+#: ../../Gui.rst:318
+msgid "Any change on “id” and “name” will instantly filter data."
+msgstr ""
+
+#: ../../Gui.rst:320
+msgid ""
+"Search is considered as “contains”, so typing “1” in “id” will select “1”, "
+"“10”, “11”, “21”, “31” and so on."
+msgstr ""
+
+#: ../../Gui.rst:322
+msgid ""
+"Selecting a “type” in the combo box will restrict the list to the "
+"corresponding type."
+msgstr ""
+
+#: ../../Gui.rst:329 ../../Gui.rst:543
+msgid "Buttons"
+msgstr ""
+
+#: ../../Gui.rst:330
+msgid ""
+"Click on the “search button” |buttonIconSearch| to display the textual "
+"search area."
+msgstr ""
+
+#: ../../Gui.rst:331
+msgid ""
+"Click on the “advanced filter” |buttonIconFilter| to set advanced filter "
+"(see : :ref:`gui-advanced-filter-label`)."
+msgstr ""
+
+#: ../../Gui.rst:332
+msgid ""
+"Click on the “select columns to display” |buttonIconColumn| to set columns "
+"order (see : :ref:`gui-diplayed-columns-label`)."
+msgstr ""
+
+#: ../../Gui.rst:333
+msgid ""
+"Click on the “print the list” |buttonIconPrint| to get a printable version "
+"of the list."
+msgstr ""
+
+#: ../../Gui.rst:334
+msgid ""
+"Click on the “export to PDF format” |buttonIconPdf| to export it to PDF "
+"format."
+msgstr ""
+
+#: ../../Gui.rst:335
+msgid ""
+"Click on the “export to CSV format” |buttonIconCsv| to export all the data "
+"of the selected items into CSV format file (see : :ref:`gui-ExportCSV-"
+"format-label`)."
+msgstr ""
+
+#: ../../Gui.rst:336
+msgid ""
+"Click on the “create a new **item**” |buttonIconNew| to create a new item of"
+" element."
+msgstr ""
+
+#: ../../Gui.rst:339
+msgid "Show closed items flag"
+msgstr ""
+
+#: ../../Gui.rst:340
+msgid "Check the “show closed items” to list also closed items."
+msgstr ""
+
+#: ../../Gui.rst:343
+msgid "Columns header"
+msgstr ""
+
+#: ../../Gui.rst:344
+msgid ""
+"Click on the header of a column will sort the list on that column (first "
+"ascending, then descending)."
+msgstr ""
+
+#: ../../Gui.rst:348
+msgid "The sorting is not always on the displayed name."
+msgstr ""
+
+#: ../../Gui.rst:350
+msgid ""
+"if the sorted column is linked to a reference list with sort order value, "
+"the sorting is executed on this sort value"
+msgstr ""
+
+#: ../../Gui.rst:352
+msgid ""
+"for instance, here the sorting on the status is executed corresponding to "
+"Status sort order value, defined as a logic workflow for status change."
+msgstr ""
+
+#: ../../Gui.rst:355
+msgid "Items list"
+msgstr ""
+
+#: ../../Gui.rst:356
+msgid ""
+"Click on a line (any column) will display the corresponding item in the "
+"detail window."
+msgstr ""
+
+#: ../../Gui.rst:365
+msgid "Advanced filter"
+msgstr ""
+
+#: ../../Gui.rst:372
+msgid ""
+"The filter pop-up presents two areas : “Active filter” and “Saved filter”."
+msgstr ""
+
+#: ../../Gui.rst:376
+msgid "Active filter"
+msgstr ""
+
+#: ../../Gui.rst:377
+msgid ""
+"Enter new clause in Active filter : in “Add a filter or sort clause”, select"
+" the name of the field, the operator and the value for the clause."
+msgstr ""
+
+#: ../../Gui.rst:379
+msgid "Then click on |buttonAdd| to add the clause to the filter criteria."
+msgstr ""
+
+#: ../../Gui.rst:381
+msgid "Click on |buttonRemove| on a clause line to remove it."
+msgstr ""
+
+#: ../../Gui.rst:383
+msgid ""
+"Click on |buttonRemove| on the header of Filter criteria to remove all "
+"clauses."
+msgstr ""
+
+#: ../../Gui.rst:385
+msgid "This can also be done by clicking the “Clear” button."
+msgstr ""
+
+#: ../../Gui.rst:387
+msgid ""
+"When Filter criteria is correct, click on “OK” button to apply the filter to"
+" the list."
+msgstr ""
+
+#: ../../Gui.rst:389
+msgid "You can also click “Cancel” button to revert to previous filter."
+msgstr ""
+
+#: ../../Gui.rst:391
+msgid ""
+"At any step you can enter a filter name and click on |IconSave| to save the "
+"filter definition."
+msgstr ""
+
+#: ../../Gui.rst:0
+msgid "Operators detail"
+msgstr ""
+
+#: ../../Gui.rst:395
+msgid ""
+"**Sort** operator define a sort criteria, then possible values are "
+"“ascending” or “descending”."
+msgstr ""
+
+#: ../../Gui.rst:397
+msgid ""
+"**Amongst** operator allows multi-value selection is possible using "
+":kbd:`Control` key."
+msgstr ""
+
+#: ../../Gui.rst:401
+msgid ""
+"Filters are defined and stored for a user and a type of item (a screen)."
+msgstr ""
+
+#: ../../Gui.rst:403
+msgid ""
+"When a filter is applied to a type of item, coming back after moving to "
+"another type (another selection in the menu) will apply the previously "
+"defined filter."
+msgstr ""
+
+#: ../../Gui.rst:405
+msgid ""
+"After disconnection, currently applied filter is lost, but stored filters "
+"are saved."
+msgstr ""
+
+#: ../../Gui.rst:407
+msgid ""
+"Default filter (if selected) is also stored and will be automatically "
+"applied on next connection."
+msgstr ""
+
+#: ../../Gui.rst:410
+msgid "Saved filter"
+msgstr ""
+
+#: ../../Gui.rst:411
+msgid "Click on a Saved filter to retrieve its definition (filter criteria)."
+msgstr ""
+
+#: ../../Gui.rst:413
+msgid "Click on |buttonRemove| on a saved filter to delete it."
+msgstr ""
+
+#: ../../Gui.rst:415
+msgid ""
+"Click on “Default” button to set actual stored filter as default, kept even "
+"after disconnection."
+msgstr ""
+
+#: ../../Gui.rst:419
+msgid ""
+"When filter is applied, filter button in the list area is checked "
+"|buttonIconActiveFilter|."
+msgstr ""
+
+#: ../../Gui.rst:430
+msgid "Displayed columns"
+msgstr ""
+
+#: ../../Gui.rst:432
+msgid "This button opens the list of all available fields."
+msgstr ""
+
+#: ../../Gui.rst:434
+msgid "Just check the fields you want to display in the list."
+msgstr ""
+
+#: ../../Gui.rst:436
+msgid ""
+"You can reorder fields with drag & drop feature, using the selector area "
+"|buttonIconDrag|."
+msgstr ""
+
+#: ../../Gui.rst:438
+msgid ""
+"When a field is selected, you can change its width with the spinner button."
+msgstr ""
+
+#: ../../Gui.rst:0
+msgid "Width"
+msgstr ""
+
+#: ../../Gui.rst:442
+msgid "Width is in % of total list width."
+msgstr ""
+
+#: ../../Gui.rst:444
+msgid "Minimum width is 1%. Maximum width is 50%."
+msgstr ""
+
+#: ../../Gui.rst:446
+msgid ""
+"So, if you select to many columns or set columns width too large, you may "
+"have total width over 100%."
+msgstr ""
+
+#: ../../Gui.rst:448
+msgid "This will be highlighted beside buttons."
+msgstr ""
+
+#: ../../Gui.rst:450
+msgid ""
+"This may lead to strange display, over page width, on List, reports or pdf "
+"export, depending on browser."
+msgstr ""
+
+#: ../../Gui.rst:452
+msgid ""
+"It is possible to reset the list display to its default format using the "
+"\"reset\" button."
+msgstr ""
+
+#: ../../Gui.rst:454
+msgid "id and name"
+msgstr ""
+
+#: ../../Gui.rst:456
+msgid ""
+"“id” and “name” are mandatory fileds : they cannot be removed from display."
+msgstr ""
+
+#: ../../Gui.rst:458
+msgid ""
+"The “name” width is automatically adjusted so that total list width is 100%."
+msgstr ""
+
+#: ../../Gui.rst:460
+msgid "Take care that “name” width cannot be less than 10%."
+msgstr ""
+
+#: ../../Gui.rst:475
+msgid "Export to CSV format"
+msgstr ""
+
+#: ../../Gui.rst:477
+msgid "The Export pop-up allows to choose fields to export."
+msgstr ""
+
+#: ../../Gui.rst:479
+msgid ""
+"The fields are presented in the order as they appear in the item "
+"description."
+msgstr ""
+
+#: ../../Gui.rst:0
+msgid "Selecting fields"
+msgstr ""
+
+#: ../../Gui.rst:483
+msgid "You can easily check or uncheck all fields to export."
+msgstr ""
+
+#: ../../Gui.rst:485
+msgid ""
+"You can also easily restrict selected fields to the ones that are actually "
+"displayed in the list."
+msgstr ""
+
+#: ../../Gui.rst:0
+msgid "id or name for references"
+msgstr ""
+
+#: ../../Gui.rst:489
+msgid ""
+"For fields that reference another item (displayed as lists in the item "
+"description), you can select to export either the id or the clear name of "
+"the referenced item."
+msgstr ""
+
+#: ../../Gui.rst:499
+msgid ""
+"CSV exported files can directly be imported through the Import "
+"functionality."
+msgstr ""
+
+#: ../../Gui.rst:526
+msgid "Identifies the element and the item id number."
+msgstr ""
+
+#: ../../Gui.rst:530
+msgid "Creation information"
+msgstr ""
+
+#: ../../Gui.rst:531
+msgid "Information about item creation : issuer and date."
+msgstr ""
+
+#: ../../Gui.rst:535
+msgid "Administrator can change information."
+msgstr ""
+
+#: ../../Gui.rst:544
+msgid "Click on |buttonIconNew| to create new item."
+msgstr ""
+
+#: ../../Gui.rst:546
+msgid "Click on |buttonIconSave| to save the changes."
+msgstr ""
+
+#: ../../Gui.rst:548
+msgid "You can rapidly save with :kbd:`Control-s`."
+msgstr ""
+
+#: ../../Gui.rst:550
+msgid "Click on |buttonIconPrint| to get a printable version of the detail."
+msgstr ""
+
+#: ../../Gui.rst:552
+msgid ""
+"Click on |buttonIconPdf|  to get a printable version of the detail in PDF "
+"format."
+msgstr ""
+
+#: ../../Gui.rst:554
+msgid ""
+"Click on |buttonIconCopy| to copy the current item (see : :ref:`gui-"
+"copyAndTransform-item-label`)."
+msgstr ""
+
+#: ../../Gui.rst:556
+msgid "Click on |buttonIconUndo| to cancel ongoing changes."
+msgstr ""
+
+#: ../../Gui.rst:558
+msgid "Click on |buttonIconDelete| to delete the item."
+msgstr ""
+
+#: ../../Gui.rst:560
+msgid "Click on |buttonIconRefresh| to refresh the display."
+msgstr ""
+
+#: ../../Gui.rst:562
+msgid ""
+"Click on |buttonIconEmail| to send detail of item by email (see : :ref:`gui-"
+"email-detail-label`)."
+msgstr ""
+
+#: ../../Gui.rst:564
+msgid ""
+"Click on |buttonIconMultipleUpdate| to update several items in one operation"
+" (see : :ref:`gui-multiple-update-label`)."
+msgstr ""
+
+#: ../../Gui.rst:566
+msgid "Click on |buttonIconShowChecklist| to show checklist."
+msgstr ""
+
+#: ../../Gui.rst:568
+msgid ""
+"Available only when user set user parameter \"display checklists\" to \"On "
+"request\"."
+msgstr ""
+
+#: ../../Gui.rst:569
+msgid ""
+"For detail of checklist information, see :ref:`gui-checklist-section-label`."
+msgstr ""
+
+#: ../../Gui.rst:571
+msgid "Click on |buttonIconShowHistory| to show history of changes."
+msgstr ""
+
+#: ../../Gui.rst:573
+msgid ""
+"Available only when user set user parameter \"display history\" to \"On "
+"request\"."
+msgstr ""
+
+#: ../../Gui.rst:574
+msgid ""
+"For detail of history of changes information, see :ref:`gui-chg-history-"
+"section-label`."
+msgstr ""
+
+#: ../../Gui.rst:578
+msgid "Some buttons are not clickable when change are ongoing."
+msgstr ""
+
+#: ../../Gui.rst:580
+msgid "|buttonIconUndo| button is clickable only when changes are ongoing."
+msgstr ""
+
+#: ../../Gui.rst:584
+msgid ""
+"When changes are ongoing, you can not select another item or another menu "
+"item."
+msgstr ""
+
+#: ../../Gui.rst:586
+msgid "Save or cancel ongoing changes first."
+msgstr ""
+
+#: ../../Gui.rst:589
+msgid "Drop file area"
+msgstr ""
+
+#: ../../Gui.rst:590
+msgid "This area allows to add a attachement file in item."
+msgstr ""
+
+#: ../../Gui.rst:592
+msgid "You can drag and drop file."
+msgstr ""
+
+#: ../../Gui.rst:594
+msgid "Or click on area to select file."
+msgstr ""
+
+#: ../../Gui.rst:598
+msgid "Sections"
+msgstr ""
+
+#: ../../Gui.rst:599
+msgid "The fields are regrouped under section."
+msgstr ""
+
+#: ../../Gui.rst:600
+msgid "All sections can be folded or unfolded, clicking on the section title."
+msgstr ""
+
+#: ../../Gui.rst:601
+msgid "The sections are organized in columns."
+msgstr ""
+
+#: ../../Gui.rst:603
+msgid "Maximum three columns can be displayed."
+msgstr ""
+
+#: ../../Gui.rst:605
+msgid ""
+"Some sections are displayed on almost all screens, see : :ref:`gui-sections-"
+"label`"
+msgstr ""
+
+#: ../../Gui.rst:614
+msgid "Copy item"
+msgstr ""
+
+#: ../../Gui.rst:616
+msgid "Allows copied item of element."
+msgstr ""
+
+#: ../../Gui.rst:617
+msgid ""
+"Options displayed in pop-up depends on whether an item is simple or complex."
+msgstr ""
+
+#: ../../Gui.rst:0
+msgid "Simple items"
+msgstr ""
+
+#: ../../Gui.rst:627
+msgid ""
+"Simple items (environment parameters, lists, …) can only be copied “as is”."
+msgstr ""
+
+#: ../../Gui.rst:0
+msgid "Complex items"
+msgstr ""
+
+#: ../../Gui.rst:631
+msgid ""
+"Complex items (Tickets, Activities, …) it is possible to copy them into new "
+"kind of elements."
+msgstr ""
+
+#: ../../Gui.rst:633
+msgid ""
+"For instance, it is possible to copy a Ticket (the request) into an Activity"
+" (the task to manage the request)."
+msgstr ""
+
+#: ../../Gui.rst:635
+msgid "It is possible to select :"
+msgstr ""
+
+#: ../../Gui.rst:637
+msgid "New kind of element."
+msgstr ""
+
+#: ../../Gui.rst:638
+msgid "Select new type (corresponding to the kind of element)."
+msgstr ""
+
+#: ../../Gui.rst:639
+msgid "Change the name."
+msgstr ""
+
+#: ../../Gui.rst:640
+msgid ""
+"Select whether the initial element will be indicated as origin of the copied"
+" one."
+msgstr ""
+
+#: ../../Gui.rst:641
+msgid ""
+"For main items, it is also possible to choose to copy links, attachments and"
+" notes."
+msgstr ""
+
+#: ../../Gui.rst:645
+msgid ""
+"For Projects and Activities, it is also possible to copy the hierarchic "
+"structure of activities (sub-projects, sub-activities)."
+msgstr ""
+
+#: ../../Gui.rst:647
+msgid "The new item are the status \"copied\"."
+msgstr ""
+
+#: ../../Gui.rst:652
+msgid "Email detail"
+msgstr ""
+
+#: ../../Gui.rst:654
+msgid ""
+"It is possible to send an informative email to defined recipients list."
+msgstr ""
+
+#: ../../Gui.rst:656
+msgid "**message**"
+msgstr ""
+
+#: ../../Gui.rst:658
+msgid ""
+"The message that will be included in the body of the email, in addition to "
+"complete description of item."
+msgstr ""
+
+#: ../../Gui.rst:669
+msgid "Multiple update"
+msgstr ""
+
+#: ../../Gui.rst:671
+msgid "To update several items in one operation."
+msgstr ""
+
+#: ../../Gui.rst:673
+msgid "This will switch to new detail view :"
+msgstr ""
+
+#: ../../Gui.rst:680
+msgid ""
+"At this step, although the list does not seem to have changed, but it is now"
+" multi-selectable :"
+msgstr ""
+
+#: ../../Gui.rst:687
+msgid ""
+"Select lines of items you want to update, specify update and save : the "
+"update will be applied to all the items (if possible) and a report will be "
+"displayed on the right of the Multiple mode detail screen."
+msgstr ""
+
+#: ../../Gui.rst:702
+msgid "Combo list fields"
+msgstr ""
+
+#: ../../Gui.rst:704
+msgid ""
+"Combo list field allows to search, view or create item associate with the "
+"field."
+msgstr ""
+
+#: ../../Gui.rst:711 ../../Gui.rst:788
+msgid "Example"
+msgstr ""
+
+#: ../../Gui.rst:714
+msgid "Click on |comboArrowDown| to get the list of value."
+msgstr ""
+
+#: ../../Gui.rst:716
+msgid "Click on |buttonIconSearch| to access item details."
+msgstr ""
+
+#: ../../Gui.rst:718
+msgid "The action depends on whether the element is selected or not."
+msgstr ""
+
+#: ../../Gui.rst:720 ../../Gui.rst:768
+msgid "Click on |iconGoto| will directly go to the selected item."
+msgstr ""
+
+#: ../../Gui.rst:724
+msgid "Access to view or create item depends on your access rights."
+msgstr ""
+
+#: ../../Gui.rst:726
+msgid "Some buttons become not available."
+msgstr ""
+
+#: ../../Gui.rst:729
+msgid "Element is selected"
+msgstr ""
+
+#: ../../Gui.rst:730
+msgid "If element is selected in the combo, detail of element is displayed."
+msgstr ""
+
+#: ../../Gui.rst:737
+msgid "Click on |buttonIconSearch| to search an item."
+msgstr ""
+
+#: ../../Gui.rst:738 ../../Gui.rst:755
+msgid "Click on |buttonIconUndo| to close the window."
+msgstr ""
+
+#: ../../Gui.rst:745
+msgid "No element is selected"
+msgstr ""
+
+#: ../../Gui.rst:746
+msgid ""
+"If no element is selected, list of elements is displayed, allowing to select"
+" an item."
+msgstr ""
+
+#: ../../Gui.rst:753
+msgid "Click on |buttonIconSelect| to select item."
+msgstr ""
+
+#: ../../Gui.rst:754
+msgid "Click on |buttonIconNew| to create a new item."
+msgstr ""
+
+#: ../../Gui.rst:757
+msgid "Header window"
+msgstr ""
+
+#: ../../Gui.rst:759
+msgid "You have access to rapid filter, search button and advanced filter."
+msgstr ""
+
+#: ../../Gui.rst:760
+msgid "For detail, see : :ref:`gui-list-window-label`."
+msgstr ""
+
+#: ../../Gui.rst:762
+msgid "Select several items"
+msgstr ""
+
+#: ../../Gui.rst:764
+msgid ""
+"Some elements is possible to select several items, use :kbd:`Control` or "
+":kbd:`Shift`."
+msgstr ""
+
+#: ../../Gui.rst:767
+msgid "Go to selected item"
+msgstr ""
+
+#: ../../Gui.rst:770
+msgid "Return to last screen"
+msgstr ""
+
+#: ../../Gui.rst:772
+msgid "Click on |buttonIconBackNavigation| to return on last screen."
+msgstr ""
+
+#: ../../Gui.rst:774
+msgid ""
+"For detail, see **Navigation buttons** in :ref:`gui-top-bar-label` section."
+msgstr ""
+
+#: ../../Gui.rst:781
+msgid "Long text fields"
+msgstr ""
+
+#: ../../Gui.rst:790
+msgid "Long text fields allow to write description, results, notes, ..."
+msgstr ""
+
+#: ../../Gui.rst:792
+msgid "A mini editor is provided."
+msgstr ""
+
+#: ../../Gui.rst:794
+msgid "Text zone is expendable."
+msgstr ""
+
+#: ../../Gui.rst:796
+msgid "Editor mode always on"
+msgstr ""
+
+#: ../../Gui.rst:798
+msgid "This parameter defines editor is always on in long text fields."
+msgstr ""
+
+#: ../../Gui.rst:800 ../../Gui.rst:829 ../../Gui.rst:843 ../../Gui.rst:859
+#: ../../Gui.rst:926 ../../Gui.rst:1173
+msgid ""
+"See this parameter under \"Graphic interface behavior\" section in :ref"
+":`user-parameters-label`."
+msgstr ""
+
+#: ../../Gui.rst:822
+msgid "Log out button"
+msgstr ""
+
+#: ../../Gui.rst:823
+msgid "Allow to disconnect user."
+msgstr ""
+
+#: ../../Gui.rst:825
+msgid "confirm quit application"
+msgstr ""
+
+#: ../../Gui.rst:827
+msgid ""
+"This parameter defines whether a confirm disconnection will be displayed "
+"before."
+msgstr ""
+
+#: ../../Gui.rst:832
+msgid "User parameters button"
+msgstr ""
+
+#: ../../Gui.rst:833
+msgid "Allow to access user parameters."
+msgstr ""
+
+#: ../../Gui.rst:836
+msgid "Hide and show menu button"
+msgstr ""
+
+#: ../../Gui.rst:837
+msgid "Allow to hide or show menu button"
+msgstr ""
+
+#: ../../Gui.rst:839
+msgid "hide menu"
+msgstr ""
+
+#: ../../Gui.rst:841
+msgid "This parameter defines whether the menu is hidden by default."
+msgstr ""
+
+#: ../../Gui.rst:846
+msgid "Switched mode button"
+msgstr ""
+
+#: ../../Gui.rst:847
+msgid ""
+"Allow to enable or disable switched mode between list and detail windows."
+msgstr ""
+
+#: ../../Gui.rst:849
+msgid "Window selected is displayed in \"full screen\" mode."
+msgstr ""
+
+#: ../../Gui.rst:851
+msgid "Hidden window are replaced by a gray bar."
+msgstr ""
+
+#: ../../Gui.rst:853
+msgid "Click on he gray bar to switch between windows."
+msgstr ""
+
+#: ../../Gui.rst:855
+msgid "switched mode"
+msgstr ""
+
+#: ../../Gui.rst:857
+msgid "This parameter defines wheater switched mode is enable or not."
+msgstr ""
+
+#: ../../Gui.rst:863
+msgid "Database name"
+msgstr ""
+
+#: ../../Gui.rst:864
+msgid "Display database name."
+msgstr ""
+
+#: ../../Gui.rst:867
+msgid "Version button"
+msgstr ""
+
+#: ../../Gui.rst:868
+msgid "Display application version."
+msgstr ""
+
+#: ../../Gui.rst:870
+msgid "Click on button access to ProjeQtOr site."
+msgstr ""
+
+#: ../../Gui.rst:880
+msgid "Common sections"
+msgstr ""
+
+#: ../../Gui.rst:882
+msgid "Some sections are displayed on almost all screens."
+msgstr ""
+
+#: ../../Gui.rst:884
+msgid ""
+"Those sections allows to set information or link information to item of the "
+"element."
+msgstr ""
+
+#: ../../Gui.rst:887
+msgid "Section: Description"
+msgstr ""
+
+#: ../../Gui.rst:889
+msgid "This section allows to put information about item of the element."
+msgstr ""
+
+#: ../../Gui.rst:892
+msgid "Section: Treatment"
+msgstr ""
+
+#: ../../Gui.rst:894
+msgid ""
+"This section allows to put information treatment done on the item of the "
+"element."
+msgstr ""
+
+#: ../../Gui.rst:896
+msgid "Mostly information under this section are :"
+msgstr ""
+
+#: ../../Gui.rst:898
+msgid "Status and Dates"
+msgstr ""
+
+#: ../../Gui.rst:899
+msgid "Responsible"
+msgstr ""
+
+#: ../../Gui.rst:900
+msgid "Result, Comment"
+msgstr ""
+
+#: ../../Gui.rst:901
+msgid "And so on"
+msgstr ""
+
+#: ../../Gui.rst:906
+msgid "Section: Checklist"
+msgstr ""
+
+#: ../../Gui.rst:908
+msgid ""
+"If a checklist is defined for the current element a checklist section will "
+"appear."
+msgstr ""
+
+#: ../../Gui.rst:910
+msgid "The user just has to check information corresponding to the situation."
+msgstr ""
+
+#: ../../Gui.rst:912
+msgid "When done, the user name and checked date are recorded and displayed."
+msgstr ""
+
+#: ../../Gui.rst:914
+msgid ""
+"Each line can get an extra comment, as well a globally on the checklist."
+msgstr ""
+
+#: ../../Gui.rst:918
+msgid "How to define a checklist, see: :ref:`ctrlAuto-checklist-def-label`."
+msgstr ""
+
+#: ../../Gui.rst:920
+msgid "display checklists"
+msgstr ""
+
+#: ../../Gui.rst:922
+msgid "This parameter defines whether the checklist section is hidden or not."
+msgstr ""
+
+#: ../../Gui.rst:924
+msgid ""
+"If the value \"On request\" is set |buttonIconShowChecklist| button appear "
+"on detail header window."
+msgstr ""
+
+#: ../../Gui.rst:936
+msgid "Section: Linked element"
+msgstr "Section: Éléments liés"
+
+#: ../../Gui.rst:938
+msgid ""
+"Most items can be linked to most of all other items (Actions, Activities, "
+"Tickets, Documents, …)."
+msgstr ""
+
+#: ../../Gui.rst:942
+msgid "Linked elements must belong to the same project."
+msgstr ""
+
+#: ../../Gui.rst:944
+msgid ""
+"Click |buttonAdd| on the corresponding section to add a link to an element. "
+"A “add link” pop up will be displayed."
+msgstr ""
+
+#: ../../Gui.rst:946
+msgid "Select the linked element in the list and validate (OK)."
+msgstr ""
+
+#: ../../Gui.rst:948
+msgid "Click on |buttonRemove| to delete the corresponding link."
+msgstr ""
+
+#: ../../Gui.rst:955
+msgid "Add link Popup"
+msgstr ""
+
+#: ../../Gui.rst:0
+msgid "Linked element"
+msgstr ""
+
+#: ../../Gui.rst:959
+msgid "Click on |buttonIconSearch| to show element detail."
+msgstr ""
+
+#: ../../Gui.rst:960
+msgid ""
+"Depends on whether the element is selected or not a pop up is displayed."
+msgstr ""
+
+#: ../../Gui.rst:961
+msgid "Detail about pop up, see :ref:`gui-combo-list-fields-label`"
+msgstr ""
+
+#: ../../Gui.rst:964
+msgid "Linked elements information"
+msgstr ""
+
+#: ../../Gui.rst:971 ../../Gui.rst:1060 ../../Gui.rst:1118 ../../Gui.rst:1151
+msgid "Field"
+msgstr ""
+
+#: ../../Gui.rst:972 ../../Gui.rst:1061 ../../Gui.rst:1119 ../../Gui.rst:1152
+msgid "Description"
+msgstr ""
+
+#: ../../Gui.rst:973
+msgid "Element"
+msgstr ""
+
+#: ../../Gui.rst:974
+msgid "Type and id of the linked element."
+msgstr ""
+
+#: ../../Gui.rst:975
+msgid "Name"
+msgstr ""
+
+#: ../../Gui.rst:976
+msgid "Name of the linked element."
+msgstr ""
+
+#: ../../Gui.rst:977 ../../Gui.rst:1066 ../../Gui.rst:1124 ../../Gui.rst:1161
+msgid "Date"
+msgstr ""
+
+#: ../../Gui.rst:978
+msgid "Date of creation of the link."
+msgstr ""
+
+#: ../../Gui.rst:979 ../../Gui.rst:1068 ../../Gui.rst:1126 ../../Gui.rst:1163
+msgid "User"
+msgstr ""
+
+#: ../../Gui.rst:980
+msgid "User who created the link."
+msgstr ""
+
+#: ../../Gui.rst:981
+msgid "Status"
+msgstr ""
+
+#: ../../Gui.rst:982
+msgid "Actual status of the linked element."
+msgstr ""
+
+#: ../../Gui.rst:0
+msgid "Reciprocally interrelated"
+msgstr ""
+
+#: ../../Gui.rst:987
+msgid ""
+"If Item A is linked to Item B, Item B is automatically linked to Item A."
+msgstr ""
+
+#: ../../Gui.rst:0
+msgid "Go to"
+msgstr ""
+
+#: ../../Gui.rst:991
+msgid "Click on the name of a item in the link list will directly move to it."
+msgstr ""
+
+#: ../../Gui.rst:0
+msgid "Link with Document"
+msgstr ""
+
+#: ../../Gui.rst:995
+msgid ""
+"If you select a Document to link, you’ll have the possibility to select a "
+"version of the document, so that it is the version that will be linked."
+msgstr ""
+
+#: ../../Gui.rst:996
+msgid ""
+"For Documents and Document Versions, a direct link to the corresponding file"
+" is proposed."
+msgstr ""
+
+#: ../../Gui.rst:997
+msgid ""
+"For document, the last version of document will be proposed, the proposed "
+"download will change with document lifecycle."
+msgstr ""
+
+#: ../../Gui.rst:1004
+msgid "Section: Attachments"
+msgstr "Section: Fichiers attachés"
+
+#: ../../Gui.rst:1006
+msgid "Users can attach files or hyperlinks on most of items."
+msgstr ""
+
+#: ../../Gui.rst:1008
+msgid ""
+"Click on |buttonAdd| to add a attachment to an element. A “Attachment file” "
+"pop up will be displayed."
+msgstr ""
+
+#: ../../Gui.rst:1010
+msgid ""
+"Click on |iconLink| to add hyperlink to an element. A “Attachment hyperlink”"
+" pop up will be displayed."
+msgstr ""
+
+#: ../../Gui.rst:1012
+msgid ""
+"Select the attachment depends on either is a file or a hyperlink and "
+"validate (OK)."
+msgstr ""
+
+#: ../../Gui.rst:1014
+msgid "Click on |iconDownload| to download attachment file."
+msgstr ""
+
+#: ../../Gui.rst:1016
+msgid "Click on |iconLink| to access to hyperlink."
+msgstr ""
+
+#: ../../Gui.rst:1018
+msgid "Click on |buttonRemove| to delete the attachment."
+msgstr ""
+
+#: ../../Gui.rst:1021
+msgid "Attachment file"
+msgstr ""
+
+#: ../../Gui.rst:1022
+msgid "To upload file :"
+msgstr ""
+
+#: ../../Gui.rst:1024
+msgid "Select file with \"Browse\" button."
+msgstr ""
+
+#: ../../Gui.rst:1025
+msgid "Drop the file in \"drop files here\" area."
+msgstr ""
+
+#: ../../Gui.rst:1032
+msgid "Attachment file Pop up"
+msgstr ""
+
+#: ../../Gui.rst:1036
+msgid "Hyperlink"
+msgstr ""
+
+#: ../../Gui.rst:1037
+msgid "Set hyperlink in hyperlink field."
+msgstr ""
+
+#: ../../Gui.rst:1044
+msgid "Attachment hyperlink Pop up"
+msgstr ""
+
+#: ../../Gui.rst:1047 ../../Gui.rst:1105
+msgid "Attachment visibilty"
+msgstr ""
+
+#: ../../Gui.rst:1048 ../../Gui.rst:1106
+msgid "public : Visible to anyone."
+msgstr ""
+
+#: ../../Gui.rst:1049 ../../Gui.rst:1107
+msgid "team : Visible to every member of the creator’s team."
+msgstr ""
+
+#: ../../Gui.rst:1050 ../../Gui.rst:1108
+msgid "private :  Visible only to creator."
+msgstr ""
+
+#: ../../Gui.rst:1053
+msgid "Attachment information"
+msgstr ""
+
+#: ../../Gui.rst:1062 ../../Gui.rst:1120
+msgid ":term:`Id`"
+msgstr ""
+
+#: ../../Gui.rst:1063
+msgid "Unique Id for the attachment."
+msgstr ""
+
+#: ../../Gui.rst:1064
+msgid "File"
+msgstr ""
+
+#: ../../Gui.rst:1065
+msgid "File name or hyperlink."
+msgstr ""
+
+#: ../../Gui.rst:1067
+msgid "Date of creation of the attachment."
+msgstr ""
+
+#: ../../Gui.rst:1069
+msgid "User who created the attchment."
+msgstr ""
+
+#: ../../Gui.rst:1077
+msgid "Section: Notes"
+msgstr ""
+
+#: ../../Gui.rst:1079
+msgid "Users can add notes on most items."
+msgstr ""
+
+#: ../../Gui.rst:1081
+msgid ""
+"Notes are comments, that can be shared to track some information or "
+"progress."
+msgstr ""
+
+#: ../../Gui.rst:1083
+msgid ""
+"Click on |buttonAdd| to add a note to an element. A “note” pop up will be "
+"displayed."
+msgstr ""
+
+#: ../../Gui.rst:1085
+msgid "Click on |buttonEdit| to edit the note."
+msgstr ""
+
+#: ../../Gui.rst:1087
+msgid "Click on |buttonRemove| to delete the note."
+msgstr ""
+
+#: ../../Gui.rst:1094
+msgid "Note Pop up"
+msgstr ""
+
+#: ../../Gui.rst:1097
+msgid "Predefined note"
+msgstr ""
+
+#: ../../Gui.rst:1098
+msgid ""
+"Predefined note list of value appear whetear a prefedefined note is created."
+msgstr ""
+
+#: ../../Gui.rst:1100
+msgid ""
+"Selecting an item in the list will automatically fill in the note text "
+"field."
+msgstr ""
+
+#: ../../Gui.rst:1102
+msgid ""
+"How to define predefined note, see: :ref:`ctrlAuto-predefined-notes-label`."
+msgstr ""
+
+#: ../../Gui.rst:1111
+msgid "Note information"
+msgstr ""
+
+#: ../../Gui.rst:1121
+msgid "Unique Id for the note."
+msgstr ""
+
+#: ../../Gui.rst:1122
+msgid "Note"
+msgstr ""
+
+#: ../../Gui.rst:1123
+msgid "Text of the note."
+msgstr ""
+
+#: ../../Gui.rst:1125
+msgid "Date of creation or modification of the note."
+msgstr ""
+
+#: ../../Gui.rst:1127
+msgid "Name of the user who created the note."
+msgstr ""
+
+#: ../../Gui.rst:1135
+msgid "Section: Change history"
+msgstr "Section: Historique des modifications"
+
+#: ../../Gui.rst:1137
+msgid "All the changes items are tracked."
+msgstr ""
+
+#: ../../Gui.rst:1139
+msgid "They are stored and displayed on each item."
+msgstr ""
+
+#: ../../Gui.rst:1141
+msgid ""
+"On creation, just an insert operation is stored, not all the initial values "
+"on creation."
+msgstr ""
+
+#: ../../Gui.rst:1144
+msgid "Change history information"
+msgstr ""
+
+#: ../../Gui.rst:1153
+msgid "Operation"
+msgstr ""
+
+#: ../../Gui.rst:1154
+msgid "The operation on the item (insert or update)."
+msgstr ""
+
+#: ../../Gui.rst:1155
+msgid "Data"
+msgstr ""
+
+#: ../../Gui.rst:1156
+msgid "The field modified."
+msgstr ""
+
+#: ../../Gui.rst:1157
+msgid "Value before"
+msgstr ""
+
+#: ../../Gui.rst:1158
+msgid "The value of the field before the update."
+msgstr ""
+
+#: ../../Gui.rst:1159
+msgid "Value after"
+msgstr ""
+
+#: ../../Gui.rst:1160
+msgid "The value of the field after the update."
+msgstr ""
+
+#: ../../Gui.rst:1162
+msgid "Date of change operation."
+msgstr ""
+
+#: ../../Gui.rst:1164
+msgid "Name of the user who operated the change."
+msgstr ""
+
+#: ../../Gui.rst:1167
+msgid "display history"
+msgstr ""
+
+#: ../../Gui.rst:1169
+msgid ""
+"This parameter defines whether the display history section is hidden or not."
+msgstr ""
+
+#: ../../Gui.rst:1171
+msgid ""
+"If the value \"On request\" is set |buttonIconShowHistory| button appear on "
+"the detail header window."
+msgstr ""
+
+#: ../../Gui.rst:1180
+msgid "Alerts"
+msgstr ""
+
+#: ../../Gui.rst:1182
+msgid ""
+"You may receive some information displayed as pop-up on the bottom right "
+"corner of the screen."
+msgstr ""
+
+#: ../../Gui.rst:1184
+msgid "Three kinds of information may be displayed :"
+msgstr ""
+
+#: ../../Gui.rst:1186
+msgid "Information"
+msgstr ""
+
+#: ../../Gui.rst:1187
+msgid "Warning"
+msgstr ""
+
+#: ../../Gui.rst:1188
+msgid "Alert"
+msgstr ""
+
+#: ../../Gui.rst:1190
+msgid "Two possible actions :"
+msgstr ""
+
+#: ../../Gui.rst:1192
+msgid ""
+"You can select to remind you in a given number of minutes (message will "
+"close and appear  again in the given number of minutes)."
+msgstr ""
+
+#: ../../Gui.rst:1193
+msgid "You can mark it as read to definitively hide it."
+msgstr ""
+
+#: ../../Gui.rst:1195
+msgid "An alert can be sent by the administrator or indicator calculation."
+msgstr ""
+
+#: ../../Gui.rst:1197
+msgid "Administrator"
+msgstr ""
+
+#: ../../Gui.rst:1199
+msgid "Administrator can send alert by administration console."
+msgstr ""
+
+#: ../../Gui.rst:1201
+msgid "Indicator calculation"
+msgstr ""
+
+#: ../../Gui.rst:1203
+msgid "Indicator calculation send only warning and alert message."
+msgstr ""
+
+#: ../../Gui.rst:1205
+msgid ""
+"Alert coming from indicator calculation message contains more information :"
+msgstr ""
+
+#: ../../Gui.rst:1207
+msgid "Item id and type."
+msgstr ""
+
+#: ../../Gui.rst:1209
+msgid "Indicator description."
+msgstr ""
+
+#: ../../Gui.rst:1211
+msgid "Target value."
+msgstr ""
+
+#: ../../Gui.rst:1213
+msgid "Alert or warning value."
+msgstr ""
+
+#: ../../Gui.rst:1220
+msgid "Themes"
+msgstr ""
+
+#: ../../Gui.rst:1222
+msgid "Users can select colors Theme to display the interface."
+msgstr ""
+
+#: ../../Gui.rst:1224
+msgid "New theme is automatically applied when selected."
+msgstr ""
+
+#: ../../Gui.rst:1226
+msgid "theme"
+msgstr ""
+
+#: ../../Gui.rst:1228
+msgid "This parameter defines the theme to display."
+msgstr ""
+
+#: ../../Gui.rst:1230 ../../Gui.rst:1254
+msgid "Save parameters to retrieve this theme on each new connection."
+msgstr ""
+
+#: ../../Gui.rst:1240
+msgid "Multilingual"
+msgstr ""
+
+#: ../../Gui.rst:1242
+msgid "ProjeQtOr is multilingual."
+msgstr ""
+
+#: ../../Gui.rst:1244
+msgid "Each user can choose the language to display all the captions."
+msgstr ""
+
+#: ../../Gui.rst:1248
+msgid "Of course, data is displayed as input, no translation is operated."
+msgstr ""
+
+#: ../../Gui.rst:1250
+msgid "language"
+msgstr ""
+
+#: ../../Gui.rst:1252
+msgid "This parameter defines language is used to display captions."
+msgstr ""
+
+#: ../../Gui.rst:71
+msgid "menu buttons"
+msgstr ""
+
+#: ../../Gui.rst:92
+msgid "project selector"
+msgstr ""
+
+#: ../../Gui.rst:124
+msgid "navigation buttons"
+msgstr ""
+
+#: ../../Gui.rst:999
+msgid "attachment - section"
+msgstr ""
+
+#: ../../Gui.rst:1072
+msgid "note - section"
+msgstr ""
+
+#: ../../Gui.rst:1130
+msgid "history - section"
+msgstr ""
+
+#~ msgid "see : :ref:`reference-receivers-label` for receivers detail."
+#~ msgstr ""
