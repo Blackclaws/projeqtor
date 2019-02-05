@@ -56,6 +56,7 @@ if ($mode=='after') {
 PlanningElement::$_noDispatch=true;
 $needRefreshInserted=false;
 Sql::beginTransaction();
+$wbsArray=array();
 foreach ($arrayFrom as $from) {
   $idFrom=substr($from, 6); // validated to be numeric value in SqlElement base constructor
   $idTo=substr($to, 6); // validated to be numeric value in SqlElement base constructor
@@ -68,6 +69,7 @@ foreach ($arrayFrom as $from) {
   } else {
     $task=GlobalPlanningElement::getTaskFromPlanningId($idFrom);
     $result=$task->moveTo($idTo,$mode);
+    $wbsArray[]=$task->id;
   }
   if (getLastOperationStatus($result)!='OK') break; // Stop loop of moves
   if ($task->refType=='Project' and ! $needRefreshInserted) {
@@ -75,6 +77,13 @@ foreach ($arrayFrom as $from) {
     $needRefreshInserted=true;
   }
 }
-if (isset($result) and getLastOperationStatus($result)=='OK') PlanningElement::moveTaskFinalize();
+if (isset($result) and getLastOperationStatus($result)=='OK') {
+  PlanningElement::moveTaskFinalize();
+  PlanningElement::$_noDispatch=false;
+  foreach($wbsArray as $wbsId) {
+    $pe=new PlanningElement($wbsId);
+    $pe->renumberWbs();
+  }
+}
 displayLastOperationStatus($result);
 ?>
