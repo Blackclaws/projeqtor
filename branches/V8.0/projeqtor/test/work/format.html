@@ -1,0 +1,339 @@
+<div class="container" id="theTable"
+  dojoType="dijit.layout.BorderContainer"
+  xstyle="width:100%;height: 100%;overflow: hidden;">
+<div xclass="scrollLeft" xid="leftsideContent"
+  dojoType="dijit.layout.ContentPane" region="left" splitter="true"
+  xstyle="width:425px; height:100%;">
+<DIV class="scrollLeft" id="leftside" style="width: 585px;">
+<TABLE dojoType="dojo.dnd.Source" withHandles="false"
+  jsId="dndSourceTable" id="dndSourceTable" class="container"
+  xclass="ganttTable">
+  <TBODY>
+    <TR class="ganttHeight">
+      <TD class="ganttLeftTopLine" style="width: 15px;"></TD>
+      <TD class="ganttLeftTopLine" style="width: 290px;"><span class="nobr">&nbsp;Scale&nbsp;:&nbsp;&nbsp;<INPUT
+        TYPE=RADIO NAME="radFormattop" VALUE="day" checked>day&nbsp;&nbsp;<INPUT
+        TYPE=RADIO NAME="radFormattop" onclick=JSGantt.changeFormat(
+        "week",g) VALUE="week">week&nbsp;&nbsp;<INPUT TYPE=RADIO
+        NAME="radFormattop" onclick=JSGantt.changeFormat(
+        "month",g) VALUE="month">month&nbsp;&nbsp;</span></TD>
+      <TD class="ganttLeftTopLine" style="width: 70px;"></TD>
+      <TD class="ganttLeftTopLine" style="width: 50px;"></TD>
+      <TD class="ganttLeftTopLine" style="width: 80px;"></TD>
+      <TD class="ganttLeftTopLine" style="width: 80px;"></TD>
+    </TR>
+    <TR class="ganttHeight">
+      <TD class="ganttLeftTitle"></TD>
+      <TD class="ganttLeftTitle"
+        style="border-left: 0px; text-align: left;">task</TD>
+      <TD class="ganttLeftTitle" nowrap>duration</TD>
+      <TD class="ganttLeftTitle" nowrap>%</TD>
+      <TD class="ganttLeftTitle" nowrap>start</TD>
+      <TD class="ganttLeftTitle" nowrap>end</TD>
+    </TR>
+    <TR id=child_5 class="dojoDndItem ganttTaskgroup"
+      xonMouseover=JSGantt.ganttMouseOver(5,
+      "left","group") xonMouseout=JSGantt.ganttMouseOut(5,"left","group")>
+      <TD class="ganttName"><img style="width: 16px"
+        src="css/images/iconProject16.png" /></TD>
+      <TD class="ganttName" nowrap>
+      <div style="width: 290px;">
+      <table>
+        <tr>
+          <td>
+          <div style="width: 0px;">&nbsp;</div>
+          </td>
+          <td>
+          <div id="group_5" class="ganttExpandOpened"
+            style="width: 16px; height: 13px;"
+            onclick="JSGantt.folder(5,g);g.DrawDependencies();"></div>
+          </td>
+          <td>
+          <div
+            style="overflow: hidden; white-space: nowrap; text-overflow: ellipsis; width: 256px;"
+            onclick=JSGantt.taskLink(
+            "dojo.byId('objectClass').value='Project'
+            ;dojo.byId('objectId').value='5'
+            ;hideList();loadContent('objectDetail.php','detailDiv','listForm');"); xclass="namePartgroup"><span class="nobr">
+          internal project</span></div>
+          </td>
+        </tr>
+      </table>
+      </div>
+      </TD>
+      <TD class="ganttDetail" align="center"><span class="nobr"><span
+        onclick=JSGantt.taskLink(
+        "dojo.byId('objectClass').value='Project'
+        ;dojo.byId('objectId').value='5'
+        ;hideList();loadContent('objectDetail.php','detailDiv','listForm');"); class="hideLeftPartgroup">-</span></span></TD>
+      <TD class="ganttDetail" align="center"><span class="nobr"><span
+        onclick=JSGantt.taskLink(
+        "dojo.byId('objectClass').value='Project'
+        ;dojo.byId('objectId').value='5'
+        ;hideList();loadContent('objectDetail.php','detailDiv','listForm');"); class="hideLeftPartgroup">0%</span></span></TD>
+      <TD class="ganttDetail" align="center"><span class="nobr"><span
+        onclick=JSGantt.taskLink(
+        "dojo.byId('objectClass').value='Project'
+        ;dojo.byId('objectId').value='5'
+        ;hideList();loadContent('objectDetail.php','detailDiv','listForm');"); class="hideLeftPartgroup">-</span></span></TD>
+      <TD class="ganttDetail" align="center"><span class="nobr"><span
+        onclick=JSGantt.taskLink(
+        "dojo.byId('objectClass').value='Project'
+        ;dojo.byId('objectId').value='5'
+        ;hideList();loadContent('objectDetail.php','detailDiv','listForm');"); class="hideLeftPartgroup">-</span></span></TD>
+    </TR>
+    <TR id=child_6 class="dojoDndItem ganttTaskrow"
+      xonMouseover=JSGantt.ganttMouseOver(6,
+      "left","row") xonMouseout=JSGantt.ganttMouseOut(6,"left","row")>
+      <TD class="ganttName"><img style="width: 16px"
+        src="css/images/iconProject16.png" /></TD>
+      <TD class="ganttName" nowrap>
+      <div style="width: 290px;">
+      <table>
+        <tr>
+          <td>
+          <div style="width: 16px;">&nbsp;</div>
+          </td>
+          <td>
+          <div style="width: 16px; height: 13px;">&nbsp;&nbsp;&nbsp;&nbsp;</div>
+          </td>
+          <td>
+          <div
+            style="overflow: hidden; white-space: nowrap; text-overflow: ellipsis; width: 240px;"
+            onclick=JSGantt.taskLink(
+            "dojo.byId('objectClass').value='Project'
+            ;dojo.byId('objectId').value='6'
+            ;hideList();loadContent('objectDetail.php','detailDiv','listForm');"); xclass="namePartrow"><span class="nobr">
+          holidays</span></div>
+          </td>
+        </tr>
+      </table>
+      </div>
+      </TD>
+      <TD class="ganttDetail" align="center"><span class="nobr"><span
+        onclick=JSGantt.taskLink(
+        "dojo.byId('objectClass').value='Project'
+        ;dojo.byId('objectId').value='6'
+        ;hideList();loadContent('objectDetail.php','detailDiv','listForm');"); class="hideLeftPartrow">-</span></span></TD>
+      <TD class="ganttDetail" align="center"><span class="nobr"><span
+        onclick=JSGantt.taskLink(
+        "dojo.byId('objectClass').value='Project'
+        ;dojo.byId('objectId').value='6'
+        ;hideList();loadContent('objectDetail.php','detailDiv','listForm');"); class="hideLeftPartrow">0%</span></span></TD>
+      <TD class="ganttDetail" align="center"><span class="nobr"><span
+        onclick=JSGantt.taskLink(
+        "dojo.byId('objectClass').value='Project'
+        ;dojo.byId('objectId').value='6'
+        ;hideList();loadContent('objectDetail.php','detailDiv','listForm');"); class="hideLeftPartrow">-</span></span></TD>
+      <TD class="ganttDetail" align="center"><span class="nobr"><span
+        onclick=JSGantt.taskLink(
+        "dojo.byId('objectClass').value='Project'
+        ;dojo.byId('objectId').value='6'
+        ;hideList();loadContent('objectDetail.php','detailDiv','listForm');"); class="hideLeftPartrow">-</span></span></TD>
+    </TR>
+    <TR>
+      <TD style="width: 16px;"></TD>
+      <TD colspan="4"><span class="nobr">&nbsp;Scale&nbsp;:&nbsp;&nbsp;<INPUT
+        TYPE=RADIO NAME="radFormatbottom" VALUE="day" checked>day&nbsp;&nbsp;<INPUT
+        TYPE=RADIO NAME="radFormatbottom" onclick=JSGantt.changeFormat(
+        "week",g) VALUE="week">week&nbsp;&nbsp;<INPUT TYPE=RADIO
+        NAME="radFormatbottom" onclick=JSGantt.changeFormat(
+        "month",g) VALUE="month">month&nbsp;&nbsp;</span></TD>
+    </TR>
+  </TBODY>
+</TABLE>
+</DIV>
+</div>
+<div xclass="scrollRight" xid="rightsideContent"
+  dojoType="dijit.layout.ContentPane" region="center"
+  xstyle="width:100%; height:100%;">
+<DIV class="scrollRight" style="width: 542px;" id="rightside">
+<TABLE style="width: 235px;">
+  <TBODY>
+    <TR class="ganttRightTitle">
+      <td class="ganttRightTitle" colspan="7">2011 #35 (Augu)</td>
+      <td class="ganttRightTitle" colspan="7">2011 #36 (Sept)</td>
+    </TR>
+    <TR>
+      <td class="ganttRightSubTitle">
+      <div style="width: 18px">29</div>
+      </td>
+      <td class="ganttRightSubTitle">
+      <div style="width: 18px">30</div>
+      </td>
+      <td class="ganttRightSubTitle">
+      <div style="width: 18px">31</div>
+      </td>
+      <td class="ganttRightSubTitle">
+      <div style="width: 18px">1</div>
+      </td>
+      <td class="ganttRightSubTitle">
+      <div style="width: 18px">2</div>
+      </td>
+      <td class="ganttRightSubTitle" style="background-color: #cfcfcf;">
+      <div style="width: 18px">3</div>
+      </td>
+      <td class="ganttRightSubTitle" style="background-color: #cfcfcf;">
+      <div style="width: 18px">4</div>
+      </td>
+      <td class="ganttRightSubTitle" style="background-color: #ffffaa">
+      <div style="width: 18px">5</div>
+      </td>
+      <td class="ganttRightSubTitle">
+      <div style="width: 18px">6</div>
+      </td>
+      <td class="ganttRightSubTitle">
+      <div style="width: 18px">7</div>
+      </td>
+      <td class="ganttRightSubTitle">
+      <div style="width: 18px">8</div>
+      </td>
+      <td class="ganttRightSubTitle">
+      <div style="width: 18px">9</div>
+      </td>
+      <td class="ganttRightSubTitle" style="background-color: #cfcfcf;">
+      <div style="width: 18px">10</div>
+      </td>
+      <td class="ganttRightSubTitle" style="background-color: #cfcfcf;">
+      <div style="width: 18px">11</div>
+      </td>
+    </TR>
+  </TBODY>
+</TABLE>
+</DIV>
+<DIV id=childgrid_5 style="position: relative;">
+<DIV>
+<TABLE style="position: relative; top: 0px; width: 235px;">
+  <TR id=childrow_5 class="ganttTaskgroup"
+    onMouseover=JSGantt.ganttMouseOver(5,
+    "right","group")  onMouseout=JSGantt.ganttMouseOut(5,"right","group")>
+    <td class="ganttDetail">
+    <div style="width: 18px">&nbsp;&nbsp;</div>
+    </td>
+    <td class="ganttDetail">
+    <div style="width: 18px">&nbsp;&nbsp;</div>
+    </td>
+    <td class="ganttDetail">
+    <div style="width: 18px">&nbsp;&nbsp;</div>
+    </td>
+    <td class="ganttDetail">
+    <div style="width: 18px">&nbsp;&nbsp;</div>
+    </td>
+    <td class="ganttDetail">
+    <div style="width: 18px">&nbsp;&nbsp;</div>
+    </td>
+    <td class="ganttDetail" style="background-color: #cfcfcf;">
+    <div style="width: 18px">&nbsp;&nbsp;</div>
+    </td>
+    <td class="ganttDetail" style="background-color: #cfcfcf;">
+    <div style="width: 18px">&nbsp;&nbsp;</div>
+    </td>
+    <td class="ganttDetail" style="background-color: #ffffaa">
+    <div style="width: 18px">&nbsp;&nbsp;</div>
+    </td>
+    <td class="ganttDetail">
+    <div style="width: 18px">&nbsp;&nbsp;</div>
+    </td>
+    <td class="ganttDetail">
+    <div style="width: 18px">&nbsp;&nbsp;</div>
+    </td>
+    <td class="ganttDetail">
+    <div style="width: 18px">&nbsp;&nbsp;</div>
+    </td>
+    <td class="ganttDetail">
+    <div style="width: 18px">&nbsp;&nbsp;</div>
+    </td>
+    <td class="ganttDetail" style="background-color: #cfcfcf;">
+    <div style="width: 18px">&nbsp;&nbsp;</div>
+    </td>
+    <td class="ganttDetail" style="background-color: #cfcfcf;">
+    <div style="width: 18px">&nbsp;&nbsp;</div>
+    </td>
+  </TR>
+</TABLE>
+</DIV>
+<div id=bardiv_5
+  style="position: absolute; top: 5px; left: NaNpx; height: 7px; width: NaNpx">
+<div id=taskbar_5 title=" internal project: - - -"
+  class="ganttTaskgroupBar" style="width: NaNpx;">
+<div
+  style="Z-INDEX: -4; float: left; background-color: #666666; height: 3px; overflow: hidden; margin-top: 1px; margin-left: 1px; margin-right: 1px; filter: alpha(opacity = 80); opacity: 0.8; width: 0%; cursor: pointer;"
+  onclick=JSGantt.taskLink( "dojo.byId('objectClass').value='Project'
+  ;dojo.byId('objectId').value='5';hideList();loadContent('objectDetail.php','detailDiv','listForm');");></div>
+</div>
+<div class="ganttTaskgroupBarExt" style="float: left; height: 4px"></div>
+<div class="ganttTaskgroupBarExt" style="float: right; height: 4px"></div>
+<div class="ganttTaskgroupBarExt" style="float: left; height: 3px"></div>
+<div class="ganttTaskgroupBarExt" style="float: right; height: 3px"></div>
+<div class="ganttTaskgroupBarExt" style="float: left; height: 2px"></div>
+<div class="ganttTaskgroupBarExt" style="float: right; height: 2px"></div>
+<div class="ganttTaskgroupBarExt" style="float: left; height: 1px"></div>
+<div class="ganttTaskgroupBarExt" style="float: right; height: 1px"></div>
+<div class="ganttTaskgroupBarText" style="left: NaNpx"></div>
+</div>
+</DIV>
+<DIV id=childgrid_6 style="position: relative;">
+<DIV>
+<TABLE style="position: relative; top: 0px; width: 235px;">
+  <TR id=childrow_6 class="ganttTaskrow"
+    onMouseover=JSGantt.ganttMouseOver(6,
+    "right","row")  onMouseout=JSGantt.ganttMouseOut(6,"right","row")>
+    <td class="ganttDetail">
+    <div style="width: 18px">&nbsp;&nbsp;</div>
+    </td>
+    <td class="ganttDetail">
+    <div style="width: 18px">&nbsp;&nbsp;</div>
+    </td>
+    <td class="ganttDetail">
+    <div style="width: 18px">&nbsp;&nbsp;</div>
+    </td>
+    <td class="ganttDetail">
+    <div style="width: 18px">&nbsp;&nbsp;</div>
+    </td>
+    <td class="ganttDetail">
+    <div style="width: 18px">&nbsp;&nbsp;</div>
+    </td>
+    <td class="ganttDetail" style="background-color: #cfcfcf;">
+    <div style="width: 18px">&nbsp;&nbsp;</div>
+    </td>
+    <td class="ganttDetail" style="background-color: #cfcfcf;">
+    <div style="width: 18px">&nbsp;&nbsp;</div>
+    </td>
+    <td class="ganttDetail" style="background-color: #ffffaa">
+    <div style="width: 18px">&nbsp;&nbsp;</div>
+    </td>
+    <td class="ganttDetail">
+    <div style="width: 18px">&nbsp;&nbsp;</div>
+    </td>
+    <td class="ganttDetail">
+    <div style="width: 18px">&nbsp;&nbsp;</div>
+    </td>
+    <td class="ganttDetail">
+    <div style="width: 18px">&nbsp;&nbsp;</div>
+    </td>
+    <td class="ganttDetail">
+    <div style="width: 18px">&nbsp;&nbsp;</div>
+    </td>
+    <td class="ganttDetail" style="background-color: #cfcfcf;">
+    <div style="width: 18px">&nbsp;&nbsp;</div>
+    </td>
+    <td class="ganttDetail" style="background-color: #cfcfcf;">
+    <div style="width: 18px">&nbsp;&nbsp;</div>
+    </td>
+  </TR>
+</TABLE>
+</DIV>
+<div id=bardiv_6
+  style="position: absolute; top: 4px; left: NaNpx; height: 18px; width: NaNpx">
+<div id=taskbar_6 title=" holidays: - - -" class="ganttTaskrowBar"
+  style="background-color: #50BB50; width: NaNpx;"
+  onclick=JSGantt.taskLink( "dojo.byId('objectClass').value='Project'
+  ;dojo.byId('objectId').value='6';hideList();loadContent('objectDetail.php','detailDiv','listForm');"); >
+<div class="ganttTaskrowBarComplete" style="width: 0%;"></div>
+</div>
+<div
+  style="FONT-SIZE: 12px; position: absolute; top: -3px; width: 120px; left: NaNpx"></div>
+</div>
+</DIV>
+</div>
+</DIV>

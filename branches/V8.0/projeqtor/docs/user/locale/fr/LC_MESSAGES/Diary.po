@@ -1,0 +1,108 @@
+# 
+msgid ""
+msgstr ""
+"Project-Id-Version: ProjeQtOr User guide 5.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2015-07-15 13:02-0400\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: ../../Diary.rst:11 ../../Diary.rst:8
+msgid "Diary planning"
+msgstr "Agenda"
+
+#: ../../Diary.rst:13
+msgid "Allows to display planned task to a resource on a calendar view."
+msgstr "Permet l'affichage des tâches planifiées sur un calendrier pour une ressource."
+
+#: ../../Diary.rst:15
+msgid "This view can be monthly, weekly or daily."
+msgstr "Calendrier mensuel, hebdomadaire ou quotidien."
+
+#: ../../Diary.rst:17
+msgid "Just click on any task to access directly."
+msgstr "Cliquer sur une tâche pour y acceder directement."
+
+#: ../../Diary.rst:19
+msgid "On mouse over the task"
+msgstr "Survole de la tâche"
+
+#: ../../Diary.rst:21
+msgid "You can see a short information about the task."
+msgstr "Vous pouvez voir une courte information sur la tâche."
+
+#: ../../Diary.rst:0
+msgid "Day colors"
+msgstr "Coloration des journées"
+
+#: ../../Diary.rst:25
+msgid "**Yellow day** : Current day"
+msgstr "**Jaune:** Jour courrant"
+
+#: ../../Diary.rst:26
+msgid "**Grey days** : Days off"
+msgstr "**Gris:** Jour non travaillé"
+
+#: ../../Diary.rst:29 ../../Diary.rst:35
+msgid "Calendar selector"
+msgstr "Sélection du calendrier"
+
+#: ../../Diary.rst:0
+msgid "Period |one|"
+msgstr "Période |one|"
+
+#: ../../Diary.rst:40
+msgid "Display the month, week, or day."
+msgstr "Affiche le mois, la semaine ou le jour."
+
+#: ../../Diary.rst:0
+msgid "1st day |two|"
+msgstr "1er jour |two|"
+
+#: ../../Diary.rst:44
+msgid "Allows to select the displayed calendar."
+msgstr "Permet de sélectionner le calendrier à afficher."
+
+#: ../../Diary.rst:45
+msgid "The first day of mouth or the week is displayed."
+msgstr "Le premier jour du mois ou de la semaine est affiché."
+
+#: ../../Diary.rst:0
+msgid "Resource |three|"
+msgstr "Ressource |three|"
+
+#: ../../Diary.rst:49
+msgid "Allows to select the resource calendar."
+msgstr "Permet de sélectionner le calendrier d'une ressource."
+
+#: ../../Diary.rst:0
+msgid "Top buttons |four|"
+msgstr "Boutons supérieur |four|"
+
+#: ../../Diary.rst:53
+msgid "Allows to change current month, week, or day."
+msgstr "Permet de changer le mois, la semaine ou le jour."
+
+#: ../../Diary.rst:0
+msgid "Left side buttons |five|"
+msgstr "Boutons à gauche |five|"
+
+#: ../../Diary.rst:57
+msgid "Click on |arrowRight| to go to week display mode."
+msgstr "Cliquer sur |arrowRight| pour passer au mode d'affichage \"semaine\"."
+
+#: ../../Diary.rst:58
+msgid "Click on |arrowLeft| to return to the last display mode."
+msgstr "Cliquer sur |arrowLeft| pour revenir au dernier mode d'affichage."
+
+#: ../../Diary.rst:0
+msgid "Day number button |six|"
+msgstr "Bouton numéro du jour |six|"
+
+#: ../../Diary.rst:62
+msgid "Click on the day number button to go today display mode."
+msgstr "Cliquer sur le numéro du jour pour passer au mode d'affichage \"jour\"."

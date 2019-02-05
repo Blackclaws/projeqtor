@@ -1,0 +1,686 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2018, ProjeQtOr
+# This file is distributed under the same license as the ProjeQtOr Bedienhandbuch Deutsch package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"POT-Creation-Date: \n"
+"PO-Revision-Date: \n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 2.0.8\n"
+"Last-Translator: \n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"Language: de\n"
+
+#: ../../Expense.rst:9
+msgid "Expenses"
+msgstr "Kosten"
+
+#: ../../Expense.rst:11
+msgid "The expenses incurred for the project are monitored."
+msgstr "Die für das Projekt anfallenden Kosten werden überwacht."
+
+#: ../../Expense.rst:15
+msgid "Expense"
+msgstr "Aufwand"
+
+#: ../../Expense.rst:22
+msgid "Call for tenders"
+msgstr "Ausschreibung"
+
+#: ../../Expense.rst:31 ../../Expense.rst:125 ../../Expense.rst:224
+#: ../../Expense.rst:330
+msgid "Section: Description"
+msgstr "Abschnitt: Beschreibung"
+
+#: ../../Expense.rst:38 ../../Expense.rst:63 ../../Expense.rst:93
+#: ../../Expense.rst:132 ../../Expense.rst:161 ../../Expense.rst:231
+#: ../../Expense.rst:257 ../../Expense.rst:337 ../../Expense.rst:374
+#: ../../Expense.rst:451 ../../Expense.rst:481
+msgid "Field"
+msgstr "Bereich"
+
+#: ../../Expense.rst:39 ../../Expense.rst:64 ../../Expense.rst:94
+#: ../../Expense.rst:133 ../../Expense.rst:162 ../../Expense.rst:232
+#: ../../Expense.rst:258 ../../Expense.rst:338 ../../Expense.rst:375
+#: ../../Expense.rst:452 ../../Expense.rst:482
+msgid "Description"
+msgstr "Beschreibung"
+
+#: ../../Expense.rst:40 ../../Expense.rst:134 ../../Expense.rst:233
+#: ../../Expense.rst:339
+msgid ":term:`Id`"
+msgstr ":term:`Id``"
+
+#: ../../Expense.rst:41
+msgid "Unique Id for the call for tender."
+msgstr "Eindeutige Id für die Ausschreibung."
+
+#: ../../Expense.rst:42 ../../Expense.rst:136 ../../Expense.rst:235
+#: ../../Expense.rst:341 ../../Expense.rst:487
+msgid "**Name**"
+msgstr "**Name**"
+
+#: ../../Expense.rst:43
+msgid "Short name of the call for tender."
+msgstr "Kurzbezeichnung der Ausschreibung."
+
+#: ../../Expense.rst:44 ../../Expense.rst:138 ../../Expense.rst:237
+#: ../../Expense.rst:343
+msgid "**Type**"
+msgstr "**Typ**"
+
+#: ../../Expense.rst:45 ../../Expense.rst:139
+msgid "Type of tender."
+msgstr "Art der Ausschreibung."
+
+#: ../../Expense.rst:46 ../../Expense.rst:140
+msgid "Project"
+msgstr "Projekt"
+
+#: ../../Expense.rst:47
+msgid "Project link to call for tender."
+msgstr "Projektlink zur Ausschreibung."
+
+#: ../../Expense.rst:48
+msgid "Maximum amount"
+msgstr "\"Höchstbetrag"
+
+#: ../../Expense.rst:49
+msgid "Maximum amount of the call for tender."
+msgstr "Höchstbetrag der Ausschreibung."
+
+#: ../../Expense.rst:50 ../../Expense.rst:185 ../../Expense.rst:384
+msgid "Expected delivery date"
+msgstr "Voraussichtlicher Liefertermin"
+
+#: ../../Expense.rst:51
+msgid "Date expected."
+msgstr "Datum erwartet."
+
+#: ../../Expense.rst:53 ../../Expense.rst:82 ../../Expense.rst:151
+#: ../../Expense.rst:196 ../../Expense.rst:246 ../../Expense.rst:274
+#: ../../Expense.rst:360 ../../Expense.rst:402 ../../Expense.rst:494
+msgid "**\\* Required field**"
+msgstr "**\\* Pflichtfeld**"
+
+#: ../../Expense.rst:56 ../../Expense.rst:154 ../../Expense.rst:250
+#: ../../Expense.rst:367
+msgid "Section: Treatment"
+msgstr "Abschnitt: Behandlung"
+
+#: ../../Expense.rst:65 ../../Expense.rst:163 ../../Expense.rst:259
+#: ../../Expense.rst:376
+msgid "**Status**"
+msgstr "**Status**"
+
+#: ../../Expense.rst:66
+msgid "Actual :term:`status` of the call for tender."
+msgstr "Aktueller :term:`Status` der Ausschreibung."
+
+#: ../../Expense.rst:67 ../../Expense.rst:165 ../../Expense.rst:261
+msgid "Responsible"
+msgstr "Verantwortlich"
+
+#: ../../Expense.rst:68
+msgid "Person responsible for the processing of this call for tender."
+msgstr "Verantwortlicher für die Bearbeitung dieser Ausschreibung."
+
+#: ../../Expense.rst:69
+msgid "Sent date"
+msgstr "Gesendetes Datum"
+
+#: ../../Expense.rst:70
+msgid "Sent date of the call for tender."
+msgstr "Gesendetes Datum der Ausschreibung."
+
+#: ../../Expense.rst:71 ../../Expense.rst:101 ../../Expense.rst:171
+msgid "Expected answer date"
+msgstr "Erwartetes Antwortdatum"
+
+#: ../../Expense.rst:72
+msgid "Expected answer date, meaning expected tender date."
+msgstr "Erwartetes Antwortdatum, d.h. erwartetes Ausschreibungsdatum."
+
+#: ../../Expense.rst:73 ../../Expense.rst:187
+msgid "Handled"
+msgstr "Bearbeitet"
+
+#: ../../Expense.rst:75 ../../Expense.rst:189
+msgid "Done"
+msgstr "Erledigt"
+
+#: ../../Expense.rst:77 ../../Expense.rst:191
+msgid "Closed"
+msgstr "Geschlossen"
+
+#: ../../Expense.rst:79 ../../Expense.rst:193 ../../Expense.rst:271
+#: ../../Expense.rst:390
+msgid "Cancelled"
+msgstr "Abgesagt"
+
+#: ../../Expense.rst:80
+msgid "Box checked indicates that the call for tender is cancelled."
+msgstr "Box angekreuzt zeigt an, dass die Ausschreibung abgebrochen wurde."
+
+#: ../../Expense.rst:86
+msgid "Section: Submissions of tenders"
+msgstr "Abschnitt: Einreichung von Angeboten"
+
+#: ../../Expense.rst:95 ../../Expense.rst:347
+msgid "Provider"
+msgstr "Anbieter"
+
+#: ../../Expense.rst:96 ../../Expense.rst:147
+msgid "Provider of the tender."
+msgstr "Anbieter der Ausschreibung."
+
+#: ../../Expense.rst:97 ../../Expense.rst:167
+msgid "Contact"
+msgstr "Kontakt"
+
+#: ../../Expense.rst:98
+msgid "Contact for the tender."
+msgstr "Kontakt für die Ausschreibung."
+
+#: ../../Expense.rst:99 ../../Expense.rst:169
+msgid "Request date"
+msgstr "Termin anfordern"
+
+#: ../../Expense.rst:100
+msgid "Request date when tender sent with the hour."
+msgstr "Anforderungsdatum, wenn das Angebot mit der Stunde gesendet wird."
+
+#: ../../Expense.rst:102
+msgid "Date expected with the hour."
+msgstr "Erwartetes Datum zur Uhrzeit."
+
+#: ../../Expense.rst:103
+msgid "Tender status"
+msgstr "Status der Ausschreibun"
+
+#: ../../Expense.rst:104 ../../Expense.rst:145
+msgid "Statut of the tender."
+msgstr "Statut der Ausschreibung."
+
+#: ../../Expense.rst:111
+msgid "Tenders"
+msgstr "Ausschreibungen"
+
+#: ../../Expense.rst:135
+msgid "Unique Id for the tender."
+msgstr "Eindeutige Id für die Ausschreibung."
+
+#: ../../Expense.rst:137
+msgid "Short name of the tender."
+msgstr "Kurzname der Ausschreibung."
+
+#: ../../Expense.rst:141
+msgid "Project link to tender."
+msgstr "Projektlink zur Ausschreibung."
+
+#: ../../Expense.rst:142
+msgid "Call for tender"
+msgstr "Ausschreibunge"
+
+#: ../../Expense.rst:143
+msgid "Link to call for tender."
+msgstr "Link zur Ausschreibung."
+
+#: ../../Expense.rst:144
+msgid "Tender statuts"
+msgstr "Ausschreibung Statuten"
+
+#: ../../Expense.rst:146
+msgid "**Provider**"
+msgstr "**Anbieter**"
+
+#: ../../Expense.rst:148
+msgid "External reference"
+msgstr "Externe Bezugnahme"
+
+#: ../../Expense.rst:149
+msgid "External reference of the tender."
+msgstr "Externe Referenz der Ausschreibung."
+
+#: ../../Expense.rst:164
+msgid "Actual :term:`status` of the tender."
+msgstr "Aktueller :term:`Status` der Ausschreibung."
+
+#: ../../Expense.rst:166
+msgid "Person responsible for the processing of this tender."
+msgstr "Verantwortlicher für die Bearbeitung dieser Ausschreibung."
+
+#: ../../Expense.rst:168
+msgid "Contact of the tender."
+msgstr "Kontakt der Ausschreibung."
+
+#: ../../Expense.rst:170
+msgid "Resquest date for tender."
+msgstr "Ausschreibungstermin."
+
+#: ../../Expense.rst:172
+msgid "Expected answer date of the tender."
+msgstr "Erwartetes Antwortdatum der Ausschreibung."
+
+#: ../../Expense.rst:173 ../../Expense.rst:386
+msgid "Date of receipt"
+msgstr "Datum des Empfangs"
+
+#: ../../Expense.rst:174
+msgid "Date of receipt of the tender with the hour."
+msgstr "Datum des Eingangs des Angebots mit der Stunde."
+
+#: ../../Expense.rst:175
+msgid "Offer validity"
+msgstr "Gültigkeit des Angebotes"
+
+#: ../../Expense.rst:176
+msgid "Offer validity date."
+msgstr "Gültigkeitsdatum des Angebots."
+
+#: ../../Expense.rst:177
+msgid "Initial"
+msgstr "Anfang"
+
+#: ../../Expense.rst:178
+msgid "Price"
+msgstr "Preis"
+
+#: ../../Expense.rst:179
+msgid "Negotiated"
+msgstr "Verhandelt"
+
+#: ../../Expense.rst:180
+msgid "Price of negotiated."
+msgstr "Preis von ausgehandelt."
+
+#: ../../Expense.rst:181 ../../Expense.rst:355
+msgid "Payment conditions"
+msgstr "Zahlungsbedingungen"
+
+#: ../../Expense.rst:182
+msgid "Type of payment conditions."
+msgstr "Art der Zahlungsbedingungen."
+
+#: ../../Expense.rst:183 ../../Expense.rst:382
+msgid "Delivery delay"
+msgstr "Lieferverzögerung"
+
+#: ../../Expense.rst:184
+msgid "Delivery delay of the tender."
+msgstr "Lieferverzögerung der Ausschreibung."
+
+#: ../../Expense.rst:186
+msgid "Expected delivery date of the tender."
+msgstr "Voraussichtlicher Liefertermin der Ausschreibung."
+
+#: ../../Expense.rst:190
+msgid "Box checked indicates that the tender is done with date when checked."
+msgstr "Feld angekreuzt zeigt an, dass die Ausschreibung mit Datum durchgeführt wird, wenn es angekreuzt ist."
+
+#: ../../Expense.rst:194
+msgid "Box checked indicates that the tender is cancelled."
+msgstr "Kästchen markiert zeigt an, dass die Ausschreibung abgebrochen wurde."
+
+#: ../../Expense.rst:204
+msgid "Individual expense"
+msgstr "Individueller Aufwand"
+
+#: ../../Expense.rst:208
+msgid "Individual expense has detail listing for all items of expense."
+msgstr "Einzelne Ausgaben haben eine detaillierte Auflistung aller Ausgaben."
+
+#: ../../Expense.rst:213 ../../Expense.rst:318
+msgid "Planned amount"
+msgstr "Geplanter Betrag"
+
+#: ../../Expense.rst:218 ../../Expense.rst:324
+msgid ":ref:`expense-detail-lines`"
+msgstr ":ref:`expense-detail-lines`"
+
+#: ../../Expense.rst:219 ../../Expense.rst:325
+msgid ":ref:`Linked element<linkElement-section>`"
+msgstr ":ref:`Linked element<linkElement-section>`"
+
+#: ../../Expense.rst:220 ../../Expense.rst:326
+msgid ":ref:`Attachments<attachment-section>`"
+msgstr ":ref:`Attachments<attachment-section>`"
+
+#: ../../Expense.rst:221 ../../Expense.rst:327
+msgid ":ref:`Notes<note-section>`"
+msgstr ":ref:`Notes<note-section>`"
+
+#: ../../Expense.rst:234 ../../Expense.rst:340
+msgid "Unique Id for the expense."
+msgstr "Eindeutige Id für die Kosten."
+
+#: ../../Expense.rst:236 ../../Expense.rst:342
+msgid "Short description of the expense."
+msgstr "Kurzbeschreibung des Aufwandes."
+
+#: ../../Expense.rst:238 ../../Expense.rst:344 ../../Expense.rst:458
+#: ../../Expense.rst:490
+msgid "Type of expense."
+msgstr "Art der Ausgabe."
+
+#: ../../Expense.rst:239 ../../Expense.rst:345
+msgid "**Project**"
+msgstr "**Projekt**"
+
+#: ../../Expense.rst:240 ../../Expense.rst:346
+msgid "The project concerned by the expense."
+msgstr "Das von den Kosten betroffene Projekt."
+
+#: ../../Expense.rst:241
+msgid "**Resource**"
+msgstr "**Ressource**"
+
+#: ../../Expense.rst:242
+msgid "Resource concerned by the expense."
+msgstr "Von den Kosten betroffene Ressource."
+
+#: ../../Expense.rst:243 ../../Expense.rst:357
+msgid ":term:`Description`"
+msgstr ":term:`Beschreibung`"
+
+#: ../../Expense.rst:244 ../../Expense.rst:358
+msgid "Complete description of the expense."
+msgstr "Vollständige Beschreibung der Kosten."
+
+#: ../../Expense.rst:260 ../../Expense.rst:377
+msgid "Actual :term:`status` of the expense."
+msgstr "Tatsächlicher Begriff:`Status` der Kosten."
+
+#: ../../Expense.rst:262
+msgid "Person responsible for the processing of this expense."
+msgstr "Verantwortlicher für die Bearbeitung dieser Kosten."
+
+#: ../../Expense.rst:263 ../../Expense.rst:392
+msgid "Planned"
+msgstr "Geplant"
+
+#: ../../Expense.rst:264 ../../Expense.rst:393
+msgid "Planned amount of the expense (Date is mandatory)."
+msgstr "Geplanter Betrag des Aufwandes (Datum ist obligatorisch)."
+
+#: ../../Expense.rst:265 ../../Expense.rst:394
+msgid "Real"
+msgstr "Echt"
+
+#: ../../Expense.rst:266 ../../Expense.rst:395
+msgid "Real amount of the expense (Date is mandatory)."
+msgstr "Realer Betrag des Aufwandes (Datum ist obligatorisch)."
+
+#: ../../Expense.rst:267 ../../Expense.rst:396
+msgid "Payment done"
+msgstr "Zahlung erfolgt"
+
+#: ../../Expense.rst:268 ../../Expense.rst:397
+msgid "Box checked indicates the payment is done."
+msgstr "Feld markiert zeigt an, dass die Zahlung erfolgt ist."
+
+#: ../../Expense.rst:269 ../../Expense.rst:388
+msgid ":term:`Closed`"
+msgstr ":term:`Closed`"
+
+#: ../../Expense.rst:270 ../../Expense.rst:389
+msgid "Box checked indicates that the expense is archived."
+msgstr "Feld markiert zeigt an, dass der Aufwand archiviert ist."
+
+#: ../../Expense.rst:272 ../../Expense.rst:391
+msgid "Box checked indicates that the expense is cancelled."
+msgstr "Box angekreuzt zeigt an, dass die Ausgabe storniert wurde."
+
+#: ../../Expense.rst:278 ../../Expense.rst:406
+msgid "Columns:"
+msgstr "Spalten:"
+
+#: ../../Expense.rst:280
+msgid "**Full**: Amount."
+msgstr "**Voll**: Betrag."
+
+#: ../../Expense.rst:284 ../../Expense.rst:416
+msgid "**Payment date**:"
+msgstr "**Zahlungsdatum**:"
+
+#: ../../Expense.rst:286 ../../Expense.rst:418
+msgid "For field \"Planned\" is the planned date."
+msgstr "Für den Bereich \"Geplant\" ist der geplante Termin."
+
+#: ../../Expense.rst:287 ../../Expense.rst:419
+msgid "For field \"Real\" can be the payment date or else."
+msgstr "Für das Feld \"Echt\" kann das Zahlungsdatum sein, oder sonst."
+
+#: ../../Expense.rst:300
+msgid "Project expense"
+msgstr "Projektaufwendunge"
+
+#: ../../Expense.rst:304
+msgid "This can be used for all kinds of project cost :"
+msgstr "Das kann für alle Arten von Projektkosten verwendet werden:"
+
+#: ../../Expense.rst:306
+msgid "Machines (rent or buy)."
+msgstr "Maschinen (mieten oder kaufen)."
+
+#: ../../Expense.rst:307
+msgid "Softwares."
+msgstr "Software."
+
+#: ../../Expense.rst:308
+msgid "Office."
+msgstr "Büro."
+
+#: ../../Expense.rst:309
+msgid "Any logistic item."
+msgstr "Jeder logistische Artikel."
+
+#: ../../Expense.rst:313
+msgid "Purchase request"
+msgstr "Kaufanfrage"
+
+#: ../../Expense.rst:348
+msgid "Provider name."
+msgstr "Name des Anbieters."
+
+#: ../../Expense.rst:349
+msgid ":term:`External reference`"
+msgstr ":term:`Externe Referenz`"
+
+#: ../../Expense.rst:350
+msgid "External reference of the expense."
+msgstr "Externe Referenz der Kosten."
+
+#: ../../Expense.rst:351
+msgid "Business responsible"
+msgstr "Geschäftlich verantwortlich"
+
+#: ../../Expense.rst:352
+msgid "The person who makes the purchase requisition."
+msgstr "Die Person, die die Bestellanforderung macht."
+
+#: ../../Expense.rst:353
+msgid "Financial responsible"
+msgstr "Finanzielle Verantwortung"
+
+#: ../../Expense.rst:354
+msgid "The person who pays the purchase."
+msgstr "Die Person, die den Kauf bezahlt."
+
+#: ../../Expense.rst:356
+msgid "Conditions of payment."
+msgstr "Zahlungsbedingungen."
+
+#: ../../Expense.rst:378
+msgid "Order date"
+msgstr "Datum der Bestellun"
+
+#: ../../Expense.rst:379
+msgid "Date of the order."
+msgstr "Datum der Bestellung."
+
+#: ../../Expense.rst:380
+msgid "Delivery mode"
+msgstr "Auslieferungszustan"
+
+#: ../../Expense.rst:381
+msgid "Delivery mode for the order."
+msgstr "Lieferart für den Auftrag."
+
+#: ../../Expense.rst:383
+msgid "Delivery delay for the order."
+msgstr "Lieferverzug bei der Bestellung."
+
+#: ../../Expense.rst:385
+msgid "Expected delivery date for the order."
+msgstr "Voraussichtlicher Liefertermin der Bestellung."
+
+#: ../../Expense.rst:387
+msgid "Date of receipt of the order."
+msgstr "Datum des Eingangs der Bestellung."
+
+#: ../../Expense.rst:398
+msgid "Result"
+msgstr "Ergebnis"
+
+#: ../../Expense.rst:399
+msgid "Complete description of the treatment of the expense."
+msgstr "Vollständige Beschreibung der Behandlung der Kosten."
+
+#: ../../Expense.rst:408
+msgid "**Ex VAT**: Amount without taxes."
+msgstr "**Ex Mehrwertsteuer**: Betrag ohne Steuern."
+
+#: ../../Expense.rst:412
+msgid "**Tax**: Applicable tax."
+msgstr "**Steuern**: Anzuwendende Steuer."
+
+#: ../../Expense.rst:414
+msgid "**Full**: Amount with taxes."
+msgstr "**Voll**: Betrag mit Steuern."
+
+#: ../../Expense.rst:431
+msgid "Expense detail lines"
+msgstr "Aufwand Detail Zeilen"
+
+#: ../../Expense.rst:434
+msgid "Section: Expense detail lines"
+msgstr "Abschnitt: Aufwandsdetailzeilen"
+
+#: ../../Expense.rst:435
+msgid "This section is common to individual and project expenses."
+msgstr "Dieser Abschnitt ist bei Einzel- und Projektkosten üblich."
+
+#: ../../Expense.rst:437
+msgid "It allows to enter detail on expense line."
+msgstr "Es erlaubt die Eingabe von Details in der Spesenzeile."
+
+#: ../../Expense.rst:442
+msgid "Real date is set with the date in the firts detail line."
+msgstr "Das reale Datum wird mit dem Datum in der ersten Detailzeile gesetzt."
+
+#: ../../Expense.rst:453 ../../Expense.rst:483
+msgid "Date"
+msgstr "Datum"
+
+#: ../../Expense.rst:454
+msgid "Date of the detail line."
+msgstr "Datum der Detailzeile."
+
+#: ../../Expense.rst:455
+msgid "Name"
+msgstr "Name"
+
+#: ../../Expense.rst:456
+msgid "Name of the detail line."
+msgstr "Name der Detailzeile."
+
+#: ../../Expense.rst:457 ../../Expense.rst:489
+msgid "Type"
+msgstr "Typ"
+
+#: ../../Expense.rst:459
+msgid "Detail"
+msgstr "Einzelheit"
+
+#: ../../Expense.rst:460
+msgid "Detail depends on the type of expense."
+msgstr "Detail hängt von der Art des Aufwandes ab."
+
+#: ../../Expense.rst:461
+msgid "Amount"
+msgstr "Menge"
+
+#: ../../Expense.rst:462
+msgid "Amount of the detail line."
+msgstr "Betrag der Detailzeile."
+
+#: ../../Expense.rst:466
+msgid "Detail lines management"
+msgstr "Detail Linienverwaltung"
+
+#: ../../Expense.rst:467
+msgid "Click on |buttonAdd| to add a detail line."
+msgstr "Klicken Sie auf |buttonAdd|, um eine Detailzeile hinzuzufügen."
+
+#: ../../Expense.rst:468
+msgid "Click on |buttonEdit| to modify an existing detail line."
+msgstr "Klicken Sie auf |buttonEdit|, um eine bestehende Detailzeile zu ändern."
+
+#: ../../Expense.rst:469
+msgid "Click on |buttonIconDelete| to delete the detail line."
+msgstr "Klicken Sie auf |buttonIconDelete|, um die Detailzeile zu löschen."
+
+#: ../../Expense.rst:477
+msgid "Fields - Expense detail dialog box"
+msgstr "Felder - Aufwandsdetail-Dialogfenster"
+
+#: ../../Expense.rst:484
+msgid "Date of the detail."
+msgstr "Datum des Details."
+
+#: ../../Expense.rst:485
+msgid "Reference"
+msgstr "Referenz"
+
+#: ../../Expense.rst:486
+msgid "External reference."
+msgstr "Externe Referenz."
+
+#: ../../Expense.rst:488
+msgid "Name of the detail."
+msgstr "Name des Details."
+
+#: ../../Expense.rst:491
+msgid "**Amount**"
+msgstr "**Betrag**"
+
+#: ../../Expense.rst:492
+msgid "Amount of the detail."
+msgstr "Betrag des Details."
+
+#: ../../Expense.rst:503
+msgid "Depending on type, new fields will appear to help calculate of amount."
+msgstr "Verfügbare Typen je nachdem, ob Einzel- oder Projektaufwand."
+
+#: ../../Expense.rst:504
+msgid "Available types depending on whether individual or project expense."
+msgstr "Je nach Typ erscheinen neue Felder zur Berechnung des Betrages."
+
+#: ../../Expense.rst:505
+msgid "See: :ref:`expense-detail-type`."
+msgstr "Siehe: :ref:`expense-detail-type`."
+
+#: ../../Expense.rst:509
+msgid "Automatically calculated from fields depending on type."
+msgstr "Automatisch aus Feldern je nach Typ berechnet."
+
+#: ../../Expense.rst:510
+msgid "May also be input for type “justified expense”."
+msgstr "Kann auch für Typ \"Kosten gerechtfertigt\" eingegeben werden."

@@ -1,0 +1,185 @@
+# 
+msgid ""
+msgstr ""
+"Project-Id-Version: ProjeQtOr User guide 5.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2015-05-29 16:06-0400\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: ../../index.rst:7
+msgid "Welcome"
+msgstr "Accueil"
+
+#: ../../index.rst:9
+msgid "ProjeQtOr is a Quality based Project Organizer, as a web application."
+msgstr "ProjeQtOr est un outil de gestion de projet oreinté qualité."
+
+#: ../../index.rst:11
+msgid ""
+"ProjeQtOr focuses on IT Projects, but is also compatible with all kinds of "
+"Projects."
+msgstr ""
+"ProjeQtOr a été conçu opur des projets informatiques, mais il est compatbile avec tout type de "
+"Projets."
+
+#: ../../index.rst:13
+msgid ""
+"Its purpose is to propose a unique tool to gather all the information about "
+"the projects."
+msgstr ""
+
+#: ../../index.rst:19
+msgid ""
+"It is also important to track and keep traces of all what is happening to "
+"the Project : incidents, bugs , change requests, support requests, ..."
+msgstr ""
+
+#: ../../index.rst:21
+msgid ""
+"In this objective, ProjeQtOr gives visibility at all levels of Project "
+"Management."
+msgstr ""
+
+#: ../../index.rst:25
+msgid ""
+"At upper level, Project Steering uses the follow-up data to take the "
+"decisions and build the action plan. This allows to bring the adjustments "
+"needed to target on the objectives of the project."
+msgstr ""
+
+#: ../../index.rst:30
+msgid "Features"
+msgstr "Fonctionnalités"
+
+#: ../../index.rst:32
+msgid "ProjeQtOr  is a \"Quality based Project Organizer\"."
+msgstr ""
+"ProjeQtOr  est un organisateur de Projet Open-Source orienté Qualité. Son "
+"nom est issu de \"Quality based Project Organizer\"."
+
+#: ../../index.rst:34
+msgid ""
+"It is particularly well suited to IT projects, but can manage any type of "
+"project."
+msgstr ""
+"Il est particulièrement bien adapté aux projets informatiques, mais s'adapte"
+" à tout type de projet."
+
+#: ../../index.rst:36
+msgid ""
+"It offers all the features needed to different Project Management actors "
+"under a unique collaborative interface."
+msgstr ""
+"Il propose sous une unique interface collaborative toutes les "
+"fonctionnalités utiles aux différents acteurs de la Gestion des Projets."
+
+#: ../../index.rst:199
+msgid "Glossary"
+msgstr "Lexique"
+
+#: ../../index.rst:173
+msgid ""
+"Every element is linked to a type, defining some mandatory data or other GUI"
+" behavior."
+msgstr ""
+"Tous les élements sont liés à un type qui défini les données obligatoires ou le comportement de l'interface utilisateur."
+
+#: ../../index.rst:181
+msgid "Lists of values"
+msgstr "Liste de valeurs"
+
+#: ../../index.rst:15
+msgid ""
+"The fact is that many Project Management softwares just focus on planning. "
+"But it is a much too restrictive point of view. Of course, planning is an "
+"important activity of Project Management and is one of the keys to Project "
+"success, but it is not the only one."
+msgstr ""
+
+#: ../../index.rst:17
+msgid ""
+"Project Managers need to foresee all what can happen, measure risks, build "
+"an action plan and mitigation plan."
+msgstr ""
+
+#: ../../index.rst:23
+msgid ""
+"At lower level, the Project follow-up consists in gathering all information,"
+" and maintain it up to date. This involves all the operational teams."
+msgstr ""
+
+#: ../../index.rst:27
+msgid ""
+"The goal of ProjeQtOr is to be Project Management Method independent. "
+"Whatever your choice of the method, you can use ProjeQtOr."
+msgstr ""
+
+#: ../../index.rst:44
+msgid "Graphical user interface"
+msgstr "Interface utilisateur"
+
+#: ../../index.rst:53
+msgid "Planning elements"
+msgstr "Elements planifiables"
+
+#: ../../index.rst:61
+msgid "Real work allocation"
+msgstr "Imputation"
+
+#: ../../index.rst:69
+msgid "Follow-up"
+msgstr "Suivi"
+
+#: ../../index.rst:80
+msgid "Document management"
+msgstr "Gestion documentaire"
+
+#: ../../index.rst:88
+msgid "Ticket management"
+msgstr "Gestion des tickets"
+
+#: ../../index.rst:97
+msgid "Requirements et Tests"
+msgstr "Exigences et test"
+
+#: ../../index.rst:105
+msgid "Risk & Issue Management"
+msgstr "Plan de gestion des risques"
+
+#: ../../index.rst:114
+msgid "Financial"
+msgstr "Financier"
+
+#: ../../index.rst:124
+msgid "Review logs"
+msgstr "Journaux des revues"
+
+#: ../../index.rst:132
+msgid "Environmental parameters"
+msgstr "Paramètres environnementaux"
+
+#: ../../index.rst:145
+msgid "Tools"
+msgstr "Outils"
+
+#: ../../index.rst:153
+msgid "Controls & Automation"
+msgstr "Contrôles & Automatismes"
+
+#: ../../index.rst:161
+msgid "Access rights"
+msgstr "Habilitations"
+
+#: ../../index.rst:171
+msgid "Lists of types"
+msgstr "Listes de valeurs"
+
+#: ../../index.rst:190
+msgid "Administration"
+msgstr ""
+

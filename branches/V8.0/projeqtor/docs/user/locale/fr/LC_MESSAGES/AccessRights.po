@@ -1,0 +1,297 @@
+# 
+msgid ""
+msgstr ""
+"Project-Id-Version: ProjeQtOr User guide 5.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2015-07-08 14:45-0400\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: ../../AccessRights.rst:0
+msgid "Access rights"
+msgstr ""
+
+#: ../../AccessRights.rst:17 ../../AccessRights.rst:14
+msgid "Profile"
+msgstr ""
+
+#: ../../AccessRights.rst:19
+msgid "The profile is a group of habilitations and right access to the data."
+msgstr ""
+
+#: ../../AccessRights.rst:21
+msgid ""
+"Each user is linked to a profile to defined the data he can see and possibly"
+" manage."
+msgstr ""
+
+#: ../../AccessRights.rst:0 ../../AccessRights.rst:0
+msgid "Other sections"
+msgstr ""
+
+#: ../../AccessRights.rst:25 ../../AccessRights.rst:78
+msgid ":ref:`gui-chg-history-section-label`"
+msgstr ""
+
+#: ../../AccessRights.rst:35 ../../AccessRights.rst:88
+msgid "Field"
+msgstr ""
+
+#: ../../AccessRights.rst:36 ../../AccessRights.rst:47
+#: ../../AccessRights.rst:89 ../../AccessRights.rst:106
+msgid "Description"
+msgstr ""
+
+#: ../../AccessRights.rst:37 ../../AccessRights.rst:90
+msgid ":term:`Id`"
+msgstr ""
+
+#: ../../AccessRights.rst:38
+msgid "Unique Id for the profile."
+msgstr ""
+
+#: ../../AccessRights.rst:39
+msgid "Name"
+msgstr ""
+
+#: ../../AccessRights.rst:40
+msgid "Name of the profile. (Translatable)."
+msgstr ""
+
+#: ../../AccessRights.rst:41
+msgid "Profile code"
+msgstr ""
+
+#: ../../AccessRights.rst:42
+msgid "A code that may be internally used when generating emails and alerts."
+msgstr ""
+
+#: ../../AccessRights.rst:43 ../../AccessRights.rst:102
+msgid "Sort order"
+msgstr ""
+
+#: ../../AccessRights.rst:44 ../../AccessRights.rst:103
+msgid "Number to define order of display in lists"
+msgstr ""
+
+#: ../../AccessRights.rst:45 ../../AccessRights.rst:104
+msgid ":term:`Closed`"
+msgstr ""
+
+#: ../../AccessRights.rst:46
+msgid "Flag to indicate that profile is archived."
+msgstr ""
+
+#: ../../AccessRights.rst:48
+msgid "Complete description of the profile."
+msgstr ""
+
+#: ../../AccessRights.rst:52
+msgid "ADM will designate administrator."
+msgstr ""
+
+#: ../../AccessRights.rst:64 ../../AccessRights.rst:61
+msgid "Access mode"
+msgstr ""
+
+#: ../../AccessRights.rst:66
+msgid ""
+"The access mode defines a combination of rights to read, created, update or "
+"delete items."
+msgstr ""
+
+#: ../../AccessRights.rst:91
+msgid "Unique Id for the access mode."
+msgstr ""
+
+#: ../../AccessRights.rst:92
+msgid "**Name**"
+msgstr ""
+
+#: ../../AccessRights.rst:93
+msgid "Name of the access mode. (Translatable)."
+msgstr ""
+
+#: ../../AccessRights.rst:94
+msgid "**Read rights**"
+msgstr ""
+
+#: ../../AccessRights.rst:95
+msgid "Scope of visible items"
+msgstr ""
+
+#: ../../AccessRights.rst:96
+msgid "**Create rights**"
+msgstr ""
+
+#: ../../AccessRights.rst:97
+msgid "Scope of possibility to create items."
+msgstr ""
+
+#: ../../AccessRights.rst:98
+msgid "**Update rights**"
+msgstr ""
+
+#: ../../AccessRights.rst:99
+msgid "Scope of updatable items."
+msgstr ""
+
+#: ../../AccessRights.rst:100
+msgid "**Delete rights**"
+msgstr ""
+
+#: ../../AccessRights.rst:101
+msgid "Scope of deletable items."
+msgstr ""
+
+#: ../../AccessRights.rst:105
+msgid "Flag to indicate that access mode is archived."
+msgstr ""
+
+#: ../../AccessRights.rst:107
+msgid "Complete description of the access mode."
+msgstr ""
+
+#: ../../AccessRights.rst:109
+msgid "**\\* Required field**"
+msgstr ""
+
+#: ../../AccessRights.rst:120 ../../AccessRights.rst:117
+msgid "Access to forms"
+msgstr ""
+
+#: ../../AccessRights.rst:122
+msgid ""
+"Access to forms defines for each screen the profiles of users that can "
+"access to the screen."
+msgstr ""
+
+#: ../../AccessRights.rst:124
+msgid ""
+"Users belonging to a profile not checked for a screen will not see the "
+"corresponding menu."
+msgstr ""
+
+#: ../../AccessRights.rst:129 ../../AccessRights.rst:126
+msgid "Access to reports"
+msgstr ""
+
+#: ../../AccessRights.rst:131
+msgid ""
+"Access to reports defines for each report the profiles of users that can "
+"access to the report."
+msgstr ""
+
+#: ../../AccessRights.rst:133
+msgid ""
+"Users belonging to a profile not checked for a report will not see the "
+"corresponding report in the report list."
+msgstr ""
+
+#: ../../AccessRights.rst:138
+msgid "Access mode to data (project dependant)"
+msgstr ""
+
+#: ../../AccessRights.rst:140
+msgid ""
+"Access mode defines for each “Project dependent” screen the access mode "
+"(scope of visibility and updatability) for each profile."
+msgstr ""
+
+#: ../../AccessRights.rst:145
+msgid "Access mode to data (not project dependant)"
+msgstr ""
+
+#: ../../AccessRights.rst:150 ../../AccessRights.rst:147
+msgid "Specific access mode"
+msgstr ""
+
+#: ../../AccessRights.rst:135
+msgid "Access to data (project dependant)"
+msgstr ""
+
+#: ../../AccessRights.rst:142
+msgid "Access to data (not project dependant)"
+msgstr ""
+
+#: ../../AccessRights.rst:28 ../../AccessRights.rst:81
+msgid "Section: Description"
+msgstr ""
+
+#: ../../AccessRights.rst:0
+msgid "Field: Profile code"
+msgstr ""
+
+#: ../../AccessRights.rst:53
+msgid "PL will designate Project Leader."
+msgstr ""
+
+#: ../../AccessRights.rst:68
+msgid ""
+"Each access is defined as scope of visible and updatable elements, that can "
+"be :"
+msgstr ""
+
+#: ../../AccessRights.rst:70
+msgid "**No element:** No element is visible and updatable."
+msgstr ""
+
+#: ../../AccessRights.rst:71
+msgid "**Own elements:** Only the elements created by the user."
+msgstr ""
+
+#: ../../AccessRights.rst:72
+msgid ""
+"**Elements he is responsible for:** Only the elements the user is "
+"responsible for."
+msgstr ""
+
+#: ../../AccessRights.rst:73
+msgid ""
+"**Elements of own project:** Only the elements of the projects the "
+"user/resource is affected to."
+msgstr ""
+
+#: ../../AccessRights.rst:74
+msgid "**All elements on all projects:** All elements, whatever the project."
+msgstr ""
+
+#~ msgid "Description section"
+#~ msgstr ""
+
+#~ msgid "Details of fields"
+#~ msgstr ""
+
+#~ msgid "**Profile code**"
+#~ msgstr ""
+
+#~ msgid "PL will designate Project Leader"
+#~ msgstr ""
+
+#~ msgid ""
+#~ "Each access is defined as scope of visible and/or updatable elements, that "
+#~ "can be :"
+#~ msgstr ""
+
+#~ msgid "No element : no element is visible and/or updatable"
+#~ msgstr ""
+
+#~ msgid "Own elements : only the elements created by the user"
+#~ msgstr ""
+
+#~ msgid ""
+#~ "Elements he is responsible for : only the elements the user is responsible "
+#~ "for"
+#~ msgstr ""
+
+#~ msgid ""
+#~ "Elements of own project : only the elements of the projects the "
+#~ "user/resource is affected to"
+#~ msgstr ""
+
+#~ msgid "All elements on all projects : all elements, whatever the project"
+#~ msgstr ""

@@ -1,0 +1,126 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2018, ProjeQtOr
+# This file is distributed under the same license as the ProjeQtOr Bedienhandbuch Deutsch package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: ProjeQtOr Bedienhandbuch Deutsch 7.2\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2018-07-03 14:34+0200\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: ../../Organization.rst:10
+msgid "Organizations"
+msgstr ""
+
+#: ../../Organization.rst:13
+msgid "Management of organizations"
+msgstr ""
+
+#: ../../Organization.rst:14
+msgid "Management of organizations allows to  edit the structure of the company in the frame of organizations (Departments, Units, Location, ...)"
+msgstr ""
+
+#: ../../Organization.rst:15
+msgid "The organization summarizes the data of the projects in progress for the organization."
+msgstr ""
+
+#: ../../Organization.rst:17
+msgid "Depending on the profile, you can limit the visibility of resources to people in the same organization or team as the current user."
+msgstr ""
+
+#: ../../Organization.rst:22
+msgid ":ref:`Current project<progress-section-activity>`"
+msgstr ""
+
+#: ../../Organization.rst:23
+msgid ":ref:`Linked element<linkElement-section>`"
+msgstr ""
+
+#: ../../Organization.rst:24
+msgid ":ref:`Attachments<attachment-section>`"
+msgstr ""
+
+#: ../../Organization.rst:25
+msgid ":ref:`Notes<note-section>`"
+msgstr ""
+
+#: ../../Organization.rst:29
+msgid "Section: Description"
+msgstr ""
+
+#: ../../Organization.rst:36
+msgid "Field"
+msgstr ""
+
+#: ../../Organization.rst:37
+msgid "Description"
+msgstr ""
+
+#: ../../Organization.rst:38
+msgid ":term:`Id`"
+msgstr ""
+
+#: ../../Organization.rst:39
+msgid "Unique Id for the Organization."
+msgstr ""
+
+#: ../../Organization.rst:40
+msgid "**Name**"
+msgstr ""
+
+#: ../../Organization.rst:41
+msgid "Short name of the Organization."
+msgstr ""
+
+#: ../../Organization.rst:42
+msgid "**Organization type**"
+msgstr ""
+
+#: ../../Organization.rst:43
+msgid "Type of organization."
+msgstr ""
+
+#: ../../Organization.rst:44
+msgid "Manager"
+msgstr ""
+
+#: ../../Organization.rst:45
+msgid "Manager of organization."
+msgstr ""
+
+#: ../../Organization.rst:46
+msgid "Hierarchy"
+msgstr ""
+
+#: ../../Organization.rst:47
+msgid "list of parents organizations."
+msgstr ""
+
+#: ../../Organization.rst:48
+msgid "Parent organization"
+msgstr ""
+
+#: ../../Organization.rst:49
+msgid "parent organization."
+msgstr ""
+
+#: ../../Organization.rst:50
+msgid "Closed"
+msgstr ""
+
+#: ../../Organization.rst:51
+msgid "Box checked indicates the organization is archived."
+msgstr ""
+
+#: ../../Organization.rst:53
+msgid "**\\* Required field**"
+msgstr ""
+
