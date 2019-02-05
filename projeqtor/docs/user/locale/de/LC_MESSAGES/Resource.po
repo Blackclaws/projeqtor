@@ -1,0 +1,488 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2018, ProjeQtOr
+# This file is distributed under the same license as the ProjeQtOr Bedienhandbuch Deutsch package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"POT-Creation-Date: \n"
+"PO-Revision-Date: \n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=ISO-8859-1\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: de\n"
+"X-Generator: Poedit 2.0.8\n"
+
+#: ../../Resource.rst:11
+msgid "Inhalt"
+msgstr "Inhalt"
+
+#: ../../Resource.rst:20
+msgid "Resources"
+msgstr "Ressourcen"
+
+#: ../../Resource.rst:24
+msgid ":ref:`projeqtor-roles`"
+msgstr ":ref:`projeqtor-roles`"
+
+#: ../../Resource.rst:25
+msgid ":ref:`profiles-definition`"
+msgstr ":ref:`profile-definition`"
+
+#: ../../Resource.rst:26
+msgid ":ref:`user-ress-contact-demystify`"
+msgstr ":ref:`user-ress-contact-demystify`"
+
+#: ../../Resource.rst:27
+msgid ":ref:`resource-function-cost`"
+msgstr ":ref:`resource-function-cost`"
+
+#: ../../Resource.rst:28 ../../Resource.rst:372
+msgid ":ref:`resource-calendar`"
+msgstr ":ref:`resource-calendar`"
+
+#: ../../Resource.rst:29
+msgid ":ref:`photo`"
+msgstr ":ref:`photo`"
+
+#: ../../Resource.rst:32
+msgid "Human and material resource are involved in the project."
+msgstr "Menschliche und materielle Ressourcen sind in das Projekt eingebunden."
+
+#: ../../Resource.rst:34
+msgid "Project allocation defines its availability."
+msgstr "Projektzuordnung definiert die Verfügbarkeit."
+
+#: ../../Resource.rst:37
+msgid "As group of person"
+msgstr "Als Personengruppe"
+
+#: ../../Resource.rst:38
+msgid "A resource can be a group of person."
+msgstr "Eine Ressource kann eine Gruppe von Personen sein."
+
+#: ../../Resource.rst:39
+msgid "Useful in initial project planning."
+msgstr "Nützlich bei der ersten Projektierung."
+
+#: ../../Resource.rst:40
+msgid "You create the fictitious resource with capacity > 1."
+msgstr "Sie legen die fiktive Ressource mit Kapazität > 1 an."
+
+#: ../../Resource.rst:42
+msgid "Example"
+msgstr "Beispiel"
+
+#: ../../Resource.rst:48 ../../Resource.rst:230
+msgid ":ref:`Allocations<allocation-section>`"
+msgstr ":ref:`Allocations<allocation-section>`"
+
+#: ../../Resource.rst:51 ../../Resource.rst:242 ../../Resource.rst:331
+#: ../../Resource.rst:415
+msgid "Section: Description"
+msgstr "Sektion: Beschreibung"
+
+#: ../../Resource.rst:58 ../../Resource.rst:139 ../../Resource.rst:176
+#: ../../Resource.rst:200 ../../Resource.rst:249 ../../Resource.rst:338
+#: ../../Resource.rst:422
+msgid "Field"
+msgstr "Feld"
+
+#: ../../Resource.rst:59 ../../Resource.rst:92 ../../Resource.rst:140
+#: ../../Resource.rst:177 ../../Resource.rst:201 ../../Resource.rst:250
+#: ../../Resource.rst:263 ../../Resource.rst:339 ../../Resource.rst:346
+#: ../../Resource.rst:423
+msgid "Description"
+msgstr "Beschreibung"
+
+#: ../../Resource.rst:60 ../../Resource.rst:251 ../../Resource.rst:340
+#: ../../Resource.rst:424
+msgid ":term:`Id`"
+msgstr ":term:`Id`"
+
+#: ../../Resource.rst:61
+msgid "Unique Id for the resource."
+msgstr "Eindeutige Id für die Ressource."
+
+#: ../../Resource.rst:62 ../../Resource.rst:253
+msgid "Photo"
+msgstr "Foto"
+
+#: ../../Resource.rst:63
+msgid "Photo of the resource."
+msgstr "Foto der Ressource."
+
+#: ../../Resource.rst:64 ../../Resource.rst:255
+msgid "**Real name**"
+msgstr "**Echter Name**"
+
+#: ../../Resource.rst:65
+msgid "Name of the resource."
+msgstr "Name der Ressource."
+
+#: ../../Resource.rst:66
+msgid "User name"
+msgstr "Benutzer-Nam"
+
+#: ../../Resource.rst:67
+msgid "Name of user."
+msgstr "Name des Benutzers."
+
+#: ../../Resource.rst:68 ../../Resource.rst:257
+msgid "Initials"
+msgstr "Initialen"
+
+#: ../../Resource.rst:69 ../../Resource.rst:258
+msgid "Initials of the resource."
+msgstr "Initialen der Ressource."
+
+#: ../../Resource.rst:70
+msgid "Email address"
+msgstr "E-Mail Adresse"
+
+#: ../../Resource.rst:71
+msgid "Email address of the resource."
+msgstr "E-Mail-Adresse der Ressource."
+
+#: ../../Resource.rst:72
+msgid "Profile"
+msgstr "Profil"
+
+#: ../../Resource.rst:73
+msgid "Profile of the user."
+msgstr "Profil des Benutzers."
+
+#: ../../Resource.rst:74
+msgid "Capacity (FTE)"
+msgstr "Kapazität (FTE)"
+
+#: ../../Resource.rst:75
+msgid "Capacity of the resource, in Full Time Equivalent."
+msgstr "Kapazität der Ressource, in Vollzeitäquivalent."
+
+#: ../../Resource.rst:76 ../../Resource.rst:259
+msgid "**Calendar**"
+msgstr "**Kalender**"
+
+#: ../../Resource.rst:77 ../../Resource.rst:260
+msgid ":ref:`Calendar<calendar>` defines the availability of the resource."
+msgstr ":ref:`Calendar<calendar>` definiert die Verfügbarkeit der Ressource."
+
+#: ../../Resource.rst:78
+msgid ":ref:`Team<team>`"
+msgstr ":ref:`Team<team>`"
+
+#: ../../Resource.rst:79
+msgid "The team to which the resource belongs."
+msgstr "Das Team, zu dem die Ressource gehört."
+
+#: ../../Resource.rst:80
+msgid "Phone"
+msgstr "Telefon"
+
+#: ../../Resource.rst:81
+msgid "Phone number of the resource."
+msgstr "Telefonnummer der Ressource."
+
+#: ../../Resource.rst:82
+msgid "Mobile"
+msgstr "Mobiltelefo"
+
+#: ../../Resource.rst:83
+msgid "Mobile phone number of the resource."
+msgstr "Handynummer der Ressource."
+
+#: ../../Resource.rst:84
+msgid "Fax"
+msgstr "Fax"
+
+#: ../../Resource.rst:85
+msgid "Fax number of the resource."
+msgstr "Faxnummer der Ressource."
+
+#: ../../Resource.rst:86
+msgid "Is a contact"
+msgstr "Ist ein Kontakt"
+
+#: ../../Resource.rst:87
+msgid "Is this resource also a contact?"
+msgstr "Ist diese Ressource auch ein Kontakt?"
+
+#: ../../Resource.rst:88
+msgid "Is a user"
+msgstr "Ist ein Benutzer"
+
+#: ../../Resource.rst:89
+msgid "Is this resource also a user?"
+msgstr "Ist diese Ressource auch ein Benutzer?"
+
+#: ../../Resource.rst:90 ../../Resource.rst:261 ../../Resource.rst:344
+msgid ":term:`Closed`"
+msgstr ":term:`Geschlossen`"
+
+#: ../../Resource.rst:91 ../../Resource.rst:262
+msgid "Flag to indicate that the resource is archived."
+msgstr "Kennzeichen, dass die Ressource archiviert ist."
+
+#: ../../Resource.rst:93 ../../Resource.rst:264
+msgid "Complete description of the resource."
+msgstr "Vollständige Beschreibung der Ressource."
+
+#: ../../Resource.rst:95 ../../Resource.rst:266
+msgid "**\\* Required field**"
+msgstr "**\\* Pflichtfeld**"
+
+#: ../../Resource.rst:99
+msgid "1 (full time)."
+msgstr "1 (Vollzeit)"
+
+#: ../../Resource.rst:100
+msgid "< 1 (for part time working resource)."
+msgstr "< 1 (für Teilzeitarbeitsmittel)."
+
+#: ../../Resource.rst:105
+msgid "Check this if the resource must also be a contact."
+msgstr "Überprüfen Sie, ob die Ressource auch ein Kontakt sein muss."
+
+#: ../../Resource.rst:106
+msgid "The resource will then also appear in the \\\"Contacts\\\" list."
+msgstr "Die Ressource erscheint dann auch in der Liste \\\"Kontakte\\\"."
+
+#: ../../Resource.rst:110
+msgid "Check this if the resource must connect to the application."
+msgstr "Üœberprüfen Sie, ob die Ressource eine Verbindung zur Anwendung herstellen muss."
+
+#: ../../Resource.rst:111
+msgid "You must then define the **User name** and **Profile** fields."
+msgstr "Sie müssen dann die Felder **Benutzername** und **Profil** definieren."
+
+#: ../../Resource.rst:112
+msgid "The resource will then also appear in the â€œUsersâ€ list."
+msgstr "Die Ressource erscheint dann auch in der Liste \"Benutzer\""
+
+#: ../../Resource.rst:123
+msgid "Section: Function and cost"
+msgstr "Sektion: Funktion und Kosten"
+
+#: ../../Resource.rst:124
+msgid "This section allows to define functions and cost of the resource."
+msgstr "Dieser Abschnitt erlaubt es, Funktionen und Kosten der Ressource zu definieren."
+
+#: ../../Resource.rst:126
+msgid "**Main function**"
+msgstr "**Hauptfunktion**"
+
+#: ../../Resource.rst:128
+msgid "Main function allows to define the default function."
+msgstr "Hauptfunktion erlaubt die Definition der Standardfunktion."
+
+#: ../../Resource.rst:130
+msgid "**Resource cost definition**"
+msgstr "**Ressourcenkostendefinition**"
+
+#: ../../Resource.rst:133
+msgid "The daily cost is defined for a specific period."
+msgstr "Die täglichen Kosten werden für einen bestimmten Zeitraum definiert."
+
+#: ../../Resource.rst:135
+msgid "Function and cost section fields"
+msgstr "Funktions- und Kostenbereichsfelder"
+
+#: ../../Resource.rst:141 ../../Resource.rst:178 ../../Resource.rst:142
+msgid "Function of the resource for the selected cost."
+msgstr "Funktion der Ressource für die ausgewählten Kosten."
+
+#: ../../Resource.rst:143 ../../Resource.rst:180
+msgid "Cost"
+msgstr "Koste"
+
+#: ../../Resource.rst:144 ../../Resource.rst:181
+msgid "Daily cost of the resource for the selected function."
+msgstr "Tägliche Kosten der Ressource für die gewählte Funktion."
+
+#: ../../Resource.rst:145 ../../Resource.rst:182
+msgid "Start date"
+msgstr "Datum des Beginns"
+
+#: ../../Resource.rst:146 ../../Resource.rst:183
+msgid "Start date for the cost of the resource, for the selected function."
+msgstr "Startdatum für die Kosten der Ressource, für die gewählte Funktion."
+
+#: ../../Resource.rst:147
+msgid "End date"
+msgstr "Enddatum"
+
+#: ../../Resource.rst:148
+msgid "End date for the cost of the resource, for the selected function."
+msgstr "Enddatum für die Kosten der Ressource, für die gewählte Funktion."
+
+#: ../../Resource.rst:161
+msgid "Resource cost management"
+msgstr "Ressourcen-Kostenmanagemen"
+
+#: ../../Resource.rst:162
+msgid "Click on |buttonAdd| to create a new resource cost."
+msgstr "Klicken Sie auf |buttonAdd|, um einen neuen Ressourcenpreis anzulegen."
+
+#: ../../Resource.rst:163
+msgid "Click on |buttonEdit| to update an existing resource cost."
+msgstr "Klicken Sie auf |buttonEdit|, um einen bestehenden Ressourcenpreis zu aktualisieren."
+
+#: ../../Resource.rst:164
+msgid "Click on |buttonIconDelete| to delete the resource cost."
+msgstr "Klicken Sie auf |buttonIconDelete|, um die Ressourcenkosten zu löschen."
+
+#: ../../Resource.rst:170
+msgid "Resource cost dialog box"
+msgstr "Ressourcenkosten-Dialogfenster"
+
+#: ../../Resource.rst:172
+msgid "Resource cost dialog box fields"
+msgstr "Felder des Dialogfensters Ressourcenkosten"
+
+#: ../../Resource.rst:179
+msgid "Function to be selected."
+msgstr "Zu wählende Funktion."
+
+#: ../../Resource.rst:187
+msgid "The default value will be the main function."
+msgstr "Der Standardwert ist die Hauptfunktion."
+
+#: ../../Resource.rst:195
+msgid "Section: Miscellanous"
+msgstr "Sektion: Sonstiges"
+
+#: ../../Resource.rst:196
+msgid "Miscellanous section fields"
+msgstr "Diverse Querschnittsfelder"
+
+#: ../../Resource.rst:202
+msgid "Don't receive team mails"
+msgstr "Keine Team-Mails erhalten"
+
+#: ../../Resource.rst:213
+msgid "Pool of Resources"
+msgstr "Ressourcen-Pool"
+
+#: ../../Resource.rst:221
+msgid "Resources in a pool"
+msgstr "Ressourcen im Pool"
+
+#: ../../Resource.rst:223
+msgid "You assign resources to the pool at a given rate for a given period."
+msgstr "Sie weisen dem Pool Ressourcen zu einem bestimmten Kurs für einen bestimmten Zeitraum zu."
+
+#: ../../Resource.rst:232
+msgid "A pool can be allocated to projects like any resource."
+msgstr "Ein Pool kann Projekten wie jeder anderen Ressource zugeordnet werden."
+
+#: ../../Resource.rst:252
+msgid "Unique Id for the pool."
+msgstr "Unique Id für den Pool."
+
+#: ../../Resource.rst:254
+msgid "Photo of the pool."
+msgstr "Foto vom Pool."
+
+#: ../../Resource.rst:256
+msgid "Name of the pool."
+msgstr "Name des Pools."
+
+#: ../../Resource.rst:314
+msgid "Teams"
+msgstr "Mannschaften"
+
+#: ../../Resource.rst:316
+msgid "The team is a group of resources gathered on any criteria."
+msgstr "Das Team ist eine Gruppe von Ressourcen, die nach beliebigen Kriterien zusammengestellt wurden."
+
+#: ../../Resource.rst:320
+msgid "A resource can belong to only one team."
+msgstr "Eine Ressource kann nur einem Team angehören."
+
+#: ../../Resource.rst:324
+msgid "Use for"
+msgstr "Verwenden für"
+
+#: ../../Resource.rst:383 ../../Resource.rst:388
+msgid "Default calendar"
+msgstr "Standard-Kalende"
+
+#: ../../Resource.rst:389
+msgid "A calendar named \"default\" is already defined."
+msgstr "Ein Kalender namens \"default\" ist bereits definiert."
+
+#: ../../Resource.rst:390
+msgid "By default, this is the calendar of all resources."
+msgstr "StandardmäßŸig ist dies der Kalender aller Ressourcen."
+
+#: ../../Resource.rst:392
+msgid "It cannot be deleted."
+msgstr "Es kann nicht gelöscht werden."
+
+#: ../../Resource.rst:395
+msgid "Specific calendar"
+msgstr "Spezifischer Kalende"
+
+#: ../../Resource.rst:400
+msgid "Import calendar definition"
+msgstr "Kalenderdefinition importieren"
+
+#: ../../Resource.rst:402
+msgid "Existing exceptions of current calendar are not changed."
+msgstr "Bestehende Ausnahmen des aktuellen Kalenders werden nicht geändert."
+
+#: ../../Resource.rst:406
+msgid "The calendars are not linked."
+msgstr "Die Kalender sind nicht verlinkt."
+
+#: ../../Resource.rst:407
+msgid "You have to re import the definition to apply changes."
+msgstr "Sie müssen die Definition erneut importieren, um Änderungen zu übernehmen."
+
+#: ../../Resource.rst:425
+msgid "Unique Id for the calendar."
+msgstr "Eindeutige Id für den Kalender."
+
+#: ../../Resource.rst:426
+msgid "Name"
+msgstr "Name"
+
+#: ../../Resource.rst:427
+msgid "Name of the calendar."
+msgstr "Name des Kalenders."
+
+#: ../../Resource.rst:430
+msgid "Section: Year"
+msgstr "Sektion: Jahr"
+
+#: ../../Resource.rst:433
+msgid "Select year of displayed calendar."
+msgstr "Jahr des angezeigten Kalenders wählen."
+
+#: ../../Resource.rst:440
+msgid "Section: Calendar days"
+msgstr "Sektion: Kalendertage"
+
+#: ../../Resource.rst:450
+msgid "In white, days work."
+msgstr "In weisŸ, Arbeitstage."
+
+#: ../../Resource.rst:451
+msgid "In gray, days off."
+msgstr "In grau, freie Tage."
+
+#: ../../Resource.rst:452
+msgid "In red, exception days work."
+msgstr "In rot, Ausnahmetage arbeiten."
+
+#: ../../Resource.rst:453
+msgid "In blue, exception days off."
+msgstr "In blau, Ausnahmetage frei."
+
+#: ../../Resource.rst:454
+msgid "In bold, current day."
+msgstr "In fett, aktueller Tag."

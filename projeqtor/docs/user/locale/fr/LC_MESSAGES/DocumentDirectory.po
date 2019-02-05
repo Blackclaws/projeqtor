@@ -1,0 +1,199 @@
+# 
+msgid ""
+msgstr ""
+"Project-Id-Version: ProjeQtOr User guide 5.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2015-07-08 14:45-0400\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: ../../DocumentDirectory.rst:10 ../../DocumentDirectory.rst:7
+msgid "Document Directory"
+msgstr ""
+
+#: ../../DocumentDirectory.rst:12
+msgid "The document directories define a structure for document storage."
+msgstr ""
+
+#: ../../DocumentDirectory.rst:14
+msgid ""
+"The document files (defined on document version) will be stored in the "
+"folder defined as “location” in the “document root” place."
+msgstr ""
+
+#: ../../DocumentDirectory.rst:16
+msgid "“Document root” is defined in the global parameters file."
+msgstr ""
+
+#: ../../DocumentDirectory.rst:0
+msgid "Other sections"
+msgstr ""
+
+#: ../../DocumentDirectory.rst:20
+msgid ":ref:`gui-chg-history-section-label`"
+msgstr ""
+
+#: ../../DocumentDirectory.rst:30
+msgid "Field"
+msgstr ""
+
+#: ../../DocumentDirectory.rst:31
+msgid "Description"
+msgstr ""
+
+#: ../../DocumentDirectory.rst:32
+msgid ":term:`Id`"
+msgstr ""
+
+#: ../../DocumentDirectory.rst:33
+msgid "Unique Id for the directory."
+msgstr ""
+
+#: ../../DocumentDirectory.rst:34
+msgid "**Name**"
+msgstr ""
+
+#: ../../DocumentDirectory.rst:35
+msgid "Name of the directory."
+msgstr ""
+
+#: ../../DocumentDirectory.rst:36
+msgid "Parent directory"
+msgstr ""
+
+#: ../../DocumentDirectory.rst:37
+msgid "Name of the parent directory to define hierarchic structure."
+msgstr ""
+
+#: ../../DocumentDirectory.rst:38
+msgid "Location"
+msgstr ""
+
+#: ../../DocumentDirectory.rst:39
+msgid "Folder where files will be stored."
+msgstr ""
+
+#: ../../DocumentDirectory.rst:40
+msgid "Project"
+msgstr ""
+
+#: ../../DocumentDirectory.rst:41
+msgid "Project the directory is dedicated to."
+msgstr ""
+
+#: ../../DocumentDirectory.rst:42
+msgid "Product"
+msgstr ""
+
+#: ../../DocumentDirectory.rst:43
+msgid "Product the directory is dedicated to."
+msgstr ""
+
+#: ../../DocumentDirectory.rst:44
+msgid "Default type"
+msgstr ""
+
+#: ../../DocumentDirectory.rst:45
+msgid "Type of document the directory is dedicated to."
+msgstr ""
+
+#: ../../DocumentDirectory.rst:46
+msgid ":term:`Closed`"
+msgstr ""
+
+#: ../../DocumentDirectory.rst:47
+msgid "Flag to indicate that directory is archived."
+msgstr ""
+
+#: ../../DocumentDirectory.rst:49
+msgid "**\\* Required field**"
+msgstr ""
+
+#: ../../DocumentDirectory.rst:53
+msgid "Location will automatically be “parent location” / “name”."
+msgstr ""
+
+#: ../../DocumentDirectory.rst:57
+msgid "The current directory is then a sub-directory of parent."
+msgstr ""
+
+#: ../../DocumentDirectory.rst:61
+msgid "Location is automatically defined as “parent location” / “name”."
+msgstr ""
+
+#: ../../DocumentDirectory.rst:62
+msgid ""
+"Location is defined relatively to “document root”, defined in global "
+"parameters."
+msgstr ""
+
+#: ../../DocumentDirectory.rst:66
+msgid ""
+"New document in this directory will have default project positioned to this "
+"value."
+msgstr ""
+
+#: ../../DocumentDirectory.rst:70
+msgid ""
+"New document in this directory will have default product positioned to this "
+"value."
+msgstr ""
+
+#: ../../DocumentDirectory.rst:74
+msgid ""
+"New document in this directory will have default document type positioned to"
+" this value."
+msgstr ""
+
+#: ../../DocumentDirectory.rst:23
+msgid "Section: Description"
+msgstr ""
+
+#: ../../DocumentDirectory.rst:0
+msgid "Field: Name"
+msgstr ""
+
+#: ../../DocumentDirectory.rst:0
+msgid "Field: Parent directory"
+msgstr ""
+
+#: ../../DocumentDirectory.rst:0
+msgid "Field: Location"
+msgstr ""
+
+#: ../../DocumentDirectory.rst:0
+msgid "Field: Project"
+msgstr ""
+
+#: ../../DocumentDirectory.rst:0
+msgid "Field: Product"
+msgstr ""
+
+#: ../../DocumentDirectory.rst:0
+msgid "Field: Default type"
+msgstr ""
+
+#~ msgid "Description section"
+#~ msgstr ""
+
+#~ msgid "Details of fields"
+#~ msgstr ""
+
+#~ msgid "**Parent directory**"
+#~ msgstr ""
+
+#~ msgid "**Location**"
+#~ msgstr ""
+
+#~ msgid "**Project**"
+#~ msgstr ""
+
+#~ msgid "**Product**"
+#~ msgstr ""
+
+#~ msgid "**Default type**"
+#~ msgstr ""

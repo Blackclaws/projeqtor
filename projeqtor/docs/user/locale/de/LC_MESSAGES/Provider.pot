@@ -1,0 +1,130 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2018, ProjeQtOr
+# This file is distributed under the same license as the ProjeQtOr Bedienhandbuch Deutsch package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: ProjeQtOr Bedienhandbuch Deutsch 7.2\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2018-07-03 14:34+0200\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: ../../Provider.rst:12
+msgid "Providers"
+msgstr ""
+
+#: ../../Provider.rst:14
+msgid "Allows to manage provider list."
+msgstr ""
+
+#: ../../Provider.rst:18
+msgid ":ref:`Attachments<attachment-section>`"
+msgstr ""
+
+#: ../../Provider.rst:19
+msgid ":ref:`Notes<note-section>`"
+msgstr ""
+
+#: ../../Provider.rst:22
+msgid "Section: Description"
+msgstr ""
+
+#: ../../Provider.rst:29
+msgid "Field"
+msgstr ""
+
+#: ../../Provider.rst:30
+msgid "Description"
+msgstr ""
+
+#: ../../Provider.rst:31
+msgid ":term:`Id`"
+msgstr ""
+
+#: ../../Provider.rst:32
+msgid "Unique Id for the provider."
+msgstr ""
+
+#: ../../Provider.rst:33
+msgid "**Name**"
+msgstr ""
+
+#: ../../Provider.rst:34
+msgid "Provider name."
+msgstr ""
+
+#: ../../Provider.rst:35
+msgid "Type of provider"
+msgstr ""
+
+#: ../../Provider.rst:36
+msgid "Type of provider."
+msgstr ""
+
+#: ../../Provider.rst:37
+msgid "Provider code"
+msgstr ""
+
+#: ../../Provider.rst:38
+msgid "Code of the provider."
+msgstr ""
+
+#: ../../Provider.rst:39
+msgid "Payment deadline"
+msgstr ""
+
+#: ../../Provider.rst:40
+msgid "The payment deadline is stated for this provider."
+msgstr ""
+
+#: ../../Provider.rst:41
+msgid "Tax"
+msgstr ""
+
+#: ../../Provider.rst:42
+msgid "Tax rate applied  for this provider."
+msgstr ""
+
+#: ../../Provider.rst:43
+msgid "Tax number"
+msgstr ""
+
+#: ../../Provider.rst:44
+msgid "Tax reference number."
+msgstr ""
+
+#: ../../Provider.rst:45
+msgid ":term:`Closed`"
+msgstr ""
+
+#: ../../Provider.rst:46
+msgid "Box checked indicates that the provider is archived."
+msgstr ""
+
+#: ../../Provider.rst:47
+msgid ":term:`Description`"
+msgstr ""
+
+#: ../../Provider.rst:48
+msgid "Description of the provider."
+msgstr ""
+
+#: ../../Provider.rst:50
+msgid "**\\* Required field**"
+msgstr ""
+
+#: ../../Provider.rst:53
+msgid "Section: Address"
+msgstr ""
+
+#: ../../Provider.rst:54
+msgid "Full address of the provider."
+msgstr ""
+

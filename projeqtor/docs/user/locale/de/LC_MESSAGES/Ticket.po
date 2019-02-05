@@ -1,0 +1,227 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2018, ProjeQtOr
+# This file is distributed under the same license as the ProjeQtOr Bedienhandbuch Deutsch package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"POT-Creation-Date: \n"
+"PO-Revision-Date: \n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=ISO-8859-1\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: de\n"
+"X-Generator: Poedit 2.0.8\n"
+
+#: ../../Ticket.rst:11
+msgid "Tickets"
+msgstr "Tickets"
+
+#: ../../Ticket.rst:13
+msgid "A ticket is a kind of task that can not be unitarily planned."
+msgstr "Ein Ticket ist eine Aufgabe, die nicht einheitlich geplant werden kann."
+
+#: ../../Ticket.rst:17
+msgid "It can be globally planned as a general activity, but not unitarily."
+msgstr "Es kann global als allgemeine Aktivität geplant werden, aber nicht einheitlich."
+
+#: ../../Ticket.rst:19
+msgid "For instance, bugs should be managed through tickets :"
+msgstr "Zum Beispiel sollten Bugs über Tickets verwaltet werden :"
+
+#: ../../Ticket.rst:21
+msgid "You can not plan bugs before they are registered."
+msgstr "Sie können keine Fehler planen, bevor sie registriert sind."
+
+#: ../../Ticket.rst:22
+msgid "You must be able to give a feedback on each bug."
+msgstr "Sie müssen in der Lage sein, ein Feedback zu jedem Fehler zu geben."
+
+#: ../../Ticket.rst:23
+msgid "You can (or at least should) globally plan bug fixing activity."
+msgstr "Sie können (oder sollten zumindest) die Fehlerbehebung global planen."
+
+#: ../../Ticket.rst:29
+msgid "This screen is a limited version of screen \"Tickets\"."
+msgstr "This screen is a limited version of screen \"Tickets\"."
+
+#: ../../Ticket.rst:31
+msgid "When fields and features are available, the description is similar."
+msgstr "Wenn Felder und Funktionen verfügbar sind, ist die Beschreibung ähnlich."
+
+#: ../../Ticket.rst:34 ../../Ticket.rst:190
+msgid "Planning activity"
+msgstr "Planungstätigkeit"
+
+#: ../../Ticket.rst:36
+msgid "Work on the ticket will be included in this activity."
+msgstr "Die Arbeit am Ticket wird in diese Aktivität einbezogen."
+
+#: ../../Ticket.rst:38
+msgid "**Put the real work from tickets to the resource timesheet**"
+msgstr "**Stellen Sie die eigentliche Arbeit von den Tickets auf die Ressourcen-Zeiterfassungsliste**"
+
+#: ../../Ticket.rst:41
+msgid "The resource is automatically assigned to this activity."
+msgstr "Die Ressource wird dieser Aktivität automatisch zugeordnet."
+
+#: ../../Ticket.rst:42
+msgid "Real work set on tickets is automatically set in resource timesheet."
+msgstr "Real work set on tickets wird automatisch in der Ressourcenzeiterfassung gesetzt."
+
+#: ../../Ticket.rst:49
+msgid "Restrict the entry of real work in the ticket."
+msgstr "Beschränken Sie den Eintritt von echten Arbeiten in das Ticket."
+
+#: ../../Ticket.rst:56
+msgid "Due dates"
+msgstr "Fälligkeitsdaten"
+
+#: ../../Ticket.rst:59
+msgid "**Initial due date**"
+msgstr "**Initiales Fälligkeitsdatum**"
+
+#: ../../Ticket.rst:62
+msgid ":ref:`delay-for-ticket` screen allows to define ticket delay."
+msgstr ":ref:`delay-for-ticket` Bildschirm erlaubt es, die Ticketverzögerung zu definieren."
+
+#: ../../Ticket.rst:64
+msgid "**Planned due date**"
+msgstr "**Geplantes Fälligkeitsdatum**"
+
+#: ../../Ticket.rst:66
+msgid "Is used to define a target date after evaluation."
+msgstr "Wird verwendet, um ein Zieldatum nach der Auswertung zu definieren."
+
+#: ../../Ticket.rst:67
+msgid "Automatically initialized to the initial due date."
+msgstr "Automatisch auf das erste Fälligkeitsdatum initialisiert."
+
+#: ../../Ticket.rst:69
+msgid "**Monitoring indicator**"
+msgstr "**Üœberwachungsindikator**"
+
+#: ../../Ticket.rst:71
+msgid "Possibility to define indicators to follow the respect of dates values."
+msgstr "Möglichkeit, Indikatoren zu definieren, um die Einhaltung von Datumswerten zu überwachen."
+
+#: ../../Ticket.rst:85
+msgid "Product, component and versions fields"
+msgstr "Produkt-, Komponenten- und Versionsfelder"
+
+#: ../../Ticket.rst:86
+msgid "Allows to identify the product and component relating to the issue."
+msgstr "Ermöglicht die Identifizierung des Produkts und der Komponente in Bezug auf das Problem."
+
+#: ../../Ticket.rst:89
+msgid "**Versions identified**"
+msgstr "**Versionen identifiziert**"
+
+#: ../../Ticket.rst:91
+msgid "A ticket can identify all versions allocated."
+msgstr "Ein Ticket kann alle zugeordneten Versionen identifizieren."
+
+#: ../../Ticket.rst:92
+msgid "Possibility to define a main version and the other versions allocated."
+msgstr "Möglichkeit, eine Hauptversion und die anderen zugeordneten Versionen zu definieren."
+
+#: ../../Ticket.rst:96
+msgid "More detail, see: :ref:`Product concept<product-concept>`."
+msgstr "Mehr Details siehe: :ref:`Product concept<product-concept>`."
+
+#: ../../Ticket.rst:102
+msgid "Responsible of product"
+msgstr "Verantwortlich für das Produkt"
+
+#: ../../Ticket.rst:103
+msgid "A responsible can be defined for a product or component."
+msgstr "Ein Verantwortlicher kann für ein Produkt oder eine Komponente definiert werden."
+
+#: ../../Ticket.rst:107
+msgid "Global parameter: Ticket responsible from product responsible"
+msgstr "Globale Parameter: Ticketverantwortlicher vom Produktverantwortlichen"
+
+#: ../../Ticket.rst:117
+msgid ":ref:`Linked element<linkElement-section>`"
+msgstr ":ref:`Linked element<linkElement-sektion>`"
+
+#: ../../Ticket.rst:118
+msgid ":ref:`Attachments<attachment-section>`"
+msgstr ":ref:`Attachments<attachment-section>`"
+
+#: ../../Ticket.rst:119
+msgid ":ref:`Notes<note-section>`"
+msgstr ":ref:`Notes<note-section>`"
+
+#: ../../Ticket.rst:123
+msgid "Section: Description"
+msgstr "Sektion: Beschreibung"
+
+#: ../../Ticket.rst:181 ../../Ticket.rst:191 ../../Ticket.rst:192
+#: ../../Ticket.rst:193 ../../Ticket.rst:194 ../../Ticket.rst:195
+#: ../../Ticket.rst:196 ../../Ticket.rst:197 ../../Ticket.rst:198
+#: ../../Ticket.rst:199 ../../Ticket.rst:200 ../../Ticket.rst:201
+#: ../../Ticket.rst:202 ../../Ticket.rst:203 ../../Ticket.rst:204
+#: ../../Ticket.rst:205 ../../Ticket.rst:206 ../../Ticket.rst:207
+#: ../../Ticket.rst:208 ../../Ticket.rst:209 ../../Ticket.rst:210
+msgid "Left work"
+msgstr "Linke Arbeit"
+
+#: ../../Ticket.rst:211
+msgid "Left workload needed to finish the ticket."
+msgstr "Linke Arbeitsbelastung nötig, um das Ticket zu beenden."
+
+#: ../../Ticket.rst:212
+msgid ":term:`Handled`"
+msgstr ":term:`Bearbeitet`"
+
+#: ../../Ticket.rst:311
+msgid "Other versions are listed above."
+msgstr "Andere Versionen sind oben aufgeführt."
+
+#: ../../Ticket.rst:315
+msgid "Click on |buttonAdd| to add a other version."
+msgstr "Klicken Sie auf |buttonAdd|, um eine andere Version hinzuzufügen."
+
+#: ../../Ticket.rst:316
+msgid "Click on |buttonIconDelete| to delete a version."
+msgstr "Klicken Sie auf |buttonIconDelete|, um eine Version zu löschen."
+
+#: ../../Ticket.rst:326
+msgid "Priority value calculation"
+msgstr "Prioritätswert-Berechnun"
+
+#: ../../Ticket.rst:332
+msgid "In the previous screens, a name of value is set with numeric value."
+msgstr "In den vorherigen Bildschirmen wird ein Wertname mit numerischem Wert gesetzt."
+
+#: ../../Ticket.rst:334
+msgid "Priority numeric value is determined by a simple equation as follows:"
+msgstr "Zahlenwert der Priorität wird durch eine einfache Gleichung wie folgt bestimmt:"
+
+#: ../../Ticket.rst:338
+msgid "[Priority value] = [Urgency value] X [Criticality value] / 2"
+msgstr "[Prioritätswert] =[Dringlichkeitswert] X[Kritikalitätswert] / 2"
+
+#: ../../Ticket.rst:339
+msgid "For example:"
+msgstr "Zum Beispiel:"
+
+#: ../../Ticket.rst:341
+msgid "Critical priority (8) = Blocking (4) X Critical (8) / 2"
+msgstr "Kritische Priorität (8) = Blockieren (4) X Kritisch (8) / 2"
+
+#: ../../Ticket.rst:344
+msgid "Default values"
+msgstr "Standardwerte"
+
+#: ../../Ticket.rst:345
+msgid "Default values are determined."
+msgstr "Standardwerte werden ermittelt."
+
+#: ../../Ticket.rst:346
+msgid "You can change its values while respecting the equation defined above."
+msgstr "Sie können seine Werte unter Beachtung der oben definierten Gleichung ändern."

@@ -1,0 +1,891 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2018, ProjeQtOr
+# This file is distributed under the same license as the ProjeQtOr Bedienhandbuch Deutsch package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"POT-Creation-Date: \n"
+"PO-Revision-Date: \n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=ISO-8859-1\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: de\n"
+"X-Generator: Poedit 2.0.8\n"
+
+#: ../../RequirementsTest.rst:10
+msgid "Requirements"
+msgstr "Anforderungen"
+
+#: ../../RequirementsTest.rst:14 ../../RequirementsTest.rst:202
+#: ../../RequirementsTest.rst:379
+msgid ":ref:`product-concept`"
+msgstr ":ref:`product-concept`"
+
+#: ../../RequirementsTest.rst:16
+msgid "Requirement is a rule defined for a project or a product."
+msgstr "Anforderung ist eine Regel für ein Projekt oder ein Produkt."
+
+#: ../../RequirementsTest.rst:20
+msgid "It allows to define and monitor cost and delays."
+msgstr "Es erlaubt, Kosten und Verzögerungen zu definieren und zu überwachen."
+
+#: ../../RequirementsTest.rst:25 ../../RequirementsTest.rst:222
+#: ../../RequirementsTest.rst:390
+msgid "Rights management"
+msgstr "Rechtemanagement"
+
+#: ../../RequirementsTest.rst:29
+msgid "Requirement link to test cases"
+msgstr "Anforderung Link zu Testfällen"
+
+#: ../../RequirementsTest.rst:35
+msgid "Requirement link to tickets"
+msgstr "Anforderungs-Link zu Tickets"
+
+#: ../../RequirementsTest.rst:44 ../../RequirementsTest.rst:226
+#: ../../RequirementsTest.rst:404
+msgid "Predecessor and successor elements"
+msgstr "Vorgänger- und Nachfolgeelemente"
+
+#: ../../RequirementsTest.rst:45
+msgid "Requirements can have predecessors and successors."
+msgstr "Anforderungen können Vorgänger und Nachfolger haben."
+
+#: ../../RequirementsTest.rst:46
+msgid "This defines some dependencies on the requirements."
+msgstr "Dies definiert einige Abhängigkeiten von den Anforderungen."
+
+#: ../../RequirementsTest.rst:50 ../../RequirementsTest.rst:409
+msgid "Monitoring indicator"
+msgstr "Ãœberwachungsindikato"
+
+#: ../../RequirementsTest.rst:51
+msgid "Possibility to define indicators to follow the respect of dates values."
+msgstr "Möglichkeit, Indikatoren zu definieren, um die Einhaltung von Datumswerten zu überwachen."
+
+#: ../../RequirementsTest.rst:64 ../../RequirementsTest.rst:417
+msgid ":ref:`Summary of test cases<summary-test-case-section>`"
+msgstr ":ref:`Summary of test cases<summary-test-case-section>`"
+
+#: ../../RequirementsTest.rst:65 ../../RequirementsTest.rst:233
+#: ../../RequirementsTest.rst:418
+msgid ":ref:`Predecessor and Sucessor element<predSuces-element-section>`"
+msgstr ":ref:`Predecessor and Sucessor element<predSuces-element-section>`"
+
+#: ../../RequirementsTest.rst:66 ../../RequirementsTest.rst:234
+#: ../../RequirementsTest.rst:419
+msgid ":ref:`Linked element<linkElement-section>`"
+msgstr ":ref:`Linked element<linkElement-sektion>`"
+
+#: ../../RequirementsTest.rst:67 ../../RequirementsTest.rst:235
+#: ../../RequirementsTest.rst:420
+msgid ":ref:`Attachments<attachment-section>`"
+msgstr ":ref:`Attachments<Attachment-Bereich>`"
+
+#: ../../RequirementsTest.rst:68 ../../RequirementsTest.rst:236
+#: ../../RequirementsTest.rst:421
+msgid ":ref:`Notes<note-section>`"
+msgstr ":ref:`Notes<note-section>`"
+
+#: ../../RequirementsTest.rst:71 ../../RequirementsTest.rst:244
+#: ../../RequirementsTest.rst:424
+msgid "Section: Description"
+msgstr "Sektion: Beschreibung"
+
+#: ../../RequirementsTest.rst:78 ../../RequirementsTest.rst:120
+#: ../../RequirementsTest.rst:175 ../../RequirementsTest.rst:251
+#: ../../RequirementsTest.rst:307 ../../RequirementsTest.rst:359
+#: ../../RequirementsTest.rst:431 ../../RequirementsTest.rst:469
+#: ../../RequirementsTest.rst:504 ../../RequirementsTest.rst:559
+#: ../../RequirementsTest.rst:584 ../../RequirementsTest.rst:643
+msgid "Field"
+msgstr "Feld"
+
+#: ../../RequirementsTest.rst:79 ../../RequirementsTest.rst:121
+#: ../../RequirementsTest.rst:176 ../../RequirementsTest.rst:252
+#: ../../RequirementsTest.rst:308 ../../RequirementsTest.rst:360
+#: ../../RequirementsTest.rst:432 ../../RequirementsTest.rst:470
+#: ../../RequirementsTest.rst:505 ../../RequirementsTest.rst:560
+#: ../../RequirementsTest.rst:585 ../../RequirementsTest.rst:644
+msgid "Description"
+msgstr "Beschreibung"
+
+#: ../../RequirementsTest.rst:80 ../../RequirementsTest.rst:253
+#: ../../RequirementsTest.rst:433
+msgid ":term:`Id`"
+msgstr ":term:`Id`"
+
+#: ../../RequirementsTest.rst:81
+msgid "Unique Id for the requirement."
+msgstr "Unique Id für die Anforderung."
+
+#: ../../RequirementsTest.rst:82 ../../RequirementsTest.rst:255
+#: ../../RequirementsTest.rst:435
+msgid "**Name**"
+msgstr "**Name**"
+
+#: ../../RequirementsTest.rst:83
+msgid "Short description of the requirement."
+msgstr "Kurzbeschreibung der Anforderung."
+
+#: ../../RequirementsTest.rst:84
+msgid "**Requirement type**"
+msgstr "**Anforderungstyp**"
+
+#: ../../RequirementsTest.rst:85
+msgid "Type of requirement."
+msgstr "Art der Anforderung."
+
+#: ../../RequirementsTest.rst:86 ../../RequirementsTest.rst:259
+#: ../../RequirementsTest.rst:439
+msgid "Project"
+msgstr "Projekt"
+
+#: ../../RequirementsTest.rst:87
+msgid "The project concerned by the requirement."
+msgstr "Das von der Anforderung betroffene Projekt."
+
+#: ../../RequirementsTest.rst:88 ../../RequirementsTest.rst:261
+#: ../../RequirementsTest.rst:441 ../../RequirementsTest.rst:89
+msgid "The product concerned by the requirement."
+msgstr "Das von der Anforderung betroffene Produkt."
+
+#: ../../RequirementsTest.rst:90 ../../RequirementsTest.rst:265
+#: ../../RequirementsTest.rst:445
+msgid ":term:`External reference`"
+msgstr ":term:`Externer Verweis`"
+
+#: ../../RequirementsTest.rst:91
+msgid "External reference for the requirement."
+msgstr "Externe Referenz für die Anforderung."
+
+#: ../../RequirementsTest.rst:92
+msgid ":term:`Requestor`"
+msgstr ":term:`Antragsteller`"
+
+#: ../../RequirementsTest.rst:93
+msgid "Contact who requested the requirement."
+msgstr "Kontakt, der die Anforderung gestellt hat."
+
+#: ../../RequirementsTest.rst:94
+msgid ":term:`Origin`"
+msgstr ":term:`Ursprung`"
+
+#: ../../RequirementsTest.rst:95
+msgid "Element which is the origin of the requirement."
+msgstr "Element, das der Ursprung der Anforderung ist."
+
+#: ../../RequirementsTest.rst:96
+msgid "Urgency"
+msgstr "Dringlichkeit"
+
+#: ../../RequirementsTest.rst:97
+msgid "Urgency of implementation of the requirement."
+msgstr "Dringlichkeit der Umsetzung der Anforderung."
+
+#: ../../RequirementsTest.rst:98
+msgid "Initial due date"
+msgstr "Erstes Fälligkeitsdatum"
+
+#: ../../RequirementsTest.rst:99
+msgid "Initial due date."
+msgstr "Erstes Fälligkeitsdatum."
+
+#: ../../RequirementsTest.rst:100
+msgid "Planned due date"
+msgstr "Geplante Fälligkeit"
+
+#: ../../RequirementsTest.rst:101
+msgid "Planned due date."
+msgstr "Geplantes Fälligkeitsdatum."
+
+#: ../../RequirementsTest.rst:102 ../../RequirementsTest.rst:269
+msgid "**Description**"
+msgstr "**Beschreibung**"
+
+#: ../../RequirementsTest.rst:103
+msgid "Long :term:`description` of the requirement."
+msgstr "Ausführliche :term:`Beschreibung` der Anforderung."
+
+#: ../../RequirementsTest.rst:105 ../../RequirementsTest.rst:149
+#: ../../RequirementsTest.rst:272 ../../RequirementsTest.rst:330
+#: ../../RequirementsTest.rst:450 ../../RequirementsTest.rst:490
+msgid "**\\* Required field**"
+msgstr "**\\* Pflichtfeld**"
+
+#: ../../RequirementsTest.rst:109 ../../RequirementsTest.rst:276
+#: ../../RequirementsTest.rst:454
+msgid "Must be concerned either with a project, a product or both."
+msgstr "Muss entweder ein Projekt, ein Produkt oder beides betreffen."
+
+#: ../../RequirementsTest.rst:113 ../../RequirementsTest.rst:300
+#: ../../RequirementsTest.rst:462
+msgid "Section: Treatment"
+msgstr "Sektion: Behandlung"
+
+#: ../../RequirementsTest.rst:122
+msgid "Top requirement"
+msgstr "Top-Anforderung"
+
+#: ../../RequirementsTest.rst:123
+msgid "Parent requirement, defining a hierarchic structure."
+msgstr "Ãœbergeordnete Anforderung, die eine hierarchische Struktur definiert."
+
+#: ../../RequirementsTest.rst:124 ../../RequirementsTest.rst:311
+#: ../../RequirementsTest.rst:475
+msgid "**Status**"
+msgstr "**Status**"
+
+#: ../../RequirementsTest.rst:125 ../../RequirementsTest.rst:312
+msgid "Actual :term:`status` of the requirement."
+msgstr "Aktueller :term:`Status` der Anforderung."
+
+#: ../../RequirementsTest.rst:126 ../../RequirementsTest.rst:313
+#: ../../RequirementsTest.rst:477
+msgid ":term:`Responsible`"
+msgstr ":term:`Verantwortlich`"
+
+#: ../../RequirementsTest.rst:127
+msgid "Resource who is responsible for the requirement."
+msgstr "Ressource, die für die Anforderung verantwortlich ist."
+
+#: ../../RequirementsTest.rst:128
+msgid "Criticality"
+msgstr "Kritikalität"
+
+#: ../../RequirementsTest.rst:129
+msgid "Level of criticality of the requirement for the product."
+msgstr "Kritikalitätsgrad der Anforderung an das Produkt."
+
+#: ../../RequirementsTest.rst:130
+msgid "Feasibility"
+msgstr "Machbarkeit"
+
+#: ../../RequirementsTest.rst:132
+msgid "Technical risk"
+msgstr "Technisches Risiko"
+
+#: ../../RequirementsTest.rst:134
+msgid "Estimated effort"
+msgstr "Geschätzte Leistung"
+
+#: ../../RequirementsTest.rst:136 ../../RequirementsTest.rst:317
+#: ../../RequirementsTest.rst:479
+msgid ":term:`Handled`"
+msgstr ":term:`Bearbeitet`"
+
+#: ../../RequirementsTest.rst:137
+msgid "Box checked indicates the requirement is taken over."
+msgstr "Box checked zeigt an, dass die Anforderung übernommen wurde."
+
+#: ../../RequirementsTest.rst:138 ../../RequirementsTest.rst:319
+#: ../../RequirementsTest.rst:481
+msgid ":term:`Done`"
+msgstr ":term:`Fertig`"
+
+#: ../../RequirementsTest.rst:139
+msgid "Box checked indicates the requirement has been treated."
+msgstr "Box checked zeigt an, dass die Anforderung behandelt wurde."
+
+#: ../../RequirementsTest.rst:140 ../../RequirementsTest.rst:321
+#: ../../RequirementsTest.rst:483
+msgid ":term:`Closed`"
+msgstr ":term:`Geschlossen`"
+
+#: ../../RequirementsTest.rst:141
+msgid "Box checked indicates the requirement is archived."
+msgstr "Box checked zeigt an, dass die Anforderung archiviert ist."
+
+#: ../../RequirementsTest.rst:142 ../../RequirementsTest.rst:323
+#: ../../RequirementsTest.rst:485
+msgid "Cancelled"
+msgstr "Abgesagt"
+
+#: ../../RequirementsTest.rst:143
+msgid "Box checked indicates the requirement is cancelled."
+msgstr "Box angekreuzt zeigt an, dass die Anforderung aufgehoben ist."
+
+#: ../../RequirementsTest.rst:144
+msgid "Target version"
+msgstr "Zielversion"
+
+#: ../../RequirementsTest.rst:145
+msgid "Version of the product for which this requirement will be active."
+msgstr "Version des Produkts, für das diese Anforderung gilt."
+
+#: ../../RequirementsTest.rst:146 ../../RequirementsTest.rst:487
+msgid ":term:`Result`"
+msgstr ":term:`Ergebnis`"
+
+#: ../../RequirementsTest.rst:147
+msgid "Description of the implementation of the requirement."
+msgstr "Beschreibung der Umsetzung der Anforderung."
+
+#: ../../RequirementsTest.rst:156
+msgid "Section: Lock"
+msgstr "Sektion: Sperre"
+
+#: ../../RequirementsTest.rst:159
+msgid "**Button: Lock/Unlock requirement**"
+msgstr "**Button: Anforderung Sperren/Entsperren**"
+
+#: ../../RequirementsTest.rst:164
+msgid "**Requirement locked**"
+msgstr "**Bedarf gesperrt**"
+
+#: ../../RequirementsTest.rst:166
+msgid "When a requirement is locked the following fields are displayed."
+msgstr "Wenn eine Anforderung gesperrt ist, werden folgende Felder angezeigt."
+
+#: ../../RequirementsTest.rst:171
+msgid "Fields when the requirement is locked"
+msgstr "Felder, wenn die Anforderung gesperrt ist"
+
+#: ../../RequirementsTest.rst:177
+msgid "Locked"
+msgstr "Gesperrt"
+
+#: ../../RequirementsTest.rst:178
+msgid "Box checked indicates the requirement is locked."
+msgstr "Box checked zeigt an, dass die Anforderung gesperrt ist."
+
+#: ../../RequirementsTest.rst:179
+msgid "Locked by"
+msgstr "Gesperrt von"
+
+#: ../../RequirementsTest.rst:180
+msgid "User who locked the requirement."
+msgstr "Benutzer, der die Anforderung gesperrt hat."
+
+#: ../../RequirementsTest.rst:181
+msgid "Locked since"
+msgstr "Gesperrt seit"
+
+#: ../../RequirementsTest.rst:182
+msgid "Date and time when the requirement was locked."
+msgstr "Datum und Uhrzeit, wann die Anforderung gesperrt wurde."
+
+#: ../../RequirementsTest.rst:198 ../../RequirementsTest.rst:561
+msgid "Test cases"
+msgstr "Testfälle"
+
+#: ../../RequirementsTest.rst:204
+msgid "Test cases are elementary actions executed to test a requirement."
+msgstr "Testfälle sind elementare Aktionen zum Testen einer Anforderung."
+
+#: ../../RequirementsTest.rst:215
+msgid "Test case run status"
+msgstr "Status des Testfalls"
+
+#: ../../RequirementsTest.rst:216
+msgid "|iconPlanned| **Planned:** Test to be executed."
+msgstr "|iconPlanned| **Geplant:**Auszuführender Test."
+
+#: ../../RequirementsTest.rst:219
+msgid "|iconFailed| **Failed:** Test has returned wrong result."
+msgstr "|iconFailed| **Nicht bestanden:** Test hat ein falsches Ergebnis geliefert."
+
+#: ../../RequirementsTest.rst:227
+msgid "Test case can have predecessors and successors."
+msgstr "Testfall kann Vorgänger und Nachfolger haben."
+
+#: ../../RequirementsTest.rst:228
+msgid "This defines some dependencies on the test case."
+msgstr "Dies definiert einige Abhängigkeiten vom Testfall."
+
+#: ../../RequirementsTest.rst:229
+msgid "Dependencies donâ€™t have specific effects. It is just an information."
+msgstr "Abhängigkeiten haben keine spezifischen Auswirkungen. Es ist nur eine Information."
+
+#: ../../RequirementsTest.rst:254
+msgid "Unique Id for the test case."
+msgstr "Unique Id für den Testfall."
+
+#: ../../RequirementsTest.rst:256
+msgid "Short description of the test case."
+msgstr "Kurzbeschreibung des Testfalls."
+
+#: ../../RequirementsTest.rst:257
+msgid "**Test type**"
+msgstr "**Testtyp**"
+
+#: ../../RequirementsTest.rst:258
+msgid "Type of test case."
+msgstr "Art des Testfalls."
+
+#: ../../RequirementsTest.rst:260
+msgid "The project concerned by the test case."
+msgstr "Das vom Testfall betroffene Projekt."
+
+#: ../../RequirementsTest.rst:262
+msgid "The product concerned by the test case."
+msgstr "Das vom Testfall betroffene Produkt."
+
+#: ../../RequirementsTest.rst:263 ../../RequirementsTest.rst:443
+msgid "Version"
+msgstr "Version\" (englisch"
+
+#: ../../RequirementsTest.rst:264
+msgid "Version of the product or component concerned by the test case."
+msgstr "Version des vom Testfall betroffenen Produkts oder der Komponente."
+
+#: ../../RequirementsTest.rst:266
+msgid "External reference for the test case."
+msgstr "Externe Referenz für den Testfall."
+
+#: ../../RequirementsTest.rst:267
+msgid "Environment"
+msgstr "Umwel"
+
+#: ../../RequirementsTest.rst:268
+msgid "List of 3 items describing the context of the test case."
+msgstr "Liste von 3 Punkten, die den Kontext des Testfalls beschreiben."
+
+#: ../../RequirementsTest.rst:270
+msgid "Complete :term:`description` of the test case."
+msgstr "Komplette :term:`Beschreibung` des Testfalls."
+
+#: ../../RequirementsTest.rst:286
+msgid "This can be easily changed values in :ref:`context` screen."
+msgstr "Das kann man leicht in :ref:`context` ändern."
+
+#: ../../RequirementsTest.rst:290
+msgid "The description of test case should describe the steps to run the test."
+msgstr "Die Beschreibung des Testfalls sollte die Schritte zur Durchführung des Tests beschreiben."
+
+#: ../../RequirementsTest.rst:309
+msgid "Parent test case"
+msgstr "Ãœbergeordneter Testfall"
+
+#: ../../RequirementsTest.rst:310
+msgid "Parent test case, defining a hierarchic structure for test cases."
+msgstr "Ãœbergeordneter Testfall, der eine hierarchische Struktur für Testfälle definiert."
+
+#: ../../RequirementsTest.rst:314
+msgid "Resource who is responsible of the test case."
+msgstr "Ressource, die für den Testfall verantwortlich ist."
+
+#: ../../RequirementsTest.rst:315
+msgid "Priority"
+msgstr "Priorität"
+
+#: ../../RequirementsTest.rst:316
+msgid "Level of priority for the test case."
+msgstr "Prioritätsstufe für den Testfall."
+
+#: ../../RequirementsTest.rst:318
+msgid "Box checked indicates the test case is taken over."
+msgstr "Box checked zeigt an, dass der Testfall übernommen wurde."
+
+#: ../../RequirementsTest.rst:320
+msgid "Box checked indicates the test case has been treated."
+msgstr "Box checked zeigt an, dass der Testfall behandelt wurde."
+
+#: ../../RequirementsTest.rst:322
+msgid "Box checked indicates the test case is archived."
+msgstr "Box checked zeigt an, dass der Testfall archiviert ist."
+
+#: ../../RequirementsTest.rst:324
+msgid "Box checked indicates the test case is cancelled."
+msgstr "Box checked zeigt an, dass der Testfall abgebrochen wurde."
+
+#: ../../RequirementsTest.rst:325
+msgid "Prerequisite"
+msgstr "Voraussetzung"
+
+#: ../../RequirementsTest.rst:326
+msgid "List of steps that must be performed before running the test."
+msgstr "Liste der Schritte, die vor der Durchführung des Tests durchgeführt werden müssen."
+
+#: ../../RequirementsTest.rst:327
+msgid ":term:`Expected result<Result>`"
+msgstr ":term:`Erwartetes Ergebnis<Ergebnis>`"
+
+#: ../../RequirementsTest.rst:328
+msgid "Description of expected result of the test."
+msgstr "Beschreibung des erwarteten Ergebnisses des Tests."
+
+#: ../../RequirementsTest.rst:337 ../../RequirementsTest.rst:497
+msgid "Section: Test case runs"
+msgstr "Sektion: Testfall läuf"
+
+#: ../../RequirementsTest.rst:338
+msgid "This section allows to display a complete list of test case runs."
+msgstr "Dieser Abschnitt ermöglicht die Anzeige einer kompletten Liste von Testfallabläufen."
+
+#: ../../RequirementsTest.rst:339
+msgid "These are links of the test to test sessions."
+msgstr "Das sind Links vom Test zu den Testsitzungen."
+
+#: ../../RequirementsTest.rst:340
+msgid "This list also displays the current status of the test in the sessions."
+msgstr "Diese Liste zeigt auch den aktuellen Status des Tests in den Sitzungen an."
+
+#: ../../RequirementsTest.rst:344
+msgid "An icon whose presents the run status of the test case."
+msgstr "Ein Symbol, das den Ausführungsstatus des Testfalls anzeigt."
+
+#: ../../RequirementsTest.rst:350
+msgid "To go, click on the corresponding test session."
+msgstr "Um zu gehen, klicken Sie auf die entsprechende Testsitzung."
+
+#: ../../RequirementsTest.rst:355 ../../RequirementsTest.rst:500
+msgid "Fields - Test case runs list"
+msgstr "Felder - Liste der Testfälle"
+
+#: ../../RequirementsTest.rst:361 ../../RequirementsTest.rst:622
+msgid "Test session"
+msgstr "Test-Sitzung"
+
+#: ../../RequirementsTest.rst:362
+msgid "Composed of session type, Id and description."
+msgstr "Zusammengesetzt aus Session-Typ, Id und Beschreibung."
+
+#: ../../RequirementsTest.rst:363 ../../RequirementsTest.rst:510
+#: ../../RequirementsTest.rst:588
+msgid "Status"
+msgstr "Status"
+
+#: ../../RequirementsTest.rst:364
+msgid "Current status of the test case run in the test session."
+msgstr "Aktueller Status des Testfalls in der Testsitzung."
+
+#: ../../RequirementsTest.rst:375
+msgid "Test sessions"
+msgstr "Testsitzungen"
+
+#: ../../RequirementsTest.rst:394
+msgid "Test sessions regroupment"
+msgstr "Umgruppierung von Testsitzungen"
+
+#: ../../RequirementsTest.rst:395
+msgid "Test session can have parents to regroup test sessions."
+msgstr "Testsitzung kann Eltern dazu bringen, Testsitzungen neu zu gruppieren."
+
+#: ../../RequirementsTest.rst:398
+msgid "Planning element"
+msgstr "Planungselemen"
+
+#: ../../RequirementsTest.rst:399
+msgid "A test session is a planning element like activity."
+msgstr "Eine Testsitzung ist ein Planungselement wie eine Aktivität."
+
+#: ../../RequirementsTest.rst:400
+msgid "A test session is a task in a project planning."
+msgstr "Eine Testsitzung ist eine Aufgabe in einer Projektplanung."
+
+#: ../../RequirementsTest.rst:401
+msgid "Allows to assigned resource and follow up progress."
+msgstr "Ermöglicht die Zuweisung von Ressourcen und die Verfolgung des Fortschritts."
+
+#: ../../RequirementsTest.rst:405
+msgid "Test sessions can have predecessors and successors."
+msgstr "Testsitzungen können Vorgänger und Nachfolger haben."
+
+#: ../../RequirementsTest.rst:406
+msgid "This defines some dependencies on test cases or planning constraints."
+msgstr "Dies definiert einige Abhängigkeiten von Testfällen oder Planungseinschränkungen."
+
+#: ../../RequirementsTest.rst:410
+msgid "The indicators can be defined on the progress data."
+msgstr "Die Indikatoren können auf den Fortschrittsdaten definiert werden."
+
+#: ../../RequirementsTest.rst:411
+msgid "See: :ref:`progress-section-monitor-indicator`"
+msgstr "Siehe: :ref:`progress-section-monitor-indicator`"
+
+#: ../../RequirementsTest.rst:415
+msgid ":ref:`Assignment<assignment-section>`"
+msgstr ":ref:`Assignment<assignment-section>`"
+
+#: ../../RequirementsTest.rst:416
+msgid ":ref:`Progress<progress-section-activity>`"
+msgstr ":ref:`Progress<progress-section-activity>`"
+
+#: ../../RequirementsTest.rst:434
+msgid "Unique Id for the test session."
+msgstr "Unique Id für die Testsitzung."
+
+#: ../../RequirementsTest.rst:436
+msgid "Short description of the test session."
+msgstr "Kurzbeschreibung der Testsitzung."
+
+#: ../../RequirementsTest.rst:437
+msgid "**Session type**"
+msgstr "**Sitzungstyp**"
+
+#: ../../RequirementsTest.rst:438
+msgid "Type of test session."
+msgstr "Art der Testsitzung."
+
+#: ../../RequirementsTest.rst:440
+msgid "The project concerned by the test session."
+msgstr "Das von der Testsitzung betroffene Projekt."
+
+#: ../../RequirementsTest.rst:442
+msgid "The product concerned by the test session."
+msgstr "Das von der Testsitzung betroffene Produkt."
+
+#: ../../RequirementsTest.rst:444
+msgid "Version of the product or component concerned by the test session."
+msgstr "Version des von der Testsitzung betroffenen Produkts oder der Komponente."
+
+#: ../../RequirementsTest.rst:446
+msgid "External reference for the test session."
+msgstr "Externe Referenz für die Testsitzung."
+
+#: ../../RequirementsTest.rst:447
+msgid ":term:`Description`"
+msgstr ":term:`Beschreibung`"
+
+#: ../../RequirementsTest.rst:448
+msgid "Complete description of the test session."
+msgstr "Vollständige Beschreibung der Testsitzung."
+
+#: ../../RequirementsTest.rst:471
+msgid "Parent activity"
+msgstr "Eltern-Tätigkeit"
+
+#: ../../RequirementsTest.rst:472
+msgid "Parent activity, to define hierarchic position in the Gantt."
+msgstr "Elternaktivität, um die hierarchische Position im Gantt zu definieren."
+
+#: ../../RequirementsTest.rst:473
+msgid "Parent session"
+msgstr "Elternsitzung"
+
+#: ../../RequirementsTest.rst:474
+msgid "Parent session, to define session of sessions."
+msgstr "Parent session, um Sessions zu definieren."
+
+#: ../../RequirementsTest.rst:476
+msgid "Actual :term:`status` of the test session."
+msgstr "Aktueller :term:`Status` der Testsitzung."
+
+#: ../../RequirementsTest.rst:478
+msgid "Resource who is responsible of the test session."
+msgstr "Ressource, die für die Testsitzung verantwortlich ist."
+
+#: ../../RequirementsTest.rst:480
+msgid "Box checked indicates the test session is taken over."
+msgstr "Kontrollkästchen zeigt an, dass die Testsitzung übernommen wurde."
+
+#: ../../RequirementsTest.rst:482
+msgid "Box checked indicates the test session has been treated."
+msgstr "Kästchen markiert zeigt an, dass die Testsitzung behandelt wurde."
+
+#: ../../RequirementsTest.rst:484
+msgid "Box checked indicates the test session is archived."
+msgstr "Box checked zeigt an, dass der Testlauf archiviert ist."
+
+#: ../../RequirementsTest.rst:486
+msgid "Box checked indicates the test session is cancelled."
+msgstr "Box angekreuzt zeigt an, dass die Testsitzung abgebrochen wurde."
+
+#: ../../RequirementsTest.rst:488
+msgid "Summary result of the test session."
+msgstr "Zusammenfassung der Testsitzung."
+
+#: ../../RequirementsTest.rst:498
+msgid "This section allows to manage test case runs."
+msgstr "Dieser Abschnitt ermöglicht die Verwaltung von Testfallabläufen."
+
+#: ../../RequirementsTest.rst:506 ../../RequirementsTest.rst:586
+msgid "Test case"
+msgstr "Testfall"
+
+#: ../../RequirementsTest.rst:507
+msgid "Information about test case (type, Id and name)."
+msgstr "Informationen zum Testfall (Typ, Id und Name)"
+
+#: ../../RequirementsTest.rst:508
+msgid "Detail"
+msgstr "Detail"
+
+#: ../../RequirementsTest.rst:509
+msgid "Detail of test case."
+msgstr "Detail des Testfalls."
+
+#: ../../RequirementsTest.rst:511
+msgid "Status of test case run."
+msgstr "Status des Testfalllaufs."
+
+#: ../../RequirementsTest.rst:516
+msgid "Moving the mouse over the icon will display the test case run comments."
+msgstr "Wenn Sie mit der Maus über das Symbol fahren, werden die Kommentare zum Testfall angezeigt."
+
+#: ../../RequirementsTest.rst:535
+msgid "Test case runs list management"
+msgstr "Testfall führt Listenverwaltung durch"
+
+#: ../../RequirementsTest.rst:538
+msgid "Click on |buttonIconDelete| to remove a test case run."
+msgstr "Klicken Sie auf |buttonIconDelete|, um einen Testfall zu entfernen."
+
+#: ../../RequirementsTest.rst:539
+msgid "Click on |iconPassed| to mark test case run as passed."
+msgstr "Klicken Sie auf |iconPassed|, um den Testfall als bestanden zu markieren."
+
+#: ../../RequirementsTest.rst:541
+msgid "Click on |iconBlocked| to mark test case run as blocked."
+msgstr "Klicken Sie auf |iconBlocked|, um den Testfall als blockiert zu markieren."
+
+#: ../../RequirementsTest.rst:546
+msgid "The referenced ticket is automatically added in linked element."
+msgstr "Das referenzierte Ticket wird automatisch in das verknüpfte Element eingefügt."
+
+#: ../../RequirementsTest.rst:552
+msgid "Dialog box - Test case run"
+msgstr "Dialogbox - Testfalllauf"
+
+#: ../../RequirementsTest.rst:555
+msgid "Fields - Test case run dialog box"
+msgstr "Felder - Dialogfeld Testfall ausführen"
+
+#: ../../RequirementsTest.rst:562
+msgid "Test cases list."
+msgstr "Testfallliste."
+
+#: ../../RequirementsTest.rst:563
+msgid "Allow duplicate"
+msgstr "Duplikat zulassen"
+
+#: ../../RequirementsTest.rst:574
+msgid "Diaglog box - Test case run detail"
+msgstr "Diagrammbox - Testfallablauf Detail"
+
+#: ../../RequirementsTest.rst:580
+msgid "Fields - Test case run detail dialog box"
+msgstr "Felder - Testfall-Detail-Dialogfenster"
+
+#: ../../RequirementsTest.rst:587
+msgid "Selected test case."
+msgstr "Ausgewählter Testfall."
+
+#: ../../RequirementsTest.rst:589
+msgid "List of :ref:`test case run status<test-case-run-status>`."
+msgstr "Liste von ::ref:`test case run status<test-case-run-status>`."
+
+#: ../../RequirementsTest.rst:590
+msgid "Ticket"
+msgstr "Ticket"
+
+#: ../../RequirementsTest.rst:591
+msgid "List of ticket."
+msgstr "Liste der Tickets."
+
+#: ../../RequirementsTest.rst:592
+msgid "Comments"
+msgstr "Anmerkungen"
+
+#: ../../RequirementsTest.rst:593
+msgid "Comments of test case run."
+msgstr "Kommentare zum Testfalllauf."
+
+#: ../../RequirementsTest.rst:597
+msgid "Field appear only whether status of test case run is **failed**."
+msgstr "Feld erscheint nur, wenn der Status des Testfalllaufs **fehlerhaft** ist."
+
+#: ../../RequirementsTest.rst:609
+msgid "Summary of test cases section"
+msgstr "Zusammenfassung der Testfälle"
+
+#: ../../RequirementsTest.rst:614
+msgid "Requirement"
+msgstr "Erfordernis"
+
+#: ../../RequirementsTest.rst:617
+msgid "Field: Total"
+msgstr "Feld: Gesamt"
+
+#: ../../RequirementsTest.rst:623
+msgid "Summarizes the status of test case runs in the test session."
+msgstr "Fasst den Status der Testfallläufe in der Testsitzung zusammen."
+
+#: ../../RequirementsTest.rst:630
+msgid "Summary of test case run status"
+msgstr "Zusammenfassung des Status des Testfalls"
+
+#: ../../RequirementsTest.rst:631
+msgid "|iconNotPlanned| **Not planned:**  No test case planned."
+msgstr "|iconNotPlanned| **Nicht geplant:** Kein geplanter Testfall."
+
+#: ../../RequirementsTest.rst:633
+msgid "|iconPassed| **Passed:** All tests passed."
+msgstr "|iconPassed| **Bestanden:**Alle Tests bestanden."
+
+#: ../../RequirementsTest.rst:634
+msgid "|iconFailed| **Failed:** At least one test failed."
+msgstr "|iconFailed| **Nicht bestanden:** Mindestens ein Test ist fehlgeschlagen."
+
+#: ../../RequirementsTest.rst:635
+msgid "|iconBlocked| **Blocked:** No test failed, at least one test blocked."
+msgstr "|iconBlocked| **Blockiert:** Kein Test fehlgeschlagen, mindestens ein Test blockiert."
+
+#: ../../RequirementsTest.rst:639
+msgid "Fields - Summary of test cases"
+msgstr "Felder - Zusammenfassung von Testfällen"
+
+#: ../../RequirementsTest.rst:645
+msgid "Total"
+msgstr "Summe"
+
+#: ../../RequirementsTest.rst:646
+msgid "Number of test case runs whatever the status."
+msgstr "Anzahl der Testfälle unabhängig vom Status."
+
+#: ../../RequirementsTest.rst:647
+msgid "Planned"
+msgstr "Geplant"
+
+#: ../../RequirementsTest.rst:648
+msgid "Number of test case runs with the status **Planned**."
+msgstr "Anzahl der Testfälle mit dem Status **geplant**."
+
+#: ../../RequirementsTest.rst:649
+msgid "Passed"
+msgstr "Bestanden"
+
+#: ../../RequirementsTest.rst:650
+msgid "Number of test case runs with the status **Passed**."
+msgstr "Anzahl der Testfälle mit dem Status **Passed**."
+
+#: ../../RequirementsTest.rst:651
+msgid "Blocked"
+msgstr "Gesperrt"
+
+#: ../../RequirementsTest.rst:652
+msgid "Number of test case runs with the status **Blocked**."
+msgstr "Anzahl der Testfälle mit dem Status **Blocked**."
+
+#: ../../RequirementsTest.rst:653
+msgid "Failed"
+msgstr "Fehlgeschlagen"
+
+#: ../../RequirementsTest.rst:654
+msgid "Number of test case runs with the status **Failed**."
+msgstr "Anzahl der Testfälle mit dem Status **Failed**."
+
+#: ../../RequirementsTest.rst:655
+msgid "Summary"
+msgstr "Zusammenfassung"
+
+#: ../../RequirementsTest.rst:656
+msgid "Summary of test case run status."
+msgstr "Zusammenfassung des Status des Testfalls."
+
+#: ../../RequirementsTest.rst:657
+msgid "Issues"
+msgstr "Ausgaben"
+
+#: ../../RequirementsTest.rst:658
+msgid "Number of tickets linked to the requirement or the test session."
+msgstr "Anzahl der Tickets, die mit der Anforderung oder der Testsitzung verknüpft sind."
+
+#: ../../RequirementsTest.rst:662
+msgid "Percent to each status is displayed."
+msgstr "Prozent zu jedem Status wird angezeigt."

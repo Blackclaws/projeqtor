@@ -1,0 +1,81 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2018, ProjeQtOr
+# This file is distributed under the same license as the ProjeQtOr Bedienhandbuch Deutsch package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"POT-Creation-Date: \n"
+"PO-Revision-Date: \n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=ISO-8859-1\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: de\n"
+"X-Generator: Poedit 2.0.8\n"
+
+#: ../../UserParameter.rst:14
+msgid "User parameters"
+msgstr "Benutzerdefinierte Paramete"
+
+#: ../../UserParameter.rst:18
+msgid ":ref:`photo`"
+msgstr ":ref:`photo`"
+
+#: ../../UserParameter.rst:21
+msgid "User parameters screen allows configuration of personal settings."
+msgstr "Benutzerparameter-Bildschirm erlaubt die Konfiguration von persönlichen Einstellungen."
+
+#: ../../UserParameter.rst:25
+msgid "User parameters are efficient even without saving."
+msgstr "Benutzerparameter sind auch ohne Speichern effizient."
+
+#: ../../UserParameter.rst:31
+msgid "Section: Display parameters"
+msgstr "Sektion: Parameter anzeige"
+
+#: ../../UserParameter.rst:32
+msgid "Generic display parameter for user."
+msgstr "Generische Anzeigeparameter für Benutzer."
+
+#: ../../UserParameter.rst:37
+msgid "Section: Graphic interface behavior"
+msgstr "Sektion: Grafisches Schnittstellenverhalten"
+
+#: ../../UserParameter.rst:38
+msgid "Selection of graphic interface behavior."
+msgstr "Auswahl des grafischen Oberflächenverhaltens."
+
+#: ../../UserParameter.rst:41
+msgid "Section: Print & Export parameters"
+msgstr "Sektion: Parameter drucken & exportieren"
+
+#: ../../UserParameter.rst:45
+msgid "Section: Miscellaneous"
+msgstr "Sektion: Sonstiges"
+
+#: ../../UserParameter.rst:48
+msgid "Field: Project indent char in lists"
+msgstr "Feld: Projekt-Einrückzeichen in Listen"
+
+#: ../../UserParameter.rst:50
+msgid "Set to \"none\" to get a flat list."
+msgstr "Set to \"none\", um eine flache Liste zu bekommen."
+
+#: ../../UserParameter.rst:53
+msgid "Section: Photo"
+msgstr "Sektion: Foto"
+
+#: ../../UserParameter.rst:54
+msgid "Photo of the user."
+msgstr "Foto des Benutzers."
+
+#: ../../UserParameter.rst:57
+msgid "Section: Password"
+msgstr "Sektion: Kennwort"
+
+#: ../../UserParameter.rst:58
+msgid "Changes the user's password."
+msgstr "Ä„ndert das Passwort des Benutzers."
