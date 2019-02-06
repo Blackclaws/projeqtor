@@ -84,6 +84,7 @@ class PlanningElement extends SqlElement {
   public $latestEndDate;
   public $isOnCriticalPath;
   public $notPlannedWork;
+  public $isManualProgress;
   
   private static $_fieldsAttributes=array(
                                   "id"=>"hidden",
@@ -131,7 +132,8 @@ class PlanningElement extends SqlElement {
                                   "validatedEndFraction"=>"hidden",
                                   "latestStartDate"=>"hidden",
                                   "latestEndDate"=>"hidden",
-                                  "isOnCriticalPath"=>"hidden"
+                                  "isOnCriticalPath"=>"hidden",
+                                  "isManualProgress"=>"hidden"
   );   
   
   private static $predecessorItemsArray = array();
@@ -258,6 +260,10 @@ class PlanningElement extends SqlElement {
    * @return the result of parent::save() function
    */
   public function save() {
+    $pmName='id'.$this->refType.'PlanningMode';
+    if( property_exists($this,$pmName)){
+     $this->idPlanningMode = $this->$pmName;
+    }
     global $canForceClose;
   	// Get old element (stored in database) : must be fetched before saving
     $old=new PlanningElement($this->id);
@@ -283,7 +289,9 @@ class PlanningElement extends SqlElement {
           $this->expectedProgress=100;
         } else {
           $this->realEndDate=null;
-          $this->progress=0;
+          if(!$this->isManualProgress){
+            $this->progress=0;
+          }
           $this->expectedProgress=0;
         }
         if (property_exists($refObj, 'handled') and property_exists($refObj, 'handledDate')) {
@@ -302,8 +310,10 @@ class PlanningElement extends SqlElement {
         $this->realEndDate=$ass->getMaxValueFromCriteria('realEndDate', $critArray);
       } else if ($this->leftWork>0 and $this->realEndDate and !$canForceClose) {
         $this->realEndDate=null;
-      } 
-    	$this->progress = round($this->realWork / ($this->realWork + $this->leftWork) * 100);
+      }
+      if(!$this->isManualProgress){
+    	 $this->progress = round($this->realWork / ($this->realWork + $this->leftWork) * 100);
+      }
     }
     if ($this->validatedWork!=0) {
       $this->expectedProgress=round($this->realWork / ($this->validatedWork) *100);
@@ -367,6 +377,13 @@ class PlanningElement extends SqlElement {
     $lstElt=$this->getSqlElementsFromCriteria(null, null, $crit ,'wbsSortable asc');
     if ($lstElt and count($lstElt)>0) {
       $this->elementary=0;
+      if($this->isManualProgress==1){
+        $this->isManualProgress = 0;
+        $this->realWork = 0;
+        $this->leftWork = 0;
+        $this->progress = 0;
+        $this->expectedProgress = 0;
+      }
     } else {
       $this->elementary=1;
       $this->validatedCalculated=0;
@@ -410,6 +427,35 @@ class PlanningElement extends SqlElement {
     	if ($this->plannedStartDate>$this->plannedEndDate) $this->plannedEndDate=$this->plannedStartDate;
     	$this->plannedDuration=workDayDiffDates($this->plannedStartDate, $this->plannedEndDate);
     }
+    
+    //gautier
+    $ass = new Assignment();
+    $crit = array("refType"=>$this->refType,"refId"=>$this->refId);
+    $cptAss = $ass->countSqlElementsFromCriteria($crit);
+    
+    if($this->refType == "Activity"){
+      $paramManualProgress=Parameter::getGlobalParameter('isManualProgress');
+      if($paramManualProgress=='YES'){
+        if($this->refId){
+          $lstPlMode = SqlList::getListWithCrit('PlanningMode', array("code" => "FDUR"));
+          if( array_key_exists($this->idPlanningMode,$lstPlMode) and $this->elementary == 1 and $cptAss==0){
+            $this->isManualProgress = 1;
+          }
+        }
+      }
+    }
+    if($this->isManualProgress){
+      $this->realWork = $this->progress * $this->validatedWork / 100;
+      $this->leftWork = $this->validatedWork - $this->realWork;
+      $this->plannedWork = $this->realWork+$this->leftWork;
+    }
+    if( $old->isManualProgress and ($old->idPlanningMode!=$this->idPlanningMode or $cptAss!=0) ){
+      $this->isManualProgress = 0;
+      $this->progress = 0;
+      $this->expectedProgress = 0;
+      $this->updateSynthesisObj(true);
+    }
+    //end
     $result=parent::save();
     if (! strpos($result,'id="lastOperationStatus" value="OK"')) {
       return $result;     
@@ -426,7 +472,6 @@ class PlanningElement extends SqlElement {
         }
       }
     }
-    
     // update topObject
     if ($topElt) {
       if ($topElt->refId and $topElt->refType) {
@@ -439,13 +484,25 @@ class PlanningElement extends SqlElement {
       	}
       }
     }
-    
     // save old parent (for synthesis update) if parent has changed
     if ($old->topId!='' and $old->topId!=$this->topId) {
       if (! self::$_noDispatch) {
         self::updateSynthesis($old->topRefType, $old->topRefId);
       } else {
         self::updateSynthesisNoDispatch($old->topRefType, $old->topRefId);
+      }
+      // Must also renumber children for old parent
+      $oldTopElt=new PlanningElement($old->topId);
+      projeqtor_set_time_limit(600);
+      $critOldTop=" topId=" . Sql::fmtId($oldTopElt->id);
+      $lstEltOldTop=$this->getSqlElementsFromCriteria(null, null, $critOldTop ,'wbsSortable asc');
+      $cpt=0;
+      foreach ($lstEltOldTop as $elt) {
+        $cpt++;
+        $elt->wbs=$oldTopElt->wbs . '.' . $cpt;
+        if ($elt->refType) { // just security for unit testing
+          $elt->wbsSave();
+        }
       }
     }
     // save new parent (for synthesis update) if parent has changed
@@ -463,7 +520,6 @@ class PlanningElement extends SqlElement {
         self::updateSynthesisNoDispatch($this->topRefType, $this->topRefId);
       }
     }
-    
     if ($this->wbsSortable!=$old->wbsSortable) {
     	$refType=$this->refType;
       if ($refType=='Project') {
@@ -480,15 +536,14 @@ class PlanningElement extends SqlElement {
        $crit="refType=".Sql::str($this->refType)." and refId=".$this->refId;
        $pw->purge($crit);
     }
-    
     // set to first handled status on first work input
     //if ($old->realWork==0 and $this->realWork!=0 and $this->refType) {
     if ($old->realWork==0 and $this->realWork!=0 and $this->refType) {
-      $this->setHandledOnRealWork('save');
+      if (!PlannedWork::$_planningInProgress) $this->setHandledOnRealWork('save');
     }
     // set to first done status on lastt work input (left work = 0)
     if ($old->leftWork!=0 and $this->leftWork==0 and $this->realWork>0 and $this->refType) {
-      $this->setDoneOnNoLeftWork('save');
+      if (!PlannedWork::$_planningInProgress) $this->setDoneOnNoLeftWork('save');
     }
     if ($old->topId and $old->topId!=$this->topId) { // and ! self::$_noDispatch removed constraitn for move // This renumbering is to avoid holes in numbering // 
     	$pe=new PlanningElement($old->topId);
@@ -503,8 +558,28 @@ class PlanningElement extends SqlElement {
      or ( $pm->code=='FIXED' and $this->validatedEndDate!=$old->validatedEndDate)    
      or ( $pm->code=='START' and $this->validatedStartDate!=$old->validatedStartDate)        
         ) {
-      Project::setNeedReplan($this->idProject);
+      if ($this->idProject) Project::setNeedReplan($this->idProject);
     }
+    
+    //gautier
+    if(isset($this->_moveToAfterCreate)){
+      $idPlanningElementOrigin= $this->_moveToAfterCreate;
+      $peOrigin = new PlanningElement($idPlanningElementOrigin);
+        if($this->idProject == $peOrigin->idProject){
+          if(property_exists($this->refType, 'idActivity') and property_exists($peOrigin->refType, 'idActivity')){
+            $objOrigin= new $peOrigin->refType($peOrigin->refId,true);
+            $currentObj = new $this->refType($this->refId,true);
+            if($objOrigin->idActivity == $currentObj->idActivity){
+              $this->moveTo($idPlanningElementOrigin, 'after');
+            }
+          }else{
+            if($peOrigin->refType != 'Project'){
+              $this->moveTo($idPlanningElementOrigin, 'after');
+            }
+          }
+        }
+    }
+    
     return $result;
   }
   public function setHandledOnRealWork ($action='check') {
@@ -619,7 +694,7 @@ class PlanningElement extends SqlElement {
   		$proj->sortOrder=$this->wbsSortable;
   		$resSaveProj=$proj->saveForced();
   	} 
-  	if (self::$_noDispatch) return;
+  	//if (self::$_noDispatch) return;
   	$crit=" topId=" . Sql::fmtId($this->id);
   	$lstElt=$this->getSqlElementsFromCriteria(null, null, $crit ,'wbsSortable asc');
   	$cpt=0;
@@ -829,7 +904,7 @@ class PlanningElement extends SqlElement {
       	if ($topElt->refId) {
           $topElt->save();
       	}
-        self::updateSynthesis($refType, $refId);          
+        if (!PlanningElement::$_noDispatch) self::updateSynthesis($refType, $refId);          
       }
     }
     if ($this->topId) { // This renumbering is to avoid holes in numbering
@@ -902,6 +977,38 @@ class PlanningElement extends SqlElement {
         }
       }
     }
+    
+//     if($this->id){
+//   	  if($this->refType="Project"){
+//   	  	$proj = new Project($this->refId);
+//   	  	if($proj->fixPerimeter == 1){
+//   	  		$result .= "<br/>" . i18n("msgUnableToUpdateOnFixPerimeter");
+//   	  	}
+//   	  }
+//   	}
+    
+  	//Damian
+    $old = $this->getOld();
+    if($old->idProject!=$this->idProject or ($this->refType=='Project' and $old->topRefId!=$this->topRefId)){
+      if($this->refType=='Project') {
+        $projOld = new Project($old->topRefId,true);
+        $projNew = new Project($this->topRefId,true);
+      } else {
+        $projOld = new Project($old->idProject,true);
+        $projNew = new Project($this->idProject,true);
+      }
+      if ($projOld->fixPerimeter) {
+        $result .= "<br/>" .i18n('msgUnableToMoveOutToFixPerimeter');
+      }
+      if ($projNew->fixPerimeter) {
+        if(!$this->id){
+          $result .= "<br/>".i18n('msgUnableToAddToFixPerimeter');
+        } else {
+          $result .= "<br/>".i18n('msgUnableToMoveOnFixPerimeter');
+        }
+      }
+    }
+  	
     $defaultControl=parent::control();
     if ($defaultControl!='OK') {
       $result.=$defaultControl;
@@ -918,9 +1025,19 @@ class PlanningElement extends SqlElement {
   	 
   	// Cannot delete item with real work
   	if ($this->id and $this->realWork and $this->realWork>0)	{
-  		$result .= "<br/>" . i18n("msgUnableToDeleteRealWork");
+ 	    $result .= "<br/>" . i18n("msgUnableToDeleteRealWork");
   	}
-  	 
+
+  	//damian
+  	if($this->refType=='Project') {
+  	  $proj = new Project($this->topRefId,true);
+  	} else {
+  	  $proj = new Project($this->idProject,true);
+  	}
+  	if($proj->fixPerimeter){
+  	  $result .= "<br/>" . i18n("msgUnableToDeleteOfFixPerimeter");
+  	}
+  	
   	if (! $result) {
   		$result=parent::deleteControl();
   	}
@@ -1095,7 +1212,7 @@ class PlanningElement extends SqlElement {
       	if (property_exists($task, 'idActivity')) {
       		$task->idActivity=null;
       	}
-      	$changeParent='projet';
+      	$changeParent='project';
       	$status="OK";
       } else if ($dest->topRefType=="Activity" and property_exists($task, 'idActivity')) {  // Move under (new) activity
       	$task->idProject=$dest->idProject;   // Move to same project
@@ -1125,6 +1242,7 @@ class PlanningElement extends SqlElement {
     
     if ($status=="OK" and $task and !$recursive) { // Change parent, then will recursively call moveTo to reorder correctly
       $peName=get_Class($task).'PlanningElement';
+      $oldParentId=$task->$peName->topId;
       $task->$peName->topRefType=$dest->topRefType;
       $task->$peName->topRefId=$dest->topRefId;
       $task->$peName->topId=$dest->topId;
@@ -1133,6 +1251,11 @@ class PlanningElement extends SqlElement {
     		$pe=new PlanningElement($this->id);
     		$pe->moveTo($destId,$mode,true);
     		$returnValue=i18n('moveDone');
+    		// Must renumber old parent...
+     		if ($changeParent=='project' and !$oldParentId) {
+     		  $oldParent=new PlanningElement();
+     		  $oldParent->renumberWbs(true);
+     		}
       } else {
       	$returnValue=$resultTask;//i18n('moveCancelled');
       	//$status="ERROR";
@@ -1282,12 +1405,12 @@ class PlanningElement extends SqlElement {
   	return $result;
   }
   
-  public function renumberWbs() {
-    return;
+  public function renumberWbs($force=false) {
+    if (PlanningElement::$_noDispatch and !$force) return;
   	if ($this->id) {
   		$where="topRefType='" . $this->refType . "' and topRefId=" . Sql::fmtId($this->refId) ;
   	} else {
-  		$where="refType is null and refId is null";
+  		$where="topRefType is null and topRefId is null";
   	}
   	$order="wbsSortable asc";
   	$list=$this->getSqlElementsFromCriteria(null,false,$where,$order);
@@ -1298,7 +1421,7 @@ class PlanningElement extends SqlElement {
   			$root=substr($pe->wbs,0,strrpos($pe->wbs,'.'));
   			$pe->wbs=($root=='')?$idx:$root.'.'.$idx;
   			if ($pe->refType) {
-  				$pe->save();
+  				$pe->wbsSave();
   			}
   	}
   }
@@ -1344,7 +1467,6 @@ class PlanningElement extends SqlElement {
       self::$_fieldsAttributes['validatedDuration']='readonly';
       self::$_fieldsAttributes['validatedCost']='readonly';
       self::$_fieldsAttributes['expenseValidatedAmount']='readonly';
-      self::$_fieldsAttributes['priority']='readonly';
     } else {
       self::$_fieldsAttributes['validatedStartDate']='';
       self::$_fieldsAttributes['validatedEndDate']='';
@@ -1352,8 +1474,16 @@ class PlanningElement extends SqlElement {
       self::$_fieldsAttributes['validatedDuration']='';
       self::$_fieldsAttributes['validatedCost']='';
       self::$_fieldsAttributes['expenseValidatedAmount']='';
-      self::$_fieldsAttributes['priority']='';
     }
+    
+    //damian
+    $priority=SqlElement::getSingleSqlElementFromCriteria('HabilitationOther',array('idProfile'=>$profile,'scope'=>'changePriority'));
+    if ($priority and ($priority->rightAccess == 2 or ! $priority->id ) ) { // If selected NO or not set (default is NO)
+    	self::$_fieldsAttributes['priority']='readonly';
+    } else {
+    	self::$_fieldsAttributes['priority']='';
+    }
+    
     if (self::$staticCostVisibility and isset(self::$staticCostVisibility[$profile]) 
     and self::$staticWorkVisibility and isset(self::$staticWorkVisibility[$profile]) ) {
       $this->_costVisibility=self::$staticCostVisibility[$profile];
@@ -1720,13 +1850,6 @@ class PlanningElement extends SqlElement {
     foreach (array_reverse(PlanningElement::$_noDispatchArray) as $pe) {
       $res=PlanningElement::updateSynthesis($pe['refType'], $pe['refId']);
     }
-    /*while (count(PlanningElement::$_noDispatchArray)>0) {
-      $list=PlanningElement::$_noDispatchArray;
-      PlanningElement::$_noDispatchArray=array();
-      foreach ($list as $pe) {
-        $res=PlanningElement::updateSynthesis($pe['refType'], $pe['refId']);
-      }
-    }*/
     self::$_noDispatch=false;
     // copy dependencies
     $critWhere="";

@@ -265,6 +265,10 @@ class BudgetMain extends SqlElement {
     	$colScript.="    dijit.byId('leftFullAmount').set('value',leftFull);";
     	$colScript .= '  formChanged();';
     	$colScript .= '</script>';
+    } else if ($colName=='done') {
+      $colScript .= '<script type="dojo/connect" event="onChange" >';
+    	$colScript .="    if (this.checked) dijit.byId('isUnderConstruction').set('checked',false);";
+      $colScript .= '</script>';
     }
     return $colScript;
   }
@@ -317,8 +321,9 @@ class BudgetMain extends SqlElement {
         if ($outMode=='html' or $outMode=='pdf') $clickEvent='';
         $result .= '<td><div ' . $clickEvent . ' class="'.(($outMode=='html' or $outMode=='pdf')?'':'menuTree').'" style="width:100%;color:black">';
         $result .= htmlEncode($bdg->name);
-        $amount=(Parameter::getGlobalParameter('ImputOfAmountProvider')=='TTC')?$bdg->actualFullAmount:$bdg->actualAmount;
-        if ($bdg->actualAmount) $result.='<div style="float:right">&nbsp;&nbsp;&nbsp;<i>('.htmlDisplayCurrency($amount).')</i></div>';
+        $ttc=(Parameter::getGlobalParameter('ImputOfAmountProvider')=='TTC')?true:false;
+        $amount=($ttc)?$bdg->actualFullAmount:$bdg->actualAmount;       
+        if ( ($ttc and $bdg->actualFullAmount) or ( !$ttc and $bdg->actualAmount) ) $result.='<div style="float:right">&nbsp;&nbsp;&nbsp;<i>('.htmlDisplayCurrency($amount).')</i></div>';
         $result .= '</div>';
         $result .= $bdg->drawSubBudgets(true);
         $result .= '</td></tr>';

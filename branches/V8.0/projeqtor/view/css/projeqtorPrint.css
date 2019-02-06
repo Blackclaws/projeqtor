@@ -457,3 +457,18 @@ span.messageOK {
   border-radius: 20px;
   box-shadow : 5px 5px 5px #656565;
 }
+.calendar {
+  font-size: 7pt;
+  background: #FFFFFF;
+  border: 1px solid #AAAAAA;
+  text-align: center;
+  width: 30px;
+  height: 20px;
+}
+.offDay {
+  background: #DDDDDD;
+}
+
+.calendar .offDay {
+  background: #DDDDDD;
+}

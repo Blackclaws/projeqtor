@@ -147,12 +147,12 @@ else {
 }
 $endYear = ($paramMonth=="01") ? $paramYear : $paramYear + 1;
 
-$where.=" and ( (    creationDateTime>= '" . $paramYear . "-" .$paramMonth . "-01'";
-$where.="        and creationDateTime<='" . $endYear. "-" . $endMonth . "-31' )";
-$where.="    or (    doneDate>= '" . $paramYear . "-" .$paramMonth . "-01'";
-$where.="        and doneDate<='" . $endYear. "-" . $endMonth . "-31' )";
-$where.="    or (    idleDate>= '" . $paramYear . "-" .$paramMonth . "-01'";
-$where.="        and idleDate<='" . $endYear. "-" . $endMonth . "-31' ) )";
+$where.=" and ( (    creationDateTime>= '" . $paramYear . "-" .$paramMonth . "-01 00:00:00'";
+$where.="        and creationDateTime<='" . $endYear. "-" . $endMonth . "-31 23:59:59' )";
+$where.="    or (    doneDate>= '" . $paramYear . "-" .$paramMonth . "-01 00:00:00'";
+$where.="        and doneDate<='" . $endYear. "-" . $endMonth . "-31 23:59:59' )";
+$where.="    or (    idleDate>= '" . $paramYear . "-" .$paramMonth . "-01 00:00:00'";
+$where.="        and idleDate<='" . $endYear. "-" . $endMonth . "-31 23:59:59' ) )";
 
 if ($paramProject!="") {
 	$where.=" and idProject in " .  getVisibleProjectsList(false, $paramProject);

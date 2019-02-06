@@ -1174,7 +1174,7 @@ class NotificationDefinition extends SqlElement {
     
     foreach($listClasses as $class) {
         $obj = new $class();
-        $databaseTableName = $obj->getStaticDatabaseTableName();
+        $databaseTableName = $obj->getDatabaseTableName();
         $listTables[$class] = $databaseTableName;
     }
     
@@ -1299,7 +1299,7 @@ class NotificationDefinition extends SqlElement {
     if (trim($where)=="WHERE") {
         $where="";
     }
-    $query = "SELECT $fieldsInSelect FROM $className $leftJoin $where";
+    $query = "SELECT $fieldsInSelect FROM $listTables[$className] $leftJoin $where";
     $listObjClasses = $this->getLines($query);
     // Error in query => Provide from $where and then from rule
     if (in_array("KO", $listObjClasses)) {

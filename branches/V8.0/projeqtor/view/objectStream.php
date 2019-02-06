@@ -79,7 +79,26 @@
         scrollInto();
 	  </script><?php }?>
 	  <table id="objectStream" style="width:100%;"> 
-	    <?php foreach ( $notes as $note ) {
+	    <?php 
+	    function sortNotes(&$listNotes, &$result, $parent){
+	    	foreach ($listNotes as $note){
+	    		if($note->idNote == $parent){
+	    			$result[] = $note;
+	    			sortNotes($listNotes, $result, $note->id);
+	    		}
+	    	}
+	    }
+	    $noteDiscussionMode = Parameter::getUserParameter('userNoteDiscussionMode');
+	    if($noteDiscussionMode == null){
+	    	$noteDiscussionMode = Parameter::getGlobalParameter('globalNoteDiscussionMode');
+	    }
+	    if($noteDiscussionMode == 'YES'){
+  	    $result = array();
+  	    sortNotes($notes, $result, null);
+  	    $notes = $result;
+	    }
+	    
+	    foreach ( $notes as $note ) {
 	      echo activityStreamDisplayNote ($note,"objectStream");
 	    };?>
 	    <tr><td><div id="scrollToBottom" style="display:block"></div></td></tr>

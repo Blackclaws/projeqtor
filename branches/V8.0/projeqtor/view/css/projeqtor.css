@@ -3674,3 +3674,7 @@ li.section {
 .absActivityRow:hover {
 	background:#eeeeee;
 }
+
+.emailHistorical:hover {
+	background-color: #545281;  color: #EEEEEE;
+}

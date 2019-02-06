@@ -420,7 +420,7 @@ class ResourceMain extends SqlElement {
   			return 0;
   		}
   	}
-  	return 0; // not found => 0;
+  	return -1; // not found => -1 as it means no more allocation exists;
   }
 
 /** =========================================================================

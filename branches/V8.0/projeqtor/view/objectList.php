@@ -65,6 +65,7 @@ if (array_key_exists('multipleSelect', $_REQUEST)) {
   }
 }
 $showIdle=(! $comboDetail and sessionValueExists('projectSelectorShowIdle') and getSessionValue('projectSelectorShowIdle')==1)?1:0;
+if ((Parameter::getUserParameter('showIdleDefault'))=='true') $showIdle=($showIdle==1)?0:1;
 if (! $comboDetail and is_array( getSessionUser()->_arrayFilters)) {
   if (array_key_exists($objectClass, getSessionUser()->_arrayFilters)) {
     $arrayFilter=getSessionUser()->_arrayFilters[$objectClass];
