@@ -1745,7 +1745,7 @@ function getAccesRestrictionClause($objectClass, $alias=null, $showIdle=false, $
       if ($listOWN) $queryWhere.=" and ($tableAlias$fieldProj not in $listOWN or $tableAlias$fieldProj is null or $clauseOWN $extraFieldCriteriaReverse)";
     }
   }
-  return " ".$queryWhere." ";
+  return " (".$queryWhere.") ";
 }
 
 /**

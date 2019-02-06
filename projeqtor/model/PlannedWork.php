@@ -32,6 +32,7 @@ require_once('_securityCheck.php');
 class PlannedWork extends GeneralWork {
 
   public $_noHistory;
+  public static $_planningInProgress;
     
   // List of fields that will be exposed in general user interface
   
@@ -130,6 +131,7 @@ class PlannedWork extends GeneralWork {
   	SqlElement::$_cachedQuery['Project']=array();
   	SqlElement::$_cachedQuery['Affectation']=array();
   	SqlElement::$_cachedQuery['PlanningMode']=array();
+  	self::$_planningInProgress=true;
   	
   	$workUnit=Work::getWorkUnit();
   	$hoursPerDay=Work::getHoursPerDay();
@@ -1227,7 +1229,7 @@ class PlannedWork extends GeneralWork {
     if ($withCriticalPath) {
       if ($allProjects) {
         $proj=new Project(' ',true);
-        $projectIdArray=array_keys($proj->getRecursiveSubProjectsFlatList(true, true));
+        $projectIdArray=array_keys($proj->getRecursiveSubProjectsFlatList(true, false));
       }
       foreach ($projectIdArray as $idP) {
         $fullListPlan=self::calculateCriticalPath($idP,$fullListPlan);
@@ -1285,6 +1287,7 @@ class PlannedWork extends GeneralWork {
       Sql::rollbackTransaction ();
     }
     echo '<div class="message' . $status . '" >' . $result . '</div>';
+    self::$_planningInProgress=false;
     return $result;
   }
 // End of PLAN
