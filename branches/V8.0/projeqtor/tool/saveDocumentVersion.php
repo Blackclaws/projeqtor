@@ -149,7 +149,12 @@ if (!$error) {
 Sql::beginTransaction();
 // Verify that user has rights to update the document
 $doc=new Document($documentId);
-if (securityGetAccessRightYesNo('menuDocument', 'update', $doc)!="YES" or $doc->locked) {
+//damian
+$documentLocked = $doc->locked;
+if($doc->idLocker == $user->id){
+  $documentLocked = 0;
+}
+if (securityGetAccessRightYesNo('menuDocument', 'update', $doc)!="YES" or $documentLocked == 1) {
   $error=htmlGetWarningMessage(i18n('msgNotGranted'));
   //$error=true;
 }

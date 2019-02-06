@@ -76,7 +76,16 @@
 		  </div>
     </div>
   </div>
-  <?php if (property_exists($objectClass, '_Note')) {?>
+  <?php 
+    if (property_exists($objectClass, '_Note')) {
+      $showNotes=true;
+      $item=new $objectClass();
+      if ($item->isAttributeSetToField('_Note','hidden')) $showNotes=false;
+      else if (in_array('_Note',$item->getExtraHiddenFields(null, null, getSessionUser()->getProfile()))) $showNotes=false;
+    } else {
+      $showNotes=false;
+    }
+    if ($showNotes) {?>
   <div id="detailRightDiv" dojoType="dijit.layout.ContentPane" region="right" splitter="true" style="width:<?php echo $rightWidth;?>">
     <script type="dojo/connect" event="resize" args="evt">
              saveDataToSession("contentPaneRightDetailDivWidth<?php echo $objectClass;?>", dojo.byId("detailRightDiv").offsetWidth, true);
@@ -88,7 +97,7 @@
     <script type="dojo/connect" event="onLoad" args="evt">
         scrollInto();
 	  </script>
-      <?php include 'objectStream.php'?>
+      <?php include 'objectStream.php';?>
   </div>
   <?php }?>  
 </div>

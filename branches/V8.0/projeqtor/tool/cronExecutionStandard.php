@@ -33,6 +33,10 @@ if ($operation=='saveDefinition') {
 }
 
 function cronPlanningDifferential(){
+  $user=getSessionUser();
+  $user->resetAllVisibleProjects();
+  setSessionUser($user);
+  SqlList::cleanAllLists();
   $startDatePlan=cronPlanningStartDate(Parameter::getGlobalParameter("automaticPlanningDifferentialDate"));
   $arrayProj=array();
   $pe=new PlanningElement();
@@ -56,6 +60,10 @@ function cronPlanningDifferential(){
   }
 }
 function cronPlanningComplete(){
+  $user=getSessionUser();
+  $user->resetAllVisibleProjects();
+  setSessionUser($user);
+  SqlList::cleanAllLists();
   $startDatePlan=cronPlanningStartDate(Parameter::getGlobalParameter("automaticPlanningCompleteDate"));
   traceLog(i18n("sectionAutomaticPlanning").' : '.i18n("paramAutomaticPlanningComplete")." - ".i18n('projects').' : '.i18n('all'));
   //Sql::beginTransaction(); #3601 : management of transaction in now included in PlannedWork::plan()

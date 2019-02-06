@@ -199,6 +199,7 @@ class Expense extends SqlElement {
   }
   
   public function save() {
+  	$old=$this->getOld();
     $this->idUser=$this->idResource;
     
     if ($this->expenseRealDate) {
@@ -215,6 +216,10 @@ class Expense extends SqlElement {
       $item=new Budget($this->idBudgetItem);
       $item->save();
     }
+    if ($this->idBudgetItem!=$old->idBudgetItem and $old->idBudgetItem) {
+      $item=new Budget($old->idBudgetItem);
+      $item->save();
+    }
     return $result;
   }
   
@@ -222,6 +227,10 @@ class Expense extends SqlElement {
     $result=parent::delete();
     $pe=SqlElement::getSingleSqlElementFromCriteria('ProjectPlanningElement', array('refType'=>'Project','refId'=>$this->idProject));
     $pe->updateExpense();
+    if ($this->idBudgetItem) {
+      $item=new Budget($this->idBudgetItem);
+      $item->save();
+    }
     return $result;
   }
 

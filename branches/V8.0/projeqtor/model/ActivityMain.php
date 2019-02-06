@@ -400,7 +400,7 @@ class ActivityMain extends SqlElement {
     }
     
     /// KROWRY HERE
-    if(Parameter::getGlobalParameter('autoSetAssignmentByResponsible')=="YES"){ 
+    if(Parameter::getGlobalParameter('autoSetAssignmentByResponsible')=="YES" and !SqlElement::isCopyInProgress()  and !$this->ActivityPlanningElement->isManualProgress){ 
       $proj=new Project($this->idProject,true);
       $type=new Type($proj->idProjectType);
       if ($type->code!='ADM' and $this->idResource and trim ( $this->idResource ) != '' and ! trim ( $oldResource ) and stripos ( $result, 'id="lastOperationStatus" value="OK"' ) > 0) {

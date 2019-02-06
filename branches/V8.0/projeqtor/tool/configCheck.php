@@ -205,6 +205,7 @@
   writeFile('// Automatically generated parameter file' . "\n", $paramFile);
   writeFile('// =======================================================================================' . "\n", $paramFile);
   foreach ($param as $id=>$val) {
+    if ($pname[$id]=='paramDbPrefix') $val=strtolower($val);
     writeFile('$' . $pname[$id] . ' = \'' . addslashes($val) . '\';', $paramFile);
     writeFile("\n", $paramFile);
   }

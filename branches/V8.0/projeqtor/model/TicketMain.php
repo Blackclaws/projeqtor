@@ -420,7 +420,7 @@ class TicketMain extends SqlElement {
   	  $this->idAccountable=$this->idResource;
   	}
   	//ADD qCazelles - Assign auto CV to ticket - Ticket 95
-    if ($this->idComponent and $this->idTargetProductVersion and !$this->idTargetComponentVersion) {
+    if ($this->idComponent and $this->idTargetProductVersion and !$this->idTargetComponentVersion and Parameter::getGlobalParameter('autoSetUniqueComponentVersion')!='NO') {
       $pvs = new ProductVersionStructure();
       $crit = array('idProductVersion' => $this->idTargetProductVersion);
       $pvss = $pvs->getSqlElementsFromCriteria($crit, false);

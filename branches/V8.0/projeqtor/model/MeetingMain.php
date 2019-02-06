@@ -483,13 +483,13 @@ class MeetingMain extends SqlElement {
     $user=getSessionUser();
     $vcal .= "ORGANIZER;CN=".(($user->resourceName)?$user->resourceName:$user->name);
     //$vcal .= ';SENT-BY="MAILTO:'.$paramMailSender.'"';
-    //$vcal .= ":MAILTO:$user->email\r\n";
-    $vcal .= ":MAILTO:$paramMailSender\r\n";
+    $vcal .= ":MAILTO:$user->email\r\n";
+    //$vcal .= ":MAILTO:$paramMailSender\r\n";
     foreach($lstMail as $name=>$to) {
       //$vcal .= "ATTENDEE;CN=\"$name\";ROLE=REQ-PARTICIPANT;RSVP=FALSE:MAILTO:$to\r\n";
       //$vcal .= "ATTENDEE;ROLE=REQ-PARTICIPANT;CN=\"$name\":MAILTO:$to\r\n";
-      $vcal .= "ATTENDEE;ROLE=REQ-PARTICIPANT";
-      $vcal .= ';CN='.str_replace(array("\r\n","\n","\r"," "),array("","","","_"),$name);
+      $vcal .= "ATTENDEE;ROLE=REQ-PARTICIPANT;PARTSTAT=ACCEPTED;RSVP=FALSE;";
+      $vcal .= 'CN='.str_replace(array("\r\n","\n","\r"," "),array("","","","_"),$name);
       $vcal .= ":MAILTO:".str_replace(array("\r\n","\n"," "),array("","",""),$to)."\r\n";
     }
     $srv="projeqtor.org";
@@ -508,22 +508,47 @@ class MeetingMain extends SqlElement {
     $vcal .= "PRIORITY:5\r\n";
     if (trim($this->description) != ""){
       $html2text=new Html2Text($this->description);
-      $vcal .= "DESCRIPTION:".str_replace(array("\r\n","\n"),array("\\n","\\n"),$html2text->gettext())."\r\n";
+      $textDesc = "DESCRIPTION:".str_replace(array("\r\n","\n"),array("\\n","\\n"),$html2text->gettext())."\r\n";
+      $testDescTab=mb_str_split($textDesc, 60);
+      $textDesc="";
+      $nbLines=0;
+      $lastCar='';
+      foreach ($testDescTab as $tab) {
+        $nbLines+=1;
+        $nextCar='';
+        if (substr($tab,-1)=="\\") {
+          $nextCar="\\";
+          $tab=substr($tab, 0,-1); 
+        }
+        $textDesc.=(($nbLines>1)?' ':'').$lastCar.$tab."\r\n";
+        $lastCar=$nextCar;
+      }
+      $vcal.=$textDesc;
+      //$vcal .="X-ALT-DESC;FMTTYPE=3Dtext/html:".$this->description;
+    } else {
+      $vcal .= "DESCRIPTION: \r\n";
     }
     $vcal .= "TRANSP:OPAQUE\r\n";
-    /*$vcal .= "BEGIN:VALARM\r\n";
-    $vcal .= "TRIGGER:-PT15M\r\n";
+	  $vcal .= "X-MICROSOFT-CDO-BUSYSTATUS:TENTATIVE\r\n";
+	  $vcal .= "X-MICROSOFT-CDO-IMPORTANCE:1\r\n";
+	  $vcal .= "X-MICROSOFT-CDO-INTENDEDSTATUS:BUSY\r\n";
+	  $vcal .= "X-MICROSOFT-DISALLOW-COUNTER:FALSE\r\n";
+	  $vcal .= "X-MS-OLK-AUTOSTARTCHECK:FALSE\r\n";
+	  $vcal .= "X-MS-OLK-CONFTYPE:0\r\n";
+	  $vcal .= "BEGIN:VALARM\r\n";
     $vcal .= "ACTION:DISPLAY\r\n";
-    $vcal .= "DESCRIPTION:Reminder\r\n";
-    $vcal .= "END:VALARM\r\n";*/
+    
+    $vcal .= "TRIGGER;RELATED=START:-PT00H15M00S\r\n";
+    $vcal .= "END:VALARM\r\n";
     $vcal .= "END:VEVENT\r\n";
+	  $vcal .= "X-MS-OLK-FORCEINSPECTOROPEN:TRUE\r\n";
     $vcal .= "END:VCALENDAR\r\n";
     $sender=$paramMailSender;
     $replyTo=($user->email)?$user->email:$paramMailReplyTo;
     $headers = "From: $sender\r\n";
     $headers .= "Reply-To: $replyTo\r\n";
     $headers .= "MIME-version: 1.0\r\n";
-    $headers .= "Content-Type: text/calendar\r\n";
+    //$headers .= "Content-Type: text/calendar; charset=\"utf-8\"; method=\"REQUEST\"\r\n";
     //$headers .= "Content-Type: multipart/alternative\r\n";
     //$headers .="boundary=--boundary_1016_7f2c68a5-e9c8-4b05-ad1c-d8886a0b573a\r\n";
     //$headers .= "Content-Transfer-Encoding: 8bit\r\n";
@@ -586,19 +611,22 @@ class MeetingMain extends SqlElement {
       $result->_copyResult="OK";
     } 
       
-    $ass=new Assignment();
-    $crit=array('refId'=>$this->id,'refType'=>'Meeting');
-    $list=$ass->getSqlElementsFromCriteria($crit);
-    foreach ($list as $ass) {
-      $newAss = new Assignment();
-      $newAss->idResource= $ass->idResource;
-      $newAss->refId = $result->id;
-      $newAss->refType = 'Meeting';
-      $newAss->assignedWork = $ass->assignedWork;
-      $newAss->leftWork = $ass->assignedWork;
-      $newAss->idProject = $ass->idProject;
-      $newAss->save();
-    } 
+    if ($newClass=='Meeting') {
+      $ass=new Assignment();
+      $crit=array('refId'=>$this->id,'refType'=>'Meeting');
+      $list=$ass->getSqlElementsFromCriteria($crit);
+      foreach ($list as $ass) {
+        $newAss = new Assignment();
+        $newAss->idResource= $ass->idResource;
+        $newAss->refId = $result->id;
+        $newAss->refType = 'Meeting';
+        $newAss->assignedWork = $ass->assignedWork;
+        $newAss->leftWork = $ass->assignedWork;
+        $newAss->idProject = $ass->idProject;
+        $newAss->save();
+      }
+      PlanningElement::updateSynthesis('Meeting',$result->id);
+    }
     return $result;
   }
 }

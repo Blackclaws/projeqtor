@@ -126,6 +126,8 @@ if ($type=='habilitation') {
                                      'planning'=>i18n('planningRight'),
   																	 'resourcePlanning'=>i18n('resourcePlanningRight'),
                                      'changeValidatedData'=>('changeValidatedData'),
+                                     'changePriority'=>('changePriority'),
+                                     'changeManualProgress'=>('changeManualProgress'),
                                      'document'=>i18n('documentUnlockRight'),
                                      'requirement'=>i18n('requirementUnlockRight'),
                                      'reportResourceAll'=>i18n('reportResourceAll'),

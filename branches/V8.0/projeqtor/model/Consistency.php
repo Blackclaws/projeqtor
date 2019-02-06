@@ -67,6 +67,19 @@ class Consistency {
     foreach ($peList as $idx=>$pe) {
       $currentWbs=$pe->wbsSortable;
       if ($trace) echo "$pe->wbsSortable - $pe->refType #$pe->refId - $pe->refName<br/>";
+      if (!$pe->refType or !$pe->refId) {
+        displayError(i18n("checkPlanningElementEmpty",array(i18n($pe->refType),$pe->refId,$pe->id)));
+        $errors++;
+        if ($correct) {
+          $resultDeletePE=$pe->delete();
+          if (getLastOperationStatus($resultDeletePE=="OK")) {
+            displayOK(i18n("checkFixed"),true);
+          } else {
+            displayMsg(i18n("checkNotFixed"),true);
+          }
+        }
+        continue;
+      }
       // check for duplicate WBS
       if ($pe->wbsSortable==$lastWbs) {
         displayError(i18n("checkWbsDuplicate",array($lastWbs,i18n($lastPe->refType),$lastPe->refId,i18n($pe->refType),$pe->refId)));
@@ -287,6 +300,7 @@ class Consistency {
       $refId=$line['refid'];
       $realWork=$line['realwork'];
       $sumWork=$line['sumwork'];
+      if (Work::displayWorkWithUnit($realWork)==Work::displayWorkWithUnit($sumWork)) continue; // It is just a rounding issue
       displayError(i18n("checkIncorrectWork",array(i18n($refType),$refId,Work::displayWorkWithUnit($realWork),Work::displayWorkWithUnit($sumWork))));
       $errors++;
       if ($correct) {
@@ -334,7 +348,7 @@ class Consistency {
     $query="SELECT pe.refType as reftype, pe.refId as refid, pe.realWork as realwork, pe.leftWork as leftwork, pe.plannedWork as plannedwork,"
           ."  (select sum(work) from $workTable w where w.refType=pe.refType and w.refId=pe.refId)+(select sum(pesum.realWork) from $peTable pesum where pesum.topId=pe.id) as sumwork "
           ."FROM $peTable pe "
-          ."WHERE realwork!=(select sum(work) from $workTable w where w.refType=pe.refType and w.refId=pe.refId)+(select sum(pesum.realWork) from $peTable pesum where pesum.topId=pe.id) "
+          ."WHERE pe.isManualProgress=0 and realwork!=(select sum(work) from $workTable w where w.refType=pe.refType and w.refId=pe.refId)+(select sum(pesum.realWork) from $peTable pesum where pesum.topId=pe.id) "
           ."   OR (pe.realWork+pe.leftWork)!=pe.plannedWork ";
     $result=Sql::query($query);
     while ($line = Sql::fetchLine($result)) {
@@ -344,6 +358,10 @@ class Consistency {
       $leftWork=$line['leftwork'];
       $plannedWork=$line['plannedwork'];
       $sumWork=$line['sumwork'];
+      if(!$sumWork){
+        $sumWork = 0;
+      }
+      if (Work::displayWorkWithUnit($realWork)==Work::displayWorkWithUnit($sumWork) and Work::displayWorkWithUnit($realWork+$leftWork)==Work::displayWorkWithUnit($plannedWork)) continue; // It is just a rounding issue
       if ($realWork!=$sumWork) displayError(i18n("checkIncorrectWork",array(i18n($refType),$refId,Work::displayWorkWithUnit($realWork),Work::displayWorkWithUnit($sumWork))));
       if ($realWork+$leftWork!=$plannedWork) displayError(i18n("checkIncorrectSumWork",array(i18n($refType),$refId,Work::displayWorkWithUnit($realWork),Work::displayWorkWithUnit($leftWork),Work::displayWorkWithUnit($plannedWork))));
       $errors++;
@@ -394,6 +412,7 @@ class Consistency {
       $leftWork=$line['leftwork'];
       $plannedWork=$line['plannedwork'];
       $sumWork=$line['sumwork'];
+      if (Work::displayWorkWithUnit($realWork)==Work::displayWorkWithUnit($sumWork) and Work::displayWorkWithUnit($realWork+$leftWork)==Work::displayWorkWithUnit($plannedWork)) continue; // It is just a rounding issue
       if ($realWork!=$sumWork) displayError(i18n("checkIncorrectWork",array(i18n($refType),$refId,Work::displayWorkWithUnit($realWork),Work::displayWorkWithUnit($sumWork))));
       if ($realWork+$leftWork!=$plannedWork) displayError(i18n("checkIncorrectSumWork",array(i18n($refType),$refId,Work::displayWorkWithUnit($realWork),Work::displayWorkWithUnit($leftWork),Work::displayWorkWithUnit($plannedWork))));
       $errors++;
