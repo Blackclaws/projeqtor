@@ -86,7 +86,7 @@ abstract class SqlElement {
   public static $_doNotSaveLastUpdateDateTime=false;
   
   // Management of cache for queries : cache is only valid during current script
-  public static $_cachedQuery = array('Habilitation' => array(), 'Menu' => array(), 'PluginTriggeredEvent' => array(), 'Plugin' => array());
+  public static $_cachedQuery = array('Habilitation' => array(), 'Menu' => array(), 'PluginTriggeredEvent' => array(), 'Plugin' => array(), 'RestrictList'=>array());
   
   // Management of extraHiddenFileds per type, status or profile
   private static $_extraHiddenFields = null;
@@ -1440,7 +1440,7 @@ abstract class SqlElement {
           if ( !$col_new_value and !$col_old_value and (substr($col_name,-4)=='Cost' or substr($col_name,-4)=='Work' or substr($col_name,-6)=='Amount') ) {
             continue; // do not save 0 to null or null to zero for Cost, Work and Amount
           }
-          if (SqlElement::is_a($this, 'PlanningElement')) {
+          if (SqlElement::is_a($this, 'PlanningElement') and !$this->isManualProgress) {
             if (! isset($this->_workHistory) and ($col_name=='assignedWork' or $col_name=='leftWork'  or $col_name=='plannedWork' 
                                                or $col_name=='assignedCost' or $col_name=='leftCost'  or $col_name=='plannedCost')) {
               continue; // Do not update calculated fields if not coming from function updateSynthesisObj()                              
@@ -1901,6 +1901,9 @@ abstract class SqlElement {
     if (property_exists ( $newObj, "creationDateTime" )) {
       $newObj->creationDateTime = date ( 'Y-m-d H:i' );
     }
+    if (property_exists ( $newObj, "lastUpdateDateTime" )) {
+      $newObj->lastUpdateDateTime=null;
+    }
     if (property_exists ( $newObj, "done" )) {
       $newObj->done = 0;
     }
@@ -2105,6 +2108,9 @@ abstract class SqlElement {
     }
     if (property_exists ( $newObj, "creationDateTime" )) {
       $newObj->creationDateTime = date ( 'Y-m-d H:i' );
+    }
+    if (property_exists ( $newObj, "lastUpdateDateTime" )) {
+      $newObj->lastUpdateDateTime=null;
     }
     if (property_exists ( $newObj, "meetingDate" )) {
       $newObj->meetingDate = date ( 'Y-m-d' );
@@ -2776,6 +2782,9 @@ abstract class SqlElement {
         }
       }
     }
+    if (RequestHandler::isCodeSet('moveToAfterCreate')) {
+      $this->_moveToAfterCreate=RequestHandler::getId('moveToAfterCreate');
+    }
   }
 
   /**
@@ -2854,11 +2863,13 @@ abstract class SqlElement {
                 $dep = new Dependency ();
                 $this->{$col_name} = $dep->getSqlElementsFromCriteria ( $crit, false );
               } else {
-                $this->{$col_name} = $this->getDependantSqlElements ( $colName );
+                if (! $withoutDependentObjects and substr(get_class($this),-4)!='Main') {
+                  $this->{$col_name} = $this->getDependantSqlElements ( $colName );
+                }
               }
             }
           } else if (ucfirst ( $col_name ) == $col_name) {
-            if (! $withoutDependentObjects) {
+            if (! $withoutDependentObjects and substr(get_class($this),-4)!='Main') {
               $this->{$col_name} = $this->getDependantSqlElement ( $col_name );
             }
           } else if (strpos ( $this->getFieldAttributes ( $col_name ), 'calculated' ) !== false) {} else {
@@ -4527,7 +4538,7 @@ abstract class SqlElement {
               $objects .= "<br/>&nbsp;-&nbsp;" . i18n ( $object ) . " (" . $nb . ")";
             }
           }
-          if (get_class($this)=='Contact') { 
+          if (get_class($this)=='Contact' and property_exists($obj,'idSponsor')) { 
             // Also search for sponsor
             $crit = array('idSponsor' => $this->id);
             $nb = $obj->countSqlElementsFromCriteria ( $crit, $where );
@@ -4976,10 +4987,11 @@ abstract class SqlElement {
     }
     //END add gmartin 
     if ($directStatusMail) {
+      $idTemplate=(trim($directStatusMail->idEmailTemplate))?$directStatusMail->idEmailTemplate:'0';
       if ($resultMail) {
-        return array('result' => 'OK', 'dest' => $destTab[0]);
+        return array('result' => 'OK', 'dest' => $destTab[$idTemplate]);
       } else {
-        return array('result' => '', 'dest' => $destTab[0]);
+        return array('result' => '', 'dest' => $destTab[$idTemplate]);
       }
     }
     return $resultMail;
@@ -5330,6 +5342,33 @@ abstract class SqlElement {
         }
       }
     }
+    // ADDITION BY papjul - Document Version details
+    if (isset ( $this->_DocumentVersion ) and is_array ( $this->_DocumentVersion )) {
+      $msg .= $rowStart . $sectionStart . i18n ( 'sectionDocumentVersion' ) . $sectionEnd . $rowEnd;
+      $documentVersion = new DocumentVersion ();
+      $documentVersions = $documentVersion->getSqlElementsFromCriteria ( array('idDocument' => $this->id), false, null, 'name desc' );
+      foreach ( $documentVersions as $documentVersion ) {
+        $name = $documentVersion->name;
+        $versionDate = $documentVersion->versionDate;
+        $msg .= $rowStart . $labelStart;
+        $msg .= $name;
+        $msg .= '<br />';
+        $msg .= htmlFormatDateTime ( $versionDate );
+        $msg .= $labelEnd . $fieldStart;
+        $msg .= $documentVersion->fileName;
+        $msg .= '<br />';
+        $text = new Html2Text ( $documentVersion->description );
+        $plainText = $text->getText ();
+        if (mb_strlen ( $plainText ) > 10000) { // Should not send too long email
+          $descriptionTruncated = nl2br ( mb_substr ( $plainText, 0, 10000 ) );
+          $msg .= $descriptionTruncated;
+        } else {
+          $msg .= $documentVersion->description;
+        }
+        $msg .= $fieldEnd . $rowEnd;
+      }
+    }
+    // End of ADDITION BY papjul - Document Version details
     if (isset ( $this->_Note ) and is_array ( $this->_Note )) {
       $msg .= $rowStart . $sectionStart . i18n ( 'sectionNote' ) . $sectionEnd . $rowEnd;
       $note = new Note ();

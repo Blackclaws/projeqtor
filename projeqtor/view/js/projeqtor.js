@@ -97,14 +97,14 @@ function refreshJsonList(className, keepUrl) {
         dojo.byId('comboDetailId').value = '';
       }
     }
-    if (dojo.byId('showAllProjects')) {
-      if (dojo.byId('showAllProjects').checked) {
+    if (dijit.byId('showAllProjects')) {
+      if (dijit.byId('showAllProjects').get("value") != '') {
         url = url + "&showAllProjects=true";
       }
     }
-    if (dojo.byId('listShowIdle')) {
+    if (dijit.byId('listShowIdle')) {
       saveDataToSession('listShowIdle'+className, dijit.byId('listShowIdle').get("value"), false);
-      if (dojo.byId('listShowIdle').checked) {
+      if (dijit.byId('listShowIdle').get("value") != '') {
         url = url + "&idle=true";
       }
     }
@@ -114,6 +114,7 @@ function refreshJsonList(className, keepUrl) {
         url = url + "&objectType=" + dijit.byId('listTypeFilter').get("value");
       }
     }
+    
     if (dijit.byId('listClientFilter')) {
       saveDataToSession('listClientFilter'+className, dijit.byId('listClientFilter').get("value"), false);
       if (dijit.byId('listClientFilter').get("value") != '') {
@@ -121,7 +122,6 @@ function refreshJsonList(className, keepUrl) {
             + dijit.byId('listClientFilter').get("value");
       }
     }
-    
     if (dijit.byId('listBudgetParentFilter')) {
       saveDataToSession('listBudgetParentFilter', dijit.byId('listBudgetParentFilter').get("value"), false);
       if (dijit.byId('listBudgetParentFilter').get("value") != '') {
@@ -129,7 +129,6 @@ function refreshJsonList(className, keepUrl) {
             + dijit.byId('listBudgetParentFilter').get("value");
       }
     }
-    
     if (dijit.byId('listElementableFilter')) {
       saveDataToSession('listElementableFilter'+className, dijit.byId('listElementableFilter').get("value"), false);
       if (dijit.byId('listElementableFilter').get("value") != '') {
@@ -151,6 +150,7 @@ function refreshJsonList(className, keepUrl) {
         url = url + "&countStatus=" + dojo.byId('countStatus').value;
       }
     }
+    
     //END ADD qCazelles - Filter by status
     if (dijit.byId('quickSearchValue')) {
       if (dijit.byId('quickSearchValue').get("value") != '') {
@@ -160,7 +160,6 @@ function refreshJsonList(className, keepUrl) {
             + encodeURIComponent(dijit.byId('quickSearchValue').get("value"));
       }
     }
-
     // store.fetch();
     if (!keepUrl) {
       grid.setStore(new dojo.data.ItemFileReadStore({
@@ -278,6 +277,27 @@ function refreshJsonPlanning() {
  * 
  * @return void
  */
+//gautier
+String.prototype.toUpperCaseWithoutAccent = function(){
+  var accent = [
+      /[\300-\306]/g, /[\340-\346]/g, // A, a
+      /[\310-\313]/g, /[\350-\353]/g, // E, e
+      /[\314-\317]/g, /[\354-\357]/g, // I, i
+      /[\322-\330]/g, /[\362-\370]/g, // O, o
+      /[\331-\334]/g, /[\371-\374]/g, // U, u
+      /[\321]/g, /[\361]/g, // N, n
+      /[\307]/g, /[\347]/g, // C, c
+  ];
+  var noaccent = ['A','a','E','e','I','i','O','o','U','u','N','n','C','c'];
+   
+  var str = this;
+  for(var i = 0; i < accent.length; i++){
+      str = str.replace(accent[i], noaccent[i]);
+  }
+   
+  return str.toUpperCase();
+}
+
 function filterJsonList(myObjectClass) {
   var filterId = dojo.byId('listIdFilter');
   var filterName = dojo.byId('listNameFilter');
@@ -295,7 +315,7 @@ function filterJsonList(myObjectClass) {
     if (filterName) {
       saveDataToSession('listNameFilter'+myObjectClass, dojo.byId('listNameFilter').value, false);
       if (filterName.value && filterName.value != '') {
-        filter.name = '*' + filterName.value + '*';
+        filter.name = '*' + filterName.value.toUpperCaseWithoutAccent() + '*';
       }
     }
     grid.query = filter;
@@ -724,6 +744,7 @@ function loadContent(page, destination, formName, isResultMessage, validationTyp
     cleanLoadContentStack(page, destination, formName, isResultMessage, validationType, directAccess, silent, callBackFunction, noFading);
     return;
   }
+  filterStatus = document.getElementById('barFilterByStatus');
   if (contentNode && page.indexOf("destinationWidth=")<0) {
     destinationWidth = dojo.style(contentNode, "width");
     destinationHeight = dojo.style(contentNode, "height");
@@ -733,6 +754,13 @@ function loadContent(page, destination, formName, isResultMessage, validationTyp
         destinationWidth = dojo.style(widthNode, "width");
         destinationHeight = dojo.style(widthNode, "height");
       }
+    }
+    if (page.indexOf('diary.php') != -1) {
+		detailTop = dojo.byId('listDiv').offsetHeight;
+		detail = dojo.byId('detailDiv');
+        destinationHeight = dojo.byId('centerDiv').offsetHeight - detailTop;
+        detail.style.height = destinationHeight + "px";
+    	dojo.byId('detailDiv').style.top = detailTop + "px";
     }
     if (page.indexOf("?") > 0) {
       page += "&destinationWidth=" + destinationWidth + "&destinationHeight="
@@ -751,6 +779,21 @@ function loadContent(page, destination, formName, isResultMessage, validationTyp
   }
   if (page.indexOf("isIE=")<0) {
     page += ((page.indexOf("?") > 0) ? "&" : "?") + "isIE=" + ((dojo.isIE) ? dojo.isIE : '');
+  }
+  if (page.indexOf('diary.php') != -1) {
+	  page+="&diarySelectItems="+dijit.byId('diarySelectItems').value;
+	  if (dojo.byId('countStatus')) {
+	    	var filteringByStatus = false;
+	    	for (var i = 1; i <= dojo.byId('countStatus').value; i++) {
+	    		if (dijit.byId('showStatus' + i).checked) {
+	    			page += "&objectStatus" + i + "=" + dijit.byId('showStatus' + i).value;
+	    			filteringByStatus = true;
+	    		}
+	    	}
+	    	if (filteringByStatus) {
+	    		page += "&countStatus=" + dojo.byId('countStatus').value;
+	    	}
+	    }
   }
   if (!silent) showWait();
   // NB : IE Issue (<IE8) must not fade load
@@ -873,7 +916,7 @@ function loadContent(page, destination, formName, isResultMessage, validationTyp
             selectLinkItem();
           }
           if (destination == "directFilterList") {
-            if (!validationType && validationType != 'returnFromFilter') {
+            if (!validationType || validationType=='returnFromFilter' ) {
               if (top.dojo.byId('noFilterSelected')
                   && top.dojo.byId('noFilterSelected').value == 'true') {
                 dijit.byId("listFilterFilter").set("iconClass", "iconFilter");
@@ -881,7 +924,11 @@ function loadContent(page, destination, formName, isResultMessage, validationTyp
                 dijit.byId("listFilterFilter").set("iconClass",
                     "iconActiveFilter");
               }
-              if (dojo.byId('objectClassManual') && dojo.byId('objectClassManual').value=='Planning') {
+              if (globalSelectFilterContenLoad && globalSelectFilterContainer) {
+                loadContent(globalSelectFilterContenLoad, globalSelectFilterContainer);
+                globalSelectFilterContenLoad=null;
+                globalSelectFilterContainer=null;
+              } else if (dojo.byId('objectClassManual') && dojo.byId('objectClassManual').value=='Planning') {
                 refreshJsonPlanning();
               } else if (dojo.byId('objectClassList')) {
                 refreshJsonList(dojo.byId('objectClassList').value);
@@ -3282,6 +3329,9 @@ function globalSave() {
   } else if (dijit.byId('dialogRestrictTypes')
       && dijit.byId('dialogRestrictTypes').open) {
     var button = dijit.byId('dialogRestrictTypesSubmit');
+  } else if (dijit.byId('dialogRestrictProductList')
+	  && dijit.byId('dialogRestrictProductList').open) {
+	var button = dijit.byId('dialogRestrictProductListSubmit');
   } else if (dojo.byId("editDependencyDiv") && dojo.byId("editDependencyDiv").style.display=="block") {
     dojo.byId("dependencyRightClickSave").click();
     return;
@@ -3947,7 +3997,20 @@ function addNewItem(item) {
   if (switchedMode) {
     setTimeout("hideList(null,true);", 1);
   }
-  loadContent("objectDetail.php", "detailDiv", 'listForm');
+    var currentItem=historyTable[historyPosition];
+    var currentScreen=currentItem[2];
+    if (currentScreen=="Planning" || currentScreen=="GlobalPlanning"){
+      var currentItemParent = currentItem[1];
+      var originClass = currentItem[0];
+      var url = 'objectDetail.php?insertItem=true&currentItemParent='+currentItemParent+'&originClass='+originClass;
+      if(currentItemParent){
+        loadContent(url, "detailDiv", 'listForm');
+      }else{
+        loadContent("objectDetail.php", "detailDiv", 'listForm');
+      }
+    }else{
+      loadContent("objectDetail.php", "detailDiv", 'listForm');
+    }
   dijit.byId('planningNewItem').closeDropDown();
 }
 
@@ -4644,6 +4707,27 @@ function refreshListItemsInNotificationDefinition(idNotifiable, forReceivers) {
     });   
 }
 
+//Damian
+function refreshListFieldsInTemplate(idItemMailable) {
+    url='../tool/getListFieldsForTemplate.php?idItemMailable='+ idItemMailable;
+    var selectTarget = '_spe_listItemTemplate';
+    dijit.byId(selectTarget).removeOption(dijit.byId(selectTarget).getOptions());
+    dijit.byId(selectTarget).set('value','');
+    dojo.xhrGet({
+        url : url,
+        handleAs : "text",
+        load : function(data) {
+            if(data){
+                var obj = JSON.parse(data);
+                for ( var key in obj) {
+                    var o = dojo.create("option", {label: obj[key], value: key});     
+                    dijit.byId(selectTarget).addOption(o); 
+                }
+            }
+        }
+    });
+}
+
 function refreshListFieldsInNotificationDefinition(table, context) {
     url='../tool/getListFieldsForNotificationDefinition.php?table='+ table + '&context=' + context;
 
@@ -4666,8 +4750,8 @@ function refreshListFieldsInNotificationDefinition(table, context) {
 }
 
 function addFieldInTextBoxForNotificationItem(context, textBox, editor) {
-                
-    var selectItems = '_spe_listItems' + context;
+
+	var selectItems = '_spe_listItems' + context;
     var selectedItemLabel = dijit.byId(selectItems).attr('displayedValue');
     var selectedItem = dijit.byId(selectItems).getValue();
     var selectFields = '_spe_listFields' + context;
@@ -4676,6 +4760,7 @@ function addFieldInTextBoxForNotificationItem(context, textBox, editor) {
 
     var idTextBox = dijit.byId(textBox);
     element = document.getElementById(textBox);
+    
     if (editor==='text' || textBox!=='content') {
       var val = element.value;
       cursPos = val.slice(0, element.selectionStart).length;
@@ -4723,6 +4808,52 @@ function addFieldInTextBoxForNotificationItem(context, textBox, editor) {
     } else if (editor==='Dojo' || editor==='DojoInline') {    
        dijit.byId(textBox+'Editor').setValue(newText)
     }
+}
+
+//Damian
+function addFieldInTextBoxForEmailTemplateItem(editor) {
+	
+  var selectedItem = dijit.byId('_spe_listItemTemplate').get("value");
+  var idTextBox = dojo.byId('template').value;
+  var element = document.getElementById('template');
+  var context = '_spe_listItemTemplate';
+  var textBox = 'template';
+  
+  if (editor==='text' || textBox!=='template') {
+    var val = element.value;
+    cursPos = val.slice(0, element.selectionStart).length;
+  } else if (editor==='CK' || editor==='CKInline') {
+    var val = CKEDITOR.instances[textBox].getData();
+    cursPos = val.length;
+  } else if (editor==='Dojo' || editor==='DojoInline') {
+    var val = dijit.byId(textBox+'Editor').getValue();
+    cursPos = val.length;
+  }
+
+  if (editor=='text' && textBox!=='template') {
+      oldText = idTextBox.getValue();
+  } else {
+      oldText = val;
+  }
+  
+  textToAdd = '${';
+    
+  if(selectedItem.search('_') == 0){
+	  textToAdd=textToAdd + selectedItem.substring(1);
+  }else{
+	  textToAdd=textToAdd + selectedItem;
+  }
+  textToAdd=textToAdd + "}";
+  newText = oldText.substr(0, cursPos) + textToAdd + oldText.substr(cursPos);        
+  
+  if (editor==='text' || textBox!=='template') {
+      idTextBox.setValue(newText);
+  } else if (editor==='CK' || editor==='CKInline') {
+    CKEDITOR.instances[textBox].insertText(textToAdd);
+    //CKEDITOR.instances[textBox].setData(newText);
+  } else if (editor==='Dojo' || editor==='DojoInline') {    
+     dijit.byId(textBox+'Editor').setValue(newText)
+  }
 }
 
 function addOperatorOrFunctionInTextBoxForNotificationItem(textBox) {                
@@ -5390,31 +5521,85 @@ function selectActivity(actRowId, actId, idProject, assId){
 		dojo.setAttr('inputAssId', 'value', assId);
 	}
 	dojo.byId('warningNoActivity').style.display = 'none';
+	saveDataToSession('selectAbsenceActivity', actId, true);
+	saveDataToSession('inputIdProject', idProject, true);
+	saveDataToSession('inputAssId', assId, true);
 }
 
 // Absence day selection fonction
-function selectAbsenceDay(dateId, day, workDay, month, year, week, userId){
+function selectAbsenceDay(dateId, day, workDay, month, year, week, userId, isValidated){
 	var workVal = dijit.byId('absenceInput').get('value');
 	var actId = dojo.byId('inputActId').value;
 	var idProject = dojo.byId('inputIdProject').value;
 	var assId = dojo.byId('inputAssId').value;
-	if(actId == ""){
-		dojo.byId('warningNoActivity').style.display = 'block';
-	}else {
-	  showWait();
-		dojo.byId('warningNoActivity').style.display = 'none';
-		var url='../tool/saveAbsence.php?day='+day+'&workDay='+workDay+'&month='+month+'&year='+year+'&week='+week+'&userId='+userId+'&workVal='+workVal+'&actId='+actId+'&idProject='+idProject+'&assId='+assId;
-		  dojo.xhrGet({
-		    url : url,
-		    handleAs : "text",
-		    load : function(data){
-		      hideWait();
-		    	refreshAbsenceCalendar();
-		    	if(data == 'warning'){
-		    		dojo.byId('warningExceedWork').style.display = 'block';
-		    		setTimeout("dojo.byId('warningExceedWork').style.display = 'none'", 2000);
-		    	}
-		    }
-		  });
+	if(!isValidated){
+		dojo.byId('warningisValiadtedDay').style.display = 'none';
+		if(actId == ""){
+			dojo.byId('warningNoActivity').style.display = 'block';
+		}else {
+		  showWait();
+			dojo.byId('warningNoActivity').style.display = 'none';
+			var url='../tool/saveAbsence.php?day='+day+'&workDay='+workDay+'&month='+month+'&year='+year+'&week='+week+'&userId='+userId+'&workVal='+workVal+'&actId='+actId+'&idProject='+idProject+'&assId='+assId;
+			  dojo.xhrGet({
+			    url : url,
+			    handleAs : "text",
+			    load : function(data){
+			      hideWait();
+			    	refreshAbsenceCalendar();
+			    	if(data == 'warning'){
+			    		dojo.byId('warningExceedWork').style.display = 'block';
+			    		setTimeout("dojo.byId('warningExceedWork').style.display = 'none'", 2000);
+			    	}
+			    }
+			  });
+		}
+	}else{
+		dojo.byId('warningisValiadtedDay').style.display = 'block';
+		setTimeout("dojo.byId('warningisValiadtedDay').style.display = 'none'", 2000);
 	}
+}
+
+//Imputation Validation refresh function
+function refreshImputationValidation() {
+	if (checkFormChangeInProgress()) {
+		showAlert(i18n('alertOngoingChange'));
+		return false;
+	}
+	formInitialize();
+	showWait();
+	var callback=function() {
+		hideWait();
+	};
+	loadDiv('../view/refreshImputationValidation.php', 'listWorkDiv', 'listForm', callback);
+	return true;
+}
+
+//Imputation Validation refresh function
+function refreshImputationValidationDiv() {
+	if (checkFormChangeInProgress()) {
+		showAlert(i18n('alertOngoingChange'));
+		return false;
+	}
+	formInitialize();
+	showWait();
+	var callback=function() {
+		hideWait();
+	};
+	//loadDiv('../view/refreshImputationValidation.php', '', 'listForm', callback);
+	return true;
+}
+
+//Imputation Validation Save function
+function saveImputationValidation(idWorkPeriod, buttonAction){
+	saveDataToSession('idWorkPeriod', idWorkPeriod);
+	showWait();
+	var url='../tool/saveImputationValidation.php?idWorkPeriod='+idWorkPeriod+'&buttonAction='+buttonAction;
+	  dojo.xhrGet({
+	    url : url,
+	    handleAs : "text",
+	    load : function(data){
+	      hideWait();
+	      refreshImputationValidation();
+	    }
+	  });
 }

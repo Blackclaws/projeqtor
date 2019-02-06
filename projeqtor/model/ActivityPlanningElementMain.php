@@ -89,7 +89,6 @@ class ActivityPlanningElementMain extends PlanningElement {
   public $topRefType;
   public $topRefId;
   public $idle;
-
   
   private static $_fieldsAttributes=array(
     "plannedStartDate"=>"readonly,noImport",
@@ -117,6 +116,7 @@ class ActivityPlanningElementMain extends PlanningElement {
     "latestStartDate"=>"hidden",
     "latestEndDate"=>"hidden",
     "isOnCriticalPath"=>"hidden",
+    "isManualProgress"=>"hidden",
     "_spe_isOnCriticalPath"=>""
   );   
   
@@ -163,6 +163,15 @@ class ActivityPlanningElementMain extends PlanningElement {
       self::$_fieldsAttributes['latestStartDate']="readonly";
       self::$_fieldsAttributes['latestEndDate']="readonly";
     }
+    
+    $user=getSessionUser();
+    $priority=SqlElement::getSingleSqlElementFromCriteria('HabilitationOther',array('idProfile'=>$user->idProfile,'scope'=>'changeManualProgress'));
+    if(!$this->isManualProgress or $priority and ($priority->rightAccess == 2 or ! $priority->id ) ){
+      self::$_fieldsAttributes["progress"]='display';
+    }else{
+      self::$_fieldsAttributes["progress"]='';
+    }
+    
   }
   /** ==========================================================================
    * Destructor
@@ -211,6 +220,9 @@ class ActivityPlanningElementMain extends PlanningElement {
    */
   public function save() {
     if (! PlanningElement::$_noDispatch) $this->updateWorkElementSummary(true);
+    if($this->idActivityPlanningMode){
+      $this->idPlanningMode = $this->idActivityPlanningMode;
+    }
     return parent::save();
   }
   
@@ -299,7 +311,6 @@ class ActivityPlanningElementMain extends PlanningElement {
         echo '<div style="position:relative;"><div style="color:#AA0000;margin:0px 10px;text-align:center;position:absolute;top:-55px;height:60px;">'.i18n('colIsOnCriticalPath').'</div></div>';
       }
     }
-    
   }
 }
 ?>

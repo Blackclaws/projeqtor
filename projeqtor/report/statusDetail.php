@@ -126,8 +126,8 @@ foreach ($lstType as $id=>$st) {
   if (! array_key_exists($id, $arr)) {
     unset($lstType[$id]);
   }
+  $tabTypeColor[$st] = SqlList::getFieldFromId('Type', $id, 'color');
 }
-
 if (count($lstStatus)>0) {
 
 	echo '<table width="95%" align="center">';
@@ -192,7 +192,12 @@ if (count($lstStatus)>0) {
 	  if (isset($lstType[$id])) {
 	    $dataSet->setSerieDescription($lstType[$id],$idName);
 	    $dataSet->setSerieOnAxis($idName,0);
-	    $serieSettings = array("R"=>$rgbPalette[($nbItem % 12)]['R'],"G"=>$rgbPalette[($nbItem % 12)]['G'],"B"=>$rgbPalette[($nbItem % 12)]['B']);
+	    if(isset($tabTypeColor[$idName])){
+	      $color=hex2rgb($tabTypeColor[$idName]);
+	      $serieSettings=array("R"=>$color['R'],"G"=>$color['G'],"B"=>$color['B']);
+	    }else{
+	      $serieSettings = array("R"=>$rgbPalette[($nbItem % 12)]['R'],"G"=>$rgbPalette[($nbItem % 12)]['G'],"B"=>$rgbPalette[($nbItem % 12)]['B']);
+	    }
 	    $dataSet->setPalette($idName,$serieSettings);
   	  $nbItem++;
 	  }

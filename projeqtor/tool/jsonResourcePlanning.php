@@ -48,6 +48,19 @@ if ($right) {
     $seeAllResource=true;
   }
 }
+if (!$seeAllResource) {
+  $prfLst=$user->getAllProfiles();
+  foreach ($prfLst as $prf) {
+    $right=SqlElement::getSingleSqlElementFromCriteria('habilitationOther', array('idProfile'=>$prf, 'scope'=>'resourcePlanning'));
+    if ($right) {
+      $list=new ListYesNo($right->rightAccess);
+      if ($list->code=='YES') {
+        $seeAllResource=true;
+        break;
+      }
+    }
+  }
+}
 
 $print=false;
 if ( array_key_exists('print',$_REQUEST) ) {
@@ -158,8 +171,8 @@ $showNullAssignment=RequestHandler::getBoolean('listShowNullAssignment');
 // else $queryWhere.=' ass.plannedWork>0 ';
  
 if (!$seeAllResource) {
-  $queryWhere.= ($queryWhere=='')?'':' and ';
-  $queryWhere.=' ass.idResource='.$user->id;
+   $queryWhere.= ($queryWhere=='')?'':' and ';
+   $queryWhere.=' ass.idResource='.$user->id;
 }
 $queryWhere.= ($queryWhere=='')?'':' and ';
 $queryWhere.=getAccesRestrictionClause('Activity',$table,$showIdleProjects);

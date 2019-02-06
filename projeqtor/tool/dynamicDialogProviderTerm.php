@@ -234,7 +234,8 @@ if(isset ($isLineMulti)){
           if($isLine=='false'){
           ?> 
           <br/>
-          <table style="<?php if ($mode!='edit' and ($alreadyOnTerms>=$totalFullAmount or $alreadyOnTermsHT>=$providerOrder->totalUntaxedAmount)) echo 'display:none;';?>">
+          
+          <table style="<?php if ($mode!='edit' and ($alreadyOnTerms>=$providerOrder->totalFullAmount or $alreadyOnTermsHT>=$providerOrder->totalUntaxedAmount)) echo 'display:none;';?>">
           <tr>
             <td colspan="5" class="assignHeader"><?php echo i18n("colTermDetail");?></td>
           
@@ -312,7 +313,7 @@ if(isset ($isLineMulti)){
            }else{ 
 	           $billLine = new BillLine();
 	           $billLineList=$billLine->getSqlElementsFromCriteria(array("refType"=>$objectClass,"refId"=>$providerOrder->id));
-	           $i = 1;
+	           $i = 0;
 	         ?> 
 	          <br/>
 	          <table>
@@ -352,9 +353,10 @@ if(isset ($isLineMulti)){
 	           <?php 
 	           $style2 = 'border-left:1px solid black;border-bottom:1px solid black;';
 	           foreach ($billLineList as $bill) {  ?>
+	             <?php $i++;?>
               <input id="providerOrderBillLineId<?php echo $i;?>" name="providerOrderBillLineId<?php echo $i;?>" type="hidden" value="<?php echo $bill->id;?>" />
               <?php 
-                $i++; 
+                 
                 $maxValue = $bill->amount;
                 $billLine2 = new BillLine();
                 $critArray = array("refType"=>"ProviderTerm","idBillLine"=>$bill->id);
@@ -396,21 +398,21 @@ if(isset ($isLineMulti)){
                <tr>
                  <td style="width:50px; <?php echo $style2;?> ">
   		            <input dojoType="dijit.form.NumberTextBox" 
-  			           id="providerTermBillLineLine<?php echo $bill->line;?>" name="providerTermBillLineLine<?php echo $bill->line;?>"
+  			           id="providerTermBillLineLine<?php echo $i;?>" name="providerTermBillLineLine<?php echo $i;?>"
   			           style="width:40px;"
   			           class="display"
   			           value="<?php echo $bill->line;?>" />
   		           </td>
                  <td style="<?php echo $style2;?> ">
                   <textarea dojoType="dijit.form.Textarea" 
-        	         id="billLineDescription<?php echo $bill->line;?>" name="billLineDescription<?php echo $bill->line;?>"
+        	         id="billLineDescription<?php echo $i;?>" name="billLineDescription<?php echo $i;?>"
         	         style="width: 180px;"
         	         maxlength="200" class="display"
         	         ><?php echo $bill->description;?></textarea>
     	           </td>
                  <td style="<?php echo $style2;?> ">
                   <textarea dojoType="dijit.form.Textarea" 
-      	           id="billLineDetail<?php echo $bill->line;?>" name="billLineDetail<?php echo $bill->line;?>"
+      	           id="billLineDetail<?php echo $i;?>" name="billLineDetail<?php echo $i;?>"
       	           style="width: 180px;"
       	           maxlength="200" class="display"
       	           ><?php echo $bill->detail;?></textarea>  
@@ -418,7 +420,7 @@ if(isset ($isLineMulti)){
                  <td style="<?php echo $style2;?> ">
                   <?php if ($currencyPosition=='before') echo $currency;?>
                   <div dojoType="dijit.form.NumberTextBox" 
-                    id="providerTermBillLineUntaxed<?php echo $bill->line;?>" name="providerTermBillLineUntaxed<?php echo $bill->line;?>"
+                    id="providerTermBillLineUntaxed<?php echo $i;?>" name="providerTermBillLineUntaxed<?php echo $i;?>"
                     style="width: 100px;"
                     value="<?php echo $bill->amount ;?>" 
                     class="display"
@@ -428,14 +430,14 @@ if(isset ($isLineMulti)){
                  </td>
                  <td style="<?php echo $style2;?> ">
                   <div dojoType="dijit.form.NumberTextBox" 
-                    id="providerTermPercent<?php echo $bill->line;?>" name="providerTermPercent<?php echo $bill->line;?>"
+                    id="providerTermPercent<?php echo $i;?>" name="providerTermPercent<?php echo $i;?>"
                     style="width:35px;"
                     constraints="{max:<?php if($mode=='edit'){
                                               echo $newPercent;
                                             }else{
                                               echo $percent;}?>}"
                     value="<?php echo $percent;?>" 
-                     onChange="providerTermLinePercentBilleLine(<?php echo $bill->line; ?>);"
+                     onChange="providerTermLinePercentBilleLine(<?php echo $i; ?>);"
                     class="input"
                     <?php echo $keyDownEventScript;?>
                   </div>
@@ -444,7 +446,7 @@ if(isset ($isLineMulti)){
                  <td style="<?php echo $style2;?> ">
                   <?php if ($currencyPosition=='before') echo $currency;?>
                   <div dojoType="dijit.form.NumberTextBox" 
-                    id="providerTermUntaxedAmount<?php echo $bill->line;?>" name="providerTermUntaxedAmount<?php echo $bill->line;?>"
+                    id="providerTermUntaxedAmount<?php echo $i;?>" name="providerTermUntaxedAmount<?php echo $i;?>"
                     style="width: 100px;"
                     constraints="{max:<?php if($mode=='edit'){
                                               echo $newMaxValue;
@@ -455,7 +457,7 @@ if(isset ($isLineMulti)){
                                  }else{
                                   echo $maxValue;}?>" 
                     class="input"
-                    onChange="providerTermLineBillLine(<?php echo $bill->line; ?>);"
+                    onChange="providerTermLineBillLine(<?php echo $i; ?>);"
                     <?php echo $keyDownEventScript;?>
                   </div>
                   <?php if ($currencyPosition=='after') echo $currency;?>
@@ -463,7 +465,7 @@ if(isset ($isLineMulti)){
               <td style="<?php echo $style2;?> ">
                <?php if ($currencyPosition=='before') echo $currency;?>
                  <input dojoType="dijit.form.NumberTextBox" 
-                  id="providerTermDiscountAmount<?php echo $bill->line;?>" name="providerTermDiscountAmount<?php echo $bill->line;?>"
+                  id="providerTermDiscountAmount<?php echo $i;?>" name="providerTermDiscountAmount<?php echo $i;?>"
                   style="width:100px;"
                   value="<?php echo $discount;?>" 
                   class="display"  >  
@@ -473,7 +475,7 @@ if(isset ($isLineMulti)){
              <td style="<?php echo $style2;?> ">
                  <?php if ($currencyPosition=='before') echo $currency;?>
                    <input dojoType="dijit.form.NumberTextBox" 
-                    id="providerTermTaxAmount<?php echo $bill->line;?>" name="providerTermTaxAmount<?php echo $bill->line;?>"
+                    id="providerTermTaxAmount<?php echo $i;?>" name="providerTermTaxAmount<?php echo $i;?>"
                     class="display"
                     style="width:100px;"
                     value="<?php echo $taxAmount;?>" 
@@ -484,7 +486,7 @@ if(isset ($isLineMulti)){
              <td style="<?php echo $style2;?>  border-right:1px solid black;">
              <?php if ($currencyPosition=='before') echo $currency;?>
                <input dojoType="dijit.form.NumberTextBox" 
-                id="providerTermFullAmount<?php echo $bill->line;?>" name="providerTermFullAmount<?php echo $bill->line;?>"
+                id="providerTermFullAmount<?php echo $i;?>" name="providerTermFullAmount<?php echo $i;?>"
                 class="display"
                 style="width:100px;"
                 value="<?php echo $totalFullAmount; ?>" 

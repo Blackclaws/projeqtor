@@ -614,6 +614,10 @@ if (document.addEventListener) {
   }, true);
 };
 
+function formatUpperName(name) {
+  var spl=name.split('#!#!#!#!#!#');  
+  return spl[0];
+}
 
 var konamiMsg = [ '5ùhmuôçYgluêYuôYgluû',
     'FhmjïmhçuàljYufhXYklYuïmRgXuhguYkluêYufYçêêYmjuû', 'NcRluYêkYuû',

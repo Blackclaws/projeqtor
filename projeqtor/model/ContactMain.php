@@ -59,6 +59,8 @@ class ContactMain extends SqlElement {
   public $country;  
   public $_sec_Affectations;
   public $_spe_affectations;
+  public $_sec_SubscriptionContact;
+  public $_spe_subscriptions;
   public $_sec_Miscellaneous;
   public $dontReceiveTeamMails;
   //ADD qCazelles - Manage ticket at customer level - Ticket #87
@@ -84,9 +86,9 @@ class ContactMain extends SqlElement {
   private static $_fieldsAttributes=array("name"=>"required, truncatedWidth100",
                                           "userName"=>"truncatedWidth100",
                                           "email"=>"truncatedWidth100",
-                                          "idProfile"=>"readonly",
-                                          "isUser"=>"readonly",
-                                          "isResource"=>"readonly",
+                                          "idProfile"=>"",
+                                          "isUser"=>"",
+                                          "isResource"=>"",
                                           "password"=>"hidden" 
   );    
   

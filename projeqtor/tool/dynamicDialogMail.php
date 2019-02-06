@@ -29,15 +29,17 @@ $isIE=false;
 if (array_key_exists('isIE',$_REQUEST)) {
 	$isIE=$_REQUEST['isIE'];
 } 
-$objectClass="";
-//$obj=new SqlElement();
-if (array_key_exists("objectClass", $_REQUEST)) {
-	$objectClass=$_REQUEST['objectClass'];
-	Security::checkValidClass($objectClass);
-
-	$obj=new $objectClass();
-	if (method_exists($obj, 'setAttributes')) $obj->setAttributes();
+$objectClass=RequestHandler::getClass('objectClass');
+if($objectClass == 'TicketSimple'){
+    $objectClass = 'Ticket';
 }
+$objectId = RequestHandler::getId('objectId');
+$obj=new $objectClass($objectId);
+$emTp = new EmailTemplate();
+$idObjectType = 'id'.$objectClass.'Type';
+$idMailable = SqlList::getIdFromTranslatableName('Mailable', $objectClass);
+$where = "(idMailable = ".$idMailable." or idMailable IS NULL) and (idType = '".$obj->$idObjectType."' or idType IS NULL)";
+$listEmailTemplate = $emTp->getSqlElementsFromCriteria(null,false,$where);
 ?>
 <input type="hidden" name="dialogMailObjectClass" id="dialogMailObjectClass" value="<?php echo htmlEncode($objectClass);?>" />
   <table>
@@ -46,6 +48,8 @@ if (array_key_exists("objectClass", $_REQUEST)) {
         <form dojoType="dijit.form.Form" id='mailForm' name='mailForm' onSubmit="return false;">
           <input id="mailRefType" name="mailRefType" type="hidden" value="" />
           <input id="mailRefId" name="mailRefId" type="hidden" value="" />
+          <input id="idEmailTemplate" name="idEmailTemplate" type="hidden" value="" />
+          <input id="previousEmail" name="previousEmail" type="hidden" value="" />
           <table style="white-space:nowrap">
           <?php if (property_exists($objectClass, 'idContact')) { ?>
             <tr>
@@ -169,11 +173,11 @@ if (array_key_exists("objectClass", $_REQUEST)) {
   				          id="dialogOtherMail" name="dialogOtherMail"
   				          style="width: 500px; display:none"
   				          maxlength="4000"
-  				          class="input" onblur="findAutoEmail()"></textarea>
+  				          class="input" onblur="findAutoEmail();hideEmailHistorical();" oninput="compareEmailCurrent();" onclick="compareEmailCurrent();"></textarea>
   				      <textarea dojoType="dijit.form.Textarea" 
       					          id="dialogMailObjectIdEmail" name="dialogMailObjectIdEmail"
       					          style="width: 500px; display:none"
-      					          class="input" onchange="dialogMailIdEmailChange()"></textarea>
+      					          class="input" autocomplete="on" onchange="dialogMailIdEmailChange()"></textarea>
   					    <td style="vertical-align: top">
                  <button id="otherMailDetailButton" dojoType="dijit.form.Button" showlabel="false"
                          style="display:none" title="<?php echo i18n('showDetail')?>"iconClass="iconView">
@@ -182,8 +186,19 @@ if (array_key_exists("objectClass", $_REQUEST)) {
                       showDetail('dialogMailObjectIdEmail', 0, 'Resource', true);
                    </script>
                  </button>
-                </td> 
-               </td>
+                </td>
+              </td>
+            </tr>
+            <tr>
+              <td class="dialogLabel">
+                <label for="dialogOtherMailHistorical"></label>
+              </td>
+              <td>
+                <div id="dialogOtherMailHistorical" name="dialogOtherMailHistorical"
+                     style="height:auto; margin-top:-1.9px; margin-left:0.5px; overflow-y:auto; position:relative; z-index: 999999999; 
+                     display:none; width: 498px;  background-color:white; border:1px solid grey;">
+                </div>
+              </td>
             </tr>
             <tr>
               <td class="dialogLabel">
@@ -207,6 +222,27 @@ if (array_key_exists("objectClass", $_REQUEST)) {
               </td>
             </tr>
             <?php }?>
+            <tr>
+              <td class="dialogLabel">
+                <label for="dialogMailEmailTemplate" class="generalColClass idEmailTemplateClass"><?php echo htmlEncode($obj->getColCaption("idEmailTemplate")); ?>&nbsp;:&nbsp;</label>
+              </td>
+              <td>
+                <select dojoType="dijit.form.FilteringSelect" 
+                id="selectEmailTemplate" name="selectEmailTemplate" class="input"
+                <?php echo autoOpenFilteringSelect();?>>
+                <option value=""></option>
+                <?php foreach ($listEmailTemplate as $key => $value){?>
+                <option value="<?php echo $value->id;?>"><span> <?php echo htmlEncode($value->name);?></span></option>
+                <?php }?>
+                <script type="dojo/connect" event="onChange" args="evt">
+                  dojo.byId('idEmailTemplate').value = this.value;
+                </script>
+                <script type="dojo/connect" event="" args="evt">
+                  dojo.byId('idEmailTemplate').value = this.value;
+                </script>
+               </select>
+              </td>
+            </tr>
           </table>
        </form>
      </td>
@@ -216,7 +252,7 @@ if (array_key_exists("objectClass", $_REQUEST)) {
         <button dojoType="dijit.form.Button" type="button" onclick="dijit.byId('dialogMail').hide();">
           <?php echo i18n("buttonCancel");?>
         </button>
-        <button dojoType="dijit.form.Button" type="submit" id="dialogMailSubmit" onclick="protectDblClick(this);sendMail();return false;">
+        <button dojoType="dijit.form.Button" type="submit" id="dialogMailSubmit" onclick="stockEmailCurrent();protectDblClick(this);sendMail();return false;">
           <?php echo i18n("buttonOK");?>
         </button>
       </td>

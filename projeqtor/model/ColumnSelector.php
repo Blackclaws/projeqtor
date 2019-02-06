@@ -136,7 +136,11 @@ class ColumnSelector extends SqlElement {
 			}
 			$cs->name=str_replace(array('# ','${','}'), array('','',''), $entry->nodeValue);
 			$cs->_displayName=i18n('col'.ucfirst($cs->name));
-			$cs->formatter=$entry->getAttribute("formatter");
+			if ($field=='name') {
+			  $cs->formatter='formatUpperName';
+			} else {
+			  $cs->formatter=$entry->getAttribute("formatter");
+			}
 			$cs->_from=$entry->getAttribute("from");
 			$cs->subItem=$cs->_from;
 			if (!$cs->id) { $cs->save(); }

@@ -245,6 +245,7 @@ class ProviderBillMain extends SqlElement {
         }
         $projExpense->save();
         $this->idProjectExpense = $projExpense->id;
+        //ExpenseDetail::addExpenseDetailFromBillLines(get_class($this),$this->id,$projExpense->id,$projExpense->idProject);
       }
     }
     $result=parent::save();
@@ -348,9 +349,12 @@ class ProviderBillMain extends SqlElement {
     if ($this->paymentAmount==$this->totalFullAmount and $this->totalFullAmount>0) {
       $this->paymentDone=1;
     }
+    
+    parent::simpleSave();
+    
     if($old->idProjectExpense != null and $old->idProjectExpense!=$this->idProjectExpense){
       $projExpense = new ProjectExpense($old->idProjectExpense);
-      $projExpense->save();
+      if ($projExpense->id) $projExpense->save();
     }
     // Update expense linked to bill
     if($this->idProjectExpense){ 
@@ -364,7 +368,7 @@ class ProviderBillMain extends SqlElement {
       }
       $projExpense->save();
     }
-    parent::simpleSave();
+    
     return $result;
   }
   

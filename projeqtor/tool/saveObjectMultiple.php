@@ -105,6 +105,10 @@ $idProduct="";
 if (array_key_exists('idProduct',$_REQUEST)) {
   $idProduct=trim($_REQUEST['idProduct']);
 }
+$idMilestone="";
+if (array_key_exists('idMilestone',$_REQUEST)) {
+  $idMilestone=trim($_REQUEST['idMilestone']);
+}
 $idComponent="";
 if (array_key_exists('idComponent',$_REQUEST)) {
   $idComponent=trim($_REQUEST['idComponent']);
@@ -192,6 +196,7 @@ if (array_key_exists($pe.'_priority',$_REQUEST)) {
 $profile = RequestHandler::getValue('idProfile_multiple');
 $rate= RequestHandler::getValue('rate_multiple');
 $team=RequestHandler::getValue('idTeam_multiple');
+$changeStatusIdle=RequestHandler::getValue('changeStatusIdle');
 
 SqlElement::unsetCurrentObject();
 
@@ -223,6 +228,14 @@ foreach ($selectList as $id) {
 	}
 	if($rate){
 	 $item->rate = $rate;
+	}
+	
+	if($changeStatusIdle){
+	 if($changeStatusIdle=='true'){
+	   $item->idle = 1;
+	 }else{
+	   $item->idle = 0;
+	 }
 	}
 	
 	if ($type and property_exists($item,$typeField)) {
@@ -265,6 +278,9 @@ foreach ($selectList as $id) {
   }
   if ($idProduct and property_exists($item,'idProduct')) {
     $item->idProduct=$idProduct;
+  }
+  if ($idMilestone and property_exists($item,'idMilestone')) {
+    $item->idMilestone=$idMilestone;
   }
   if ($idComponent and property_exists($item,'idComponent')) {
     $item->idComponent=$idComponent;

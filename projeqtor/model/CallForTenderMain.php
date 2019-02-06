@@ -363,9 +363,14 @@ class CallForTenderMain extends SqlElement {
       echo '<td class="noteData" style="text-align:center">' . htmlFormatDate($tender->requestDateTime) . '</td>';
       echo '<td class="noteData" style="text-align:center">' . htmlFormatDate($tender->expectedTenderDateTime) . '</td>';
       echo '<td class="noteData" style="text-align:center">' . htmlFormatDate($tender->receptionDateTime) . '</td>';
-      echo '<td class="noteData" style="text-align:center">' . (($tender->evaluationValue===null)?'':htmlDisplayNumericWithoutTrailingZeros($tender->evaluationValue)) 
-        . '<br/><span style="white-space:nowrap;font-size:90%;color:#555555"><i>'.htmlDisplayCurrency(($tender->totalUntaxedAmount)?$tender->totalUntaxedAmount:$tender->untaxedAmount,true).'</i></span>' 
-        . '</td>';
+      echo '<td class="noteData" style="text-align:center">' . (($tender->evaluationValue===null)?'':htmlDisplayNumericWithoutTrailingZeros($tender->evaluationValue));
+      if (Parameter::getGlobalParameter('ImputOfAmountProvider')=='TTC') { 
+        $tenderAmount=($tender->totalFullAmount)?$tender->totalFullAmount:$tender->fullAmount;
+      } else {
+        $tenderAmount=($tender->totalUntaxedAmount)?$tender->totalUntaxedAmount:$tender->untaxedAmount;
+      } 
+      echo '<br/><span style="white-space:nowrap;font-size:90%;color:#555555"><i>'.htmlDisplayCurrency($tenderAmount,true).'</i></span>';
+      echo '</td>';
       echo '</tr>';
     }
     echo '<tr>';

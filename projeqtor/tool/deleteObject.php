@@ -55,7 +55,20 @@ Sql::beginTransaction();
 
 $obj=new $className($obj->id); // Get the last saved version, to fetch last version for array of objects
 // delete from database
+if ($className=='Project') {
+  PlanningElement::$_noDispatch=true;
+  $topProject=$obj->idProject;
+}
+
 $result=$obj->delete();
+if ($className=='Project') {
+  PlanningElement::$_noDispatch=false;
+  if ($topProject) {
+    PlanningElement::updateSynthesis('Project', $topProject);
+    $pe=SqlElement::getSingleSqlElementFromCriteria('PlanningElement', array('refType'=>'Project','refId'=>$topProject));
+    $pe->renumberWbs();
+  }
+}
 
 // Message of correct saving
 if (stripos($result,'id="lastOperationStatus" value="ERROR"')>0 ) {
