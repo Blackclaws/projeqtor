@@ -475,13 +475,13 @@ class PlanningElement extends SqlElement {
     // set to first handled status on first work input
     //if ($old->realWork==0 and $this->realWork!=0 and $this->refType) {
     if ($old->realWork==0 and $this->realWork!=0 and $this->refType) {
-      $this->setHandledOnRealWork('save');
+      if (!PlannedWork::$_planningInProgress) $this->setHandledOnRealWork('save');
     }
     // set to first done status on lastt work input (left work = 0)
     if ($old->leftWork!=0 and $this->leftWork==0 and $this->realWork>0 and $this->refType) {
-      $this->setDoneOnNoLeftWork('save');
+      if (!PlannedWork::$_planningInProgress) $this->setDoneOnNoLeftWork('save');
     }
-    if ($old->topId!=$this->topId  and ! self::$_noDispatch) { // This renumbering is to avoid holes in numbering
+    if ($old->topId and $old->topId!=$this->topId ) { // This renumbering is to avoid holes in numbering
     	$pe=new PlanningElement($old->topId);
     	$pe->renumberWbs();
     }
@@ -494,7 +494,7 @@ class PlanningElement extends SqlElement {
      or ( $pm->code=='FIXED' and $this->validatedEndDate!=$old->validatedEndDate)    
      or ( $pm->code=='START' and $this->validatedStartDate!=$old->validatedStartDate)        
         ) {
-      Project::setNeedReplan($this->idProject);
+      if ($this->idProject) Project::setNeedReplan($this->idProject);
     }
     return $result;
   }
