@@ -537,11 +537,13 @@
       $table = getListForSpecificRights('imputation');
       $getRessource = RequestHandler::getValue('exportRessourceAs');
       $date = RequestHandler::getValue('exportDateAs');
+      $w=new Work();
+      $wTable=$w->getDatabaseTableName();
       if (substr($getRessource,0,1) == 'C') {
         $getRessource = substr($getRessource,1);
-        $queryWhere.=" and idResource = $getRessource ";
+        $queryWhere.=" and $wTable.idResource = $getRessource ";
       }else{
-        $queryWhere.=" and idResource in ".transformListIntoInClause($table);
+        $queryWhere.=" and $wTable.idResource in ".transformListIntoInClause($table);
       }
       if(substr($date,0,1) == 'W') {
         $dateWeekOrMonthOrYear = 'week';
