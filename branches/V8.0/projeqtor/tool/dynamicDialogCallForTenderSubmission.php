@@ -76,7 +76,8 @@ if (!$tender->expectedTenderDateTime) $tender->expectedTenderDateTime=$callForTe
 									dojoType="dijit.form.Button" showlabel="false"
 									title="<?php echo i18n('showDetail')?>" iconClass="iconView">
 									<script type="dojo/connect" event="onClick" args="evt">
-                    showDetail('dialogCallForTenderSubmissionProvider', 0, 'Provider', true); // should not create project here 
+                    <?php $canCreate=securityGetAccessRightYesNo('menuProvider', 'create')=="YES";?>
+                    showDetail('dialogCallForTenderSubmissionProvider', <?php echo ($canCreate)?1:0;?>, 'Provider', true); 
                  </script>
 								</button>
 						  </td>

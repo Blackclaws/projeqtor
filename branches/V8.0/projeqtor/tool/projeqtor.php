@@ -48,7 +48,7 @@ if (is_session_started()===FALSE) {
 // === Application data : version, dependencies, about message, ...
 $applicationName = "ProjeQtOr"; // Name of the application
 $copyright = $applicationName; // Copyright to be displayed
-$version = "V7.4.0"; // Version of application : Major / Minor / Release
+$version = "V8.0.0"; // Version of application : Major / Minor / Release
 $build = "0221"; // Build number. To be increased on each release
 $website = "http://www.projeqtor.org"; // ProjeQtOr site url
 if (!isset($aesKeyLength)) { // one can define key lenth to 256 in parameters.php with $aesKeyLength=256; // valid values are 128, 192 and 256
@@ -1268,7 +1268,7 @@ function i18n($str, $vars=null) {
  * @return void
  */
 function exceptionHandler($exception) {
-  global $globalSilentErrors;
+  global $globalSilentErrors,$cronnedScript;
   if ($globalSilentErrors) {
     return true;
   }
@@ -1282,7 +1282,12 @@ function exceptionHandler($exception) {
       errorLog("   => #".$indTrc." ".$trc['file']." (".$trc['line'].")"." -> ".$trc['function']."()");
     }
   }
-  if ($logLevel>=3) {
+  if ($cronnedScript==true) {
+    // Exception in Cron Process => try and restart CRON
+    traceLog("Exception while executing script : try and restart");
+    Cron::setRestartFlag();
+    exit;
+  } else if ($logLevel>=3) {
     throwError($exception->getMessage());
   } else {
     throwError(i18n('exceptionMessage', array(date('Y-m-d'), date('H:i:s'))));
@@ -1298,7 +1303,7 @@ function exceptionHandler($exception) {
  * @return void
  */
 function errorHandler($errorType, $errorMessage, $errorFile, $errorLine) {
-  global $globalCatchErrors, $globalSilentErrors;
+  global $globalCatchErrors, $globalSilentErrors,$cronnedScript;
   $logLevel=Parameter::getGlobalParameter('logLevel');
   if ($globalSilentErrors) {
     return true;
@@ -1311,7 +1316,12 @@ function errorHandler($errorType, $errorMessage, $errorFile, $errorLine) {
   if ($globalCatchErrors) {
     return true;
   }
-  if ($logLevel>=3) {
+  if ($cronnedScript==true) {
+    // Error in Cron Process => try and restart CRON
+    traceLog("Error while executing script : try and restart");
+    Cron::setRestartFlag();
+    exit;
+  } else if ($logLevel>=3) {
     throwError($errorMessage."<br/>&nbsp;&nbsp;&nbsp;in ".basename($errorFile)."<br/>&nbsp;&nbsp;&nbsp;at line ".$errorLine, true);
   } else {
     throwError(i18n('errorMessage', array(date('Y-m-d'), date('H:i:s'))));

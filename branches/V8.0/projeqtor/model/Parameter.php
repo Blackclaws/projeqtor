@@ -422,7 +422,7 @@ class Parameter extends SqlElement {
       	break;
       case 'ldapMsgOnUserCreation': case 'imputationAlertSendToResource': 
       case 'imputationAlertSendToProjectLeader': case 'imputationAlertSendToTeamManager': 
-      case 'imputationAlertSendToOrganismManager': case 'imputationAlertInputByOther':
+      case 'imputationAlertSendToOrganismManager': case 'imputationAlertInputByOther': case 'imputationAlertCancelByOther':
         $list=array('ALERT'=>i18n('displayAlert'),
                     'MAIL'=>i18n('displayMail'),
                     'ALERT&MAIL'=>i18n('displayAlertAndMail'));
@@ -708,6 +708,7 @@ class Parameter extends SqlElement {
             	                'maxDaysToBookWork'=>'number',
             	                'maxDaysToBookWorkBlocking'=>'number',
             	                'imputationAlertInputByOther'=>'list',
+            	                'imputationAlertCancelByOther'=>'list',
             	                'displayPoolsOnImputation'=>'list',
             	                'submitAlertSendToProjectLeader'=>'list',
             	                'submitAlertSendToTeamManager'=>'list',

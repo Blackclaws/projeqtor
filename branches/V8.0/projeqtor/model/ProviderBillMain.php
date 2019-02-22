@@ -287,6 +287,7 @@ class ProviderBillMain extends SqlElement {
     $billLine=new BillLine();
     $crit = array("refType"=> "ProviderBill", "refId"=>$this->id);
     $billLineList = $billLine->getSqlElementsFromCriteria($crit,false);
+    $paramImput=$paramImputOfAmountProvider;
     if (count($billLineList)>0) {
       $paramImput=$paramImputOfBillLineProvider;
       $amount=0;
@@ -298,27 +299,20 @@ class ProviderBillMain extends SqlElement {
       }else{
         $this->fullAmount=$amount;
       }
-    }
-    $paramImputOfBillLineProvider = Parameter::getGlobalParameter('ImputOfBillLineProvider');
-    $paramImputOfAmountProvider = Parameter::getGlobalParameter('ImputOfAmountProvider');
-    $providerTerm=new ProviderTerm();
-    $crit = array("idProviderBill"=> $this->id);
-    $providerTermList = $providerTerm->getSqlElementsFromCriteria($crit,false);
-    if (count($providerTermList)>0) {
-      $paramImput=$paramImputOfBillLineProvider;
-      if(!isset($amount)){
-        $amount = 0;
+    } else if (!$old->id) {
+      $providerTerm=new ProviderTerm();
+      $crit = array("idProviderBill"=> $this->id);
+      $providerTermList = $providerTerm->getSqlElementsFromCriteria($crit,false);
+      if (count($providerTermList)>0) {
+        $amountHT = 0;
+        $amountTTC=0;
+        foreach ($providerTermList as $line) {
+          $amountHT+=$line->untaxedAmount;
+          $amountTTC+=$line->fullAmount;
+        }
+        $this->untaxedAmount=$amountHT;
+        $this->fullAmount=$amountTTC;
       }
-      foreach ($providerTermList as $line) {
-        $amount+=$line->untaxedAmount;
-      }
-      if($paramImput == 'HT'){
-        $this->untaxedAmount=$amount;
-      }else{
-        $this->fullAmount=$amount;
-      }
-    } else {
-      $paramImput=$paramImputOfAmountProvider;
     }
     if($paramImput == 'HT'){
       if ($this->discountFrom=='rate' or !$this->untaxedAmount) {

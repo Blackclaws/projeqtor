@@ -695,17 +695,6 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false, $pare
     // - the x column headers
     // - the y line headers
     
-    //Doris #3687
-    if (substr($col, 0, 10)=='_separator') {
-      $decomp=explode("_", $col);
-      $name = i18n($decomp[2]);
-      $margin = "";
-      if(isset($decomp[3])){
-        $margin = "margin-top:5px;";
-      }
-      echo '<div class="assignHeader" id="'.$col.'" style="height:14px; padding: 3px; margin-bottom:5px;'.$margin.' vertical-align:middle; border:1px solid grey;">'.$name.'</div>';
-    }
-    
     // gautier #3251
     if (substr($col, 0, 4)=='_tab') {
       // BEGIN - ADD BY TABARY - FORCE HEADER TAB VISIBLE
@@ -948,6 +937,15 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false, $pare
         startTitlePane($classObj, $section, $collapsedList, $widthPct, $print, $outMode, $prevSection, $nbCol, $cpt, $included, $obj);
       }
       // ADD qCazelles - Manage ticket at customer level - Ticket #87
+    } else if (substr($col, 0, 10)=='_separator') {    //Doris #3687
+      $decomp=explode("_", $col);
+      $name = i18n($decomp[2]);
+      $margin = "";
+      if(1 or isset($decomp[3])){
+        $margin = "margin-top:5px;";
+      }
+      echo '<tr><td colspan="2" style="font-size:3px;border-bottom:1px solid grey;">&nbsp;</td></tr>'; 
+      echo '<tr><td colspan="2" class="assignHeader" id="'.$col.'" style="width:100%;height:14px; padding: 3px; margin-bottom:5px;'.$margin.';vertical-align:middle; border:1px solid grey;">'.$name.'</td></tr>';
     } else if ($col=='_spe_tickets' and !$obj->isAttributeSetTofield($col, 'hidden')) {
       drawTicketsList($obj);
       // END ADD qCazelles - Manage ticket at customer level - Ticket #87
@@ -2783,7 +2781,7 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false, $pare
       if ($internalTable>0) {
         $internalTable--;
         if ($internalTable==0) {
-          echo '</td></tr></table><table  style="width: 100%;">';
+          echo '</td></tr></table><table  style="width:'.$widthPct.'">';
         }
       } else {
         if ($internalTable==0 and !$hide and !$nobr) {
@@ -3571,8 +3569,10 @@ function drawNotesFromObject($obj, $refresh=false) {
       echo '<tr>';
       if (!$print) {
       	echo '<td class="noteData smallButtonsGroup">';
-      	if ($note->idUser==$user->id and !$print and $canUpdate) {
+      	if ($obj->id!=null and !$print and $canUpdate) {
       		echo ' <a onClick="addNote(true,'.htmlEncode($note->id).');" title="'.i18n('replyToThisNote').'" > '.formatSmallButton('Reply').'</a>';
+      	}
+      	if ($note->idUser==$user->id and !$print and $canUpdate) {
       		echo ' <a onClick="editNote('.htmlEncode($note->id).','.htmlEncode($note->idPrivacy).');" title="'.i18n('editNote').'" > '.formatSmallButton('Edit').'</a>';
       		echo ' <a onClick="removeNote('.htmlEncode($note->id).');" title="'.i18n('removeNote').'" > '.formatSmallButton('Remove').'</a>';
       	}
