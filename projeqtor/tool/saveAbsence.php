@@ -42,7 +42,8 @@ $year = RequestHandler::getYear('year');
 $week = RequestHandler::getValue('week');
 $userId = RequestHandler::getId('userId');
 $editWork = false;
-
+$res= new Resource($userId,true);
+$etp= round($res->capacity,2);
 //open transaction bdd
 Sql::beginTransaction();
 $result = "";
@@ -68,8 +69,13 @@ if ($workVal == 0){
     $somWork = $workVal;
   }
   foreach ($listWork as $isWork){
-    if($isWork->refId == $actId and $somWork <= 1){
-      $isWork->work = $workVal;
+    if($isWork->refId == $actId and $somWork <= $etp){
+      if($unitAbs != 'days'){
+        $somWork = $workVal/$maxHour;
+        $isWork->work = $somWork;
+      }else{
+        $isWork->work = $workVal;
+      }
       $editWork = true;
       $isWork->save();
       $somWork += $workVal;
@@ -78,7 +84,7 @@ if ($workVal == 0){
     }
   }
   if(!$editWork){
-    if($somWork <= 1){
+    if($somWork <= $etp){
       //put parameter in work object
       $work->refType = 'Activity';
       $work->refId = $actId;
@@ -90,7 +96,6 @@ if ($workVal == 0){
       $work->work = $workVal;
       $work->idProject = $idProject;
       $work->idAssignment = $assId;
-      
       //save work
       $work->save();
     }else {

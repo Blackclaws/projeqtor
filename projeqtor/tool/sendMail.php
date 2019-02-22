@@ -53,6 +53,8 @@ if ($typeSendMail=="User") {
   // Damian
 } else if ($typeSendMail=="Imputation") {
   $action=RequestHandler::getValue('action');
+  $idWorkPeriod = RequestHandler::getId('idWorkPeriod');
+  $workPeriod = new WorkPeriod($idWorkPeriod);
   if ($action=='submit') {
     $ProjectLeaderParam=Parameter::getGlobalParameter('submitAlertSendToProjectLeader');
     $TeamManagerParam=Parameter::getGlobalParameter('submitAlertSendToTeamManager');
@@ -144,6 +146,28 @@ if ($typeSendMail=="User") {
       $alert->title=$title;
       $alert->alertType='INFO';
       $result=$alert->save();
+    }
+  }
+  if($action == 'cancelSubmitByOther' and $workPeriod->idResource != getCurrentUserId()){
+    $canceler = new Resource(getCurrentUserId());
+    $resource = new Resource($workPeriod->idResource);
+    $paramCancel=Parameter::getGlobalParameter('imputationAlertCancelByOther');
+    $periodWeek = substr($workPeriod->periodValue, 0, 4).'-'.substr($workPeriod->periodValue, 4, 2);
+    $message=i18n('messageAlertCancelSubmitByOther', array($canceler->name, $periodWeek));
+    $title='['.Parameter::getGlobalParameter('paramDbDisplayName').']'.i18n('ImputationSubmitCancelByOther');
+    if($paramCancel == 'ALERT' or $paramCancel == 'ALERT&MAIL'){
+      $alert=new Alert();
+      $alert->idUser=$workPeriod->idResource;
+      $alert->alertInitialDateTime=date('Y-m-d H:i:s');
+      $alert->alertDateTime=date('Y-m-d H:i:s');
+      $alert->message=$message;
+      $alert->title=$title;
+      $alert->alertType='INFO';
+      $result=$alert->save();
+    }
+    if($paramCancel == 'MAIL' or $paramCancel == 'ALERT&MAIL'){
+      $dest = $resource->email;
+      $result=sendMail($dest, $title, $message);
     }
   }
 } else if ($typeSendMail=="Meeting") {

@@ -1460,9 +1460,10 @@ scriptLog("storeListPlan(listPlan,$plan->id)");
     $str01=($mainPriority=='endDate')?'.00000000':'';
     //$str02=($mainPriority=='priority')?'.00000000':'';
     $pmList=SqlList::getList('PlanningMode','code',null,true);
+    $pmList['']='';
     foreach ($list as $id=>$elt) {
-      if (!isset($pmList[$elt->idPlanningMode])) {
-        traceLog("Error for planning mode $elt->idPlanningMode not found in Planning Mode table");
+      if ($elt->idPlanningMode and !isset($pmList[$elt->idPlanningMode])) {
+        traceLog("Error for planning mode '$elt->idPlanningMode' not found in Planning Mode table");
         $pmList[$elt->idPlanningMode]='ASAP';
       }    
       $pm=$pmList[$elt->idPlanningMode];

@@ -24,7 +24,7 @@
  *     
  *** DO NOT REMOVE THIS NOTICE ************************************************/
 
-scriptLog('dynamicDialogMailt.php');
+scriptLog('dynamicDialogMail.php');
 $isIE=false;
 if (array_key_exists('isIE',$_REQUEST)) {
 	$isIE=$_REQUEST['isIE'];
@@ -177,7 +177,7 @@ $listEmailTemplate = $emTp->getSqlElementsFromCriteria(null,false,$where);
   				      <textarea dojoType="dijit.form.Textarea" 
       					          id="dialogMailObjectIdEmail" name="dialogMailObjectIdEmail"
       					          style="width: 500px; display:none"
-      					          class="input" autocomplete="on" onchange="dialogMailIdEmailChange()"></textarea>
+      					          class="input" onchange="dialogMailIdEmailChange()"></textarea>
   					    <td style="vertical-align: top">
                  <button id="otherMailDetailButton" dojoType="dijit.form.Button" showlabel="false"
                          style="display:none" title="<?php echo i18n('showDetail')?>"iconClass="iconView">

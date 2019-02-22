@@ -7705,7 +7705,7 @@ function saveMultipleUpdateMode(objectClass) {
     });
   }
   var callBack = function(){
-    updateSelectedCountMultiple();
+    setTimeout("updateSelectedCountMultiple();",100);
   };
   loadContent('../tool/saveObjectMultiple.php?objectClass=' + objectClass,
       'resultDivMultiple', 'objectFormMultiple',null,null,null,null,callBack);
@@ -7770,7 +7770,7 @@ function deleteMultipleUpdateMode(objectClass) {
 }
 function updateSelectedCountMultiple() {
   if (dojo.byId('selectedCount')) {
-    dojo.byId('selectedCount').value=countSelectedItem('objectGrid');
+    countSelectedItem('objectGrid','selectedCount');
   }
 }
 
@@ -9918,4 +9918,19 @@ function cronExecutionDefinitionSave(){
       hideWait();
     }
   });
+}
+
+function showDialogAutoSendMail(){
+	loadDialog('dialogAutoSendMail',null,true,null,true);
+}
+
+function saveAutoSendMail(sendFrequency, week, month, destination, otherDestination){
+	var url='../tool/saveAutoSendMail.php?sendFrequency='+sendFrequency+'&week='+week+'&month='+month+'&destination='+destination+'&otherDestination='+otherDestination;
+	  dojo.xhrGet({
+	    url : url,
+	    handleAs : "text",
+	    load : function(){
+	    	
+	    }
+	  });
 }

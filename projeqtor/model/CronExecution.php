@@ -139,7 +139,7 @@ class CronExecution extends SqlElement {
     }
   }
   public static function getObjectFromScope($scope) {
-    $obj=SqlElement::getSingleSqlElementFromCriteria('CronExecution', array('fonctionName'=>'cron'.$scope));
+    $obj=SqlElement::getSingleSqlElementFromCriteria('CronExecution', array('fonctionName'=>'cron'.ucfirst($scope)));
     if (! trim($obj->cron)) $obj->cron='0 * * * *';
     return $obj;
   }

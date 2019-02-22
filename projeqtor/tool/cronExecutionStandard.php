@@ -104,10 +104,16 @@ function cronSaveDefinition() {
   $cronExecution=CronExecution::getObjectFromScope($scope);
   
   $cronStr=$minutes.' '.$hours.' '.$dayOfMonth.' '.$month.' '.$dayOfWeek;
-  $cronExecution->idle=1; // Désactivate after save (will force réactivate and then CRON relaunch
+  $cronExecution->idle=1; // Desactivate after save (will force reactivate and then CRON relaunch
   
-  if (! $cronExecution->fileExecuted) $cronExecution->fileExecuted="../tool/cronExecutionStandard.php";
-  if (! $cronExecution->fonctionName) $cronExecution->fonctionName="cron$scope";
+  if (! $cronExecution->fileExecuted) {
+    if (substr($scope,0,15)=='imputationAlert') {
+      $cronExecution->fileExecuted="../tool/generateImputationAlert.php";
+    } else {
+      $cronExecution->fileExecuted="../tool/cronExecutionStandard.php";
+    }
+  }
+  if (! $cronExecution->fonctionName) $cronExecution->fonctionName="cron". ucfirst($scope);
   $cronExecution->cron=$cronStr;
   $cronExecution->nextTime=null;
   $result=$cronExecution->save();

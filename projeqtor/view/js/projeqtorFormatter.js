@@ -205,7 +205,8 @@ function colorTranslateNameFormatter(value) {
  */
 function translateFormatter(value, prefix) {
   if (value) {
-    return i18n(value);
+    var val=value.split('#!#!#!#!#!#');
+    return i18n(val[0]);
   } else {
     return '';
   }

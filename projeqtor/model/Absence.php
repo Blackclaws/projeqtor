@@ -71,7 +71,15 @@ class Absence{
     $listAss = "";
     $sltActId = "";
     $idle = "";
-    $max = 1;
+    $unitAbs = Parameter::getGlobalParameter('imputationUnit');
+    $res = new Resource($userID,true);
+    $etp = $res->capacity;
+    if($unitAbs != 'days'){
+      $max = Parameter::getGlobalParameter('dayTime');
+    }else{
+      $max = 1;
+    }
+    $max = round($etp * $max,2);
     $assId = "";
     $idColor = 0;
     $tabColor = array();
@@ -176,7 +184,6 @@ class Absence{
       	$result .=' <td style="margin-top:30px; height:20px;width:55px">&nbsp;'.i18n('day').'</td>';
       }else{
       	$result .=' <td style="margin-top:30px; height:20px;width:40px">&nbsp;'.i18n('hours').'</td>';
-      	$max = Parameter::getGlobalParameter('dayTime');
       }
       $result .=' </tr>';
       $result .=' <tr style="height:20px">';
@@ -331,6 +338,10 @@ class Absence{
     		$result.= '<div style="width:30px; height:15px;position:absolute; padding-top:10px; text-align:center; vertical-align:middle">';
     		$result.= mb_substr(i18n(date('l',$iDay)),0,1,"UTF-8").$d;
     		$result.= '</div>';
+    		//gautier 
+    		$unitAbs = Parameter::getGlobalParameter('imputationUnit');
+        $res = new Resource($userID,true);
+        $max = $res->capacity;
     		if($isOpen){ 
     		  $dayWork = new Work();
     		  $whereWorkDay = " idResource=".$userID." AND workDate='".$workDay."' AND ".$whereWork;
@@ -342,10 +353,10 @@ class Absence{
     			//Work open day and ADM project
     			foreach ($listADmWork as $admWork){
     				$workV = $admWork->work;
-    				if($workV >1)$workV=1;
+    				if($workV >$max)$workV=$max;
     				$idActWork = $admWork->refId;
     				if($workV){
-    				  $workHeigth = $workHeigth + (($workV/1)*100);
+    				  $workHeigth = $workHeigth + (($workV/$max)*100);
     				  $totalRemplissage += $workHeigth;
     				  if($totalRemplissage > 100){
     				  	$workHeigth = 100-($totalRemplissage-$workHeigth);
@@ -361,19 +372,17 @@ class Absence{
     			//Work open day and not ADM project
     			foreach ($listWork as $workNotAdm){
     				$workVal = $workNotAdm->work;
-    				if($workVal > 1) $workVal = 1;
+    				if($workVal > $max) $workVal = $max;
     				$idActWork = $workNotAdm->refId;
     				if($workVal){
     				  if($totalRemplissage < 100){
-      					$workHeigth = $workHeigth + (($workVal/1)*100);
+      					$workHeigth = $workHeigth + (($workVal/$max)*100);
       					$totalRemplissage += $workHeigth;
       					if($totalRemplissage > 100){
       					  $workHeigth = 100-($totalRemplissage-$workHeigth);
       					}
-      						if($tabColor){
-      							$background = '#A0A0A0';
-      							$result.='<div style="background:'.$background.'; height:'.$workHeigth.'%"> </div>';
-      						}
+  							$background = '#A0A0A0';
+  							$result.='<div style="background:'.$background.'; height:'.$workHeigth.'%"> </div>';
     				  }
     				}
     			}

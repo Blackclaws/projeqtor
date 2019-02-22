@@ -34,8 +34,9 @@ scriptLog('   ->/view/refreshImputationValidation.php');
 
 $idUser= RequestHandler::getId('userName');
 $idTeam = RequestHandler::getId('idTeam');
+$firstDay = RequestHandler::getDatetime('weekImputationValidation');
 
 ?>
-<div id="listWorkDiv" name="listWorkDiv">
-  <?php ImputationValidation::drawUserWorkList($idUser, $idTeam); ?>
+<div id="imputListDiv" name="imputListDiv">
+  <?php ImputationValidation::drawUserWorkList($idUser, $idTeam, $firstDay);?>
 </div>

@@ -31,16 +31,20 @@
   scriptLog('   ->/view/diaryMain.php');  
   $user=getSessionUser();
 ?>
-<input type="hidden" name="objectClassManual" id="objectClassManual" value="Diary" />
+<input type="hidden" name="objectClassManual" id="objectClassManual"
+	value="Diary" />
 <div class="container" dojoType="dijit.layout.BorderContainer">
-  <div id="listDiv" dojoType="dijit.layout.ContentPane" region="top" class="listTitle" splitter="false" style="height: auto !important">
-  <table width="100%" height="36px" class="listTitle" style="max-height:36px;" >
-    <tr height="17px" style="max-height:17px;">
-      <td style="width:50px;text-align:center">
-        <?php echo formatIcon('Diary',32,null,true);?>
-      </td>
-      <td style="width:50px;text-align:left" ><span class="title"><?php echo i18n('menuDiary');?></span></td>
-      <td style="text-align: center;"> 
+	<div id="listDiv" dojoType="dijit.layout.ContentPane" region="top"
+		class="listTitle" splitter="false"
+		style="height: auto !important">
+		<table width="100%" height="36px" class="listTitle"
+			style="max-height: 36px;">
+			<tr height="17px" style="max-height: 17px;">
+				<td style="width: 50px; text-align: center">
+          <?php echo formatIcon('Diary',32,null,true);?>
+        </td>
+				<td style="width: 50px; text-align: left"><span class="title"><?php echo i18n('menuDiary');?></span></td>
+				<td style="text-align: center;"> 
 		   <?php 
 		   $period=Parameter::getUserParameter("diaryPeriod");
 		   if (!$period) {$period="month";}
@@ -76,45 +80,52 @@
        echo "</div>";
 		   ?>
 		   </td>
-		    <td style="width: 200px;text-align: right; align: right;"nowrap="nowrap">
+				<td style="width: 200px; text-align: right; align: right;"
+					nowrap="nowrap">
                 <?php echo i18n("colFirstDay");
                 $currentWeek=weekNumber(date('Y-m-d')) ;
                 $currentYear=strftime("%Y") ;
                 $currentDay=date('Y-m-d',firstDayofWeek($currentWeek,$currentYear));?> 
                 <div dojoType="dijit.form.DateTextBox"
-                	<?php if (sessionValueExists('browserLocaleDateFormatJs')) {
+						<?php if (sessionValueExists('browserLocaleDateFormatJs')) {
 										echo ' constraints="{datePattern:\''.getSessionValue('browserLocaleDateFormatJs').'\'}" ';
 									}?>
-                  id="dateSelector" name=""dateSelector""
+						id="dateSelector" name=""
+						dateSelector""
                   invalidMessage="<?php echo i18n('messageInvalidDate')?>"
-                  type="text" maxlength="10" 
-                  style="width:100px; text-align: center;" class="input roundedLeft"
-                  hasDownArrow="true"
-                  value="<?php if(sessionValueExists('dateSelectorDiary')){ echo getSessionValue('dateSelectorDiary');}else{ echo $currentDay; }?>" >
-                  <script type="dojo/method" event="onChange">
+						type="text" maxlength="10"
+						style="width: 100px; text-align: center;"
+						class="input roundedLeft" hasDownArrow="true"
+						value="<?php if(sessionValueExists('dateSelectorDiary')){ echo getSessionValue('dateSelectorDiary');}else{ echo $currentDay; }?>">
+						<script type="dojo/method" event="onChange">
                     saveDataToSession('dateSelectorDiary',formatDate(dijit.byId('dateSelector').get("value")), false);
                     return diarySelectDate(this.value);
                   </script>
-                </div>
-              </td>
-		   <td nowrap="nowrap" width="650px" ><form id="diaryForm" name="diaryForm">
-		   <input type="hidden" name="diaryPeriod" id="diaryPeriod" value="<?php echo $period;?>" />
-		   <input type="hidden" name="diaryYear" id="diaryYear" value="<?php echo $year;?>" />
-		   <input type="hidden" name="diaryMonth" id="diaryMonth" value="<?php echo $month;?>" />
-		   <input type="hidden" name="diaryWeek" id="diaryWeek" value="<?php echo $week;?>" />
-		   <input type="hidden" name="diaryDay" id="diaryDay" value="<?php echo $day;?>" />
-		   <table style="width:100%">
-		   <td style="text-align:right">
-         <table style="width: 99%">
-						<tr>
-							<td>
+					</div>
+				</td>
+				<td nowrap="nowrap" width="650px"><form id="diaryForm"
+						name="diaryForm">
+						<input type="hidden" name="diaryPeriod" id="diaryPeriod"
+							value="<?php echo $period;?>" /> <input type="hidden"
+							name="diaryYear" id="diaryYear" value="<?php echo $year;?>" /> <input
+							type="hidden" name="diaryMonth" id="diaryMonth"
+							value="<?php echo $month;?>" /> <input type="hidden"
+							name="diaryWeek" id="diaryWeek" value="<?php echo $week;?>" /> <input
+							type="hidden" name="diaryDay" id="diaryDay"
+							value="<?php echo $day;?>" />
+						<table style="width: 100%">
+							<tr>
+								<td style="text-align: right">
+									<table style="width: 99%">
+										<tr>
+											<td>
 		   					<?php echo i18n("colIdResource");?> 
 		   					<select dojoType="dijit.form.FilteringSelect"
-							 	class="input roundedLeft" style="width: 150px;"
-							 	name="diaryResource" id="diaryResource"
-								 <?php echo autoOpenFilteringSelect();?>
-								 value="<?php if(sessionValueExists('diaryResource')){ echo getSessionValue('diaryResource');}else{ echo ($user->isResource)?$user->id:'0';}?>">
-										<script type="dojo/method" event="onChange">
+												class="input roundedLeft" style="width: 150px;"
+												name="diaryResource" id="diaryResource"
+												<?php echo autoOpenFilteringSelect();?>
+												value="<?php if(sessionValueExists('diaryResource')){ echo getSessionValue('diaryResource');}else{ echo ($user->isResource)?$user->id:'0';}?>">
+													<script type="dojo/method" event="onChange">
                        saveDataToSession('diaryResource',dijit.byId('diaryResource').get("value"), false);
                        loadContent("../view/diary.php","detailDiv","diaryForm");
                       </script>
@@ -122,20 +133,21 @@
                         $specific='diary';
                         include '../tool/drawResourceListForSpecificAccess.php'?>  
        						</select>
+											</td>
+										</tr>
+									</table>
 								</td>
-							</tr>
-						</table>
-					</td>
-            <td >&nbsp;</td>
-            <td width="25px"><span class="nobr">&nbsp;</span></td>
+								<td>&nbsp;</td>
+								<td width="25px"><span class="nobr">&nbsp;</span></td>
 		               <?php
               if (Parameter::getGlobalParameter('filterByStatus') == 'YES') {  ?>
             <td width="36px">
-            	<button title="<?php echo i18n('filterByStatus');?>"
-			             dojoType="dijit.form.Button"
-			             id="iconStatusButton" name="iconStatusButton"
-			             iconClass="dijitButtonIcon dijitButtonIconStatusChange" class="detailButton" showLabel="false">
-			             <script type="dojo/connect" event="onClick" args="evt">
+									<button title="<?php echo i18n('filterByStatus');?>"
+										dojoType="dijit.form.Button" id="iconStatusButton"
+										name="iconStatusButton"
+										iconClass="dijitButtonIcon dijitButtonIconStatusChange"
+										class="detailButton" showLabel="false">
+										<script type="dojo/connect" event="onClick" args="evt">
                      protectDblClick(this);
 						         if (dijit.byId('barFilterByStatus').domNode.style.display == 'none') {
 							         dijit.byId('barFilterByStatus').domNode.style.display = 'block';
@@ -145,31 +157,37 @@
                      saveDataToSession("displayByStatusList_Diary", dijit.byId('barFilterByStatus').domNode.style.display, true);
                      loadContent("../view/diary.php","detailDiv","diaryForm");
           				 </script>
-			        </button>
-			      </td>
+									</button>
+								</td>
 			      <?php } ?>
             <td width="5px">
-              <div dojoType="dijit.form.DropDownButton"							    
-  						id="listItemsSelector" jsId="listItemsSelector" name="listItemsSelector" 
-  						showlabel="false" class="comboButton" iconClass="iconGlobalView iconSize22" 
-  						title="<?php echo i18n('itemSelector');?>">
-  							  <div dojoType="dijit.TooltipDialog" class="white" id="listItemsSelectorDialog"
-  							    style="position: absolute; top: 50px; right: 40%">   
-                    <script type="dojo/connect" event="onShow" args="evt">
+									<div dojoType="dijit.form.DropDownButton"
+										id="listItemsSelector" jsId="listItemsSelector"
+										name="listItemsSelector" showlabel="false" class="comboButton"
+										iconClass="iconGlobalView iconSize22"
+										title="<?php echo i18n('itemSelector');?>">
+										<div dojoType="dijit.TooltipDialog" class="white"
+											id="listItemsSelectorDialog"
+											style="position: absolute; top: 50px; right: 40%">
+											<script type="dojo/connect" event="onShow" args="evt">
                       oldSelectedItems=dijit.byId('diarySelectItems').get('value');
-                    </script>                 
-                    <div style="text-align: center;position: relative;"> 
-                      <div style="position: absolute;top: 34px; right:42px;"></div>
-                    </div>   
-                    <div style="height:5px;border-bottom:1px solid #AAAAAA"></div>    
-  							    <div>
+                    </script>
+											<div style="text-align: center; position: relative;">
+												<div style="position: absolute; top: 34px; right: 42px;"></div>
+											</div>
+											<div style="height: 5px; border-bottom: 1px solid #AAAAAA"></div>
+											<div>
   							    	<?php
                       $itemsToDisplay=Parameter::getUserParameter('diarySelectedItems');
                       ?>
-    									<select dojoType="dojox.form.CheckedMultiSelect"  multiple="true" 
-    									style="border:1px solid #A0A0A0;width:initial;height:120px;";
-    									id="diarySelectItems" name="diarySelectItems"
-    									onChange="diarySelectItems(this.value);" value="<?php echo $itemsToDisplay ?>" >
+    									<select dojoType="dojox.form.CheckedMultiSelect"
+													multiple="true"
+													style="border: 1px solid #A0A0A0; width: initial; height: 120px;"
+													;
+    									id="diarySelectItems"
+													name="diarySelectItems"
+													onChange="diarySelectItems(this.value);"
+													value="<?php echo $itemsToDisplay ?>">
   							      <?php
                       $arrOpt=array("All"=>"activityStreamAllItems",
                                     "Action"=>'Action',
@@ -181,56 +199,65 @@
                          echo '<option value="'.$key.'">'.htmlencode(i18n($val)).'</option>';
                       ?>
                       </select>
-  							    </div>
-                    <div style="height:5px;border-top:1px solid #AAAAAA"></div>    
-                    <div style="text-align: center;position: relative;">
-                      <button title="" dojoType="dijit.form.Button" 
-                         class="mediumTextButton" id="" name="" showLabel="true"><?php echo i18n('buttonOK');?>
-                        <script type="dojo/connect" event="onClick" args="evt">
+											</div>
+											<div style="height: 5px; border-top: 1px solid #AAAAAA"></div>
+											<div style="text-align: center; position: relative;">
+												<button title="" dojoType="dijit.form.Button"
+													class="mediumTextButton" id="" name="" showLabel="true"><?php echo i18n('buttonOK');?>
+                        <script type="dojo/connect" event="onClick"
+														args="evt">
                           dijit.byId('listItemsSelector').closeDropDown();
                         </script>
-                      </button>
-                      <div style="position: absolute;bottom: 33px; right:42px;" ></div>
-                    </div>   
-  							  </div>
-  							</div>                   
-              </td>
-		   </td>
-					<td style="text-align:right">
-         	<table style="width:99%"><tr>
-           <td><?php echo i18n("labelShowDone")?>&nbsp;</td>
-           <td>
-             <div title="<?php echo i18n('labelShowDone')?>" dojoType="dijit.form.CheckBox" 
-                class="whiteCheck" type="checkbox" id="showDone" name="showDone"  <?php if (sessionValueExists('showDoneDiary')){  if(getSessionValue('showDoneDiary')=='on'){ echo 'checked';}}?> >
-                <script type="dojo/method" event="onChange" >
+												</button>
+												<div style="position: absolute; bottom: 33px; right: 42px;"></div>
+											</div>
+										</div>
+									</div>
+								</td>
+								</td>
+								<td style="text-align: right">
+									<table style="width: 99%">
+										<tr>
+											<td><?php echo i18n("labelShowDone")?>&nbsp;</td>
+											<td>
+												<div title="<?php echo i18n('labelShowDone')?>"
+													dojoType="dijit.form.CheckBox" class="whiteCheck"
+													type="checkbox" id="showDone" name="showDone"
+													<?php if (sessionValueExists('showDoneDiary')){  if(getSessionValue('showDoneDiary')=='on'){ echo 'checked';}}?>>
+													<script type="dojo/method" event="onChange">
                   saveDataToSession('showDoneDiary',dijit.byId('showDone').get("value"), false);
                   loadContent("../view/diary.php","detailDiv","diaryForm");
                 </script>
-              </div>
-            </td>
-          </tr><tr>
-            <td><?php echo i18n("labelShowIdle")?>&nbsp;</td>
-            <td>
-              <div title="<?php echo i18n('showIdleElements')?>" dojoType="dijit.form.CheckBox" 
-                class="whiteCheck" type="checkbox" id="showIdle" name="showIdle"
-                <?php if (sessionValueExists('showIdleDiary')){  if(getSessionValue('showIdleDiary')=='on'){ echo 'checked';}}
-                else if (Parameter::getUserParameter('showIdleDefault')=='true'){ echo 'checked';}?> >
-                <script type="dojo/method" event="onChange" >
+												</div>
+											</td>
+										</tr>
+										<tr>
+											<td><?php echo i18n("labelShowIdle")?>&nbsp;</td>
+											<td>
+												<div title="<?php echo i18n('showIdleElements')?>"
+													dojoType="dijit.form.CheckBox" class="whiteCheck"
+													type="checkbox" id="showIdle" name="showIdle"
+													<?php if (sessionValueExists('showIdleDiary')){  if(getSessionValue('showIdleDiary')=='on'){ echo 'checked';}}
+                else if (Parameter::getUserParameter('showIdleDefault')=='true'){ echo 'checked';}?>>
+													<script type="dojo/method" event="onChange">
                   saveDataToSession('showIdleDiary',dijit.byId('showIdle').get("value"), false);
                   loadContent("../view/diary.php","detailDiv","diaryForm");
                 </script>
-              </div>
-            </td>
-          </tr></table>
-       </td></table>
-		   </form> </td>
-   	</tr>
-   </table>
+												</div>
+											</td>
+										</tr>
+									</table>
+								</td>
+							</tr>
+						</table>
+					</form></td>
+			</tr>
+		</table>
 		   <?php
       if (Parameter::getGlobalParameter('filterByStatus')=='YES') {
         $displayStatus=Parameter::getUserParameter("displayByStatusList_Diary");
         if (!$displayStatus) $displayStatus='none';
-        $arrObj=array(new Action(), new Ticket(), new MilestonePlanningElement(), new MeetingPlanningElement(), new Activity());
+        $arrObj=array(new Action(), new Ticket(), new Milestone(), new Meeting(), new Activity());
         $listStatus=array();
         foreach ($arrObj as $obj) {
           $listObjStatus=$obj->getExistingStatus();
@@ -239,53 +266,58 @@
           }
         }
         ?>
-<div class="listTitle" id="barFilterByStatus" dojoType="dijit.layout.ContentPane" region="top" style="display: <?php echo $displayStatus;?>; width: 100%; height: auto;">
-	<table style="display: block; width: 100%">
-		<tr style="display: inlineblock; width: 100%">
-			<td style="font-weight: bold; padding-left: 50px;"><?php echo i18n("colIdStatus");?>&nbsp;:&nbsp;</td>
+
+  <div class="listTitle" id="barFilterByStatus" dojoType="dijit.layout.ContentPane" region="top" style="display: <?php echo $displayStatus;?>; width: 100%; height: auto;">
+			<table style="display: block; width: 100%">
+				<tr style="display: inlineblock; width: 100%">
+					<td style="font-weight: bold; padding-left: 50px;"><?php echo i18n("colIdStatus");?>&nbsp;:&nbsp;</td>
 			<?php
       $cptStatus=0;
       foreach ($listStatus as $status) {
         $cptStatus+=1;?>
-				<td style="float:left; height: 100%; width: 130px; white-space: nowrap">
-					<div id="showStatus<?php echo $cptStatus; ?>"
-							 title="<?php echo $status->name; ?>"
-							 dojoType="dijit.form.CheckBox" type="checkbox"
-							 value="<?php echo $status->id; ?>">
+				<td
+						style="float: left; height: 100%; width: 130px; white-space: nowrap">
+						<div id="showStatus<?php echo $cptStatus; ?>"
+							title="<?php echo $status->name; ?>"
+							dojoType="dijit.form.CheckBox" type="checkbox"
+							value="<?php echo $status->id; ?>">
 							<script type="dojo/method" event="onChange">
                  loadContent("../view/diary.php","detailDiv","diaryForm");
 					    </script>
-					</div>
+						</div>
 					<?php echo $status->name; ?>&nbsp;&nbsp;
 				</td>
 <?php  } ?>
 		</tr>
-	</table>
-	<input type="hidden" id="countStatus"
-				 value="<?php echo $cptStatus; ?>" />
+			</table>
+			<input type="hidden" id="countStatus"
+				value="<?php echo $cptStatus; ?>" />
+		</div>
 <?php } ?>
-</div height="18px" vertical-align="middle" style="max-height:18px;">
-  <table width="100%">
-  	<tr>
-  		<td width="50%;">
-   			<div class="buttonDiary" onClick="diaryPrevious();">
-   				<img src="../view/css/images/left.png" />
-   			</div>
-   	 </td>
-   	 <td style="width:1px"></td>
-   	 <td width="50%">
-   	   <div class="buttonDiary" onClick="diaryNext();">
-   	   	<img src="../view/css/images/right.png" />
-   	   </div>
-   	 </td>
-   	</tr>
-   </table>
-  </div>
+		<div height="18px" vertical-align="middle" style="max-height: 18px;">
+				<table width="100%">
+					<tr>
+						<td width="50%;">
+							<div class="buttonDiary" onClick="diaryPrevious();">
+								<img src="../view/css/images/left.png" />
+							</div>
+						</td>
+						<td style="width: 1px"></td>
+						<td width="50%">
+							<div class="buttonDiary" onClick="diaryNext();">
+								<img src="../view/css/images/right.png" />
+							</div>
+						</td>
+					</tr>
+				</table>
+			</div>
+		</div>
+  
   <?php
-  $destinationHeight=$_REQUEST['destinationHeight']-61;
-  if ($displayStatus!='none') $destinationHeight-=48;
+  $destinationHeight=intval($_REQUEST['destinationHeight'])-54;
+  if (isset($displayStatus) and $displayStatus!='none') $destinationHeight-=16;
   ?>
-  <div id="detailDiv" dojoType="dijit.layout.ContentPane" region="center" style="overflow-x:auto;height: <?php echo $destinationHeight?>">
+  <div id="detailDiv" dojoType="dijit.layout.ContentPane" region="center" style="overflow-x:auto;height: <?php echo $destinationHeight?>px">
    <?php include 'diary.php'; ?>
   </div>
-</div>
+	</div>

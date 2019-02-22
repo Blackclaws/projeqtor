@@ -25,45 +25,23 @@
  *** DO NOT REMOVE THIS NOTICE ************************************************/
 
 /** ============================================================================
- * 
+ * Save real work allocation.
  */
+
 require_once "../tool/projeqtor.php";
 
-$objectClass=null;
-if (isset($_REQUEST['objectClass'])) {
-  $objectClass=$_REQUEST['objectClass'];
-}
-Security::checkValidClass($objectClass);
-$type=null;
-if (isset($_REQUEST['type'])) {
-  $type=$_REQUEST['type'];
-}
-Security::checkValidId($type);
-$status=null;
-if (isset($_REQUEST['status'])) {
-  $status=$_REQUEST['status'];
-}
-Security::checkValidId($status);
-$profile=null;
-if (isset($_REQUEST['profile'])) {
-  $profile=$_REQUEST['profile'];
-}
-Security::checkValidId($profile);
+//parameter
+$sendFrequency = RequestHandler::getValue('sendFrequency');
+$week = RequestHandler::getValue('week');
+$month = RequestHandler::getValue('month');
+$destination = RequestHandler::getValue('destination');
+$otherDestination = RequestHandler::getValue('otherDestination');
 
-$peName=$objectClass.'PlanningElement';
+//open transaction bdd
+Sql::beginTransaction();
 
-$obj=new $objectClass();
-$result=$obj->getExtraHiddenFields($type,$status,$profile);
+$result = "";
 
-$peName=$objectClass.'PlanningElement';
-if (property_exists($obj, $peName)) {
-  $pe=$obj->$peName;
-  $resultPe=$pe->getExtraHiddenFields($type,$status,$profile);
-  $result=array_merge($result,$resultPe);
-}
-if (property_exists($obj, 'WorkElement')) {
-  $we=$obj->WorkElement;
-  $resultWe=$we->getExtraHiddenFields($type,$status,$profile);
-  $result=array_merge($result,$resultWe);
-}
-echo json_encode($result);
+// commit work
+Sql::commitTransaction();
+?>

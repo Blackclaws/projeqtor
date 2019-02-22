@@ -1096,9 +1096,9 @@ class ImputationLine {
         echo '<div type="text" dojoType="dijit.form.NumberTextBox" ';
         // echo ' constraints="{pattern:\'###0.0#\'}"';
         echo ' trim="true" disabled="true" ';
-        if (round($colSum[$i], 2)>$capacity) {
+        if (round($colSum[$i], 2)> round($capacity,2)) {
           echo ' class="imputationInvalidCapacity imputation"';
-        } else if (round($colSum[$i], 2)<$capacity) {
+        } else if (round($colSum[$i], 2)<round($capacity)) {
           echo ' class="displayTransparent imputation"';
         } else {
           echo ' class="imputationValidCapacity imputation"';
