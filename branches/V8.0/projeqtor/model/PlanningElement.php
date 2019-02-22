@@ -217,15 +217,15 @@ class PlanningElement extends SqlElement {
       $colScript .= '    var startDate=dijit.byId("' . get_class($this) . '_' . $rubr . 'StartDate").value;';
       $colScript .= '    var duration=workDayDiffDates(startDate, endDate);';
       $colScript .= '    if (endDate && startDate) dijit.byId("' . get_class($this) . '_' . $rubr . 'Duration").set("value",duration);';
-      if ($rubr=="real") {
-        $colScript .= '   if (dijit.byId("idle")) { ';
-        $colScript .= '     if ( endDate!=null && endDate!="") {';
-        $colScript .= '       dijit.byId("idle").set("checked", true);';
-        $colScript .= '     } else {';
-        $colScript .= '       dijit.byId("idle").set("checked", false);';
-        $colScript .= '     }';
-        $colScript .= '   }';
-      }
+//       if ($rubr=="real") {
+//         $colScript .= '   if (dijit.byId("idle")) { ';
+//         $colScript .= '     if ( endDate!=null && endDate!="") {';
+//         $colScript .= '       dijit.byId("idle").set("checked", true);';
+//         $colScript .= '     } else {';
+//         $colScript .= '       dijit.byId("idle").set("checked", false);';
+//         $colScript .= '     }';
+//         $colScript .= '   }';
+//       }
       $colScript .= '    terminateChange();';
       $colScript .= '    formChanged();';
             $colScript .= '  }';   

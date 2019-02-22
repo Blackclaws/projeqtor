@@ -5346,7 +5346,7 @@ abstract class SqlElement {
     if (isset ( $this->_DocumentVersion ) and is_array ( $this->_DocumentVersion )) {
       $msg .= $rowStart . $sectionStart . i18n ( 'sectionDocumentVersion' ) . $sectionEnd . $rowEnd;
       $documentVersion = new DocumentVersion ();
-      $documentVersions = $documentVersion->getSqlElementsFromCriteria ( array('idDocument' => $this->id), false, null, 'name desc' );
+      $documentVersions = $documentVersion->getSqlElementsFromCriteria ( array('idDocument' => $this->id), false, null, 'id desc' );
       foreach ( $documentVersions as $documentVersion ) {
         $name = $documentVersion->name;
         $versionDate = $documentVersion->versionDate;

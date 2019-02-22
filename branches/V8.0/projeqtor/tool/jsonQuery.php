@@ -917,7 +917,11 @@
             }       
             if ($id=='name') {
               $val=htmlEncodeJson($val);
-              $val.='#!#!#!#!#!#'.mb_strtoupper(suppr_accents($val));
+              if (property_exists($obj,'_isNameTranslatable') and $obj->_isNameTranslatable) {
+                $val.='#!#!#!#!#!#'.mb_strtoupper(suppr_accents(i18n($val)));
+              } else {
+                $val.='#!#!#!#!#!#'.mb_strtoupper(suppr_accents($val));
+              }
               echo '"' . htmlEncode($id) . '":"' . $val . '"';
             } else {
               echo '"' . htmlEncode($id) . '":"' . htmlEncodeJson($val, $numericLength) . '"';

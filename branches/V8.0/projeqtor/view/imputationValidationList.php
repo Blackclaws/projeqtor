@@ -35,7 +35,20 @@ scriptLog('   ->/view/imputationValidationList.php');
 $user=getSessionUser();
 $userName="";
 $userTeam="";
-$currentWeek=date('Y-m-d');
+$showValidated = '';
+$showSubmitted = '';
+$currentDay=date('Y-m-d');
+$currentWeek = weekNumber(getSessionValue('weekImputationValidation'));
+$currentYear = date('Y',strtotime(getSessionValue('weekImputationValidation')));
+$currentMonth = date('m',strtotime(getSessionValue('weekImputationValidation')));
+if ($currentWeek==1 and $currentMonth>10 ) {
+	$currentYear+=1;
+}
+if ($currentWeek>50 and $currentMonth==1 ) {
+	$currentYear-=1;
+}
+$firstDay = date('Y-m-d', firstDayofWeek($currentWeek, $currentYear));
+$lastDay = lastDayofWeek(weekNumber($currentDay), date('Y',strtotime($currentDay)));
 ?>
 
 <div dojoType="dijit.layout.BorderContainer" id="imputationValidationParamDiv" name="imputationValidationParamDiv">
@@ -43,7 +56,7 @@ $currentWeek=date('Y-m-d');
        id="imputationValidationResultDiv" dojoType="dijit.layout.ContentPane" region="none" >
   </div>   
   <div dojoType="dijit.layout.ContentPane" region="top" id="imputationValidationButtonDiv" class="listTitle" >
-  <form dojoType="dijit.form.Form" name="listForm" id="listForm" action="" method="post" >
+  <form dojoType="dijit.form.Form" name="imputValidationForm" id="imputValidationForm" action="" method="post" >
   <table width="100%" height="64px" class="listTitle">
     <tr height="32px">
     <td style="vertical-align:top; min-width:100px; width:15%;">
@@ -60,7 +73,7 @@ $currentWeek=date('Y-m-d');
               title="<?php echo i18n('buttonRefreshList');?>"
               iconClass="dijitButtonIcon dijitButtonIconRefresh" class="detailButton">
               <script type="dojo/method" event="onClick" args="evt">
-	             refreshImputationValidation();
+	             refreshImputationValidation(null);
               </script>
             </button> 
           </td>
@@ -80,18 +93,14 @@ $currentWeek=date('Y-m-d');
                               $userName =  getSessionValue('userName');
                               echo $userName;
                              }else{
-                              if($user->isResource){
-                                $userName = $user->id;
-                              }else{
-                                $userName = 0;
-                              }
                               echo $userName;
                              }?>">
                   <script type="dojo/method" event="onChange" >
                     saveDataToSession("userName",dijit.byId('userName').get('value'),false);
-                    refreshImputationValidation();
+                    refreshImputationValidation(null);
                   </script>
-                  <?php 
+                  <option value=""></option>
+                  <?php
                    $specific='imputation';
                    include '../tool/drawResourceListForSpecificAccess.php';?>  
               </select>
@@ -107,14 +116,26 @@ $currentWeek=date('Y-m-d');
                type="text" maxlength="10"
                style="width:100px; text-align: center;" class="input roundedLeft"
                hasDownArrow="true"
-               value="<?php if(sessionValueExists('weekImputationValidation')){ echo getSessionValue('weekImputationValidation'); }else{ echo $currentWeek; }?>" >
+               value="<?php if(sessionValueExists('weekImputationValidation')){
+                    echo date('Y-m-d', firstDayofWeek(weekNumber(getSessionValue('weekImputationValidation')), date('Y',strtotime(getSessionValue('weekImputationValidation')))));
+                 }else{ 
+                    echo $currentDay; 
+                 }?>" >
                <script type="dojo/method" event="onChange" >
                  saveDataToSession('weekImputationValidation',formatDate(dijit.byId('weekImputationValidation').get("value")), false);
-                 refreshImputationValidation();
+                 refreshImputationValidation(this.value);
                </script>
              </div>
            </td>
-           <td nowrap="nowrap" style="text-align: right;padding-left:5px; padding-right:5px;"><?php echo i18n("weekEndLabel");?> <b><?php echo $currentWeek;?></b></td>
+           <td nowrap="nowrap" style="text-align: right;padding-left:5px; padding-right:5px;"><?php echo i18n("weekEndLabel");?></td>
+           <td>
+           <div dojoType="dijit.form.TextBox"
+               id="currentWeekImputationValidation" name="currentWeekImputationValidation"
+               type="text" maxlength="10" readonly
+               style="width:70px; text-align:center;" class="filterField rounded"
+               value="<?php echo htmlFormatDate($lastDay); ?>">
+             </div>
+           </td>
            </tr>
            <tr>
              <td nowrap="nowrap" style="text-align: right;padding-left:50px; padding-right:5px;"><?php echo i18n("colIdTeam");?></td>
@@ -129,7 +150,7 @@ $currentWeek=date('Y-m-d');
                                  }?>">
                     <script type="dojo/method" event="onChange" >
                       saveDataToSession("idTeam",dijit.byId('idTeam').get('value'),false);
-                      refreshImputationValidation();
+                      refreshImputationValidation(null);
                     </script>
                     <?php htmlDrawOptionForReference('idTeam', null)?>
                 </select>
@@ -138,59 +159,54 @@ $currentWeek=date('Y-m-d');
         </table>
       </td>
       <td style="text-align: right; align: right;">
-        <table width="100%"><tr>
-          <td style="min-width:80px;">
-          <?php echo i18n("colShowDetail");?>
-          </td>
-          <td width="35px">
-            <div title="<?php echo i18n('helpShowDetail')?>" dojoType="dijit.form.CheckBox" 
-              type="checkbox" id="showDetail" name="showDetail" class="whiteCheck"
-              <script type="dojo/method" event="onChange" >
-              refreshImputationValidation();
-            </script>
-            </div>&nbsp;
-          </td>
-          <td style="width:80px;">
-          <?php echo i18n("colShowAll");?>
-          </td>
-          <td width="35px">
-            <div title="<?php echo i18n('colShowAll')?>" dojoType="dijit.form.CheckBox" 
-              type="checkbox" id="showAll" name="showAll" class="whiteCheck"
-              <script type="dojo/method" event="onChange" >
-              refreshImputationValidation();
-            </script>
-            </div>&nbsp;
-          </td>
+        <table width="100%">
+          <tr>
+            <td>
+              <label for="showUnvalidated" class="notLabel" style="text-shadow: 0px 0px;"><?php echo i18n('colShowUnvalidated');?></label>
+              <input type="radio" data-dojo-type="dijit/form/RadioButton"
+              <?php if ($showValidated=='0') { echo "checked='checked'"; }?>
+                id="showUnvalidated" name="showValidatedWork" value="0" 
+                onchange="refreshImputationValidation(null);"/>
+              <label for="showValidated" class="notLabel" style="text-shadow: 0px 0px;"><?php echo i18n('colShowValidated');?></label>
+              <input type="radio" data-dojo-type="dijit/form/RadioButton"
+              <?php if ($showValidated=='1') { echo "checked='checked'"; }?>
+                id="showValidated" name="showValidatedWork" value="1"
+                onchange="refreshImputationValidation(null);"/>
+              <label for="showAllValidated" class="notLabel" style="text-shadow: 0px 0px;"><?php echo i18n('colShowAll');?></label>
+              <input type="radio" data-dojo-type="dijit/form/RadioButton"
+              <?php if ($showValidated=='') { echo "checked='checked'"; }?>
+                id="showAllValidated" name="showValidatedWork" value=""
+                onchange="refreshImputationValidation(null);"/>
+           </td>
           </tr>
           <tr>
-            <td style="min-width:80px;"><?php echo i18n("colShowUnsubmitWork");?></td>
             <td>
-              <div title="<?php echo i18n('helpShowUnsubmitWork')?>" dojoType="dijit.form.CheckBox" 
-                type="checkbox" id="showUnsubmitWork" name="showUnsubmitWork" class="whiteCheck"
-                <script type="dojo/method" event="onChange" >
-                  refreshImputationValidation();
-                </script>
-              </div>&nbsp;
-            </td>
-            <td width="150px"><?php echo i18n("colShowSubmitWork");?></td>
-            <td>
-              <div title="<?php echo i18n('helpShowSubmitWork')?>" dojoType="dijit.form.CheckBox" 
-                type="checkbox" id="showSubmitWork" name="showSubmitWork" class="whiteCheck"
-                <script type="dojo/method" event="onChange" >
-                  refreshImputationValidation();
-                </script>
-              </div>&nbsp;
+              <label for="showUnsubmitWork" class="notLabel" style="text-shadow: 0px 0px;"><?php echo i18n('colShowUnsubmitWork');?></label>
+              <input type="radio" data-dojo-type="dijit/form/RadioButton"
+              <?php if ($showSubmitted=='0') { echo "checked='checked'"; }?>
+                id="showUnsubmitWork" name="showSubmitWork" value="0" 
+                onchange="refreshImputationValidation(null);"/>
+              <label for="showSubmitted" class="notLabel" style="text-shadow: 0px 0px;"><?php echo i18n('colShowSubmitWork');?></label>
+              <input type="radio" data-dojo-type="dijit/form/RadioButton"
+              <?php if ($showSubmitted=='1') { echo "checked='checked'"; }?>
+                id="showSubmitted" name="showSubmitWork" value="1"
+                onchange="refreshImputationValidation(null);"/>
+              <label for="showAllSubmitted" class="notLabel" style="text-shadow: 0px 0px;"><?php echo i18n('colShowAll');?></label>
+              <input type="radio" data-dojo-type="dijit/form/RadioButton"
+              <?php if ($showSubmitted=='') { echo "checked='checked'"; }?>
+                id="showAllSubmitted" name="showSubmitWork" value=""
+                onchange="refreshImputationValidation(null);"/>
             </td>
           </tr>
-          </table>
+        </table>
       </td>
     </tr>
   </table>
   </form>
   </div>
   <div id="imputationValidationWorkDiv" name="imputationValidationWorkDiv" dojoType="dijit.layout.ContentPane" region="center" >
-    <div id="listWorkDiv" name="listWorkDiv">
-      <?php ImputationValidation::drawUserWorkList($userName, $userTeam); ?>
+    <div id="imputListDiv" name="imputListDiv">
+      <?php ImputationValidation::drawUserWorkList($userName, $userTeam, $firstDay);?>
     </div>
   </div>  
 </div>

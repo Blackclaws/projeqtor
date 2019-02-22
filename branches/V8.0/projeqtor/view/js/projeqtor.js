@@ -2323,32 +2323,31 @@ function selectAllRows(gridName) {
   });
 }
 
-function countSelectedItem(gridName) {
+function countSelectedItem(gridName,selectedName) {
   grid = dijit.byId(gridName); // if the element is not a widget, exit.
-  if (!grid) {
-    return 0;
+  if (!grid || ! dojo.byId(selectedName)) {
+    return;
   }
+  dojo.byId(selectedName).value=0;
   var lstStore=new Array();
   grid.store.fetch({
     onComplete : function(items) {
       dojo.forEach(items, function(item, index) {
         lstStore[item.id]=item.id;
       });
+      var items=grid.selection.getSelected();
+      if (items.length) {
+        dojo.forEach(items, function(selectedItem) {
+          if (selectedItem !== null) {
+            if (lstStore.indexOf(selectedItem.id)=== -1) {
+              grid.selection.setSelected(selectedItem.id, false);
+            }
+          }
+        });
+      }
+      dojo.byId(selectedName).value=grid.selection.getSelectedCount();
     }
   });
-  var items=grid.selection.getSelected();
-  if (items.length) {
-    dojo.forEach(items, function(selectedItem) {
-      if (selectedItem !== null) {
-        if (lstStore.indexOf(selectedItem.id)=== -1) {
-          grid.selection.setSelected(selectedItem.id, false);
-        }
-      }
-    });
-  } else {
-    return 0;
-  }
-  return grid.selection.getSelectedCount();
 }
 /**
  * ============================================================================
@@ -5560,38 +5559,74 @@ function selectAbsenceDay(dateId, day, workDay, month, year, week, userId, isVal
 }
 
 //Imputation Validation refresh function
-function refreshImputationValidation() {
-	if (checkFormChangeInProgress()) {
-		showAlert(i18n('alertOngoingChange'));
-		return false;
+function refreshImputationValidation(directDate) {
+	if (directDate) {
+	    var year=directDate.getFullYear();
+	    var week=getWeek(directDate.getDate(),directDate.getMonth()+1,directDate.getFullYear())+'';
+	    if (week==1 && directDate.getMonth()>10) {
+	      year+=1;
+	    }
+	    if (week.length==1 || parseInt(week,10)<10) {
+		    week='0' + week;
+		  }
+		  if (week=='00') {
+		    week=getWeek(31,12,year-1);
+		    if (week==1) {
+		      var day=getFirstDayOfWeek(1,year);
+		      //day=day-1;
+		      week=getWeek(day.getDate()-1,day.getMonth()+1,day.getFullYear());
+		    }
+		    year=year-1;
+		    dijit.byId('yearSpinner').set('value',year);
+		    dijit.byId('weekSpinner').set('value', week);
+		  } else if (parseInt(week,10)>53) {
+		      week='01';
+		      year+=1;
+		    dijit.byId('yearSpinner').set('value', year);
+		    dijit.byId('weekSpinner').set('value', week);
+		  } else if (parseInt(week,10)>52) {
+		    lastWeek=getWeek(31,12,year);
+		    if (lastWeek==1) {
+		      var day=getFirstDayOfWeek(1,year+1);
+		      //day=day-1;
+		      lastWeek=getWeek(day.getDate()-1,day.getMonth()+1,day.getFullYear());
+		    }
+		    if (parseInt(week,10)>parseInt(lastWeek,10)) {
+		      week='01';
+		        year+=1;
+		      dijit.byId('yearSpinner').set('value', year);
+		      dijit.byId('weekSpinner').set('value', week);
+		    }
+		  }
+		  var day=getFirstDayOfWeek(week,year);
+		  dijit.byId('weekImputationValidation').set('value',day);
 	}
 	formInitialize();
 	showWait();
 	var callback=function() {
 		hideWait();
 	};
-	loadDiv('../view/refreshImputationValidation.php', 'listWorkDiv', 'listForm', callback);
+	loadContent('../view/refreshImputationValidation.php', 'imputationValidationWorkDiv', 'imputValidationForm', false,false,false,false,callback,false);
 	return true;
 }
 
-//Imputation Validation refresh function
-function refreshImputationValidationDiv() {
-	if (checkFormChangeInProgress()) {
-		showAlert(i18n('alertOngoingChange'));
-		return false;
-	}
+function refreshSubmitValidateDiv(idWorkPeriod, buttonAction) {
 	formInitialize();
 	showWait();
 	var callback=function() {
 		hideWait();
 	};
-	//loadDiv('../view/refreshImputationValidation.php', '', 'listForm', callback);
-	return true;
+	if(buttonAction == 'validateWork' || buttonAction == 'cancelValidation'){
+		loadContent('../view/refreshSubmitValidateDiv.php','validatedDiv'+idWorkPeriod,false,false,false,false,false,callback,false);
+	}else{
+		loadContent('../view/refreshSubmitValidateDiv.php','submittedDiv'+idWorkPeriod,false,false,false,false,false,callback,false);
+	}
 }
 
 //Imputation Validation Save function
 function saveImputationValidation(idWorkPeriod, buttonAction){
-	saveDataToSession('idWorkPeriod', idWorkPeriod);
+	saveDataToSession('idWorkPeriod', idWorkPeriod, false);
+	saveDataToSession('buttonAction', buttonAction, false);
 	showWait();
 	var url='../tool/saveImputationValidation.php?idWorkPeriod='+idWorkPeriod+'&buttonAction='+buttonAction;
 	  dojo.xhrGet({
@@ -5599,7 +5634,26 @@ function saveImputationValidation(idWorkPeriod, buttonAction){
 	    handleAs : "text",
 	    load : function(data){
 	      hideWait();
-	      refreshImputationValidation();
+	      refreshSubmitValidateDiv(idWorkPeriod, buttonAction);
+	      if(buttonAction == 'cancelSubmit'){
+	  		cancelSubmitbyOther(idWorkPeriod);
+	  	  }
 	    }
 	  });
+}
+
+function cancelSubmitbyOther(idWorkPeriod) {
+  var url='../tool/sendMail.php?className=Imputation&action=cancelSubmitByOther&idWorkPeriod='+idWorkPeriod;
+	  dojo.xhrGet({
+	    url : url,
+	    handleAs : "text",
+	    load : function(){
+	    	
+	    }
+	  });
+}
+
+function imputationValidationSelection(isChecked, weekNumber){
+	console.log(isChecked);
+	console.log(weekNumber);
 }

@@ -79,6 +79,7 @@ class ColumnSelector extends SqlElement {
 		// retrieve from database, in correct order
 		$user=getSessionUser();
 		$obj=new $classObj();
+		$extraHiddenFields=$obj->getExtraHiddenFields();
 		if (method_exists($obj, 'setAttributes')) $obj->setAttributes();
 		$cs=new ColumnSelector();
 		$crit=array('scope'=>'list', 'objectClass'=>$classObj, 'idUser'=>$user->id);
@@ -88,14 +89,26 @@ class ColumnSelector extends SqlElement {
 		  if (! SqlElement::isVisibleField($cs->attribute)) {
         continue;
       }
+      if ($obj->isAttributeSetToField($cs->attribute, 'hidden')) {
+        continue;  
+      }
       $cs->_name=$cs->attribute;
       $dispObj=$obj;
+      $hidden=$extraHiddenFields;
       if ($cs->subItem) {
       	$fromObj='obj'.$cs->subItem;
       	if (! isset($$fromObj)) {
       		$$fromObj=new $cs->subItem();      		
       	}
       	$dispObj=$$fromObj;
+      	$hiddenObj='hidden'.$cs->subItem;
+      	if (! isset($$hiddenObj)) {
+      	  $$hiddenObj=$dispObj->getExtraHiddenFields();
+      	}
+      	$hidden=$$hiddenObj;
+      }     
+      if (in_array($cs->attribute,$hidden)) {
+        continue;
       }
       $cs->_displayName=$dispObj->getColCaption($cs->_name);
 		  if (substr($cs->attribute,0,9)=='idContext' and strlen($cs->attribute)==10) {
@@ -136,7 +149,7 @@ class ColumnSelector extends SqlElement {
 			}
 			$cs->name=str_replace(array('# ','${','}'), array('','',''), $entry->nodeValue);
 			$cs->_displayName=i18n('col'.ucfirst($cs->name));
-			if ($field=='name') {
+			if ($field=='name' and (!property_exists($obj,'_isNameTranslatable') or !$obj->_isNameTranslatable)) {
 			  $cs->formatter='formatUpperName';
 			} else {
 			  $cs->formatter=$entry->getAttribute("formatter");
@@ -166,6 +179,7 @@ class ColumnSelector extends SqlElement {
 
 	private static function addAllFields($result, $obj, $included=false, $sourceClass=null) {
 		$fieldsArray=$obj->getFieldsArray();
+		$extrahiddenFields=$obj->getExtraHiddenFields();
 		$user=getSessionUser();
 		$cpt=count($result);
 		foreach($obj as $col => $val) {
@@ -181,6 +195,9 @@ class ColumnSelector extends SqlElement {
 			if ($obj->isAttributeSetToField($col,'hidden') or $obj->isAttributeSetToField($col,'noList') 
 			 or $obj->isAttributeSetToField($col,'calculated')) {
 				continue;
+			}
+			if (in_array($col,$extrahiddenFields)) {
+			  continue;
 			}
 			if ($col=="password" or $col=="Origin") {
 				continue;

@@ -63,7 +63,6 @@ if ($noteId=='') {
   $noteId=null;
 }
 $idParentNote=RequestHandler::getId('noteIdParent');
-$reply=RequestHandler::getValue('noteReply');
 
 Sql::beginTransaction();
 // get the modifications (from request)

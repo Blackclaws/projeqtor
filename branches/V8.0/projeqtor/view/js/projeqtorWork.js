@@ -488,6 +488,7 @@ function enterRealAsPlanned(nbDays){
 
 function checkCapacity() {
   var capacity=parseFloat(dojo.byId('resourceCapacity').value);
+  capacity=Math.round(capacity*100)/100;
   for (colId=1; colId<=7; colId++) {
   valSum=Math.round(parseFloat(dijit.byId('colSumWork_' + colId).get("value"))*100)/100;
   if (valSum > capacity) {

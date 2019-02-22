@@ -80,7 +80,6 @@ if (sessionValueExists('screenHeight')) {
          <input id="noteRefType" name="noteRefType" type="hidden" value="<?php echo $note->refType;?>" />
          <input id="noteRefId" name="noteRefId" type="hidden" value="<?php echo $note->refId;?>" />
          <input id="noteIdParent" name="noteIdParent" type="hidden" value="<?php echo $note->idNote;?>" />
-         <input id="noteReply" name="noteReply" type="hidden" value="<?php echo $reply;?>" />
          <input id="noteEditorType" name="noteEditorType" type="hidden" value="<?php echo getEditorType();?>" />
          <?php if (getEditorType()=="CK" or getEditorType()=="CKInline") {?> 
           <textarea style="width:<?php echo $detailWidth;?>px; height:<?php echo $detailHeight;?>px"
