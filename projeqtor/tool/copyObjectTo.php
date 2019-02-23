@@ -136,7 +136,7 @@ if (!$error and $copyWithStructure and get_class($obj)=='Activity' and get_class
 	  PlanningElement::copyStructureFinalize();
 	}
 }
-if (!$error and $copyWithStructure) {
+if (!$error and ($copyWithStructure or $copyAssignments)) {
   PlanningElement::copyStructureFinalize();
 }
 if (!$error and $copyToLinkOrigin) {

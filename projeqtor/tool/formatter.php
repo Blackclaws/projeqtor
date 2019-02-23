@@ -527,13 +527,31 @@ function activityStreamDisplayNote ($note,$origin){
   }
   $isNoteClosed=getSessionTableValue("closedNotes", $note->id);
   if ($note->idPrivacy == 1 or ($note->idPrivacy == 3 and $user->id == $note->idUser) or ($note->idPrivacy == 2 and $userRessource->idTeam == $note->idTeam)) {
-    echo '<tr style="height:100%;"><td class="noteData" style="width:100%;"><div style="float:left;margin-top:6px;">';
+    echo '<tr style="height:100%;">';
+    $noteDiscussionMode = Parameter::getUserParameter('userNoteDiscussionMode');
+    if($noteDiscussionMode == null){
+      $noteDiscussionMode = Parameter::getGlobalParameter('globalNoteDiscussionMode');
+    }
+    if($noteDiscussionMode == 'YES'){
+      for($i=0; $i<$note->replyLevel; $i++){
+      	if($i >= 5){
+      		break;
+      	}
+      	echo '<td class="noteData" colspan="1" style="width:3%;border-bottom:0px;border-top:0px;border-right:solid 2px;!important;"></td>';
+      }
+      echo '<td colspan="'.(6-$note->replyLevel).'" class="noteData" style="width:100%;"><div style="float:left;margin-top:6px;">';
+    }else{
+      echo '<td colspan="6" class="noteData" style="width:100%;"><div style="float:left;margin-top:6px;">';
+    }
     echo formatUserThumb($note->idUser, $userName, 'Creator',32,'left');
     echo formatPrivacyThumb($note->idPrivacy, $note->idTeam);
     echo '</div><div>';
     echo '<table style="float:right;"><tr><td>';
     if($origin=="objectStream" || $origin=="objectStreamKanban") {
-          if ($note->idUser == $user->id and !$print and $canUpdate) echo  '<div style="float:right;" ><a onClick="removeNote(' . htmlEncode($note->id) . ');" title="' . i18n('removeNote') . '" > '.formatSmallButton('Remove').'</a></div>';
+          if ($note->idUser == $user->id and !$print and $canUpdate){
+            echo  '<div style="float:right;" ><a onClick="removeNote(' . htmlEncode($note->id) . ');" title="' . i18n('removeNote') . '" > '.formatSmallButton('Remove').'</a></div>';
+            echo  '<div style="float:right;" ><a onClick="addNote(true,' . htmlEncode($note->id) . ');" title="' . i18n('replyToThisNote') . '" > '.formatSmallButton('Reply').'</a></div>';
+          }
     }
     echo '</td></tr><tr><td>';
     echo '<div "style=float:right;"><a  id="imgCollapse_'.$note->id.'" style="float:right;" onclick="switchNoteStatus('.$note->id.');">'.formatSmallButton('Collapse'.(($isNoteClosed)?'Open':'Hide')).'</a></div>';
@@ -558,10 +576,30 @@ function activityStreamDisplayNote ($note,$origin){
      echo '<div style="margin-top:8px;">'.htmlFormatDateTime($note->creationDate,true).'</div></div>';
     }
     if($rightWidthScreen<100){
-      echo '<div class="activityStreamNoteContent" id="activityStreamNoteContent_'.$note->id.'" style="display:block;height:'.(($isNoteClosed)?'0px':'100%').';margin-left:'.(($origin=='activityStream')?'36':'0').'px;margin-bottom:'.(($isNoteClosed)?'0px':'10px').';word-break:break-all;">'.$strDataHTML.'</div></div></td></tr>'; 
+      echo '<div class="activityStreamNoteContent" id="activityStreamNoteContent_'.$note->id.'" style="display:block;height:'.(($isNoteClosed)?'0px':'100%').';margin-left:'.(($origin=='activityStream')?'36':'0').'px;margin-bottom:'.(($isNoteClosed)?'0px':'10px').';word-break:break-all;">';
+      if($noteDiscussionMode != 'YES'){
+      	if($note->idNote != null){
+      		echo '<span style="position:relative;float:left;padding-right:5px">'.formatIcon('Reply', 16, 'reply to note #'.$note->idNote).'</span>';
+      	}
+      }
+      echo $strDataHTML.'</div></div></td></tr>'; 
     } else {
-      echo '<div class="activityStreamNoteContent" id="activityStreamNoteContent_'.$note->id.'" style="display:block;height:'.(($isNoteClosed)?'0px':'100%').';margin-left:'.(($origin=='activityStream')?'36':'0').'px;margin-bottom:'.(($isNoteClosed)?'0px':'10px').';">'.$strDataHTML.'</div></div></td></tr>';
+      echo '<div class="activityStreamNoteContent" id="activityStreamNoteContent_'.$note->id.'" style="display:block;height:'.(($isNoteClosed)?'0px':'100%').';margin-left:'.(($origin=='activityStream')?'36':'0').'px;margin-bottom:'.(($isNoteClosed)?'0px':'10px').';">';
+      if($noteDiscussionMode != 'YES'){
+      	if($note->idNote != null){
+      		echo '<span style="position:relative;float:left;padding-right:5px">'.formatIcon('Reply', 16, 'reply to note #'.$note->idNote).'</span>';
+      	}
+      }
+      echo $strDataHTML.'</div></div></td></tr>';
     } 
   }
+}
+
+function suppr_accents($str, $encoding='utf-8'){
+  $str = htmlentities($str, ENT_NOQUOTES, $encoding);
+  $str = preg_replace('#&([A-za-z])(?:acute|grave|cedil|circ|orn|ring|slash|th|tilde|uml);#', '\1', $str);
+  $str = preg_replace('#&([A-za-z]{2})(?:lig);#', '\1', $str);
+  $str = preg_replace('#&[^;]+;#', '', $str);
+  return $str;
 }
 ?>

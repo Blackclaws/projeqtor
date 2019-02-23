@@ -42,6 +42,8 @@ class Note extends SqlElement {
   public $idTeam;
   public $fromEmail;
   public $idle;
+  public $idNote;//id ParentNote
+  public $replyLevel;//reply indention Level
     
   /** ==========================================================================
    * Constructor
@@ -76,7 +78,7 @@ class Note extends SqlElement {
   public function save() {
     $class = $this->refType;
     $id = $this->refId;
-    $obj = new $class( $id );
+    $obj = new $class($id);
     if ($class=='Project') {
     	$this->idProject=$obj->id;
     } else if (property_exists($class, 'idProject') ) {
@@ -89,6 +91,18 @@ class Note extends SqlElement {
         $obj->lastUpdateDateTime = date ( "Y-m-d H:i:s" );
         $resObj=$obj->saveForced();
       }
+    }
+    return $result;
+  }
+  
+  public function deleteControl(){
+    $result="";
+    $cptNote = $this->countSqlElementsFromCriteria(array('idNote'=>$this->id));
+    if($cptNote != 0){
+      $result .= "<br/>" . i18n("errorDeleteParentNote");
+    }
+    if (!$result) {
+      $result=parent::deleteControl();
     }
     return $result;
   }

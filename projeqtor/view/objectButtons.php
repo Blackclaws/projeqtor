@@ -155,10 +155,21 @@
           hideExtraButtons('extraButtonsDetail');
           id=dojo.byId('objectId');
 	        if (id) { 	
-		        id.value="";
-		        unselectAllRows("objectGrid");
-            loadContent("objectDetail.php", "detailDiv", 'listForm');
-            if (dijit.byId('detailRightDiv')) loadContent("objectStream.php", "detailRightDiv", "listForm");
+            var currentItem=historyTable[historyPosition];
+            var currentScreen=currentItem[2];
+            if (currentScreen=="Planning" || currentScreen=="GlobalPlanning"){
+              var currentItemParent = currentItem[1];
+              var originClass = currentItem[0];
+              var url = 'objectDetail.php?insertItem=true&currentItemParent='+currentItemParent+'&originClass='+originClass;
+              id.value="";
+		          unselectAllRows("objectGrid");
+              loadContent(url, "detailDiv", 'listForm');
+            }else{
+		          id.value="";
+		          unselectAllRows("objectGrid");
+              loadContent("objectDetail.php", "detailDiv", 'listForm');
+              if (dijit.byId('detailRightDiv')) loadContent("objectStream.php", "detailRightDiv", "listForm");
+            }
           } else { 
             showError(i18n("errorObjectId"));
 	        }

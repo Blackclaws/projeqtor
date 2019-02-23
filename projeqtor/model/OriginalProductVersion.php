@@ -65,7 +65,19 @@ class OriginalProductVersion extends OriginalVersion {
    * @return the databaseTableName
    */
   protected function getStaticDatabaseCriteria() {
-    return self::$_databaseCriteria;
+    $prof= getSessionUser()->getProfile();
+    $rl = new RestrictList();
+    $crit = array("idProfile"=>$prof);
+    $result = $rl->getSingleSqlElementFromCriteria(get_class($rl), $crit);
+    $arrayToMerge = array();
+    if ($result->showInService == "1") {
+      $arrayToMerge["isEis"] = "1";
+    } else if ($result->showDelivered == "1") {
+      $arrayToMerge["isDelivered"] = "1";
+    } else if ($result->showStarted == "1") {
+      $arrayToMerge["isStarted"] = "1";
+    }
+    return array_merge(self::$_databaseCriteria, $arrayToMerge);
   }
 }
 ?>

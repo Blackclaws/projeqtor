@@ -268,7 +268,12 @@ $keyDownEventScript=NumberFormatter52::getKeyDownEvent();
         else
           dojo.isIE = undefined;
       }
-         
+
+      //Disable the key events Ctrl and Shift
+      dojo.extend( dojo.dnd.Source, { copyState: function( keyPressed, self ){ 
+          return false; }}
+      );
+      
       currentLocale="<?php echo $currentLocale;?>";
       <?php 
       if (sessionValueExists('project')) {

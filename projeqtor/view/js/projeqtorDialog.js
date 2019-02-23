@@ -41,6 +41,7 @@ var openMenuListTimeout=null;
 var menuListAutoshow=false;
 var hideUnderMenuTimeout;
 var hideUnderMenuId;
+var stockEmailHistory = new Array();
 // =============================================================================
 // = Wait spinner
 // =============================================================================
@@ -928,7 +929,7 @@ function planningPDFBox(copyType) {
 // 7.3.0 Not usefull anymore with dojo 1.14 and 2 lines below
 function pauseBodyFocus() { dojo.query(".cke_dialog_body").addClass("dijitPopup");}      
 function resumeBodyFocus() { dojo.query(".cke_dialog_body").removeClass("dijitPopup");}   
-function addNote() {
+function addNote(reply, idParentNote) {
   if (dijit.byId("noteToolTip")) {
     dijit.byId("noteToolTip").destroy();
     dijit.byId("noteNote").set("class", "");
@@ -951,9 +952,12 @@ function addNote() {
   };
   var params="&objectClass="+dojo.byId('objectClass').value;
   params+="&objectId="+dojo.byId("objectId").value;
-  params+="&noteId="; // Null    
+  params+="&noteId="; // Null
+  params+="&reply="+reply;
+  if(reply){
+	  params+="&idParentNote="+idParentNote;
+  }
   loadDialog('dialogNote', callBack, true, params, true);
-
 }
 
 function noteSelectPredefinedText(idPrefefinedText) {
@@ -2649,7 +2653,7 @@ function expenseDetailRecalculate() {
  * Display a add Document Version Box
  * 
  */
-function addDocumentVersion(defaultStatus, typeEvo, numVers, dateVers, nameVers) {
+function addDocumentVersion(defaultStatus, typeEvo, numVers, dateVers, nameVers, lockStatus) {
   if (checkFormChangeInProgress()) {
     showAlert(i18n('alertOngoingChange'));
     return;
@@ -2665,7 +2669,7 @@ function addDocumentVersion(defaultStatus, typeEvo, numVers, dateVers, nameVers)
           data) {
         saveDocumentVersionProgress(data);
       });
-      addDocumentVersion(defaultStatus, typeEvo, numVers, dateVers, nameVers);
+      addDocumentVersion(defaultStatus, typeEvo, numVers, dateVers, nameVers, lockStatus);
     };
     loadDialog('dialogDocumentVersion', callBack);
     return;
@@ -2714,6 +2718,11 @@ function addDocumentVersion(defaultStatus, typeEvo, numVers, dateVers, nameVers)
   dojo.byId('documentVersionMode').value="add";
   calculateNewVersion();
   setDisplayIsRefDocumentVersion();
+  if(lockStatus==1){
+	dojo.byId("lockedMsg").style.display = 'block';
+  }else{
+    dojo.byId("lockedMsg").style.display = 'none';  
+  }
   dijit.byId("dialogDocumentVersion").show();
 }
 
@@ -4203,8 +4212,12 @@ function saveFilter() {
  * Select a stored filter in the list and fetch criteria
  * 
  */
+var globalSelectFilterContenLoad=null;
+var globalSelectFilterContainer=null;
 function selectStoredFilter(idFilter, context, contentLoad, container) {  
   var compUrl=(top.dijit.byId("dialogDetail").open) ? '&comboDetail=true' : '';
+  globalSelectFilterContenLoad=null;
+  globalSelectFilterContainer=null;
   if (context == 'directFilterList') {
     if (dojo.byId('noFilterSelected')) {
       if (idFilter == '0') {
@@ -4222,21 +4235,23 @@ function selectStoredFilter(idFilter, context, contentLoad, container) {
     if (dojo.byId('objectClassList') && dojo.byId('objectClassList').value) objectClass=dojo.byId('objectClassList').value;
     else if (dojo.byId("objectClassManual") && dojo.byId("objectClassManual").value) objectClass=dojo.byId("objectClassManual").value;
     else if (dojo.byId('objectClass') && dojo.byId('objectClass').value) objectClass=dojo.byId('objectClass').value;
+    var validationType=null;
     if (dojo.byId('dynamicFilterId'+idFilter)) {  		
   		var param="&idFilter="+idFilter+"&filterObjectClass="+objectClass;
   		loadDialog('dialogDynamicFilter', null, true, param, true);
-  	} 
-  	if(typeof contentLoad != 'undefined' && typeof container != 'undefined'){
+  		globalSelectFilterContenLoad=contentLoad;
+  		globalSelectFilterContainer=container;
+  		validationType='selectFilter'; // will avoid immediate refresh
+  	}
+    if(typeof contentLoad != 'undefined' && typeof container != 'undefined'){
       loadContent("../tool/selectStoredFilter.php?idFilter=" + idFilter
           + "&context=" + context + "&contentLoad="+contentLoad+"&container="+container+"&filterObjectClass="
-          + objectClass + compUrl, "directFilterList", null,
-          false);
-      loadContent(contentLoad, container);
+          + objectClass + compUrl, "directFilterList", null,false,validationType);
+      if (!dojo.byId('dynamicFilterId'+idFilter)) loadContent(contentLoad, container);
     }else{
       loadContent("../tool/selectStoredFilter.php?idFilter=" + idFilter
           + "&context=" + context + "&filterObjectClass="
-          + objectClass + compUrl, "directFilterList", null,
-          false);
+          + objectClass + compUrl, "directFilterList", null,false,validationType);
       if (dojo.byId("objectClassList") && dojo.byId("objectClassList").value.substr(0,7)=='Report_') {
         dojo.byId('outMode').value='';
         runReport();
@@ -6507,7 +6522,8 @@ function loadMenuBarItem(item, itemName, from) {
     loadContent("reportsMain.php", "centerDiv");
   } else if (item == 'Absence') {
 	    loadContent("absenceMain.php", "centerDiv");
-    
+  } else if (item == 'ImputationValidation') {
+	    loadContent("imputationValidationMain.php", "centerDiv");  
     //ADD qCazelles - GANTT
   } else if (item == 'VersionsPlanning') {
 	//CHANGE qCazelles - Correction GANTT - Ticket #100
@@ -7168,6 +7184,26 @@ function recalculateColumnSelectorName() {
 // Items selector
 // =========================================================
 var oldSelectedItems=null;
+
+function diarySelectItems(value) {
+	  if (!oldSelectedItems || oldSelectedItems==value) return;
+	  if (oldSelectedItems.indexOf("All")>=0 && value.length>1 ) {
+	    value[0]=null;
+	    oldSelectedItems=value;
+	    dijit.byId("diarySelectItems").set("value",value);
+	  } else if (value.indexOf("All")>=0 && oldSelectedItems.indexOf("All")===-1) {
+	    value=["All"];
+	    oldSelectedItems=value;
+	    dijit.byId("diarySelectItems").set("value",value);
+	  }
+	  var finish=function() {
+          loadContent("../view/diary.php","detailDiv","diaryForm");
+	  };
+	  if (value.length==0) value='none';
+	  saveDataToSession('diarySelectedItems', value, true, finish);
+	  oldSelectedItems=value;
+}
+
 function globalViewSelectItems(value) {
   if (!oldSelectedItems || oldSelectedItems==value) return;
   if (oldSelectedItems.indexOf(" ")>=0 && value.length>1 ) {
@@ -7220,6 +7256,7 @@ function showMailOptions() {
       dialogMailToOtherChange();
     }
     dijit.byId("dialogMail").set('title', title);
+    refreshListSpecific('emailTemplate', 'selectEmailTemplate','objectIdClass',dojo.byId('objectId').value+'_'+dojo.byId('objectClass').value);
     dijit.byId("dialogMail").show();
   }
   if (dijit.byId("dialogMail")
@@ -7227,12 +7264,12 @@ function showMailOptions() {
       && dojo.byId('dialogMailObjectClass').value == dojo.byId('objectClass').value) {
     dojo.byId('mailRefType').value=dojo.byId('objectClass').value;
     dojo.byId('mailRefId').value=dojo.byId('objectId').value;
+    refreshListSpecific('emailTemplate', 'selectEmailTemplate','objectIdClass',dojo.byId('objectId').value+'_'+dojo.byId('objectClass').value);
     dijit.byId("dialogMail").show();
   } else {
-    var param="&objectClass=" + dojo.byId('objectClass').value;
+    var param="&objectClass=" + dojo.byId('objectClass').value+"&objectId=" + dojo.byId('objectId').value;
     loadDialog("dialogMail", callback, false, param);
   }
-
 }
 
 function dialogMailToOtherChange() {
@@ -7305,6 +7342,8 @@ function saveMailMessage() {
 //gautier #2935
 function findAutoEmail(){
   var adress=dijit.byId('dialogOtherMail').get('value');
+  var regex = /,[ ]*|;[ ]*/gi;
+  adress=adress.replace(regex,",");
   dojo.xhrGet({
     url: '../tool/saveFindEmail.php?&isId=false&adress='+adress ,
     load: function(data,args) { 
@@ -7328,11 +7367,85 @@ function dialogMailIdEmailChange(){
 }
 //end
 
+//damian #2936
+function stockEmailCurrent(){
+	var adress=dijit.byId('dialogOtherMail').get('value');
+	var adressSplit = adress.split(',');
+	adressSplit.forEach(function(emailSplit) {
+		if(stockEmailHistory.indexOf(emailSplit) == -1){
+			stockEmailHistory.push(emailSplit);
+		}
+	});
+}
+
+function compareEmailCurrent(){
+	if(stockEmailHistory.length > 0){
+		var inputEmail=dijit.byId('dialogOtherMail').get('value');
+		var split = inputEmail.split(',');
+		inputEmail = split[split.length - 1];
+		var count = 0;
+		var email = "";
+		var divCount = 0;
+		var display = '';
+		stockEmailHistory.forEach(function(element){
+			count++;
+			if(split.indexOf(element) <= -1){
+				divCount++;
+				if(divCount < 0){
+					dojo.byId('dialogOtherMailHistorical').style.display = 'none';
+				}
+				if(element.search(inputEmail) > -1){
+					dojo.byId('dialogOtherMailHistorical').style.display = 'block';
+					email += '<div class="emailHistorical" id="email'+count+'" style="cursor:pointer;"'
+							+'onclick="selectEmailHistorical(\''+element+'\')">'
+							+element+'</div>';
+					dojo.byId('dialogOtherMailHistorical').innerHTML = email;
+				}
+			}else{
+				divCount--;
+			}
+			if(divCount > 7){
+				dojo.byId('dialogOtherMailHistorical').style.height = '100px';
+			}else{
+				dojo.byId('dialogOtherMailHistorical').style.height = 'auto';
+			}
+		});
+	}else{
+		dojo.byId('dialogOtherMailHistorical').style.display = 'none';
+	}
+}
+
+function hideEmailHistorical(){
+	setTimeout(function(){dojo.byId('dialogOtherMailHistorical').style.display = 'none';},200); 
+}
+
+function selectEmailHistorical(email){
+	var currentValue = dijit.byId('dialogOtherMail').get("value");
+	var tab = currentValue.split(',');
+	var tabLength = tab.length;
+	var newValue = "";
+	if(currentValue != ""){
+		if(tabLength>1){
+			for(var i = 0; i<tabLength-1; i++){
+				if(tab[i].search('@') > -1){
+					newValue += tab[i]+',';
+				}
+			}
+		}
+		newValue += email+',';
+		dijit.byId('dialogOtherMail').set("value", newValue);
+	}else{
+		dijit.byId('dialogOtherMail').set("value", email+',');
+	}
+	dojo.byId('dialogOtherMailHistorical').style.display = 'none';
+}
+//end #2936
+
 function extractEmails(str) {
   var current='';
   var result='';
   var name=false;
-  for (i=0; i < str.length; i++) {
+  for (var i=0; i < str.length; i++) {
     car=str.charAt(i);
     if (car == '"') {
       if (name == true) {
@@ -7372,7 +7485,8 @@ function extractEmails(str) {
 }
 
 function sendMail() {
-  loadContent("../tool/sendMail.php?className=Mailable", "resultDiv",
+	var idEmailTemplate = dijit.byId('selectEmailTemplate').get("value");
+  loadContent("../tool/sendMail.php?className=Mailable&idEmailTemplate="+idEmailTemplate, "resultDiv",
       "mailForm", true, 'mail');
   dijit.byId("dialogMail").hide();
 }
@@ -7591,7 +7705,7 @@ function saveMultipleUpdateMode(objectClass) {
     });
   }
   var callBack = function(){
-    updateSelectedCountMultiple();
+    setTimeout("updateSelectedCountMultiple();",100);
   };
   loadContent('../tool/saveObjectMultiple.php?objectClass=' + objectClass,
       'resultDivMultiple', 'objectFormMultiple',null,null,null,null,callBack);
@@ -7656,7 +7770,7 @@ function deleteMultipleUpdateMode(objectClass) {
 }
 function updateSelectedCountMultiple() {
   if (dojo.byId('selectedCount')) {
-    dojo.byId('selectedCount').value=countSelectedItem('objectGrid');
+    countSelectedItem('objectGrid','selectedCount');
   }
 }
 
@@ -8015,9 +8129,11 @@ function diarySelectDate(directDate) {
     var week=getWeek(directDate.getDate(), month, year) + '';
     if (week == 1 && month > 10) {
       year+=1;
+      month=1;
     }
     if (week > 50 && month == 1) {
       year-=1;
+      month=12;
     }
     dojo.byId("diaryWeek").value=week;
     dojo.byId("diaryYear").value=year;
@@ -8029,8 +8145,8 @@ function diarySelectDate(directDate) {
     dojo.byId("diaryYear").value=year;
     diaryDisplayDay(day);
   }
-  setTimeout("noRefreshDiaryPeriod=false;", 100);
-  loadContent("../view/diary.php", "detailDiv", "diaryForm");
+  setTimeout("noRefreshDiaryPeriod=false;", 10);
+  setTimeout('loadContent("../view/diary.php", "detailDiv", "diaryForm");',200);
   return true;
 }
 
@@ -8131,8 +8247,9 @@ function diaryDisplayWeek(week, year) {
   var firstday=getFirstDayOfWeek(week, year);
   var lastday=new Date(firstday);
   lastday.setDate(firstday.getDate() + 6);
-  caption=year + ' #' + week + " (" + dateFormatter(formatDate(firstday))
-      + " - " + dateFormatter(formatDate(lastday)) + ")";
+  if (week<10) week='0'+parseInt(week);
+  caption=year + ' #' + week + "<span style='font-size:70%'> (" + dateFormatter(formatDate(firstday))
+      + " - " + dateFormatter(formatDate(lastday)) + ") </span>";
   dojo.byId("diaryCaption").innerHTML=caption;
   dijit.byId('dateSelector').set('value', firstday);
 }
@@ -8587,6 +8704,19 @@ function saveRestrictTypes() {
   loadContent("../tool/saveRestrictTypes.php" , "resultDiv", "restrictTypesForm", true, 'report',false,false, $callback);
   dijit.byId('dialogRestrictTypes').hide();
 }
+
+/*************************************************************************************
+ * 				START FUNCTION RESTRICTION LIST
+ ************************************************************************************/
+
+function saveRestrictProductList() {
+	loadContent("../tool/saveRestrictProductList.php" , "resultDiv", "dialogRestrictProductListForm", true);
+	dijit.byId('dialogRestrictProductList').hide();
+}
+
+/*************************************************************************************
+ * 				END FUNCTION RESTRICTION LIST
+ ************************************************************************************/
 
 function getMaxWidth(document){
   return Math.max( document.scrollWidth, document.offsetWidth, 

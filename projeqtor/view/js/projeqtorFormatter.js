@@ -205,7 +205,8 @@ function colorTranslateNameFormatter(value) {
  */
 function translateFormatter(value, prefix) {
   if (value) {
-    return i18n(value);
+    var val=value.split('#!#!#!#!#!#');
+    return i18n(val[0]);
   } else {
     return '';
   }
@@ -614,6 +615,10 @@ if (document.addEventListener) {
   }, true);
 };
 
+function formatUpperName(name) {
+  var spl=name.split('#!#!#!#!#!#');  
+  return spl[0];
+}
 
 var konamiMsg = [ '5ùhmuôçYgluêYuôYgluû',
     'FhmjïmhçuàljYufhXYklYuïmRgXuhguYkluêYufYçêêYmjuû', 'NcRluYêkYuû',

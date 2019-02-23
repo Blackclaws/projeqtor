@@ -1083,3 +1083,26 @@
 .ProjeQtOrFlatRed .iconAbsence { background-image: url(customIcons/red/iconAbsence.png); }
 .ProjeQtOrFlatGreen .iconAbsence { background-image: url(customIcons/green/iconAbsence.png); }
 .ProjeQtOrFlatGrey .iconAbsence { background-image: url(customIcons/grey/iconAbsence.png); }
+
+.iconButtonReply16 { background-image: url(images/smallButtonReply.png);  background-size: 16px 16px;}
+.ProjeQtOrFlatBlue .iconButtonReply16 { background-image: url(customIcons/blue/smallButtonReply.png); width: 16px; height: 16px; background-size: 16px 16px;}
+.ProjeQtOrFlatRed .iconButtonReply16 { background-image: url(customIcons/red/smallButtonReply.png); width: 16px; height: 16px; background-size: 16px 16px;}
+.ProjeQtOrFlatGreen .iconButtonReply16 { background-image: url(customIcons/green/smallButtonReply.png);width: 16px; height: 16px; background-size: 16px 16px; }
+.ProjeQtOrFlatGrey .iconButtonReply16 { background-image: url(customIcons/grey/smallButtonReply.png); width: 16px; height: 16px; background-size: 16px 16px;}
+
+.iconReply16 { background-image: url(images/smallButtonReply.png);  background-size: 16px 16px;}
+.ProjeQtOrFlatBlue .iconReply16 { background-image: url(customIcons/blue/smallButtonReply.png); width: 16px; height: 16px; background-size: 16px 16px;}
+.ProjeQtOrFlatRed .iconReply16 { background-image: url(customIcons/red/smallButtonReply.png); width: 16px; height: 16px; background-size: 16px 16px;}
+.ProjeQtOrFlatGreen .iconReply16 { background-image: url(customIcons/green/smallButtonReply.png);width: 16px; height: 16px; background-size: 16px 16px; }
+.ProjeQtOrFlatGrey .iconReply16 { background-image: url(customIcons/grey/smallButtonReply.png); width: 16px; height: 16px; background-size: 16px 16px;}
+
+.iconImputationValidation { background-image: url(images/iconImputationValidation32.png); }
+.ProjeQtOrFlatBlue .iconImputationValidation { background-image: url(customIcons/blue/iconImputationValidation.png); }
+.ProjeQtOrFlatRed .iconImputationValidation { background-image: url(customIcons/red/iconImputationValidation.png); }
+.ProjeQtOrFlatGreen .iconImputationValidation { background-image: url(customIcons/green/iconImputationValidation.png); }
+.ProjeQtOrFlatGrey .iconImputationValidation { background-image: url(customIcons/grey/iconImputationValidation.png); }
+
+.iconSubmitted16 { background-image: url(images/Submitted.png);  background-size: 16px 16px;}
+.iconSubmitted32 { background-image: url(images/Submitted.png);  background-size: 32px 32px;}
+.iconUnsubmitted16 { background-image: url(images/Unsubmitted.png);  background-size: 16px 16px;}
+.iconUnsubmitted32 { background-image: url(images/Unsubmitted.png);  background-size: 32px 32px;}

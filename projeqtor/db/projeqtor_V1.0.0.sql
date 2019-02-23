@@ -31,3 +31,6 @@ CREATE TABLE `${prefix}filtercriteria` (
   `sqlValue` varchar(100), 
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
+
+INSERT INTO `${prefix}parameter` (`idUser`,`idProject`,`parameterCode`,`parameterValue`) VALUES 
+(NULL,NULL,'isManualProgress','YES');

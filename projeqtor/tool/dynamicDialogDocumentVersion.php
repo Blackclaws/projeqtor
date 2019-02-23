@@ -252,3 +252,4 @@ if (array_key_exists('isIE',$_REQUEST)) {
   <form id='documentVersionAckForm' name='documentVersionAckForm'> 
     <input type='hidden' id="resultAckDocumentVersion" name="resultAckDocumentVersion" />
   </form>  
+  <div class="messageWARNING" id="lockedMsg" name="lockedMsg" style="margin-left: 8px; margin-top: 10px; height: 28px;display:none;text-align:center;"><?php echo i18n('documentLockedInfo');?></div>

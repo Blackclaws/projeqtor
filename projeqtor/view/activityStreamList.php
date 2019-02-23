@@ -166,7 +166,25 @@ $onlyCenter = (RequestHandler::getValue ( 'onlyCenter' ) == 'true') ? true : fal
 ?>
 <div dojo-type="dijit.layout.BorderContainer" class="container" style="overflow-y:auto;">
 	<table id="objectStream" style="width: 100%;"> 
-	<?php 
+	<?php
+  	function sortNotes(&$listNotes, &$result, $parent){
+  		foreach ($listNotes as $note){
+  			if($note->idNote == $parent){
+  				$result[] = $note;
+  				sortNotes($listNotes, $result, $note->id);
+  			}
+  		}
+  	}
+	  $noteDiscussionMode = Parameter::getUserParameter('userNoteDiscussionMode');
+    if($noteDiscussionMode == null){
+    	$noteDiscussionMode = Parameter::getGlobalParameter('globalNoteDiscussionMode');
+    }
+    if($noteDiscussionMode == 'YES'){
+	    $result = array();
+	    sortNotes($notes, $result, null);
+	    $notes = $result;
+    }
+  	
 	  foreach ($notes as $note) {
       activityStreamDisplayNote($note,"activityStream");
 	  }?>

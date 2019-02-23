@@ -704,6 +704,15 @@ class ImputationLine {
     }
     $listLienProject=ImputationLine::addProjectToListLienProject($listLienProject, $listAllProject);
     foreach ($tab as $key=>$line) {
+// gautier hide activity with planning element isManualProgress = 1
+//       $isManualProgress = false;
+//       if($line->refType=='Activity'){
+//         $actPe = SqlElement::getSingleSqlElementFromCriteria('ActivityPlanningElement', array('refId'=>$line->refId),true);
+//         $isManualProgress = $actPe->isManualProgress;
+//         if($isManualProgress){
+//           continue;
+//         }
+//       }
       if (($line->refType=='Activity'&&!SqlList::getFieldFromId("Project", SqlList::getFieldFromId("Activity", $line->refId, "idProject"), 'isUnderConstruction'))||($line->refType!='Project'&&$line->refType!='Activity'&&!SqlList::getFieldFromId("Project", $line->idProject, "isUnderConstruction"))||($line->refType=='Project'&&!SqlList::getFieldFromId("Project", $line->refId, "isUnderConstruction"))) if (($line->refType=='Activity'&&SqlList::getFieldFromId("ProjectType", SqlList::getFieldFromId("Project", SqlList::getFieldFromId("Activity", $line->refId, "idProject"), "idProjectType"), 'code')!='TMP')||($line->refType!='Project'&&$line->refType!='Activity'&&SqlList::getFieldFromId("ProjectType", SqlList::getFieldFromId("Project", $line->idProject, "idProjectType"), 'code')!='TMP')||($line->refType=='Project'&&SqlList::getFieldFromId("ProjectType", SqlList::getFieldFromId("Project", $line->refId, "idProjectType"), 'code')!='TMP')) {
         if ($locked) $line->locked=true;
         $nbLine++;
@@ -926,6 +935,14 @@ class ImputationLine {
               else if ($valWork>0) $colorClass="imputationHasValue";
               echo '<div type="text" idProject="'.$line->idProject.'" dojoType="dijit.form.NumberTextBox" ';
               echo ' constraints="{min:0}"';
+              //gautier #3384
+              if($idWork){
+                $work = new Work($idWork,true);
+                if($work->idBill){
+                  echo ' readOnly="true" ';
+                  $colorClass = "";
+                }
+              }
               echo '  style="width: 45px; text-align: center;'.$colorStyle.'" ';
               echo ' trim="true" maxlength="4" class="input imputation '.$colorClass.'" ';
               echo ' id="workValue_'.$nbLine.'_'.$i.'"';
@@ -1079,9 +1096,9 @@ class ImputationLine {
         echo '<div type="text" dojoType="dijit.form.NumberTextBox" ';
         // echo ' constraints="{pattern:\'###0.0#\'}"';
         echo ' trim="true" disabled="true" ';
-        if (round($colSum[$i], 2)>$capacity) {
+        if (round($colSum[$i], 2)> round($capacity,2)) {
           echo ' class="imputationInvalidCapacity imputation"';
-        } else if (round($colSum[$i], 2)<$capacity) {
+        } else if (round($colSum[$i], 2)<round($capacity)) {
           echo ' class="displayTransparent imputation"';
         } else {
           echo ' class="imputationValidCapacity imputation"';

@@ -39,8 +39,12 @@ class EmailTemplate extends SqlElement {
     public $idType;
     public $title;
     public $idle;
+    public $_sec_message;
     public $template;
     public $_sec_void;
+    //Damian
+    public $_spe_listItemTemplate;
+    public $_spe_buttonInsertInTemplate;
     
     
     private static $_fieldsAttributes=array("idMailable"=>"",
@@ -99,13 +103,175 @@ class EmailTemplate extends SqlElement {
     public function getValidationScript($colName) {
       
       $colScript = parent::getValidationScript($colName);
-   
+      
       if ($colName=='idMailable') {
         $colScript .= '<script type="dojo/connect" event="onChange" args="evt">';
         $colScript .= '  dijit.byId("idType").set("value",null);';
         $colScript .= '  refreshList("idType","scope", mailableArray[this.value]);';
+        $colScript .= '  refreshListFieldsInTemplate(dijit.byId("idMailable").get("value"));';
+        $colScript .= '  formChanged();';
+        $colScript .= '</script>';
+        $colScript .= '<script type="dojo/connect" event="onLoad" args="evt">';
+        $colScript .= '  refreshListFieldsInTemplate(dijit.byId("idMailable").get("value"));';
+        $colScript .= '  formChanged();';
         $colScript .= '</script>';
       }
+      
       return $colScript;
+    }
+    
+    
+    private function getMailableItem() {
+      $mailableItem = null;
+    	if ($this->id) {
+    		$mailableItem = new Mailable($this->idMailable);
+    	}
+    	return $mailableItem;
+    }
+    
+    public function drawListItem($item,$readOnly=false,$refresh=false) {
+      global $largeWidth, $print, $toolTip, $outMode;
+      
+      if ($print or $outMode=="pdf" or $readOnly) {
+      	return("");
+      }
+      
+      $itemLab = "listFieldsTitle";
+      $itemEnd = str_replace("listItem","", $item);
+      
+      $arrayFields = array();
+      $newArrayFields = array();
+      if($this->getMailableItem() != null){
+        $mailableItem=$this->getMailableItem();
+        if ($mailableItem->id != null) {
+        	$nameMailableItem = SqlList::getFieldFromId('Mailable', $mailableItem->id, 'name',false);
+        	$arrayFields = getObjectClassTranslatedFieldsList(trim($nameMailableItem));
+        	foreach ($arrayFields as $elmt=>$val){
+        		$newArrayFields[$elmt]=$val;
+        		if(substr($elmt, 0, 2) == "id" and substr($elmt, 2) != "" and $elmt != "idle" and $elmt != "idleDateTime"){
+        			$newArrayFields['name'.ucfirst(substr($elmt, 2))]=$val.' ('.i18n('colName').')';
+        		}
+        	}
+        	$newArrayFields['_item'] = i18n('mailableItem');
+          $newArrayFields['_dbName'] = i18n('mailableDbName');
+          $newArrayFields['_responsible'] = i18n('colResponsible').', '.i18n('synonymResponsible');
+          $newArrayFields['_sender'] = i18n('mailableSender');
+          $newArrayFields['_project'] = i18n('colIdProject').', '.i18n('synonymProject');
+          $newArrayFields['_url'] = i18n('mailableUrl');
+          $newArrayFields['_goto'] = i18n('mailableGoto');
+          $newArrayFields['_HISTORY'] = i18n('mailableHistory');
+          $newArrayFields['_LINK'] = i18n('mailableLink');
+          $newArrayFields['_NOTE'] = i18n('mailableNote');
+        	$arrayFields = $newArrayFields;
+        }else{
+          $newArrayFields['_id'] = 'id';
+          $newArrayFields['_name'] = i18n('colName');
+          $newArrayFields['_idProject'] = 'id'.i18n('colIdProject');
+          $newArrayFields['_nameProject'] = i18n('colIdProject').' ('.i18n('colName').')';
+          $newArrayFields['_description'] = 'colDescription';
+          $newArrayFields['_item'] = i18n('mailableItem');
+          $newArrayFields['_dbName'] = i18n('mailableDbName');
+          $newArrayFields['_responsible'] = i18n('colResponsible').', '.i18n('synonymResponsible');
+          $newArrayFields['_sender'] = i18n('mailableSender');
+          $newArrayFields['_project'] = i18n('colIdProject').', '.i18n('synonymProject');
+          $newArrayFields['_url'] = i18n('mailableUrl');
+          $newArrayFields['_goto'] = i18n('mailableGoto');
+          $newArrayFields['_HISTORY'] = i18n('mailableHistory');
+          $newArrayFields['_LINK'] = i18n('mailableLink');
+          $newArrayFields['_NOTE'] = i18n('mailableNote');
+          $arrayFields = $newArrayFields;
+        }
+      }else{
+        $newArrayFields['_id'] = 'id';
+        $newArrayFields['_name'] = i18n('colName');
+        $newArrayFields['_idProject'] = 'id'.i18n('colIdProject');
+        $newArrayFields['_nameProject'] = i18n('colIdProject').' ('.i18n('colName').')';
+        $newArrayFields['_description'] = 'colDescription';
+        $newArrayFields['_item'] = i18n('mailableItem');
+        $newArrayFields['_dbName'] = i18n('mailableDbName');
+        $newArrayFields['_responsible'] = i18n('colResponsible').', '.i18n('synonymResponsible');
+        $newArrayFields['_sender'] = i18n('mailableSender');
+        $newArrayFields['_project'] = i18n('colIdProject').', '.i18n('synonymProject');
+        $newArrayFields['_url'] = i18n('mailableUrl');
+        $newArrayFields['_goto'] = i18n('mailableGoto');
+        $newArrayFields['_HISTORY'] = i18n('mailableHistory');
+        $newArrayFields['_LINK'] = i18n('mailableLink');
+        $newArrayFields['_NOTE'] = i18n('mailableNote');
+        $arrayFields = $newArrayFields;
+      }
+      $fieldAttributes=$this->getFieldAttributes($item);
+      if(strpos($fieldAttributes,'required')!==false) {
+      	$isRequired = true;
+      } else {
+      	$isRequired = false;
+      }
+      $notReadonlyClass=($readOnly?"":" generalColClassNotReadonly ");
+      $notRequiredClass=($isRequired?"":" generalColClassNotRequired ");
+      $style=$this->getDisplayStyling($item);
+      $labelStyle=$style["caption"];
+      $fieldStyle=$style["field"];
+      $fieldWidth=$largeWidth;
+      $extName="";
+      $fullItem = "_spe_$item";
+      $name=' id="' . $fullItem . '" name="' . $fullItem . $extName . '" ';
+      $attributes =' required="true" missingMessage="' . i18n('messageMandatory', array($this->getColCaption($itemLab))) . '" invalidMessage="' . i18n('messageMandatory', array($this->getColCaption($item))) . '"';
+      
+      //$colScript  = '';
+      
+      $result  = '<table><tr class="detail generalRowClass">';
+      $result .= '<td class="label" style="font-weight:normal;"><label>' . i18n("col".ucfirst($itemLab));
+      $result .= '&nbsp;:&nbsp;</label></td>';
+      $result .= '<td>';
+      $result .= '<select dojoType="dijit.form.Select" class="input '.(($isRequired)?'required':'').' generalColClass '.$notReadonlyClass.$notRequiredClass.$item.'Class"';
+      $result .= '  style="width: ' . ($fieldWidth-150) . 'px;' . $fieldStyle . '; "';
+      $result .= $name;
+      $result .=$attributes;
+      $result .=">";
+      
+      $first=true;
+      foreach ($arrayFields as $key => $value) {
+      	$result .= '<option value="' . $key . '"';
+      	if($first) {
+      		$result .= ' selected="selected" ';
+      		$first=false;
+      	}
+      	$result .= '> <span>'. htmlEncode($value) . '</span>
+      	            </option>';
+      }
+      //$result .=$colScript;
+      $result .="</select></td>";
+      $result .= '</tr></table>';
+      return $result;
+    }
+    
+    public function drawButtonInsertField($item) {
+    	global $largeWidth, $toolTip, $print, $outMode;
+      if ($print) return '';
+      
+    	$itemEnd = str_replace("buttonAddIn","", $item);
+    	$editor = getEditorType();
+    	$textBox = strtolower($itemEnd);;
+    	$result  = '<div style="position:relative;left:155px;top:-2px">';
+    	$result .= '<button id="_spe_'.$item.'" dojoType="dijit.form.Button" showlabel="true" style="position:absolute;top:-24px;right:0px;width:145px;height:17px">';
+    	$result .= i18n('operationInsert');
+    	$result .= '<script type="dojo/connect" event="onClick" args="evt">';
+    	$result .= '  addFieldInTextBoxForEmailTemplateItem("'.$editor.'");';
+    	$result .= '  formChanged();';
+    	$result .= '</script>';
+    	$result .= '</button>';
+    	$result .= '</div>';
+    	$result .= '<div data-dojo-type="dijit/Tooltip" data-dojo-props="connectId:_spe_'.$item.',position:[\'below\']">';
+    	$result .= '</div>';
+    
+    	return $result;
+    }
+    
+    public function drawSpecificItem($item,$readOnly=false,$refresh=false){
+      if ($item=='listItemTemplate') {
+      	return $this->drawListItem($item, $readOnly, $refresh);
+      } elseif ($item==='buttonInsertInTemplate'){
+        return $this->drawButtonInsertField($item);
+      }
+      return "";
     }
 }

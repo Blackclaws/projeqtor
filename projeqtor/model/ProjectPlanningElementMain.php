@@ -295,6 +295,7 @@ class ProjectPlanningElementMain extends PlanningElement {
   
   public function updateExpense($doNotSave=false) {
   	$exp=new Expense();
+  	$paramInputExpense = Parameter::getGlobalParameter('ImputOfAmountProvider');
   	$lstExp=$exp->getSqlElementsFromCriteria(array('idProject'=>$this->refId,'cancelled'=>'0'));
   	$assigned=0;
   	$real=0;
@@ -302,13 +303,16 @@ class ProjectPlanningElementMain extends PlanningElement {
   	$left=0;
   	foreach ($lstExp as $exp) {
   		if ($exp->plannedAmount) {
-  			$assigned+=$exp->plannedAmount;
+  		  if ($paramInputExpense=='TTC') $assigned+=$exp->plannedFullAmount;
+  		  else $assigned+=$exp->plannedAmount;
   		}
   		if ($exp->realAmount) {
-  			$real+=$exp->realAmount;
+  			if ($paramInputExpense=='TTC') $real+=$exp->realFullAmount;
+  		  else $real+=$exp->realAmount;
   		} else {
   			if ($exp->plannedAmount) {
-  				$left+=$exp->plannedAmount;
+  				if ($paramInputExpense=='TTC') $left+=$exp->plannedFullAmount;
+  		    else $left+=$exp->plannedAmount;
   			}
   		}
   	}

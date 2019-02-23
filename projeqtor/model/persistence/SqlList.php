@@ -124,6 +124,8 @@ class SqlList {
       $query .= ' order by ' . $obj->getDatabaseTableName() . '.'.$obj->_sortCriteriaForList;
     } else if (property_exists($obj,'sortOrder')) {
       $query .= ' order by ' . $obj->getDatabaseTableName() . '.sortOrder, ' . $obj->getDatabaseTableName() . '.' . $obj->getDatabaseColumnName($displayCol);
+    } else if (property_exists($obj,'bbsSortable')) {
+        $query .= ' order by ' . $obj->getDatabaseTableName() . '.bbsSortable, ' . $obj->getDatabaseTableName() . '.' . $obj->getDatabaseColumnName($displayCol); 
     } else if (property_exists($obj,'order')) {
       $query .= ' order by ' . $obj->getDatabaseTableName() . '.order, ' . $obj->getDatabaseTableName() . '.' . $obj->getDatabaseColumnName($displayCol);
     } else if (property_exists($obj,'baselineDate')) {

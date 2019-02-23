@@ -180,6 +180,8 @@ if ($periodType) {
     $start=date('Y-m-d', firstDayofWeek($paramWeek, $paramYear));
     $end=addDaysToDate($start,6);
   }
+  $start.=' 00:00:00';
+  $end.=' 23:59:59';
   $where.=" and (  creationDateTime>= '" . $start . "'";
   $where.="        and creationDateTime<='" . $end . "' )";
 }//End of Isset
@@ -340,6 +342,7 @@ function drawSynthesisTable($scope, $lst) {
 function drawsynthesisGraph($scope, $lst) {
 	global $rgbPalette;
 	global $arrayColors;
+	$tabColor = array();
   if (! testGraphEnabled()) { return;}
   if (count($lst)==0) { return;}  
   $valArr=array();
@@ -357,10 +360,6 @@ function drawsynthesisGraph($scope, $lst) {
   if (array_key_exists('0', $lst)) {
     $legArr[]=i18n('undefinedValue');
     $valArr[]=$lst['0'];
-    $lstColorRef[0]='#cccccc';
-    $colorRequirement = hex2rgb($lstColorRef[0]);
-    $serieSettings = array("R"=>$colorRequirement['R'],"G"=>$colorRequirement['G'],"B"=>$colorRequirement['B']);
-    $dataSet->setPalette($nbItem,$serieSettings);
     $nbItem++;
   }
   foreach ($lstRef as $code=>$val) {
@@ -374,7 +373,7 @@ function drawsynthesisGraph($scope, $lst) {
       }
       $colorRequirement = hex2rgb($color);
       $serieSettings = array("R"=>$colorRequirement['R'],"G"=>$colorRequirement['G'],"B"=>$colorRequirement['B']);
-      $dataSet->setPalette($nbItem,$serieSettings);
+      $tabColor[$nbItem]=$serieSettings;
       $nbItem++;
     }
   }
@@ -391,6 +390,16 @@ function drawsynthesisGraph($scope, $lst) {
   $graph->Antialias = FALSE;
   
   $pieChart = new pPie($graph,$dataSet);
+  
+  if (array_key_exists('0', $lst)) {
+  	$pieChart->setSliceColor(0,array("R"=>204,"G"=>204,"B"=>204));
+  }else {
+  	$pieChart->setSliceColor(0,$tabColor[0]);
+  }
+  
+  for ($i=1; $i<$nbItem; $i++){
+  	$pieChart->setSliceColor($i,$tabColor[$i]);
+  }
   
   /* Set the default font */
   $graph->setFontProperties(array("FontName"=>getFontLocation("verdana"),"FontSize"=>8));

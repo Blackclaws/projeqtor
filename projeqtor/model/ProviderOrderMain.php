@@ -244,6 +244,7 @@ class ProviderOrderMain extends SqlElement {
         }
         $projExpense->save();
         $this->idProjectExpense = $projExpense->id;
+        //ExpenseDetail::addExpenseDetailFromBillLines(get_class($this),$this->id,$projExpense->id,$projExpense->idProject);
       }
     }
     //convert project expense  to bill lines
@@ -341,7 +342,7 @@ class ProviderOrderMain extends SqlElement {
     
     if($old->idProjectExpense != null and $old->idProjectExpense!=$this->idProjectExpense){
       $projExpense = new ProjectExpense($old->idProjectExpense);
-      $projExpense->save();
+      if ($projExpense->id) $projExpense->save();
     }
     // Update expense linked to order
     if($this->idProjectExpense){ 

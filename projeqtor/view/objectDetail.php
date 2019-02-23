@@ -62,6 +62,16 @@ if (isset($_REQUEST['noselect'])) {
 if (!isset($noselect)) {
   $noselect=false;
 }
+
+//gautier
+$objInsert = false;
+$insertPlanningItem = RequestHandler::getValue('insertItem');
+if($insertPlanningItem){
+  $currentItemParent = RequestHandler::getId('currentItemParent');
+  $classItemParent = RequestHandler::getClass('originClass');
+  $objInsert = new $classItemParent($currentItemParent);
+}
+
 if ($noselect) {
   $objId="";
   $obj=null;
@@ -407,9 +417,28 @@ if (array_key_exists('refresh', $_REQUEST)) {
  */
 function drawTableFromObject($obj, $included=false, $parentReadOnly=false, $parentHidden=false) {
   scriptLog("drawTableFromObject(obj, included=$included, parentReadOnly=$parentReadOnly)");
-  global $toolTip, $cr, $print, $treatedObjects, $displayWidth, $outMode, $comboDetail, $collapsedList, $printWidth, $profile, $detailWidth, $readOnly, $largeWidth, $widthPct, $nbColMax, $preseveHtmlFormatingForPDF, $reorg, $leftPane, $rightPane, $extraPane, $bottomPane, $nbColMax, $section, $beforeAllPanes, $colWidth;
+  global $toolTip, $cr, $print, $treatedObjects, $displayWidth, $outMode, $comboDetail, $collapsedList, $printWidth, $profile, $detailWidth, $readOnly, $largeWidth, $widthPct, $nbColMax, $preseveHtmlFormatingForPDF, $reorg, $leftPane, $rightPane, $extraPane, $bottomPane, $nbColMax, $section, $beforeAllPanes, $colWidth,$objInsert;
   $ckEditorNumber=0; // Will be used only if getEditor=="CK" for CKEditor
-  
+
+  //gautier
+  if($objInsert){
+    if(get_class($objInsert)=='Project'){
+      if(substr(get_class($obj), 0, 7)== 'Project'){
+        $obj->idProject = $objInsert->idProject;
+      }else{
+        $obj->idProject = $objInsert->id;
+      }
+    }else{
+      $obj->idProject = $objInsert->idProject;
+    }
+    if (property_exists($obj, 'idActivity') and property_exists($objInsert, 'idActivity')) {
+      $obj->idActivity = $objInsert->idActivity;
+    }
+    $planningElementClass = get_class($objInsert).'PlanningElement';
+    $idPlanningElementOrigin = $objInsert->$planningElementClass->id;
+    echo "<input type='hidden' name='moveToAfterCreate' value='$idPlanningElementOrigin' />";
+  }
+
   if (property_exists($obj, '_sec_Assignment')) {
     $habil=SqlElement::getSingleSqlElementFromCriteria('HabilitationOther', array('idProfile'=>$profile, 'scope'=>'assignmentView'));
     if ($habil and $habil->rightAccess!=1) {
@@ -499,6 +528,9 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false, $pare
         }
       }
       $defaultProject=$firstId;
+      if($objInsert){
+        $defaultProject = $obj->idProject;
+      }
     }
   }
   if (property_exists($obj, $idType)) {
@@ -625,6 +657,19 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false, $pare
         $hiddenSection=true;
       }
     }
+    if (substr($col,0,9)=='_lib_help') { // Hide if corresponding field is hidden
+      $helper=array(lcfirst(substr($col,9)), 'is'.substr($col,9));
+      $helperField=null;
+      foreach( $helper as $helpTest) {
+        if (property_exists($obj, $helpTest)) {
+          $helperField=$helpTest;
+          break;
+        }
+      }
+      if ($helperField and $obj->isAttributeSetToField($helperField, 'hidden') or in_array($helperField, $extraHiddenFields)) {
+        $hide=true;
+      }
+    }
     if (substr($col, 0, 7)=='_label_') {
       $attFld=substr($col, 7);
       if ($attFld=='expected') $attFld='expectedProgress';
@@ -649,17 +694,6 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false, $pare
     // the field _tab_x_y must be an array containing x + y values :
     // - the x column headers
     // - the y line headers
-    
-    //Doris #3687
-    if (substr($col, 0, 10)=='_separator') {
-      $decomp=explode("_", $col);
-      $name = i18n($decomp[2]);
-      $margin = "";
-      if(isset($decomp[3])){
-        $margin = "margin-top:5px;";
-      }
-      echo '<div class="assignHeader" id="'.$col.'" style="height:14px; padding: 3px; margin-bottom:5px;'.$margin.' vertical-align:middle; border:1px solid grey;">'.$name.'</div>';
-    }
     
     // gautier #3251
     if (substr($col, 0, 4)=='_tab') {
@@ -903,11 +937,24 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false, $pare
         startTitlePane($classObj, $section, $collapsedList, $widthPct, $print, $outMode, $prevSection, $nbCol, $cpt, $included, $obj);
       }
       // ADD qCazelles - Manage ticket at customer level - Ticket #87
+    } else if (substr($col, 0, 10)=='_separator') {    //Doris #3687
+      $decomp=explode("_", $col);
+      $name = i18n($decomp[2]);
+      $margin = "";
+      if(1 or isset($decomp[3])){
+        $margin = "margin-top:5px;";
+      }
+      echo '<tr><td colspan="2" style="font-size:3px;border-bottom:1px solid grey;">&nbsp;</td></tr>'; 
+      echo '<tr><td colspan="2" class="assignHeader" id="'.$col.'" style="width:100%;height:14px; padding: 3px; margin-bottom:5px;'.$margin.';vertical-align:middle; border:1px solid grey;">'.$name.'</td></tr>';
     } else if ($col=='_spe_tickets' and !$obj->isAttributeSetTofield($col, 'hidden')) {
       drawTicketsList($obj);
       // END ADD qCazelles - Manage ticket at customer level - Ticket #87
-    }     // Add mOlives - ticket 215 - 09/05/2018
-    else if ($col=='_spe_activity' and !$obj->isAttributeSetTofield($col, 'hidden')) {
+      // Add mOlives - ticket 215 - 09/05/2018
+    } else if ($col == '_spe_subscriptions') {
+      $limitToActive = true;
+      if (isset($_REQUEST['showClosedSub']) and $_REQUEST['showClosedSub'] == true) $limitToActive = false;
+      drawSubscriptionsList($obj, false, $limitToActive);
+    } else if ($col=='_spe_activity' and !$obj->isAttributeSetTofield($col, 'hidden')) {
       drawActivityList($obj);
       // End mOlives - ticket 215 - 09/05/2018
     } else if (substr($col, 0, 5)=='_spe_') { // if field is _spe_xxxx, draw the specific item xxx
@@ -1508,7 +1555,7 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false, $pare
           echo '<span style="'.$fieldStyle.'">';
           echo htmlFormatTime($val, false);
           echo '</span>';
-        } else if ($col=='color' and $dataLength==7) { // color
+        } else if ( ($col=='color' or (substr($col,0,5)=='color' and strlen($col)>5 and strtoupper(substr($col,5,1))==substr($col,5,1) ) ) and $dataType=='varchar' and $dataLength==7) { // color
           echo '<table><tr><td style="width: 100px;">';
           echo '<div class="colorDisplay" readonly tabindex="-1" ';
           echo '  value="'.htmlEncode($val).'" ';
@@ -1712,7 +1759,7 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false, $pare
         echo ' class="display generalColClass '.$col.'Class" style="width:150px;position:relative; left: 3px;'.$specificStyle.'"';
         echo ' readonly tabindex="-1" ';
         echo ' value="'.htmlEncode($val).'" />';
-      } else if ($col=='color' and $dataLength==7) {
+      } else if (($col=='color' or (substr($col,0,5)=='color' and strlen($col)>5 and strtoupper(substr($col,5,1))==substr($col,5,1) ) ) and $dataType=='varchar' and $dataLength==7) {
         // Draw a color selector ============================================== COLOR
         echo '<table class="generalColClass '.$col.'Class" style="'.$specificStyleWithoutCustom.'"><tr><td class="detail">';
         // BEGIN - ADD BY TABARY - TOOLTIP
@@ -1734,13 +1781,13 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false, $pare
         // echo '</div>';
         echo '</td><td class="detail">';
         if (!$readOnly) {
-          echo '<div id="'.'colorButton" dojoType="dijit.form.DropDownButton"  ';
+          echo '<div id="'.'colorButton'.$col.'" dojoType="dijit.form.DropDownButton"  ';
           // echo ' style="width: 100px; background-color: ' . $val . ';"';
           echo ' showlabel="false" iconClass="colorSelector" style="position:relative;top:-2px;height:19px">';
           echo '  <span>'.i18n('selectColor').'</span>';
-          echo '  <div dojoType="dijit.ColorPalette" >';
+          echo '  <div dojoType="dijit.ColorPalette" id="colorPicker'.$col.'" >';
           echo '    <script type="dojo/method" event="onChange" >';
-          echo '      var fld=dojo.byId("color");';
+          echo '      var fld=dojo.byId("'.$col.'");';
           echo '      fld.style.color=this.value;';
           echo '      fld.style.backgroundColor=this.value;';
           echo '      fld.value=this.value;';
@@ -1751,11 +1798,11 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false, $pare
         }
         echo '</td><td>';
         if (!$readOnly) {
-          echo '<button id="resetColor" dojoType="dijit.form.Button" showlabel="true"';
+          echo '<button id="resetColor'.$col.'" dojoType="dijit.form.Button" showlabel="true"';
           echo ' title="'.i18n('helpResetColor').'" >';
           echo '<span>'.i18n('resetColor').'</span>';
           echo '<script type="dojo/connect" event="onClick" args="evt">';
-          echo '      var fld=dojo.byId("color");';
+          echo '      var fld=dojo.byId("'.$col.'");';
           echo '      fld.style.color="transparent";';
           echo '      fld.style.backgroundColor="transparent";';
           echo '      fld.value="";';
@@ -2459,11 +2506,16 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false, $pare
         // echo ' style="text-align:right; width: ' . $fieldWidth . 'px;' . $specificStyle . '" ';
         echo ' style="'.$negative.'width: '.$fieldWidth.'px;'.$specificStyle.'" ';
         // ADD BY Marc TABARY - 2017-03-06 - PATTERN FOR YEAR
+        //gautier manualProgress
+        if($isPercent and strtolower(substr($col, -8, 8))=='progress'){
+          echo ' constraints="{min:0,max:100}")';
+        }
         if (strpos(strtolower($col), 'year')!==false) {
           echo ' constraints="{min:2000,max:2100,pattern:\'###0\'}" ';
         } else if ($max) {
           //gautier min amount
-          $arrayPossibleNegativeAmounts=array('update3Amount','update3FullAmount','update4Amount','update4FullAmount',
+          $arrayPossibleNegativeAmounts=array('update1Amount','update1FullAmount','update2Amount','update2FullAmount',
+          		                                'update3Amount','update3FullAmount','update4Amount','update4FullAmount',
                                               'addUntaxedAmount','addFullAmount','availableAmount','availableFullAmount',
                                               'leftAmount','leftFullAmount','reserveAmount','totalLeftCost', 'totalPlannedCost',
           		                                'marginCost'
@@ -2729,7 +2781,7 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false, $pare
       if ($internalTable>0) {
         $internalTable--;
         if ($internalTable==0) {
-          echo '</td></tr></table><table  style="width: 100%;">';
+          echo '</td></tr></table><table  style="width:'.$widthPct.'">';
         }
       } else {
         if ($internalTable==0 and !$hide and !$nobr) {
@@ -2869,7 +2921,12 @@ function drawDocumentVersionFromObject($list, $obj, $refresh=false) {
     reset($statusTable);
     echo '<td class="assignHeader" style="width:10%">';
     if ($obj->id!=null and !$print and $canUpdate and !$obj->idle) {
-      echo '<a onClick="addDocumentVersion('."'".key($statusTable)."'".",'".$typeEvo."'".",'".$num."'".",'".htmlEncode($vers->name)."'".",'".htmlEncode($vers->name)."'".');" ';
+      echo '<a onClick="addDocumentVersion('."'".key($statusTable)."'".",'".$typeEvo."'".",'".$num."'".",'".htmlEncode($vers->name)."'".",'".htmlEncode($vers->name)."',".$obj->locked.');" ';
+      echo ' title="'.i18n('addDocumentVersion').'" > ';
+      echo formatSmallButton('Add');
+      echo '</a>';
+    }else if(!$canUpdate and $obj->idLocker == $user->id){
+      echo '<a onClick="addDocumentVersion('."'".key($statusTable)."'".",'".$typeEvo."'".",'".$num."'".",'".htmlEncode($vers->name)."'".",'".htmlEncode($vers->name)."',".$obj->locked.');" ';
       echo ' title="'.i18n('addDocumentVersion').'" > ';
       echo formatSmallButton('Add');
       echo '</a>';
@@ -2890,7 +2947,17 @@ function drawDocumentVersionFromObject($list, $obj, $refresh=false) {
     echo '<tr>';
     if (!$print) {
       echo '<td class="assignData" style="text-align:center; white-space: nowrap;vertical-align:top;">';
-      if (!$print) {
+      //damian
+      $canDownload = false;
+      if ($obj->locked){
+        $forbidDownload = Parameter::getGlobalParameter('lockDocumentDownload');
+        if(($forbidDownload == "YES" and $obj->idLocker == $user->id) or $forbidDownload == "NO" or $forbidDownload == ""){
+          $canDownload = true;
+        }
+      }else {
+        $canDownload = true;
+      }
+      if (!$print and $canDownload) {
         echo '<a href="../tool/download.php?class=DocumentVersion&id='.htmlEncode($version->id).'"';
         echo ' target="printFrame" title="'.i18n('helpDownload')."\n".(($preserveFileName=='YES')?$version->fileName:$version->fullName).'">'.formatSmallButton('Download').'</a>';
       }
@@ -3450,7 +3517,7 @@ function drawNotesFromObject($obj, $refresh=false) {
   if (!$refresh and !$print) echo '<tr><td colspan="2">';
   echo '<input type="hidden" id="noteIdle" value="'.htmlEncode($obj->idle).'" />';
   if (!$print) {
-    echo '<table width="99.9%">';
+    echo '<table width="100%">';
   }
   echo '<tr>';
   if (!$print) {
@@ -3461,12 +3528,34 @@ function drawNotesFromObject($obj, $refresh=false) {
     echo '</td>';
   }
   echo '<td class="noteHeader" style="width:5%">'.i18n('colId').'</td>';
-  echo '<td class="noteHeader" style="width:'.(($print)?'95':'85').'%">'.i18n('colNote').'</td>';
+  echo '<td colspan="6" class="noteHeader" style="width:'.(($print)?'95':'85').'%">'.i18n('colNote').'</td>';
   // echo '<td class="noteHeader" style="width:15%">' . i18n ( 'colDate' ) . '</td>';
   // echo '<td class="noteHeader" style="width:15%">' . i18n ( 'colUser' ) . '</td>';
   echo '</tr>';
   $nbNotes=0;
   $ress=new Resource($user->id);
+  //damian
+  $noteDiscussionMode = Parameter::getUserParameter('userNoteDiscussionMode');
+  if($noteDiscussionMode == null){
+  	$noteDiscussionMode = Parameter::getGlobalParameter('globalNoteDiscussionMode');
+  }
+  
+  function sortNotes(&$listNotes, &$result, $parent){
+    foreach ($listNotes as $note){
+      if($note->idNote == $parent){
+        $result[] = $note;
+        sortNotes($listNotes, $result, $note->id); 
+      }
+    }
+  }
+  
+  if($noteDiscussionMode == 'YES'){
+    $result = array();
+    $notes=array_reverse($notes,true);
+    sortNotes($notes, $result, null);
+    $notes = $result;
+  }
+  
   foreach ($notes as $note) {
     if ($user->id==$note->idUser or $note->idPrivacy==1 or ($note->idPrivacy==2 and $ress->idTeam==$note->idTeam)) {
       $nbNotes++;
@@ -3479,57 +3568,59 @@ function drawNotesFromObject($obj, $refresh=false) {
       }
       echo '<tr>';
       if (!$print) {
-        echo '<td class="noteData smallButtonsGroup">';
-        if ($note->idUser==$user->id and !$print and $canUpdate) {
-          echo ' <a onClick="editNote('.htmlEncode($note->id).','.htmlEncode($note->idPrivacy).');" title="'.i18n('editNote').'" > '.formatSmallButton('Edit').'</a>';
-          echo ' <a onClick="removeNote('.htmlEncode($note->id).');" title="'.i18n('removeNote').'" > '.formatSmallButton('Remove').'</a>';
-        }
-        echo '</td>';
+      	echo '<td class="noteData smallButtonsGroup">';
+      	if($obj->id!=null and !$print and $canUpdate){
+      	  echo ' <a onClick="addNote(true,'.htmlEncode($note->id).');" title="'.i18n('replyToThisNote').'" > '.formatSmallButton('Reply').'</a>';
+      	}
+      	if ($note->idUser==$user->id and !$print and $canUpdate) {
+      		echo ' <a onClick="editNote('.htmlEncode($note->id).','.htmlEncode($note->idPrivacy).');" title="'.i18n('editNote').'" > '.formatSmallButton('Edit').'</a>';
+      		echo ' <a onClick="removeNote('.htmlEncode($note->id).');" title="'.i18n('removeNote').'" > '.formatSmallButton('Remove').'</a>';
+      	}
+      	echo '</td>';
       }
-      echo '<td class="noteData" style="width:5%">#'.htmlEncode($note->id).'</td>';
-      echo '<td class="noteData" style="width:'.(($print)?'95':'85').'%">';
-      /*
-       * if (!$print) {
-       * echo '<div style="display:none" type="hidden" id="note_' . htmlEncode($note->id) . '">';
-       * echo $note->note;
-       * echo '</div>';
-       * }
-       */
+      echo '<td class="noteData" style="width:5%; text-align: center;">#'.htmlEncode($note->id).'</td>';
+      if($noteDiscussionMode == 'YES'){
+        for($i=0; $i<$note->replyLevel; $i++){
+        	if($i >= 5){
+        		break;
+        	}
+        	echo '<td class="noteData" colspan="1" style="width:3%;border-bottom:0px;border-top:0px;border-right:solid 2px;!important;"></td>';//border-bottom:0px;border-top:0px;!important
+        }
+        echo '<td colspan="'.(6-$note->replyLevel).'" class="noteData" style="width:'.(($print)?'95':'85').'%">';
+      }else{
+        echo '<td colspan="6" class="noteData" style="width:'.(($print)?'95':'85').'%">';
+      }
       echo formatUserThumb($userId, $userName, 'Creator');
       echo formatDateThumb($creationDate, $updateDate);
       echo formatPrivacyThumb($note->idPrivacy, $note->idTeam);
-      // ADDED BRW
-      // $strDataHTML=htmlEncode($note->note, ''); // context = '' => only htmlspecialchar, not htmlentities
+      if($noteDiscussionMode != 'YES'){
+        if($note->idNote != null){
+        	echo '<span style="position:relative;float:right;padding-right:3px">'.formatIcon('Reply', 16, i18n('replyToNote').' #'.$note->idNote).'</span>';
+        }
+      }
       if (!$print) echo '<div style="max-width:'.$widthPctNote.';overflow-x:auto;" >';
       $strDataHTML=$note->note;
-      // $strDataHTML=preg_replace('@(https?://([-\w\.]<+[-\w])+(:\d+)?(/([\w/_\.#-]*(\?\S+)?[^\.\s])?)?)@', '<a href="$1" target="_blank">$1</a>', $strDataHTML);
-      // $strDataHTML=nl2br($strDataHTML); // then convert line breaks : must be after preg_replace of url
-      if ($print and $outMode=="pdf") { // Must purge data, otherwise will never be generated
-        if ($preseveHtmlFormatingForPDF) {
-          // $strDataHTML='<div>'.$strDataHTML.'</div>';
-        } else {
-          $strDataHTML=htmlEncode($strDataHTML, 'pdf'); // remove all tags but line breaks
-        }
+      if ($print and $outMode=="pdf") {
+      	if ($preseveHtmlFormatingForPDF) {
+      	} else {
+      		$strDataHTML=htmlEncode($strDataHTML, 'pdf');
+      	}
       } else {
-        if (!isTextFieldHtmlFormatted($strDataHTML)) {
-          $strDataHTML=htmlEncode($strDataHTML, 'plainText');
-        } else {
-          $strDataHTML=preg_replace('@(https?://([-\w\.]<+[-\w])+(:\d+)?(/([\w/_\.#-]*(\?\S+)?[^\.\s])?)?)@', '<a href="$1" target="_blank">$1</a>', $strDataHTML);
-        }
+      	if (!isTextFieldHtmlFormatted($strDataHTML)) {
+      		$strDataHTML=htmlEncode($strDataHTML, 'plainText');
+      	} else {
+      		$strDataHTML=preg_replace('@(https?://([-\w\.]<+[-\w])+(:\d+)?(/([\w/_\.#-]*(\?\S+)?[^\.\s])?)?)@', '<a href="$1" target="_blank">$1</a>', $strDataHTML);
+      	}
       }
       echo $strDataHTML;
       if (!$print) echo '</div>';
-      // END ADDED BRW
       echo '</td>';
-      /*
-       * echo '<td class="noteData">' . htmlFormatDateTime ( $creationDate ) . '<br/>'; if ($note->fromEmail) { echo '<b>' . i18n ( 'noteFromEmail' ) . '</b>'; } echo '<i>' . htmlFormatDateTime ( $updateDate ) . '</i></td>'; echo '<td class="noteData">' . $userName . '</td>';
-       */
       echo '</tr>';
     }
   }
   echo '<tr>';
   if (!$print) {
-    echo '<td class="noteDataClosetable">&nbsp;</td>';
+    echo '<td colspan = "6" class="noteDataClosetable">&nbsp;</td>';
   }
   echo '<td colspan="'.(($print)?'2':'3').'" class="noteDataClosetable">&nbsp;</td>';
   echo '</tr>';
@@ -4435,6 +4526,66 @@ function drawContextSection($obj, $refresh=false) {
   }
 }
 // END qCazelles - Lang-Context
+
+function drawSubscriptionsList($obj, $refresh=false, $limitToActive) {
+  global $cr, $print, $user, $comboDetail;
+  if ($comboDetail) {
+    return;
+  }
+  $canUpdate=securityGetAccessRightYesNo('menu'.get_class($obj), 'update', $obj)=="YES";
+  if ($obj->idle==1) {
+    $canUpdate=false;
+  }
+ 	$checked = '';
+ 	if (isset($_REQUEST['showClosedSub']) and $_REQUEST['showClosedSub'] == true) $checked = ' checked ';
+ 	echo '<div style="position:absolute;right:5px;top:2px;">';
+ 	echo '<label for="showClosedSub" class="dijitTitlePaneTitle" style="font-weight:normal !important;height:10px;width:250px">' . i18n('labelShowIdle') . '</label>';
+ 	echo '<div class="whiteCheck" title="'.i18n('labelShowIdle') .'" type="checkbox" id="showClosedSub" name="showClosedSub" value="showClosedSub" style="position:relative;left:5px" dojoType="dijit.form.CheckBox"'.$checked.'>';
+ 	echo '<script type="dojo/method" event="onChange"> loadContent("objectDetail.php?&showClosedSub='.(($checked=='')?true:false).'", "detailDiv", "listForm"); </script>';
+ 	echo '</div>';
+ 	echo '</div>';
+  
+  if (!$refresh) echo '<tr><td colspan="4">';
+  echo '<table style="width:100%;">';
+  echo '<tr>';
+  echo '<td class="linkHeader" style="width:25%">'.i18n('colType').'</td>';
+  echo '<td class="linkHeader" style="width:15%">'.i18n('colId').'</td>';
+  echo '<td class="linkHeader" style="width:60%">'.i18n('colName').'</td>';
+  echo '</tr>';
+  if (!$obj->id) {
+    $list=array();
+  } else if (get_class($obj)=='Contact') {
+    $where = 'idAffectable = ' . $obj->id;
+    $orderBy = 'refType, refId';
+    $sub=new Subscription();
+    $list=$sub->getSqlElementsFromCriteria(null, false, $where, $orderBy);
+  }
+  if (!isset($list)) $list=array();
+  
+  foreach ($list as $subscription) {
+    $item = new $subscription->refType($subscription->refId);
+    if (!$item or !$item->id or ($limitToActive and $item->idle == 1)) continue;
+    $canGoto=(securityCheckDisplayMenu(null, $subscription->refType) and securityGetAccessRightYesNo('menu'. $subscription->refType, 'read', $subscription)=="YES")?true:false;
+    echo '<tr>';
+    echo '<td class="linkData" style="white-space:nowrap;width:25%"><table><tr><td>' . htmlEncode(i18n($subscription->refType)) . '</td></tr></table>';
+    echo '</td><td class="linkData" style="white-space:nowrap;width:15%"><table><tr><td>' . formatIcon($subscription->refType, 16) . '</td><td style="vertical-align:top">&nbsp;'.'#' . $item->id . '</td></tr></table>';
+    echo '</td>';
+    $goto="";
+    if (!$print and $canGoto) {
+      $goto=' onClick="gotoElement('."'" . $subscription->refType ."','" . htmlEncode($item->id) . "'".');" style="cursor: pointer;" ';
+    }
+    echo '<td class="linkData" ' . $goto . ' style="position:relative">'; 
+    echo htmlEncode($item->name);
+    echo '</td>';
+    echo '</tr>';
+  }
+  
+  echo '</table>';
+  if (!$refresh) echo '</td></tr>';
+  if (!$print) {
+    echo '<input id="SubscriptionSectionCount" type="hidden" value="'.count($list).'" />';
+  }
+}
 
 // ADD qCazelles - Manage ticket at customer level - Ticket #87
 function drawTicketsList($obj, $refresh=false) {
@@ -6398,7 +6549,7 @@ function drawTabExpense($obj, $refresh=false) {
   
   $clauseStatus=transformListIntoInClause(SqlList::getListWithCrit('tenderStatus', array('isSelected'=>'1')));
   $providerTender = new Tender();
-  $listTender = $providerTender->getSqlElementsFromCriteria(null,false,"idTenderStatus in $clauseStatus and idProjectExpense=$obj->id ");
+  $listTender = $providerTender->getSqlElementsFromCriteria(null,false,"idProjectExpense=$obj->id ");
   $untaxedAmount = 0;
   $fullAmount = 0;
   foreach ($listTender as $tender ){

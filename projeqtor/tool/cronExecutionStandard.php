@@ -33,6 +33,10 @@ if ($operation=='saveDefinition') {
 }
 
 function cronPlanningDifferential(){
+  $user=getSessionUser();
+  $user->resetAllVisibleProjects();
+  setSessionUser($user);
+  SqlList::cleanAllLists();
   $startDatePlan=cronPlanningStartDate(Parameter::getGlobalParameter("automaticPlanningDifferentialDate"));
   $arrayProj=array();
   $pe=new PlanningElement();
@@ -56,6 +60,10 @@ function cronPlanningDifferential(){
   }
 }
 function cronPlanningComplete(){
+  $user=getSessionUser();
+  $user->resetAllVisibleProjects();
+  setSessionUser($user);
+  SqlList::cleanAllLists();
   $startDatePlan=cronPlanningStartDate(Parameter::getGlobalParameter("automaticPlanningCompleteDate"));
   traceLog(i18n("sectionAutomaticPlanning").' : '.i18n("paramAutomaticPlanningComplete")." - ".i18n('projects').' : '.i18n('all'));
   //Sql::beginTransaction(); #3601 : management of transaction in now included in PlannedWork::plan()
@@ -96,10 +104,16 @@ function cronSaveDefinition() {
   $cronExecution=CronExecution::getObjectFromScope($scope);
   
   $cronStr=$minutes.' '.$hours.' '.$dayOfMonth.' '.$month.' '.$dayOfWeek;
-  $cronExecution->idle=1; // Désactivate after save (will force réactivate and then CRON relaunch
+  $cronExecution->idle=1; // Desactivate after save (will force reactivate and then CRON relaunch
   
-  if (! $cronExecution->fileExecuted) $cronExecution->fileExecuted="../tool/cronExecutionStandard.php";
-  if (! $cronExecution->fonctionName) $cronExecution->fonctionName="cron$scope";
+  if (! $cronExecution->fileExecuted) {
+    if (substr($scope,0,15)=='imputationAlert') {
+      $cronExecution->fileExecuted="../tool/generateImputationAlert.php";
+    } else {
+      $cronExecution->fileExecuted="../tool/cronExecutionStandard.php";
+    }
+  }
+  if (! $cronExecution->fonctionName) $cronExecution->fonctionName="cron". ucfirst($scope);
   $cronExecution->cron=$cronStr;
   $cronExecution->nextTime=null;
   $result=$cronExecution->save();

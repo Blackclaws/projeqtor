@@ -6,7 +6,9 @@ if (isset($_REQUEST['class'])) {
   $class=$_REQUEST['class'];
 }
 Security::checkValidClass($class);
-
+if ($class=='Replan' or $class=='Construction' or $class=='Fixed') {
+  $class='Project';
+}
 $id=null;
 if (isset($_REQUEST['id'])) {
   $id=$_REQUEST['id'];
