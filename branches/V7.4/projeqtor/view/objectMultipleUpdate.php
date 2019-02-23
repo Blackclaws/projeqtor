@@ -263,8 +263,8 @@
               </td>
             </tr>
              <?php }}
-       // fix planning, under construction
-             $arrayCheckbox=array("fixPlanning","isUnderConstruction");
+       // fix planning, fixPerimeter, under construction
+             $arrayCheckbox=array("fixPlanning","fixPerimeter","isUnderConstruction");
              foreach($arrayCheckbox as $checkField) {
              if (isDisplayable($obj,$checkField)) {?>
             <tr class="detail">
@@ -448,26 +448,44 @@
               </td>
             </tr>
             <?php }
-            
+            //targetMilestone
+            if (isDisplayable($obj,'idMilestone')) {?>
+              <tr class="detail">
+                <td class="label" style="width:<?php echo $labelWidth;?>px;"><?php echo i18n('colChangeMilestone');?>&nbsp;:&nbsp;</td>
+                <td>
+                  <select dojoType="dijit.form.FilteringSelect" class="input" style="width:<?php echo $fieldWidth-25;?>px;" 
+                  <?php echo autoOpenFilteringSelect();?>
+                   id="idMilestone" name="idMilestone">
+                   <?php htmlDrawOptionForReference('idMilestone', null, null, false);?>
+                  </select>
+                  <button id="milestone" dojoType="dijit.form.Button" showlabel="false"
+                    title="<?php echo i18n('showDetail');?>" iconClass="iconView">
+                    <script type="dojo/connect" event="onClick" args="evt">
+                      showDetail("idMilestone",0); 
+                    </script>
+                  </button>
+                </td>
+              </tr>
+               <?php }
             //component
             if (isDisplayable($obj,'idComponent')) {?>
-            <tr class="detail">
-              <td class="label" style="width:<?php echo $labelWidth;?>px;"><?php echo i18n('colChangeComponent');?>&nbsp;:&nbsp;</td>
-              <td>
-                <select dojoType="dijit.form.FilteringSelect" class="input" style="width:<?php echo $fieldWidth-25;?>px;" 
-                <?php echo autoOpenFilteringSelect();?>
-                 id="idComponent" name="idComponent">
-                 <?php htmlDrawOptionForReference('idComponent', null, null, false);?>
-                </select>
-                <button id="idComponentBis" dojoType="dijit.form.Button" showlabel="false"
-                  title="<?php echo i18n('showDetail');?>" iconClass="iconView">
-                  <script type="dojo/connect" event="onClick" args="evt">
-                    showDetail("idComponent",0); 
-                  </script>
-                </button>
-              </td>
-            </tr>
-             <?php }
+              <tr class="detail">
+                <td class="label" style="width:<?php echo $labelWidth;?>px;"><?php echo i18n('colChangeComponent');?>&nbsp;:&nbsp;</td>
+                <td>
+                  <select dojoType="dijit.form.FilteringSelect" class="input" style="width:<?php echo $fieldWidth-25;?>px;" 
+                  <?php echo autoOpenFilteringSelect();?>
+                   id="idComponent" name="idComponent">
+                   <?php htmlDrawOptionForReference('idComponent', null, null, false);?>
+                  </select>
+                  <button id="idComponentBis" dojoType="dijit.form.Button" showlabel="false"
+                    title="<?php echo i18n('showDetail');?>" iconClass="iconView">
+                    <script type="dojo/connect" event="onClick" args="evt">
+                      showDetail("idComponent",0); 
+                    </script>
+                  </button>
+                </td>
+              </tr>
+               <?php }
              //ComponentVersion
              if (isDisplayable($obj,'idTargetComponentVersion')) {?>
                
@@ -726,7 +744,27 @@
                 </button>
               </td>
             </tr>
-            <?php }?>
+            <?php }
+            // gautier #3802
+            if(get_class($obj)=='TicketSimple'){
+              $type='idTicketType';
+            }else{
+              $type='id'.get_class($obj).'Type';
+            }
+            if(!property_exists($obj, 'idProject') or !property_exists($obj,$type)){?>
+            <tr class="detail">
+              <td class="label" style="width:<?php echo $labelWidth;?>px;"><?php echo i18n('colChangeStatusIdle');?>&nbsp;:&nbsp;</td>
+              <td>
+                <select dojoType="dijit.form.FilteringSelect" class="input" style="width:<?php echo $fieldWidth-25;?>px;" 
+                <?php echo autoOpenFilteringSelect();?>
+                 id="changeStatusIdle" name="changeStatusIdle">
+                  <option value=""></option>
+                  <option value="true"><?php echo i18n('checkBox');?></option>
+                  <option value="false"><?php echo i18n('uncheckedBox');?></option>
+                </select>
+              </td>
+            </tr>
+            <?php  }?>
           </table>
           </div>
         </form>

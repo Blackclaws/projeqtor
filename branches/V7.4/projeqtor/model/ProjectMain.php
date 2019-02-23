@@ -70,6 +70,8 @@ class ProjectMain extends SqlElement {
   public $idOverallProgress;
   public $fixPlanning;
   public $_lib_helpFixPlanning;
+  public $fixPerimeter;
+  public $_lib_helpFixPerimeter;
   public $isUnderConstruction;
   public $_lib_helpUnderConstruction;
   public $excludeFromGlobalPlanning;
@@ -129,6 +131,7 @@ class ProjectMain extends SqlElement {
   
   private static $_fieldsTooltip = array(
       "fixPlanning"=> "tooltipFixPlanning",
+      "fixPerimeter"=> "tooltipFixPerimeter",
       "isUnderConstruction" => "tooltipUnderConstruction",
       "excludeFromGlobalPlanning" => "tooltipExcludeFromGlobalPlanning",
   );
@@ -152,6 +155,7 @@ class ProjectMain extends SqlElement {
                                   "organizationInherited"=>"hidden",
                                   "organizationElementary"=>"hidden",
                                   "fixPlanning"=>"nobr",
+                                  "fixPerimeter"=>"nobr",
                                   "isUnderConstruction"=>"nobr",
                                   "excludeFromGlobalPlanning"=>"nobr"
   );   
@@ -174,7 +178,6 @@ class ProjectMain extends SqlElement {
   function __construct($id = NULL, $withoutDependentObjects=false) {
     if ($id=='*') {$id='';}
   	parent::__construct($id,$withoutDependentObjects);
-  	
   }
 
    /** ==========================================================================
@@ -430,7 +433,7 @@ class ProjectMain extends SqlElement {
    *  must be redefined in the inherited class
    */
   public function drawSpecificItem($item){
-//scriptLog("Project($this->id)->drawSpecificItem($item)");  	
+//scriptLog("Project($this->id)->drawSpecificItem($item)");
     $result="";
     if ($item=='subprojects') {
       $result .="<table><tr><td class='label' valign='top'><label>" . i18n('subProjects') . "&nbsp;:&nbsp;</label>";
@@ -624,7 +627,7 @@ scriptLog("Project($this->id)->drawSubProjects(selectField=$selectField, recursi
    * @see persistence/SqlElement#save()
    * @return the return message of persistence/SqlElement#save() method
    */
-  public function save() {	
+  public function save() {
     // #305 : need to recalculate before dispatching to PE
     $old=$this->getOld();
     $this->recalculateCheckboxes();
@@ -761,6 +764,17 @@ scriptLog("Project($this->id)->drawSubProjects(selectField=$selectField, recursi
       $clause=('idProject ='.$this->id);
       $purg=$plw->purge($clause);
     }
+    //damian
+    if($this->fixPerimeter != $old->fixPerimeter){
+    	$listProjPerim = $this->getRecursiveSubProjectsFlatList();
+    	foreach ($listProjPerim as $id=>$name){
+    		$subProj = new Project($id);
+    		if($this->id == $subProj->idProject){
+    		  $subProj->fixPerimeter = $this->fixPerimeter;
+    		}
+    		$subProj->save();
+    	}
+    }
     
     return $result; 
 
@@ -859,6 +873,7 @@ scriptLog("Project($this->id)->drawSubProjects(selectField=$selectField, recursi
         $result.='<br/>' .i18n('cannotExcludeFromGlobalPlanning',array($cpt));
       }
     }
+    
     $defaultControl=parent::control();
     if ($defaultControl!='OK') {
       $result.=$defaultControl;
@@ -899,6 +914,24 @@ scriptLog("Project($this->id)->drawSubProjects(selectField=$selectField, recursi
       if ($sublist and count($sublist)>0) {
         foreach($sublist as $subId=>$subName) {
           $arrayProj[]=$subId;
+        }
+      }
+    }
+    if ($returnResultAsArray) return $arrayProj;
+    return '(' . implode(', ',$arrayProj) . ')';
+  }
+  
+  //damian
+  public static function getFixedProjectPerimeterList($returnResultAsArray=false){
+    $arrayProj = array();
+    $proj = new Project();
+    $listProj = $proj->getSqlElementsFromCriteria(array('fixPerimeter'=>'1', 'idle'=>'0'));
+    foreach ($listProj as $projPerim){
+      $arrayProj[$projPerim->id] = $projPerim->name;
+      $sublist = $projPerim->getRecursiveSubProjectsFlatList(true);
+      if($sublist and count($sublist) > 0) {
+        foreach ($sublist as $subId=>$subName){
+          $arrayProj[$subId] = $subName;
         }
       }
     }

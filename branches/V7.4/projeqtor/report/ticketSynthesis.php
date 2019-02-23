@@ -229,6 +229,8 @@ if ($periodType) {
     $end=addDaysToDate($start,6);
   }
   //echo $start . ' - ' . $end . '<br/>';
+  $start.=' 00:00:00';
+  $end.=' 23:59:59';
   $where.=" and (  creationDateTime>= '" . $start . "'";
   $where.="        and creationDateTime<='" . $end . "' )";
   //$where.="    or (    doneDateTime>= '" . $start . "'";
@@ -395,10 +397,12 @@ function drawSynthesisTable($scope, $lst) {
 function drawsynthesisGraph($scope, $lst) {
 	global $rgbPalette;
 	global $arrayColors;
+	$tabColor = array();
   if (! testGraphEnabled()) { return;}
   if (count($lst)==0) { return;}  
   $valArr=array();
   $legArr=array();
+  $tabSliceColor = array();
   $lstRef=SqlList::getList($scope,'name',null,true,false);
   $lstColorRef=array();
   if (property_exists($scope, 'color')) {
@@ -412,10 +416,6 @@ function drawsynthesisGraph($scope, $lst) {
   if (array_key_exists('0', $lst)) {
     $legArr[]=i18n('undefinedValue');
     $valArr[]=$lst['0'];
-    $lstColorRef[0]='#cccccc';
-    $colorTicket = hex2rgb($lstColorRef[0]);
-    $serieSettings = array("R"=>$colorTicket['R'],"G"=>$colorTicket['G'],"B"=>$colorTicket['B']);
-    $dataSet->setPalette($nbItem,$serieSettings);
     $nbItem++;
   }
   foreach ($lstRef as $code=>$val) {
@@ -429,7 +429,7 @@ function drawsynthesisGraph($scope, $lst) {
       }
       $colorTicket = hex2rgb($color);
       $serieSettings = array("R"=>$colorTicket['R'],"G"=>$colorTicket['G'],"B"=>$colorTicket['B']);
-      $dataSet->setPalette($nbItem,$serieSettings);
+      $tabColor[$nbItem]=$serieSettings;
       $nbItem++;
     }
   }
@@ -447,9 +447,20 @@ function drawsynthesisGraph($scope, $lst) {
   
   $pieChart = new pPie($graph,$dataSet);
   
+  if (array_key_exists('0', $lst)) {
+    $pieChart->setSliceColor(0,array("R"=>204,"G"=>204,"B"=>204));
+  }else {
+    $pieChart->setSliceColor(0,$tabColor[0]);
+  }
+  
+  for ($i=1; $i<$nbItem; $i++){
+    $pieChart->setSliceColor($i,$tabColor[$i]);
+  }
+  
   /* Set the default font */
   $graph->setFontProperties(array("FontName"=>getFontLocation("verdana"),"FontSize"=>8));
   $formSettings = array("R"=>255,"G"=>255,"B"=>255,"Alpha"=>0,"Surrounding"=>0);
+  //$formSettings2 = array("R"=>0,"G"=>0,"B"=>255);
   $graph->setShadow(TRUE,$formSettings);
   $pieChart->draw3DPie(90,($hgt/2)+7,array("Border"=>FALSE));
   $pieChart->drawPieLegend(180,20,array("Style"=>LEGEND_BOX,"Mode"=>LEGEND_VERTICAL));

@@ -65,6 +65,7 @@ if (array_key_exists('multipleSelect', $_REQUEST)) {
   }
 }
 $showIdle=(! $comboDetail and sessionValueExists('projectSelectorShowIdle') and getSessionValue('projectSelectorShowIdle')==1)?1:0;
+if ((Parameter::getUserParameter('showIdleDefault'))=='true') $showIdle=($showIdle==1)?0:1;
 if (! $comboDetail and is_array( getSessionUser()->_arrayFilters)) {
   if (array_key_exists($objectClass, getSessionUser()->_arrayFilters)) {
     $arrayFilter=getSessionUser()->_arrayFilters[$objectClass];
@@ -136,6 +137,11 @@ if ($displayWidthList<1400) {
     }
   }
 }
+$extrahiddenFields=$obj->getExtraHiddenFields();
+if ($obj->isAttributeSetToField('idClient','hidden') or in_array('idClient',$extrahiddenFields)) $hideClientSearch=true;
+if ($obj->isAttributeSetToField('idBudget','hidden') or in_array('idBudget',$extrahiddenFields)) $hideParentBudgetSearch=true;
+if ($obj->isAttributeSetToField('id'.$objectClass.'Type','hidden') or in_array('id'.$objectClass.'Type',$extrahiddenFields)) $hideTypeSearch=true;
+
 if ($comboDetail) $referenceWidth-=5;
 
 $iconClassName=((SqlElement::is_subclass_of($objectClass, 'PlgCustomList'))?'ListOfValues':$objectClass);
@@ -525,6 +531,7 @@ if (property_exists($objectClass,'idStatus')) {
 			             id="iconStatusButton" name="iconStatusButton"
 			             iconClass="dijitButtonIcon dijitButtonIconStatusChange" class="detailButton" showLabel="false">
 			             <script type="dojo/connect" event="onClick" args="evt">
+                     protectDblClick(this);
 						         if (dijit.byId('barFilterByStatus').domNode.style.display == 'none') {
 							         dijit.byId('barFilterByStatus').domNode.style.display = 'block';
 						         } else {

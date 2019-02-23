@@ -204,6 +204,8 @@ class ComponentMain extends ProductOrComponent {
         $resultSC.=' loadContent("objectDetail.php", "detailDiv", "listForm");';
         $resultSC.='</script>';
         $resultSC.='</div>';
+      } else {
+        $resultSC='';
       }
       return $result.$resultSC;
     } else {

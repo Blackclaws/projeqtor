@@ -28,6 +28,7 @@
  * Get the list of objects, in Json format, to display the grid list
  */
     require_once "../tool/projeqtor.php";
+    require_once "../tool/formatter.php";
     require_once "../tool/jsonFunctions.php";
     scriptLog('   ->/tool/jsonQuery.php'); 
     $objectClass=$_REQUEST['objectClass'];
@@ -566,7 +567,7 @@
     }
     //end gautier
     
-    if($objectClass = 'Budget'){
+    if($objectClass=='Budget'){
       $idSelectedBudget = RequestHandler::getValue('budgetParent');
       if($idSelectedBudget){
         $budg = new Budget($idSelectedBudget);
@@ -841,6 +842,13 @@
       echo ' "items":[';
       if (Sql::$lastQueryNbRows > 0) {               
         while ($line = Sql::fetchLine($result)) {
+          if ($objectClass=='Term') { // Attention, this part main reduce drastically performance
+            $term=new Term($line['id']);
+            $line['validatedAmount']=$term->validatedAmount;
+            $line['validatedDate']=$term->validatedDate;
+            $line['plannedAmount']=$term->plannedAmount;
+            $line['plannedDate']=$term->plannedDate;
+          }          
           echo (++$nbRows>1)?',':'';
           echo  '{';
           $nbFields=0;
@@ -906,8 +914,18 @@
 	              }
             	}
             	
-            }            
-            echo '"' . htmlEncode($id) . '":"' . htmlEncodeJson($val, $numericLength) . '"';
+            }       
+            if ($id=='name') {
+              $val=htmlEncodeJson($val);
+              if (property_exists($obj,'_isNameTranslatable') and $obj->_isNameTranslatable) {
+                $val.='#!#!#!#!#!#'.mb_strtoupper(suppr_accents(i18n($val)));
+              } else {
+                $val.='#!#!#!#!#!#'.mb_strtoupper(suppr_accents($val));
+              }
+              echo '"' . htmlEncode($id) . '":"' . $val . '"';
+            } else {
+              echo '"' . htmlEncode($id) . '":"' . htmlEncodeJson($val, $numericLength) . '"';
+            }
           }
           echo '}';
         }   
@@ -916,5 +934,4 @@
       //echo ', "numberOfRow":"' . $nbRows . '"' ;
       echo ' }';
     }
-    
 ?>

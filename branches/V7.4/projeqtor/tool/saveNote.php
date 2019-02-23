@@ -61,11 +61,14 @@ if (array_key_exists('noteId',$_REQUEST)) {
 $noteId=trim($noteId);
 if ($noteId=='') {
   $noteId=null;
-} 
+}
+$idParentNote=RequestHandler::getId('noteIdParent');
 Sql::beginTransaction();
 // get the modifications (from request)
 $note=new Note($noteId);
-
+if($idParentNote){
+  $noteParent = SqlElement::getSingleSqlElementFromCriteria('Note', array('id'=>$idParentNote));
+}
 $user=getSessionUser();
 if (! $note->id) {
   $note->idUser=$user->id;
@@ -75,6 +78,10 @@ if (! $note->id) {
 
 $note->refId=$refId;
 $note->refType=$refType;
+if($idParentNote){
+  $note->idNote=$idParentNote;
+  $note->replyLevel = $noteParent->replyLevel + 1;
+}
 if ($note->creationDate==null) {
   $note->creationDate=date("Y-m-d H:i:s");
 } else if ($note->note!=$noteNote) {
@@ -86,6 +93,7 @@ if ($notePrivacy) {
 } else if (! $note->idPrivacy) {
 	$note->idPrivacy=1;
 }
+
 $result=$note->save();
 
 if ($note->idPrivacy==1) { // send mail if new note is public

@@ -104,3 +104,35 @@ CREATE TABLE `${prefix}workflowprofile` (
   `checked` int(1) unsigned DEFAULT '0',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE `${prefix}restrictlist` (
+  `id` int(12) unsigned NOT NULL AUTO_INCREMENT,
+  `idProfile` int(12) unsigned DEFAULT NULL,
+  `showAll` int(1),
+  `showStarted` int(1),
+  `showDelivered` int(1),
+  `showInService` int(1),
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 ;
+
+INSERT INTO `${prefix}parameter` (`idUser`, `idProject`, `parameterCode`, `parameterValue`) VALUES
+(NULL, NULL, 'authorizeActivityOnDeliveredProduct', 'YES');
+
+ALTER TABLE `${prefix}note` 
+ADD `idNote` int(12),
+ADD `replyLevel` int(12) DEFAULT '0';
+
+UPDATE `${prefix}parameter` SET `parameterValue` = 'YES' WHERE `parameterCode` = 'globalNoteDiscussionMode';
+ 
+ALTER TABLE `${prefix}planningelement`
+ADD `isManualProgress` int(1) unsigned DEFAULT '0';
+
+ALTER TABLE `${prefix}project`
+ADD `fixPerimeter` int(1) unsigned DEFAULT '0';
+
+INSERT INTO `${prefix}habilitationother` (idProfile, rightAccess, scope) VALUES
+(1,1,'changeManualProgress'),
+(3,1,'changeManualProgress');
+
+INSERT INTO `${prefix}habilitationother` (idProfile, rightAccess, scope)
+  SELECT idProfile, rightAccess, 'changePriority' FROM `${prefix}habilitationother` WHERE `scope`='changeValidatedData';

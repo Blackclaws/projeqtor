@@ -40,6 +40,7 @@
   $idRessource=getSessionUser()->id;
   $showDone=false;
   $showIdle=false;
+  $selectedTypes=Parameter::getUserParameter('diarySelectedItems');
   if (! isset($period)) {
   	$period=htmlentities($_REQUEST['diaryPeriod']);
     $year=htmlentities($_REQUEST['diaryYear']);
@@ -48,9 +49,12 @@
     $day=htmlentities($_REQUEST['diaryDay']);
     Parameter::storeUserParameter("diaryPeriod",$period);
     $idRessource=$_REQUEST['diaryResource'];
+    $selectedTypes=$_REQUEST['diarySelectItems'];
     $showIdle=(isset($_REQUEST['showIdle']))?true:false;
     $showDone=(isset($_REQUEST['showDone']))?true:false;
   }
+  
+  if ($selectedTypes=='' or $selectedTypes=='none') $selectedTypes='All';
   
   if(sessionValueExists('diaryResource')) {
     $idRessource = getSessionValue('diaryResource');
@@ -74,6 +78,13 @@
     $year= date('Y',strtotime($day));
     $month= date('m',strtotime($day));
     $week= date('W',strtotime($day));
+    if ($period=='week') {
+      if ($week>50 and $month==1) {
+        $year--;
+      } else if ($week==1 and $month==12) {
+        $year++;
+      }
+    }
   }
   
   $ress=new Resource($idRessource);
@@ -147,8 +158,7 @@
   	echo '<tr height="0px"><td></td>';
   	$trHeight=$totalHeight;
   }
-  $arrayActivities=getAllActivities($currentDay, $endDay, $idRessource,$showDone,$showIdle);
-  
+  $arrayActivities=getAllActivities($currentDay, $endDay, $idRessource, $selectedTypes, $showDone,$showIdle);
   drawDiaryLineHeader($currentDay, $trHeight,$period); 
   while ($currentDay<=$endDay) {
   	if ($period=="month") {
@@ -266,180 +276,201 @@ function getActivity($date) {
 	}
 }
 
-function getAllActivities($startDate, $endDate, $ress, $showDone=false, $showIdle=false) {
+function getAllActivities($startDate, $endDate, $ress, $selectedTypes, $showDone=false, $showIdle=false) {
 	global $projectColorArray, $projectNameArray, $allActi;
 	$result=array();
-	
-	$arrObj=array(new Action(), new Ticket(), new MilestonePlanningElement(), new MeetingPlanningElement());
-	foreach ($arrObj as $obj) {
-	  if (get_class($obj)=='MeetingPlanningElement') {
-	    $ass=new Assignment();
-	    $assTable=$ass->getDatabaseTableName();
-	    $meet=new Meeting();
-	    $meetTable=$meet->getDatabaseTableName();
-	    $mpe=new MeetingPlanningElement();
-	    $mpeTable=$mpe->getDatabaseTableName();
-	    $critWhere=" ( exists (select 'x' from $assTable ass where ass.refType='Meeting' and ass.refId = $mpeTable.refId and ass.idResource=".Sql::fmtId($ress).")";
-	    $critWhere.="  or exists (select 'x' from $meetTable meet where id=$mpeTable.refId and meet.idResource=".Sql::fmtId($ress).") )";
-	  } else if (get_class($obj)=='MilestonePlanningElement') {
-	    $critWhere="1=1";
-	  } else { 
-		  $critWhere="idResource=".Sql::fmtId($ress);
-	  }
-		if (!$showDone and !$showIdle) {
-		  $critWhere.=" and done=0 ";
-		}
-		if (!$showIdle) {
-		  $critWhere.=" and idle=0 ";
-		}
-		if (property_exists($obj, 'actualDueDate') and property_exists($obj, 'initialDueDate')) {
-		  $critWhere.=" and ( "
-		   ." (actualDueDate>='$startDate' and actualDueDate<='$endDate') "
-		   ." or ( actualDueDate is null and (initialDueDate>='$startDate' and initialDueDate<='$endDate') )"
-		   ." )";
-	  } else if (property_exists($obj, 'actualDueDateTime') and property_exists($obj, 'initialDueDateTime')) {
-		  $critWhere.=" and ( "
-		   ." (actualDueDateTime>='$startDate 00:00:00' and actualDueDateTime<='$endDate 23:59:59') "
-		   ." or ( actualDueDateTime is null and (initialDueDateTime>='$startDate 00:00:00' and initialDueDateTime<='$endDate 23:59:59') )"
-	     ." )";
-		} else if (property_exists($obj, 'validatedEndDate') ) {
-		  $refType=str_replace('PlanningElement', '', get_class($obj));
-		  $critWhere.=" and refType='$refType' and validatedEndDate>='$startDate' and validatedEndDate<='$endDate' ";
-		  $critWhere.=" and idProject in ".transformListIntoInClause(getSessionUser()->getVisibleProjects(true));
-			if ($refType=='Milestone' and $ress!=getSessionUser()->id) {
-			  $lstMile=SqlList::getListWithCrit('Milestone', array('idResource'=>$ress));
-			  $critWhere.=" and refId in ".transformListIntoInClause($lstMile);
-			}
-	  } else {
-	  	$critWhere.=" and 1=0";
-	  }
-		$lst=$obj->getSqlElementsFromCriteria(null,false,$critWhere);
-		
-		foreach ($lst as $o) {	
-			if (get_class($o)=='MilestonePlanningElement' or get_class($o)=='MeetingPlanningElement') {
-				$refType=$o->refType;
-				$item=new $refType($o->refId);
-			} else {
-				$item=$o;
-			}
-			if (array_key_exists($o->idProject,$projectColorArray)) {
-				$color=$projectColorArray[$o->idProject];
-				$projectId=$o->idProject;
-				$projectName=$projectNameArray[$o->idProject];
-			} else {
-				$pro=new Project($item->idProject);
-				$color=$pro->getColor();
-				$projectId=$pro->id;
-				$projectName=$pro->name;
-				$projectColorArray[$o->idProject]=$color;
-				$projectNameArray[$o->idProject]=$projectName;
-			}
-			$typeName=null;
-			$typeId=null;
-			$type='id'.get_class($item).'Type';
-			if (property_exists($item,$type)) {
-			  $typeId=$item->$type;
-			  $typeName=SqlList::getNameFromId('Type', $item->$type);
-			}
-			$priorityName=null;
-			$priorityId=null;
-			if (property_exists($item,'idPriority')) {
-			  $priorityId=$item->idPriority;
-			  $priorityName=SqlList::getNameFromId('Priority', $item->idPriority);
-			}
-			$responsibleName=null;
-			$responsibleId=null;
-			if (property_exists($item,'idResource')) {
-			  $responsibleId=$item->idResource;
-			  $responsibleName=SqlList::getNameFromId('Affectable', $item->idResource);
-			}
-			$statusName=null;
-			$statusId=null;
-			if (property_exists($item,'idStatus')) {
-			  $statusId=$item->idStatus;
-			  $statusName=SqlList::getNameFromId('Status', $item->idStatus);
-			}
-			$description=null;
-			if (property_exists($item,'description')) {
-			  $description=$item->description;
-			}
-			$date=null;
-			$dateField="";
-			$name="";
-			$id=$o->id;
-			$class=get_class($o);
-			if (property_exists($obj, 'actualDueDate') and property_exists($obj, 'initialDueDate')) {
-				if ($o->actualDueDate) {
-					$date=$o->actualDueDate;
-					$dateField=i18n('colActualDueDate');
-				} else {
-					$date=$o->initialDueDate;
-					$dateField=i18n('colInitialDueDate');
-				}
-				$name=$o->name;
-			} else if (property_exists($obj, 'actualDueDateTime') and property_exists($obj, 'initialDueDateTime')) {
-				if ($o->actualDueDateTime) {
-					$date=substr($o->actualDueDateTime,0,10);
-					$dateField=i18n('colActualDueDate');
-				} else {
-					$date=substr($o->initialDueDateTime,0,10);
-					$dateField=i18n('colInitialDueDate');
-				}
-				$name=$o->name;
-			} else if (property_exists($obj, 'validatedEndDate')) {
-				$name=$o->refName;
-				$id=$o->refId;
-				$class=$o->refType;
-				$date=$o->validatedEndDate;
-				$dateField=i18n('colValidatedEndDate');
-			}
-			if ($date) {
-				if (!array_key_exists($date, $result)) {
-					$result[$date]=array();
-				}				
-				
-				$result[$date]["$class#$id"]=array(
-						'class'=>$class,
-						'id'=>$id,
-						'work'=>0,
-				    'real'=>false,
-						'name'=>$name,
-						'color'=>$color,
-						'date'=>$dateField,
-				    'projectId'=>$projectId,
-						'projectName'=>$projectName,
-				    'typeId'=>$typeId,
-				    'typeName'=>$typeName,
-				    'priorityId'=>$priorityId,
-				    'priorityName'=>$priorityName,
-				    'responsibleId'=>$responsibleId,
-				    'responsibleName'=>$responsibleName,
-				    'statusId'=>$statusId,
-				    'statusName'=>$statusName,
-				    'description'=>$description
-				);
-			}
-		}
+	$typesList=explode(',', $selectedTypes);
+  foreach ($typesList as $typeFilter) {
+    if ($typeFilter=='All') $arrObj=array(new Action(), new Ticket(), new MilestonePlanningElement(), new MeetingPlanningElement());
+    else if ($typeFilter=="Meeting") $arrObj=array(new MeetingPlanningElement());
+    else $arrObj=array(new $typeFilter());
+    if (isset($_REQUEST['countStatus'])) {
+      $statusWhere="IN (";
+      $listStatusFilter=array();
+      $countStatus=$_REQUEST['countStatus'];
+      for ($i=1; $i<=$countStatus; $i++) {
+        if (array_key_exists("objectStatus$i", $_REQUEST) and trim($_REQUEST["objectStatus$i"])!='') {
+          $statusWhere.=((strlen($statusWhere)==4)?"":", ").$_REQUEST["objectStatus$i"];
+          $listStatusFilter[]=$_REQUEST["objectStatus$i"];
+        }
+      }
+      $statusWhere.=")";
+    }
+    foreach ($arrObj as $obj) {
+      if (get_class($obj)=='MeetingPlanningElement') {
+        $ass=new Assignment();
+        $assTable=$ass->getDatabaseTableName();
+        $meet=new Meeting();
+        $meetTable=$meet->getDatabaseTableName();
+        $mpeTable=$obj->getDatabaseTableName();
+        $critWhere=" ( exists (select 'x' from $assTable ass where ass.refType='Meeting' and ass.refId = $mpeTable.refId and ass.idResource=".Sql::fmtId($ress);
+        $critWhere.=((isset($countStatus))?" AND  exists ( select 'x' from $meetTable meet where id = ass.refId AND meet.idStatus $statusWhere)":"").")";
+        $critWhere.="  or exists (select 'x' from $meetTable meet where id=$mpeTable.refId and meet.idResource=".Sql::fmtId($ress);
+        $critWhere.=((isset($countStatus))?" AND meet.idStatus $statusWhere":"").") )";
+      } else if (get_class($obj)=='MilestonePlanningElement') {
+        if (!isset($countStatus)) $critWhere="1=1";
+        else {
+          $mlst=new Milestone();
+          $mlstTable=$mlst->getDatabaseTableName();
+          $mlstpeTable=$obj->getDatabaseTableName();
+          $critWhere="exists (select 'x' from $mlstTable mlst where id=$mlstpeTable.refId AND mlst.idStatus $statusWhere)";
+        }
+      } else {
+        $critWhere="idResource=".Sql::fmtId($ress);
+        if (isset($countStatus)) $critWhere.=" AND idStatus $statusWhere";
+      }
+      if (!$showDone and !$showIdle) {
+        $critWhere.=" and done=0 ";
+      }
+      if (!$showIdle) {
+        $critWhere.=" and idle=0 ";
+      }
+      if (property_exists($obj, 'actualDueDate') and property_exists($obj, 'initialDueDate')) {
+        $critWhere.=" and ( "." (actualDueDate>='$startDate' and actualDueDate<='$endDate') "." or ( actualDueDate is null and (initialDueDate>='$startDate' and initialDueDate<='$endDate') )"." )";
+      } else if (property_exists($obj, 'actualDueDateTime') and property_exists($obj, 'initialDueDateTime')) {
+        $critWhere.=" and ( "." (actualDueDateTime>='$startDate 00:00:00' and actualDueDateTime<='$endDate 23:59:59') "." or ( actualDueDateTime is null and (initialDueDateTime>='$startDate 00:00:00' and initialDueDateTime<='$endDate 23:59:59') )"." )";
+      } else if (property_exists($obj, 'validatedEndDate')) {
+        $refType=str_replace('PlanningElement', '', get_class($obj));
+        $critWhere.=" and refType='$refType' and validatedEndDate>='$startDate' and validatedEndDate<='$endDate' ";
+        $critWhere.=" and idProject in ".transformListIntoInClause(getSessionUser()->getVisibleProjects(true));
+        if ($refType=='Milestone' and $ress!=getSessionUser()->id) {
+          $lstMile=SqlList::getListWithCrit('Milestone', array('idResource'=>$ress));
+          $critWhere.=" and refId in ".transformListIntoInClause($lstMile);
+        }
+      } else {
+        $critWhere.=" and 1=0";
+      }
+      $lst=$obj->getSqlElementsFromCriteria(null, false, $critWhere);
+
+      foreach ($lst as $o) {
+        if (get_class($o)=='MilestonePlanningElement' or get_class($o)=='MeetingPlanningElement') {
+          $refType=$o->refType;
+          $item=new $refType($o->refId);
+        } else {
+          $item=$o;
+        }
+        if (array_key_exists($o->idProject, $projectColorArray)) {
+          $color=$projectColorArray[$o->idProject];
+          $projectId=$o->idProject;
+          $projectName=$projectNameArray[$o->idProject];
+        } else {
+          $pro=new Project($item->idProject);
+          $color=$pro->getColor();
+          $projectId=$pro->id;
+          $projectName=$pro->name;
+          $projectColorArray[$o->idProject]=$color;
+          $projectNameArray[$o->idProject]=$projectName;
+        }
+        $typeName=null;
+        $typeId=null;
+        $type='id'.get_class($item).'Type';
+        if (property_exists($item, $type)) {
+          $typeId=$item->$type;
+          $typeName=SqlList::getNameFromId('Type', $item->$type);
+        }
+        $priorityName=null;
+        $priorityId=null;
+        if (property_exists($item, 'idPriority')) {
+          $priorityId=$item->idPriority;
+          $priorityName=SqlList::getNameFromId('Priority', $item->idPriority);
+        }
+        $responsibleName=null;
+        $responsibleId=null;
+        if (property_exists($item, 'idResource')) {
+          $responsibleId=$item->idResource;
+          $responsibleName=SqlList::getNameFromId('Affectable', $item->idResource);
+        }
+        $statusName=null;
+        $statusId=null;
+        if (property_exists($item, 'idStatus')) {
+          $statusId=$item->idStatus;
+          $statusName=SqlList::getNameFromId('Status', $item->idStatus);
+        }
+        $description=null;
+        if (property_exists($item, 'description')) {
+          $description=$item->description;
+        }
+        $date=null;
+        $dateField="";
+        $name="";
+        $id=$o->id;
+        $class=get_class($o);
+        if (property_exists($obj, 'actualDueDate') and property_exists($obj, 'initialDueDate')) {
+          if ($o->actualDueDate) {
+            $date=$o->actualDueDate;
+            $dateField=i18n('colActualDueDate');
+          } else {
+            $date=$o->initialDueDate;
+            $dateField=i18n('colInitialDueDate');
+          }
+          $name=$o->name;
+        } else if (property_exists($obj, 'actualDueDateTime') and property_exists($obj, 'initialDueDateTime')) {
+          if ($o->actualDueDateTime) {
+            $date=substr($o->actualDueDateTime, 0, 10);
+            $dateField=i18n('colActualDueDate');
+          } else {
+            $date=substr($o->initialDueDateTime, 0, 10);
+            $dateField=i18n('colInitialDueDate');
+          }
+          $name=$o->name;
+        } else if (property_exists($obj, 'validatedEndDate')) {
+          $name=$o->refName;
+          $id=$o->refId;
+          $class=$o->refType;
+          $date=$o->validatedEndDate;
+          $dateField=i18n('colValidatedEndDate');
+        }
+        if ($date) {
+          if (!array_key_exists($date, $result)) {
+            $result[$date]=array();
+          }
+
+          $result[$date]["$class#$id"]=array(
+              'class'=>$class,
+              'id'=>$id,
+              'work'=>0,
+              'real'=>false,
+              'name'=>$name,
+              'color'=>$color,
+              'date'=>$dateField,
+              'projectId'=>$projectId,
+              'projectName'=>$projectName,
+              'typeId'=>$typeId,
+              'typeName'=>$typeName,
+              'priorityId'=>$priorityId,
+              'priorityName'=>$priorityName,
+              'responsibleId'=>$responsibleId,
+              'responsibleName'=>$responsibleName,
+              'statusId'=>$statusId,
+              'statusName'=>$statusName,
+              'description'=>$description);
+        }
+      }
+    }
 	}
 	// Planned Activities and real work
 	$pw=new PlannedWork();
 	$w=new Work();
 	$critWhere="idResource=".Sql::fmtId($ress);
 	$critWhere.=" and workDate>='$startDate' and workDate<='$endDate'";
+	if ($selectedTypes != 'All') {
+	  $selectedTypes = str_replace(",", "','", $selectedTypes);
+	  $critWhere.=" AND refType IN ('$selectedTypes')";
+	}
 	$pwList=$pw->getSqlElementsFromCriteria(null,false,$critWhere);
 	$wList=$w->getSqlElementsFromCriteria(null,false,$critWhere);
 	$workList=array_merge($pwList,$wList);
 	//KEVIN
 	foreach ($workList as $pw) {
-		$item=new $pw->refType($pw->refId);
-		if ($item->done and !$showDone) continue;
-		if ($item->idle and !$showIdle) continue;
+	  $item=new $pw->refType($pw->refId);
+	  if (($item->done and !$showDone and !$showIdle) or ($item->idle and !$showIdle) or  (isset($countStatus) and !in_array($item->idStatus, $listStatusFilter)))
+	    continue;
 		if ($pw->refType=='Meeting') {
 			$display=substr($item->meetingStartTime,0,5).' - '.htmlEncode($item->name);
 		} else if (get_class($pw)=='Work') {
 				$display='['.Work::displayWorkWithUnit($pw->work).'] '.htmlEncode($item->name);
 		} else {
-		  $display='<i>('.Work::displayWorkWithUnit($pw->work).')</i> '.htmlEncode($item->name);		  
+		  $display='<i>('.Work::displayWorkWithUnit($pw->work).')</i> '.htmlEncode($item->name);
 		}
 		if (array_key_exists($item->idProject,$projectColorArray)) {
 			$color=$projectColorArray[$item->idProject];
@@ -513,12 +544,15 @@ function getAllActivities($startDate, $endDate, $ress, $showDone=false, $showIdl
 function drawDiaryLineHeader($currentDay, $trHeight,$period) {
 	echo '</tr>';
 	echo '<tr height="'.$trHeight.'px"><td class="buttonDiary" ';
+	$week=weekNumber($currentDay);
+	$weekYear=substr($currentDay,0,4);
+	if (intval($week)==1 and substr($currentDay,5,2)==12) $weekYear+=1;
 	if ($period=="month") {
-	  echo 'onClick="diaryWeek('.weekNumber($currentDay).','.substr($currentDay,0,4).');"';
+	  echo 'onClick="diaryWeek('.$week.','.$weekYear.');"';
 	} else if ($period=="week") {
 		echo 'onClick="diaryMonth('.substr($currentDay,5,2).','.substr($currentDay,0,4).');"';
 	} else if ($period=="day") {
-		echo 'onClick="diaryWeek('.weekNumber($currentDay).','.substr($currentDay,0,4).');"';
+		echo 'onClick="diaryWeek('.$week.','.$weekYear.');"';
 	}	
 	echo '>';
 	if ($period=='week') {

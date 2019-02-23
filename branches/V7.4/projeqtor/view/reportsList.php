@@ -75,7 +75,7 @@ scriptLog('   ->/view/reportsList.php');
     </tr>
     <tr style="height:100%">
       <td valign="top" style="width:40%" >
-        <div id="reportMenuList" style="width:558px;overflow-y:auto;overflow-x:hidden;height:100%;">
+        <div id="reportMenuList" style="width:558px;overflow-y:auto;overflow-x:hidden;height:96%;">
            <?php include "reportListMenu.php";?>
         </div>
       </td>

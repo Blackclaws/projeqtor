@@ -61,4 +61,9 @@ if (property_exists($obj, $peName)) {
   $resultPe=$pe->getExtraHiddenFields($type,$status,$profile);
   $result=array_merge($result,$resultPe);
 }
+if (property_exists($obj, 'WorkElement')) {
+  $we=$obj->WorkElement;
+  $resultWe=$we->getExtraHiddenFields($type,$status,$profile);
+  $result=array_merge($result,$resultWe);
+}
 echo json_encode($result);

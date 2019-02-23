@@ -543,7 +543,7 @@ class WorkflowMain extends SqlElement {
         $result.='  <table>';
         foreach ($val as $name=>$value){
           if($scopeName != $scope){
-            $result.='    <tr style="border-bottom:1px solid #aaaaaa;"  ><td style="padding:2px 5px;"class="workflowHeader" style="padding:2px 5px;">'. $scope .'</td> </tr>';
+            $result.='    <tr style="border-bottom:1px solid #aaaaaa;"  ><td style="padding:2px 5px;"class="workflowHeader" style="padding:2px 5px;">'. i18n($scope) .'</td> </tr>';
           }
           $scopeName = $scope;
           $result.='    <tr style="border-bottom:1px solid #aaaaaa;"  ><td  class="workflowData" style="padding:2px 5px;">'. $name .'</td> </tr>';
