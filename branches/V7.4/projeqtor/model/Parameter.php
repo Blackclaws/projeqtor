@@ -255,6 +255,7 @@ class Parameter extends SqlElement {
       case 'printInNewWindow':
       case 'initializePassword': case 'setResponsibleIfNeeded': 
       case 'autoSetAssignmentByResponsible':
+      case 'autoSetUniqueComponentVersion':
         $list=array('YES'=>i18n('displayYes'),
                     'NO'=>i18n('displayNo'));
         break;
@@ -263,10 +264,12 @@ class Parameter extends SqlElement {
       case 'displayOnlyHandled': case 'setHandledOnRealWork': case 'setDoneOnNoLeftWork':
       case 'limitPlanningActivity' :
       case 'autoUpdateActivityStatus':
+      case 'lockDocumentDownload':
       case 'subscriptionAuto':
       case 'displayBusinessFeature':
       case 'displayListOfActivity':
       case 'filterByStatus':
+      case 'globalNoteDiscussionMode'://damian
       case 'displayLanguage' :
       case 'displayContext' :
      	case 'displayMilestonesStartDelivery' :
@@ -287,6 +290,7 @@ class Parameter extends SqlElement {
       case 'milestoneFromVersion' :
       case 'dontAddClosedDeliveredVersionToProject' : //ADD qCazelles - Dont add closed and delivered versions to Project - Ticket 181 
       case 'mailGroupActive' :
+      case 'isManualProgress':
         $list=array('NO'=>i18n('displayNo'),
                     'YES'=>i18n('displayYes')); 
         break;
@@ -300,9 +304,17 @@ class Parameter extends SqlElement {
       case 'changeReferenceOnTypeChange': case 'rememberMe':
       case 'getVersion':
       case 'displayPoolsOnImputation':
+      case 'authorizeActivityOnDeliveredProduct' :
         $list=array('YES'=>i18n('displayYes'),
       	            'NO'=>i18n('displayNo'));
       	break;
+      case 'submitAlertSendToProjectLeader': case 'submitAlertSendToTeamManager': 
+      case 'submitAlertSendToOrganismManager':
+        $list=array('NONE'=>i18n('displayNone'),
+            'ALERT'=>i18n('displayAlert'),
+        		'MAIL'=>i18n('displayMail'),
+        		'ALERT&MAIL'=>i18n('displayAlertAndMail'));
+        break;
       case 'displayNote':
         $list=array('YES_OPENED'=>i18n('displayYesOpened'),
                     'YES_CLOSED'=>i18n('displayYesClosed'));
@@ -393,9 +405,13 @@ class Parameter extends SqlElement {
         $list=array('false'=>i18n('displayNo'),
                     'true'=>i18n('displayYes'));
         break;
-      case 'restrictProjectList';
+      case 'restrictProjectList':case 'showIdleDefault';
         $list=array('false'=>i18n('displayNo'),
                     'true'=>i18n('displayYes'));
+        break;
+      case 'userNoteDiscussionMode':
+        $list = array('NO'=>i18n('displayNo'),
+                      'YES'=>i18n('displayYes'));
         break;
       case 'paramLdap_version':
         $list=array('2'=>'2',
@@ -474,6 +490,7 @@ class Parameter extends SqlElement {
       	if (securityCheckDisplayMenu(null,'DashboardTicket')) {$list['dashboardTicketMain.php']=i18n('menuDashboardTicket');}
       	if (securityCheckDisplayMenu(null,'Diary')) {$list['diaryMain.php']=i18n('menuDiary');}
       	if (securityCheckDisplayMenu(null,'Imputation')) {$list['imputationMain.php']=i18n('menuImputation');}
+      	if (securityCheckDisplayMenu(null,'ImputationValidation')) {$list['ImputationValidation.php']=i18n('menuImputationValidation');}//damian
       	if (securityCheckDisplayMenu(null,'Absence')) {$list['Absence.php']=i18n('menuAbsence');}
       	if (securityCheckDisplayMenu(null,'Planning')) {$list['planningMain.php']=i18n('menuPlanning');}
       	if (securityCheckDisplayMenu(null,'PortfolioPlanning')) {$list['portfolioPlanningMain.php']=i18n('menuPortfolioPlanning');}
@@ -636,6 +653,8 @@ class Parameter extends SqlElement {
                            "maxColumns"=>'list',
                            "directAccessToComponentList"=>'list',
                            "restrictProjectList"=>'list',
+                           "showIdleDefault"=>'list',
+                           "userNoteDiscussionMode"=>'list',
                          'sectionPrintExport'=>'section',
                            'printHistory'=>'list',  
                            "printInNewWindow"=>"list",
@@ -690,6 +709,9 @@ class Parameter extends SqlElement {
             	                'maxDaysToBookWorkBlocking'=>'number',
             	                'imputationAlertInputByOther'=>'list',
             	                'displayPoolsOnImputation'=>'list',
+            	                'submitAlertSendToProjectLeader'=>'list',
+            	                'submitAlertSendToTeamManager'=>'list',
+            	                'submitAlertSendToOrganismManager'=>'list',
       	                'tabPlanning'=>"tab",
       	                  'columnPlanningLeft'=>'newColumn',
         	                  'sectionPlanning'=>'section',
@@ -720,6 +742,7 @@ class Parameter extends SqlElement {
       	                      'updateDeliverableResponsibleFromMilestone'=>'list',
       	                      'updateIncomingResponsibleFromMilestone'=>'list',
       	                      'autoUpdateActivityStatus'=>'list',
+      	                      'isManualProgress'=>'list',
       	                    'menuMilestone'=>'section',
       	                      'manageMilestoneOnItems'=>'list',
       	                      'autoLinkMilestone'=>'list',
@@ -750,6 +773,7 @@ class Parameter extends SqlElement {
       	                      "scaytAutoStartup"=>'list',
       	                      "notApplicableValue"=>"list",
       	                      'restrictProjectList'=>'list',
+      	                      "globalNoteDiscussionMode"=>'list',
       	                'tabMiscellaneous'=>"tab",
       	                  'columnMiscellanousLeft'=>'newColumn',
       	                     'sectionReferenceFormat'=>'section',
@@ -761,6 +785,7 @@ class Parameter extends SqlElement {
       	                       'versionReferenceSuffix'=>'text',
       	                       'draftSeparator'=>'text',
       	                       'preserveUploadedFileName'=>'list',
+      	                       'lockDocumentDownload'=>'list',
       	                     'sectionBillReferenceFormat'=>'section',
       	                       'billReferenceFormat'=>'text',
       	                       'billNumSize'=>'number',
@@ -785,6 +810,8 @@ class Parameter extends SqlElement {
                             'sortCompositionStructure'=>'list', //ADD qCazelles - Sort version composition-structure - Ticket 142
                             'manageComponentOnRequirement'=>'list',   //ADD qCazelles - Add Component to Requirement - Ticket 171
                             'dontAddClosedDeliveredVersionToProject'=>'list', //ADD qCazelles - Dont add closed and delivered versions to Project - Ticket 181
+                            'authorizeActivityOnDeliveredProduct'=>'list',
+                            'autoSetUniqueComponentVersion'=>'list',
                           'columnConfigurationRight'=>'newColumn',
                         'tabFinancial'=>"tab",
                           'newColumnbFinancialLeft'=>'newColumn',
@@ -1092,6 +1119,7 @@ class Parameter extends SqlElement {
   static public function getPlanningColumnDescription() {
     if (count(self::$planningColumnDescription)) return self::$planningColumnDescription;
     $arrayFields=array(
+        'Id'=>50,
         'Name'=>300,
         'StartDate'=>80,
         'EndDate'=>80,
@@ -1179,7 +1207,7 @@ class Parameter extends SqlElement {
   	}
   	$i=1;  	
   	foreach($arrayFieldsSorted as $order=>$column) {
-  	  $res[$i]=(!strpos($hidden,$column)>0)?$column:'Hidden'.$column;
+  	  $res[$i]=(!strpos($hidden,'|'.$column.'|')>0)?$column:'Hidden'.$column;
   	  $resAll[$i]=$column;
   		$i++;
   	}

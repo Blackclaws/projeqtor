@@ -32,6 +32,7 @@ require_once('_securityCheck.php');
 class PlannedWork extends GeneralWork {
 
   public $_noHistory;
+  public static $_planningInProgress;
     
   // List of fields that will be exposed in general user interface
   
@@ -130,6 +131,7 @@ class PlannedWork extends GeneralWork {
   	SqlElement::$_cachedQuery['Project']=array();
   	SqlElement::$_cachedQuery['Affectation']=array();
   	SqlElement::$_cachedQuery['PlanningMode']=array();
+  	self::$_planningInProgress=true;
   	
   	$workUnit=Work::getWorkUnit();
   	$hoursPerDay=Work::getHoursPerDay();
@@ -191,6 +193,7 @@ class PlannedWork extends GeneralWork {
     //-- #697 : moved the administrative project clause after the purge
     //-- Remove administrative projects
     $inClause.=" and idProject not in " . Project::getAdminitrativeProjectList() ;
+    $inClause.=" and idle=0";
     //-- Get the list of all PlanningElements to plan (includes Activity, Projects, Meetings, Test Sessions)
     $pe=new PlanningElement();
     $clause=$inClause;
@@ -1226,7 +1229,7 @@ class PlannedWork extends GeneralWork {
     if ($withCriticalPath) {
       if ($allProjects) {
         $proj=new Project(' ',true);
-        $projectIdArray=array_keys($proj->getRecursiveSubProjectsFlatList(true, true));
+        $projectIdArray=array_keys($proj->getRecursiveSubProjectsFlatList(true, false));
       }
       foreach ($projectIdArray as $idP) {
         $fullListPlan=self::calculateCriticalPath($idP,$fullListPlan);
@@ -1235,7 +1238,7 @@ class PlannedWork extends GeneralWork {
     $arrayProj=array();
     foreach ($fullListPlan as $pe) {
       if (!$pe->refType) continue;
-      if ($pe->refType!='Project') $arrayProj[$pe->idProject]=$pe->idProject;
+      if ($pe->refType!='Project' and $pe->idProject) $arrayProj[$pe->idProject]=$pe->idProject;
       if (property_exists($pe,'_profile') and $pe->_profile=='RECW') { 
         $resPe=$pe->simpleSave();
         PlanningElement::updateSynthesis($pe->refType, $pe->refId);
@@ -1284,6 +1287,7 @@ class PlannedWork extends GeneralWork {
       Sql::rollbackTransaction ();
     }
     echo '<div class="message' . $status . '" >' . $result . '</div>';
+    self::$_planningInProgress=false;
     return $result;
   }
 // End of PLAN
@@ -1452,20 +1456,26 @@ scriptLog("storeListPlan(listPlan,$plan->id)");
   
   private static function sortPlanningElements($list,$listProjectsPriority) {
   	// first sort on simple criterias
-    $mainPriority="priority"; // May be set to "endDate" // TODO : finalize
+    $mainPriority="endDate"; // May be set to "endDate" or "priority"
     $str01=($mainPriority=='endDate')?'.00000000':'';
     //$str02=($mainPriority=='priority')?'.00000000':'';
-    foreach ($list as $id=>$elt) {    
-    	if ($elt->idPlanningMode=='16' or $elt->idPlanningMode=='6') { // FIXED
+    $pmList=SqlList::getList('PlanningMode','code',null,true);
+    $pmList['']='';
+    foreach ($list as $id=>$elt) {
+      if ($elt->idPlanningMode and !isset($pmList[$elt->idPlanningMode])) {
+        traceLog("Error for planning mode '$elt->idPlanningMode' not found in Planning Mode table");
+        $pmList[$elt->idPlanningMode]='ASAP';
+      }    
+      $pm=$pmList[$elt->idPlanningMode];
+    	if ($pm=='FIXED') { // FIXED
     		$crit='1'.$str01;
-    	} else if ($elt->idPlanningMode=='2' or  $elt->idPlanningMode=='3' or  $elt->idPlanningMode=='7' or  $elt->idPlanningMode=='20'
-    	  or $elt->idPlanningMode=='10' or $elt->idPlanningMode=='11' or $elt->idPlanningMode=='13') { // REGUL or FULL or HALF or QUART)
+    	} else if ($pm=='REGUL' or $pm=='FULL' or $pm=='HALF' or $pm=='QUART') { // REGUL or FULL or HALF or QUART)
     	  $crit='2'.$str01;
-    	} else if ($elt->idPlanningMode=='8' or  $elt->idPlanningMode=='14') { // FDUR  
+    	} else if ($pm=='FDUR') { // FDUR  
     	  $crit='4'.$str01;
-    	} else if ($elt->idPlanningMode=='22') { // RECW
+    	} else if ($pm=='RECW') { // RECW
     	  $crit='6'.$str01; // Lower priority (availability will be reserved)
-    	} else if ($elt->idPlanningMode=='4' and $elt->validatedEndDate and $mainPriority=='endDate') {
+    	} else if ($pm=='ALAP' and $elt->validatedEndDate and $mainPriority=='endDate') {
     		$crit='5'.'.'.str_replace('-','',$elt->validatedEndDate);
     	} else { // Others (includes GROUP, wich is not a priority but a constraint)
         $crit='5'.$str01;

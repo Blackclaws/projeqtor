@@ -48,8 +48,8 @@ if (is_session_started()===FALSE) {
 // === Application data : version, dependencies, about message, ...
 $applicationName = "ProjeQtOr"; // Name of the application
 $copyright = $applicationName; // Copyright to be displayed
-$version = "V7.4.0"; // Version of application : Major / Minor / Release
-$build = "0218"; // Build number. To be increased on each release
+$version = "V7.4.2"; // Version of application : Major / Minor / Release
+$build = "0223"; // Build number. To be increased on each release
 $website = "http://www.projeqtor.org"; // ProjeQtOr site url
 if (!isset($aesKeyLength)) { // one can define key lenth to 256 in parameters.php with $aesKeyLength=256; // valid values are 128, 192 and 256
   $aesKeyLength=128;
@@ -206,6 +206,7 @@ if (!(isset($maintenance) and $maintenance) and !(isset($batchMode) and $batchMo
         $loginSave=true;
         $user->setCookieHash();
         $user->save();
+        //damian
         if(Parameter::getGlobalParameter('applicationStatus')=='Closed'){
         	$prf=new Profile($user->idProfile);
         	if ($prf->profileCode!='ADM') {
@@ -439,9 +440,13 @@ function getUserVisibleObjectClassesList($listScreen="List", $user=NULL) {
     $user=getSessionUser();
   }
   
+  $menu=new Menu();
+  $menuTable=$menu->getDatabaseTableName();
+  $habi=new Habilitation();
+  $habiTable=$habi->getDatabaseTableName();
   $query="SELECT substr(menu.name,5) AS class ";
-  $query.="FROM menu ";
-  $query.="INNER JOIN habilitation ON habilitation.idMenu = menu.id ";
+  $query.="FROM $menuTable menu ";
+  $query.="INNER JOIN $habiTable habilitation ON habilitation.idMenu = menu.id ";
   $query.="WHERE habilitation.allowAccess=1 AND habilitation.idProfile=";
   $query.=$user->idProfile;
   
@@ -1740,7 +1745,7 @@ function getAccesRestrictionClause($objectClass, $alias=null, $showIdle=false, $
       if ($listOWN) $queryWhere.=" and ($tableAlias$fieldProj not in $listOWN or $tableAlias$fieldProj is null or $clauseOWN $extraFieldCriteriaReverse)";
     }
   }
-  return " ".$queryWhere." ";
+  return " (".$queryWhere.") ";
 }
 
 /**
@@ -1910,12 +1915,38 @@ function sendMail_phpmailer($to, $title, $message, $object=null, $headers=null, 
                                 
   // TODO : FOR OUTLOOK // TEST PBE FOR V7.0
   if ($headers) {
-    // $phpmailer->ContentType = 'multipart/alternative';
-    $phpmailer->addStringAttachment($message, "invite.ics", "7bit", "text/calendar; charset=utf-8; method=REQUEST");
+    /*
+    // Test V1 - Up to 7.2.7 => not opened on Outlook 2010
+    //$phpmailer->ContentType = 'multipart/alternative';
+    $phpmailer->addStringAttachment($message, "meeting.ics", "7bit", 'text/calendar; charset="utf-8"; method="REQUEST"');
     $heads=explode("\r\n", $headers);
     // PHPMailer
     $phpmailer->Body=" ";
-    // $phpmailer->Body = $message;
+    //$phpmailer->Body = $message;
+    */
+    
+     // Test VOK - Tested on Outlook, Thunderbird, Gmail, Zimbra, Sogo
+     $phpmailer->ContentType = 'text/calendar; charset="utf-8"; method="REQUEST"';
+     $heads = explode ( "\r\n", $headers );
+     $phpmailer->Body = $message;
+    
+    /*
+     // Test V3
+     $phpmailer->ContentType = 'multipart/alternative';
+     $phpmailer->addStringAttachment($message, "invite.ics", "7bit", "text/calendar; charset=utf-8; method=REQUEST");
+     $heads=explode("\r\n", $headers);
+     $phpmailer->Body = $message;
+     */
+    
+    /*
+     // Test V4
+     $phpmailer->ContentType = 'multipart/alternative';
+     $phpmailer->addStringAttachment($message, "invite.ics", "base64", "text/calendar;charset=utf-8; method=REQUEST");
+     $heads=explode("\r\n", $headers);
+     // PHPMailer
+     $phpmailer->Body=" ";
+     // $phpmailer->Body = $message;
+     */
   } else {
     $phpmailer->Body=$message; //
     $text=new Html2Text($message);
@@ -1924,21 +1955,6 @@ function sendMail_phpmailer($to, $title, $message, $object=null, $headers=null, 
   if ($references) {
     $phpmailer->addCustomHeader('References', '<'.$references.'.'.$paramMailSender.'>');
   }
-  
-  // // TODO FOR OUTLOOK // See above
-  // if ($headers) {
-  // $phpmailer->ContentType = 'text/calendar';
-  // $heads = explode ( "\r\n", $headers );
-  // //PHPMailer
-  // $phpmailer->Body = $message;
-  // } else {
-  // $phpmailer->Body = $message; //
-  // $text=new Html2Text($message);
-  // $phpmailer->AltBody = $text->getText();
-  // }
-  // if ($references) {
-  // $phpmailer->addCustomHeader('References', '<' . $references . '.' . $paramMailSender . '>');
-  // }
   
   $phpmailer->CharSet="UTF-8";
   if ($attachmentsArray) { // attachments
@@ -1973,7 +1989,14 @@ function sendMail_phpmailer($to, $title, $message, $object=null, $headers=null, 
   $mail->save();
   return $resultMail;
 }
-
+function mb_str_split($str, $split_length) {
+  $chars = array();
+  $len = mb_strlen($str, 'UTF-8');
+  for ($i = 0; $i < $len; $i+=$split_length ) {
+    $chars[] = mb_substr($str, $i, $split_length, 'UTF-8');
+  }
+  return $chars;
+}
 function sendMail_socket($to, $subject, $messageBody, $object=null, $headers=null, $sender=null, $boundary=null) {
   scriptLog('sendMail_socket');
   $paramMailSender=Parameter::getGlobalParameter('paramMailSender');
@@ -2753,6 +2776,25 @@ function workDayDiffDates($start, $end) {
   return $duration;
 }
 
+function countDayDiffDates($start, $end, $idCalendarDefinition) {
+	if (!$start or !$end) {
+		return "";
+	}
+	$currentDate=$start;
+	$endDate=$end;
+	if ($end<$start) {
+		return 0;
+	}
+	$duration=0;
+	while ($currentDate<=$endDate) {
+		if (!isOffDay($currentDate, $idCalendarDefinition)) {
+			$duration++;
+		}
+		$currentDate=addDaysToDate($currentDate, 1);
+	}
+	return $duration;
+}
+
 /**
  * ============================================================================
  * Calculate difference between 2 dates
@@ -3170,6 +3212,16 @@ function firstDayofWeek($week=null, $year=null) {
   return $desiredMonday;
 }
 
+function lastDayofWeek($week=null, $year=null) {
+	if (!$week or !$year) {
+		$now=date('Y-m-d');
+		return firstDayofWeek(weekNumber($now), substr($now, 0, 4));
+	}
+	$date = new DateTime();
+	$date->setISODate($year, $week, 7);
+	$lastDay = substr($date->format('Y-m-d'), 0, 10);
+	return $lastDay;
+}
 /*
  * Calculate number of days between 2 dates
  */

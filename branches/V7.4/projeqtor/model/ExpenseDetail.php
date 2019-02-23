@@ -1,4 +1,5 @@
 <?php 
+use Spipu\Html2Pdf\Tests\ExamplesTest;
 /*** COPYRIGHT NOTICE *********************************************************
  *
  * Copyright 2009-2017 ProjeQtOr - Pascal BERNARD - support@projeqtor.org
@@ -130,5 +131,25 @@ class ExpenseDetail extends SqlElement {
     }
     return $result;
   }
+
+//   public static function addExpenseDetailFromBillLines($objectClass,$objectId,$expenseId,$projectId=null) {
+//     if (!$projectId) {
+//       $exp=new Expense($expenseId);
+//       $projectId=$exp->idProject;
+//     }
+//     $billLine = new BillLine();
+//     $critArray=array('refType'=>$objectClass,'refId'=>$objectId);
+//     $lines=$billLine->getSqlElementsFromCriteria($critArray);
+//     foreach ($lines as $line) {
+//       $det=new ExpenseDetail();
+//       $det->amount=$line->amount;
+//       $det->externalReference=mb_substr($line->description, 0,100);
+//       $det->idExpense=$expenseId;
+//       $det->idProject=$projectId;
+//       $det->name=mb_substr(str_replace("\n", " ", $line->detail), 0,100);
+//       if (!$det->name) $det->name=i18n('BillLine').' #'.$line->line;
+//       $res=$det->save();
+//     }
+//   }
 }
 ?>

@@ -77,6 +77,28 @@ if ($type == 'empty') {
   Security::checkValidClass ( $objectClass, 'objectClass' );
   $obj = new $objectClass ();
   $nbRows = listFieldsForFilter ( $obj, 0 );
+  //damian
+}else if($type == "emailTemplate"){
+  $objIdClass = RequestHandler::getValue('objectIdClass');
+  $split=explode('_',$objIdClass);
+  $objectId = $split[0];
+  $objectClass = $split[1];
+  if($objectClass == 'TicketSimple'){
+    $objectClass = 'Ticket';
+  }
+  $obj=new $objectClass($objectId);
+  $emTp = new EmailTemplate();
+  $idObjectType = 'id'.$objectClass.'Type';
+  $idMailable = SqlList::getIdFromTranslatableName('Mailable', $objectClass);
+  $where = "(idMailable = ".$idMailable." or idMailable IS NULL) and (idType = '".$obj->$idObjectType."' or idType IS NULL)";
+  $listEmailTemplate = $emTp->getSqlElementsFromCriteria(null,false,$where);
+  $tabEmailTemplate = array();
+  foreach ($listEmailTemplate as $val){
+  	$tabEmailTemplate[$val->id]=$val->name;
+  }
+  foreach ($tabEmailTemplate as $id=>$name){
+    echo '{id:"'.$id.'", name:"'.$name.'"},';
+  }
 } else if ($type == 'operator') { // =============================================== OPERATOR ===================================================================================
   $dataType = $_REQUEST ['dataType']; // Note: checked against constant values.
   if ($dataType == 'int' or $dataType == 'date' or $dataType == 'datetime' or $dataType == 'decimal') {
@@ -686,7 +708,7 @@ if ($type == 'empty') {
     echo '{id:"' . $id . '", name:"' . $name . '"}';
     $nbRows += 1;
   }
-}
+} 
 echo ' ] }';
 
 function listFieldsForFilter($obj, $nbRows, $included = false) {

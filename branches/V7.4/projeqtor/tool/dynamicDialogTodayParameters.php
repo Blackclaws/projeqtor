@@ -94,6 +94,12 @@ $today=new Today();
   echo '<tr><td class="dialogSection" colspan="4">'.i18n('listTodayItems').'</td></tr>';
   echo '<tr><td colspan="4">&nbsp;</td></tr>';
   foreach ($todayList as $todayItem) {
+    if ($todayItem->scope=='static') {
+      if ($todayItem->staticSection=='Documents' and !securityCheckDisplayMenu(null, 'Document')) continue;
+      if ($todayItem->staticSection=='AssignedTasks' and !securityCheckDisplayMenu(null, 'Activity') and !!securityCheckDisplayMenu(null, 'Meeting') ) continue;
+      if ($todayItem->staticSection=='AccountableTasks' and !getSessionUser()->isResource) continue;
+      if ($todayItem->staticSection=='ResponsibleTasks' and !getSessionUser()->isResource) continue;
+    }
     if ($todayItem->scope!="static" or $todayItem->staticSection!="ProjectsTasks" or $profile=='PL') {
       echo '<tr id="dialogTodayParametersRow' . htmlEncode($todayItem->id). '"
                 class="dojoDndItem" dndType="today" style="height:10px;">';

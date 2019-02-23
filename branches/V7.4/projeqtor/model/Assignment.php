@@ -348,6 +348,33 @@ class Assignment extends SqlElement {
     $pw=new PlannedWork();
     $pwList=$pw->purge('idAssignment='.Sql::fmtId($this->id));
     
+    //gautier #3646
+    // If Resource is part of Resource Team (Pool) and Pool is assigned, add work from Pool
+    if($this->refType='Activity'){
+      $resAffPool = new ResourceTeamAffectation();
+      $lstResAffPool = $resAffPool->getSqlElementsFromCriteria(array('idResource'=>$this->idResource));
+      if($lstResAffPool){
+        $arrTeams=array();
+        foreach ($lstResAffPool as $pool){
+          $arrTeams[$pool->idResourceTeam]=$pool->idResourceTeam;
+        }
+        $idAct = $this->refId;
+        $ass = new Assignment();
+        $lstAss = $ass->getSqlElementsFromCriteria(array('refId'=>$this->refId,'refType'=>'Activity'));
+        foreach ($lstAss as $value){
+          if($value->isResourceTeam){
+            if (in_array($value->idResource, $arrTeams)) {
+              $assAdd = new Assignment($value->id);
+              $assAdd->assignedWork += $this->assignedWork;
+              $assAdd->leftWork += $this->leftWork;
+              $assAdd->save();
+            }
+          }
+        }
+      }
+    }
+    //end
+    
     // Update planning elements
     PlanningElement::updateSynthesis($this->refType, $this->refId);
     if ($this->leftWork!=0) {

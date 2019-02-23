@@ -89,8 +89,8 @@ $yearSpinner = $currentYear;
               constraints="{min:2000,max:2100,places:0,pattern:'###0'}"
               intermediateChanges="true"
               maxlength="4" class="roundedLeft"
-              value="<?php if(sessionValueExists('yearSpinner')){
-                              $yearSpinner = getSessionValue('yearSpinner') ;
+              value="<?php if(sessionValueExists('yearSpinnerAbsence')){
+                              $yearSpinner = getSessionValue('yearSpinnerAbsence') ;
                             echo $yearSpinner;
                            }else{
                             echo $currentYear;    
@@ -118,15 +118,15 @@ $yearSpinner = $currentYear;
                id="printButton" name="printButton"
                iconClass="dijitButtonIcon dijitButtonIconPrint" class="detailButton" showLabel="false">
                 <script type="dojo/method" event="onClick" args="evt">
-                  showPrint('../report/AbsenceReport.php', 'absence');
+                  showPrint('../report/absenceReport.php?userName='+dijit.byId('userName').get('value')+'&yearSpinner='+dijit.byId('yearSpinner').get('value'), 'print');
                 </script>
               </button>
               <button title="<?php echo i18n('reportPrintPdf')?>"  
                dojoType="dijit.form.Button" 
                id="printButtonPdf" name="printButtonPdf"
-               iconClass="dijitButtonIcon dijitButtonIconPdf" class="detailButton" showLabel="false">
+               iconClass="dijitButtonIcon dijitButtonIconPdf" class="detailButton" showLabel="false" style="display:none;">
                 <script type="dojo/method" event="onClick" args="evt">
-                  showPrint('../report/AbsenceReport.php', 'absence', null, 'pdf');
+                  showPrint('../report/absenceReport.php?userName='+dijit.byId('userName').get('value')+'&yearSpinner='+dijit.byId('yearSpinner').get('value'), 'print', null, 'pdf');
                 </script>
               </button>               
               <button id="refreshButton" dojoType="dijit.form.Button" showlabel="false"

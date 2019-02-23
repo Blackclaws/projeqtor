@@ -228,7 +228,7 @@ if ($_SERVER['REQUEST_METHOD']=='GET') {
 	$class="";
 	$uri=htmlEncode($_REQUEST['uri']);
 	$split=explode('/',$uri);
-	if (count($split>1)) {
+	if (count($split)>0) {
 		$class=ucfirst($split[0]);
 	}
 	if (! SqlElement::class_exists($class)) {

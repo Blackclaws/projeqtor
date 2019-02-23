@@ -36,6 +36,9 @@ if (! array_key_exists('objectId',$_REQUEST)) {
 $objectId=$_REQUEST['objectId'];
 Security::checkValidId($objectId);
 
+$reply=RequestHandler::getBoolean('reply');
+$idParentNote=RequestHandler::getId('idParentNote');
+
 $noteId=null;
 if (array_key_exists('noteId',$_REQUEST)) {
   $noteId=$_REQUEST['noteId'];
@@ -43,11 +46,17 @@ if (array_key_exists('noteId',$_REQUEST)) {
 }
 if ($noteId) {
   $note=new Note($noteId);
+  if($reply){
+  	$note->idNote=$idParentNote;
+  }
 } else {
   $note=new Note();
   $note->refType=$objectClass;
   $note->refId=$objectId;
   $note->idPrivacy=1;
+  if($reply){
+    $note->idNote=$idParentNote;
+  }
 }
 $detailHeight=600;
 $detailWidth=1010;
@@ -70,6 +79,7 @@ if (sessionValueExists('screenHeight')) {
          <input id="noteId" name="noteId" type="hidden" value="<?php echo $note->id;?>" />
          <input id="noteRefType" name="noteRefType" type="hidden" value="<?php echo $note->refType;?>" />
          <input id="noteRefId" name="noteRefId" type="hidden" value="<?php echo $note->refId;?>" />
+         <input id="noteIdParent" name="noteIdParent" type="hidden" value="<?php echo $note->idNote;?>" />
          <input id="noteEditorType" name="noteEditorType" type="hidden" value="<?php echo getEditorType();?>" />
          <?php if (getEditorType()=="CK" or getEditorType()=="CKInline") {?> 
           <textarea style="width:<?php echo $detailWidth;?>px; height:<?php echo $detailHeight;?>px"

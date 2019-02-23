@@ -291,7 +291,7 @@ class Cron {
     }
   }
   
-  // Restrart already running CRON  !!! NOT WORKING !!!
+  // Restrart already running CRON  !!! NOT WORKING WITHOUT A RELAUNCH !!!
   public static function restart() {
     error_reporting(0);
     //session_write_close();
@@ -315,7 +315,7 @@ class Cron {
       $now=time();
       fclose($handle);
       if (!$last or !is_numeric($last)) $last=0;
-      if ( (!$last or $now-$last) > (self::getSleepTime()*5)) {
+      if ( !$last or ($now-$last) > (self::getSleepTime()*5)) {
         // not running for more than 5 cycles : dead process
         self::removeRunningFlag();
         self::run();

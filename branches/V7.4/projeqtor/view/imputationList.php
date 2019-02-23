@@ -115,7 +115,7 @@ if(sessionValueExists('listShowIdleTimesheet')and getSessionValue('listShowIdleT
                   value="<?php if(sessionValueExists('yearSpinner')){
                                 echo getSessionValue('yearSpinner') ;
                                 if(sessionValueExists('weekSpinner')){
-                                  $rangeValue = getSessionValue('yearSpinner').getSessionValue('weekSpinner');
+                                  $rangeValue = getSessionValue('yearSpinner').numericFixLengthFormatter(getSessionValue('weekSpinner'),2);
                                 }else{
                                   $rangeValue = getSessionValue('yearSpinner').$currentWeek;
                                 }
@@ -138,11 +138,11 @@ if(sessionValueExists('listShowIdleTimesheet')and getSessionValue('listShowIdleT
                   intermediateChanges="true"
                   maxlength="2" class="roundedLeft"
                   value="<?php if(sessionValueExists('weekSpinner')){
-                                echo getSessionValue('weekSpinner') ;
+                                echo numericFixLengthFormatter(getSessionValue('weekSpinner'),2) ;
                                 if(sessionValueExists('yearSpinner')){
-                                  $rangeValue = getSessionValue('yearSpinner').getSessionValue('weekSpinner');
+                                  $rangeValue = getSessionValue('yearSpinner').numericFixLengthFormatter(getSessionValue('weekSpinner'),2);
                                 }else{
-                                  $rangeValue = $currentYear.getSessionValue('weekSpinner');
+                                  $rangeValue = $currentYear.numericFixLengthFormatter(getSessionValue('weekSpinner'),2);
                                 }
                                }else{
                                 echo $currentWeek;   
@@ -348,7 +348,7 @@ if(sessionValueExists('listShowIdleTimesheet')and getSessionValue('listShowIdleT
   </div>
   <div style="position:relative;" dojoType="dijit.layout.ContentPane" region="center" id="workDiv" name="workDiv">
      <form dojoType="dijit.form.Form" id="listForm" action="" method="post" >
-       <input type="hidden" name="userId" id="userId" value="<?php echo $user->id;?>"/>
+       <input type="hidden" name="userId" id="userId" value="<?php if(sessionValueExists('userName')){ echo getSessionValue('userName');}else{ echo $user->id; }?>"/>
        <input type="hidden" name="rangeType" id="rangeType" value="<?php echo $rangeType;?>"/>
        <input type="hidden" name="rangeValue" id="rangeValue" value="<?php echo $rangeValue;?>"/>
        <input type="checkbox" name="idle" id="idle" style="display: none;"/>     

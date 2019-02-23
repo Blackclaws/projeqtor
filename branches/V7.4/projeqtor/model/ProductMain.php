@@ -204,6 +204,8 @@ class ProductMain extends ProductOrComponent {
         $resultSC.=' loadContent("objectDetail.php", "detailDiv", "listForm");';
         $resultSC.='</script>';
         $resultSC.='</div></div>';
+      } else {
+        $resultSC='';
       }
       return $result.$resultSC;
     } elseif ($item=='subproducts') {

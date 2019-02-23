@@ -40,6 +40,7 @@ class ProfileMain extends SqlElement {
   public $description;
   public $_sec_restrictTypes;
   public $_spe_restrictTypes;
+  public static $_profileHasAccess;
   
   private static $_layout='
     <th field="id" formatter="numericFormatter" width="10%" ># ${id}</th>
@@ -152,8 +153,33 @@ class ProfileMain extends SqlElement {
       }
       $result.='</div>';
       $result.='</td></tr></table>';
+      if (! $print) {
+        $result.= '<button id="buttonRestrictProductList" dojoType="dijit.form.Button" showlabel="true"'
+                . ' title="'.i18n('helpRestrictProductListProfile').'" iconClass="iconType16" >'
+                . '<span>'.i18n('restrictProductList').'</span>'
+                . ' <script type="dojo/connect" event="onClick" args="evt">'
+                . '  var params="&idProfile='.$this->id.'";'
+                . '  loadDialog("dialogRestrictProductList", null, true, params);'
+                . ' </script>'
+                . '</button>';
+      }
       return $result;
     }
+  }
+  
+  public static function profileHasNoAccess($prof) {
+    if (!self::$_profileHasAccess) {
+      self::$_profileHasAccess=array();
+       $hab=new Habilitation();
+       $res=$hab->countGroupedSqlElementsFromCriteria(null, array('idProfile'), "allowAccess=1");
+       foreach($res as $idP=>$cpt) {     
+         if ($cpt>0) {
+           self::$_profileHasAccess[$idP]=true;
+         }
+       }
+    }
+    if (isset(self::$_profileHasAccess[$prof]) and self::$_profileHasAccess[$prof]==true) return false;
+    else return true;
   }
 }
 ?>

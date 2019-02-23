@@ -40,7 +40,7 @@ $versionHistory = array(
   "V5.0.0", "V5.1.0.a","V5.1.0",  "V5.1.1",  "V5.1.4",  "V5.1.5",  "V5.2.0",  "V5.2.2.a","V5.2.2",  "V5.2.3",  "V5.2.4", "V5.2.5", "V5.3.0.a", "V5.3.0", "V5.3.2", "V5.3.3", 
   "V5.4.0", "V5.4.2", "V5.4.3", "V5.4.4", "V5.4.5", "V5.5.0", "V5.5.2", "V5.5.3", 
   "V6.0.0", "V6.0.2", "V6.0.3", "V6.0.6", "V6.1.0", "V6.1.1", "V6.1.3", "V6.2.0", "V6.3.0", "V6.3.2", "V6.3.3", "V6.4.0", "V6.4.1", "V6.4.2", "V6.4.3", "V6.5.0", "V6.5.1", "V6.5.5", "V6.6.0",
-	"V7.0.0", "V7.0.2", "V7.1.0", "V7.1.2", "V7.1.3", "V7.2.0", "V7.2.3", "V7.2.6", "V7.3.0", "V7.3.2", "V7.4.0"
+	"V7.0.0", "V7.0.2", "V7.1.0", "V7.1.2", "V7.1.3", "V7.2.0", "V7.2.3", "V7.2.6", "V7.3.0", "V7.3.2", "V7.3.3", "V7.4.0", "V7.4.1"
 );
 $versionParameters =array(
   'V1.2.0'=>array('paramMailSmtpServer'=>'localhost',
@@ -51,7 +51,7 @@ $versionParameters =array(
                  'paramMailShowDetail'=>'true' ),
   'V1.3.0'=>array('defaultTheme'=>'blue'),
   'V1.4.0'=>array('paramReportTempDirectory'=>'../files/report/'),
-  'V1.5.0'=>array('currency'=>'€', 
+  'V1.5.0'=>array('currency'=>'â‚¬', 
                   'currencyPosition'=>'after'),
   'V1.8.0'=>array('paramLdap_allow_login'=>'false',
 					'paramLdap_base_dn'=>'dc=mydomain,dc=com',
@@ -784,7 +784,7 @@ deleteDuplicate();
 Sql::saveDbVersion($version);
 Parameter::clearGlobalParameters();
 unsetSessionValue('_tablesFormatList');
-if (file_exists(Parameter::getGlobalParameter('cronDirectory'))) Cron::restart();
+if (file_exists(Parameter::getGlobalParameter('cronDirectory')) and Cron::check()=='running') Cron::restart();
 
 traceLog('=====================================');
 traceLog("");

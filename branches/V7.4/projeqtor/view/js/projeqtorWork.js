@@ -449,9 +449,18 @@ function submitWorkPeriod(action) {
   dojo.xhrGet({
   url: '../tool/submitWorkPeriod.php?action='+action+'&rangeType='+rangeType+'&rangeValue='+rangeValue+'&resource='+resource,
     handleAs: "text",
-    load: function(data,args) { refreshImputationList();},
+    load: function(data,args) { refreshImputationList();sendAlertOnSubmitWork(action, rangeType, rangeValue, resource);},
     error: function() { }
-  });   
+  });
+}
+
+function sendAlertOnSubmitWork(action, rangeType, rangeValue, resource){
+	dojo.xhrGet({
+		  url: '../tool/sendMail.php?className=Imputation&action='+action+'&rangeType='+rangeType+'&rangeValue='+rangeValue+'&resource='+resource,
+		    handleAs: "text",
+		    load: function(data,args) {},
+		    error: function() { }
+		  });
 }
 
 function enterRealAsPlanned(nbDays){   
@@ -479,6 +488,7 @@ function enterRealAsPlanned(nbDays){
 
 function checkCapacity() {
   var capacity=parseFloat(dojo.byId('resourceCapacity').value);
+  capacity=Math.round(capacity*100)/100;
   for (colId=1; colId<=7; colId++) {
   valSum=Math.round(parseFloat(dijit.byId('colSumWork_' + colId).get("value"))*100)/100;
   if (valSum > capacity) {

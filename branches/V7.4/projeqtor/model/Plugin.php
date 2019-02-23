@@ -290,6 +290,9 @@ class Plugin extends SqlElement {
       
       traceLog("Plugin $plugin V".$this->pluginVersion. " completely deployed");
       if (isset($pluginReload) and $pluginReload) {
+        $user=getSessionUser();
+        $user->reset();
+        setSessionUser($user);
         return 'RELOAD';
       }
       return "OK";
