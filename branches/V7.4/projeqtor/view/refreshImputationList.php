@@ -49,6 +49,7 @@ $week=0;
 if (array_key_exists('weekSpinnerT',$_REQUEST)) {
   $week=$_REQUEST['weekSpinnerT'];
 }
+if (intval($week)<10) $week='0'.intval($week);
 
 $month=substr(date('Y-m-d',firstDayofWeek($week,$year)),5,-3);
 
