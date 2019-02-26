@@ -7850,9 +7850,9 @@ function showBigImage(objectClass, objectId, node, title, hideImage, nocache) {
     centerThumb80.style.top=topPx;
     centerThumb80.style.left=leftPx;
     centerThumb80.style.display="block";
-    var titleDivRect=dojo.byId('centerThumb80TitleContainer').getBoundingClientRect();
+    var titleDivRect=(dojo.byId('centerThumb80TitleContainer'))?dojo.byId('centerThumb80TitleContainer').getBoundingClientRect():null;
     var globalDivRect=document.documentElement.getBoundingClientRect();
-    if (titleDivRect.top+titleDivRect.height+50>globalDivRect.height) {
+    if (titleDivRect && titleDivRect.top+titleDivRect.height+50>globalDivRect.height) {
       var newTop=globalDivRect.height-titleDivRect.height-50;
       if (newTop<0) newTop=0;
       centerThumb80.style.top=newTop+'px';
