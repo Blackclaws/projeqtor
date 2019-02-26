@@ -64,7 +64,7 @@ class GlobalView extends SqlElement {
   
   // Define the layout that will be used for lists
   private static $_layout='
-    <th field="id" width="0%" >${id}</th>
+    <th field="id" width="-1%" >${id}</th>
     <th field="objectClass" formatter="classNameFormatter" width="10%" >${refType}</th>
     <th field="objectId" formatter="numericFormatter" width="5%" ># ${id}</th>
     <th field="nameProject" width="10%" >${idProject}</th>

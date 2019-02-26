@@ -584,7 +584,7 @@ class ImputationLine {
     echo '  <TD class="ganttLeftTopLine" colspan="'.(($lowRes)?$lowRes:'5').'" style="width:'.($nameWidth+2*$dateWidth+2*$workWidth).'px">';
     echo '<table style="width:98%"><tr><td style="width:99%">'.htmlEncode($resource->name).' - '.i18n($rangeType).' '.$rangeValueDisplay;
     echo '</td>';
-    if (!$print and !$period->validated and !$lowRes) { // and $resourceId == $user->id
+    if (!$print and !$period->validated and !$period->submitted and !$lowRes) { // and $resourceId == $user->id
       echo '<td style="width:1%">';
       echo '<button id="enterRealAsPlanned" dojoType="dijit.form.Button" showlabel="true" >';
       echo '<script type="dojo/connect" event="onClick" args="evt">enterRealAsPlanned('.$nbDays.');</script>';
