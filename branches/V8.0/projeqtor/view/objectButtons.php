@@ -156,8 +156,8 @@
           id=dojo.byId('objectId');
 	        if (id) { 	
             var currentItem=historyTable[historyPosition];
-            var currentScreen=currentItem[2];
-            if (currentScreen=="Planning" || currentScreen=="GlobalPlanning"){
+            var currentScreen=(currentItem && currentItem.length>2)?currentItem[2]:null;
+            if (currentItem && (currentScreen=="Planning" || currentScreen=="GlobalPlanning")){
               var currentItemParent = currentItem[1];
               var originClass = currentItem[0];
               var url = 'objectDetail.php?insertItem=true&currentItemParent='+currentItemParent+'&originClass='+originClass;

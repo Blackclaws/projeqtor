@@ -513,97 +513,109 @@ class Cron {
   	$importFullLog="";
   	$attachmentArray=array();
   	$boundary = null;
+  	$importFileArray=array();
   	if (is_dir($importDir)) {
       if ($dirHandler = opendir($importDir)) {
         while (($file = readdir($dirHandler)) !== false) {
         	if ($file!="." and $file!=".." and filetype($importDir . $pathSeparator . $file)=="file") {
         		$globalCronMode=true; // Cron should not be stopped on error or exception
-            $importFile=$importDir . $pathSeparator . $file;      
-            $split=explode('_',$file);
-            $class=$split[0];
-            $result="";
-            try {
-              $result=Importable::import($importFile, $class);
-            } catch (Exception $e) {
-            	$msg="CRON : Exception on import of file '$importFile'";
-            	$result="ERROR";
+            $importFile=$importDir . $pathSeparator . $file;            
+            $pos=strpos($file,'_');
+            if ($pos>0) {
+              $timestamp=substr($file,$pos+1).'_'.$cpt;
+            } else {
+              $timestamp=date('Ymd_his').'_'.$cpt;
             }
-            $globalCronMode=false; // VOLOUNTARILY STOP THE CRON. Actions are requested !
-            try {
-	            if ($result=="OK") {	            	
-	              $msg="Import OK : file $file imported with no error [ Number of '$class' imported : " . Importable::$cptDone . " ]";
-	              traceLog($msg);
-	              $importSummary.="<span style='color:green;'>$msg</span><br/>";
-	              if (! is_dir($importDir . $pathSeparator . "done")) {
-	              	mkdir($importDir . $pathSeparator . "done",0777,true);
-	              	
-	              }
-	              rename($importFile,$importDir . $pathSeparator . "done" . $pathSeparator . $file);
-	            } else {
-	            	if ($result=="INVALID") {
-	               	$msg="Import INVALID : file $file imported with " . Importable::$cptInvalid . " control errors [ Number of '$class' imported : " . Importable::$cptOK . " ]";
-	               	traceLog($msg);
-                  $importSummary.="<span style='color:orange;'>$msg</span><br/>";
-	              } else {
-	            	  $msg="Import ERROR : file $file imported with " . Importable::$cptRejected . " errors [ Number of '$class' imported : " . Importable::$cptOK . " ]";
-	            	  traceLog($msg);
-                  $importSummary.="<span style='color:red;'>$msg</span><br/>";
-	              }
-	              if (! is_dir($importDir . $pathSeparator . "error")) {
-	                mkdir($importDir . $pathSeparator . "error",0777,true);
-	              }
-	            	rename($importFile,$importDir . $pathSeparator . "error" . $pathSeparator . $file);
-	            }
-            } catch (Exception $e) {
-            	$msg="CRON : Impossible to move file '$importFile'";
-            	traceLog($msg);
-              $importSummary.="<span style='color:red;'>$msg</span><br/>";
-            	$msg="CRON IS STOPPED TO AVOID MULTIPLE-TREATMENT OF SAME FILES";
-            	traceLog($msg);
-              $importSummary.="<span style='color:red;'>$msg</span><br/>";
-            	$msg="Check access rights to folder '$importDir', subfolders 'done' and 'error' and file '$importFile'";
-            	traceLog($msg);
-              $importSummary.="<span style='color:red;'>$msg</span><br/>";
-            	exit; // VOLOUNTARILY STOP THE CRON. Actions are requested !
-            }
-            $globalCronMode=true; // If cannot write log file, do not exit CRON (not blocking)
-            $logFile=$importDir . $pathSeparator . 'logs' . $pathSeparator . substr($file, 0, strlen($file)-4) . ".log.htm";
-        	  if (! is_dir($importDir . $pathSeparator . "logs")) {
-              mkdir($importDir . $pathSeparator . "logs",0777,true);
-            }
-            if (file_exists($logFile)) {
-            	kill($logFile);
-            }
-            // Write log file
-            $fileHandler = fopen($logFile, 'w');
-            fwrite($fileHandler, Importable::getLogHeader());
-            fwrite($fileHandler, Importable::$importResult);
-            fwrite($fileHandler, Importable::getLogFooter());
-            fclose($fileHandler);
-            // Prepare joined file on email
-        	  if (Parameter::getGlobalParameter('cronImportLogDestination')=='mail+log') {
-        	  	if (! isset($paramMailerType) or $paramMailerType=='phpmailer') {
-        	  		$attachmentArray[]=$logFile;
-        	  	} else { // old way to send attachments
-	        	  	if (! $boundary) {
-	        	  	  $boundary = md5(uniqid(microtime(), TRUE));
-	        	  	}
-							  $file_type = 'text/html';
-	              $content = Importable::getLogHeader();
-							  $content .= Importable::$importResult;
-							  $content .= Importable::getLogFooter();
-							  $content = chunk_split(base64_encode($content));       
-	              $importFullLog .= $eol.'--'.$boundary.$eol;
-	              $importFullLog .= 'Content-type:'.$file_type.';name="'.basename($logFile).'"'.$eol;
-	              $importFullLog .= 'Content-Length: ' . strlen($content).$eol;     
-	              $importFullLog .= 'Content-transfer-encoding:base64'.$eol;
-	              $importFullLog .= 'Content-disposition: attachment; filename="'.basename($logFile).'"'.$eol; 
-	              $importFullLog .= $eol.$content.$eol;
-	              $importFullLog .= '--'.$boundary.$eol;
-        	  	}
-            }
-            $cpt+=1;
+            $importFileArray[$timestamp]=$importFile;
         	}
+        }
+        ksort($importFileArray);
+        foreach ($importFileArray as $importFile) {   
+          $file=basename($importFile);
+          $split=explode('_',$file);
+          $class=$split[0];
+          $result="";
+          try {
+            $result=Importable::import($importFile, $class);
+          } catch (Exception $e) {
+          	$msg="CRON : Exception on import of file '$importFile'";
+          	$result="ERROR";
+          }
+          $globalCronMode=false; // VOLOUNTARILY STOP THE CRON. Actions are requested !
+          try {
+            if ($result=="OK") {	            	
+              $msg="Import OK : file $file imported with no error [ Number of '$class' imported : " . Importable::$cptDone . " ]";
+              traceLog($msg);
+              $importSummary.="<span style='color:green;'>$msg</span><br/>";
+              if (! is_dir($importDir . $pathSeparator . "done")) {
+              	mkdir($importDir . $pathSeparator . "done",0777,true);
+              	
+              }
+              rename($importFile,$importDir . $pathSeparator . "done" . $pathSeparator . $file);
+            } else {
+            	if ($result=="INVALID") {
+               	$msg="Import INVALID : file $file imported with " . Importable::$cptInvalid . " control errors [ Number of '$class' imported : " . Importable::$cptOK . " ]";
+               	traceLog($msg);
+                $importSummary.="<span style='color:orange;'>$msg</span><br/>";
+              } else {
+            	  $msg="Import ERROR : file $file imported with " . Importable::$cptRejected . " errors [ Number of '$class' imported : " . Importable::$cptOK . " ]";
+            	  traceLog($msg);
+                $importSummary.="<span style='color:red;'>$msg</span><br/>";
+              }
+              if (! is_dir($importDir . $pathSeparator . "error")) {
+                mkdir($importDir . $pathSeparator . "error",0777,true);
+              }
+            	rename($importFile,$importDir . $pathSeparator . "error" . $pathSeparator . $file);
+            }
+          } catch (Exception $e) {
+          	$msg="CRON : Impossible to move file '$importFile'";
+          	traceLog($msg);
+            $importSummary.="<span style='color:red;'>$msg</span><br/>";
+          	$msg="CRON IS STOPPED TO AVOID MULTIPLE-TREATMENT OF SAME FILES";
+          	traceLog($msg);
+            $importSummary.="<span style='color:red;'>$msg</span><br/>";
+          	$msg="Check access rights to folder '$importDir', subfolders 'done' and 'error' and file '$importFile'";
+          	traceLog($msg);
+            $importSummary.="<span style='color:red;'>$msg</span><br/>";
+          	exit; // VOLOUNTARILY STOP THE CRON. Actions are requested !
+          }
+          $globalCronMode=true; // If cannot write log file, do not exit CRON (not blocking)
+          $logFile=$importDir . $pathSeparator . 'logs' . $pathSeparator . substr($file, 0, strlen($file)-4) . ".log.htm";
+      	  if (! is_dir($importDir . $pathSeparator . "logs")) {
+            mkdir($importDir . $pathSeparator . "logs",0777,true);
+          }
+          if (file_exists($logFile)) {
+          	kill($logFile);
+          }
+          // Write log file
+          $fileHandler = fopen($logFile, 'w');
+          fwrite($fileHandler, Importable::getLogHeader());
+          fwrite($fileHandler, Importable::$importResult);
+          fwrite($fileHandler, Importable::getLogFooter());
+          fclose($fileHandler);
+          // Prepare joined file on email
+      	  if (Parameter::getGlobalParameter('cronImportLogDestination')=='mail+log') {
+      	  	if (! isset($paramMailerType) or $paramMailerType=='phpmailer') {
+      	  		$attachmentArray[]=$logFile;
+      	  	} else { // old way to send attachments
+        	  	if (! $boundary) {
+        	  	  $boundary = md5(uniqid(microtime(), TRUE));
+        	  	}
+						  $file_type = 'text/html';
+              $content = Importable::getLogHeader();
+						  $content .= Importable::$importResult;
+						  $content .= Importable::getLogFooter();
+						  $content = chunk_split(base64_encode($content));       
+              $importFullLog .= $eol.'--'.$boundary.$eol;
+              $importFullLog .= 'Content-type:'.$file_type.';name="'.basename($logFile).'"'.$eol;
+              $importFullLog .= 'Content-Length: ' . strlen($content).$eol;     
+              $importFullLog .= 'Content-transfer-encoding:base64'.$eol;
+              $importFullLog .= 'Content-disposition: attachment; filename="'.basename($logFile).'"'.$eol; 
+              $importFullLog .= $eol.$content.$eol;
+              $importFullLog .= '--'.$boundary.$eol;
+      	  	}
+          }
+          $cpt+=1;
         }
         closedir($dirHandler);
       }
