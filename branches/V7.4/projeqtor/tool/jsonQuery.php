@@ -617,8 +617,10 @@
     		$arrayFields=array();
         $arrayFields=$obj->getLowercaseFieldsArray(true);
         $arrayFieldsWithCase=$obj->getFieldsArray(true);
-        $arrayFields['hyperlink'] = 'hyperlink';
-        $arrayFieldsWithCase['hyperlink'] = 'Hyperlink';
+        if ($objectClass!='Work') {
+          $arrayFields['hyperlink'] = 'hyperlink';
+          $arrayFieldsWithCase['hyperlink'] = 'Hyperlink';
+        }
         foreach($arrayFieldsWithCase as $key => $val) {
           if (!SqlElement::isVisibleField($val)) {
             unset($arrayFields[strtolower($key)]);
