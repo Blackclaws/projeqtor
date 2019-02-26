@@ -49,7 +49,7 @@ foreach ($csList as $cs) {
 }
 $arrayDependantObjects=array('Document'=>array('_DocumentVersion'=>'withSection'));
 $htmlresult='<td valign="top" style="width:1px">';
-$fieldsArray=$obj->getfieldsArray(true);
+$fieldsArray=$obj->getFieldsArray(true);
 if (isset($fieldsArray['_sec_description']))  $fieldsArray = array('_sec_description' => '_sec_description') + array('hyperlink' => 'Hyperlink') + $fieldsArray;
 else $fieldsArray = array('_sec_Description' => '_sec_description') + $fieldsArray; // Fix : do nopt show link for item without description (Work for instance)
 foreach($fieldsArray as $key => $val) {
