@@ -540,6 +540,8 @@ class ComponentVersionMain extends Version {
     $lang = new VersionLanguage();
     $listLang=$lang->getSqlElementsFromCriteria(array('idVersion'=>$this->id),null,null,null,null,true);
     foreach($listLang as $lang){
+      $cptExists=$lang->countSqlElementsFromCriteria(array('idVersion'=>$result->id,'scope'=>$result->scope,'idLanguage'=>$lang->idLanguage));
+      if ($cptExists>0) continue;
       $lang->id = NULL;
       $lang->idVersion = $result->id;
       $lang->scope = $result->scope; //Add mOlives - bugLanguage - 19/04/2018
