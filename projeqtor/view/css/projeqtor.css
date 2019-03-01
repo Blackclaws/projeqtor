@@ -3678,3 +3678,6 @@ li.section {
 .emailHistorical:hover {
 	background-color: #545281;  color: #EEEEEE;
 }
+.selectPlan .dojoxCheckedMultiSelectWrapper{
+  width: 500px;
+}
