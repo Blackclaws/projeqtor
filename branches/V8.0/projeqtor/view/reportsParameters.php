@@ -1079,11 +1079,11 @@ foreach ($listParam as $param) {
           </div> 
         </button>
 		  <?php }?>
-  		  <button title="<?php echo i18n('reportAutoSendMail')?>"   
+  		  <button title="<?php echo i18n('reportAutoSendReport')?>"   
            dojoType="dijit.form.Button" type="submit" 
-           id="reportAutoSendMail" name="reportAutoSendMail" 
+           id="reportAutoSendReport" name="reportAutoSendReport" 
            iconClass="dijitButtonIcon dijitButtonIconEmail" class="detailButton whiteBackground" showLabel="false"
-           onclick="showDialogAutoSendMail();saveDataToSession('idReport', <?php echo $idReport;?>, false);">
+           onclick="showDialogAutoSendReport();saveDataToSession('idReport', <?php echo $idReport;?>, false);">
         </button>
         <input type="hidden" id="page" name="page" value="<?php echo ((substr($report->file,0,3)=='../')?'':'../report/') . $report->file;?>"/>
         <input type="hidden" id="print" name="print" value=true />
