@@ -51,6 +51,9 @@ class Cron {
   public static $listCronExecution;
   public static $lastCronTimeExecution;
   public static $lastCronExecution;
+  public static $listCronAutoSendReport;
+  public static $lastCronTimeAutoSendReport;
+  public static $lastCronAutoSendReport;
   
    /** ==========================================================================
    * Constructor
@@ -426,6 +429,31 @@ class Cron {
           $cronExecution->calculNextTime();
           call_user_func($cronExecution->fonctionName);
         }
+      }
+      
+      // Check Database Execution for auto send report damian
+      foreach (getlistCronAutoSendReport() as $key=>$cronAutoSendReport){
+      	if($cronAutoSendReport->nextTime==null){
+      		$cronAutoSendReport->calculNextTime();
+      	}
+      	$UTC=new DateTimeZone(Parameter::getGlobalParameter ( 'paramDefaultTimezone' ));
+      	$date=new DateTime('now');
+      	$resource = new Resource($cronAutoSendReport->idResource);
+      	if($cronAutoSendReport->nextTime!=null && $cronAutoSendReport->nextTime<=$date->format("U")){
+      		self::$lastCronTimeAutoSendReport = $cronAutoSendReport->nextTime;
+      		self::$lastCronAutoSendReport = $cronAutoSendReport->cron;
+      		if($cronAutoSendReport->sendFrequency != 'everyOpenDays'){
+      		  $cronAutoSendReport->sendReport($cronAutoSendReport->idReport, $cronAutoSendReport->reportParameter);
+      		  $cronAutoSendReport->calculNextTime();
+      		}else{
+      		  if(isOpenDay(date('Y-m-d'), $resource->idCalendarDefinition)){
+      		    $cronAutoSendReport->sendReport($cronAutoSendReport->idReport, $cronAutoSendReport->reportParameter);
+      		    $cronAutoSendReport->calculNextTime();
+      		  }else{
+      		    $cronAutoSendReport->calculNextTime();
+      		  }
+      		}
+      	}
       }
       
 // BEGIN - ADD BY TABARY - NOTIFICATION SYSTEM
@@ -939,6 +967,19 @@ class Cron {
   }
 }
 
+function getListCronAutoSendReport(){
+  //Look if CronAutoSendReport exist in database //damian
+  $listCronAutoSendReport=SqlList::getListWithCrit("AutoSendReport", array("idle"=>"0"), 'id');
+  $inCronBlockFonctionCustom=true;
+  foreach ($listCronAutoSendReport as $key=>$cronAutoSendReport){
+  	if(is_numeric($cronAutoSendReport)){
+  		$listCronAutoSendReport[$key]=new AutoSendReport($cronAutoSendReport);
+  		$cronAutoSendReport=$listCronAutoSendReport[$key];
+  	}
+  }
+  return $listCronAutoSendReport;
+}
+
 //Look if CronExecution exist in database
 Cron::$listCronExecution=SqlList::getListWithCrit("CronExecution", array("idle"=>"0"), 'id');
 $inCronBlockFonctionCustom=true;
@@ -949,5 +990,4 @@ foreach (Cron::$listCronExecution as $key=>$cronExecution){
   }
   if ($cronExecution->fileExecuted) require_once $cronExecution->fileExecuted;
 }
-
 ?>

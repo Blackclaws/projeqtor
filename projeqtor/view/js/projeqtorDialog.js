@@ -7850,9 +7850,9 @@ function showBigImage(objectClass, objectId, node, title, hideImage, nocache) {
     centerThumb80.style.top=topPx;
     centerThumb80.style.left=leftPx;
     centerThumb80.style.display="block";
-    var titleDivRect=(dojo.byId('centerThumb80TitleContainer'))?dojo.byId('centerThumb80TitleContainer').getBoundingClientRect():null;
+    var titleDivRect=dojo.byId('centerThumb80TitleContainer').getBoundingClientRect();
     var globalDivRect=document.documentElement.getBoundingClientRect();
-    if (titleDivRect && titleDivRect.top+titleDivRect.height+50>globalDivRect.height) {
+    if (titleDivRect.top+titleDivRect.height+50>globalDivRect.height) {
       var newTop=globalDivRect.height-titleDivRect.height-50;
       if (newTop<0) newTop=0;
       centerThumb80.style.top=newTop+'px';
@@ -9920,17 +9920,30 @@ function cronExecutionDefinitionSave(){
   });
 }
 
-function showDialogAutoSendMail(){
-	loadDialog('dialogAutoSendMail',null,true,null,true);
+function showDialogAutoSendReport(){
+	loadDialog('dialogAutoSendReport',null,true,null,true);
 }
 
-function saveAutoSendMail(sendFrequency, week, month, destination, otherDestination){
-	var url='../tool/saveAutoSendMail.php?sendFrequency='+sendFrequency+'&week='+week+'&month='+month+'&destination='+destination+'&otherDestination='+otherDestination;
-	  dojo.xhrGet({
-	    url : url,
-	    handleAs : "text",
-	    load : function(){
-	    	
-	    }
-	  });
+function saveAutoSendReport(sendFrequency){
+	var month = dojo.byId('monthFrequency').value;
+	var week = dijit.byId('weekFrequency').get('value');
+	var destination = dijit.byId('destinationInput').get('value');
+	var otherDestination = dijit.byId('otherDestinationInput').get('value');
+	var name = dijit.byId('name').get('value');
+	var sendTime = dojo.byId('sendTime').value;
+	var yearSpinner = dojo.byId('yearParam').value;
+	var monthSpinner = dojo.byId('monthParam').value;
+	var weekSpinner = dojo.byId('weekParam').value;
+	
+	if((destination != '' && otherDestination != '') || (destination != '' || otherDestination != '')){
+		var url='../tool/saveAutoSendReport.php?sendFrequency='+sendFrequency+'&week='+week+'&month='+month+'&destination='+destination+
+		'&otherDestination='+otherDestination+'&name='+name+'&sendTime='+sendTime+'&yearSpinner='+yearSpinner+'&monthSpinner='+monthSpinner+'&weekSpinner='+weekSpinner;
+		  dojo.xhrGet({
+		    url : url,
+		    handleAs : "text",
+		    load : function(){
+		    	
+		    }
+		  });
+	}
 }
