@@ -706,7 +706,7 @@ if (beforeVersion($currVersion,'V7.2.0')) {
 if (beforeVersion($currVersion,'V7.4.0')) {
   PlanningElement::$_noDispatch=true;
   $pe=new PlanningElement();
-  $list=$pe->getSqlElementsFromCriteria(null,null,null);
+  $list=$pe->getSqlElementsFromCriteria(null,null,null,'wbsSortable asc');
   if (count($list)>0) {
     traceLog("Reformat WBS for PlanningElement");
     $cpt=0;
@@ -715,7 +715,7 @@ if (beforeVersion($currVersion,'V7.4.0')) {
     traceLog("   => ".count($list)." to save");
     projeqtor_set_time_limit(1500);
     foreach($list as $pe) {
-    		$pe->wbsSave();
+    		$pe->wbsSave(false); // without sub-items
     		$cpt++;
     		if ( ($cpt % $cptCommit) == 0) {
     		  Sql::commitTransaction();
@@ -728,7 +728,7 @@ if (beforeVersion($currVersion,'V7.4.0')) {
     traceLog("   => $cpt saved");
   }
   $peb=new PlanningElementBaseline();
-  $list=$peb->getSqlElementsFromCriteria(null,null,null);
+  $list=$peb->getSqlElementsFromCriteria(null,null,null,'wbsSortable asc');
   if (count($list)>0) {
     traceLog("Reformat WBS for PlanningElementBaseline");
     $cpt=0;
