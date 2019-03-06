@@ -685,7 +685,7 @@ class PlanningElement extends SqlElement {
     return $result;
   }
 
-  public function wbsSave() {
+  public function wbsSave($withSubItems=true) {
   	$this->_noHistory=true;
   	$this->wbsSortable=formatSortableWbs($this->wbs);
   	$resTmp=$this->saveForced();
@@ -694,6 +694,7 @@ class PlanningElement extends SqlElement {
   		$proj->sortOrder=$this->wbsSortable;
   		$resSaveProj=$proj->saveForced();
   	} 
+  	if (!$withSubItems) return;
   	//if (self::$_noDispatch) return;
   	$crit=" topId=" . Sql::fmtId($this->id);
   	$lstElt=$this->getSqlElementsFromCriteria(null, null, $crit ,'wbsSortable asc');
@@ -942,10 +943,6 @@ class PlanningElement extends SqlElement {
         }
       }
     }
-    
-    
-
-
     
     // Dispatch value
     return $result;
