@@ -399,7 +399,7 @@ class Consistency {
     $ass=new Assignment();
     $assTable=$ass->getDatabaseTableName();
     $query="SELECT ass.id as id, ass.refType as reftype, ass.refId as refid, ass.realWork as realwork, ass.leftWork as leftwork, ass.plannedWork as plannedwork,"
-        ."  (select sum(work) from $workTable w where w.idAssignment=ass.id) as sumwork "
+        ."  (select sum(work) from $workTable w where w.idAssignment=ass.id) as sumwork, ass.idResource as idresource "
         ."FROM $assTable ass "
         ."WHERE realwork!=(select sum(work) from $workTable w where w.idAssignment=ass.id) "
         ."   OR (coalesce(ass.realWork,0)+coalesce(ass.leftWork,0))!=coalesce(ass.plannedWork,0) ";
@@ -411,10 +411,11 @@ class Consistency {
       $realWork=$line['realwork'];
       $leftWork=$line['leftwork'];
       $plannedWork=$line['plannedwork'];
+      $idResource=$line['idresource'];
       $sumWork=$line['sumwork'];
       if (Work::displayWorkWithUnit($realWork)==Work::displayWorkWithUnit($sumWork) and Work::displayWorkWithUnit($realWork+$leftWork)==Work::displayWorkWithUnit($plannedWork)) continue; // It is just a rounding issue
       if ($realWork!=$sumWork) displayError(i18n("checkIncorrectWork",array(i18n($refType),$refId,Work::displayWorkWithUnit($realWork),Work::displayWorkWithUnit($sumWork))));
-      if ($realWork+$leftWork!=$plannedWork) displayError(i18n("checkIncorrectSumWork",array(i18n($refType),$refId,Work::displayWorkWithUnit($realWork),Work::displayWorkWithUnit($leftWork),Work::displayWorkWithUnit($plannedWork))));
+      if ($realWork+$leftWork!=$plannedWork) displayError(i18n("checkIncorrectSumWork",array(i18n($refType),$refId.' ['.i18n('Resource').' #'.$idResource.']',Work::displayWorkWithUnit($realWork),Work::displayWorkWithUnit($leftWork),Work::displayWorkWithUnit($plannedWork))));
       $errors++;
       if ($correct) {
         $ass=new Assignment($id);
