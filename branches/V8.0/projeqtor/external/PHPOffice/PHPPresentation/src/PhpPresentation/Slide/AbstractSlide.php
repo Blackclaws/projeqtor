@@ -26,6 +26,7 @@ use PhpOffice\PhpPresentation\Shape\Group;
 use PhpOffice\PhpPresentation\Shape\Line;
 use PhpOffice\PhpPresentation\Shape\RichText;
 use PhpOffice\PhpPresentation\Shape\Table;
+use PhpOffice\PhpPresentation\Shape\Triangle;
 use PhpOffice\PhpPresentation\ShapeContainerInterface;
 use PhpOffice\PhpPresentation\Slide;
 
@@ -386,5 +387,21 @@ abstract class AbstractSlide implements ComparableInterface, ShapeContainerInter
     public function setRelsIndex($indexName)
     {
         $this->relsIndex = $indexName;
+    }
+    /**
+     * Create a Triangle.
+     *
+     * @param  int $fromX Starting point x offset
+     * @param  int $fromY Starting point y offset
+     * @param  int $toX Ending point x offset
+     * @param  int $toY Ending point y offset
+     * @param  int $rotation Used for the rotation clockwise or anti-clockwise
+     * @return \PhpOffice\PhpPresentation\Shape\Triangle
+     */
+    public function createTriangle($fromX, $fromY, $toX, $toY, $rotation)
+    {
+      $shape = new Triangle($fromX, $fromY, $toX, $toY, $rotation);
+      $this->addShape($shape);
+      return $shape;
     }
 }

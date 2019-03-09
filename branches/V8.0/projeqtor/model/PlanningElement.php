@@ -485,21 +485,23 @@ class PlanningElement extends SqlElement {
       }
     }
     // save old parent (for synthesis update) if parent has changed
-    if ($old->topId!='' and $old->topId!=$this->topId) {
-      if (! self::$_noDispatch) {
-        self::updateSynthesis($old->topRefType, $old->topRefId);
-      } else {
-        self::updateSynthesisNoDispatch($old->topRefType, $old->topRefId);
+    if ($old->topId!=$this->topId) {
+      if ($old->topId!='') {
+        if (! self::$_noDispatch) {
+          self::updateSynthesis($old->topRefType, $old->topRefId);
+        } else {
+          self::updateSynthesisNoDispatch($old->topRefType, $old->topRefId);
+        }
       }
       // Must also renumber children for old parent
       $oldTopElt=new PlanningElement($old->topId);
       projeqtor_set_time_limit(600);
-      $critOldTop=" topId=" . Sql::fmtId($oldTopElt->id);
+      $critOldTop=($oldTopElt->id)?" topId=" . Sql::fmtId($oldTopElt->id):" topId is null";
       $lstEltOldTop=$this->getSqlElementsFromCriteria(null, null, $critOldTop ,'wbsSortable asc');
       $cpt=0;
       foreach ($lstEltOldTop as $elt) {
         $cpt++;
-        $elt->wbs=$oldTopElt->wbs . '.' . $cpt;
+        $elt->wbs=($oldTopElt->wbs)?$oldTopElt->wbs . '.' . $cpt:$cpt;
         if ($elt->refType) { // just security for unit testing
           $elt->wbsSave();
         }
