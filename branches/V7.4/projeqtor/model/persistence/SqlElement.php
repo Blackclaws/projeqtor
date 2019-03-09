@@ -157,10 +157,14 @@ abstract class SqlElement {
           "Attachment" => "cascade", 
           "Dependency" => "cascade", 
           "Link" => "cascade", 
+          "Meeting"=>"confirm",
           "Milestone" => "confirm", 
           "Note" => "cascade", 
-          "PlannedWork" => "cascade", 
-          "Ticket" => "control"), 
+          "PeriodicMeeting"=>"confirm",
+          "PlannedWork" => "cascade",
+          "TestSession"=>"confirm", 
+          "Ticket" => "control"
+          ), 
       "ActivityType" => array(
           "Activity" => "controlStrict"), 
       "Bill" => array(
@@ -251,23 +255,17 @@ abstract class SqlElement {
       "Menu" => array("AccessRight" => "cascade"), 
       "MessageType" => array("Message" => "controlStrict"), 
       "Milestone" => array("Attachment" => "cascade", "Dependency" => "cascade", "Link" => "cascade", "Note" => "cascade"), 
-      "MilestoneType" => array("Milestone" => "controlStrict"), 
-// BEGIN - ADD BY TABARY - NOTIFICATION SYSTEM      
+      "MilestoneType" => array("Milestone" => "controlStrict"),     
       "Notifiable" => array("NotificationDefinition" => "controlStrict",
                              "Notification" => "controlStrict"
                             ),
       "NotificationDefinition" => array("Notification" => "controlStrict"),
-// END - ADD BY TABARY - NOTIFICATION SYSTEM      
       "OverallProgress" => array("Project" => "controlStrict"), 
       "OpportunityType" => array("Opportunity" => "controlStrict"), 
-      // ADD BY Marc TABARY - 2017-02-08
       "Organization" => array("Attachment" => "cascade", "Link" => "cascade", "Note" => "cascade", 
-          // ADD BY Marc TABARY - 2016-03-14 - PERIODIC YEAR BUDGET ELEMENT
           "BudgetElement" => "cascade", 
-          // END ADD BY Marc TABARY - 2016-03-14 - PERIODIC YEAR BUDGET ELEMENT
           "Project" => "controlStrict", "Organization" => "control", "Resource" => "controlStrict"), 
-      // END ADD BY Marc TABARY - 2017-02-08
-      // "PaymentType" => array("Payment" => "controlStrict"),
+      "PaymentType" => array("Payment" => "controlStrict"),
       "PeriodicMeeting" => array("Assignment" => "cascade", "Meeting" => "cascade", "Note" => "cascade"), 
       "Priority" => array(
           "Action" => "controlStrict", 
@@ -318,6 +316,7 @@ abstract class SqlElement {
           "Note" => "cascade", 
           "Opportunity" => "control", 
           "Parameter" => "cascade", 
+          "PeriodicMeeting" => "control",
           "PlannedWork" => "cascade", 
           "Project" => "confirm", 
           "ProjectExpense" => "control", 
@@ -330,7 +329,7 @@ abstract class SqlElement {
           "TestSession" => "control", 
           "Ticket" => "control", 
           "VersionProject" => "cascade", 
-          "Work" => "control"), 
+          "Work" => "controlStrict"), 
       "Provider" => array("ProjectExpense" => "controlStrict", "Tender" => "ControlStrict"), 
       "ProviderBill" => array("BillLine" => "cascade",
                               "ProviderTerm"=>"controlStrict"),
@@ -498,10 +497,13 @@ abstract class SqlElement {
       "AccessScopeDelete" => array(
           "AccessProfile" => "control"), 
       "Activity" => array(
-          "Milestone" => "control", 
-          "Activity" => "control", 
-          "Ticket" => "control", 
-          "Assignment" => "cascade"), 
+          "Assignment" => "cascade",
+          "Activity" => "control",
+          "Meeting" => "control",
+          "Milestone" => "control",
+          "PeriodicMeeting" => "control",
+          "Ticket" => "control" 
+      ), 
       "Document" => array(
           "DocumentVersion" => "cascade"), 
       "DocumentDirectory" => array(
@@ -3099,7 +3101,7 @@ abstract class SqlElement {
       $result .= ' width="' . (($col->field == 'name') ? 'auto' : $col->widthPct . '%') . '"';
       $result .= ($col->formatter) ? ' formatter="' . htmlEncode ( $col->formatter ) . '"' : '';
       $result .= ($col->_from) ? ' from="' . $col->_from . '"' : '';
-      $result .= ($col->hidden) ? ' hidden="true"' : '';
+      $result .= ($col->hidden and $col->field!='id') ? ' hidden="true"' : '';
       $result .= '>' . $col->_displayName . '</th>' . "\n";
       $totWidth += ($col->field == 'name') ? 0 : $col->widthPct;
     }

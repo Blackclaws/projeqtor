@@ -48,8 +48,8 @@ if (is_session_started()===FALSE) {
 // === Application data : version, dependencies, about message, ...
 $applicationName = "ProjeQtOr"; // Name of the application
 $copyright = $applicationName; // Copyright to be displayed
-$version = "V7.4.2"; // Version of application : Major / Minor / Release
-$build = "0223"; // Build number. To be increased on each release
+$version = "V7.4.3"; // Version of application : Major / Minor / Release
+$build = "0224"; // Build number. To be increased on each release
 $website = "http://www.projeqtor.org"; // ProjeQtOr site url
 if (!isset($aesKeyLength)) { // one can define key lenth to 256 in parameters.php with $aesKeyLength=256; // valid values are 128, 192 and 256
   $aesKeyLength=128;
@@ -1788,6 +1788,7 @@ function getTheme() {
  * @return unknown_type
  */
 function sendMail($to, $subject, $messageBody, $object=null, $headers=null, $sender=null, $attachmentsArray=null, $boundary=null, $references=null) {
+  // traceLog(" sendMail() \n Send email at ".date('Y-m-d h:i:s').(($object)?' \n   for '.get_class($object).' #'.$object->id:'')." \n   to :$to \n   subject=$subject");
   // Code that caals sendMail :
   // + SqlElement::sendMailIfMailable() : sendMail($dest, $title, $message, $this)
   // + Cron::checkImport() : sendMail($to, $title, $message, null, null, null, $attachmentsArray, $boundary); !!! with attachments
