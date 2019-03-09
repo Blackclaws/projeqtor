@@ -59,7 +59,7 @@ class Consistency {
    */
   public static function checkWbs($correct=false,$trace=false) {
     $pe=new PlanningElement();
-    $peList=$pe->getSqlElementsFromCriteria(null,null,null,'wbsSortable asc');
+    $peList=$pe->getSqlElementsFromCriteria(null,null,"1=1",'wbsSortable asc');
     $lastWbs='';
     $lastPe=$pe;
     $errors=0;
@@ -93,6 +93,12 @@ class Consistency {
       if ($pe->topRefType and $pe->topRefId) {
         $key=$pe->topRefType.'#'.$pe->topRefId;
         $parentWbs=(isset($arrayWbs[$key]))?$arrayWbs[$key]:'';
+        if (!$parentWbs) { // Possibly just incorrect order
+          $parentPe=SqlElement::getSingleSqlElementFromCriteria('PlanningElement', array('refType'=>$pe->topRefType, 'refId'=>$pe->topRefId));
+          if ($parentPe and $parentPe->id) {
+            $parentWbs=$parentPe->wbsSortable;
+          }
+        }
         if ($parentWbs=='') {
           displayError(i18n("checkWbsParentNotFound",array($pe->topRefType,$pe->topRefId, i18n($pe->refType), $pe->refId)));
           $errors++;
@@ -246,7 +252,7 @@ class Consistency {
     // Direct Query : valid here for technical needs on grouping
     $work=new Work();
     $workTable=$work->getDatabaseTableName();
-    $query="SELECT idAssignment as idassignment, refType as reftype, refId as refid, idWorkElement as idworkelement, day as day, count(*) as cpt from $workTable group by idAssignment, refType, refId, idWorkElement, day having count(*)>1";
+    $query="SELECT idAssignment as idassignment, idResource as idResource, refType as reftype, refId as refid, idWorkElement as idworkelement, day as day, count(*) as cpt from $workTable group by idAssignment, idResource, refType, refId, idWorkElement, day having count(*)>1";
     $result=Sql::query($query);
     while ($line = Sql::fetchLine($result)) {
       $idAss=$line['idassignment'];
@@ -345,10 +351,18 @@ class Consistency {
     $workTable=$work->getDatabaseTableName();
     $pe=new PlanningElement();
     $peTable=$pe->getDatabaseTableName();
+    $we=new WorkElement();
+    $weTable=$we->getDatabaseTableName();
     $query="SELECT pe.refType as reftype, pe.refId as refid, pe.realWork as realwork, pe.leftWork as leftwork, pe.plannedWork as plannedwork,"
-          ."  (select sum(work) from $workTable w where w.refType=pe.refType and w.refId=pe.refId)+(select sum(pesum.realWork) from $peTable pesum where pesum.topId=pe.id) as sumwork "
+          ."  coalesce((select sum(work) from $workTable w where w.refType=pe.refType and w.refId=pe.refId),0)"
+          ."+coalesce((select sum(pesum.realWork) from $peTable pesum where pesum.topId=pe.id),0)"
+          ."+coalesce((select sum(wesum.realWork) from $weTable wesum where pe.refTYpe='Project' and wesum.idProject=pe.id and wesim.idActivty is null),0)"
+          ." as sumwork "
           ."FROM $peTable pe "
-          ."WHERE pe.isManualProgress=0 and realwork!=(select sum(work) from $workTable w where w.refType=pe.refType and w.refId=pe.refId)+(select sum(pesum.realWork) from $peTable pesum where pesum.topId=pe.id) "
+          ."WHERE pe.isManualProgress=0 and realwork!="
+           ."coalesce((select sum(work) from $workTable w where w.refType=pe.refType and w.refId=pe.refId),0)"
+           ."+coalesce((select sum(pesum.realWork) from $peTable pesum where pesum.topId=pe.id),0) "
+           ."+coalesce((select sum(wesum.realWork) from $weTable wesum where pe.refTYpe='Project' and wesum.idProject=pe.id and wesim.idActivty is null),0)"
           ."   OR (pe.realWork+pe.leftWork)!=pe.plannedWork ";
     $result=Sql::query($query);
     while ($line = Sql::fetchLine($result)) {
@@ -358,12 +372,13 @@ class Consistency {
       $leftWork=$line['leftwork'];
       $plannedWork=$line['plannedwork'];
       $sumWork=$line['sumwork'];
+      
       if(!$sumWork){
         $sumWork = 0;
       }
       if (Work::displayWorkWithUnit($realWork)==Work::displayWorkWithUnit($sumWork) and Work::displayWorkWithUnit($realWork+$leftWork)==Work::displayWorkWithUnit($plannedWork)) continue; // It is just a rounding issue
-      if ($realWork!=$sumWork) displayError(i18n("checkIncorrectWork",array(i18n($refType),$refId,Work::displayWorkWithUnit($realWork),Work::displayWorkWithUnit($sumWork))));
-      if ($realWork+$leftWork!=$plannedWork) displayError(i18n("checkIncorrectSumWork",array(i18n($refType),$refId,Work::displayWorkWithUnit($realWork),Work::displayWorkWithUnit($leftWork),Work::displayWorkWithUnit($plannedWork))));
+      if (round($realWork,2)!=round($sumWork,2)) displayError(i18n("checkIncorrectWork",array(i18n($refType),$refId,Work::displayWorkWithUnit($realWork),Work::displayWorkWithUnit($sumWork))));
+      if (round($realWork+$leftWork,2)!=round($plannedWork,2)) displayError(i18n("checkIncorrectSumWork",array(i18n($refType),$refId,Work::displayWorkWithUnit($realWork),Work::displayWorkWithUnit($leftWork),Work::displayWorkWithUnit($plannedWork))));
       $errors++;
       if ($correct) {
         $res=PlanningElement::updateSynthesis($refType,$refId);
@@ -399,7 +414,7 @@ class Consistency {
     $ass=new Assignment();
     $assTable=$ass->getDatabaseTableName();
     $query="SELECT ass.id as id, ass.refType as reftype, ass.refId as refid, ass.realWork as realwork, ass.leftWork as leftwork, ass.plannedWork as plannedwork,"
-        ."  (select sum(work) from $workTable w where w.idAssignment=ass.id) as sumwork "
+        ."  (select sum(work) from $workTable w where w.idAssignment=ass.id) as sumwork, ass.idResource as idresource "
         ."FROM $assTable ass "
         ."WHERE realwork!=(select sum(work) from $workTable w where w.idAssignment=ass.id) "
         ."   OR (coalesce(ass.realWork,0)+coalesce(ass.leftWork,0))!=coalesce(ass.plannedWork,0) ";
@@ -411,10 +426,11 @@ class Consistency {
       $realWork=$line['realwork'];
       $leftWork=$line['leftwork'];
       $plannedWork=$line['plannedwork'];
+      $idResource=$line['idresource'];
       $sumWork=$line['sumwork'];
       if (Work::displayWorkWithUnit($realWork)==Work::displayWorkWithUnit($sumWork) and Work::displayWorkWithUnit($realWork+$leftWork)==Work::displayWorkWithUnit($plannedWork)) continue; // It is just a rounding issue
       if ($realWork!=$sumWork) displayError(i18n("checkIncorrectWork",array(i18n($refType),$refId,Work::displayWorkWithUnit($realWork),Work::displayWorkWithUnit($sumWork))));
-      if ($realWork+$leftWork!=$plannedWork) displayError(i18n("checkIncorrectSumWork",array(i18n($refType),$refId,Work::displayWorkWithUnit($realWork),Work::displayWorkWithUnit($leftWork),Work::displayWorkWithUnit($plannedWork))));
+      if ($realWork+$leftWork!=$plannedWork) displayError(i18n("checkIncorrectSumWork",array(i18n($refType),$refId.' ['.i18n('Resource').' #'.$idResource.']',Work::displayWorkWithUnit($realWork),Work::displayWorkWithUnit($leftWork),Work::displayWorkWithUnit($plannedWork))));
       $errors++;
       if ($correct) {
         $ass=new Assignment($id);
