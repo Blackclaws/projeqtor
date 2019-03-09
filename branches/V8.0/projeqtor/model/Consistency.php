@@ -246,7 +246,7 @@ class Consistency {
     // Direct Query : valid here for technical needs on grouping
     $work=new Work();
     $workTable=$work->getDatabaseTableName();
-    $query="SELECT idAssignment as idassignment, refType as reftype, refId as refid, idWorkElement as idworkelement, day as day, count(*) as cpt from $workTable group by idAssignment, refType, refId, idWorkElement, day having count(*)>1";
+    $query="SELECT idAssignment as idassignment, idResource as idResource, refType as reftype, refId as refid, idWorkElement as idworkelement, day as day, count(*) as cpt from $workTable group by idAssignment, idResource, refType, refId, idWorkElement, day having count(*)>1";
     $result=Sql::query($query);
     while ($line = Sql::fetchLine($result)) {
       $idAss=$line['idassignment'];
@@ -345,10 +345,18 @@ class Consistency {
     $workTable=$work->getDatabaseTableName();
     $pe=new PlanningElement();
     $peTable=$pe->getDatabaseTableName();
+    $we=new WorkElement();
+    $weTable=$we->getDatabaseTableName();
     $query="SELECT pe.refType as reftype, pe.refId as refid, pe.realWork as realwork, pe.leftWork as leftwork, pe.plannedWork as plannedwork,"
-          ."  (select sum(work) from $workTable w where w.refType=pe.refType and w.refId=pe.refId)+(select sum(pesum.realWork) from $peTable pesum where pesum.topId=pe.id) as sumwork "
+          ."  coalesce((select sum(work) from $workTable w where w.refType=pe.refType and w.refId=pe.refId),0)"
+          ."+coalesce((select sum(pesum.realWork) from $peTable pesum where pesum.topId=pe.id),0)"
+          ."+coalesce((select sum(wesum.realWork) from $weTable wesum where pe.refTYpe='Project' and wesum.idProject=pe.id and wesim.idActivty is null),0)"
+          ." as sumwork "
           ."FROM $peTable pe "
-          ."WHERE pe.isManualProgress=0 and realwork!=(select sum(work) from $workTable w where w.refType=pe.refType and w.refId=pe.refId)+(select sum(pesum.realWork) from $peTable pesum where pesum.topId=pe.id) "
+          ."WHERE pe.isManualProgress=0 and realwork!="
+           ."coalesce((select sum(work) from $workTable w where w.refType=pe.refType and w.refId=pe.refId),0)"
+           ."+coalesce((select sum(pesum.realWork) from $peTable pesum where pesum.topId=pe.id),0) "
+           ."+coalesce((select sum(wesum.realWork) from $weTable wesum where pe.refTYpe='Project' and wesum.idProject=pe.id and wesim.idActivty is null),0)"
           ."   OR (pe.realWork+pe.leftWork)!=pe.plannedWork ";
     $result=Sql::query($query);
     while ($line = Sql::fetchLine($result)) {
@@ -358,12 +366,13 @@ class Consistency {
       $leftWork=$line['leftwork'];
       $plannedWork=$line['plannedwork'];
       $sumWork=$line['sumwork'];
+      
       if(!$sumWork){
         $sumWork = 0;
       }
       if (Work::displayWorkWithUnit($realWork)==Work::displayWorkWithUnit($sumWork) and Work::displayWorkWithUnit($realWork+$leftWork)==Work::displayWorkWithUnit($plannedWork)) continue; // It is just a rounding issue
-      if ($realWork!=$sumWork) displayError(i18n("checkIncorrectWork",array(i18n($refType),$refId,Work::displayWorkWithUnit($realWork),Work::displayWorkWithUnit($sumWork))));
-      if ($realWork+$leftWork!=$plannedWork) displayError(i18n("checkIncorrectSumWork",array(i18n($refType),$refId,Work::displayWorkWithUnit($realWork),Work::displayWorkWithUnit($leftWork),Work::displayWorkWithUnit($plannedWork))));
+      if (round($realWork,2)!=round($sumWork,2)) displayError(i18n("checkIncorrectWork",array(i18n($refType),$refId,Work::displayWorkWithUnit($realWork),Work::displayWorkWithUnit($sumWork))));
+      if (round($realWork+$leftWork,2)!=round($plannedWork,2)) displayError(i18n("checkIncorrectSumWork",array(i18n($refType),$refId,Work::displayWorkWithUnit($realWork),Work::displayWorkWithUnit($leftWork),Work::displayWorkWithUnit($plannedWork))));
       $errors++;
       if ($correct) {
         $res=PlanningElement::updateSynthesis($refType,$refId);

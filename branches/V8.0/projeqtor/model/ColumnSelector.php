@@ -80,6 +80,8 @@ class ColumnSelector extends SqlElement {
 		$user=getSessionUser();
 		$obj=new $classObj();
 		$extraHiddenFields=$obj->getExtraHiddenFields();
+		if (isset($extraHiddenFields['id'])) unset($extraHiddenFields['id']);
+		if (isset($extraHiddenFields['name'])) unset($extraHiddenFields['name']);
 		if (method_exists($obj, 'setAttributes')) $obj->setAttributes();
 		$cs=new ColumnSelector();
 		$crit=array('scope'=>'list', 'objectClass'=>$classObj, 'idUser'=>$user->id);
@@ -89,7 +91,7 @@ class ColumnSelector extends SqlElement {
 		  if (! SqlElement::isVisibleField($cs->attribute)) {
         continue;
       }
-      if ($obj->isAttributeSetToField($cs->attribute, 'hidden')) {
+      if ($obj->isAttributeSetToField($cs->attribute, 'hidden') and $cs->attribute!='id' and $cs->attribute!='name') {
         continue;  
       }
       $cs->_name=$cs->attribute;
@@ -107,7 +109,7 @@ class ColumnSelector extends SqlElement {
       	}
       	$hidden=$$hiddenObj;
       }     
-      if (in_array($cs->attribute,$hidden)) {
+      if (in_array($cs->attribute,$hidden) and $cs->attribute!='id' and $cs->attribute!='name') {
         continue;
       }
       $cs->_displayName=$dispObj->getColCaption($cs->_name);
@@ -156,7 +158,9 @@ class ColumnSelector extends SqlElement {
 			}
 			$cs->_from=$entry->getAttribute("from");
 			$cs->subItem=$cs->_from;
-			if (!$cs->id) { $cs->save(); }
+			if (!$cs->id) { 
+			  $cs->save();
+			}
 			$result[$attribute]=$cs;
 		}
 		if (self::$allFields) {
