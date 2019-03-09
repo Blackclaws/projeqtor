@@ -180,6 +180,8 @@ class Assignment extends SqlElement {
     if ($this->refType=='PeriodicMeeting') {
     	$this->idle=1;
     	$this->leftWork=0;
+    	$this->realWork=0;
+    	$this->plannedWork=0;
     }
     
     if (! $this->idProject) {

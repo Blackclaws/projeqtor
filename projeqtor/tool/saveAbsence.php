@@ -54,7 +54,7 @@ if ($workVal == 0){
     
     //delete work
     foreach ($listWork as $isWork){
-      $isWork->delete();
+      $isWork->deleteWork();
     }
 }else {
   $work = new Work();
@@ -77,7 +77,7 @@ if ($workVal == 0){
         $isWork->work = $workVal;
       }
       $editWork = true;
-      $isWork->save();
+      $isWork->saveWork();
       $somWork += $workVal;
     } else {
       $somWork += $isWork->work;
@@ -97,7 +97,7 @@ if ($workVal == 0){
       $work->idProject = $idProject;
       $work->idAssignment = $assId;
       //save work
-      $work->save();
+      $work->saveWork();
     }else {
       $result = 'warning';
       echo $result;
