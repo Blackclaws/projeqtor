@@ -119,6 +119,7 @@ class PlannedWork extends GeneralWork {
 // ================================================================================================================================
 
   public static function plan($projectIdArray, $startDate,$withCriticalPath=true) {
+    global $cronnedScript;
   	projeqtor_set_time_limit(300);
   	projeqtor_set_memory_limit('512M');
   	
@@ -154,7 +155,7 @@ class PlannedWork extends GeneralWork {
     $accessRightRead=securityGetAccessRight('menuActivity', 'read');
     $allProjects=false;
     if (count($projectIdArray)==1 and ! trim($projectIdArray[0])) $allProjects=true;
-    if ($accessRightRead=='ALL' and $allProjects) {
+    if ($accessRightRead=='ALL' and $allProjects and !$cronnedScript) {
       $listProj=explode(',',getVisibleProjectsList());
       if (count($listProj)-1 > Parameter::getGlobalParameter('maxProjectsToDisplay')) {
         $result=i18n('selectProjectToPlan');
@@ -186,7 +187,7 @@ class PlannedWork extends GeneralWork {
     //-- Remove Projects with Fixed Planning flag
     $inClause.=" and idProject not in " . Project::getFixedProjectList() ;
     $user=getSessionUser();
-    $inClause.=" and idProject in ". transformListIntoInClause($user->getListOfPlannableProjects());
+    if (!$cronnedScript) $inClause.=" and idProject in ". transformListIntoInClause($user->getListOfPlannableProjects());
     //-- Purge existing planned work
     $plan=new PlannedWork();
     $plan->purge($inClause);

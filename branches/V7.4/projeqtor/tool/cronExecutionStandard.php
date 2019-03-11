@@ -33,7 +33,8 @@ if ($operation=='saveDefinition') {
 }
 
 function cronPlanningDifferential(){
-  $user=getSessionUser();
+  $user=new User();//getSessionUser();
+  $user->idProfile=1; // Admin
   $user->resetAllVisibleProjects();
   setSessionUser($user);
   SqlList::cleanAllLists();
@@ -44,7 +45,9 @@ function cronPlanningDifferential(){
   foreach ($lst as $pe) {
     $arrayProj[]=$pe->refId;
   }
-  traceLog(i18n("sectionAutomaticPlanning").' : '.i18n("paramAutomaticPlanningDifferential")." - ".i18n('projects').' : ' .((count($arrayProj))?implode(',',$arrayProj):i18n('paramNone')));
+  $mode=i18n("paramAutomaticPlanningDifferential");
+  $mode=str_replace(array("<b>","</b>"),array("",""),$mode);
+  traceLog(i18n("sectionAutomaticPlanning").' : '.$mode." - ".i18n('colStart')." - ".i18n('projects').' : ' .((count($arrayProj))?implode(',',$arrayProj):i18n('paramNone')));
   if (count($arrayProj)>0) {
     //Sql::beginTransaction(); #3601 : management of transaction in now included in PlannedWork::plan()
     $result=PlannedWork::plan($arrayProj, $startDatePlan);
@@ -54,18 +57,24 @@ function cronPlanningDifferential(){
     //} else {
     //  Sql::rollbackTransaction ();
     //}
-    traceLog(i18n("sectionAutomaticPlanning").' : '.i18n("paramAutomaticPlanningDifferential")." - $status");
+    if ($status == "OK") $resultStatus=i18n("planningResultOK");
+    else if ($status == "NO_CHANGE" or $status == "INCOMPLETE") $resultStatus=i18n("planningResultNoChange");
+    else $resultStatus=i18n("planningResultError");
+    traceLog(i18n("sectionAutomaticPlanning").' : '.$mode." - ".i18n('colEnd')." - ". i18n("colResult"). " = $resultStatus");
   } else {
     $status='NO_CHANGE';
   }
 }
 function cronPlanningComplete(){
-  $user=getSessionUser();
+  $user=new User();//getSessionUser();
+  $user->idProfile=1; // Admin
   $user->resetAllVisibleProjects();
   setSessionUser($user);
   SqlList::cleanAllLists();
   $startDatePlan=cronPlanningStartDate(Parameter::getGlobalParameter("automaticPlanningCompleteDate"));
-  traceLog(i18n("sectionAutomaticPlanning").' : '.i18n("paramAutomaticPlanningComplete")." - ".i18n('projects').' : '.i18n('all'));
+  $mode=i18n("paramAutomaticPlanningComplete");
+  $mode=str_replace(array("<b>","</b>"),array("",""),$mode);
+  traceLog(i18n("sectionAutomaticPlanning").' : '.$mode." - ".i18n('colStart')." - ".i18n('projects').' : '.i18n('all'));
   //Sql::beginTransaction(); #3601 : management of transaction in now included in PlannedWork::plan()
   $result=PlannedWork::plan(array(' '), $startDatePlan);
   $status = getLastOperationStatus ( $result );
@@ -74,7 +83,10 @@ function cronPlanningComplete(){
   //} else {
   //  Sql::rollbackTransaction ();
   //}
-  traceLog(i18n("sectionAutomaticPlanning").' : '.i18n("paramAutomaticPlanningComplete")." - $status");
+  if ($status == "OK") $resultStatus=i18n("planningResultOK");
+  else if ($status == "NO_CHANGE" or $status == "INCOMPLETE") $resultStatus=i18n("planningResultNoChange");
+  else $resultStatus=i18n("planningResultError");
+  traceLog(i18n("sectionAutomaticPlanning").' : '.$mode." - ".i18n('colEnd')." - ". i18n("colResult"). " = $resultStatus");
 }
 function cronPlanningStartDate($param) {
   if ($param=="W") {
