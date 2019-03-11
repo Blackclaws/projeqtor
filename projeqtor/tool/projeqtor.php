@@ -206,6 +206,7 @@ if (!(isset($maintenance) and $maintenance) and !(isset($batchMode) and $batchMo
         $loginSave=true;
         $user->setCookieHash();
         $user->save();
+        User::resetAllVisibleProjects();
         //damian
         if(Parameter::getGlobalParameter('applicationStatus')=='Closed'){
         	$prf=new Profile($user->idProfile);
