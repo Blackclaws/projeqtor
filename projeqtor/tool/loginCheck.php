@@ -152,6 +152,7 @@
     }                     
   }
   loginOk ($user);
+  User::resetAllVisibleProjects();
   
   /** ========================================================================
    * Display an error message because of invalid login

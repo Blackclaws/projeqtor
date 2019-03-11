@@ -279,7 +279,7 @@ class PlanningElement extends SqlElement {
     	$this->idProject=$this->refId;
     }
     // If done and no work, set up end date
-    if ($this->leftWork==0 and $this->realWork==0) {
+    if (($this->leftWork==0 and $this->realWork==0) or $this->isManualProgress) {
       $refType=$this->refType;
       if ($refType) {
         $refObj=new $refType($this->refId);
