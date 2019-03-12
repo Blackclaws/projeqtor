@@ -359,7 +359,7 @@ class ActivityMain extends SqlElement {
    * @see persistence/SqlElement#save()
    * @return the return message of persistence/SqlElement#save() method
    */
-  public function save() {
+  public function save($onlyProject=false) {
     $oldResource = null;
     $oldIdle = null;
     $oldIdProject = null;
@@ -390,7 +390,7 @@ class ActivityMain extends SqlElement {
       $this->ActivityPlanningElement->topRefId = $this->idProject;
       $this->ActivityPlanningElement->topId = null;
     }
-    if (trim ( $this->idProject ) != trim ( $oldIdProject ) or trim ( $this->idActivity ) != trim ( $oldIdActivity )) {
+    if ( (trim($this->idProject)!=trim($oldIdProject) and !$onlyProject) or trim($this->idActivity)!=trim( $oldIdActivity )) {
       $this->ActivityPlanningElement->wbs = null;
       $this->ActivityPlanningElement->wbsSortable = null;
     }
@@ -473,7 +473,11 @@ class ActivityMain extends SqlElement {
         foreach ( $lst as $obj ) {
           $objBis = new $elt ( $obj->id );
           $objBis->idProject = $this->idProject;
-          $tmpRes = $objBis->save ();
+          if ($elt=='Activity') {
+            $tmpRes = $objBis->save (true);
+          } else {
+            $tmpRes = $objBis->save ();
+          }
         }
       }
     }

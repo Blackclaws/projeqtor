@@ -56,11 +56,32 @@ class Absence{
     //Get administrative project list 
     $proj = new Project();
     $act = new Activity();
-    $where = "idProject in " . Project::getAdminitrativeProjectList(false,false);    
-    //$where .= "and idle = 0 ";
+    $where = "idProject in " . Project::getAdminitrativeProjectList(false);    
+    $where .= " and idle = 0 ";
+    $countExiting=$act->countSqlElementsFromCriteria(null,$where);
+    $user=getSessionUser();
+    $accessRightRead=securityGetAccessRight('menuActivity', 'read');
+    if ($user->id!=$userID and $accessRightRead!='ALL') {
+      $profile=$user->getProfile(); // Default profile for user
+      $listAccesRightsForImputation=$user->getAllSpecificRightsForProfiles('imputation');
+      $listAllowedProfiles=array(); // List will contain all profiles with visibility to Others imputation
+      if (isset($listAccesRightsForImputation['PRO'])) {
+        $listAllowedProfiles+=$listAccesRightsForImputation['PRO'];
+      }
+      if (isset($listAccesRightsForImputation['ALL'])) {
+        $listAllowedProfiles+=$listAccesRightsForImputation['ALL'];
+      }
+      $visibleProjects=array();
+      foreach ($user->getSpecificAffectedProfiles() as $prj=>$prf) {
+        if (in_array($prf, $listAllowedProfiles)) {
+          $visibleProjects[$prj]=$prj;
+        }
+      }
+      $where .=" and idProject in ".transformListIntoInClause($visibleProjects);
+    }
+    
     $listAct = $act->getSqlElementsFromCriteria(null,false,$where,"idProject asc");
     $ass = new Assignment();
-    
     //Variable parameter
     $result="";
     $actName = "";
@@ -158,7 +179,11 @@ class Absence{
     }
     if(!$idColor){
       $result .='<tr><td colspan="3">'; 
-      $result .='<div style="background:#FFDDDD;font-size:150%;color:#808080;text-align:center;padding:15px 0px;width:100%;">'.i18n('noActivityOnAdmProjectFound').'</div>';
+      if ($countExiting>0) {
+        $result .='<div style="background:#DDDDDD;font-size:120%;color:#808080;text-align:center;padding:15px 0px;width:100%;">'.i18n('noRightOnAdminActivities').'</div>';
+      } else {
+        $result .='<div style="background:#FFDDDD;font-size:150%;color:#808080;text-align:center;padding:15px 0px;width:100%;">'.i18n('noActivityOnAdmProjectFound').'</div>';
+      }
       $result .='</td></tr>';
     }
     $listActId = substr($listActId, 0, -1);
