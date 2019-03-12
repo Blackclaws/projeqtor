@@ -581,7 +581,6 @@ class PlanningElement extends SqlElement {
           }
         }
     }
-    
     return $result;
   }
   public function setHandledOnRealWork ($action='check') {
