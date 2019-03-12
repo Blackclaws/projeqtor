@@ -3244,6 +3244,14 @@ function saveReportInToday() {
   loadContent("../tool/saveReportInToday.php", "resultDiv", "reportForm", true,
       'report');
 }
+function saveReportParametersForDialog() {
+  var callback=function(){
+	hideWait();
+	showDialogAutoSendReport();
+  };
+  loadDiv("../tool/saveReportParametersForDialog.php", "resultDiv", "reportForm", callback);
+      
+}	     
 
 /**
  * Global save function through [CTRL)+s
@@ -5656,4 +5664,13 @@ function cancelSubmitbyOther(idWorkPeriod) {
 function imputationValidationSelection(isChecked, weekNumber){
 	console.log(isChecked);
 	console.log(weekNumber);
+}
+
+function refreshAutoSendReportList(idUser) {
+	formInitialize();
+	showWait();
+	var callback=function() {
+		hideWait();
+	};
+	loadContent('../view/refreshAutoSendReportList.php', 'autoSendReportWorkDiv', 'autoSendReportListForm', false,false,false,false,callback,false);
 }

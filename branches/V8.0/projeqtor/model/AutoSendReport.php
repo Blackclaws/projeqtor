@@ -35,9 +35,10 @@ class AutoSendReport extends SqlElement{
 	public $name;
 	public $idReport;
 	public $idResource;
+	public $idReceiver;
 	public $idle;
 	public $sendFrequency;
-	public $email;
+	public $otherReceiver;
 	public $cron;
 	public $nextTime;
 	public $reportParameter;
@@ -113,9 +114,74 @@ class AutoSendReport extends SqlElement{
 	  ob_start();
 	  $report = new Report($idReport);
 	  $parameter = json_decode($reportParameter);
-	  foreach ($parameter as $name=>$value){
-      RequestHandler::setValue($name, $value);
+	  foreach ($parameter as $paramName=>$paramValue){
+	  	if($paramName != 'yearSpinner' and $paramName != 'monthSpinner' and $paramName != 'weekSpinner' and $paramName != 'startDate' and $paramName != 'periodValue'){
+	  	  RequestHandler::setValue($paramName, $paramValue);
+	  	}
 	  }
+  	foreach ($parameter as $paramName=>$paramValue){
+  	  if($paramName == 'yearSpinner'){
+  	    if($paramValue == 'current'){
+  	      RequestHandler::setValue($paramName, date('Y'));
+  	    }else if($paramValue == 'previous'){
+  	      RequestHandler::setValue($paramName, date('Y')-1);
+  	    }
+  	  }
+  	  if($paramName == 'monthSpinner'){
+  	  if($paramValue == 'current'){
+  	      RequestHandler::setValue($paramName, date('m'));
+  	    }else if($paramValue == 'previous'){
+  	      RequestHandler::setValue($paramName, date('m')-1);
+  	    }
+  	  }
+  	  if($paramName == 'weekSpinner'){
+  	  if($paramValue == 'current'){
+  	      RequestHandler::setValue($paramName, date('W'));
+  	    }else if($paramValue == 'previous'){
+  	      RequestHandler::setValue($paramName, date('W')-1);
+  	    }
+  	  }
+  	  if($paramName == 'startDate'){
+  	    if($paramValue == 'currentDate'){
+  	      RequestHandler::setValue($paramName, date('Y-m-d'));
+  	    }else{
+  	      RequestHandler::setValue($paramName, $paramValue);
+  	    }
+  	  }
+  	  if($paramName == 'periodValue'){
+  	    $value = explode('-', $paramValue);
+  	    $year = '';
+	      if($value[0] == "currentYear"){
+	        $year = date('Y');
+	        RequestHandler::setValue($paramName, $year);
+        }else if($value[0] == 'previousYear'){
+	        	$year = date('Y')-1;
+	        	RequestHandler::setValue($paramName, $year);
+	      }
+	      if(count($value) > 1){
+  	      if($value[1] == 'currentMonth'){
+  	      	$month = date('m');
+  	      	RequestHandler::setValue($paramName, $year.$month);
+  	      }else if($value[1] == 'previousMonth'){
+  	      	$month = date('m')-1;
+  	      	if($month < 10){
+  	      		$month = '0'.$month;
+  	      	}
+  	      	RequestHandler::setValue($paramName, $year.$month);
+  	      }
+  	      if($value[1] == 'currentWeek'){
+  	      	$week = date('W');
+  	      	RequestHandler::setValue($paramName, $year.$week);
+  	      }else if($value[1] == 'previousWeek'){
+  	      	$week = date('W')-1;
+  	      	if($week < 10){
+  	      		$week = '0'.$week;
+  	      	}
+  	      	RequestHandler::setValue($paramName, $year.$week);
+  	      }
+  	    }
+  	  }
+  	}
 	  $reportFile=explode('?', $report->file);
 	  if (count($reportFile) > 1) {
 	    $reportFileParam = explode('&', $reportFile[1]);
@@ -146,137 +212,122 @@ class AutoSendReport extends SqlElement{
     $title = str_replace('${dbName}', Parameter::getGlobalParameter('paramDbDisplayName'), $title);
     $title = str_replace('${report}', $report->name, $title);
     $title = str_replace('${date}', date('Y-m-d'), $title);
-    $message = Parameter::getGlobalParameter('paramMailTitleReport');
-    $title = str_replace('${dbName}', Parameter::getGlobalParameter('paramDbDisplayName'), $title);
-    $title = str_replace('${report}', $report->name, $title);
-    $title = str_replace('${date}', date('Y-m-d'), $title);
-    $email = explode(',', $this->email);
+    $message = Parameter::getGlobalParameter('paramMailBodyReport');
+    $message = str_replace('${dbName}', Parameter::getGlobalParameter('paramDbDisplayName'), $message);
+    $message = str_replace('${report}', $report->name, $message);
+    $message = str_replace('${date}', date('Y-m-d'), $message);
+    $resource = new Resource($this->idReceiver, true);
+    sendMail($resource->email, $title, $message, null, null, null, array($fileName), null);
+    $email = explode(',', $this->otherReceiver);
     foreach ($email as $dest){
-      sendMail($dest, $title, $message, null, null, null, array($fileName), null);
+      if($dest != $resource->email and $dest != ''){
+        sendMail($dest, $title, $message, null, null, null, array($fileName), null);
+      }
     }
 	}
 	
-	public function returnReportParameters($report, $frequency, $includeAllBooleans=false) {
-		$result=array();
-		$currentWeek=weekNumber(date('Y-m-d'));
-		if (strlen($currentWeek)==1) {
-			$currentWeek='0' . $currentWeek;
-		}
-		$currentYear=strftime("%Y") ;
-		$currentMonth=strftime("%m") ;
-		$param=new ReportParameter();
-		$crit=array('idReport'=>$report->id);
-		$listParam=$param->getSqlElementsFromCriteria($crit,false,null,'sortOrder');
-		foreach ($listParam as $param) {
-			if ($param->paramType=='organizationList'){
-				if($param->defaultValue=='currentOrganization'){
-					$defaultValue= '';
-					$userId=getCurrentUserId();
-					$user = new Affectable($userId);
-					$result[$param->name]=$user->idOrganization;
-					$defaultValue= $user->idOrganization;
-				}
-			} else if ($param->paramType=='week') {
-				$result['periodType']='week';
-				$result['periodValue']=($param->defaultValue=='currentWeek')?$currentYear . $currentWeek:$param->defaultValue;
-				$result['yearSpinner']=substr($result['periodValue'],0,4);
-				$result['weekSpinner']=substr($result['periodValue'],4,2);
-			} else if ($param->paramType=='month') {
-				$result['periodType']='month';
-				$result['periodValue']=($param->defaultValue=='currentMonth')?$currentYear . $currentMonth:$param->defaultValue;
-				$result['yearSpinner']=substr($result['periodValue'],0,4);
-				$result['monthSpinner']=substr($result['periodValue'],4,2);
-			} else if ($param->paramType=='year') {
-				$result['periodType']='year';
-				$result['periodValue']=($param->defaultValue=='currentYear')?$currentYear:$param->defaultValue;
-				$result['yearSpinner']=$result['periodValue'];
-			} else if ($param->paramType=='date') {
-				$result[$param->name]=($param->defaultValue=='today')?date('Y-m-d'):$param->defaultValue;
-			} else if ($param->paramType=='periodScale') {
-				$result[$param->name]=$param->defaultValue;
-			} else if ($param->paramType=='boolean') {
-				if ($param->defaultValue=='true') {
-					$result[$param->name]=true;
-				} else if ($includeAllBooleans) {
-					$result[$param->name]=$param->defaultValue;
-				}
-			} else if ($param->paramType=='projectList') {
-				$defaultValue='';
-				if ($param->defaultValue=='currentProject') {
-					if (sessionValueExists('project')) {
-						if (getSessionValue('project')!='*') {
-							$defaultValue=getSessionValue('project');
-						}
-					}
-				} else if ($param->defaultValue) {
-					$defaultValue=$param->defaultValue;
-				}
-				$result[$param->name]=$defaultValue;
-			} else if ($param->paramType=='productList') {
-				$defaultValue='';
-				if ($param->defaultValue) {
-					$defaultValue=$param->defaultValue;
-				}
-				$result[$param->name]=$defaultValue;
-			} else if ($param->paramType=='userList') {
-				$defaultValue='';
-				if ($param->defaultValue=='currentUser') {
-					if (sessionUserExists()) {
-						$user=getSessionUser();
-						$defaultValue=$user->id;
-					}
-				} else if ($param->defaultValue) {
-					$defaultValue=$param->defaultValue;
-				}
-				$result[$param->name]=$defaultValue;
-			} else if ($param->paramType=='versionList') {
-				$defaultValue=$param->defaultValue;
-				$result[$param->name]=$defaultValue;
-			} else if ($param->paramType=='testSessionList') {
-				$defaultValue=$param->defaultValue;
-				$result[$param->name]=$defaultValue;
-			} else if ($param->paramType=='resourceList') {
-				$defaultValue='';
-				if ($param->defaultValue=='currentResource') {
-					if (sessionValueExists('project')) {
-						$user=getSessionUser();
-						$defaultValue=$user->id;
-					}
-				} else if ($param->defaultValue) {
-					$defaultValue=$param->defaultValue;
-				}
-				$result[$param->name]=$defaultValue;
-			} else if ($param->paramType=='requestorList') {
-				$defaultValue='';
-				$result[$param->name]=$defaultValue;
-			} else if ($param->paramType=='showDetail') {
-				$defaultValue='';
-				$result[$param->name]=$defaultValue;
-			} else if ($param->paramType=='ticketType') {
-				$defaultValue='';
-				if ($param->defaultValue) {
-					$defaultValue=$param->defaultValue;
-				}
-				$result[$param->name]=$defaultValue;
-			} else if ($param->paramType=='objectList') {
-				$defaultValue='';
-				if ($param->defaultValue) {
-					$defaultValue=$param->defaultValue;
-				}
-				$result[$param->name]=$defaultValue;
-			} else if ($param->paramType=='id') {
-				$defaultValue='';
-				if ($param->defaultValue) {
-					$defaultValue=$param->defaultValue;
-				}
-				$result[$param->name]=$defaultValue;
-			} else {
-				$defaultValue='';
-				if ($param->defaultValue) {
-					$defaultValue=$param->defaultValue;
-				}
-				$result[$param->name]=$defaultValue;
+	public static function drawAutoSendReportList($idUser){
+	  $autoSendReport = new AutoSendReport();
+	  $user = getSessionUser();
+	  $profile = new Profile($user->idProfile, true);
+	  $crit = array("idResource"=>getCurrentUserId());
+	  if($profile->profileCode == 'ADM'){
+	    if($idUser != ''){
+	    	$crit = array("idResource"=>$idUser);
+	    }else{
+	    	$crit = null;
+	    }
+	  }
+	  $listAutoSendReport = $autoSendReport->getSqlElementsFromCriteria($crit);
+	  
+	  $result = "";
+	  $result .='<div id="autoSendReportDiv" align="center" style="margin-top:20px;margin-bottom:20px; overflow-y:auto; width:100%;">';
+	  $result .='  <table width="98%" style="margin-left:20px;margin-right:20px;border: 1px solid grey;">';
+	  $result .='   <tr class="reportHeader">';
+	  $result .='     <td style="border: 1px solid grey;border-right: 1px solid white;height:60px;width:10%;text-align:center;vertical-align:center;">'.i18n('Resource').'</td>';
+	  $result .='     <td style="border: 1px solid grey;border-right: 1px solid white;height:60px;width:12%;text-align:center;vertical-align:center;">'.i18n('colSendName').'</td>';
+	  $result .='     <td style="border: 1px solid grey;border-right: 1px solid white;height:60px;width:10%;text-align:center;vertical-align:center;">'.i18n('colReportName').'</td>';
+	  $result .='     <td style="border: 1px solid grey;border-right: 1px solid white;height:60px;width:15%;text-align:center;vertical-align:center;">'.i18n('colReceivers').'</td>';
+	  $result .='     <td style="border: 1px solid grey;border-right: 1px solid white;height:60px;width:10%;text-align:center;vertical-align:center;">'.i18n('colFrequency').'</td>';
+	  $result .='     <td style="border: 1px solid grey;border-right: 1px solid white;height:60px;width:10%;text-align:center;vertical-align:center;">'.i18n('colNextTime').'</td>';
+	  $result .='     <td style="border: 1px solid grey;border-right: 1px solid white;height:60px;width:17%;text-align:center;vertical-align:center;">'.i18n('colParam').'</td>';
+	  $result .='     <td style="border: 1px solid grey;height:60px;width:20%;text-align:center;vertical-align:center;"></td>';
+	  $result .='   </tr>';
+	  $countLine = 0;
+	  foreach ($listAutoSendReport as $send){
+	    $resource = new Resource($send->idResource, true);
+	    $receiver = new Resource($send->idReceiver, true);
+	    $report = new Report($send->idReport, true);
+	  	$result .='<tr>';
+	  	if($countLine == 0){
+  				$result .='<td style="border: 1px solid grey;height:40px;width:10%;text-align:left;vertical-align:center;background:white;">';
+  				$result .=' <table width="100%">';
+  				$result .='   <tr><td width="40%">'.formatUserThumb($resource->id, $resource->name, null, 22, 'right').'</td>';
+  				$result .='       <td width="60%" float="left">&nbsp'.$resource->name.'</td></tr>';
+  				$result .=' </table></td>';
+			}else{
+  				$result .='     <td style="border-left: 1px solid grey;border-right: 1px solid grey;height:40px;width:10%;background-color:transparent;"></td>';
 			}
+			$result .='<td style="border: 1px solid grey;height:40px;width:12%;text-align:center;vertical-align:center;background:white;">'.$send->name.'</td>';
+			$result .='<td style="border: 1px solid grey;height:40px;width:10%;text-align:center;vertical-align:center;background:white;">'.$report->name.'</td>';
+			$result .='<td style="border: 1px solid grey;height:40px;width:15%;text-align:center;vertical-align:center;background:white;">'.$receiver->name;
+			if($send->otherReceiver != ''){
+			  $result .= ','.$otherReceiver;
+			}
+			$result .='</td>';
+			$result .='<td style="border: 1px solid grey;height:40px;width:10%;text-align:center;vertical-align:center;background:white;">'.$send->sendFrequency.'</td>';
+			$result .='<td style="border: 1px solid grey;height:40px;width:10%;text-align:center;vertical-align:center;background:white;">'.htmlFormatDate(date('Y-m-d', $send->nextTime)).'</td>';
+			$result .='<td style="border: 1px solid grey;height:40px;width:17%;text-align:center;vertical-align:center;background:white;">';
+			$param = json_decode($send->reportParameter);
+			foreach ($param as $name=>$value){
+			  if($value != ''){
+			    if($name == 'yearSpinner'){
+			      $result .= 'year : '.$value.'&nbsp';
+			    }
+			    if($name == 'monthSpinner'){
+			    	$result .= 'month : '.$value.'&nbsp';
+			    }
+			    if($name == 'weekSpinner'){
+			    	$result .= 'week : '.$value.'&nbsp';
+			    }
+			  }
+			}
+			$result .='</td>';
+			$result .='</tr>';
+	  	$countLine++;
+	  }
+	  $result .='  </table>';
+	  $result .='</div>';
+	  echo $result;
+	}
+	public static function htmlReturnOptionForMinutesHoursCron($selection, $isHours=false, $isDayOfMonth=false, $required=false) {
+		$arrayWeekDay=array();
+		$max=59;
+		$start=0;
+		$modulo=5;
+		if($isHours){
+			$max=23;
+			$start=0;
+			$modulo=1;
+		}
+		if($isDayOfMonth){
+			$max=31;
+			$start=1;
+			$modulo=1;
+		}
+		for($i=$start;$i<=$max;$i++){
+			$key=$i;
+			//if($key<10)$key='0'.$key;
+			if ( $i % $modulo==0) $arrayWeekDay[$key]=$key;
+		}
+		$result="";
+		if (! $required) {
+			$result.='<option value="*" '.(($selection=='*')?'selected':'').'>'.i18n('all').'</option>';
+		}
+		foreach($arrayWeekDay as $key=>$line) {
+			$result.= '<option value="' . $key . '"';
+			if ($selection!==null and $key==$selection ) { $result.= ' SELECTED '; }
+			$result.= '>'.$line.'</option>';
 		}
 		return $result;
 	}
