@@ -6523,7 +6523,9 @@ function loadMenuBarItem(item, itemName, from) {
   } else if (item == 'Absence') {
 	    loadContent("absenceMain.php", "centerDiv");
   } else if (item == 'ImputationValidation') {
-	    loadContent("imputationValidationMain.php", "centerDiv");  
+	    loadContent("imputationValidationMain.php", "centerDiv");
+  } else if (item == 'AutoSendReport') {
+	    loadContent("autoSendReportList.php", "centerDiv"); 
     //ADD qCazelles - GANTT
   } else if (item == 'VersionsPlanning') {
 	//CHANGE qCazelles - Correction GANTT - Ticket #100
@@ -9921,23 +9923,29 @@ function cronExecutionDefinitionSave(){
 }
 
 function showDialogAutoSendReport(){
-	loadDialog('dialogAutoSendReport',null,true,null,true);
+	setTimeout(loadDialog('dialogAutoSendReport',null,true,null,true), 200);
 }
 
-function saveAutoSendReport(sendFrequency){
+function saveAutoSendReport(sendFrequency, idReport){
 	var month = dojo.byId('monthFrequency').value;
 	var week = dijit.byId('weekFrequency').get('value');
 	var destination = dijit.byId('destinationInput').get('value');
 	var otherDestination = dijit.byId('otherDestinationInput').get('value');
 	var name = dijit.byId('name').get('value');
 	var sendTime = dojo.byId('sendTime').value;
-	var yearSpinner = dojo.byId('yearParam').value;
-	var monthSpinner = dojo.byId('monthParam').value;
-	var weekSpinner = dojo.byId('weekParam').value;
+	if(dijit.byId('yearParam')){
+		var yearParam = dijit.byId('yearParam').get('value');
+	}
+	if(dijit.byId('monthParam')){
+		var monthParam = dijit.byId('monthParam').get('value');
+	}
+	if(dijit.byId('weekParam')){
+		var weekParam = dijit.byId('weekParam').get('value');
+	}
 	
 	if((destination != '' && otherDestination != '') || (destination != '' || otherDestination != '')){
-		var url='../tool/saveAutoSendReport.php?sendFrequency='+sendFrequency+'&week='+week+'&month='+month+'&destination='+destination+
-		'&otherDestination='+otherDestination+'&name='+name+'&sendTime='+sendTime+'&yearSpinner='+yearSpinner+'&monthSpinner='+monthSpinner+'&weekSpinner='+weekSpinner;
+		var url='../tool/saveAutoSendReport.php?sendFrequency='+sendFrequency+'&idReport='+idReport+'&week='+week+'&month='+month+'&destination='+destination+
+		'&otherDestination='+otherDestination+'&name='+name+'&sendTime='+sendTime+'&yearParam='+yearParam+'&monthParam='+monthParam+'&weekParam='+weekParam;
 		  dojo.xhrGet({
 		    url : url,
 		    handleAs : "text",
@@ -9946,4 +9954,8 @@ function saveAutoSendReport(sendFrequency){
 		    }
 		  });
 	}
+}
+
+function refreshRadioButtonDiv(){
+	loadContent("../tool/refreshButtonAutoSendReport.php", "radioButtonDiv", "autoSendReportForm");
 }

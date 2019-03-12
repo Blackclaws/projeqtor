@@ -177,7 +177,7 @@ class ImputationValidation{
   				$result .='       <td width="60%" float="left">&nbsp'.$name.'</td></tr>';
   				$result .='     </table></td>';
   			}else{
-  				$result .='     <td style="border-left: 1px solid grey;border-rgiht: 1px solid grey;height:30px;width:16%;background-color:transparent;"></td>';
+  				$result .='     <td style="border-left: 1px solid grey;border-right: 1px solid grey;height:30px;width:16%;background-color:transparent;"></td>';
   			}
   			$displayWeek=$weekValue.'&nbsp;<span style="font-size:80%;font-style:italic;">('.htmlFormatDate($firstDay).' - '.htmlFormatDate($lastDay).')</span>';
   			$result .='     <td onClick="'.$goto.'" style="cursor:pointer;border: 1px solid grey;height:30px;width:10%;text-align:center;vertical-align:center;">'.$displayWeek.'</td>';
