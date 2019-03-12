@@ -40,52 +40,48 @@ $name = RequestHandler::getValue('name');
 $sendTime = RequestHandler::getValue('sendTime');
 $hours = substr($sendTime, 0, 2);
 $minutes = substr($sendTime, 3);
-$idReport = getSessionValue('idReport');
-$yearSpinner = RequestHandler::getValue('yearSpinner');
-$monthSpinner = RequestHandler::getValue('monthSpinner');
-$weekSpinner = RequestHandler::getValue('weekSpinner');
-if($destination != ''){
-  $user = new Resource($destination, true);
-  $destination = $user->email;
+$idReport = RequestHandler::getId('idReport');
+$yearParam = RequestHandler::getValue('yearParam');
+$monthParam = RequestHandler::getValue('monthParam');
+$weekParam = RequestHandler::getValue('weekParam');
+
+if(sessionValueExists('reportParametersForDialog')){
+	$param = getSessionValue('reportParametersForDialog');
 }
-if($otherDestination != '' and $destination != ''){
-  $destination = $destination.','.$otherDestination;
-}else{
-  $destination = $user->email;
+
+$report = new Report($idReport, true);
+$arrayParam = array();
+foreach ($param as $paramName=>$paramValue){
+  if($paramName != 'yearSpinner' and $paramName != 'monthSpinner' and $paramName != 'weekSpinner' and $paramName != 'startDate' and $paramName != 'periodValue'){
+      $arrayParam[$paramName] = $paramValue;
+  }
 }
-if($idReport != ''){
-	$report = new Report($idReport, true);
-	$param = TodayParameter::returnReportParameters($report, true);
-	$arrayParam = array();
-	foreach ($param as $type=>$value){
-	  if($type != 'periodValue' and $type != 'yearSpinner' and $type != 'monthSpinner' and $type != 'weekSpinner'){
-	    $arrayParam[$type] = $value;
-	  }
-	}
-	foreach ($arrayParam as $type=>$value){
-	  if($type == 'periodType' and $value == 'year'){
-	    if (Parameter::getGlobalParameter("reportStartMonth")!='NO') {
-  	    $arrayParam['periodValue'] = $yearSpinner;
-  	    $arrayParam['yearSpinner'] = $yearSpinner;
-  	    $arrayParam['monthSpinner'] = $monthSpinner;
-	    }else{
-	      $arrayParam['periodValue'] = $yearSpinner;
-	      $arrayParam['yearSpinner'] = $yearSpinner;
-	    }
-	  }
-	  if($type == 'periodType' and $value == 'month'){
-	  	$arrayParam['periodValue'] = $yearSpinner.$monthSpinner;
-	  	$arrayParam['monthSpinner'] = $monthSpinner;
-	  	$arrayParam['yearSpinner'] = $yearSpinner;
-	  }
-	  if($type == 'periodType' and $value == 'week'){
-	  	$arrayParam['periodValue'] = $yearSpinner.$weekSpinner;
-	  	$arrayParam['weekSpinner'] = $weekSpinner;
-	  	$arrayParam['yearSpinner'] = $yearSpinner;
-	  }
-	}
-	$param = json_encode($arrayParam);
+foreach ($param as $paramName=>$paramValue){
+  if($paramName == 'yearSpinner'){
+    $arrayParam[$paramName] = $yearParam;
+  }
+  if($paramName == 'monthSpinner'){
+  	$arrayParam[$paramName] = $monthParam;
+  }
+  if($paramName == 'weekSpinner'){
+  	$arrayParam[$paramName] = $weekParam;
+  }
+  if($paramName == 'startDate' and $paramValue == date('Y-m-d')){
+  	$arrayParam[$paramName] = 'currentDate';
+  }else if($paramName == 'startDate' and $paramValue != date('Y-m-d')){
+    $arrayParam[$paramName] = $paramValue;
+  }
+  if($paramName == 'periodType' and $paramValue == 'year'){
+    $arrayParam['periodValue'] = $yearParam.'Year';
+  }
+  if ($paramName == 'periodType' and $paramValue == 'month'){
+    $arrayParam['periodValue'] = $yearParam.'Year-'.$monthParam.'Month';
+  }
+  if ($paramName == 'periodType' and $paramValue == 'week'){
+    $arrayParam['periodValue'] = $yearParam.'Year-'.$weekParam.'Week';
+  }
 }
+$param = json_encode($arrayParam);
 
 //open transaction bdd
 Sql::beginTransaction();
@@ -93,12 +89,13 @@ Sql::beginTransaction();
 $autoSendReport = new AutoSendReport();
 $autoSendReport->idReport = $report->id;
 $autoSendReport->idResource = getCurrentUserId();
+$autoSendReport->idReceiver = $destination;
 if($name != ''){
   $autoSendReport->name = $name;
 }else{
   $autoSendReport->name = $report->name.'_'.$sendFrequency;
 }
-$autoSendReport->email = $destination;
+$autoSendReport->otherReceiver = $otherDestination;
 $autoSendReport->sendFrequency = $sendFrequency;
 $cron = '';
 if($sendTime != ''){

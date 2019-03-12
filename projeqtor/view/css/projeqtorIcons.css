@@ -1108,3 +1108,9 @@
 .iconSubmitted32 { background-image: url(images/Submitted.png);  background-size: 32px 32px;}
 .iconUnsubmitted16 { background-image: url(images/Unsubmitted.png);  background-size: 16px 16px;}
 .iconUnsubmitted32 { background-image: url(images/Unsubmitted.png);  background-size: 32px 32px;}
+
+.iconAutoSendReport { background-image: url(images/iconAutoSendReport32.png); }
+.ProjeQtOrFlatBlue .iconAutoSendReport { background-image: url(customIcons/blue/iconAutoSendReport.png); }
+.ProjeQtOrFlatRed .iconAutoSendReport { background-image: url(customIcons/red/iconAutoSendReport.png); }
+.ProjeQtOrFlatGreen .iconAutoSendReport { background-image: url(customIcons/green/iconAutoSendReport.png); }
+.ProjeQtOrFlatGrey .iconAutoSendReport { background-image: url(customIcons/grey/iconAutoSendReport.png); }

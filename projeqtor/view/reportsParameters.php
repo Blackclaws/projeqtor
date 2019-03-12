@@ -1083,7 +1083,7 @@ foreach ($listParam as $param) {
            dojoType="dijit.form.Button" type="submit" 
            id="reportAutoSendReport" name="reportAutoSendReport" 
            iconClass="dijitButtonIcon dijitButtonIconEmail" class="detailButton whiteBackground" showLabel="false"
-           onclick="showDialogAutoSendReport();saveDataToSession('idReport', <?php echo $idReport;?>, false);">
+           onclick="saveReportParametersForDialog();">
         </button>
         <input type="hidden" id="page" name="page" value="<?php echo ((substr($report->file,0,3)=='../')?'':'../report/') . $report->file;?>"/>
         <input type="hidden" id="print" name="print" value=true />

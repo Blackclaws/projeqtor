@@ -6,12 +6,20 @@
 -- ///////////////////////////////////////////////////////////
 
 INSERT INTO `${prefix}menu` (`id`, `name`, `idMenu`, `type`, `sortOrder`, `level`, `idle`, `menuClass`) VALUES
-(204, 'menuImputationValidation', 7, 'item', 118, Null, 0, 'Work');
+(204, 'menuImputationValidation', 7, 'item', 118, Null, 0, 'Work')
+(205, 'menuAutoSendReport', 7, 'item', 175, Null, 0, 'Work');
 
 INSERT INTO `${prefix}habilitation` (`idProfile`, `idMenu`, `allowAccess`) VALUES
 (1, 204, 1),
 (2, 204, 1),
-(3, 204, 1);
+(3, 204, 1),
+(1, 205, 1),
+(2, 205, 1),
+(3, 205, 1),
+(4, 205, 1),
+(5, 205, 1),
+(6, 205, 1),
+(7, 205, 1);
 
 INSERT INTO `${prefix}accessright` (`idProfile`, `idMenu`, `idAccessProfile`) VALUES
 (1,204,8);
@@ -197,6 +205,21 @@ CREATE TABLE `${prefix}calendarbankoffdays` (
     `month` INT(2) DEFAULT NULL,
     `day` INT(2) DEFAULT NULL,
     `easterDay` INT(2) DEFAULT NULL,
+  PRIMARY KEY (id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE `${prefix}cronautosendreport` (
+    `id` INT(12) NOT NULL AUTO_INCREMENT,
+    `name` VARCHAR(100) DEFAULT NULL,
+    `idReport` INT(12) DEFAULT NULL,
+    `idResource` INT(12) DEFAULT NULL,
+    `idReceiver` INT(12) DEFAULT NULL,
+		`idle` INT(1) DEFAULT NULL,
+		`sendFrequency` varchar(100) DEFAULT NULL,
+		`otherReceiver` varchar(500) DEFAULT NULL,
+		`cron` varchar(100) DEFAULT NULL,
+		`nextTime` varchar(100) DEFAULT NULL,
+		`reportParameter` varchar(500) DEFAULT NULL,
   PRIMARY KEY (id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
