@@ -73,7 +73,8 @@ if ($idProject) {
   errorLog(" dynamicDialogRestrictTypes : no parameter set idType=$idType, idProject=$idProject, idProjectType=$idProjectType, idProfile=$idProfile)");
   $canUpdate="NO";
 }
-  
+
+unset($lstCustom['VersionType']);
 echo "<table style='width:100%'>";
 foreach ($lstCustom as $class=>$nameClass) {
   echo "<tr style='padding-bottom:20px'><td class='dialogLabel' valign='top'><label>$nameClass&nbsp;:&nbsp;</label></td>";
