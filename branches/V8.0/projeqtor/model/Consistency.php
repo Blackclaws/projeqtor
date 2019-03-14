@@ -350,13 +350,13 @@ class Consistency {
     $query="SELECT pe.refType as reftype, pe.refId as refid, pe.realWork as realwork, pe.leftWork as leftwork, pe.plannedWork as plannedwork,"
           ."  coalesce((select sum(work) from $workTable w where w.refType=pe.refType and w.refId=pe.refId),0)"
           ."+coalesce((select sum(pesum.realWork) from $peTable pesum where pesum.topId=pe.id),0)"
-          ."+coalesce((select sum(wesum.realWork) from $weTable wesum where pe.refTYpe='Project' and wesum.idProject=pe.id and wesum.idActivty is null),0)"
+          ."+coalesce((select sum(wesum.realWork) from $weTable wesum where pe.refType='Project' and wesum.idProject=pe.id and wesum.idActivity is null),0)"
           ." as sumwork "
           ."FROM $peTable pe "
           ."WHERE pe.isManualProgress=0 and realwork!="
            ."coalesce((select sum(work) from $workTable w where w.refType=pe.refType and w.refId=pe.refId),0)"
            ."+coalesce((select sum(pesum.realWork) from $peTable pesum where pesum.topId=pe.id),0) "
-           ."+coalesce((select sum(wesum.realWork) from $weTable wesum where pe.refTYpe='Project' and wesum.idProject=pe.id and wesum.idActivty is null),0)"
+           ."+coalesce((select sum(wesum.realWork) from $weTable wesum where pe.refType='Project' and wesum.idProject=pe.id and wesum.idActivity is null),0)"
           ."   OR (pe.realWork+pe.leftWork)!=pe.plannedWork ";
     $result=Sql::query($query);
     while ($line = Sql::fetchLine($result)) {

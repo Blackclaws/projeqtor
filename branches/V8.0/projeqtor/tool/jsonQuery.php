@@ -208,6 +208,7 @@
         $queryWhere.= " or $table.codeType='TMP' "; // Templates projects are always visible in projects list
         $queryWhere.= ')';
     }  
+    
     // --- Restrict to allowed project taking into account selected project : for all list that are project dependant
     if (property_exists($obj, 'idProject') and sessionValueExists('project')) {
         if (getSessionValue('project')!='*' and !$showAllProjects) {
@@ -228,6 +229,16 @@
             $queryWhere.= "($table.idProject in " . getVisibleProjectsList(! $showIdleProjects). " or $table.idProject is null)" ;
           }
         }
+    }
+    
+    //Gautier #itemTypeRestriction
+    if(Parameter::getGlobalParameter('hideItemTypeRestrictionOnProject')=='YES'){
+      $lstGetClassList = Type::getClassList();
+      $objType = $obj->getDatabaseColumnName($objectClass . 'Type');
+      $lstGetClassList = array_flip($lstGetClassList);
+      if(in_array($objType,$lstGetClassList)){
+        $queryWhere.= $user->getItemTypeRestriction($obj,$objectClass,$user,$showIdle,$showIdleProjects);
+      }
     }
     // --- Take into account restriction visibility clause depending on profile
     if ( ($objectClass=='Version' or $objectClass=='Resource') and $comboDetail) {

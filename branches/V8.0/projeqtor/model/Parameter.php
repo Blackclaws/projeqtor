@@ -291,6 +291,7 @@ class Parameter extends SqlElement {
       case 'dontAddClosedDeliveredVersionToProject' : //ADD qCazelles - Dont add closed and delivered versions to Project - Ticket 181 
       case 'mailGroupActive' :
       case 'isManualProgress':
+      case 'hideItemTypeRestrictionOnProject' :
         $list=array('NO'=>i18n('displayNo'),
                     'YES'=>i18n('displayYes')); 
         break;
@@ -750,6 +751,7 @@ class Parameter extends SqlElement {
       	                      'milestoneFromVersion'=>'list',
       	                    'sectionPlanningControl'=>'section',
       	                      'allowTypeRestrictionOnProject'=>'list',
+      	                      'hideItemTypeRestrictionOnProject'=>'list',
       	                'tabDisplay'=>"tab",
       	                  'columnDisplayLeft'=>'newColumn',
       	                    'sectionDisplay'=>'section',
