@@ -39,7 +39,7 @@ Sql::beginTransaction();
 $result="";
 foreach($profileList as $idProfile=>$profile) {
   $critArray=array('idWorkflow'=>$workflowId, 'idProfile'=>$idProfile);
-	$cs=SqlElement::getSingleSqlElementFromCriteria("workflowprofile", $critArray);
+	$cs=SqlElement::getSingleSqlElementFromCriteria("WorkflowProfile", $critArray);
 	if ($cs and $cs->id) {} else {
 		$cs->idWorkflow=$workflowId;
 		$cs->idProfile=$idProfile;
