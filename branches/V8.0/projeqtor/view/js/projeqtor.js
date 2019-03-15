@@ -5642,9 +5642,14 @@ function saveImputationValidation(idWorkPeriod, buttonAction){
 	    handleAs : "text",
 	    load : function(data){
 	      hideWait();
-	      refreshSubmitValidateDiv(idWorkPeriod, buttonAction);
+	      if(buttonAction != 'validateSelection'){
+	    	  refreshSubmitValidateDiv(idWorkPeriod, buttonAction);
+	      }
+	      if(buttonAction == 'validateSelection'){
+	    	  refreshImputationValidation(null);
+	      }
 	      if(buttonAction == 'cancelSubmit'){
-	  		cancelSubmitbyOther(idWorkPeriod);
+	    	  cancelSubmitbyOther(idWorkPeriod);
 	  	  }
 	    }
 	  });
@@ -5661,9 +5666,29 @@ function cancelSubmitbyOther(idWorkPeriod) {
 	  });
 }
 
-function imputationValidationSelection(isChecked, weekNumber){
-	console.log(isChecked);
-	console.log(weekNumber);
+function imputationValidationSelection(){
+	var countLine = dojo.byId('countLine').value;
+	for(var i=1; i<=countLine; i++){
+		if(dojo.byId('validatedLine'+i).value == '0'){
+			dijit.byId('validCheckBox'+i).set("checked", dijit.byId('selectAll').get('checked'));
+		}
+	}
+}
+
+function validateAllSelection(){
+	var countLine = dojo.byId('countLine').value;
+	var listId = '';
+	if(countLine > 0){
+		for(var i=1; i<=countLine; i++){
+			if(dojo.byId('validatedLine'+i).value == '0' && dijit.byId('validCheckBox'+i).get('checked') == true){
+				listId += dojo.byId('validatedLine'+i).name+',';
+			}
+		}
+		if(listId != ''){
+			listId = listId.substr(0, listId.length-1);
+			saveImputationValidation(listId, 'validateSelection');
+		}
+	}
 }
 
 function refreshAutoSendReportList(idUser) {
@@ -5673,4 +5698,31 @@ function refreshAutoSendReportList(idUser) {
 		hideWait();
 	};
 	loadContent('../view/refreshAutoSendReportList.php', 'autoSendReportWorkDiv', 'autoSendReportListForm', false,false,false,false,callback,false);
+}
+
+function activeAutoSendReport(idSendReport){
+	var idle = dijit.byId('activeCheckBox'+idSendReport).get('checked');
+	showWait();
+	var url='../tool/saveAutoSendReport.php?action=changeStatus&idle='+idle+'&idSendReport='+idSendReport;
+	  dojo.xhrGet({
+	    url : url,
+	    handleAs : "text",
+	    load : function(){
+	    	hideWait();
+	    	refreshAutoSendReportList(null);
+	    }
+	  });
+}
+
+function removeAutoSendReport(idSendReport){
+	showWait();
+	var url='../tool/saveAutoSendReport.php?action=delete&idSendReport='+idSendReport;
+	  dojo.xhrGet({
+	    url : url,
+	    handleAs : "text",
+	    load : function(){
+	    	hideWait();
+	    	refreshAutoSendReportList(null);
+	    }
+	  });
 }
