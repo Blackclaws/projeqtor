@@ -31,33 +31,48 @@
 require_once "../tool/projeqtor.php";
 
 //parameter
-$idWorkPeriod = RequestHandler::getId('idWorkPeriod');
 $buttonAction = RequestHandler::getValue('buttonAction');
 
 //open transaction bdd
 Sql::beginTransaction();
 
-$workPeriod = new WorkPeriod($idWorkPeriod);
-
-switch ($buttonAction){
-	case 'cancelSubmit' :
-	  $workPeriod->submitted = 0;
-	  $workPeriod->submittedDate = null;
-	  break;
-	case 'cancelValidation' :
-	  $workPeriod->validated = 0;
-	  $workPeriod->validatedDate = null;
-	  $workPeriod->idLocker = null;
-	  break;
-	case 'validateWork' :
-	  $workPeriod->validated = 1;
-	  $workPeriod->validatedDate = date('Y-m-d-H-i-s');
-	  $workPeriod->idLocker = getCurrentUserId();
-	  break;
-	default:
-	  break;
+if($buttonAction != 'validateSelection'){
+  $idWorkPeriod = RequestHandler::getId('idWorkPeriod');
+  $workPeriod = new WorkPeriod($idWorkPeriod, true);
+  
+  switch ($buttonAction){
+  	case 'cancelSubmit' :
+  	  $workPeriod->submitted = 0;
+  	  $workPeriod->submittedDate = null;
+  	  break;
+  	case 'cancelValidation' :
+  	  $workPeriod->validated = 0;
+  	  $workPeriod->validatedDate = null;
+  	  $workPeriod->idLocker = null;
+  	  break;
+  	case 'validateWork' :
+  	  $workPeriod->validated = 1;
+  	  $workPeriod->validatedDate = date('Y-m-d-H-i-s');
+  	  $workPeriod->idLocker = getCurrentUserId();
+  	  break;
+  	default:
+  	  break;
+  }
+  $workPeriod->save();
 }
-$workPeriod->save();
+if($buttonAction == 'validateSelection'){
+  $idWorkPeriod = RequestHandler::getValue('idWorkPeriod');
+  $arrayId = explode(',', $idWorkPeriod);
+  foreach ($arrayId as $id){
+    $workPeriod = new WorkPeriod($id, true);
+    if($workPeriod->validated == 0){
+      $workPeriod->validated = 1;
+      $workPeriod->validatedDate = date('Y-m-d-H-i-s');
+      $workPeriod->idLocker = getCurrentUserId();
+      $workPeriod->save();
+    }
+  }
+}
 
 // commit workPeriod
 Sql::commitTransaction();

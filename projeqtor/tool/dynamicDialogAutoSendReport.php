@@ -38,7 +38,6 @@ $currentDay = date('Y-m-d');
 if(sessionValueExists('reportParametersForDialog')){
 	$param = getSessionValue('reportParametersForDialog');
 }
-
 $idReport = '';
 $periodType = '';
 $periodValue = '';
@@ -47,7 +46,7 @@ $monthSpinner = '';
 $weekSpinner = '';
 $startDate = '';
 $endDate = '';
-	
+
 foreach ($param as $name=>$value){
 	if($name == 'reportId'){
 		$idReport = $value;

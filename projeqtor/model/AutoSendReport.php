@@ -109,7 +109,7 @@ class AutoSendReport extends SqlElement{
 	}
 	
 	public function sendReport($idReport, $reportParameter){
-	  global $graphEnabled;
+	  global $displayResource, $outMode, $showMilestone, $portfolio, $columnsDescription, $graphEnabled, $showProject, $rgbPalette, $arrayColors;
 	  debugLog('report send at : '.date('H:i'));
 	  ob_start();
 	  $report = new Report($idReport);
@@ -190,6 +190,10 @@ class AutoSendReport extends SqlElement{
 	    	RequestHandler::setValue($param[0], $param[1]);
 	    }
 	  }
+	  $file = $reportFile[0];
+	  if ($file == '../tool/jsonPlanning.php' or $file == '../tool/jsonResourcePlanning.php') {
+	  	$file = substr($file, 0, -4).'_pdf.php';
+	  }
 	  header ('Content-Type: text/html; charset=UTF-8');
 	  echo '<html>
             	  <head>
@@ -197,7 +201,7 @@ class AutoSendReport extends SqlElement{
             	    <link rel="stylesheet" type="text/css" href="../view/css/projeqtorPrint.css" />
             	    <link rel="stylesheet" type="text/css" href="../view/css/projeqtorFlat.css" />
 	              </head><body>';
-    include '../report/'.$reportFile[0];
+    include '../report/'.$file;
     echo '</body></html>';
     $result = ob_get_clean();
     ob_clean();
@@ -227,74 +231,144 @@ class AutoSendReport extends SqlElement{
 	}
 	
 	public static function drawAutoSendReportList($idUser){
+	  $noData = true;
 	  $autoSendReport = new AutoSendReport();
 	  $user = getSessionUser();
+	  $listUser = getUserVisibleResourcesList(true);
 	  $profile = new Profile($user->idProfile, true);
-	  $crit = array("idResource"=>getCurrentUserId());
 	  if($profile->profileCode == 'ADM'){
 	    if($idUser != ''){
-	    	$crit = array("idResource"=>$idUser);
-	    }else{
-	    	$crit = null;
+	      unset($listUser);
+	      foreach (getUserVisibleResourcesList(true) as $id=>$name){
+	      	if($id == $idUser){
+	      		$listUser[$id]=$name;
+	      	}
+	      }
+	    }
+	  }else{
+	    unset($listUser);
+	    foreach (getUserVisibleResourcesList(true) as $id=>$name){
+	    	if($id == $user->id){
+	    		$listUser[$id]=$name;
+	    	}
 	    }
 	  }
-	  $listAutoSendReport = $autoSendReport->getSqlElementsFromCriteria($crit);
-	  
 	  $result = "";
 	  $result .='<div id="autoSendReportDiv" align="center" style="margin-top:20px;margin-bottom:20px; overflow-y:auto; width:100%;">';
 	  $result .='  <table width="98%" style="margin-left:20px;margin-right:20px;border: 1px solid grey;">';
 	  $result .='   <tr class="reportHeader">';
-	  $result .='     <td style="border: 1px solid grey;border-right: 1px solid white;height:60px;width:10%;text-align:center;vertical-align:center;">'.i18n('Resource').'</td>';
-	  $result .='     <td style="border: 1px solid grey;border-right: 1px solid white;height:60px;width:12%;text-align:center;vertical-align:center;">'.i18n('colSendName').'</td>';
-	  $result .='     <td style="border: 1px solid grey;border-right: 1px solid white;height:60px;width:10%;text-align:center;vertical-align:center;">'.i18n('colReportName').'</td>';
-	  $result .='     <td style="border: 1px solid grey;border-right: 1px solid white;height:60px;width:15%;text-align:center;vertical-align:center;">'.i18n('colReceivers').'</td>';
-	  $result .='     <td style="border: 1px solid grey;border-right: 1px solid white;height:60px;width:10%;text-align:center;vertical-align:center;">'.i18n('colFrequency').'</td>';
-	  $result .='     <td style="border: 1px solid grey;border-right: 1px solid white;height:60px;width:10%;text-align:center;vertical-align:center;">'.i18n('colNextTime').'</td>';
-	  $result .='     <td style="border: 1px solid grey;border-right: 1px solid white;height:60px;width:17%;text-align:center;vertical-align:center;">'.i18n('colParam').'</td>';
-	  $result .='     <td style="border: 1px solid grey;height:60px;width:20%;text-align:center;vertical-align:center;"></td>';
+	  $result .='     <td style="border: 1px solid grey;border-right: 1px solid white;height:60px;width:10%;text-align:center;vertical-align:center;">'.i18n('colIdResource').'</td>';
+	  $result .='     <td style="border: 1px solid grey;border-right: 1px solid white;height:60px;width:16%;text-align:center;vertical-align:center;">'.i18n('colSendName').'</td>';
+	  $result .='     <td style="border: 1px solid grey;border-right: 1px solid white;height:60px;width:15%;text-align:center;vertical-align:center;">'.i18n('colReport').'</td>';
+	  $result .='     <td style="border: 1px solid grey;border-right: 1px solid white;height:60px;width:18%;text-align:center;vertical-align:center;">'.i18n('colReceiver').'</td>';
+	  $result .='     <td style="border: 1px solid grey;border-right: 1px solid white;height:60px;width:8%;text-align:center;vertical-align:center;">'.i18n('colFrequency').'</td>';
+	  $result .='     <td style="border: 1px solid grey;border-right: 1px solid white;height:60px;width:6%;text-align:center;vertical-align:center;">'.i18n('colNextSend').'</td>';
+	  $result .='     <td style="border: 1px solid grey;border-right: 1px solid white;height:60px;width:22%;text-align:center;vertical-align:center;">'.i18n('colParameters').'</td>';
+	  $result .='     <td style="border: 1px solid grey;height:60px;width:5%;text-align:center;vertical-align:center;">'.i18n('colActive').'</td>';
 	  $result .='   </tr>';
-	  $countLine = 0;
-	  foreach ($listAutoSendReport as $send){
-	    $resource = new Resource($send->idResource, true);
-	    $receiver = new Resource($send->idReceiver, true);
-	    $report = new Report($send->idReport, true);
-	  	$result .='<tr>';
-	  	if($countLine == 0){
-  				$result .='<td style="border: 1px solid grey;height:40px;width:10%;text-align:left;vertical-align:center;background:white;">';
-  				$result .=' <table width="100%">';
-  				$result .='   <tr><td width="40%">'.formatUserThumb($resource->id, $resource->name, null, 22, 'right').'</td>';
-  				$result .='       <td width="60%" float="left">&nbsp'.$resource->name.'</td></tr>';
-  				$result .=' </table></td>';
-			}else{
-  				$result .='     <td style="border-left: 1px solid grey;border-right: 1px solid grey;height:40px;width:10%;background-color:transparent;"></td>';
-			}
-			$result .='<td style="border: 1px solid grey;height:40px;width:12%;text-align:center;vertical-align:center;background:white;">'.$send->name.'</td>';
-			$result .='<td style="border: 1px solid grey;height:40px;width:10%;text-align:center;vertical-align:center;background:white;">'.$report->name.'</td>';
-			$result .='<td style="border: 1px solid grey;height:40px;width:15%;text-align:center;vertical-align:center;background:white;">'.$receiver->name;
-			if($send->otherReceiver != ''){
-			  $result .= ','.$otherReceiver;
-			}
-			$result .='</td>';
-			$result .='<td style="border: 1px solid grey;height:40px;width:10%;text-align:center;vertical-align:center;background:white;">'.$send->sendFrequency.'</td>';
-			$result .='<td style="border: 1px solid grey;height:40px;width:10%;text-align:center;vertical-align:center;background:white;">'.htmlFormatDate(date('Y-m-d', $send->nextTime)).'</td>';
-			$result .='<td style="border: 1px solid grey;height:40px;width:17%;text-align:center;vertical-align:center;background:white;">';
-			$param = json_decode($send->reportParameter);
-			foreach ($param as $name=>$value){
-			  if($value != ''){
-			    if($name == 'yearSpinner'){
-			      $result .= 'year : '.$value.'&nbsp';
-			    }
-			    if($name == 'monthSpinner'){
-			    	$result .= 'month : '.$value.'&nbsp';
-			    }
-			    if($name == 'weekSpinner'){
-			    	$result .= 'week : '.$value.'&nbsp';
-			    }
-			  }
-			}
-			$result .='</td>';
-			$result .='</tr>';
-	  	$countLine++;
+	  foreach ($listUser as $id=>$name){
+	    $crit = array("idResource"=>$id);
+	    $listAutoSendReport = $autoSendReport->getSqlElementsFromCriteria($crit);
+	    $countLine = 0;
+  	  foreach ($listAutoSendReport as $send){
+  	    $noData = false;
+  	    $resource = new Resource($send->idResource, true);
+  	    $receiver = new Resource($send->idReceiver, true);
+  	    $report = new Report($send->idReport, true);
+  	  	$result .='<tr>';
+  	  	if($countLine == 0){
+    				$result .='<td style="border: 1px solid grey;height:40px;width:10%;text-align:left;vertical-align:center;background-color:white;">';
+    				$result .=' <table width="100%">';
+    				$result .='   <tr><td width="40%">'.formatUserThumb($resource->id, $resource->name, null, 22, 'right').'</td>';
+    				$result .='       <td width="60%" float="left">&nbsp'.$resource->name.'</td></tr>';
+    				$result .=' </table></td>';
+  			}else{
+    				$result .='     <td style="border-left: 1px solid grey;border-right: 1px solid grey;height:40px;width:10%;background-color:transparent;"></td>';
+  			}
+  			$result .='<td style="border: 1px solid grey;height:40px;width:16%;text-align:center;vertical-align:center;">'.$send->name.'</td>';
+  			$result .='<td style="border: 1px solid grey;height:40px;width:15%;text-align:center;vertical-align:center;">'.i18n($report->name).'</td>';
+  			$result .='<td style="border: 1px solid grey;height:40px;width:18%;text-align:center;vertical-align:center;">'.$receiver->name;
+  			if($send->otherReceiver != ''){
+  			  $listOtherReceiver = explode(',', $send->otherReceiver);
+  			  foreach ($listOtherReceiver as $otherReceiver){
+  			    $result .= ' / '.$otherReceiver;
+  			  }
+  			}
+  			$result .='</td>';
+  			$result .='<td style="border: 1px solid grey;height:40px;width:8%;text-align:center;vertical-align:center;">'.i18n($send->sendFrequency).'</td>';
+  			$result .='<td style="border: 1px solid grey;height:40px;width:6%;text-align:center;vertical-align:center;">'.htmlFormatDate(date('Y-m-d', $send->nextTime)).'</td>';
+  			$result .='<td style="border: 1px solid grey;height:40px;width:22%;text-align:center;vertical-align:center;">';
+  			$param = json_decode($send->reportParameter);
+  			$strParam = '';
+  			foreach ($param as $name=>$value){
+  			  if( trim($value) != ''){
+    		    if($name == 'idProject'){
+    		      $proj = new Project($value, true);
+    		    	$strParam .= i18n('Project').' : '.$proj->name.' / ';
+    		    }
+    		    if($name == 'idResource'){
+    		      $res = new Resource($value, true);
+    		    	$strParam .= i18n('colIdResource').' : '.$res->name.' / ';
+    		    }
+    		    if($name == 'idTeam'){
+    		      $team = new Team($value, true);
+    		    	$strParam .= i18n('team').' : '.$team->name.' / ';
+    		    }
+    		    if($name == 'idOrganization'){
+    		      $org = new Organization($value, true);
+    		    	$strParam .= i18n('organization').' : '.$org->name.' / ';
+    		    }
+    		    if($name == 'yearSpinner'){
+    		      $strParam .= i18n('setTo'.ucfirst($value).'Year').' / ';
+    		    }
+    		    if($name == 'monthSpinner'){
+    		      if($value == 'current' or $value == 'previous'){
+    		        $strParam .= i18n('setTo'.ucfirst($value).'Month').' / ';
+    		      }else{
+    		        $strParam .= i18n('startMonth').' : '.$value.' / ';
+    		      }
+    		    }
+    		    if($name == 'weekSpinner'){
+    		    	$strParam .= i18n('setTo'.ucfirst($value).'Week').' / ';
+    		    }
+    		    if($name == 'startDate'){
+    		      if($value == 'currentDate'){
+    		        $strParam .= i18n('colStartDate').' : '.i18n($value).' / ';
+    		      }else{
+    		        $strParam .= i18n('colStartDate').' : '.$value.' / ';
+    		      }
+    		    }
+  			  }
+  			}
+  			$strParam = substr($strParam, 0, -2);
+  			$result .= $strParam;
+  			$result .='</td>';
+  			$backgroud = '#a3d179';
+  			if($send->idle){
+  			  $backgroud = '#ff7777';
+  			}
+  			$result .='<td style="border: 1px solid grey;height:40px;width:5%;text-align:center;vertical-align:center;">';
+  			$result .='<table width="100%"><tr><td width="50%" style="background-color: '.$backgroud.';border-right:1px solid grey;height:40px;">';
+  			$checked = '';
+  			if(!$send->idle){
+  				$checked = 'checked';
+  			}
+  			$result .=' <div dojoType="dijit.form.CheckBox" type="checkbox" name="activeCheckBox'.$send->id.'" id="activeCheckBox'.$send->id.'" '.$checked.'>';
+  			$result .='<script type="dojo/method" event="onChange">activeAutoSendReport('.$send->id.')</script>';
+    		$result .=' </div>';
+    		$result .='</td><td width="50%">';
+  			$result .= '<a onClick="removeAutoSendReport('.htmlEncode($send->id).');" title="'.i18n('removeAutoSendReport').'" > '.formatMediumButton('Remove').'</a>';
+  			$result .='</td></tr></table>';
+  			$result .= '</td>';
+  			$result .='</tr>';
+  	  	$countLine++;
+  	  }
+	  }
+	  if($noData==true){
+	  	noData :
+	  	$result .='<tr><td colspan="8">';
+	  	$result .='<div style="background:#FFDDDD;font-size:150%;color:#808080;text-align:center;padding:15px 0px;width:100%;">'.i18n('noDataFound').'</div>';
+	  	$result .='</td></tr>';
 	  }
 	  $result .='  </table>';
 	  $result .='</div>';

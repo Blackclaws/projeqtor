@@ -34,6 +34,8 @@ scriptLog('   ->/view/refreshSubmitValidateDiv.php');
 
 $idWorkPeriod = getSessionValue('idWorkPeriod');
 $buttonAction = getSessionValue('buttonAction');
+$idCheckBox = getSessionValue('idCheckBox');
+
 if($buttonAction and $idWorkPeriod){
   $week = new WorkPeriod($idWorkPeriod);
   $result = "";
@@ -47,6 +49,8 @@ if($buttonAction and $idWorkPeriod){
   		$result .='      <span id="buttonCancelValidation'.$week->id.'" style="width:100px; " type="button" dojoType="dijit.form.Button" showlabel="true">'.i18n('buttonCancel')
   		. '       <script type="dojo/method" event="onClick" >'
   				. '        saveImputationValidation('.$week->id.', "cancelValidation");'
+  				    . '        saveDataToSession("idCheckBox", '.$idCheckBox.', false);' 
+  				    
   						. '       </script>'
   								. '     </span>';
   	}else{
@@ -56,12 +60,14 @@ if($buttonAction and $idWorkPeriod){
   		$result .='      <span id="buttonValidation'.$week->id.'" style="width:100px; " type="button" dojoType="dijit.form.Button" showlabel="true">'.i18n('validateWorkPeriod')
   		. '       <script type="dojo/method" event="onClick" >'
   				. '        saveImputationValidation('.$week->id.', "validateWork");'
+  				    . '        saveDataToSession("idCheckBox", '.$idCheckBox.', false);' 
   						. '       </script>'
   								. '     </span>';
   	}
   	$result .='     </td>';
-  	$result .='     <td style="padding-right:5px;"><div name="validCheckBox'.$week->id.'" id="validCheckBox'.$week->id.'"><input type="checkbox"/></div></td>';
-  	$result .='     </tr></table>';
+  	$result .='     <td style="padding-right:5px;"><div class="validCheckBox" type="checkbox" dojoType="dijit.form.CheckBox" name="validCheckBox'.$idCheckBox.'" id="validCheckBox'.$idCheckBox.'"></div></td>';
+		$result .='     </tr></table>';
+		$result .='     <input type="hidden" id="validatedLine'.$idCheckBox.'" name="'.$week->id.'" value="'.$week->validated.'"/>';
   }else{
   	if($week->submitted){
   		$result .='     <table width="100%"><tr><td style="height:30px;">'.formatIcon('Submitted', 32, i18n('submittedWork', array($name, htmlFormatDate($week->submittedDate)))).'</td>';
@@ -70,6 +76,7 @@ if($buttonAction and $idWorkPeriod){
   		$result .='      <span id="buttonCancel'.$week->id.'" style="width:100px; " type="button" dojoType="dijit.form.Button" showlabel="true">'.i18n('buttonCancel')
   		. '       <script type="dojo/method" event="onClick" >'
   				. '        saveImputationValidation('.$week->id.', "cancelSubmit");'
+  				    . '        saveDataToSession("idCheckBox", '.$idCheckBox.', false);' 
   						. '       </script>'
   								. '     </span>';
   		$result .='     </td></tr></table>';
