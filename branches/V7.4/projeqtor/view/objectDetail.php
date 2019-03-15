@@ -2580,7 +2580,7 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false, $pare
         if (strpos($attributes, 'readonly')>0) {
           $specificStyle.=' color:#606060 !important; background:none; background-color: #F0F0F0; ';
         }
-        echo ' rows="2" style="max-height:150px;width: '.$largeWidth.'px;'.$specificStyle.'" ';
+        echo ' rows="2" style="max-height:150px;width: '.$fieldWidth.'px;'.$specificStyle.'" ';
         echo ' maxlength="'.$dataLength.'" ';
         echo ' class="input '.(($isRequired)?'required':'').' generalColClass '.$notReadonlyClass.$notRequiredClass.$col.'Class" >';
         /*
