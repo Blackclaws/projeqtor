@@ -54,7 +54,8 @@ class ImputationValidation{
 	  $critDraw = "";
 	  $result="";
 	  $startWeek = $week;
-	  $endWeek = date('Y-m-d');
+	  $currentDay = date('Y-m-d');
+	  $endWeek = lastDayofWeek(weekNumber($currentDay), date('Y',strtotime($currentDay)));
 	  $proj = new Project();
 	  $listAdmProj = $proj->getAdminitrativeProjectList(true);
 	  $userVisbileResourceList = getUserVisibleResourcesList(true);
@@ -91,7 +92,6 @@ class ImputationValidation{
   	  	$critWhere .= " and validated=".$showValidated;
   	  }
 	  }
-	  $isChecked = "refreshImputationValidation();";
 	  
 	  //Header
 	  $result .='<div id="imputationValidationDiv" align="center" style="margin-top:20px;margin-bottom:20px; overflow-y:auto; width:100%;">';
@@ -108,10 +108,18 @@ class ImputationValidation{
 	  $result .='     </td>';
 	  $result .='     <td style="border: 1px solid grey;border-right: 1px solid white;height:60px;width:23%;text-align:center;vertical-align:center;">'.i18n('ImputationSubmit').'</td>';
 	  $result .='     <td colspan="2" style="border: 1px solid grey;height:60px;width:23%;text-align:center;vertical-align:center;">';
-    $result .='       <table width="100%"><tr><td>'.i18n('menuImputationValidation').'</td>';
-	  $result.='        <td style="float:right;margin-right: 2px;">
+    $result .='       <table width="100%"><tr><td width="62%">'.i18n('menuImputationValidation').'</td>';
+    $result .='       <td width="30%">';
+    $result .='       <span id="buttonValidationAll" style="width:100px; " type="button" dojoType="dijit.form.Button" showlabel="true">'.i18n('validateWorkPeriod')
+            . '         <script type="dojo/method" event="onClick" >'
+        		. '           validateAllSelection();'
+    				. '         </script>'
+  				  . '       </span></td>';
+	  $result.='        <td width="8%" style="padding-left:5px;padding-right:5px;">
 	                     <div title="'.i18n('selectionAll').'" dojoType="dijit.form.CheckBox" type="checkbox" 
-	                     class="whiteCheck" id="selectAll" name="selectAll" onChange="'.$isChecked.'"></div></td></table></td>';
+	                     class="whiteCheck" id="selectAll" name="selectAll" onChange="imputationValidationSelection()"></div>
+                      </td></table>
+                    </td>';
 	  $result .='   </tr>';
 	  if(!isset($noResource)){
 	  $weekArray = array();
@@ -136,6 +144,7 @@ class ImputationValidation{
 	  	$idCalendar = $res->idCalendarDefinition;
 	  	$countWeek = 0;
 	  	foreach ($periodValueList as $week){
+	  	  $idCheckBox++;
 	  	  $noData = false;
   			$firstDay = date('Y-m-d', firstDayofWeek(substr($week->periodValue, 4, 2),substr($week->periodValue, 0, 4)));
   			$lastDay = lastDayofWeek(substr($week->periodValue, 4, 2),substr($week->periodValue, 0, 4));
@@ -198,6 +207,7 @@ class ImputationValidation{
   				$result .='      <span id="buttonCancel'.$week->id.'" style="width:100px; " type="button" dojoType="dijit.form.Button" showlabel="true">'.i18n('buttonCancel')
   				        . '       <script type="dojo/method" event="onClick" >'
   				        . '        saveImputationValidation('.$week->id.', "cancelSubmit");'
+			            . '        saveDataToSession("idCheckBox", '.$idCheckBox.', false);'
   								. '       </script>'
 									. '     </span>';
   				$result .='     </td></tr></table></div></td>';
@@ -216,6 +226,7 @@ class ImputationValidation{
   				$result .='      <span id="buttonCancelValidation'.$week->id.'" style="width:100px; " type="button" dojoType="dijit.form.Button" showlabel="true">'.i18n('buttonCancel')
   				        . '       <script type="dojo/method" event="onClick" >'
 				          . '        saveImputationValidation('.$week->id.', "cancelValidation");'
+				          . '        saveDataToSession("idCheckBox", '.$idCheckBox.', false);'    
   								. '       </script>'
 									. '     </span>';
   			}else{
@@ -225,19 +236,20 @@ class ImputationValidation{
   				$result .='      <span id="buttonValidation'.$week->id.'" style="width:100px; " type="button" dojoType="dijit.form.Button" showlabel="true">'.i18n('validateWorkPeriod')
   				        . '       <script type="dojo/method" event="onClick" >'
 				          . '        saveImputationValidation('.$week->id.', "validateWork");'
+		              . '        saveDataToSession("idCheckBox", '.$idCheckBox.', false);' 
   								. '       </script>'
 									. '     </span>';
   			}
-  			$idCheckBox++;
   			$result .='     </td>';
-  			$result .='     <td style="padding-right:5px;"><div name="CheckBoxDiv'.$idCheckBox.'" id="CheckBoxDiv'.$idCheckBox.'">
-  			                 <input type="checkbox" name="validCheckBox'.$idCheckBox.'" id="validCheckBox'.$idCheckBox.'"/></div></td>';
-  			$result .='     </tr></table></div></td>';
+  			$result .='     <td style="padding-right:5px;"><div class="validCheckBox" type="checkbox" dojoType="dijit.form.CheckBox" name="validCheckBox'.$idCheckBox.'" id="validCheckBox'.$idCheckBox.'"></div></td>';
+  			$result .='     </tr></table>';
+  			$result .='     <input type="hidden" id="validatedLine'.$idCheckBox.'" name="'.$week->id.'" value="'.$week->validated.'"/>';
+  			$result .='  </div></td>';
   			$result .='   </tr>';
   			$countWeek++;
 	  	}
 	  }
-	  $isChecked = "imputationValidationSelection(this.checked, ".$idCheckBox.")";
+	  $result .='<input type="hidden" id="countLine" name="countLine" value="'.$idCheckBox.'"/>';
 	  }
 	  if($noData==true or isset($noResource)){
 	    noData :
