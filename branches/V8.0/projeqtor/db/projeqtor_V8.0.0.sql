@@ -337,6 +337,9 @@ INSERT INTO `${prefix}parameter` (`parameterCode`,`parameterValue`) VALUES ('lea
 -- to insert the parameter typeExportXLSorODS in the table parameter
 INSERT INTO `${prefix}parameter` (`parameterCode`,`parameterValue`) VALUES ('typeExportXLSorODS', 'Excel');
 
+INSERT INTO `${prefix}parameter` (`parameterCode`,`parameterValue`) VALUES ('paramMailTitleReport', '[${dbName}] Report : ${report} - ${date}');
+INSERT INTO `${prefix}parameter` (`parameterCode`,`parameterValue`) VALUES ('paramMailBodyReport', 'Report : ${report} - ${date}');
+
 --to insert the rulable classes in rulableforempcontracttype
 INSERT INTO `${prefix}rulableforempcontracttype` (`rulableItem`,`name`,`idle`) VALUES
     ('Employee','Employee',0),
@@ -351,3 +354,4 @@ INSERT INTO `${prefix}notifiable` (`notifiableItem`,`name`,`idle`) VALUES
     ('Workflow','Workflow',0),
     ('Status', 'Status',0),
     ('LeaveType', 'Leave Type',0);
+		
