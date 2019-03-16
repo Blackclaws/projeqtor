@@ -872,6 +872,8 @@ class Parameter extends SqlElement {
       	                      'paramMailBodyApprover'=>'display',
       	                      'paramMailTitleAffectationAdd'=>'longtext',
       	                      'paramMailTitleAffectationChange'=>'longtext',
+      	                      'paramMailTitleReport'=>'longtext',
+      	                      'paramMailBodyReport'=>'longtext',
       	                'tabAuthent'=>"tab",
       	                  'newColumnAuthentLeft'=>'newColumn',
         	                  'sectionLdap'=>'section',

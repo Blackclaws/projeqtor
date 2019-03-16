@@ -5609,6 +5609,12 @@ function refreshImputationValidation(directDate) {
 		  var day=getFirstDayOfWeek(week,year);
 		  dijit.byId('weekImputationValidation').set('value',day);
 	}
+	
+	var end = dijit.byId('currentWeekImputationValidation');
+	var start = dijit.byId('weekImputationValidation');
+	start.constraints.max=end.get('value');
+	end.constraints.min=start.get('value');
+	
 	formInitialize();
 	showWait();
 	var callback=function() {
