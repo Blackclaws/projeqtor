@@ -116,7 +116,7 @@ $lastDay = lastDayofWeek(weekNumber($currentDay), date('Y',strtotime($currentDay
            <td>
              <div dojoType="dijit.form.DateTextBox"
               <?php if (sessionValueExists('browserLocaleDateFormatJs')) {
-  							echo ' constraints="{datePattern:\''.getSessionValue('browserLocaleDateFormatJs').'\'}" ';
+  							echo ' constraints="{datePattern:\''.getSessionValue('browserLocaleDateFormatJs').'\',max:\''.$lastDay.'\'}" ';
   						 }?>
                id="weekImputationValidation" name="weekImputationValidation"
                invalidMessage="<?php echo i18n('messageInvalidDate')?>"
@@ -132,24 +132,22 @@ $lastDay = lastDayofWeek(weekNumber($currentDay), date('Y',strtotime($currentDay
                  saveDataToSession('weekImputationValidation',formatDate(dijit.byId('weekImputationValidation').get("value")), false);
                  refreshImputationValidation(this.value);
                </script>
-               <script type="dojo/method" event="onClick" >
-                 var end = dijit.byId('currentWeekImputationValidation').get('value');
-                 this.constraints.max=end;
-                 console.log(this);
-                 console.log(dijit.byId('currentWeekImputationValidation'));
-               </script>
              </div>
            </td>
            <td nowrap="nowrap" style="text-align: right;padding-left:5px; padding-right:5px;"><?php echo i18n("weekEndLabel");?></td>
            <td>
            <div dojoType="dijit.form.DateTextBox"
                <?php if (sessionValueExists('browserLocaleDateFormatJs')) {
-  							echo ' constraints="{datePattern:\''.getSessionValue('browserLocaleDateFormatJs').'\'}" ';
+  							echo ' constraints="{datePattern:\''.getSessionValue('browserLocaleDateFormatJs').'\',min:\''.$firstDay.'\'}" ';
   						 }?>
                id="currentWeekImputationValidation" name="currentWeekImputationValidation"
-               type="text" maxlength="10" readonly hasDownArrow="false"
-               style="width:70px; text-align:center;" class="input rounded"
+               type="text" maxlength="10" hasDownArrow="true"
+               style="width:100px; text-align:center;" class="input roundedLeft"
                value="<?php echo $lastDay; ?>">
+               <script type="dojo/method" event="onChange" >
+  						   var start = dijit.byId('weekImputationValidation').get('value');
+                 refreshImputationValidation(start);
+               </script>
              </div>
            </td>
            </tr>

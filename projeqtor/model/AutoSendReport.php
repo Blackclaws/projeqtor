@@ -110,7 +110,6 @@ class AutoSendReport extends SqlElement{
 	
 	public function sendReport($idReport, $reportParameter){
 	  global $displayResource, $outMode, $showMilestone, $portfolio, $columnsDescription, $graphEnabled, $showProject, $rgbPalette, $arrayColors;
-	  debugLog('report send at : '.date('H:i'));
 	  ob_start();
 	  $report = new Report($idReport);
 	  $parameter = json_decode($reportParameter);
