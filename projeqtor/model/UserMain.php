@@ -1619,39 +1619,44 @@ debugTraceLog("User->authenticate('$paramlogin', '$parampassword')" );
     }else{
       $resultAnd.= "  and ( 1=1" ;
     }
-    if (getSessionValue('project')=='*'){
-      $resultAnd.= " and ($table.idProject in " . getVisibleProjectsList(! $showIdleProjects). " or $table.idProject is null)";
-    }
-      $monTab = getVisibleProjectsList(! $showIdleProjects);
-      $monTab = substr($monTab, 1);
-      $monTab = substr($monTab,0,-1);
-      $tabVisibleProjet = explode(', ', $monTab);
-      
-    $listProjOtherProfile = $user->getSpecificAffectedProfiles($showIdle);
-    foreach ($listProjOtherProfile as $id=>$idProfile){
-      if($idProfile != $user->idProfile){
-        $tabProfileByProj[$id]=$idProfile;
+    
+    if (property_exists($obj,'idProject')) { 
+      if (getSessionValue('project')=='*'){
+        $resultAnd.= " and ($table.idProject in " . getVisibleProjectsList(! $showIdleProjects). " or $table.idProject is null)";
       }
-    }
-    if(isset($tabProfileByProj)){
-      foreach ($tabProfileByProj as $idProj=>$idProfile){
-        if(in_array($idProj,$tabVisibleProjet)){
-          $listRestrictType = $restrictType->getSqlElementsFromCriteria(array('className'=>$objType,'idProfile'=>$idProfile));
-          $tabListIdRestrictTypeByProject = array();
-          foreach ($listRestrictType as $typeRestrict){
-            $tabListIdRestrictTypeByProject[] = $typeRestrict->idType;
-          }
-          if($tabListIdRestrictTypeByProject){
-            $tabListIdRestrictTypeByProject = transformValueListIntoInClause($tabListIdRestrictTypeByProject);
-            $resultOr.= " or ($table.idProject=$idProj and ( $table.id$objType in $tabListIdRestrictTypeByProject)) " ;
-          }else{
-            $resultOr.= " or ($table.idProject=$idProj ) " ;
-          }
+        $monTab = getVisibleProjectsList(! $showIdleProjects);
+        $monTab = substr($monTab, 1);
+        $monTab = substr($monTab,0,-1);
+        $tabVisibleProjet = explode(', ', $monTab);
+        
+      $listProjOtherProfile = $user->getSpecificAffectedProfiles($showIdle);
+      foreach ($listProjOtherProfile as $id=>$idProfile){
+        if($idProfile != $user->idProfile){
+          $tabProfileByProj[$id]=$idProfile;
         }
       }
-      $listIdProj = transformListIntoInClause($tabProfileByProj);
-      $resultAnd .= " and  $table.idProject not in $listIdProj ) ";
-    }
+      if(isset($tabProfileByProj)){
+        foreach ($tabProfileByProj as $idProj=>$idProfile){
+          if(in_array($idProj,$tabVisibleProjet)){
+            $listRestrictType = $restrictType->getSqlElementsFromCriteria(array('className'=>$objType,'idProfile'=>$idProfile));
+            $tabListIdRestrictTypeByProject = array();
+            foreach ($listRestrictType as $typeRestrict){
+              $tabListIdRestrictTypeByProject[] = $typeRestrict->idType;
+            }
+            if($tabListIdRestrictTypeByProject){
+              $tabListIdRestrictTypeByProject = transformValueListIntoInClause($tabListIdRestrictTypeByProject);
+              $resultOr.= " or ($table.idProject=$idProj and ( $table.id$objType in $tabListIdRestrictTypeByProject)) " ;
+            }else{
+              $resultOr.= " or ($table.idProject=$idProj ) " ;
+            }
+          }
+        }
+        $listIdProj = transformListIntoInClause($tabProfileByProj);
+        $resultAnd .= " and  $table.idProject not in $listIdProj ) ";
+      }
+     }else{
+      $resultOr = ')';
+     }
     $result = $resultAnd.$resultOr;
     return $result;
   }

@@ -261,8 +261,8 @@ class AutoSendReport extends SqlElement{
 	  $result .='     <td style="border: 1px solid grey;border-right: 1px solid white;height:60px;width:15%;text-align:center;vertical-align:center;">'.i18n('colReport').'</td>';
 	  $result .='     <td style="border: 1px solid grey;border-right: 1px solid white;height:60px;width:18%;text-align:center;vertical-align:center;">'.i18n('colReceiver').'</td>';
 	  $result .='     <td style="border: 1px solid grey;border-right: 1px solid white;height:60px;width:8%;text-align:center;vertical-align:center;">'.i18n('colFrequency').'</td>';
-	  $result .='     <td style="border: 1px solid grey;border-right: 1px solid white;height:60px;width:6%;text-align:center;vertical-align:center;">'.i18n('colNextSend').'</td>';
-	  $result .='     <td style="border: 1px solid grey;border-right: 1px solid white;height:60px;width:22%;text-align:center;vertical-align:center;">'.i18n('colParameters').'</td>';
+	  $result .='     <td style="border: 1px solid grey;border-right: 1px solid white;height:60px;width:8%;text-align:center;vertical-align:center;">'.i18n('colNextSend').'</td>';
+	  $result .='     <td style="border: 1px solid grey;border-right: 1px solid white;height:60px;width:20%;text-align:center;vertical-align:center;">'.i18n('colParameters').'</td>';
 	  $result .='     <td style="border: 1px solid grey;height:60px;width:5%;text-align:center;vertical-align:center;">'.i18n('colActive').'</td>';
 	  $result .='   </tr>';
 	  foreach ($listUser as $id=>$name){
@@ -295,8 +295,8 @@ class AutoSendReport extends SqlElement{
   			}
   			$result .='</td>';
   			$result .='<td style="border: 1px solid grey;height:40px;width:8%;text-align:center;vertical-align:center;">'.i18n($send->sendFrequency).'</td>';
-  			$result .='<td style="border: 1px solid grey;height:40px;width:6%;text-align:center;vertical-align:center;">'.htmlFormatDate(date('Y-m-d', $send->nextTime)).'</td>';
-  			$result .='<td style="border: 1px solid grey;height:40px;width:22%;text-align:center;vertical-align:center;">';
+  			$result .='<td style="border: 1px solid grey;height:40px;width:8%;text-align:center;vertical-align:center;font-style:italic;">'.htmlFormatDateTime(date('Y-m-d H:i', $send->nextTime)).'</td>';
+  			$result .='<td style="border: 1px solid grey;height:40px;width:20%;text-align:center;vertical-align:center;">';
   			$param = json_decode($send->reportParameter);
   			$strParam = '';
   			foreach ($param as $name=>$value){

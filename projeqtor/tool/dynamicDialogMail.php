@@ -139,10 +139,10 @@ $listEmailTemplate = $emTp->getSqlElementsFromCriteria(null,false,$where);
             <?php if (property_exists($objectClass, '_Assignment') ) {?>  
              <tr>
               <td class="dialogLabel">
-                <label for="dialogMailToAssigned"><?php echo i18n("colMailToAssigned") ?>&nbsp;:&nbsp;</label>
+                <label for="dialogMailToAttendees"><?php echo i18n("colAttendees") ?>&nbsp;:&nbsp;</label>
               </td>
               <td>
-                <div id="dialogMailToAssigned" name="dialogMailToAssigned" dojoType="dijit.form.CheckBox" type="checkbox" ></div>
+                <div id="dialogMailToAttendees" name="dialogMailToAttendees" dojoType="dijit.form.CheckBox" type="checkbox" ></div>
               </td>
             </tr>
             <?php }?>

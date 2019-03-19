@@ -491,6 +491,10 @@ else if($copyType=="copyVersion"){
              </td>
            </tr>
            <tr><td>&nbsp;</td><td>&nbsp;</td></tr>
+           
+           <?php $paramTypeOfCopyComponentVersion = Parameter::getGlobalParameter('typeOfCopyComponentVersion');
+                  if(!$paramTypeOfCopyComponentVersion){ $paramTypeOfCopyComponentVersion = 'free';} ?>
+           
            <tr>
              <td class="dialogLabel" >
                <label><?php echo i18n("copyToCopyVersionStructure") ?>&nbsp;:&nbsp;</label>           
@@ -501,13 +505,13 @@ else if($copyType=="copyVersion"){
                  <img style="position: absolute;left:0px; top:0px;height:50px;" src="../view/img/helpCopyVersion.png" 
                      onmouseenter="this.style.height='200px';this.style.top='-100px';" 
                      onmouseout="this.style.height='50px';this.style.top='0px';"/>
-               <input type="radio" data-dojo-type="dijit/form/RadioButton" name="copyToCopyVersionStructure" id="copyToCopyVersionStructureCopy" value="Copy"/>
+               <input type="radio" data-dojo-type="dijit/form/RadioButton"  <?php if($paramTypeOfCopyComponentVersion == 'A'){ echo 'checked'; } if($paramTypeOfCopyComponentVersion != 'free'){ echo' disabled'; }?>  name="copyToCopyVersionStructure" id="copyToCopyVersionStructureCopy" value="Copy"/>
                  <label for="copyToCopyVersionStructureCopy" style="width:90%"><?php echo i18n("copyToCopyVersionStructureCopy")?></label>
                </td></tr><tr><td>
-               <input type="radio" data-dojo-type="dijit/form/RadioButton" name="copyToCopyVersionStructure" id="copyToCopyVersionStructureNoCopy" checked value="NoCopy"/> 
+               <input type="radio" data-dojo-type="dijit/form/RadioButton" <?php if($paramTypeOfCopyComponentVersion == 'B' or $paramTypeOfCopyComponentVersion == 'free') { echo 'checked'; } if($paramTypeOfCopyComponentVersion != 'free'){ echo' disabled'; }?>  name="copyToCopyVersionStructure" id="copyToCopyVersionStructureNoCopy"  value="NoCopy"/> 
                  <label for="copyToCopyVersionStructureNoCopy" style="width:90%"><?php echo i18n("copyToCopyVersionStructureNoCopy")?></label>
                </td></tr><tr><td>
-               <input type="radio" data-dojo-type="dijit/form/RadioButton" name="copyToCopyVersionStructure" id="copyToCopyVersionStructureReplace" value="Replace"/> 
+               <input type="radio" data-dojo-type="dijit/form/RadioButton" <?php if($paramTypeOfCopyComponentVersion == 'C'){ echo 'checked'; } if($paramTypeOfCopyComponentVersion != 'free'){ echo' disabled'; }?>  name="copyToCopyVersionStructure" id="copyToCopyVersionStructureReplace" value="Replace"/> 
                  <label for="copyToCopyVersionStructureReplace" style="width:90%"><?php echo i18n("copyToCopyVersionStructureReplace")?></label>
                </td></tr>
                </table>
