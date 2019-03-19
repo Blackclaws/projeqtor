@@ -247,6 +247,12 @@ class Parameter extends SqlElement {
         $list=array('YES'=>i18n('displayYes'),
                     'REQ'=>i18n('displayOnRequest'));
         break;
+      case 'typeOfCopyComponentVersion':
+            $list=array('free'=>i18n('free'),
+                        'A'=>i18n('copyToCopyVersionStructureCopy'),
+                        'B'=>i18n('copyToCopyVersionStructureNoCopy'),
+                        'C'=>i18n('copyToCopyVersionStructureReplace'));
+       break;
       case 'printHistory': 
       case 'csvExportUTF8': 
       case 'allowTypeRestrictionOnProject' :
@@ -806,6 +812,7 @@ class Parameter extends SqlElement {
         	                  'versionNameAutoformat'=>'list',
         	                  'versionNameAutoformatSeparator'=>'text',
         	                  'subscriptionAuto'=>'list',
+        	                  'typeOfCopyComponentVersion'=>'list',
         	                  'versionCompatibility'=>'list',
                             //'sectionDelivery'=>'section', //ADD qCazelles
                             'productVersionOnDelivery'=>'list',

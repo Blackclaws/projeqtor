@@ -149,13 +149,18 @@ class ImputationValidation{
   			$firstDay = date('Y-m-d', firstDayofWeek(substr($week->periodValue, 4, 2),substr($week->periodValue, 0, 4)));
   			$lastDay = lastDayofWeek(substr($week->periodValue, 4, 2),substr($week->periodValue, 0, 4));
   			$excepted = round(countDayDiffDates($firstDay, $lastDay, $idCalendar)*($res->capacity),2);
+  			
   			$work = new Work();
   			$crit = array('idResource'=>$idResource, 'week'=>$week->periodValue);
   			$critWorkList = $work->getSqlElementsFromCriteria($crit);
   			$inputWork = 0;
   			$inputAdm = 0;
+  			$outCapacity = false;
   			if($critWorkList){
   				foreach ($critWorkList as $critWork){
+  				  if($critWork->work != $res->capacity){
+  				    $outCapacity = true;
+  				  }
   					if (isset($listAdmProj[$critWork->idProject])) {
   						$inputAdm += $critWork->work;
   					}else{
@@ -168,8 +173,18 @@ class ImputationValidation{
 				$inputWork = Work::displayImputationWithUnit($inputWork);
 				$inputAdm = Work::displayImputationWithUnit($inputAdm);
   			$inputTotal = Work::displayImputationWithUnit($inputTotal);
-  			$backgroundColor = "background-color:#ff7777;";
-  			if($inputTotal == $excepted)$backgroundColor = "background-color:#a3d179;";
+  			$backgroundColor = "background-color:#a3d179;";
+  			if($outCapacity){
+  			  if($inputTotal == $excepted){
+  			    $backgroundColor = "background-color:#ffb366;";
+  			  }else{
+  			    $backgroundColor = "background-color:#ff7777;";
+  			  }
+  			}else{
+  			  if($inputTotal != $excepted){
+  			  	$backgroundColor = "background-color:#ff7777;";
+  			  }
+  			}
   			$weekValue = substr($week->periodValue, 0, 4).'-'.substr($week->periodValue, 4, 2);
   			$goto="showWait();saveDataToSession('userName',$idResource,false, function() {
   			       saveDataToSession('yearSpinner',".intval(substr($week->periodValue, 0, 4)).",false, function() {
