@@ -95,6 +95,9 @@
     <copy todir="${deploy.dir}/external/mailParser">
        <fileset dir="${src.dir}/external/mailParser"/>
     </copy>
+    <copy todir="${deploy.dir}/external/PHPOffice">
+       <fileset dir="${src.dir}/external/PHPOffice"/>
+    </copy>
   </target>
   
   <target name="copyFiles">
