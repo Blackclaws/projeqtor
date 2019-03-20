@@ -2367,10 +2367,13 @@ function removeDependencyRightClick(dependencyId,evt){
 }
 
 function saveDependencyRightClick() {
-    if (!dojo.byId('delayDependency').value
+  if (!dojo.byId('delayDependency').value
         && !dojo.byId('commentDependency').value)
       return;
-
+  if (isNaN(dojo.byId('delayDependency').value)) {
+    showAlert(i18n('messageInvalidNumeric',new Array(i18n('colDependencyDelay'))));
+    return;
+  }
   loadContent("../tool/saveDependencyRightClick.php", "planResultDiv", "dynamicRightClickDependencyForm",
       true, 'dependency');
   dijit.byId('dialogDependency').hide();
