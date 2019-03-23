@@ -1,4 +1,4 @@
-<?php
+ <?php
 /*** COPYRIGHT NOTICE *********************************************************
  *
  * Copyright 2009-2017 ProjeQtOr - Pascal BERNARD - support@projeqtor.org
@@ -6549,13 +6549,20 @@ function drawTabExpense($obj, $refresh=false) {
   }
   $class=get_class($obj);
   echo '<tr><td colspan="2" style="width:100%;">';
-  echo '<table style="width:100%;">';
+  echo '<table style="width:70%;">';
   echo '  <tr>';
   echo '    <td class="" colspan="1" style="width:25%"></td>';
   echo '    <td class="assignHeader" colspan="1" style="width:30%">'.i18n('colUntaxedAmount').'</td>';
   echo '    <td class="assignHeader" colspan="1" style="width:30%">'.i18n('colFullAmount').'</td>';
   echo '    <td class="assignHeader" colspan="1" style="width:15%">'.i18n('colWorkElementCount').'</td>';
   echo '  </tr>';
+  
+  //damian Tab
+  $tabTender = array();
+  $tabOrder = array();
+  $tabBill = array();
+  $tabTerm = array();
+  $tabPayment = array();
   
   $clauseStatus=transformListIntoInClause(SqlList::getListWithCrit('tenderStatus', array('isSelected'=>'1')));
   $providerTender = new Tender();
@@ -6565,6 +6572,7 @@ function drawTabExpense($obj, $refresh=false) {
   foreach ($listTender as $tender ){
     $untaxedAmount += $tender->totalUntaxedAmount;
     $fullAmount += $tender->totalFullAmount;
+    $tabTender[$tender->id]['tender'] = $tender->id;
   }
   echo '  <tr>';
   echo '    <td class="assignHeader" colspan="1" style="width:25%">'.i18n('menuTender').'</td>';
@@ -6581,9 +6589,11 @@ function drawTabExpense($obj, $refresh=false) {
   $fullAmount = 0;
   $clauseProviderBill=transformListIntoInClause(SqlList::getListWithCrit('providerBill', array('idProvider'=>$obj->id)));
   $arrayTerm=array();
+  $arrayPayment = array();
   foreach ($listProviderOrder as $order ){
     $untaxedAmount += $order->totalUntaxedAmount;
     $fullAmount += $order->totalFullAmount;
+    $tabOrder[$order->id]['bill']= $order->id;
     $providerTerm = new ProviderTerm();
     $listProviderTerm = $providerTerm->getSqlElementsFromCriteria(null, false,'idProviderOrder='.$order->id);
     foreach ($listProviderTerm as $term){
@@ -6603,21 +6613,23 @@ function drawTabExpense($obj, $refresh=false) {
   $fullAmountPayment =0;
   $nbPayment = 0;
   foreach ($listProviderBill as $bill ){
+    $tabBill[$bill->id]['term']= $bill->id;
     $untaxedAmount += $bill->totalUntaxedAmount;
     $fullAmount += $bill->totalFullAmount;
     $payment = new ProviderPayment();
     $listProviderPayment = $payment->getSqlElementsFromCriteria(array("idProviderBill"=>$bill->id));
     foreach ($listProviderPayment as $provPayment){
+      $arrayPayment[$provPayment->id]=$provPayment; 
       $nbPayment++;
       $fullAmountPayment += $provPayment->paymentAmount;
     }
     $providerTerm = new ProviderTerm();
     $listProviderTerm = $providerTerm->getSqlElementsFromCriteria(array("idProviderBill"=>$bill->id));
     foreach ($listProviderTerm as $term){
+      $tabTerm[$term->id]['payment']= $term->id;
       $arrayTerm[$term->id]=$term;
     }
   }
-  
   foreach ($arrayTerm as $term){
     $nbTerm++;
     $untaxedAmountTerm += $term->untaxedAmount;
@@ -6643,6 +6655,184 @@ function drawTabExpense($obj, $refresh=false) {
   echo '  </tr>';
   echo '</table>';
   echo '</td></tr>';
+  $showExpenseProjectDetail=(Parameter::getUserParameter('showExpenseProjectDetail')!='0')?true:false;
+  if($showExpenseProjectDetail){
+    echo '<tr><td><br/></td></tr>';
+    echo '<tr><td colspan="2" style="width:100%;">';
+    //damian
+    echo '<table style="width:100%;border:solid #AAAAAA 1px;">';
+    echo '  <tr>';
+    echo '    <td class="assignHeader" colspan="5" style="width:40%">'.i18n('colName').'</td>';
+    echo '    <td class="assignHeader" colspan="1" style="width:10%">'.i18n('colDate').'</td>';
+    echo '    <td class="assignHeader" colspan="1" style="width:20%">'.i18n('colExternalReference').'</td>';
+    echo '    <td class="assignHeader" colspan="1" style="width:10%">'.i18n('colUntaxedAmount').'</td>';
+    echo '    <td class="assignHeader" colspan="1" style="width:10%">'.i18n('colFullAmount').'</td>';
+    echo '    <td class="assignHeader" colspan="1" style="width:10%">'.i18n('colTaxAmount').'</td>';
+    echo '  </tr>';
+   
+    
+    
+    
+   //TERM with payment
+    foreach ($tabTerm as $id=>$term){
+    	unset($tabTerm[$id]['payment']);
+    }
+    debugLog($tabTerm);
+    foreach ($arrayPayment as $payment){
+     if($payment->idProviderTerm){
+     	$tabTerm[$payment->idProviderTerm][$payment->id]=$payment->id;
+     	unset($tabTerm[$payment->idProviderTerm]['payment']);
+     }else{
+     	$tabBill[$payment->idProviderBill][$payment->id]=$payment->id;
+     	unset($tabBill[$payment->idProviderBill]['payment']);
+     }
+    }
+   //BILL with TERM
+    foreach ($tabBill as $id=>$bill){
+    	unset($tabBill[$id]['term']);
+    }
+    foreach ($arrayTerm as $providerTerm){
+      if($providerTerm->idProviderBill){
+        $tabBill[$providerTerm->idProviderBill]['t'.$providerTerm->id]=$tabTerm[$providerTerm->id];
+        unset($tabBill[$providerTerm->idProviderBill]['term']);
+      }else{
+        $tabOrder[$providerTerm->idProviderOrder]['t'.$providerTerm->id] = $providerTerm->id;
+        unset($tabOrder[$providerTerm->idProviderOrder]['term']);
+      }
+    }
+    $link = new Link();
+    //ORDER with Bill
+    foreach ($listProviderOrder as $order){
+    	$listLink = $link->getSqlElementsFromCriteria(array('ref1Type'=>'ProviderBill','ref2Type'=>'ProviderOrder','ref2Id'=>$order->id));
+    	foreach ($listLink as $billLinked){
+    	  if(isset($tabBill[$billLinked->ref1Id])){
+    	    $tabOrder[$order->id][$billLinked->ref1Id]=$tabBill[$billLinked->ref1Id];
+    	  }else{
+    	    $tabOrder[$order->id][$billLinked->ref1Id]=$billLinked->ref1Id;
+    	  }
+    		
+    	}
+    	unset($tabOrder[$order->id]['bill']);
+    }
+    
+    //TENDER with Order
+    foreach ($listTender as $tender){
+      $listLink = $link->getSqlElementsFromCriteria(array('ref1Type'=>'ProviderOrder','ref2Type'=>'Tender','ref2Id'=>$tender->id));
+      foreach ($listLink as $orderLinked){
+        $tabTender[$tender->id][$orderLinked->ref1Id]=$tabOrder[$orderLinked->ref1Id];
+      }
+      unset($tabTender[$tender->id]['tender']);
+    }
+    
+    //DISPLAY
+    foreach ($tabTender as $idTender=>$tenders){
+      drawProjectExpenseDetailLine('Tender',$idTender, 0);
+      foreach ($tenders as $idOrder=>$orders){
+        drawProjectExpenseDetailLine('ProviderOrder',$idOrder, 1);
+        unset($tabOrder[$idOrder]);
+      	foreach ($orders as $id=>$objs){
+      	  $object = 'ProviderBill';
+      	  if(substr($id, 0,1)== 't'){
+      	    $object = 'ProviderTerm';
+      	    $id = substr($id,1);
+      	  }
+      	  drawProjectExpenseDetailLine($object,$id, 2);
+      	  foreach ($objs as $idTerm=>$terms){
+    	      drawProjectExpenseDetailLine('ProviderTerm',substr($idTerm,1), 3);
+      	    unset($tabBill[$id]);
+      	    foreach ($terms as $idPayment=>$payment){
+      	      drawProjectExpenseDetailLine('ProviderPayment', $idPayment, 4);
+      	      unset($tabTerm[$idPayment]);
+      	    }
+      	  }
+      	}
+       }
+    }
+    
+    foreach ($tabOrder as $idOrder=>$orders){
+      drawProjectExpenseDetailLine('ProviderOrder',$idOrder, 0);
+      foreach ($orders as $id=>$bills){
+        $object = 'ProviderBill';
+        if(substr($id, 0,1)== 't'){
+        	$object = 'ProviderTerm';
+        	$id = substr($id,1);
+        	drawProjectExpenseDetailLine($object,$id, 1);
+        }else{
+          drawProjectExpenseDetailLine($object,$id, 1);
+          unset($tabBill[$id]);
+          foreach ($bills as $idObj=>$obj){
+         	  drawProjectExpenseDetailLine('ProviderPayment', $idObj, 2);
+         	  unset($tabTerm[$idObj]);
+         }
+        }
+      }
+    }
+    
+    foreach ($tabBill as $idBill=>$bills){
+      drawProjectExpenseDetailLine('ProviderBill',$idBill, 0);
+      foreach ($bills as $id=>$objs){
+        if(substr($id, 0,1)== 't'){
+        	$object = 'ProviderTerm';
+        	$id = substr($id,1);
+        	drawProjectExpenseDetailLine($object,$id, 1);
+        	foreach ($objs as $idPayment=>$payment){
+        		drawProjectExpenseDetailLine('ProviderPayment',$idPayment, 2);
+        	}
+        }else{
+          $object = 'ProviderPayment';
+          drawProjectExpenseDetailLine($object,$id, 1);
+        }
+      }
+    }
+    echo '</table></tr>';
+  }
+}
+
+function drawProjectExpenseDetailLine($class,$id, $level){
+  $obj = new $class($id);
+  if(isset($obj->date)){
+    $date = htmlFormatDate($obj->date);
+  }else{
+    $date = htmlFormatDate($obj->creationDate);
+  }
+  $ref = '';
+  if(isset($obj->externalReference)){
+  	$ref = $obj->externalReference;
+  }
+  $untaxed = '';
+  if(isset($obj->untaxedAmout)){
+    $untaxed = htmlDisplayCurrency($obj->untaxedAmount);
+  }
+  $taxAmout = '';
+  if(isset($obj->taxAmout)){
+    $taxAmout = htmlDisplayCurrency($obj->taxAmout);
+  }
+  $fullAmount = '';
+  if(isset($obj->fullAmount)){
+  	$fullAmount = htmlDisplayCurrency($obj->fullAmount);
+  }
+  if(isset($obj->paymentAmount)){
+    $fullAmount = htmlDisplayCurrency($obj->paymentAmount);
+  }
+  $goto= '';
+  if (securityCheckDisplayMenu(null, $class) and securityGetAccessRightYesNo('menu'.$class, 'read', '')=="YES") {
+  	$goto = 'onClick="gotoElement('."'".$class."','".htmlEncode($id)."'".');"';
+  }
+  echo '  <tr>';
+  for($i=0; $i<$level; $i++){
+  	echo '<td class="assignData" colspan="1" style="width:3%;height:20px;border-bottom:0px;border-top:0px;border-right:solid 2px;"></td>';
+  }
+  $width=40-(3*$level);
+  echo '    <td class="assignData" align="center" colspan="'.(5-$level).'"'.$goto.'style="width:'.$width.'%;height:20px;cursor:pointer;">';
+  echo '      <table width="100%"><tr><td width="6%" float="right">'.formatIcon(get_class($obj), 16).'</td>';
+  echo '      <td width="94%"style="text-aglign:left;">'.$obj->name.'</td></tr></table>';
+  echo '    </td>';
+  echo '    <td class="assignData" align="center" colspan="1" style="width:10%;height:20px;">'.$date.'</td>';
+  echo '    <td class="assignData" align="center" colspan="1" style="width:20%;height:20px;">'.$ref.'</td>';
+  echo '    <td class="assignData" align="right" colspan="1" style="width:10%;height:20px;">'.$untaxed.'</td>';
+  echo '    <td class="assignData" align="right" colspan="1" style="width:10%;height:20px;">'.$fullAmount.'</td>';
+  echo '    <td class="assignData" align="right" colspan="1" style="width:10%;height:20px;">'.$taxAmout.'</td>';
+  echo '  </tr>';
 }
 
 
@@ -6848,7 +7038,7 @@ function endBuffering($prevSection, $included) {
       'testcaserun'=>array('2'=>'bottom', '3'=>'bottom'), 
       'testcaserunsummary'=>array('2'=>'left', '3'=>'extra'), 
       'testcasesummary'=>array('2'=>'right', '3'=>'extra'),
-      'totalfinancialsynthesis'=>array('2'=>'right', '3'=>'extra'),
+      'totalfinancialsynthesis'=>array('2'=>'bottom', '3'=>'bottom'),//damian
       'void'=>array('2'=>'right', '3'=>'right'), 
       'workflowdiagram'=>array('2'=>'bottom', '3'=>'bottom'), 
       'workflowstatus'=>array('2'=>'bottom', '3'=>'bottom'));
