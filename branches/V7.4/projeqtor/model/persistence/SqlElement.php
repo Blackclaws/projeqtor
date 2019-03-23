@@ -4145,7 +4145,7 @@ abstract class SqlElement {
     $result = "";
     $right = "";
     // Manage Exceptions
-    if (get_class ( $this ) == 'Alert' or get_class ( $this ) == 'Mail' or get_class ( $this ) == 'Audit' or get_class ( $this ) == 'AuditSummary' or get_class ( $this ) == 'ColumnSelector') {
+    if (get_class ( $this ) == 'Alert' or get_class ( $this ) == 'Mail' or get_class ( $this ) == 'MailToSend' or get_class ( $this ) == 'Audit' or get_class ( $this ) == 'AuditSummary' or get_class ( $this ) == 'ColumnSelector') {
       $right = 'YES';
     } else if (isset ( $cronnedScript ) and $cronnedScript == true) { // Cronned script can do everything
       $right = 'YES';
@@ -4465,7 +4465,7 @@ abstract class SqlElement {
     $result = "";
     $objects = "";
     $right = securityGetAccessRightYesNo ( 'menu' . get_class ( $this ), 'delete', $this );
-    if (get_class ( $this ) == 'Alert' or get_class ( $this ) == 'Mail' or get_class ( $this ) == 'Audit' or get_class ( $this ) == 'AuditSummary' or get_class ( $this ) == 'ColumnSelector') {
+    if (get_class ( $this ) == 'Alert' or get_class ( $this ) == 'Mail' or get_class ( $this ) == 'MailToSend' or get_class ( $this ) == 'Audit' or get_class ( $this ) == 'AuditSummary' or get_class ( $this ) == 'ColumnSelector') {
       $right = 'YES';
     }
     if ($right != 'YES') {
@@ -4596,7 +4596,7 @@ abstract class SqlElement {
    * @return status of mail, if sent
    */
   public function sendMailIfMailable($newItem = false, $statusChange = false, $directStatusMail = null, $responsibleChange = false, $noteAdd = false, $attachmentAdd = false, $noteChange = false, $descriptionChange = false, $resultChange = false, $assignmentAdd = false, $assignmentChange = false, $anyChange = false,$affectationAdd = false , $affectationChange = false, $linkAdd = false, $linkDelete = false) {
-    $objectClass = get_class ( $this );
+    $objectClass = get_class($this);
     $idProject = ($objectClass == 'Project') ? $this->id : ((property_exists ( $this, 'idProject' )) ? $this->idProject : null);
     if ($objectClass == 'TicketSimple') {
       $objectClass = 'Ticket';
@@ -4676,11 +4676,11 @@ abstract class SqlElement {
       $statusMailList = $statusMail->getSqlElementsFromCriteria ( null, false, $crit );
       // $statusMailList contains all events compatible with current change.
       // Now, we must resctrict : if several lines exist for same event, we must limit to 1 only (depending on project and/or type 
-      $typeName='id'.get_class($this).'Type';
+      $typeName='id'.$objectClass.'Type';
       $proj=null;
       $type=null;
       if(property_exists($this, "idProject")){
-        $proj=(get_class($this)=='Project')?$this->id:$this->idProject;
+        $proj=($objectClass=='Project')?$this->id:$this->idProject;
       }
       if(property_exists($this, $typeName)){
         $type=$this->$typeName;
@@ -4859,7 +4859,7 @@ abstract class SqlElement {
         }
       }
       if ($statusMail->mailToSubscribers) {
-        $crit ="(refType='".get_class($this)."' and refId=".Sql::fmtId($this->id).")";
+        $crit ="(refType='".$objectClass."' and refId=".Sql::fmtId($this->id).")";
         if (property_exists($this, 'idProject')) {
           $crit.=" or (refType='Project' and refId=".Sql::fmtId($this->idProject).")";
         }
@@ -4956,7 +4956,7 @@ abstract class SqlElement {
       if ($groupMails=='YES') {
         $temp=new MailToSend();
         $temp->idUser=getCurrentUserId();
-        $temp->refType=get_class($this);
+        $temp->refType=$objectClass;
         $temp->refId=$this->id;
         $temp->idEmailTemplate=$emailTemplateTab[$j]->id;
         $temp->template=$emailTemplateTab[$j]->name;
@@ -5034,7 +5034,8 @@ abstract class SqlElement {
   public function parseMailMessage($message) {
     $arrayFrom = array();
     $arrayTo = array();
-    $objectClass = get_class ( $this );
+    $objectClass = get_class($this);
+    if ($objectClass == 'TicketSimple') { $objectClass = 'Ticket'; }
     $item = i18n ( $objectClass );
     if ($objectClass == 'Project') {
       $project = $this;
