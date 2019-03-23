@@ -75,6 +75,7 @@ class ProjectExpenseMain extends Expense {
   public $_expenseDetail_colSpan="2";
   public $_sec_totalFinancialSynthesis;
   public $_spe_totalFinancialSynthesis;
+  public $_totalFinancialSynthesis_colSpan="2";
   public $_sec_Link;
   public $_Link=array();
   public $_Attachment=array();
@@ -478,12 +479,26 @@ class ProjectExpenseMain extends Expense {
   
   public function drawSpecificItem($item){
     global $comboDetail, $print, $outMode, $largeWidth;
+    $showExpenseProjectDetail=(Parameter::getUserParameter('showExpenseProjectDetail')!='0')?true:false;
+    $page="objectDetail";
     $result="";
+    $resultSC='';
     if ($item=='totalFinancialSynthesis') {
       if($this->id){
         drawTabExpense($this, false);
       }
-      return $result;
+      if (!$print) {
+      	$resultSC='<div style="position:absolute;right:5px;top:2px;">';
+      	$resultSC.='<label for="showExpenseProjectDetail"  class="dijitTitlePaneTitle" style="font-weight:normal !important;height:10px;width:250px">'.i18n('colShowDetail').'&nbsp;</label>';
+      	$resultSC.='<div class="whiteCheck" id="showExpenseProjectDetail" dojoType="dijit.form.CheckBox" type="checkbox" '.(($showExpenseProjectDetail)?'checked':'').' >';
+      	$resultSC.='<script type="dojo/connect" event="onChange" args="evt">';
+      	$resultSC.=' saveUserParameter("showExpenseProjectDetail",((this.checked)?"1":"0"));';
+      	$resultSC.=' if (checkFormChangeInProgress()) {return false;}';
+      	$resultSC.=' loadContent("objectDetail.php", "detailDiv", "listForm");';
+      	$resultSC.='</script>';
+      	$resultSC.='</div>';
+      }
+      return $result.$resultSC;
     }
   }
   
