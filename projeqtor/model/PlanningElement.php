@@ -493,17 +493,19 @@ class PlanningElement extends SqlElement {
           self::updateSynthesisNoDispatch($old->topRefType, $old->topRefId);
         }
       }
-      // Must also renumber children for old parent
-      $oldTopElt=new PlanningElement($old->topId);
-      projeqtor_set_time_limit(600);
-      $critOldTop=($oldTopElt->id)?" topId=" . Sql::fmtId($oldTopElt->id):" topId is null";
-      $lstEltOldTop=$this->getSqlElementsFromCriteria(null, null, $critOldTop ,'wbsSortable asc');
-      $cpt=0;
-      foreach ($lstEltOldTop as $elt) {
-        $cpt++;
-        $elt->wbs=($oldTopElt->wbs)?$oldTopElt->wbs . '.' . $cpt:$cpt;
-        if ($elt->refType) { // just security for unit testing
-          $elt->wbsSave();
+      if ($old->id) {
+        // Must also renumber children for old parent
+        $oldTopElt=new PlanningElement($old->topId);
+        projeqtor_set_time_limit(600);
+        $critOldTop=($oldTopElt->id)?" topId=" . Sql::fmtId($oldTopElt->id):" topId is null";
+        $lstEltOldTop=$this->getSqlElementsFromCriteria(null, null, $critOldTop ,'wbsSortable asc');
+        $cpt=0;
+        foreach ($lstEltOldTop as $elt) {
+          $cpt++;
+          $elt->wbs=($oldTopElt->wbs)?$oldTopElt->wbs . '.' . $cpt:$cpt;
+          if ($elt->refType) { // just security for unit testing
+            $elt->wbsSave();
+          }
         }
       }
     }
