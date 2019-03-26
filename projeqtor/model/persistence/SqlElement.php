@@ -620,7 +620,7 @@ abstract class SqlElement {
     global $debugTraceUpdates, $debugTraceHistory;
     if ( isset($debugTraceUpdates) and $debugTraceUpdates==true) {
       if ( ! property_exists($this,'_noHistory') or (isset($debugTraceHistory) and $debugTraceHistory==true) )
-        debugTraceLog("Start SAVE for ".get_class($this)." #".$this->id);$startMicroTime=microtime(true);
+        debugTraceLog("Start SAVE for ".get_class($this)." #".$this->id.((SqlElement::is_a($this, 'PlanningElement'))?" $this->refType #$this->refId":''));$startMicroTime=microtime(true);
     }
     $peName=get_class($this).'PlanningElement';
     if (Parameter::getGlobalParameter ( 'autoUpdateActivityStatus' ) == 'YES' and property_exists($this,$peName) and !isset($old)) {
@@ -768,7 +768,7 @@ abstract class SqlElement {
     }
     if (isset($debugTraceUpdates) and $debugTraceUpdates==true) {
       if ( ! property_exists($this,'_noHistory') or (isset($debugTraceHistory) and $debugTraceHistory==true) )
-        debugTraceLog("End SAVE for ".get_class($this)." #".$this->id." => ".round((microtime(true) - $startMicroTime)*1000000)/1000000);
+        debugTraceLog("  End SAVE for ".get_class($this)." #".$this->id.((SqlElement::is_a($this, 'PlanningElement'))?" $this->refType #$this->refId":'')." => ".round((microtime(true) - $startMicroTime)*1000000)/1000000);
     }
     return $result;
   }
