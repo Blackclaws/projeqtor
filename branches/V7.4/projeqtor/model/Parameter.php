@@ -248,7 +248,6 @@ class Parameter extends SqlElement {
                     'REQ'=>i18n('displayOnRequest'));
         break;
       case 'printHistory': 
-      case 'csvExportUTF8': 
       case 'allowTypeRestrictionOnProject' :
       case 'versionNameAutoformat' : 
       case 'directAccessToComponentList' :
@@ -290,6 +289,7 @@ class Parameter extends SqlElement {
       case 'milestoneFromVersion' :
       case 'dontAddClosedDeliveredVersionToProject' : //ADD qCazelles - Dont add closed and delivered versions to Project - Ticket 181 
       case 'mailGroupActive' :
+      case 'csvExportUTF8':  
       case 'isManualProgress':
         $list=array('NO'=>i18n('displayNo'),
                     'YES'=>i18n('displayYes')); 

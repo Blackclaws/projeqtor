@@ -1091,8 +1091,8 @@ function addAttachment(attachmentType) {
     return;
   }
   dojo.byId("attachmentId").value="";
-  dojo.byId("attachmentRefType").value=dojo.byId('objectClass').value;
-  dojo.byId("attachmentRefId").value=dojo.byId("objectId").value;
+  dojo.byId("attachmentRefType").value=(dojo.byId('objectClass'))?dojo.byId('objectClass').value:'User';
+  dojo.byId("attachmentRefId").value=(dojo.byId('objectId'))?dojo.byId("objectId").value:dojo.byId("userMenuIdUser").value;
   dojo.byId("attachmentType").value=attachmentType;
   dojo.byId('attachmentFileName').innerHTML="";
   dojo.style(dojo.byId('downloadProgress'), {
