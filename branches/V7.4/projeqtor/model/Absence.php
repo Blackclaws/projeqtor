@@ -316,7 +316,7 @@ class Absence{
     for ($m=1; $m<=12; $m++) {
     	$mx=($m<10)?'0'.$m:''.$m;   	
     	$time=mktime(0, 0, 0, $m, 1, $currentYear);
-    	$libMonth=i18n(strftime("%B", $time));
+    	$libMonth=getMonthName($m);
     	$result .= '<tr style="height:30px">';
     	$result .= '<td class="calendar" style="background:#F0F0F0; width: 150px;">' . $libMonth . '</td>';
     	for ($d=1;$d<=date('t',strtotime($currentYear.'-'.$mx.'-01'));$d++) {
