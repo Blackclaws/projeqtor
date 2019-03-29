@@ -512,14 +512,14 @@ class ComponentVersionMain extends Version {
     
     $pvs=new ProductVersionStructure();
     // Copy Composition
-//     $crit=array('idProductVersion'=>$this->id);
-//     $list=$pvs->getSqlElementsFromCriteria($crit,null,null,null,null,true);
-//     foreach ($list as $pvs) {
-//       $pvs->idProductVersion=$result->id;
-//       $pvs->id=null;
-//       $pvs->creationDate=date('Y-m-d');
-//       $pvs->save();
-//     }
+     $crit=array('idProductVersion'=>$this->id);
+     $list=$pvs->getSqlElementsFromCriteria($crit,null,null,null,null,true);
+     foreach ($list as $pvs) {
+       $pvs->idProductVersion=$result->id;
+       $pvs->id=null;
+       $pvs->creationDate=date('Y-m-d');
+       $pvs->save();
+     }
     // Copy Structure
     if (!property_exists($this, '_copyVersionStructure')) {
     	$this->_copyVersionStructure='Copy';
