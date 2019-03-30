@@ -887,6 +887,9 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false, $pare
         }
         $aff=new Affectation();
         $cpt=$aff->countSqlElementsFromCriteria($crit);
+      }else if($section == 'ExpenseBudgetDetail'){
+        $expense = new ProjectExpense();
+        $cpt= $expense->countSqlElementsFromCriteria(array("idBudgetItem"=>$obj->id));
       } else if ($section=='affectationsResourceTeam') {
         $crit=array('idResourceTeam'=>$obj->id);
         $aff=new ResourceTeamAffectation();
@@ -6670,14 +6673,10 @@ function drawTabExpense($obj, $refresh=false) {
     echo '    <td class="assignHeader" colspan="1" style="width:10%">'.i18n('colTaxAmount').'</td>';
     echo '  </tr>';
    
-    
-    
-    
    //TERM with payment
     foreach ($tabTerm as $id=>$term){
     	unset($tabTerm[$id]['payment']);
     }
-    debugLog($tabTerm);
     foreach ($arrayPayment as $payment){
      if($payment->idProviderTerm){
      	$tabTerm[$payment->idProviderTerm][$payment->id]=$payment->id;
@@ -6790,9 +6789,10 @@ function drawTabExpense($obj, $refresh=false) {
 
 function drawProjectExpenseDetailLine($class,$id, $level){
   $obj = new $class($id);
+  $date = '';
   if(isset($obj->date)){
     $date = htmlFormatDate($obj->date);
-  }else{
+  }elseif(isset($obj->creationDate)){
     $date = htmlFormatDate($obj->creationDate);
   }
   $ref = '';
@@ -6833,6 +6833,89 @@ function drawProjectExpenseDetailLine($class,$id, $level){
   echo '    <td class="assignData" align="right" colspan="1" style="width:10%;height:20px;">'.$fullAmount.'</td>';
   echo '    <td class="assignData" align="right" colspan="1" style="width:10%;height:20px;">'.$taxAmout.'</td>';
   echo '  </tr>';
+}
+
+function drawExpenseBudgetDetail($obj) {
+  global $print, $user;
+  $class=get_class($obj);
+  $projectExpense = new ProjectExpense();
+  $listProjectExpense = $projectExpense->getSqlElementsFromCriteria(array("idBudgetItem"=>$obj->id));
+  echo '<tr><td colspan="2" style="width:100%;">';
+  echo '<table style="width:100%;">';
+  echo '  <tr>';
+  echo '    <td class="assignHeader" colspan="1" style="width:25%">'.i18n('colName').'</td>';
+  echo '    <td class="assignHeader" colspan="1" style="width:10%"></td>';
+  echo '    <td class="assignHeader" colspan="1" style="width:10%">'.i18n('colDate').'</td>';
+  echo '    <td class="assignHeader" colspan="1" style="width:20%">'.i18n('colUntaxedAmount').'</td>';
+  echo '    <td class="assignHeader" colspan="1" style="width:15%">'.i18n('colTaxAmount').'</td>';
+  echo '    <td class="assignHeader" colspan="1" style="width:20%">'.i18n('colFullAmount').'</td>';
+  echo '  </tr>';
+  foreach ($listProjectExpense as $expense){
+    drawBudgetExpenseDetailLine(get_class($expense), $expense->id);
+  }
+  echo '</table>';
+  echo '</tr>';
+}
+
+function drawBudgetExpenseDetailLine($class,$id){
+	$obj = new $class($id);
+	$plannedDate = '';
+  if(isset($obj->expensePlannedDate)){
+    $plannedDate = htmlFormatDate($obj->expensePlannedDate);
+  }
+  $realDate = '';
+  if(isset($obj->expenseRealDate)){
+    $realDate = htmlFormatDate($obj->expenseRealDate);
+  }
+	$plannedAmount = '';
+	if(isset($obj->plannedAmount)){
+		$plannedAmount = htmlDisplayCurrency($obj->plannedAmount);
+	}
+	$realAmount = '';
+	if(isset($obj->realAmount)){
+		$realAmount = htmlDisplayCurrency($obj->realAmount);
+	}
+	$plannedFullAmount = '';
+	if(isset($obj->plannedFullAmount)){
+		$plannedFullAmount = htmlDisplayCurrency($obj->plannedFullAmount);
+	}
+	$realFullAmount = '';
+	if(isset($obj->realFullAmount)){
+		$realFullAmount = htmlDisplayCurrency($obj->realFullAmount);
+	}
+	$plannedTaxAmount = '';
+	if(isset($obj->plannedTaxAmount)){
+		$plannedTaxAmount = htmlDisplayCurrency($obj->plannedTaxAmount);
+	}
+	$realTaxAmount = '';
+	if(isset($obj->realTaxAmount)){
+		$realTaxAmount = htmlDisplayCurrency($obj->realTaxAmount);
+	}
+	
+	$goto= '';
+	if (securityCheckDisplayMenu(null, $class) and securityGetAccessRightYesNo('menu'.$class, 'read', '')=="YES") {
+		$goto = 'onClick="gotoElement('."'".$class."','".htmlEncode($id)."'".');"';
+	}
+	$idleClass = ($obj->idle)?' affectationIdleClass':'';
+	echo ' <tr>';
+	echo '    <td class="assignData'.$idleClass.'" align="center" rowspan="2"'.$goto.'style="width:25%;height:20px;cursor:pointer;vertical-align:middle">';
+	echo '      <table width="100%"><tr><td width="10%" float="right">'.formatIcon(get_class($obj), 16).'</td>';
+	echo '      <td width="90%"style="text-aglign:left;">&nbsp'.$obj->name.'</td></tr></table>';
+	echo '    </td>';
+	echo '    <td class="assignData'.$idleClass.'" align="center" style="width:10%;height:20px;">'.i18n('colPlanned').'</td>';
+	echo '    <td class="assignData'.$idleClass.'" align="right" style="width:10%;height:20px;">'.$plannedDate.'</td>';
+	echo '    <td class="assignData'.$idleClass.'" align="right" style="width:20%;height:20px;">'.$plannedAmount.'</td>';
+	echo '    <td class="assignData'.$idleClass.'" align="right" style="width:15%;height:20px;">'.$plannedTaxAmount.'</td>';
+	echo '    <td class="assignData'.$idleClass.'" align="right" style="width:20%;height:20px;">'.$plannedFullAmount.'</td>';
+	echo '</tr>';
+	
+	echo ' <tr>';
+	echo '    <td class="assignData'.$idleClass.'" align="center" style="width:10%;height:20px;">'.i18n('colReal').'</td>';
+	echo '    <td class="assignData'.$idleClass.'" align="right" style="width:10%;height:20px;">'.$realDate.'</td>';
+	echo '    <td class="assignData'.$idleClass.'" align="right" style="width:20%;height:20px;">'.$realAmount.'</td>';
+	echo '    <td class="assignData'.$idleClass.'" align="right" style="width:15%;height:20px;">'.$realTaxAmount.'</td>';
+	echo '    <td class="assignData'.$idleClass.'" align="right" style="width:20%;height:20px;">'.$realFullAmount.'</td>';
+	echo '</tr>';
 }
 
 
