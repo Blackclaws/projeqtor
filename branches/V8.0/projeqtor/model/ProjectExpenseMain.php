@@ -480,9 +480,7 @@ class ProjectExpenseMain extends Expense {
   public function drawSpecificItem($item){
     global $comboDetail, $print, $outMode, $largeWidth;
     $showExpenseProjectDetail=(Parameter::getUserParameter('showExpenseProjectDetail')!='0')?true:false;
-    $page="objectDetail";
     $result="";
-    $resultSC='';
     if ($item=='totalFinancialSynthesis') {
       if($this->id){
         drawTabExpense($this, false);
@@ -498,7 +496,7 @@ class ProjectExpenseMain extends Expense {
       	$resultSC.='</script>';
       	$resultSC.='</div>';
       }
-      return $result.$resultSC;
+      return $result;
     }
   }
   
