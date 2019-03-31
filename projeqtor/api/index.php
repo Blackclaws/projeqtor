@@ -246,6 +246,7 @@ if ($_SERVER['REQUEST_METHOD']=='GET') {
 	$cpt=0;
 	echo '{"identifier":"id", "items":[';
 	foreach ($arrayData as $objArray) {
+	  Sql::beginTransaction();
 		$id=null;
 		if (isset($objArray['id'])) $id=$objArray['id'];
 		$obj=new $class($id);
@@ -276,6 +277,8 @@ if ($_SERVER['REQUEST_METHOD']=='GET') {
 		if ($pos) {
 		  $result=substr($result,0,$pos);
 		}
+		if ($resultStatus=="OK") { Sql::commitTransaction();}
+		else { Sql::rollbackTransaction();}
 		$result=str_ireplace(array('<b>','</b>','<br/>','<br>'),array('','',' ',' '), $result);
 		$obj=new $class($obj->id); // refresh object to display calculated values in return
 		if ($cpt) echo ",";
