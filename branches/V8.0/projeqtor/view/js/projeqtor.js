@@ -267,7 +267,15 @@ function refreshJsonPlanning() {
       url += "listShowNullAssignment=true";
       param = true;
     }
-  } 
+  }
+  if(dijit.byId('projectDate').get('checked')){
+	  dijit.byId('listSaveDates').set('checked', false);
+	  dojo.setAttr('startDatePlanView', 'value', null);
+	  dojo.setAttr('endDatePlanView', 'value', null);
+  }
+  if(!dijit.byId('projectDate').get('checked')){
+	  dijit.byId('listSaveDates').set('checked', true);
+  }
   loadContent(url, "planningJsonData", 'listForm', false);
 }
 
