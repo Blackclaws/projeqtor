@@ -486,15 +486,15 @@ class ProjectExpenseMain extends Expense {
         drawTabExpense($this, false);
       }
       if (!$print) {
-      	$resultSC='<div style="position:absolute;right:5px;top:2px;">';
-      	$resultSC.='<label for="showExpenseProjectDetail"  class="dijitTitlePaneTitle" style="font-weight:normal !important;height:10px;width:250px">'.i18n('colShowDetail').'&nbsp;</label>';
-      	$resultSC.='<div class="whiteCheck" id="showExpenseProjectDetail" dojoType="dijit.form.CheckBox" type="checkbox" '.(($showExpenseProjectDetail)?'checked':'').' >';
-      	$resultSC.='<script type="dojo/connect" event="onChange" args="evt">';
-      	$resultSC.=' saveUserParameter("showExpenseProjectDetail",((this.checked)?"1":"0"));';
-      	$resultSC.=' if (checkFormChangeInProgress()) {return false;}';
-      	$resultSC.=' loadContent("objectDetail.php", "detailDiv", "listForm");';
-      	$resultSC.='</script>';
-      	$resultSC.='</div>';
+      	$result='<div style="position:absolute;right:5px;top:2px;">';
+      	$result.='<label for="showExpenseProjectDetail"  class="dijitTitlePaneTitle" style="font-weight:normal !important;height:10px;width:250px">'.i18n('colShowDetail').'&nbsp;</label>';
+      	$result.='<div class="whiteCheck" id="showExpenseProjectDetail" dojoType="dijit.form.CheckBox" type="checkbox" '.(($showExpenseProjectDetail)?'checked':'').' >';
+      	$result.='<script type="dojo/connect" event="onChange" args="evt">';
+      	$result.=' saveUserParameter("showExpenseProjectDetail",((this.checked)?"1":"0"));';
+      	$result.=' if (checkFormChangeInProgress()) {return false;}';
+      	$result.=' loadContent("objectDetail.php", "detailDiv", "listForm");';
+      	$result.='</script>';
+      	$result.='</div>';
       }
       return $result;
     }
