@@ -209,7 +209,7 @@ function recursiveAddWorkProject(idProject, day, diff){
  * @return
  */
 //var oldImputationWorkValue=0;
-function dispatchWorkValueChange(rowId, colId) { 
+function dispatchWorkValueChange(rowId, colId, date) { 
   var oldWorkValue=dojo.byId('workOldValue_' + rowId + '_' + colId).value;
   //var oldWorkValue=oldImputationWorkValue;
   if (oldWorkValue==null || oldWorkValue=='') {oldWorkValue=0;}   
@@ -329,7 +329,7 @@ function dispatchWorkValueChange(rowId, colId) {
   disableWidget("listShowIdle");
   disableWidget("listShowPlannedWork");
   disableWidget("showId");
-  checkCapacity();
+  checkCapacity(date);
   dijit.byId('totalWork').set("value",parseFloat(dijit.byId('totalWork').get("value"))+diff);
   totalWork=parseFloat(dijit.byId('totalWork').get("value"));
   businessDay=parseInt(dojo.byId('businessDay').value);
@@ -486,10 +486,11 @@ function enterRealAsPlanned(nbDays){
   }
 }
 
-function checkCapacity() {
-  var capacity=parseFloat(dojo.byId('resourceCapacity').value);
+function checkCapacity(date) {
+  var capacity=parseFloat(dojo.byId('resourceCapacity_'+date).value);
   capacity=Math.round(capacity*100)/100;
-  for (colId=1; colId<=7; colId++) {
+  //for (colId=1; colId<=7; colId++) {
+  colId = dojo.byId('colId_'+date).value;
   valSum=Math.round(parseFloat(dijit.byId('colSumWork_' + colId).get("value"))*100)/100;
   if (valSum > capacity) {
     //dojo.style('colSumWork_' + colId, "backgroung","red");
@@ -501,7 +502,7 @@ function checkCapacity() {
     //dojo.style('colSumWork_' + colId, "backgroung","red");
     dijit.byId('colSumWork_' + colId).set("class","imputationValidCapacity imputation");
   }   
-  }
+  //}
 }
 
 function validFutureWorkDate(){

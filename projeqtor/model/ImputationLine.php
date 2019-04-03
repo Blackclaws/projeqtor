@@ -563,8 +563,6 @@ class ImputationLine {
     echo '</table>';
     
     if (!$print) {
-      echo '<input type="hidden" id="resourceCapacity" value="'.$capacity.'" />';
-      
       echo '<script type="dojo/connect" event="resize" args="evt">
         var valueHeight=parseInt(dojo.byId(\'topRegionImputation\').offsetHeight)-5;
         dojo.byId(\'imputationComment\').style.height=valueHeight+\'px\';
@@ -657,15 +655,18 @@ class ImputationLine {
     if ($lowRes!=1) echo '  <TD class="ganttLeftTitle" style="width: '.$workWidth.'px;max-width:'.$workWidth.'px;overflow:hidden;">'.i18n('colAssigned').'</TD>';
     if ($lowRes!=1) echo '  <TD class="ganttLeftTitle" style="width: '.$workWidth.'px;max-width:'.$workWidth.'px;overflow:hidden;">'.i18n('colReal').'</TD>';
     $curDate=$startDate;
-    $businessDay=0;
+    //$businessDay=0;
+    $totalCapacity=0;
     for ($i=1; $i<=$nbDays; $i++) {
+      echo '<input type="hidden" id="resourceCapacity_'.$curDate.'" value="'.$resource->getCapacityPeriod($curDate).'" />';
       echo '  <TD class="ganttLeftTitle" style="width: '.$inputWidth.'px;max-width:'.$inputWidth.'px;min-width:'.$inputWidth.'px;overflow:hidden;';
       if ($today==$curDate) {
         echo ' background-color:#'.$currentdayColor.'; color: #aaaaaa;';
       } else if (isOffDay($curDate, $cal)) {
         echo ' background-color:#'.$weekendColor.'; color: #aaaaaa;';
       }
-      if (!isOffDay($curDate, $cal)) $businessDay++;
+      //if (!isOffDay($curDate, $cal)) $businessDay++;
+      if (!isOffDay($curDate, $cal)) $totalCapacity+=$resource->getCapacityPeriod($curDate);
       echo '">';
       if ($rangeType=='week') {
         echo i18n('colWeekday'.$i)." ".date('d', strtotime($curDate)).'';
@@ -676,7 +677,7 @@ class ImputationLine {
       echo '</TD>';
       $curDate=date('Y-m-d', strtotime("+1 days", strtotime($curDate)));
     }
-    $businessDay=$businessDay*$capacity;
+    //$businessDay=$businessDay*$capacity;
     echo '  <TD class="ganttLeftTitle" style="width: '.$workWidth.'px;max-width:'.$workWidth.'px;min-width:'.$workWidth.'px;overflow:hidden;">'.i18n('colLeft').'</TD>';
     echo '  <TD class="ganttLeftTitle" style="width: '.$workWidth.'px;max-width:'.$workWidth.'px;min-width:'.$workWidth.'px;overflow:hidden;"><div>'.i18n('colReassessed').'</div></TD>';
     echo '</TR>';
@@ -957,7 +958,7 @@ class ImputationLine {
               // echo '</script>';
               echo $keyDownEventScript;
               echo '<script type="dojo/method" event="onChange" args="evt">';
-              echo '  dispatchWorkValueChange("'.$nbLine.'","'.$i.'");';
+              echo '  dispatchWorkValueChange("'.$nbLine.'","'.$i.'","'.$curDate.'");';
               echo '</script>';
               echo '</div>';
               echo '</div>';
@@ -1084,7 +1085,7 @@ class ImputationLine {
     if (!$print) echo '<input type="hidden" id="nbFutureDays" value="'.$nbFutureDays.'" />';
     if (!$print) echo '<input type="hidden" id="nbFutureDaysBlocking" value="'.$nbFutureDaysBlocking.'" />';
     if (!$print) echo '<input type="hidden" value="'.$maxDateFuture.'" />';
-    if (!$print) echo '<input type="hidden" id="businessDay" value="'.($businessDay).'" />';
+    if (!$print) echo '<input type="hidden" id="businessDay" value="'.($totalCapacity).'" />';
     $totalWork=0;
     for ($i=1; $i<=$nbDays; $i++) {
       echo '  <TD class="ganttLeftTitle" style="width: '.$inputWidth.'px;';
@@ -1096,9 +1097,9 @@ class ImputationLine {
         echo '<div type="text" dojoType="dijit.form.NumberTextBox" ';
         // echo ' constraints="{pattern:\'###0.0#\'}"';
         echo ' trim="true" disabled="true" ';
-        if (round($colSum[$i], 2)> round($capacity,2)) {
+        if (round($colSum[$i], 2)> round($resource->getCapacityPeriod($curDate),2)) {
           echo ' class="imputationInvalidCapacity imputation"';
-        } else if (round($colSum[$i], 2)<round($capacity)) {
+        } else if (round($colSum[$i], 2)<round($resource->getCapacityPeriod($curDate))) {
           echo ' class="displayTransparent imputation"';
         } else {
           echo ' class="imputationValidCapacity imputation"';
@@ -1108,6 +1109,7 @@ class ImputationLine {
         echo ' value="'.$colSum[$i].'" ';
         echo ' >';
         echo '</div>';
+        echo '<input type="hidden" id="colId_'.$curDate.'" value="'.$i.'"/>';
         echo '<input type="hidden" id="colIsFuture_'.$i.'" value="'.(($curDate>$maxDateFuture&&$nbFutureDays!=-1)?1:0).'" />';
         echo '<input type="hidden" id="colIsFutureBlocking_'.$i.'" value="'.(($curDate>$maxDateFutureBlocking&&$nbFutureDaysBlocking!=-1)?1:0).'" />';
       } else {
@@ -1118,9 +1120,9 @@ class ImputationLine {
       $curDate=date('Y-m-d', strtotime("+1 days", strtotime($curDate)));
     }
     $classTotalWork="imputationValidCapacity";
-    if (round($totalWork, 2)>$businessDay) {
+    if (round($totalWork, 2)>$totalCapacity) {
       $classTotalWork='imputationInvalidCapacity';
-    } else if (round($totalWork, 2)<$businessDay) {
+    } else if (round($totalWork, 2)<$totalCapacity) {
       $classTotalWork='displayTransparent';
     }
     $colSpanFooter=''; // No more need

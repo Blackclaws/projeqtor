@@ -96,6 +96,10 @@
       $idAffectation=RequestHandler::getId('idAffectation');
       $aff=new ResourceTeamAffectation($idAffectation);
       echo formatAnyTextToPlainText($aff->description,false);
+    } else if ($type=='resourceCapacityDescription') {
+      $idResourceCapacity=RequestHandler::getId('idResourceCapacity');
+      $resCap=new ResourceCapacity($idResourceCapacity);
+      echo formatAnyTextToPlainText($resCap->description,false);
     } else if ($type=='assignmentDescription') {
       $idAssignment=RequestHandler::getId('idAssignment');
       $ass=new Assignment($idAssignment);
