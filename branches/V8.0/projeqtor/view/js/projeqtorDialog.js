@@ -5456,6 +5456,101 @@ function addAffectation(objectClass, type, idResource, idProject) {
   params+="&mode=add";
   loadDialog('dialogAffectation',callBack,false,params);
 }
+//gautier #resourceCapacity
+function addResourceCapacity(objectClass, type, idResource) {
+  var callBack = function () {
+    affectationLoad=true;
+    dijit.byId("dialogResourceCapacity").show();
+    setTimeout("affectationLoad=false", 500);
+  };
+  var params="&idResource="+idResource;
+  params+="&type="+type;
+  params+="&mode=add";
+  loadDialog('dialogResourceCapacity',callBack,false,params);
+}
+
+function saveResourceCapacity(capacity){
+  var formVar=dijit.byId('resourceCapacityForm');
+  if (dijit.byId('resourceCapacityStartDate') && dijit.byId('resourceCapacityEndDate')) {
+    var start=dijit.byId('resourceCapacityStartDate').value;
+    var end=dijit.byId('resourceCapacityEndDate').value;
+    if (start && end && dayDiffDates(start, end) < 0) {
+      showAlert(i18n("errorStartEndDates", new Array(i18n("colStartDate"),
+          i18n("colEndDate"))));
+      return;
+    }
+  }
+  if (dijit.byId('resourceCapacity')){
+    var newCapacity = dijit.byId('resourceCapacity').value;
+    if(capacity === newCapacity){
+      showAlert(i18n("changeCapacity"));
+      return;
+    }
+  }
+  
+  if (formVar.validate()) {
+    loadContent("../tool/saveResourceCapacity.php", "resultDiv", "resourceCapacityForm",true,'affectation');
+    dijit.byId('dialogResourceCapacity').hide();
+  } else {
+    showAlert(i18n("alertInvalidForm"));
+  }
+}
+
+function removeResourceCapacity(id,idResource) {
+  if (checkFormChangeInProgress()) {
+    showAlert(i18n('alertOngoingChange'));
+    return;
+  }
+  actionOK=function() {
+    loadContent("../tool/removeResourceCapacity.php?idResourceCapacity="+id+"&idResource="+idResource, "resultDiv",null, true, 'affectation');
+  };
+  msg=i18n('confirmDeleteResourceCapacity', new Array(id,i18n('Resource'),idResource));
+  showConfirm(msg, actionOK);
+}
+
+function editResourceCapacity(id,idResource,capacity, idle, startDate, endDate) {
+  affectationLoad=true;
+  if (checkFormChangeInProgress()) {
+    showAlert(i18n('alertOngoingChange'));
+    return;
+  }
+  var callBack = function () {
+    dojo.xhrGet({
+      url : '../tool/getSingleData.php?dataType=resourceCapacityDescription&idResourceCapacity='+id,
+      handleAs : "text",
+      load : function(data) {
+        dijit.byId('resourceCapacityDescription').set('value', data);
+        enableWidget("resourceCapacityDescription");
+      }
+      });
+    if (capacity) {
+      dijit.byId("resourceCapacity").set('value', parseFloat(capacity));
+    }
+    if (startDate) {
+      dijit.byId("resourceCapacityStartDate").set('value', startDate);
+    } else {
+      dijit.byId("resourceCapacityStartDate").reset();
+    }
+    if (endDate) {
+      dijit.byId("resourceCapacityEndDate").set('value', endDate);
+    } else {
+      dijit.byId("resourceCapacityEndDate").reset();
+    }
+    if (idle == 1) {
+      dijit.byId("resourceCapacityIdle").set('value', idle);
+    } else {
+      dijit.byId("resourceCapacityIdle").reset();
+    }
+    dijit.byId("dialogResourceCapacity").show();
+    setTimeout("affectationLoad=false", 500);
+  };
+  var params="&id="+id;
+  params+="&idResource="+idResource;
+  params+="&mode=edit";
+  loadDialog('dialogResourceCapacity',callBack,false,params);
+}
+
+//
 
 //gautier #resourceTeam
 function addAffectationResourceTeam(objectClass, type, idResource) {

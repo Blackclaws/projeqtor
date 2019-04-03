@@ -894,6 +894,10 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false, $pare
         $crit=array('idResourceTeam'=>$obj->id);
         $aff=new ResourceTeamAffectation();
         $cpt=$aff->countSqlElementsFromCriteria($crit);
+      } else if ($section=='resourceCapacity') {
+        $crit=array('idResource'=>$obj->id);
+        $resCap=new ResourceCapacity();
+        $cpt=$resCap->countSqlElementsFromCriteria($crit);
       } else if ($section=='affectationResourceTeamResource') {
         $crit=array('idResource'=>$obj->id);
         $aff=new ResourceTeamAffectation();
@@ -5859,6 +5863,82 @@ function drawAffectationsResourceTeamFromObject($list, $obj, $type, $refresh=fal
   echo '</table>';
 }
 
+//gautier #ResourceCapacity
+function drawResourceCapacity($list, $obj, $type, $refresh=false) {
+global $cr, $print, $user, $browserLocale, $comboDetail;
+  $pluginObjectClass='Affectation';
+  //$tableObject=$list;
+  $lstPluginEvt=Plugin::getEventScripts('list', $pluginObjectClass);
+  foreach ($lstPluginEvt as $script) {
+    require $script; // execute code
+  }
+ 
+  $canDelete=securityGetAccessRightYesNo('menu'.get_class($obj), 'delete', $obj)=="YES";
+  $canUpdate=securityGetAccessRightYesNo('menu'.get_class($obj), 'update', $obj)=="YES";
+  $canCreate=securityGetAccessRightYesNo('menu'.get_class($obj), 'create', $obj)=="YES";
+  if (!(securityGetAccessRightYesNo('menu'.get_class($obj), 'update', $obj)=="YES")) {
+    $canCreate=false;
+    $canUpdate=false;
+    $canDelete=false;
+  }
+  if ($obj->idle==1) {
+    $canUpdate=false;
+    $canCreate=false;
+    $canDelete=false;
+  }
+  if (get_class($obj)=='GlobalView') {
+    $canUpdate=false;
+    $canCreate=false;
+    $canDelete=false;
+  }
+  
+  echo '<table style="width:100%">';
+  echo '<tr><td colspan=2 style="width:100%;"><table style="width:100%;">';
+  echo '<tr>';
+  if (get_class($obj)=='Resource' or get_class($obj)=='ResourceTeam') {
+    $idRess=$obj->id;
+  } else {
+    $idRess=null;
+  }
+  if (!$print) {
+    echo '<td class="assignHeader" style="width:15%">';
+   if ($obj->id!=null and !$print and $canCreate and !$obj->idle) {
+      echo '<a onClick="addResourceCapacity(\''.get_class($obj).'\',\''.$type.'\',\''.$idRess.'\');" title="'.i18n('addResourceCapacity').'" /> '.formatSmallButton('Add').'</a>';
+    }
+    echo '</td>';
+  }
+  echo '<td class="assignHeader" style="width:12%">'.i18n('colId').'</td>';
+  echo '<td class="assignHeader" style="width:35%">'.i18n('colCapacity').'</td>';
+  echo '<td class="assignHeader" style="width:19%">'.i18n('colStartDate').'</td>';
+  echo '<td class="assignHeader" style="width:19%">'.i18n('colEndDate').'</td>';
+  echo '</tr>';
+  
+  foreach ($list as $resCap) {
+    $idleClass=($resCap->idle or ($resCap->endDate and $resCap->endDate<$dateNow=date("Y-m-d")))?' affectationIdleClass':'';
+      echo '<tr>';
+      if (!$print) {
+        echo '<td class="assignData'.$idleClass.'" style="text-align:center;white-space: nowrap;">';
+        if ($canUpdate) {
+          echo '  <a onClick="editResourceCapacity(\''.$resCap->id.'\',\''.$obj->id.'\',\''.$resCap->capacity.'\',\''.$resCap->idle.'\',\''.$resCap->startDate.'\',\''.$resCap->endDate.'\');" '.'title="'.i18n('editResourceCapacity').'" > '.formatSmallButton('Edit').'</a>';
+        }
+        if ($canDelete) {
+          echo '  <a onClick="removeResourceCapacity(\''.$resCap->id.'\',\''.$resCap->idResource.'\');" '.'title="'.i18n('removeResourceCapacity').'" > '.formatSmallButton('Remove').'</a>';
+        }
+        if ($resCap->description) {
+          echo '<div style="float:right">'.formatCommentThumb($resCap->description).'</div>';
+        }
+      }
+      echo '</td>';
+      echo ' <td class="assignData'.$idleClass.'" align="center" style="white-space: nowrap;">'.$resCap->id.'</td>';
+      echo ' <td class="assignData'.$idleClass.'" align="center" style="white-space: nowrap;">'.htmlDisplayNumericWithoutTrailingZeros($resCap->capacity).'</td>';
+      echo ' <td class="assignData'.$idleClass.'" align="center" style="white-space: nowrap;">'.htmlFormatDate($resCap->startDate).'</td>';
+      echo ' <td class="assignData'.$idleClass.'" align="center" style="white-space: nowrap;">'.htmlFormatDate($resCap->endDate).'</td>';
+      echo '</tr>';
+  }
+  echo '</table></td></tr>';
+  echo '</table>';
+}
+
 // gautier #ProviderTerm
 function drawProviderTermFromObject($list, $obj, $type, $refresh=false) {
   global $cr, $print, $user, $browserLocale, $comboDetail;
@@ -7122,6 +7202,7 @@ function endBuffering($prevSection, $included) {
       'testcaserunsummary'=>array('2'=>'left', '3'=>'extra'), 
       'testcasesummary'=>array('2'=>'right', '3'=>'extra'),
       'totalfinancialsynthesis'=>array('2'=>'bottom', '3'=>'bottom'),//damian
+      'variableCapacityResource'=>array('2'=>'bottom', '3'=>'bottom'),
       'void'=>array('2'=>'right', '3'=>'right'), 
       'workflowdiagram'=>array('2'=>'bottom', '3'=>'bottom'), 
       'workflowstatus'=>array('2'=>'bottom', '3'=>'bottom'));

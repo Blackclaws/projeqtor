@@ -58,6 +58,8 @@ class ResourceMain extends SqlElement {
   public $_spe_affectationGraph;
   public $_sec_affectationResourceTeamResource;
   public $_spe_affectationResourceTeamResource;
+  public $_sec_resourceCapacity;
+  public $_spe_resourceCapacity;
   public $_sec_Miscellaneous;
   public $isLdap;
   public $dontReceiveTeamMails;
@@ -580,6 +582,12 @@ class ResourceMain extends SqlElement {
       $affList=$resourceTeamAff->getSqlElementsFromCriteria($critArray, false);
       drawAffectationsResourceTeamResourceFromObject($affList, $this, 'ResourceTeam', false);
       return $result;
+    }else if ($item=='resourceCapacity'){
+      $resourceCapacity = new ResourceCapacity();
+      $critArray=array('idResource'=>(($this->id)?$this->id:'0'));
+      $capacityList=$resourceCapacity->getSqlElementsFromCriteria($critArray, false);
+      drawResourceCapacity($capacityList,$this,'ResourceCapacity',false);
+      return $result;
     }
   }
   
@@ -656,6 +664,45 @@ class ResourceMain extends SqlElement {
       $result.= formatLetterThumb($this->id, $size,$this->name,"right",null);
     }
     return $result;
+  }
+  
+  
+  public function buildCapacityPeriod(){
+    $resCap = new ResourceCapacity();
+    $listResCap = $resCap->getSqlElementsFromCriteria(array('idResource'=>$this->id),null,null,'startDate desc');
+    foreach ($listResCap as $cap){
+      if($cap->idle == 0 ){
+        $capacityPeriod[$this->id][$cap->startDate]['capacity']=$cap->capacity;
+        $capacityPeriod[$this->id][$cap->startDate]['startDate']=$cap->startDate;
+        $capacityPeriod[$this->id][$cap->startDate]['endDate']=$cap->endDate;
+      }
+    }
+    if(!isset($capacityPeriod)){
+      $capacityPeriod = array();
+    }   
+    return $capacityPeriod;
+  }
+  
+  public function getCapacityPeriod($date) {
+     if(!sessionValueExists('capacityPeriod')){
+         setSessionValue('capacityPeriod', array());
+     }
+    if(!sessionTableValueExist('capacityPeriod', $this->id)){
+      setSessionTableValue('capacityPeriod',$this->id, $this->buildCapacityPeriod());
+    }
+    $capacityPeriod = getSessionTableValue('capacityPeriod', $this->id); 
+    foreach ($capacityPeriod as $val) {
+      foreach ($val as $value){
+        if ($date>=$value['startDate'] and $date<=$value['endDate']){
+          return $value['capacity'];
+        }
+      }
+    }
+    return $this->capacity;
+  }
+  
+  public function getSurbookingCapacity($date) {
+    return getCapacityPeriod($date);
   }
   
 }

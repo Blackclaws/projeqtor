@@ -355,3 +355,17 @@ INSERT INTO `${prefix}notifiable` (`notifiableItem`,`name`,`idle`) VALUES
     ('Status', 'Status',0),
     ('LeaveType', 'Leave Type',0);
 		
+
+--gautier #resourceCapacity
+CREATE TABLE `${prefix}resourcecapacity` (
+  `id` INT(12) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `idResource` INT(12) NOT NULL,
+  `capacity` decimal(8,5) unsigned default null,
+  `description`  mediumtext,
+  `idle` int(1) unsigned DEFAULT 0,
+  `startDate` date DEFAULT NULL,
+  `endDate` date DEFAULT NULL,
+  PRIMARY KEY (id)
+)
+ENGINE = InnoDB, DEFAULT CHARSET=utf8;
+CREATE INDEX `resourcevariablecapacity` ON `${prefix}resourcecapacity` (`idResource`);
