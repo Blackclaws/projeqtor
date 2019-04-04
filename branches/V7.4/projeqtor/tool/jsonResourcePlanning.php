@@ -471,7 +471,8 @@ if (Sql::$lastQueryNbRows == 0) {
 	      $item=new Project($line['idproject'],false);
 	      $list[$keyProj]["status"]=SqlList::getNameFromId('Status',$item->idStatus);
 	      $list[$keyProj]["type"]=SqlList::getNameFromId('Type',$item->idProjectType);
-	      $list[$keyProj]["priority"]=SqlList::getNameFromId('Priority',$item->ProjectPlanningElement->priority);
+	      //$list[$keyProj]["priority"]=SqlList::getNameFromId('Priority',$item->ProjectPlanningElement->priority);
+	      $list[$keyProj]["priority"]=$item->ProjectPlanningElement->priority;
 	    }
 			if (! $list[$keyProj]["realstartdate"] or $line['realstartdate'] < $list[$keyProj]["realstartdate"]) {
 	      if ($line['realstartdate'] and $line['realstartdate']<$line['plannedstartdate']) {
