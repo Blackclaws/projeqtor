@@ -308,18 +308,33 @@ echo '</tr>';
 asort($resourcesToShow);
 //asort($resources);
 foreach ($resourcesToShow as $idR=>$nameR) {
-	if ($paramTeam) {
+	//if ($paramTeam) {
     $res=new Resource($idR);
-  }
+  //}
   if (!$paramTeam or $res->idTeam==$paramTeam) {
     //gautier
     if(array_key_exists($idR,$resourceCapacity)){
   	  $capacity=$resourceCapacity[$idR];
     }else{
-      $capacity=SqlList::getFieldFromId('Resource', $idR, 'capacity');
+      $capacity=SqlList::getFieldFromId('ResourceAll', $idR, 'capacity');
+    }
+    $maxCapa = 0;
+    for ($i=1; $i<=$nbDays;$i++) {
+    	$day=$startDate+$i-1;
+    	$weekDate = substr($day, 0,4).'-'.substr($day, 4, -2).'-'.substr($day, 6);
+    	if($res->getCapacityPeriod($weekDate) > $maxCapa){
+    		$maxCapa = round($res->getCapacityPeriod($weekDate), 2);
+    	}
     }
 	  echo '<tr height="20px"><td class="reportTableLineHeader" style="width:200px">' . $nameR;
-	  echo '<div style="float:right;font-size:80%;color:#A0A0A0;">'.htmlDisplayNumericWithoutTrailingZeros($capacity).'</div>';
+	  echo '<div style="float:right;font-size:80%;color:#A0A0A0;">';
+	  if($capacity != $maxCapa){
+	  	echo '<table width="100%"><tr><td style="width:50%;text-align:right;padding-right:10px;">'.htmlDisplayNumericWithoutTrailingZeros($capacity).'</td>';
+	  	echo '<td style="width:50%;text-align:left;font-style:italic;">max('.$maxCapa.')</td></tr></table>';
+	  }else{
+	  	echo htmlDisplayNumericWithoutTrailingZeros($capacity);
+	  }
+	  echo '</div>';
 	  echo '</td>';
 	  for ($i=1; $i<=$nbDays;$i++) {
 	    $day=$startDate+$i-1;

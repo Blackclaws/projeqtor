@@ -737,22 +737,23 @@ if (!$paramScrollDelay) $paramScrollDelay=10;
         }
         delete refreshEnabled;
       }
-    </script>
-        <button id="todayParametersButton" dojoType="dijit.form.Button"
-          showlabel="false" title="<?php echo i18n('menuParameter');?>"
-          style="width: 28px"
-          iconClass="dijitButtonIcon iconParameter22">
-          <script type="dojo/connect" event="onClick" args="evt">
+      </script>
+    </button>
+    <button id="todayParametersButton" dojoType="dijit.form.Button"
+      showlabel="false" title="<?php echo i18n('menuParameter');?>"
+      style="width: 28px"
+      iconClass="dijitButtonIcon iconParameter22">
+      <script type="dojo/connect" event="onClick" args="evt">
           loadDialog('dialogTodayParameters', null, true);
         </script>
-        </button>
-        <button id="todayPrintButton" dojoType="dijit.form.Button"
-          showlabel="false" title="<?php echo i18n('print');?>"
-          iconClass="dijitButtonIcon dijitButtonIconPrint">
-          <script type="dojo/connect" event="onClick" args="evt">
+    </button>
+    <button id="todayPrintButton" dojoType="dijit.form.Button"
+      showlabel="false" title="<?php echo i18n('print');?>"
+      iconClass="dijitButtonIcon dijitButtonIconPrint">
+      <script type="dojo/connect" event="onClick" args="evt">
           showPrint('../view/today.php');
         </script>
-        </button>
+    </button>
     
     </div>    
     <?php }?>

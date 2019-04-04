@@ -157,10 +157,14 @@ abstract class SqlElement {
           "Attachment" => "cascade", 
           "Dependency" => "cascade", 
           "Link" => "cascade", 
+          "Meeting"=>"confirm",
           "Milestone" => "confirm", 
           "Note" => "cascade", 
-          "PlannedWork" => "cascade", 
-          "Ticket" => "control"), 
+          "PeriodicMeeting"=>"confirm",
+          "PlannedWork" => "cascade",
+          "TestSession"=>"confirm", 
+          "Ticket" => "control"
+          ), 
       "ActivityType" => array(
           "Activity" => "controlStrict"), 
       "Bill" => array(
@@ -231,6 +235,21 @@ abstract class SqlElement {
       "DocumentDirectory" => array("Document" => "control", "DocumentDirectory" => "control"), 
       "DocumentType" => array("Document" => "controlStrict"), 
       "Efficiency" => array("Action" => "controlStrict"), 
+// MTY - LEAVE SYSTEM
+      "Employee" => array(
+          "EmployeeLeaveEarned" => "control",
+          "Leave" => "control",
+          "EmploymentContract" => "control",
+          ),
+      "EmploymentContractEndReason" => array(
+          "EmploymentContract" => "controlStrict"
+          ),
+      "EmploymentContractType" => array(
+          "EmploymentContract" => "controlStrict",
+          "CustomEarnedRulesOfEmploymentContractType" => "control",
+          "LeaveTypeOfEmploymentContractType" => "control"
+          ),
+// MTY - LEAVE SYSTEM
       "ExpenseDetailType" => array("ExpenseDetail" => "controlStrict"), 
       "Feasibility" => array("Requirement" => "controlStrict"), 
       "Filter" => array("FilterCriteria" => "cascade"), 
@@ -239,6 +258,18 @@ abstract class SqlElement {
       "Issue" => array("Attachment" => "cascade", "Link" => "cascade", "Note" => "cascade"), 
       "IssueType" => array("Issue" => "controlStrict"), 
       "JoblistDefinition" => array("Job" => "control", "JobDefinition" => "cascade"), 
+// MTY - LEAVE SYSTEM
+      "Leave" => array(
+          "work" => "cascade",
+          "plannedWork" => "cascade"
+          ),
+      "LeaveType" => array(
+          "Leave" => "confirm",
+          "CustomEarnedRulesOfEmploymentContractType" => "confirm",
+          "LeaveTypeOfEmploymentContractType" => "confirm",
+//          "EmployeeLeaveEarned" => "confirm",
+          ),
+// MTY - LEAVE SYSTEM      
       "Likelihood" => array("Opportunity" => "controlStrict", "Risk" => "controlStrict"), 
       "Meeting" => array(
           "Assignment" => "cascade", 
@@ -251,23 +282,17 @@ abstract class SqlElement {
       "Menu" => array("AccessRight" => "cascade"), 
       "MessageType" => array("Message" => "controlStrict"), 
       "Milestone" => array("Attachment" => "cascade", "Dependency" => "cascade", "Link" => "cascade", "Note" => "cascade"), 
-      "MilestoneType" => array("Milestone" => "controlStrict"), 
-// BEGIN - ADD BY TABARY - NOTIFICATION SYSTEM      
+      "MilestoneType" => array("Milestone" => "controlStrict"),     
       "Notifiable" => array("NotificationDefinition" => "controlStrict",
                              "Notification" => "controlStrict"
                             ),
       "NotificationDefinition" => array("Notification" => "controlStrict"),
-// END - ADD BY TABARY - NOTIFICATION SYSTEM      
       "OverallProgress" => array("Project" => "controlStrict"), 
       "OpportunityType" => array("Opportunity" => "controlStrict"), 
-      // ADD BY Marc TABARY - 2017-02-08
       "Organization" => array("Attachment" => "cascade", "Link" => "cascade", "Note" => "cascade", 
-          // ADD BY Marc TABARY - 2016-03-14 - PERIODIC YEAR BUDGET ELEMENT
           "BudgetElement" => "cascade", 
-          // END ADD BY Marc TABARY - 2016-03-14 - PERIODIC YEAR BUDGET ELEMENT
           "Project" => "controlStrict", "Organization" => "control", "Resource" => "controlStrict"), 
-      // END ADD BY Marc TABARY - 2017-02-08
-      // "PaymentType" => array("Payment" => "controlStrict"),
+      "PaymentType" => array("Payment" => "controlStrict"),
       "PeriodicMeeting" => array("Assignment" => "cascade", "Meeting" => "cascade", "Note" => "cascade"), 
       "Priority" => array(
           "Action" => "controlStrict", 
@@ -318,6 +343,7 @@ abstract class SqlElement {
           "Note" => "cascade", 
           "Opportunity" => "control", 
           "Parameter" => "cascade", 
+          "PeriodicMeeting" => "control",
           "PlannedWork" => "cascade", 
           "Project" => "confirm", 
           "ProjectExpense" => "control", 
@@ -330,7 +356,7 @@ abstract class SqlElement {
           "TestSession" => "control", 
           "Ticket" => "control", 
           "VersionProject" => "cascade", 
-          "Work" => "control"), 
+          "Work" => "controlStrict"), 
       "Provider" => array("ProjectExpense" => "controlStrict", "Tender" => "ControlStrict"), 
       "ProviderBill" => array("BillLine" => "cascade",
                               "ProviderTerm"=>"controlStrict"),
@@ -386,6 +412,9 @@ abstract class SqlElement {
           "Expense" => "controlStrict", 
           "IndividualExpense" => "controlStrict", 
           "Issue" => "controlStrict", 
+// MTY - LEAVE SYSTEM          
+          "Leave" => "controlStrict",
+// MTY - LEAVE SYSTEM          
           "Mail" => "controlStrict", 
           "Meeting" => "controlStrict", 
           "Milestone" => "controlStrict", 
@@ -498,15 +527,37 @@ abstract class SqlElement {
       "AccessScopeDelete" => array(
           "AccessProfile" => "control"), 
       "Activity" => array(
-          "Milestone" => "control", 
-          "Activity" => "control", 
-          "Ticket" => "control", 
-          "Assignment" => "cascade"), 
+          "Assignment" => "cascade",
+          "Activity" => "control",
+          "Meeting" => "control",
+          "Milestone" => "control",
+          "PeriodicMeeting" => "control",
+          "Ticket" => "control" 
+      ), 
       "Document" => array(
           "DocumentVersion" => "cascade"), 
       "DocumentDirectory" => array(
           "Document" => "control", 
           "DocumentDirectory" => "control"), 
+      "Meeting" => array(
+      		"Assignment" => "cascade"
+      ),
+// MTY - LEAVE SYSTEM
+      "EmploymentContractEndReason" => array(
+          "EmploymentContract" => "control"
+      ),
+      "EmploymentContractType" => array(
+          "EmploymentContract" => "control",
+          "CustomEarnedRulesOfEmploymentContractType" => "cascade",
+          "LeaveTypeOfEmploymentContractType" => "cascade"
+      ),
+      "LeaveType" => array(
+          "CustomEarnedRulesOfEmploymentContractType" => "control",
+          "EmployeeLeaveEarned" => "control",
+          "Leave" => "control",
+          "LeaveTypeOfEmploymentContractType" => "control"          
+      ),
+// MTY - LEAVE SYSTEM
 // BEGIN - ADD BY TABARY - NOTIFICATION SYSTEM      
       "Notifiable" => array(
           "NotificationDefinition" => "confirm"),
@@ -565,13 +616,28 @@ abstract class SqlElement {
           "TestCase" => "confirm", 
           "TestCaseRun" => "cascade"), 
       "TestSession" => array(
-          "TestCaseRun" => "cascade"), 
+          "TestCaseRun" => "cascade",
+          "Assignment" => "cascade"),
       "User" => array(
           "Affectation" => "cascade"), 
       "Version" => array(
           "VersionProject" => "cascade", 
           "TestSession" => "confirm"));
 
+  //ELIOTT - LEAVE SYSTEM
+  private static $_classesArrayToBypassPHPCompatibilityIf=array(
+      0=>"EmployeeLeaveEarned",
+      1=>"LeaveTypeOfEmploymentContractType",
+      2=>"CustomEarnedRulesOfEmploymentContractType"
+  );
+  
+  private static $_attributesArrayToBypassPHPCompatibilityIf=array(
+      0=>"quantity",
+      1=>"leftQuantity",
+      2=>"oldLeftQuantity",
+      3=>"leftQuantityBeforeClose"
+  );
+  //ELIOTT - LEAVE SYSTEM
   /**
    * =========================================================================
    * Constructor.
@@ -618,7 +684,7 @@ abstract class SqlElement {
     global $debugTraceUpdates, $debugTraceHistory;
     if ( isset($debugTraceUpdates) and $debugTraceUpdates==true) {
       if ( ! property_exists($this,'_noHistory') or (isset($debugTraceHistory) and $debugTraceHistory==true) )
-        debugTraceLog("Start SAVE for ".get_class($this)." #".$this->id);$startMicroTime=microtime(true);
+        debugTraceLog("Start SAVE for ".get_class($this)." #".$this->id.((SqlElement::is_a($this, 'PlanningElement'))?" $this->refType #$this->refId":''));$startMicroTime=microtime(true);
     }
     $peName=get_class($this).'PlanningElement';
     if (Parameter::getGlobalParameter ( 'autoUpdateActivityStatus' ) == 'YES' and property_exists($this,$peName) and !isset($old)) {
@@ -766,7 +832,7 @@ abstract class SqlElement {
     }
     if (isset($debugTraceUpdates) and $debugTraceUpdates==true) {
       if ( ! property_exists($this,'_noHistory') or (isset($debugTraceHistory) and $debugTraceHistory==true) )
-        debugTraceLog("End SAVE for ".get_class($this)." #".$this->id." => ".round((microtime(true) - $startMicroTime)*1000000)/1000000);
+        debugTraceLog("  End SAVE for ".get_class($this)." #".$this->id.((SqlElement::is_a($this, 'PlanningElement'))?" $this->refType #$this->refId":'')." => ".round((microtime(true) - $startMicroTime)*1000000)/1000000);
     }
     return $result;
   }
@@ -2410,7 +2476,10 @@ abstract class SqlElement {
           $dataLength=$obj->getDataLength($col_name);
           if ($obj->{$col_name}===null 
           and ( ($dataType=='decimal') or ($dataType=='numeric') ) 
-          and $col_name!='warningValue' and $col_name!='alertValue')  {
+          and $col_name!='warningValue' and $col_name!='alertValue'
+//ELIOTT - LEAVE SYSTEM
+          and !(in_array(get_class($obj),self::$_classesArrayToBypassPHPCompatibilityIf)  and in_array($col_name,self::$_attributesArrayToBypassPHPCompatibilityIf)) ) {
+//ELIOTT - LEAVE SYSTEM
             $obj->{$col_name}=0;
           }
         }
@@ -2626,7 +2695,7 @@ abstract class SqlElement {
    *          The object class
    * @param array $critArray 
    *                the critera as an array
-   * @return array : an array of objects
+   * @return object : The object find - If not found set attribut _singleElementNotFound
    */
   public static function getFirstSqlElementFromCriteria($class, $critArray) {
     $obj = new $class ();
@@ -2776,7 +2845,10 @@ abstract class SqlElement {
           // FOR PHP 7.1 COMPATIBILITY
           if (($this->$key===null or $this->$key==='') 
           and ( ($dataType=='decimal') or ($dataType=='numeric') ) 
-          and $key!='warningValue' and $key!='alertValue') {
+          and $key!='warningValue' and $key!='alertValue'
+//ELIOTT - LEAVE SYSTEM
+          and !(in_array(get_class($this),self::$_classesArrayToBypassPHPCompatibilityIf)  and in_array($key,self::$_attributesArrayToBypassPHPCompatibilityIf)) ) {
+//ELIOTT - LEAVE SYSTEM
             $this->$key=0;
           }
         }
@@ -2890,7 +2962,10 @@ abstract class SqlElement {
             //if ($this->{$col_name}===null    // FOR TEST PURPOSE
             if ($this->{$col_name}===''  
             and ( ( $dbType=='numeric') or ( $dbType=='decimal') ) 
-            and $col_name!='warningValue' and $col_name!='alertValue')  {
+            and $col_name!='warningValue' and $col_name!='alertValue'
+//ELIOTT - LEAVE SYSTEM
+          and !(in_array(get_class($this),self::$_classesArrayToBypassPHPCompatibilityIf)  and in_array($col_name,self::$_attributesArrayToBypassPHPCompatibilityIf)) ) {
+//ELIOTT - LEAVE SYSTEM
               $this->{$col_name}=0;
             }
           }
@@ -3099,7 +3174,7 @@ abstract class SqlElement {
       $result .= ' width="' . (($col->field == 'name') ? 'auto' : $col->widthPct . '%') . '"';
       $result .= ($col->formatter) ? ' formatter="' . htmlEncode ( $col->formatter ) . '"' : '';
       $result .= ($col->_from) ? ' from="' . $col->_from . '"' : '';
-      $result .= ($col->hidden) ? ' hidden="true"' : '';
+      $result .= ($col->hidden and $col->field!='id') ? ' hidden="true"' : '';
       $result .= '>' . $col->_displayName . '</th>' . "\n";
       $totWidth += ($col->field == 'name') ? 0 : $col->widthPct;
     }
@@ -3327,15 +3402,19 @@ abstract class SqlElement {
    * Return the name of the column name in the table in the database
    * Default is the name of the field
    * May be overloaded for some fields of some classes
-   *
+   * @param string $field : The field to find as data column in database
+   * @param boolean $emptyIfNotFound : If True = Returns empty string if not found
    * @return string the name of the data column
    */
-  public function getDatabaseColumnName($field) {
+  public function getDatabaseColumnName($field,$emptyIfNotFound=false) {
     $colName = $field;
     $databaseColumnName = $this->getStaticDatabaseColumnName ();
     if (array_key_exists ( $field, $databaseColumnName )) {
       $colName = $databaseColumnName [$field];
-    } // else {
+    } else if($emptyIfNotFound) {
+        return "";
+    } 
+    // else {
       // return Sql::str($field); // Must not be quoted : would return 'name' (with quotes)
       // return $field;
       // }
@@ -3820,7 +3899,11 @@ abstract class SqlElement {
       }
       if ($colName == 'id' . get_class ( $this ) . 'Type' or $colName == 'idStatus') {
         $colScript .= '   getExtraReadonlyFields("","","");';
-        $colScript .= '   getExtraHiddenFields("","","");';
+// MTY - LEAVE SYSTEM
+        if (get_class($this)!="Leave") {
+          $colScript .= '   getExtraHiddenFields("","","");';
+        }
+// MTY - LEAVE SYSTEM        
       }
       $colScript .= '</script>';
     }
@@ -4143,7 +4226,7 @@ abstract class SqlElement {
     $result = "";
     $right = "";
     // Manage Exceptions
-    if (get_class ( $this ) == 'Alert' or get_class ( $this ) == 'Mail' or get_class ( $this ) == 'Audit' or get_class ( $this ) == 'AuditSummary' or get_class ( $this ) == 'ColumnSelector') {
+    if (get_class ( $this ) == 'Alert' or get_class ( $this ) == 'Mail' or get_class ( $this ) == 'MailToSend' or get_class ( $this ) == 'Audit' or get_class ( $this ) == 'AuditSummary' or get_class ( $this ) == 'ColumnSelector') {
       $right = 'YES';
     } else if (isset ( $cronnedScript ) and $cronnedScript == true) { // Cronned script can do everything
       $right = 'YES';
@@ -4417,11 +4500,37 @@ abstract class SqlElement {
       $statList = SqlList::getList ( 'Status' );
       $firstStat = key ( $statList );
       if (! $oldStat->isCopyStatus and ($this->idStatus != $old->idStatus or $this->idStatus != $firstStat)) {
-        $type = new Type ( $this->$fldType );
+          $idProfile = getSessionUser ()->getProfile ( $this );
+// ELIOTT - LEAVE SYSTEM          
+          // In fact, leaveType and EmploymentContractType aren't standarts Type. They are objects in model/
+          if($fldType==="idLeaveType"){
+            $type = new LeaveType($this->$fldType);
+          }else if($fldType==="idEmploymentContractType"){
+            $type = new EmploymentContractType($this->$fldType);
+          }else{
+            $type = new Type ( $this->$fldType );
+          }
+            // For Leave System and Leave :
+            //   - Leave Admin or 
+            //   - Manager of Employee or
+            //   - Employee of the leave 
+            //   can see status
+          if (isLeavesSystemActiv() and $class=='Leave') {
+            if (isLeavesAdmin() or isManagerOfEmployee(getSessionUser()->id, $this->idEmployee) or
+                (getSessionUser()->isEmployee==1 and $this->idEmployee == getSessionUser()->id)
+               ) {
+                $theProfile = getFirstADMProfile();
+                if ($theProfile!=null) {
+                    $idProfile = $theProfile->id;
+                }
+            }
+          }
+// ELIOTT - LEAVE SYSTEM          
+        
         $crit = array(
             'idWorkflow' => $type->idWorkflow, 
             'idStatusTo' => $this->idStatus, 
-            'idProfile' => getSessionUser ()->getProfile ( $this ));
+            'idProfile' => $idProfile);
         if (trim ( $old->idStatus ) != trim ( $this->idStatus )) {
           $crit ['idStatusFrom'] = $old->idStatus;
         }
@@ -4429,6 +4538,20 @@ abstract class SqlElement {
         $wsList = $ws->getSqlElementsFromCriteria ( $crit );
         $allowed = false;
         foreach ( $wsList as $ws ) {
+// MTY - LEAVE SYSTEM          
+             // For Leave System and Leave :
+            //   - Employee of the leave 
+            //   status that has not id = 1 and with setSubmittedLeave = 0 and setAcceptedLeave = 1 or setRejectedLeave = 1
+            // are not allowed
+          if (isLeavesSystemActiv() and $class=='Leave' and $ws->id <> 1) {
+            if (getSessionUser()->isEmployee==1 and $this->idEmployee == getSessionUser()->id) {
+                $theStatus = new Status($ws->id);
+                if  ($theStatus->setSubmittedLeave==0 and ($theStatus->setRejectedLeave==1 or $theStatus->setAcceptedLeave==1)) {
+                    $ws->allowed = false;
+                }
+            }
+          }
+// MTY - LEAVE SYSTEM          
           if ($ws->allowed) {
             $allowed = true;
             break;
@@ -4463,7 +4586,7 @@ abstract class SqlElement {
     $result = "";
     $objects = "";
     $right = securityGetAccessRightYesNo ( 'menu' . get_class ( $this ), 'delete', $this );
-    if (get_class ( $this ) == 'Alert' or get_class ( $this ) == 'Mail' or get_class ( $this ) == 'Audit' or get_class ( $this ) == 'AuditSummary' or get_class ( $this ) == 'ColumnSelector') {
+    if (get_class ( $this ) == 'Alert' or get_class ( $this ) == 'Mail' or get_class ( $this ) == 'MailToSend' or get_class ( $this ) == 'Audit' or get_class ( $this ) == 'AuditSummary' or get_class ( $this ) == 'ColumnSelector') {
       $right = 'YES';
     }
     if ($right != 'YES') {
@@ -4594,7 +4717,7 @@ abstract class SqlElement {
    * @return status of mail, if sent
    */
   public function sendMailIfMailable($newItem = false, $statusChange = false, $directStatusMail = null, $responsibleChange = false, $noteAdd = false, $attachmentAdd = false, $noteChange = false, $descriptionChange = false, $resultChange = false, $assignmentAdd = false, $assignmentChange = false, $anyChange = false,$affectationAdd = false , $affectationChange = false, $linkAdd = false, $linkDelete = false) {
-    $objectClass = get_class ( $this );
+    $objectClass = get_class($this);
     $idProject = ($objectClass == 'Project') ? $this->id : ((property_exists ( $this, 'idProject' )) ? $this->idProject : null);
     if ($objectClass == 'TicketSimple') {
       $objectClass = 'Ticket';
@@ -4674,11 +4797,11 @@ abstract class SqlElement {
       $statusMailList = $statusMail->getSqlElementsFromCriteria ( null, false, $crit );
       // $statusMailList contains all events compatible with current change.
       // Now, we must resctrict : if several lines exist for same event, we must limit to 1 only (depending on project and/or type 
-      $typeName='id'.get_class($this).'Type';
+      $typeName='id'.$objectClass.'Type';
       $proj=null;
       $type=null;
       if(property_exists($this, "idProject")){
-        $proj=(get_class($this)=='Project')?$this->id:$this->idProject;
+        $proj=($objectClass=='Project')?$this->id:$this->idProject;
       }
       if(property_exists($this, $typeName)){
         $type=$this->$typeName;
@@ -4857,7 +4980,7 @@ abstract class SqlElement {
         }
       }
       if ($statusMail->mailToSubscribers) {
-        $crit ="(refType='".get_class($this)."' and refId=".Sql::fmtId($this->id).")";
+        $crit ="(refType='".$objectClass."' and refId=".Sql::fmtId($this->id).")";
         if (property_exists($this, 'idProject')) {
           $crit.=" or (refType='Project' and refId=".Sql::fmtId($this->idProject).")";
         }
@@ -4954,7 +5077,7 @@ abstract class SqlElement {
       if ($groupMails=='YES') {
         $temp=new MailToSend();
         $temp->idUser=getCurrentUserId();
-        $temp->refType=get_class($this);
+        $temp->refType=$objectClass;
         $temp->refId=$this->id;
         $temp->idEmailTemplate=$emailTemplateTab[$j]->id;
         $temp->template=$emailTemplateTab[$j]->name;
@@ -5032,7 +5155,8 @@ abstract class SqlElement {
   public function parseMailMessage($message) {
     $arrayFrom = array();
     $arrayTo = array();
-    $objectClass = get_class ( $this );
+    $objectClass = get_class($this);
+    if ($objectClass == 'TicketSimple') { $objectClass = 'Ticket'; }
     $item = i18n ( $objectClass );
     if ($objectClass == 'Project') {
       $project = $this;
@@ -6231,7 +6355,10 @@ public function getMailDetailFromTemplate($templateToReplace, $lastChangeDate=nu
   }
 
   public static function isThumbableField($col) {
-    return ($col == 'idResource' or $col == 'idUser' or $col == 'idContact'  or $col=='idAccountable' or $col=='idResponsible') ? true : false;
+// MTY - LEAVE SYSTEM      
+//    return ($col == 'idResource' or $col == 'idUser' or $col == 'idContact'  or $col=='idAccountable' or $col=='idResponsible') ? true : false;
+    return ($col == 'idEmployee' or $col == 'idResource' or $col == 'idUser' or $col == 'idContact'  or $col=='idAccountable' or $col=='idResponsible') ? true : false;
+// MTY - LEAVE SYSTEM      
   }
 
   public static function isColorableField($col) {
@@ -6252,6 +6379,9 @@ public function getMailDetailFromTemplate($templateToReplace, $lastChangeDate=nu
     $planningMode = $newPlanningMode;
     $user = getSessionUser ();
     $class = get_class ( $this );
+// MTY - LEAVE SYSTEM    
+    if ($class=="Leave") { return $result;}
+// MTY - LEAVE SYSTEM    
     $testObj = $this;
     $testClass = $class;
     $typeFld = 'id' . $class . "Type";
@@ -6408,6 +6538,9 @@ public function getMailDetailFromTemplate($templateToReplace, $lastChangeDate=nu
 
   public function getExtraHiddenFields($newType = "", $newStatus = "", $newProfile = "", $forExport=false) {
     $class = get_class ( $this );
+// MTY - LEAVE SYSTEM    
+    if ($class=="Leave") { return array();}
+// MTY - LEAVE SYSTEM    
     $testObj = $this;
     $testClass = $class;
     $typeFld = 'id' . $class . "Type";
@@ -6434,6 +6567,7 @@ public function getMailDetailFromTemplate($templateToReplace, $lastChangeDate=nu
     $listType = array();
     $listStatus = array();
     $listProfile = array();
+    $listModule = array();
     if (property_exists ( $testObj, $typeFld ) and $newType != '*') {
       $type = ($newType) ? $newType : $testObj->$typeFld;
       if (isset ( $list ['Type'] ) and isset ( $list ['Type'] [$class] ) and isset ( $list ['Type'] [$class] [$type] )) {
@@ -6462,8 +6596,16 @@ public function getMailDetailFromTemplate($templateToReplace, $lastChangeDate=nu
     // if ($newStatus=='*' and $newProfile=='*') return $listType;
     // if ($newType=='*' and $newProfile=='*') return $listStatus;
     // if ($newType=='*' and $newStatus=='*') return $listProfile;
-    if ($forExport) return array_unique ( $listProfile );
-    return array_unique ( array_merge ( $listType, $listStatus, $listProfile ) );
+    $currentScript=basename($_SERVER['PHP_SELF'], '.php'); 
+    if (substr($currentScript,0,19)=="screenCustomization") {
+      $listModule=array();
+    } else {
+      $listModule=Module::getListOfFieldsToHide($class);
+    }
+    
+    //if ($forExport) return array_unique ( $listProfile);
+    if ($forExport) return array_merge ( $listProfile, $listModule );
+    return array_unique ( array_merge ( $listType, $listStatus, $listProfile, $listModule ) );
   }
 
   private static function getExtraRequiredFieldsFullList() {
@@ -6534,6 +6676,9 @@ public function getMailDetailFromTemplate($templateToReplace, $lastChangeDate=nu
 
   public function getExtraReadonlyFields($newType = "", $newStatus = "", $newProfile = "") {
     $class = get_class ( $this );
+// MTY - LEAVE SYSTEM    
+    if ($class=="Leave") { return array();}
+// MTY - LEAVE SYSTEM    
     $testObj = $this;
     $testClass = $class;
     $typeFld = 'id' . $class . "Type";
