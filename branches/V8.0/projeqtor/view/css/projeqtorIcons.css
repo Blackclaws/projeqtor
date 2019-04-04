@@ -68,6 +68,9 @@
 .iconButtonMark24 { background-image: url(images/iconMark.png);  background-repeat: no-repeat; width: 24px; height: 24px; background-size: 24px 24px;}
 .iconButtonMark16 { background-image: url(images/iconMark.png);  background-repeat: no-repeat; width: 16px; height: 16px; background-size: 16px 16px;}
 
+.iconModule16 { background-image: url(images/iconModule.png);  background-repeat: no-repeat; width: 16px; height: 16px; background-size: 16px 16px; }
+.iconModule22 { background-image: url(images/iconModule.png);  background-repeat: no-repeat; width: 22px; height: 22px; background-size: 22px 22px; }
+.iconModule32 { background-image: url(images/iconModule.png);  background-repeat: no-repeat; width: 32px; height: 32px; background-size: 32px 32px; }
 
 .iconCollapse {
   background-image: url(images/minus.gif);

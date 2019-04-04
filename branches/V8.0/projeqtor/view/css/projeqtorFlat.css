@@ -1025,6 +1025,10 @@ body .ProjeQtOrFlatBlue {
 .ProjeQtOrFlatBlue .iconMilestoneType22 { background-image: url(customIcons/blue/iconMilestoneType.png);  background-repeat: no-repeat; width: 22px; height: 22px; background-size: 22px 22px;}
 .ProjeQtOrFlatBlue .iconMilestoneType16 { background-image: url(customIcons/blue/iconMilestoneType.png);  background-repeat: no-repeat; width: 16px; height: 16px; background-size: 16px 16px; }
 
+.ProjeQtOrFlatBlue .iconModule16 { background-image: url(customIcons/blue/iconModule.png);  background-repeat: no-repeat; width: 16px; height: 16px; background-size: 16px 16px; }
+.ProjeQtOrFlatBlue .iconModule22 { background-image: url(customIcons/blue/iconModule.png);  background-repeat: no-repeat; width: 22px; height: 22px; background-size: 22px 22px; }
+.ProjeQtOrFlatBlue .iconModule32 { background-image: url(customIcons/blue/iconModule.png);  background-repeat: no-repeat; width: 32px; height: 32px; background-size: 32px 32px; }
+
 /* N */
 
 /* BEGIN - ADD BY TABARY - NOTIFICATION SYSTEM */
@@ -2400,6 +2404,10 @@ body .ProjeQtOrFlatRed {
 .ProjeQtOrFlatRed .iconMilestoneType32 { background-image: url(customIcons/red/iconMilestoneType.png);  background-repeat: no-repeat; width: 32px; height: 32px; background-size: 32px 32px;}
 .ProjeQtOrFlatRed .iconMilestoneType22 { background-image: url(customIcons/red/iconMilestoneType.png);  background-repeat: no-repeat; width: 22px; height: 22px; background-size: 22px 22px;}
 .ProjeQtOrFlatRed .iconMilestoneType16 { background-image: url(customIcons/red/iconMilestoneType.png);  background-repeat: no-repeat; width: 16px; height: 16px; background-size: 16px 16px; }
+
+.ProjeQtOrFlatRed .iconModule16 { background-image: url(customIcons/red/iconModule.png);  background-repeat: no-repeat; width: 16px; height: 16px; background-size: 16px 16px; }
+.ProjeQtOrFlatRed .iconModule22 { background-image: url(customIcons/red/iconModule.png);  background-repeat: no-repeat; width: 22px; height: 22px; background-size: 22px 22px; }
+.ProjeQtOrFlatRed .iconModule32 { background-image: url(customIcons/red/iconModule.png);  background-repeat: no-repeat; width: 32px; height: 32px; background-size: 32px 32px; }
 
 /* N */
 
@@ -3778,6 +3786,10 @@ body .ProjeQtOrFlatGreen {
 .ProjeQtOrFlatGreen .iconMilestoneType22 { background-image: url(customIcons/green/iconMilestoneType.png);  background-repeat: no-repeat; width: 22px; height: 22px; background-size: 22px 22px;}
 .ProjeQtOrFlatGreen .iconMilestoneType16 { background-image: url(customIcons/green/iconMilestoneType.png);  background-repeat: no-repeat; width: 16px; height: 16px; background-size: 16px 16px; }
 
+.ProjeQtOrFlatGreen .iconModule16 { background-image: url(customIcons/green/iconModule.png);  background-repeat: no-repeat; width: 16px; height: 16px; background-size: 16px 16px; }
+.ProjeQtOrFlatGreen .iconModule22 { background-image: url(customIcons/green/iconModule.png);  background-repeat: no-repeat; width: 22px; height: 22px; background-size: 22px 22px; }
+.ProjeQtOrFlatGreen .iconModule32 { background-image: url(customIcons/green/iconModule.png);  background-repeat: no-repeat; width: 32px; height: 32px; background-size: 32px 32px; }
+
 /* N */
 
 /* BEGIN - ADD BY TABARY - NOTIFICATION SYSTEM */
@@ -5153,6 +5165,10 @@ body .ProjeQtOrFlatGrey {
 .ProjeQtOrFlatGrey .iconMilestoneType32 { background-image: url(customIcons/grey/iconMilestoneType.png);  background-repeat: no-repeat; width: 32px; height: 32px; background-size: 32px 32px;}
 .ProjeQtOrFlatGrey .iconMilestoneType22 { background-image: url(customIcons/grey/iconMilestoneType.png);  background-repeat: no-repeat; width: 22px; height: 22px; background-size: 22px 22px;}
 .ProjeQtOrFlatGrey .iconMilestoneType16 { background-image: url(customIcons/grey/iconMilestoneType.png);  background-repeat: no-repeat; width: 16px; height: 16px; background-size: 16px 16px; }
+
+.ProjeQtOrFlatGrey .iconModule16 { background-image: url(customIcons/grey/iconModule.png);  background-repeat: no-repeat; width: 16px; height: 16px; background-size: 16px 16px; }
+.ProjeQtOrFlatGrey .iconModule22 { background-image: url(customIcons/grey/iconModule.png);  background-repeat: no-repeat; width: 22px; height: 22px; background-size: 22px 22px; }
+.ProjeQtOrFlatGrey .iconModule32 { background-image: url(customIcons/grey/iconModule.png);  background-repeat: no-repeat; width: 32px; height: 32px; background-size: 32px 32px; }
 
 /* N */
 

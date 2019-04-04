@@ -6,8 +6,8 @@
 -- ///////////////////////////////////////////////////////////
 
 INSERT INTO `${prefix}menu` (`id`, `name`, `idMenu`, `type`, `sortOrder`, `level`, `idle`, `menuClass`) VALUES
-(204, 'menuImputationValidation', 7, 'item', 112, Null, 0, 'Work'),
-(205, 'menuAutoSendReport', 7, 'item', 155, Null, 0, 'Work');
+(204, 'menuImputationValidation', 7, 'item', 118, Null, 0, 'Work'),
+(205, 'menuAutoSendReport', 7, 'item', 175, Null, 0, 'Work');
 
 INSERT INTO `${prefix}habilitation` (`idProfile`, `idMenu`, `allowAccess`) VALUES
 (1, 204, 1),
@@ -22,12 +22,11 @@ INSERT INTO `${prefix}habilitation` (`idProfile`, `idMenu`, `allowAccess`) VALUE
 (7, 205, 1);
 
 INSERT INTO `${prefix}accessright` (`idProfile`, `idMenu`, `idAccessProfile`) VALUES
-(1,204,8),
-(1,205,8);
+(1,204,8);
 
--- ///////////////////////////////////////////////////////////
-
+-- ============================================================
 -- LEAVE SYSTEM
+-- ============================================================
 
 -- to create the table leavessystemhabilitation
 CREATE TABLE `${prefix}leavessystemhabilitation` (
@@ -41,6 +40,7 @@ CREATE TABLE `${prefix}leavessystemhabilitation` (
   PRIMARY KEY (id)
 )
 ENGINE = InnoDB, DEFAULT CHARSET=utf8;
+CREATE INDEX leavessystemhabilitationMenu ON `${prefix}leavessystemhabilitation` (menuName);
 
 -- to create the table leavetype
 CREATE TABLE `${prefix}leavetype` (
@@ -80,6 +80,7 @@ CREATE TABLE `${prefix}employeeleaveearned` (
   `idle` INT(1) UNSIGNED DEFAULT 0,
   PRIMARY KEY (id)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 ;
+CREATE INDEX employeeleaveearnedEmployee ON `${prefix}employeeleaveearned` (idEmployee);
 
 -- to create the table employeeleaveperiod
 CREATE TABLE `${prefix}employeeleaveperiod` (
@@ -105,6 +106,7 @@ CREATE TABLE `${prefix}employeeleaveperiod` (
   `statusSetLeaveChange` INT(1) UNSIGNED NOT NULL DEFAULT 0,
   PRIMARY KEY (id)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 ;
+CREATE INDEX employeeleaveperiodEmployee ON `${prefix}employeeleaveperiod` (idEmployee);
 
 -- to create the table employmentContractType
 CREATE TABLE `${prefix}employmentcontracttype` (
@@ -176,6 +178,7 @@ CREATE TABLE `${prefix}employmentcontract` (
   `idle` INT(1) UNSIGNED NOT NULL DEFAULT 0,
   PRIMARY KEY (id)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 ;
+CREATE INDEX employmentcontractEmployee ON `${prefix}employmentcontract` (idEmployee);
 
 --to create the table employeesManaged
 CREATE TABLE `${prefix}employeesmanaged` (
@@ -187,7 +190,8 @@ CREATE TABLE `${prefix}employeesmanaged` (
   `idle` INT(1) UNSIGNED NOT NULL DEFAULT 0,
   PRIMARY KEY (id)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 ;
-
+CREATE INDEX employeesManagedEmployee ON `${prefix}employeesManaged` (idEmployee);
+CREATE INDEX employeesManagedEmployeeManager ON `${prefix}employeesManaged` (idEmployeeManager);
 
 --to create the table RulableForEmpContractType
 CREATE TABLE `${prefix}rulableforempcontracttype` (
@@ -208,21 +212,7 @@ CREATE TABLE `${prefix}calendarbankoffdays` (
     `easterDay` INT(2) DEFAULT NULL,
   PRIMARY KEY (id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
-CREATE TABLE `${prefix}cronautosendreport` (
-    `id` INT(12) NOT NULL AUTO_INCREMENT,
-    `name` VARCHAR(100) DEFAULT NULL,
-    `idReport` INT(12) DEFAULT NULL,
-    `idResource` INT(12) DEFAULT NULL,
-    `idReceiver` INT(12) DEFAULT NULL,
-		`idle` INT(1) DEFAULT NULL,
-		`sendFrequency` varchar(100) DEFAULT NULL,
-		`otherReceiver` varchar(500) DEFAULT NULL,
-		`cron` varchar(100) DEFAULT NULL,
-		`nextTime` varchar(100) DEFAULT NULL,
-		`reportParameter` varchar(500) DEFAULT NULL,
-  PRIMARY KEY (id)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+CREATE INDEX calendarbankoffdaysCalendar ON `${prefix}calendarbankoffdays` (idCalendarDefinition);
 
 -- to add the dayOfWeek columns to the table calendardefinition
 ALTER TABLE `${prefix}calendardefinition` ADD `dayOfWeek0` int(1) UNSIGNED DEFAULT 0;
@@ -256,59 +246,59 @@ ALTER TABLE `${prefix}status` ADD `setAcceptedLeave` INT(1) DEFAULT 0;
 ALTER TABLE `${prefix}status` ADD `setRejectedLeave` INT(1) DEFAULT 0;
 
 -- to update sortOrder of existing menus that are'nt Leave System menu
-UPDATE `${prefix}menu` set `sortOrder` = (`sortOrder`+20) where `isLeavesSystemMenu`=0;
+UPDATE `${prefix}menu` set `sortOrder` = (`sortOrder`+100) where `sortOrder`>=395;
 
 --to insert HumanResource in menu
 INSERT INTO `${prefix}menu` (`id`,`name`, `idMenu`, `type`, `sortOrder`, `level`, `idle`, `menuClass`, `isLeavesSystemMenu`) VALUES
-(208,'menuHumanResource', 0, 'menu', 0, null, 1, 'Human', 1);
+(208,'menuHumanResource', 0, 'menu', 400, null, 1, 'HumanResource', 1);
 
 --to insert LeaveCalendar in menu
 INSERT INTO `${prefix}menu` (`id`,`name`, `idMenu`, `type`, `sortOrder`, `level`, `idle`, `menuClass`, `isLeavesSystemMenu`) VALUES
-(209,'menuLeaveCalendar', 208, 'item', 1, null, 0, 'Leave', 1);
+(209,'menuLeaveCalendar', 208, 'item', 405, null, 0, 'HumanResource', 1);
 
 -- to insert the Leave in Menu
 INSERT INTO `${prefix}menu` (`id`,`name`, `idMenu`, `type`, `sortOrder`, `level`, `idle`, `menuClass`, `isLeavesSystemMenu`) VALUES
-(210, 'menuLeave', 208, 'object', 2, null, 0, 'Leave', 1);
+(210, 'menuLeave', 208, 'object', 410, null, 0, 'HumanResource', 1);
 
 --to insert employeeLeaveEarned in menu
 INSERT INTO `${prefix}menu` (`id`,`name`, `idMenu`, `type`, `sortOrder`, `level`, `idle`, `menuClass`, `isLeavesSystemMenu`) VALUES
-(211, 'menuEmployeeLeaveEarned', 208, 'object', 3, null, 0, 'EmployeeLeaveEarned', 1);
+(211, 'menuEmployeeLeaveEarned', 208, 'object', 420, null, 0, 'HumanResource', 1);
 
 -- to insert the Employee in Menu
 INSERT INTO `${prefix}menu` (`id`,`name`, `idMenu`, `type`, `sortOrder`, `level`, `idle`, `menuClass`, `isLeavesSystemMenu`) VALUES
-(212, 'menuEmployee', 208, 'object', 4, null, 0, 'Leave', 1);
+(212, 'menuEmployee', 208, 'object', 425, null, 0, 'HumanResource', 1);
 
 --to insert employmentContract in menu
 INSERT INTO `${prefix}menu` (`id`,`name`, `idMenu`, `type`, `sortOrder`, `level`, `idle`, `menuClass`, `isLeavesSystemMenu`) VALUES
-(213, 'menuEmploymentContract', 208, 'object', 5, null, 0, 'EmploymentContract', 1);
+(213, 'menuEmploymentContract', 208, 'object', 430, null, 0, 'HumanResource', 1);
 
 --to insert employeeManager in menu
 INSERT INTO `${prefix}menu` (`id`,`name`, `idMenu`, `type`, `sortOrder`, `level`, `idle`, `menuClass`, `isLeavesSystemMenu`) VALUES
-(214, 'menuEmployeeManager', 208, 'object', 6, null, 0, 'EmployeeManagement', 1);
+(214, 'menuEmployeeManager', 208, 'object', 435, null, 0, 'HumanResource', 1);
 
 --to insert dashboardEmployeeManager in menu
 INSERT INTO `${prefix}menu` (`id`,`name`, `idMenu`, `type`, `sortOrder`, `level`, `idle`, `menuClass`, `isLeavesSystemMenu`) VALUES
-(215, 'menuDashboardEmployeeManager', 208, 'item', 7, null, 0, 'EmployeeManagement', 1);
+(215, 'menuDashboardEmployeeManager', 208, 'item', 440, null, 0, 'HumanResource', 1);
 
 --to insert HumanResourceParameters in menu
 INSERT INTO `${prefix}menu` (`id`,`name`, `idMenu`, `type`, `sortOrder`, `level`, `idle`, `menuClass`, `isLeavesSystemMenu`) VALUES
-(216,'menuHumanResourceParameters', 208, 'menu', 8, null, 1, 'HumanParam', 1);
+(216,'menuHumanResourceParameters', 208, 'menu', 445, null, 1, 'HumanResource', 1);
 
 --to insert LeaveType in menu
 INSERT INTO `${prefix}menu` (`id`,`name`, `idMenu`, `type`, `sortOrder`, `level`, `idle`, `menuClass`, `isLeavesSystemMenu`) VALUES
-(217, 'menuLeaveType', 216, 'object', 9, null, 0, 'LeaveType', 1);
+(217, 'menuLeaveType', 216, 'object', 450, null, 0, 'HumanResource', 1);
 
 --to insert contractType in menu
 INSERT INTO `${prefix}menu` (`id`,`name`, `idMenu`, `type`, `sortOrder`, `level`, `idle`, `menuClass`, `isLeavesSystemMenu`) VALUES
-(218, 'menuEmploymentContractType', 216, 'object', 10, null, 0, 'EmploymentContractType', 1);
+(218, 'menuEmploymentContractType', 216, 'object', 455, null, 0, 'HumanResource', 1);
 
 --to insert employmentContractEndReason in menu
 INSERT INTO `${prefix}menu` (`id`,`name`, `idMenu`, `type`, `sortOrder`, `level`, `idle`, `menuClass`, `isLeavesSystemMenu`) VALUES
-(219, 'menuEmploymentContractEndReason', 216, 'object', 11, null, 0, 'EmploymentContract', 1);
+(219, 'menuEmploymentContractEndReason', 216, 'object', 460, null, 0, 'HumanResource', 1);
 
 --to insert leavesSystemHabilitation in menu
 INSERT INTO `${prefix}menu` (`id`,`name`, `idMenu`, `type`, `sortOrder`, `level`, `idle`, `menuClass`, `isLeavesSystemMenu`) VALUES
-(220, 'menuLeavesSystemHabilitation', 216, 'item', 12, null, 0, 'HumanParam', 1);
+(220, 'menuLeavesSystemHabilitation', 216, 'item', 465, null, 0, 'HumanResource', 1);
 
 -- to insert default LeavesSystemHabilitation
 INSERT INTO `${prefix}leavessystemhabilitation`(`id`, `menuName`, `viewAccess`, `readAccess`, `createAccess`, `updateAccess`, `deleteAccess`) VALUES
@@ -337,9 +327,6 @@ INSERT INTO `${prefix}parameter` (`parameterCode`,`parameterValue`) VALUES ('lea
 -- to insert the parameter typeExportXLSorODS in the table parameter
 INSERT INTO `${prefix}parameter` (`parameterCode`,`parameterValue`) VALUES ('typeExportXLSorODS', 'Excel');
 
-INSERT INTO `${prefix}parameter` (`parameterCode`,`parameterValue`) VALUES ('paramMailTitleReport', '[${dbName}] Report : ${report} - ${date}');
-INSERT INTO `${prefix}parameter` (`parameterCode`,`parameterValue`) VALUES ('paramMailBodyReport', 'Report : ${report} - ${date}');
-
 --to insert the rulable classes in rulableforempcontracttype
 INSERT INTO `${prefix}rulableforempcontracttype` (`rulableItem`,`name`,`idle`) VALUES
     ('Employee','Employee',0),
@@ -354,9 +341,228 @@ INSERT INTO `${prefix}notifiable` (`notifiableItem`,`name`,`idle`) VALUES
     ('Workflow','Workflow',0),
     ('Status', 'Status',0),
     ('LeaveType', 'Leave Type',0);
-		
+    
+-- ======================================================
+-- Shedule sending of report result by mail
+-- ======================================================
+CREATE TABLE `${prefix}cronautosendreport` (
+    `id` int(12) unsigned NOT NULL AUTO_INCREMENT,
+    `name` varchar(100) DEFAULT NULL,
+    `idReport` int(12) unsigned DEFAULT NULL,
+    `idResource` int(12) unsigned DEFAULT NULL,
+    `idReceiver` int(12) unsigned DEFAULT NULL,
+    `idle` int(1) DEFAULT NULL,
+    `sendFrequency` varchar(100) DEFAULT NULL,
+    `otherReceiver` varchar(500) DEFAULT NULL,
+    `cron` varchar(100) DEFAULT NULL,
+    `nextTime` varchar(100) DEFAULT NULL,
+    `reportParameter` varchar(500) DEFAULT NULL,
+  PRIMARY KEY (id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
---gautier #resourceCapacity
+-- ======================================================
+-- MODULES MANAGEMENT
+-- ======================================================
+
+CREATE TABLE `${prefix}module` (
+    `id` int(12) unsigned NOT NULL AUTO_INCREMENT,
+    `name` varchar(100) DEFAULT NULL,
+    `sortOrder` int(5) DEFAULT NULL,
+    `idModule` int(12) unsigned DEFAULT NULL,
+    `idle` int(1) DEFAULT 0,
+    `active` int(1) DEFAULT 1,
+  PRIMARY KEY (id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE `${prefix}modulemenu` (
+    `id` INT(12) NOT NULL AUTO_INCREMENT,
+    `idModule` int(12) unsigned DEFAULT NULL,
+    `idMenu` int(12) unsigned DEFAULT NULL,
+    `hidden` int(1) DEFAULT 1,
+    `active` int(1) DEFAULT 1,
+  PRIMARY KEY (id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+CREATE INDEX moduleMenuMenu ON `${prefix}moduleMenu` (idMenu);
+
+INSERT INTO `${prefix}module` (`id`,`name`,`sortOrder`,`idModule`,`idle`,`active`) VALUES
+ (1,'modulePlanning','100',null,0,1),
+ (2,'moduleTicket','200',null,0,1),
+ (3,'moduleImputation','300',null,0,1),
+ (4,'moduleRequirement','400',null,0,1),
+ (5,'moduleFinancial','500',null,0,1),
+ (6,'moduleFinancialExpense','510',5,0,1),
+ (7,'moduleFinancialIncome','520',5,0,1),
+ (8,'moduleRisk','600',null,0,1),
+ (9,'moduleMeeting','700',null,0,1),
+ (10,'moduleSteering','710',null,0,1),
+ (11,'moduleConfiguration','800',null,0,1),
+ (12,'moduleHR','900',null,0,1),
+ (13,'moduleNotification','1600',null,0,1),
+ (14,'moduleOrganization','1100',null,0,1),
+ (15,'moduleDocument','1000',null,0,1),
+ (16,'moduleStream','1500',null,0,1);
+ 
+INSERT INTO `${prefix}modulemenu` (`id`,`idModule`,`idMenu`,`hidden`,`active`) VALUES
+ (1,2,150,0,1),
+ (2,14,158,0,1),
+ (3,16,177,0,1),
+ (4,15,102,0,1),
+ (5,2,22,0,1),
+ (6,2,118,0,1),
+ (7,1,25,0,1),
+ (8,1,26,0,1),
+ (9,9,4,0,1),
+ (10,8,4,0,1),
+ (11,8,192,0,1),
+ (12,10,192,0,1),
+ (13,2,192,0,1),
+ (14,3,8,0,1),
+ (15,3,203,0,1),
+ (15,1,9,0,1),
+ (16,1,196,0,1),
+ (17,1,123,0,1),
+ (18,1,106,0,1),
+ (19,1,133,0,1),
+ (20,4,189,0,1),
+ (21,4,111,0,1),
+ (22,4,112,0,1),
+ (23,4,113,0,1),
+ (24,6,197,0,1),
+ (25,6,153,0,1),
+ (26,6,154,0,1),
+ (27,6,191,0,1),
+ (28,6,195,0,1),
+ (29,6,194,0,1),
+ (30,6,201,0,1),
+ (31,6,75,0,1),
+ (32,6,76,0,1),
+ (33,7,131,0,1),
+ (34,7,125,0,1),
+ (35,7,96,0,1),
+ (36,7,97,0,1),
+ (37,7,78,0,1),
+ (38,7,94,0,1),
+ (39,7,146,0,1),
+ (40,7,174,0,1),
+ (41,8,3,0,1),
+ (42,8,119,0,1),
+ (43,8,5,0,1),
+ (44,9,62,0,1),
+ (45,9,124,0,1),
+ (46,10,63,0,1),
+ (47,10,64,0,1),
+ (48,10,168,0,1),
+ (49,10,167,0,1),
+ (50,10,176,0,1),
+ (51,11,86,0,1),
+ (52,11,87,0,1),
+ (53,11,141,0,1),
+ (54,11,142,0,1),
+ (55,11,179,0,1),
+ (56,13,185,0,1),
+ (57,2,104,0,1),
+ (58,6,148,0,1),
+ (59,7,95,0,1),
+ (60,15,103,0,1),
+ (61,2,89,0,1),
+ (62,2,182,0,1),
+ (63,1,162,0,1),
+ (64,13,186,0,1),
+ (65,2,149,1,1),
+ (66,8,39,1,1),
+ (67,7,39,1,1),
+ (68,8,40,1,1),
+ (69,4,40,1,1),
+ (70,2,40,1,1),
+ (71,8,38,1,1),
+ (72,4,42,1,1),
+ (73,2,42,1,1),
+ (74,8,41,1,1),
+ (75,9,41,1,1),
+ (76,4,41,1,1),
+ (77,2,41,1,1),
+ (78,4,114,1,1),
+ (79,4,115,1,1),
+ (80,9,117,1,1),
+ (81,8,117,1,1),
+ (82,6,137,1,1),
+ (83,7,137,1,1),
+ (84,6,138,1,1),
+ (85,7,138,1,1),
+ (86,6,139,1,1),
+ (87,7,139,1,1),
+ (88,6,140,1,1),
+ (89,7,140,1,1),
+ (90,6,199,1,1),
+ (91,6,200,1,1),
+ (92,6,157,1,1),
+ (93,10,171,1,1),
+ (94,10,163,1,1),
+ (95,10,172,1,1),
+ (96,10,164,1,1),
+ (97,11,178,1,1),
+ (98,14,159,1,1),
+ (99,2,53,1,1),
+ (100,1,55,1,1),
+ (101,1,56,1,1),
+ (102,6,198,1,1),
+ (103,6,155,1,1),
+ (104,6,156,1,1),
+ (105,6,190,1,1),
+ (106,6,193,1,1),
+ (107,6,202,1,1),
+ (108,6,80,1,1),
+ (109,6,81,1,1),
+ (110,6,84,1,1),
+ (111,7,132,1,1),
+ (112,7,126,1,1),
+ (113,7,100,1,1),
+ (114,7,83,1,1),
+ (115,7,175,1,1),
+ (116,8,45,1,1),
+ (117,7,82,1,1),
+ (118,8,120,1,1),
+ (119,9,60,1,1),
+ (120,8,60,1,1),
+ (121,8,46,1,1),
+ (122,9,65,1,1),
+ (123,10,66,1,1),
+ (124,10,67,1,1),
+ (125,15,101,1,1),
+ (126,2,105,1,1),
+ (127,4,107,1,1),
+ (128,4,108,1,1),
+ (129,4,109,1,1),
+ (130,6,147,1,1),
+ (131,11,144,1,1),
+ (132,11,145,1,1),
+ (133,11,160,1,1),
+ (134,11,161,1,1),
+ (135,7,166,1,1),
+ (136,10,165,1,1),
+ (137,10,183,1,1);
+ 
+ 
+INSERT INTO `${prefix}menu` (`id`, `name`, `idMenu`, `type`, `sortOrder`, `level`, `idle`, `menuClass`) VALUES
+(221, 'menuModule', 37  , 'item', 1225, Null, 0, 'Admin');
+
+INSERT INTO `${prefix}habilitation` (`idProfile`, `idMenu`, `allowAccess`) VALUES
+(1, 221, 1);
+
+-- ==============================================================================
+-- Mailable 
+-- ==============================================================================
+INSERT INTO `${prefix}mailable` (`id`,`name`, `idle`) VALUES 
+(36,'ProviderOrder', '0'),
+(37,'ProviderBill', '0'),
+(38,'ProviderPayment', '0'),
+(39,'Budget', '0');
+
+		
+-- ==============================================================================
+-- gautier #resourceCapacity 
+-- ==============================================================================
+
 CREATE TABLE `${prefix}resourcecapacity` (
   `id` INT(12) UNSIGNED NOT NULL AUTO_INCREMENT,
   `idResource` INT(12) NOT NULL,

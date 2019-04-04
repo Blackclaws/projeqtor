@@ -180,6 +180,8 @@ class Assignment extends SqlElement {
     if ($this->refType=='PeriodicMeeting') {
     	$this->idle=1;
     	$this->leftWork=0;
+    	$this->realWork=0;
+    	$this->plannedWork=0;
     }
     
     if (! $this->idProject) {
@@ -447,6 +449,13 @@ class Assignment extends SqlElement {
     	$critProj=array('idProjectType'=>$type->id, 'idle'=>'0');
     	$lstProj=$proj->getSqlElementsFromCriteria($critProj,false,null,null,false,true);
     	foreach ($lstProj as $proj) {
+// MTY - LEAVE SYSTEM
+            if (isLeavesSystemActiv()) {
+                // If the project is the Leave Project and is not visible ==> not taken into account
+                if (Project::isTheLeaveProject($proj->id) && !Project::isProjectLeaveVisible()) {continue;}
+            }
+// MTY - LEAVE SYSTEM
+            
     		$acti=new Activity();
     	  $critActi=array('idProject'=>$proj->id, 'idle'=>'0');
     	  $lstActi=$acti->getSqlElementsFromCriteria($critActi,false,null,null,false,true);

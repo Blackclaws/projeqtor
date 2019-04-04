@@ -148,25 +148,42 @@ class ImputationValidation{
 	  	  $noData = false;
   			$firstDay = date('Y-m-d', firstDayofWeek(substr($week->periodValue, 4, 2),substr($week->periodValue, 0, 4)));
   			$lastDay = lastDayofWeek(substr($week->periodValue, 4, 2),substr($week->periodValue, 0, 4));
-  			$excepted = round(countDayDiffDates($firstDay, $lastDay, $idCalendar)*($res->capacity),2);
   			
+  			$firstWeekDay = $firstDay;
+  			$lastWeekDay = $lastDay;
+  			$excepted = 0;
+  			$weekDayArray =array();
+  			while ($firstWeekDay<=$lastWeekDay){
+  			  if(isOpenDay($firstWeekDay)){
+  			    $excepted += round($res->getCapacityPeriod($firstWeekDay),2);
+  			    $weekDayArray[$week->idResource][$week->periodValue][$firstWeekDay]=round($res->getCapacityPeriod($firstWeekDay),2);
+  			  }
+  				$firstWeekDay=addDaysToDate($firstWeekDay, 1);
+  			}
   			$work = new Work();
   			$crit = array('idResource'=>$idResource, 'week'=>$week->periodValue);
   			$critWorkList = $work->getSqlElementsFromCriteria($crit);
   			$inputWork = 0;
   			$inputAdm = 0;
   			$outCapacity = false;
+  			
   			if($critWorkList){
-  				foreach ($critWorkList as $critWork){
-  				  if($critWork->work != $res->capacity){
-  				    $outCapacity = true;
-  				  }
-  					if (isset($listAdmProj[$critWork->idProject])) {
-  						$inputAdm += $critWork->work;
-  					}else{
-  						$inputWork += $critWork->work;
-  					}
-  				}
+  			  foreach ($weekDayArray[$res->id][$week->periodValue] as $workDay=>$capacityValue){
+  			    $workByDay = 0;
+  			    foreach ($critWorkList as $critWork){
+  			      if($critWork->workDate == $workDay){
+  			    		$workByDay += $critWork->work;
+    			    	if (isset($listAdmProj[$critWork->idProject])) {
+    			    		$inputAdm += $critWork->work;
+    			    	}else{
+    			    		$inputWork += $critWork->work;
+    			    	}
+  			      }
+  			    }
+  			    if($workByDay != $capacityValue){
+  			    	$outCapacity = true;
+  			    }
+  			  }
   			}
   			$inputTotal = $inputWork + $inputAdm;
 			  $excepted = Work::displayImputationWithUnit($excepted);

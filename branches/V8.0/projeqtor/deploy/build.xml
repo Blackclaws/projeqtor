@@ -95,6 +95,9 @@
     <copy todir="${deploy.dir}/external/mailParser">
        <fileset dir="${src.dir}/external/mailParser"/>
     </copy>
+    <copy todir="${deploy.dir}/external/PHPOffice">
+       <fileset dir="${src.dir}/external/PHPOffice"/>
+    </copy>
   </target>
   
   <target name="copyFiles">
@@ -337,6 +340,8 @@
         <exclude name="form/uploader/*.js"/>
         <exclude name="form/uploader/plugin/*.js"/>
         <exclude name="grid/*.js"/>
+        <exclude name="calendar/*.js"/>
+        <exclude name="calendar/*.css"/>
         <exclude name="mobile/*.*"/>
         <exclude name="mobile/**/*"/>
         <exclude name="fx/*.js"/>
