@@ -402,30 +402,18 @@ class ImapMailbox {
 
 }
 
-require_once ('_securityCheck.php');
-
 class IncomingMail {
 
   public $id;
-
   public $date;
-
   public $subject;
-
   public $fromName;
-
   public $fromAddress;
-
   public $to=array();
-
   public $toString;
-
   public $cc=array();
-
   public $replyTo=array();
-
   public $textPlain;
-
   public $textHtml;
 
   /**
@@ -465,19 +453,13 @@ class IncomingMail {
 
 }
 
-require_once ('_securityCheck.php');
-
 class IncomingMailAttachment {
 
   public $id;
-
   public $name;
-
   public $filePath;
 
 }
-
-require_once ('_securityCheck.php');
 
 class ImapMailboxException extends Exception {
 

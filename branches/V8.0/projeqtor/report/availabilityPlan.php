@@ -88,7 +88,6 @@ foreach($affLst as $aff){
 	}
 	asort($resources);
 }
-
 $where="1=1"; // Ticket #2532 : must show availability whatever the project 
 $where.=($periodType=='week')?" and week='" . $periodValue . "'":'';
 $where.=($periodType=='month')?" and month='" . $periodValue . "'":'';
@@ -105,7 +104,6 @@ foreach ($resources as $id=>$name) {
 	$capacity[$id]=SqlList::getFieldFromId('ResourceAll', $id, 'capacity');
   $result[$id]=array();
 }
-
 $real=array();
 foreach ($lstWork as $work) {
   if (! array_key_exists($work->idResource,$resources)) {
@@ -217,14 +215,29 @@ echo '<td class="reportTableHeader" style="width:5%">' . i18n('sum') . '</td>';
 echo '</tr>';
 
 foreach ($resources as $idR=>$nameR) {
-	if ($paramTeam) {
+	//if ($paramTeam) {
     $res=new Resource($idR);
+  //}
+  $maxCapa = 0;
+  for ($i=1; $i<=$nbDays;$i++) {
+    $day=$startDate+$i-1;
+    $weekDate = substr($day, 0,4).'-'.substr($day, 4, -2).'-'.substr($day, 6);
+  	if($res->getCapacityPeriod($weekDate) > $maxCapa){
+  		$maxCapa = round($res->getCapacityPeriod($weekDate), 2);
+  	}
   }
   if (!$paramTeam or $res->idTeam==$paramTeam) {
 		$sum=0;
 	  echo '<tr height="20px">';
 	  echo '<td class="reportTableLineHeader" style="width:20%">' . $nameR . '</td>';
-	  echo '<td class="reportTableLineHeader" style="width:5%;text-align:center;">' . ($capacity[$idR]*1) . '</td>';
+	  echo '<td class="reportTableLineHeader" style="width:5%;text-align:center;">';
+	  if($capacity[$idR]*1 != $maxCapa){
+  	  echo '<table width="100%"><tr><td style="width:50%;text-align:right;padding-right:10px;">'.($capacity[$idR]*1).'</td>';
+  	  echo '<td style="width:50%;text-align:left;font-style:italic;">max('.$maxCapa.')</td></tr></table>';
+	  }else{
+	    echo ($capacity[$idR]*1);
+	  }
+	  echo '</td>';
 	  for ($i=1; $i<=$nbDays;$i++) {
 	    $day=$startDate+$i-1;
 	    $style="";
@@ -233,10 +246,11 @@ foreach ($resources as $idR=>$nameR) {
 	    if (isOffDay(substr($day,0,4) . "-" . substr($day,4,2) . "-" . substr($day,6,2), $resourceCalendar[$idR])) {	
 	      $style=$weekendStyle;
 	    } else {
+	      $weekDate = substr($day, 0,4).'-'.substr($day, 4, -2).'-'.substr($day, 6);
 	      if (array_key_exists($day,$result[$idR])) {
-	        $val=$capacity[$idR]-$result[$idR][$day];
+	        $val=$res->getCapacityPeriod($weekDate)-$result[$idR][$day];
 	      } else {
-	        $val=$capacity[$idR]*1;
+	        $val=$res->getCapacityPeriod($weekDate);
 	      }
 	      $style=' style="text-align:center;';
 	      //if (! array_key_exists($day,$real) and array_key_exists($day,$result[$idR])) {

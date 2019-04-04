@@ -38,6 +38,9 @@ class Cron {
 // BEGIN - ADD BY TABARY - NOTIFICATION SYSTEM
   private static $checkNotifications;
 // END - ADD BY TABARY - NOTIFICATION SYSTEM
+// MTY - LEAVE SYSTEM
+  private static $checkLeavesEarned;
+// MTY - LEAVE SYSTEM
   private static $checkImport;
   private static $checkEmails;
   private static $checkMailGroup;
@@ -118,6 +121,9 @@ class Cron {
 // BEGIN - ADD BY TABARY - NOTIFICATION SYSTEM            
                  .(isNotificationSystemActiv()?'|CheckNotifications='.self::getCheckNotifications():'')
 // END - ADD BY TABARY - NOTIFICATION SYSTEM
+// MTY - LEAVE SYSTEM            
+                 .(isLeavesSystemActiv()?'|CheckLeavesEarned='.self::getCheckLeavesEarned():'')
+// MTY - LEAVE SYSTEM
            );
     fclose($handle);
   }
@@ -161,6 +167,23 @@ class Cron {
   }
 // END - ADD BY TABARY - NOTIFICATION SYSTEM
 
+// MTY - LEAVE SYSTEM
+  public static function getCheckLeavesEarned() {
+    self::init();
+    if (!isLeavesSystemActiv()) {
+        self::$checkLeavesEarned=-1;
+        return self::$checkLeavesEarned;        
+    }  
+    if (self::$checkLeavesEarned) {
+      return self::$checkLeavesEarned;
+    }
+    $checkLeavesEarned=3600*24; 
+    self::$checkLeavesEarned=$checkLeavesEarned;
+    return self::$checkLeavesEarned;
+  }
+// MTY - LEAVE SYSTEM
+  
+  
   public static function getCheckImport() {
   	self::init();
     if (self::$checkImport) {
@@ -353,6 +376,12 @@ class Cron {
         $cronCheckNotifications=self::getCheckNotifications();
     }
 // END - ADD BY TABARY - NOTIFICATION SYSTEM
+// MTY - LEAVE SYSTEM
+    $cronCheckLeavesEarned=-1;
+    if (isLeavesSystemActiv()) {
+        $cronCheckLeavesEarned=self::getCheckLeavesEarned();
+    }
+// MTY - LEAVE SYSTEM
     $cronCheckDates=self::getCheckDates();
     $cronCheckImport=self::getCheckImport();
     $cronCheckEmails=self::getCheckEmails();
@@ -471,6 +500,21 @@ class Cron {
       }
 // END - ADD BY TABARY - NOTIFICATION SYSTEM
 		
+// MTY - LEAVE SYSTEM
+      // CheckLeavesEarned : automatically calculed quantity and left for leaves earned
+      if (isLeavesSystemActiv() and $cronCheckLeavesEarned>0 ) {
+        $cronCheckLeavesEarned-=$cronSleepTime;
+        if ($cronCheckLeavesEarned<=0) {
+          try { 
+            self::checkLeavesEarned();
+          } catch (Exception $e) {
+            traceLog("Cron::run() - Error on checkLeavesEarned()");
+          }
+          $cronCheckLeavesEarned=Cron::getCheckLeavesEarned();
+        }
+      }
+// MTY - LEAVE SYSTEM
+      
       // Sleep to next check
       sleep($cronSleepTime);
     } // While 1
@@ -509,7 +553,43 @@ class Cron {
     }
   }// END - ADD BY TABARY - NOTIFICATION SYSTEM
     
-  public static function checkDates() {
+// MTY - LEAVE SYSTEM
+  public static function checkLeavesEarned() {      
+//scriptLog('Cron::checkLeavesEarned()');
+    global $globalCronMode;
+    if (!isLeavesSystemActiv()) {exit;}
+    self::init();
+    $globalCronMode=true;  
+    
+    // Check for all employees
+    $employee = new Employee();
+    $crit = array("idle" => '0');
+    $employeesList = $employee->getSqlElementsFromCriteria($crit);
+    foreach($employeesList as $emp) {
+        $employees[$emp->id] = $emp->name;
+    }
+    if (!empty($employees)) {        
+        foreach ($employees as $key=>$emp) {
+            $res = checkLeaveEarnedEnd($key);
+            if ($res=='OK') { 
+                $res = checkValidity($key);
+                if ($res=='OK') { 
+                    $res = checkEarnedPeriod($key);
+                    if ($res!='OK') {
+                        $msg = "ERROR - Cron - $res";                        
+                    }
+                } else {
+                $msg = "ERROR - Cron - $res";                    
+                }
+            } else {
+                $msg = "ERROR - Cron - $res";
+            }
+        }
+    }
+  }
+// MTY - LEAVE SYSTEM
+  
+    public static function checkDates() {
 //scriptLog('Cron::checkDates()');
   	global $globalCronMode;
     self::init();
@@ -990,4 +1070,5 @@ foreach (Cron::$listCronExecution as $key=>$cronExecution){
   }
   if ($cronExecution->fileExecuted) require_once $cronExecution->fileExecuted;
 }
+
 ?>

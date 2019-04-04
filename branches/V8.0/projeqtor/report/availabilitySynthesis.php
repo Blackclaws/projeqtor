@@ -175,9 +175,10 @@ for($day=$start;$day<=$end;$day=addDaysToDate($day, 1)) {
 		$resultPeriodFmt[$period]=array();
 	}
 	foreach ($resources as $idR=>$nameR) {
+	  $res = new Resource($idR, true);
 		$capaDay=0;
 		if (! isOffDay($day, $resourceCalendar[$idR])) {
-			$capaDay=$capacity[$idR];
+			$capaDay=$res->getCapacityPeriod($day);
 		}
 		if (! isset($resultPeriod[$period][$idR])) {
 	    $resultPeriod[$period][$idR]=0;
@@ -228,16 +229,28 @@ foreach($resultPeriod as $idP=>$period) {
 }
 echo '<td class="reportTableHeader" style="width:5%">' . i18n('sum') . '</td>';
 echo '</tr>';
-
 foreach ($resources as $idR=>$nameR) {
-	if ($paramTeam) {
+	//if ($paramTeam) {
     $res=new Resource($idR);
+  //}
+  $maxCapa = 0;
+  for($day=$start;$day<=$end;$day=addDaysToDate($day, 1)) {
+    if($res->getCapacityPeriod($day) > $maxCapa){
+      $maxCapa = round($res->getCapacityPeriod($day), 2);
+    }
   }
   if (!$paramTeam or $res->idTeam==$paramTeam) {
 		$sum=0;
 	  echo '<tr height="20px">';
 	  echo '<td class="reportTableLineHeader" style="width:20%">' . $nameR . '</td>';
-	  echo '<td class="reportTableLineHeader" style="width:5%;text-align:center;">' . ($capacity[$idR]*1) . '</td>';
+	  echo '<td class="reportTableLineHeader" style="width:5%;text-align:center;">';
+	  if($capacity[$idR]*1 != $maxCapa){
+  	  echo '<table width="100%"><tr><td style="width:50%;text-align:right;padding-right:10px;">'.($capacity[$idR]*1).'</td>';
+  	  echo '<td style="width:50%;text-align:left;font-style:italic;">max('.$maxCapa.')</td></tr></table>';
+	  }else{
+	    echo ($capacity[$idR]*1);
+	  }
+	  echo '</td>';
 	  foreach($resultPeriod as $idP=>$period) {	    
 	    $style="";
 	    $italic=false;

@@ -62,6 +62,8 @@ class ResourceTeamMain extends ResourceMain {
 //	      "idRole"=>"hidden" ,
 	      "idProfile"=>"hidden" ,
 	      "_sec_Miscellaneous"=>"hidden" ,
+	      "_sec_resourceCapacity"=>"hidden",
+        "_spe_resourceCapacity"=>"hidden",
 	      "dontReceiveTeamMails"=>"hidden"
 	  );
 	  

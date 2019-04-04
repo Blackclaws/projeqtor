@@ -1,4 +1,4 @@
- <?php
+<?php
 /*** COPYRIGHT NOTICE *********************************************************
  *
  * Copyright 2009-2017 ProjeQtOr - Pascal BERNARD - support@projeqtor.org
@@ -59,6 +59,10 @@ Security::checkValidClass($objClass, 'objectClass');
 if (isset($_REQUEST['noselect'])) {
   $noselect=true;
 }
+// MTY - LEAVE SYSTEM
+$canReadLeave=true;
+// MTY - LEAVE SYSTEM
+
 if (!isset($noselect)) {
   $noselect=false;
 }
@@ -85,7 +89,16 @@ if ($noselect) {
   }
   $obj=new $objClass($objId);
   $profile=getSessionUser()->getProfile($obj);
-  // gautier
+// MTY - LEAVE SYSTEM
+  if (isLeavesSystemActiv()) {
+    if (property_exists($obj, 'idProject')) {
+        if (Project::isTheLeaveProject($obj->idProject) && !Project::isProjectLeaveVisible()) {
+          $canReadLeave=false;
+        }
+    }
+  }
+// MTY - LEAVE SYSTEM  
+  //gautier   
   if ($objClass=='Resource' and $obj->isResourceTeam) {
     $objClass='ResourceTeam';
     $obj=new ResourceTeam($objId);
@@ -280,7 +293,10 @@ if (array_key_exists('refresh', $_REQUEST)) {
   }
   if ($noselect) {
     echo $noData;
-  } else if (!$canRead) {
+// MTY - LEAVE SYSTEM    
+//  } else if (!$canRead) {
+  } else if (!$canRead || !$canReadLeave) {
+// MTY - LEAVE SYSTEM    
     echo htmlGetNoAccessMessage($objClass);
     echo "</div></form>";
     exit();
@@ -2045,18 +2061,24 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false, $pare
             }
             // END ADD BY Marc TABARY - 2017-02-22 - ORGANIZATION PARENT
             
-            // ADD BY Marc TABARY - 2017-02-22 - RESOURCE VISIBILITY (list teamOrga)
-            // Special case for idResource, idLocker, idAuthor, idResponsive
+            // Special case for idResource, idLocker, idAuthor, idResponsive, idAccountable, idEmployee
             // Don't see or access to the resource if is not visible for the user connected (respect of HabilitationOther - teamOrga)
-            $arrayIdSpecial=array('idResource', 'idLocker', 'idAuthor', 'idResponsible', 'idAccountable');
+            // Add idEmployee for LEAVE SYSTEM
+            $arrayIdSpecial=array('idResource', 'idLocker', 'idAuthor', 'idResponsible', 'idAccountable', 'idEmployee');
             if (in_array($col, $arrayIdSpecial)) {
-              $idList=getUserVisibleResourcesList(true, "List");
+// MTY - LEAVE SYSTEM
+              if ($col=="idEmployee") {
+              // Limits list to Resource with isEmployee = 1  
+                $idList = getUserVisibleResourcesList(true, "List",'', false, true);
+              } else {
+                $idList=getUserVisibleResourcesList(true, "List");
+              }
+// MTY - LEAVE SYSTEM                
               if ($val and !array_key_exists($val, $idList)) {
                 $displayComboButtonCol=false;
                 $displayDirectAccessButton=false;
               }
             }
-            // END ADD BY Marc TABARY - 2017-02-22 - RESOURCE VISIBILITY (list teamOrga)
           } else {
             $displayComboButtonCol=false;
             $displayDirectAccessButton=false;
@@ -2120,6 +2142,15 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false, $pare
             }
           }
         }
+        
+// MTY - LEAVE SYSTEM
+        // Restrict list to Employee (isEmployee=1) if col is idEmployee
+        if ($col=="idEmployee") {
+            $critFld="isEmployee";
+            $critVal="1";
+        } 
+// MTY - LEAVE SYSTEM
+        
         if ($col=='idComponent' and isset($obj->idProduct)) {
           $critFld='idProduct';
           $critVal=$obj->idProduct;
@@ -2239,7 +2270,8 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false, $pare
           }
         }
         $showExtraButton=false;
-        if ($col=='idStatus' or $col=='idResource' or $col=='idAccountable' or $col=='idResponsible') {
+// MTY - Forgot readonly in condition        
+        if (($col=='idStatus' or $col=='idResource' or $col=='idAccountable' or $col=='idResponsible') and !$readOnly) {
           if ((($col=='idStatus') or (($col=='idResource' or $col=='idAccountable' or $col=='idResponsible') and $user->isResource and $user->id!=$val and $obj->id and $classObj!='Affectation')) and $classObj!='Document' and $classObj!='StatusMail' and $classObj!="TicketSimple" and $canUpdate) {
             $showExtraButton=true;
             $fieldWidth=round($fieldWidth/2)-5;
@@ -2247,7 +2279,7 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false, $pare
         }
         
         // BEGIN - ADD BY TABARY - NOTIFICATION SYSTEM
-        if ($col=='idStatusNotification' and $classObj!='StatusNotification') {
+        if ($col=='idStatusNotification' and $classObj!='StatusNotification'  and !$readOnly) {
           $showExtraButton=true;
           $fieldWidth=round($fieldWidth/2)-5;
         }
@@ -2284,7 +2316,7 @@ function drawTableFromObject($obj, $included=false, $parentReadOnly=false, $pare
         }
         echo $colScript;
         echo '</select>';
-        if ($displayDirectAccessButton) {
+        if ($displayDirectAccessButton or $displayComboButtonCol) {
           echo '<div id="'.$col.'ButtonGoto" ';
           echo ' title="'.i18n('showDirectAccess').'" style="float:right;margin-right:3px;'.$specificStyleWithoutCustom.'"';
           echo ' class="roundedButton  generalColClass '.$col.'Class">';
@@ -3324,14 +3356,25 @@ function drawObjectLinkedByIdToObject($obj, $objLinkedByIdObject='', $refresh=fa
   // Get the visible list of linked Object
   $listVisibleLinkedObj=getUserVisibleObjectsList($objLinkedByIdObject);
   
-  $canUpdate=securityGetAccessRightYesNo('menu'.get_class($obj), 'update', $obj)=="YES";
+//MTY - LEAVE SYSTEM 
+  if ($obj->idle==1) {
+    $canUpdate=false;
+  } else {
+    $canUpdate = true;
+  }      
+  if ($canUpdate) {
+    $canUpdate=securityGetAccessRightYesNo('menu'.get_class($obj), 'update', $obj)=="YES";
+  }    
   if ($canUpdate) {
     $canUpdate=securityGetAccessRightYesNo('menu'.$objLinkedByIdObject, 'update', $obj)=="YES";
   }
-  
-  if ($obj->idle==1) {
-    $canUpdate=false;
-  }
+  if ($canUpdate) {
+    // MTY - Test if attribute of the LinkedByIdObject is readonly => If it's , can't update  
+    $theObjClass = get_class($obj);
+    if (strpos($obj->getFieldAttributes($theClassName),"readonly")!==false) {
+        $canUpdate = false;
+    }
+  }  
   if (isset($obj->$theClassName)) {
     $objects=$obj->$theClassName;
   } else {
@@ -5549,7 +5592,7 @@ function drawResourceCostFromObject($list, $obj, $refresh=false) {
   foreach ($list as $rcost) {
     echo '<tr>';
     if (!$print) {
-      echo '<td class="assignData" style="text-align:center;">';
+      echo '<td class="assignData" style="text-align:center;white-space:nowrap">';
       if (!$rcost->endDate and $canUpdate and !$print) {
         echo '  <a onClick="editResourceCost('."'".htmlEncode($rcost->id)."'".",'".htmlEncode($rcost->idResource)."'".",'".htmlEncode($rcost->idRole)."'".",'".($rcost->cost*100)."'".",'".htmlEncode($rcost->startDate)."'".",'".htmlEncode($rcost->endDate)."'".');" '.'title="'.i18n('editResourceCost').'" > '.formatSmallButton('Edit').'</a>';
       }
@@ -5865,78 +5908,78 @@ function drawAffectationsResourceTeamFromObject($list, $obj, $type, $refresh=fal
 
 //gautier #ResourceCapacity
 function drawResourceCapacity($list, $obj, $type, $refresh=false) {
-global $cr, $print, $user, $browserLocale, $comboDetail;
-  $pluginObjectClass='Affectation';
-  //$tableObject=$list;
-  $lstPluginEvt=Plugin::getEventScripts('list', $pluginObjectClass);
-  foreach ($lstPluginEvt as $script) {
-    require $script; // execute code
-  }
- 
-  $canDelete=securityGetAccessRightYesNo('menu'.get_class($obj), 'delete', $obj)=="YES";
-  $canUpdate=securityGetAccessRightYesNo('menu'.get_class($obj), 'update', $obj)=="YES";
-  $canCreate=securityGetAccessRightYesNo('menu'.get_class($obj), 'create', $obj)=="YES";
-  if (!(securityGetAccessRightYesNo('menu'.get_class($obj), 'update', $obj)=="YES")) {
-    $canCreate=false;
-    $canUpdate=false;
-    $canDelete=false;
-  }
-  if ($obj->idle==1) {
-    $canUpdate=false;
-    $canCreate=false;
-    $canDelete=false;
-  }
-  if (get_class($obj)=='GlobalView') {
-    $canUpdate=false;
-    $canCreate=false;
-    $canDelete=false;
-  }
-  
-  echo '<table style="width:100%">';
-  echo '<tr><td colspan=2 style="width:100%;"><table style="width:100%;">';
-  echo '<tr>';
-  if (get_class($obj)=='Resource' or get_class($obj)=='ResourceTeam') {
-    $idRess=$obj->id;
-  } else {
-    $idRess=null;
-  }
-  if (!$print) {
-    echo '<td class="assignHeader" style="width:15%">';
-   if ($obj->id!=null and !$print and $canCreate and !$obj->idle) {
-      echo '<a onClick="addResourceCapacity(\''.get_class($obj).'\',\''.$type.'\',\''.$idRess.'\');" title="'.i18n('addResourceCapacity').'" /> '.formatSmallButton('Add').'</a>';
-    }
-    echo '</td>';
-  }
-  echo '<td class="assignHeader" style="width:12%">'.i18n('colId').'</td>';
-  echo '<td class="assignHeader" style="width:35%">'.i18n('colCapacity').'</td>';
-  echo '<td class="assignHeader" style="width:19%">'.i18n('colStartDate').'</td>';
-  echo '<td class="assignHeader" style="width:19%">'.i18n('colEndDate').'</td>';
-  echo '</tr>';
-  
-  foreach ($list as $resCap) {
-    $idleClass=($resCap->idle or ($resCap->endDate and $resCap->endDate<$dateNow=date("Y-m-d")))?' affectationIdleClass':'';
-      echo '<tr>';
-      if (!$print) {
-        echo '<td class="assignData'.$idleClass.'" style="text-align:center;white-space: nowrap;">';
-        if ($canUpdate) {
-          echo '  <a onClick="editResourceCapacity(\''.$resCap->id.'\',\''.$obj->id.'\',\''.$resCap->capacity.'\',\''.$resCap->idle.'\',\''.$resCap->startDate.'\',\''.$resCap->endDate.'\');" '.'title="'.i18n('editResourceCapacity').'" > '.formatSmallButton('Edit').'</a>';
-        }
-        if ($canDelete) {
-          echo '  <a onClick="removeResourceCapacity(\''.$resCap->id.'\',\''.$resCap->idResource.'\');" '.'title="'.i18n('removeResourceCapacity').'" > '.formatSmallButton('Remove').'</a>';
-        }
-        if ($resCap->description) {
-          echo '<div style="float:right">'.formatCommentThumb($resCap->description).'</div>';
-        }
-      }
-      echo '</td>';
-      echo ' <td class="assignData'.$idleClass.'" align="center" style="white-space: nowrap;">'.$resCap->id.'</td>';
-      echo ' <td class="assignData'.$idleClass.'" align="center" style="white-space: nowrap;">'.htmlDisplayNumericWithoutTrailingZeros($resCap->capacity).'</td>';
-      echo ' <td class="assignData'.$idleClass.'" align="center" style="white-space: nowrap;">'.htmlFormatDate($resCap->startDate).'</td>';
-      echo ' <td class="assignData'.$idleClass.'" align="center" style="white-space: nowrap;">'.htmlFormatDate($resCap->endDate).'</td>';
-      echo '</tr>';
-  }
-  echo '</table></td></tr>';
-  echo '</table>';
+	global $cr, $print, $user, $browserLocale, $comboDetail;
+	$pluginObjectClass='Affectation';
+	//$tableObject=$list;
+	$lstPluginEvt=Plugin::getEventScripts('list', $pluginObjectClass);
+	foreach ($lstPluginEvt as $script) {
+		require $script; // execute code
+	}
+
+	$canDelete=securityGetAccessRightYesNo('menu'.get_class($obj), 'delete', $obj)=="YES";
+	$canUpdate=securityGetAccessRightYesNo('menu'.get_class($obj), 'update', $obj)=="YES";
+	$canCreate=securityGetAccessRightYesNo('menu'.get_class($obj), 'create', $obj)=="YES";
+	if (!(securityGetAccessRightYesNo('menu'.get_class($obj), 'update', $obj)=="YES")) {
+		$canCreate=false;
+		$canUpdate=false;
+		$canDelete=false;
+	}
+	if ($obj->idle==1) {
+		$canUpdate=false;
+		$canCreate=false;
+		$canDelete=false;
+	}
+	if (get_class($obj)=='GlobalView') {
+		$canUpdate=false;
+		$canCreate=false;
+		$canDelete=false;
+	}
+
+	echo '<table style="width:100%">';
+	echo '<tr><td colspan=2 style="width:100%;"><table style="width:100%;">';
+	echo '<tr>';
+	if (get_class($obj)=='Resource' or get_class($obj)=='ResourceTeam') {
+		$idRess=$obj->id;
+	} else {
+		$idRess=null;
+	}
+	if (!$print) {
+		echo '<td class="assignHeader" style="width:15%">';
+		if ($obj->id!=null and !$print and $canCreate and !$obj->idle) {
+			echo '<a onClick="addResourceCapacity(\''.get_class($obj).'\',\''.$type.'\',\''.$idRess.'\');" title="'.i18n('addResourceCapacity').'" /> '.formatSmallButton('Add').'</a>';
+		}
+		echo '</td>';
+	}
+	echo '<td class="assignHeader" style="width:12%">'.i18n('colId').'</td>';
+	echo '<td class="assignHeader" style="width:35%">'.i18n('colCapacity').'</td>';
+	echo '<td class="assignHeader" style="width:19%">'.i18n('colStartDate').'</td>';
+	echo '<td class="assignHeader" style="width:19%">'.i18n('colEndDate').'</td>';
+	echo '</tr>';
+
+	foreach ($list as $resCap) {
+		$idleClass=($resCap->idle or ($resCap->endDate and $resCap->endDate<$dateNow=date("Y-m-d")))?' affectationIdleClass':'';
+		echo '<tr>';
+		if (!$print) {
+			echo '<td class="assignData'.$idleClass.'" style="text-align:center;white-space: nowrap;">';
+			if ($canUpdate) {
+				echo '  <a onClick="editResourceCapacity(\''.$resCap->id.'\',\''.$obj->id.'\',\''.$resCap->capacity.'\',\''.$resCap->idle.'\',\''.$resCap->startDate.'\',\''.$resCap->endDate.'\');" '.'title="'.i18n('editResourceCapacity').'" > '.formatSmallButton('Edit').'</a>';
+			}
+			if ($canDelete) {
+				echo '  <a onClick="removeResourceCapacity(\''.$resCap->id.'\',\''.$resCap->idResource.'\');" '.'title="'.i18n('removeResourceCapacity').'" > '.formatSmallButton('Remove').'</a>';
+			}
+			if ($resCap->description) {
+				echo '<div style="float:right">'.formatCommentThumb($resCap->description).'</div>';
+			}
+		}
+		echo '</td>';
+		echo ' <td class="assignData'.$idleClass.'" align="center" style="white-space: nowrap;">'.$resCap->id.'</td>';
+		echo ' <td class="assignData'.$idleClass.'" align="center" style="white-space: nowrap;">'.htmlDisplayNumericWithoutTrailingZeros($resCap->capacity).'</td>';
+		echo ' <td class="assignData'.$idleClass.'" align="center" style="white-space: nowrap;">'.htmlFormatDate($resCap->startDate).'</td>';
+		echo ' <td class="assignData'.$idleClass.'" align="center" style="white-space: nowrap;">'.htmlFormatDate($resCap->endDate).'</td>';
+		echo '</tr>';
+	}
+	echo '</table></td></tr>';
+	echo '</table>';
 }
 
 // gautier #ProviderTerm
@@ -6632,6 +6675,7 @@ function drawTabExpense($obj, $refresh=false) {
   }
   $class=get_class($obj);
   echo '<tr><td colspan="2" style="width:100%;">';
+
   echo '<table style="width:70%;">';
   echo '  <tr>';
   echo '    <td class="" colspan="1" style="width:25%"></td>';
@@ -6713,6 +6757,7 @@ function drawTabExpense($obj, $refresh=false) {
       $arrayTerm[$term->id]=$term;
     }
   }
+
   foreach ($arrayTerm as $term){
     $nbTerm++;
     $untaxedAmountTerm += $term->untaxedAmount;
@@ -6866,87 +6911,86 @@ function drawTabExpense($obj, $refresh=false) {
     echo '</table></tr>';
   }
 }
-
 function drawProjectExpenseDetailLine($class,$id, $level){
-  $obj = new $class($id);
-  $date = '';
-  if(isset($obj->date)){
-    $date = htmlFormatDate($obj->date);
-  }elseif(isset($obj->creationDate)){
-    $date = htmlFormatDate($obj->creationDate);
-  }
-  $ref = '';
-  if(isset($obj->externalReference)){
-  	$ref = $obj->externalReference;
-  }
-  $untaxed = '';
-  if(isset($obj->untaxedAmout)){
-    $untaxed = htmlDisplayCurrency($obj->untaxedAmount);
-  }
-  $taxAmout = '';
-  if(isset($obj->taxAmout)){
-    $taxAmout = htmlDisplayCurrency($obj->taxAmout);
-  }
-  $fullAmount = '';
-  if(isset($obj->fullAmount)){
-  	$fullAmount = htmlDisplayCurrency($obj->fullAmount);
-  }
-  if(isset($obj->paymentAmount)){
-    $fullAmount = htmlDisplayCurrency($obj->paymentAmount);
-  }
-  $goto= '';
-  if (securityCheckDisplayMenu(null, $class) and securityGetAccessRightYesNo('menu'.$class, 'read', '')=="YES") {
-  	$goto = 'onClick="gotoElement('."'".$class."','".htmlEncode($id)."'".');"';
-  }
-  echo '  <tr>';
-  for($i=0; $i<$level; $i++){
-  	echo '<td class="assignData" colspan="1" style="width:3%;height:20px;border-bottom:0px;border-top:0px;border-right:solid 2px;"></td>';
-  }
-  $width=40-(3*$level);
-  echo '    <td class="assignData" align="center" colspan="'.(5-$level).'"'.$goto.'style="width:'.$width.'%;height:20px;cursor:pointer;">';
-  echo '      <table width="100%"><tr><td width="6%" float="right">'.formatIcon(get_class($obj), 16).'</td>';
-  echo '      <td width="94%"style="text-aglign:left;">'.$obj->name.'</td></tr></table>';
-  echo '    </td>';
-  echo '    <td class="assignData" align="center" colspan="1" style="width:10%;height:20px;">'.$date.'</td>';
-  echo '    <td class="assignData" align="center" colspan="1" style="width:20%;height:20px;">'.$ref.'</td>';
-  echo '    <td class="assignData" align="right" colspan="1" style="width:10%;height:20px;">'.$untaxed.'</td>';
-  echo '    <td class="assignData" align="right" colspan="1" style="width:10%;height:20px;">'.$fullAmount.'</td>';
-  echo '    <td class="assignData" align="right" colspan="1" style="width:10%;height:20px;">'.$taxAmout.'</td>';
-  echo '  </tr>';
+	$obj = new $class($id);
+	$date = '';
+	if(isset($obj->date)){
+		$date = htmlFormatDate($obj->date);
+	}elseif(isset($obj->creationDate)){
+		$date = htmlFormatDate($obj->creationDate);
+	}
+	$ref = '';
+	if(isset($obj->externalReference)){
+		$ref = $obj->externalReference;
+	}
+	$untaxed = '';
+	if(isset($obj->untaxedAmout)){
+		$untaxed = htmlDisplayCurrency($obj->untaxedAmount);
+	}
+	$taxAmout = '';
+	if(isset($obj->taxAmout)){
+		$taxAmout = htmlDisplayCurrency($obj->taxAmout);
+	}
+	$fullAmount = '';
+	if(isset($obj->fullAmount)){
+		$fullAmount = htmlDisplayCurrency($obj->fullAmount);
+	}
+	if(isset($obj->paymentAmount)){
+		$fullAmount = htmlDisplayCurrency($obj->paymentAmount);
+	}
+	$goto= '';
+	if (securityCheckDisplayMenu(null, $class) and securityGetAccessRightYesNo('menu'.$class, 'read', '')=="YES") {
+		$goto = 'onClick="gotoElement('."'".$class."','".htmlEncode($id)."'".');"';
+	}
+	echo '  <tr>';
+	for($i=0; $i<$level; $i++){
+		echo '<td class="assignData" colspan="1" style="width:3%;height:20px;border-bottom:0px;border-top:0px;border-right:solid 2px;"></td>';
+	}
+	$width=40-(3*$level);
+	echo '    <td class="assignData" align="center" colspan="'.(5-$level).'"'.$goto.'style="width:'.$width.'%;height:20px;cursor:pointer;">';
+	echo '      <table width="100%"><tr><td width="6%" float="right">'.formatIcon(get_class($obj), 16).'</td>';
+	echo '      <td width="94%"style="text-aglign:left;">'.$obj->name.'</td></tr></table>';
+	echo '    </td>';
+	echo '    <td class="assignData" align="center" colspan="1" style="width:10%;height:20px;">'.$date.'</td>';
+	echo '    <td class="assignData" align="center" colspan="1" style="width:20%;height:20px;">'.$ref.'</td>';
+	echo '    <td class="assignData" align="right" colspan="1" style="width:10%;height:20px;">'.$untaxed.'</td>';
+	echo '    <td class="assignData" align="right" colspan="1" style="width:10%;height:20px;">'.$fullAmount.'</td>';
+	echo '    <td class="assignData" align="right" colspan="1" style="width:10%;height:20px;">'.$taxAmout.'</td>';
+	echo '  </tr>';
 }
 
 function drawExpenseBudgetDetail($obj) {
-  global $print, $user;
-  $class=get_class($obj);
-  $projectExpense = new ProjectExpense();
-  $listProjectExpense = $projectExpense->getSqlElementsFromCriteria(array("idBudgetItem"=>$obj->id));
-  echo '<tr><td colspan="2" style="width:100%;">';
-  echo '<table style="width:100%;">';
-  echo '  <tr>';
-  echo '    <td class="assignHeader" colspan="1" style="width:25%">'.i18n('colName').'</td>';
-  echo '    <td class="assignHeader" colspan="1" style="width:10%"></td>';
-  echo '    <td class="assignHeader" colspan="1" style="width:10%">'.i18n('colDate').'</td>';
-  echo '    <td class="assignHeader" colspan="1" style="width:20%">'.i18n('colUntaxedAmount').'</td>';
-  echo '    <td class="assignHeader" colspan="1" style="width:15%">'.i18n('colTaxAmount').'</td>';
-  echo '    <td class="assignHeader" colspan="1" style="width:20%">'.i18n('colFullAmount').'</td>';
-  echo '  </tr>';
-  foreach ($listProjectExpense as $expense){
-    drawBudgetExpenseDetailLine(get_class($expense), $expense->id);
-  }
-  echo '</table>';
-  echo '</tr>';
+	global $print, $user;
+	$class=get_class($obj);
+	$projectExpense = new ProjectExpense();
+	$listProjectExpense = $projectExpense->getSqlElementsFromCriteria(array("idBudgetItem"=>$obj->id));
+	echo '<tr><td colspan="2" style="width:100%;">';
+	echo '<table style="width:100%;">';
+	echo '  <tr>';
+	echo '    <td class="assignHeader" colspan="1" style="width:25%">'.i18n('colName').'</td>';
+	echo '    <td class="assignHeader" colspan="1" style="width:10%"></td>';
+	echo '    <td class="assignHeader" colspan="1" style="width:10%">'.i18n('colDate').'</td>';
+	echo '    <td class="assignHeader" colspan="1" style="width:20%">'.i18n('colUntaxedAmount').'</td>';
+	echo '    <td class="assignHeader" colspan="1" style="width:15%">'.i18n('colTaxAmount').'</td>';
+	echo '    <td class="assignHeader" colspan="1" style="width:20%">'.i18n('colFullAmount').'</td>';
+	echo '  </tr>';
+	foreach ($listProjectExpense as $expense){
+		drawBudgetExpenseDetailLine(get_class($expense), $expense->id);
+	}
+	echo '</table>';
+	echo '</tr>';
 }
 
 function drawBudgetExpenseDetailLine($class,$id){
 	$obj = new $class($id);
 	$plannedDate = '';
-  if(isset($obj->expensePlannedDate)){
-    $plannedDate = htmlFormatDate($obj->expensePlannedDate);
-  }
-  $realDate = '';
-  if(isset($obj->expenseRealDate)){
-    $realDate = htmlFormatDate($obj->expenseRealDate);
-  }
+	if(isset($obj->expensePlannedDate)){
+		$plannedDate = htmlFormatDate($obj->expensePlannedDate);
+	}
+	$realDate = '';
+	if(isset($obj->expenseRealDate)){
+		$realDate = htmlFormatDate($obj->expenseRealDate);
+	}
 	$plannedAmount = '';
 	if(isset($obj->plannedAmount)){
 		$plannedAmount = htmlDisplayCurrency($obj->plannedAmount);
@@ -6971,7 +7015,7 @@ function drawBudgetExpenseDetailLine($class,$id){
 	if(isset($obj->realTaxAmount)){
 		$realTaxAmount = htmlDisplayCurrency($obj->realTaxAmount);
 	}
-	
+
 	$goto= '';
 	if (securityCheckDisplayMenu(null, $class) and securityGetAccessRightYesNo('menu'.$class, 'read', '')=="YES") {
 		$goto = 'onClick="gotoElement('."'".$class."','".htmlEncode($id)."'".');"';
@@ -6988,7 +7032,7 @@ function drawBudgetExpenseDetailLine($class,$id){
 	echo '    <td class="assignData'.$idleClass.'" align="right" style="width:15%;height:20px;">'.$plannedTaxAmount.'</td>';
 	echo '    <td class="assignData'.$idleClass.'" align="right" style="width:20%;height:20px;">'.$plannedFullAmount.'</td>';
 	echo '</tr>';
-	
+
 	echo ' <tr>';
 	echo '    <td class="assignData'.$idleClass.'" align="center" style="width:10%;height:20px;">'.i18n('colReal').'</td>';
 	echo '    <td class="assignData'.$idleClass.'" align="right" style="width:10%;height:20px;">'.$realDate.'</td>';
@@ -7201,8 +7245,7 @@ function endBuffering($prevSection, $included) {
       'testcaserun'=>array('2'=>'bottom', '3'=>'bottom'), 
       'testcaserunsummary'=>array('2'=>'left', '3'=>'extra'), 
       'testcasesummary'=>array('2'=>'right', '3'=>'extra'),
-      'totalfinancialsynthesis'=>array('2'=>'bottom', '3'=>'bottom'),//damian
-      'variableCapacityResource'=>array('2'=>'bottom', '3'=>'bottom'),
+      'totalfinancialsynthesis'=>array('2'=>'right', '3'=>'extra'),
       'void'=>array('2'=>'right', '3'=>'right'), 
       'workflowdiagram'=>array('2'=>'bottom', '3'=>'bottom'), 
       'workflowstatus'=>array('2'=>'bottom', '3'=>'bottom'));
