@@ -509,6 +509,9 @@ abstract class SqlElement {
       "DocumentDirectory" => array(
           "Document" => "control", 
           "DocumentDirectory" => "control"), 
+      "Meeting" => array(
+          "Assignment" => "cascade"
+          ),
 // BEGIN - ADD BY TABARY - NOTIFICATION SYSTEM      
       "Notifiable" => array(
           "NotificationDefinition" => "confirm"),
@@ -567,7 +570,8 @@ abstract class SqlElement {
           "TestCase" => "confirm", 
           "TestCaseRun" => "cascade"), 
       "TestSession" => array(
-          "TestCaseRun" => "cascade"), 
+          "TestCaseRun" => "cascade",
+          "Assignment" => "cascade"),
       "User" => array(
           "Affectation" => "cascade"), 
       "Version" => array(
