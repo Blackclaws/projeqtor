@@ -64,7 +64,11 @@ class ResourceTeamMain extends ResourceMain {
 	      "_sec_Miscellaneous"=>"hidden" ,
 	      "_sec_resourceCapacity"=>"hidden",
         "_spe_resourceCapacity"=>"hidden",
-	      "dontReceiveTeamMails"=>"hidden"
+	      "dontReceiveTeamMails"=>"hidden",
+// ELIOTT - LEAVE SYSTEM              
+              "isEmployee"=>"hidden", //Hide the attribute isEmployee for the leaveManagement
+              "isLeaveManager"=>"hidden" //Hide the attribute isLeaveManager for the leaveManagement
+// ELIOTT - LEAVE SYSTEM              
 	  );
 	  
 	private static $_databaseColumnName = array('name'=>'fullName',

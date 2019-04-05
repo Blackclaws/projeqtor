@@ -29,9 +29,14 @@ use PHPMailer\PHPMailer\PHPMailer;
 // use PHPMailer\PHPMailer\PHPMailer;
 // use PHPMailer\PHPMailer\Exception;
 
-$projeqtor='loaded';
-spl_autoload_register('projeqtorAutoload', true);
-// include_once ('../model/User.php');
+$projeqtor = 'loaded';
+spl_autoload_register ( 'projeqtorAutoload', true );
+// MTY - LEAVE SYSTEM
+//if (isLeavesSystemActiv()) {
+ require_once('../tool/projeqtor-hr.php');
+//}
+// MTY - LEAVE SYSTEM
+//include_once ('../model/User.php');
 global $targetDirImageUpload;
 $targetDirImageUpload='../files/images/';
 // Example
@@ -283,6 +288,40 @@ if (!(isset($maintenance) and $maintenance) and !(isset($batchMode) and $batchMo
  * ============================================================================ functions ============================================================================
  */
 
+/**
+ * 
+ * @param array $array : The array containing the list of Model objects to sort
+ * @param string $field : The field with sort
+ * @param boolean $preserveKey : true to preserve keys of array
+ * @return array : The array sorted
+ */
+function sortArrayOfModelObjectsByAField($array=array(), $field="", $preserveKey=false) {
+    $intType = array("bigint", "double", "float", "int", "integer", "mediumint", "numeric", "real", "smallint", "tinyint","dec","decimal","serial","bigserial","double precision");
+    
+    if ($array==null or $field==="") { return $array; }
+
+    reset($array);
+    $firtKey = key($array);
+    $object = $array[$firtKey];
+    if (!is_subclass_of($object,'SqlElement')) { return $array; }
+    if ($object->getDatabaseColumnName($field, true)=="") { return $array; }
+    $dataType = $object->getDataType($field);
+    if (in_array($dataType, $intType)) {
+        if ($preserveKey) {
+            uasort($array, function($a, $b){global $field; return ($a->$field > $b->$field);});
+        } else {
+            usort($array, function($a, $b){global $field; return ($a->$field > $b->$field);});            
+        }
+    } else {
+        if ($preserveKey) {
+            uasort($array, function($a, $b){global $field; return strcmp($a->$field, $b->$field);});                
+        } else {
+            usort($array, function($a, $b){global $field; return strcmp($a->$field, $b->$field);});                
+        }
+    }
+    return $array;
+}
+
 // ADD BY TABARY - CLASS FIELD WITHOUT ALIAS FOREIGN KEY
 /**
  * ===========================================================
@@ -401,7 +440,13 @@ function getUserVisibleObjectsList($objName, $limitToActiveObjects=false, $listS
     return array();
   }
   
-  switch ($objName) {
+  switch($objName) {
+// MTY - LEAVE SYSTEM
+    case 'EmploymentContract' :
+      $user=getSessionUser();
+      return $user->getVisibleEmploymentContract($limitToActiveObjects);            
+      break;
+// MTY - LEAVE SYSTEM
     case 'Resource' :
       return getUserVisibleResourcesList($limitToActiveObjects, $listScreen, $idLinkObjectName);
       break;
@@ -1047,11 +1092,61 @@ function isNotificationSystemActiv() {
  *          = '' if not restrict on idLinkObjectName - true if restrict to resource with idLinkObject null
  * @return list of visible resources
  */
-function getUserVisibleResourcesList($limitToActiveResources=false, $listScreen="List", $idLinkObjectName='', $includePool=false) {
+function getUserVisibleResourcesList($limitToActiveResources=false,
+                                     $listScreen="List", 
+                                     $idLinkObjectName='', 
+                                     $includePool=false, 
+                                     $limitToEmployee=false,
+                                     $limitToManagedEmployee=false,
+                                     $selfIncluded=false,
+                                     $limitToUser=false) {
   $crit="";
   if ($limitToActiveResources) {
     $crit="idle=0 and ";
   }
+    
+// MTY - LEAVE SYSTEM
+    if ($limitToManagedEmployee) {
+        // Leave Admin => Can see all employees
+        if(isLeavesAdmin()) {
+            $res = new Resource();
+            $emplList = $res->getEmployeesList($limitToActiveResources,$limitToUser);
+            if ($selfIncluded and getSessionUser()->isEmployee) {
+                if (!array_key_exists(getSessionUser()->id, $emplList)) {
+                    $emplList[getSessionUser()->id] = getSessionUser()->name;
+                }                
+            }
+            return $emplList;
+        } 
+        // Leave Manager - Can see it's managedEmployee
+        elseif (isLeavesManager()) {
+            $manager = new EmployeeManager(getSessionUser()->id);
+            $emplList = $manager->getManagedEmployees(true,null,false,$limitToUser);
+            if ($selfIncluded) {
+                if ($emplList==null) {
+                    $emplList[getSessionUser()->id] = getSessionUser()->name;                    
+                } else {
+                    if (!array_key_exists(getSessionUser()->id, $emplList) and getSessionUser()->isEmployee) {
+                        $emplList[getSessionUser()->id] = getSessionUser()->name;
+                    }
+                }
+            }
+            return $emplList;
+        }
+    }
+
+    if ($limitToEmployee) {
+        if($selfIncluded and getSessionUser()->isEmployee) {
+            $crit .= "(isEmployee=1 or id=". getSessionUser()->id.") and ";
+        } else {
+            $crit .= "isEmployee=1 and ";
+        }    
+    }
+    if ($limitToUser) {
+        $crit .= " isUser=1 and ";
+    }
+// MTY - LEAVE SYSTEM
+
   if ($idLinkObjectName!='' and property_exists('Resource', $idLinkObjectName)) {
     $crit.=$idLinkObjectName." is null and ";
   }
@@ -1486,6 +1581,30 @@ function getCurrentUserId() {
 }
 
 /**
+ * Return an array of the objects difference between the two arrays passed in parameter
+ * @param array $array1 : First Array of objects
+ * @param type $array2 : Second array of objects
+ * @return array
+ */
+function twoArraysObjects_diff($array1=array(), $array2=array()) {
+    $result=array();
+    
+    foreach($array2 as $key=>$value) {
+        if (!in_array($value,$array1)) {
+            $result[$key] = $value;                
+        }        
+    }
+
+    foreach($array1 as $key=>$value) {
+        if (!in_array($value,$array2)) {
+            $result[$key] = $value;                
+        }        
+    }
+    
+  return $result;
+}
+
+/**
  * ===========================================================================
  * New function that merges array, but preseves numeric keys (unlike array_merge)
  *
@@ -1538,8 +1657,14 @@ function securityCheckDisplayMenu($idMenu, $class=null, $user=null) {
   if (!$user) {
     return false;
   }
+  if (! Module::isMenuActive(SqlList::getNameFromId('Menu',$menu,false))) return false;
   $result=false;
-  $typeAdmin=SqlList::getFieldFromId('Menu', $idMenu, 'isAdminMenu', false);
+// MTY - LEAVE SYSTEM
+    if (isLeavesSystemMenuByMenuName("menu".$class)) {
+        return showLeavesSystemMenu("menu".$class);         
+    }
+// MTY - LEAVE SYSTEM
+  $typeAdmin=SqlList::getFieldFromId('Menu', $idMenu, 'isAdminMenu',false);
   if ($typeAdmin==0) {
     $allProfiles=$user->getAllProfiles();
     foreach ($allProfiles as $profile) {
@@ -2541,15 +2666,32 @@ function securityGetAccessRight($menuName, $accessType, $obj=null, $user=null) {
   if (!$user) {
     $user=getSessionUser();
   }
-  $accessRightList=$user->getAccessControlRights($obj);
-  $accessRight='ALL';
-  if ($accessType=='update' and $obj and $obj->id==null) {
-    return securityGetAccessRight($menuName, 'create');
+// MTY - LEAVE SYSTEM
+  // If a leave system obj => return result for specific leave system habilitation
+  if (isLeavesSystemActiv()) {
+    $secLeaveSystemResult = securityGetLeaveSystemAccessRight($menuName, $accessType, $obj, $user);
+    if ($secLeaveSystemResult!= 'NOTALEAVEELEMENT' and substr($secLeaveSystemResult,0,1)!= '_') {
+      return $secLeaveSystemResult;
+    }
+    // If a leave system obj => return result for specific leave system habilitation
+    if (substr($secLeaveSystemResult,0,1)=='_') {
+      $theClass = substr($secLeaveSystemResult,1,-1);
+      $menuName = "menu".$theClass;
+      if ($obj!=null) {
+        $obj = new $theClass($obj->id);
+      }
+    }
   }
-  if (array_key_exists($menuName, $accessRightList)) {
-    $accessRightObj=$accessRightList[$menuName];
-    if (array_key_exists($accessType, $accessRightObj)) {
-      $accessRight=$accessRightObj[$accessType];
+// MTY - LEAVE SYSTEM  
+  $accessRightList = $user->getAccessControlRights ($obj);
+  $accessRight = 'ALL';
+  if ($accessType == 'update' and $obj and $obj->id == null) {
+    return securityGetAccessRight ( $menuName, 'create' );
+  }
+  if (array_key_exists ( $menuName, $accessRightList )) {
+    $accessRightObj = $accessRightList [$menuName];
+    if (array_key_exists ( $accessType, $accessRightObj )) {
+      $accessRight = $accessRightObj [$accessType];
     }
   }
   return $accessRight;
@@ -2567,8 +2709,25 @@ function securityGetAccessRight($menuName, $accessType, $obj=null, $user=null) {
  */
 function securityGetAccessRightYesNo($menuName, $accessType, $obj=null, $user=null) {
   scriptLog("securityGetAccessRightYesNo ( menuName=$menuName, accessType=$accessType, obj=".debugDisplayObj($obj).", user=".debugDisplayObj($user).")");
-  if ($menuName=='menuCalendarDefinition') $menuName='menuCalendar';
-  $class=substr($menuName, 4);
+// MTY - LEAVE SYSTEM
+  if (isLeavesSystemActiv()) {
+    $secLeaveSystemResult = securityGetLeaveSystemAccessRight($menuName, $accessType, $obj, $user, true);
+    // If a leave system obj => return result for specific leave system habilitation
+    if ($secLeaveSystemResult!= 'NOTALEAVEELEMENT' and substr($secLeaveSystemResult,0,1)!= '_') {
+      return $secLeaveSystemResult;
+    }
+    // If the obj is a leave system class but is in fact a standard projeqtor object
+    // => Substitutes with the real class et real obj
+    if (substr($secLeaveSystemResult,0,1)=='_') {
+      $theClass = substr($secLeaveSystemResult,1,-1);
+      $menuName = "menu".$theClass;
+      if ($obj!=null) {
+        $obj = new $theClass($obj->id);
+      }
+    }
+  }
+// MTY - LEAVE SYSTEM  
+  $class=substr ( $menuName, 4 );  
   global $remoteDb;
   if (isset($remoteDb) and $remoteDb==true) {
     if ($class=='Parameter' or $class=='History' or $class=='TranslationCode' or $class=='TranslationValue') {
@@ -3315,16 +3474,48 @@ function isOpenDay($dateValue, $idCalendarDefinition='1') {
     }
     $bankHolidays[$year.'#'.$idCalendarDefinition]=$aBankHolidays;
   }
+  
+// MTY - GENERIC DAY OFF
+  $calDef = new CalendarDefinition($idCalendarDefinition);
   $arrayDefaultOffDays=array();
-  if (Parameter::getGlobalParameter('OpenDayMonday')=='offDays') $arrayDefaultOffDays[]=1;
-  if (Parameter::getGlobalParameter('OpenDayTuesday')=='offDays') $arrayDefaultOffDays[]=2;
-  if (Parameter::getGlobalParameter('OpenDayWednesday')=='offDays') $arrayDefaultOffDays[]=3;
-  if (Parameter::getGlobalParameter('OpenDayThursday')=='offDays') $arrayDefaultOffDays[]=4;
-  if (Parameter::getGlobalParameter('OpenDayFriday')=='offDays') $arrayDefaultOffDays[]=5;
-  if (Parameter::getGlobalParameter('OpenDaySaturday')=='offDays') $arrayDefaultOffDays[]=6;
-  if (Parameter::getGlobalParameter('OpenDaySunday')=='offDays') $arrayDefaultOffDays[]=0;
-  if (in_array(date('w', $iDate), $arrayDefaultOffDays)) {
-    if (in_array(date('Ymd', $iDate), $aBankWorkdays)) {
+  if (Parameter::getGlobalParameter('OpenDayMonday')=='offDays') {
+    $arrayDefaultOffDays[]=1;  
+  } elseif ($calDef->dayOfWeek1==1) {
+    $arrayDefaultOffDays[]=1;        
+  }
+  if (Parameter::getGlobalParameter('OpenDayTuesday')=='offDays') {
+      $arrayDefaultOffDays[]=2;
+  } elseif ($calDef->dayOfWeek2==1) {
+    $arrayDefaultOffDays[]=2;        
+  }
+  if (Parameter::getGlobalParameter('OpenDayWednesday')=='offDays') {
+      $arrayDefaultOffDays[]=3;
+  } elseif ($calDef->dayOfWeek3==1) {
+    $arrayDefaultOffDays[]=3;        
+  }
+  if (Parameter::getGlobalParameter('OpenDayThursday')=='offDays') {
+      $arrayDefaultOffDays[]=4;
+  } elseif ($calDef->dayOfWeek4==1) {
+    $arrayDefaultOffDays[]=4;        
+  }
+  if (Parameter::getGlobalParameter('OpenDayFriday')=='offDays') {
+      $arrayDefaultOffDays[]=5;
+  } elseif ($calDef->dayOfWeek5==1) {
+    $arrayDefaultOffDays[]=5;        
+  }
+  if (Parameter::getGlobalParameter('OpenDaySaturday')=='offDays') {
+      $arrayDefaultOffDays[]=6;
+  } elseif ($calDef->dayOfWeek6==1) {
+    $arrayDefaultOffDays[]=6;        
+  }
+  if (Parameter::getGlobalParameter('OpenDaySunday')=='offDays') {
+      $arrayDefaultOffDays[]=0;
+  } elseif ($calDef->dayOfWeek0==1) {
+    $arrayDefaultOffDays[]=0;        
+  }
+// MTY - GENERIC DAY OFF  
+  if (in_array (date('w', $iDate), $arrayDefaultOffDays)) {
+    if (in_array(date( 'Ymd', $iDate), $aBankWorkdays)) {
       return true;
     } else {
       return false;
@@ -4100,8 +4291,14 @@ function debugPrintTraceStack() {
   }
 }
 
-function formatIcon($class, $size, $title=null, $withHighlight=false) {
-  // if ($size=="22") $size==24;
+function formatIcon ($class, $size, $title=null, $withHighlight=false) {
+// MTY - LEAVE SYSTEM    
+    $hr="";
+    $menuName = "menu".$class;
+    if (isLeavesSystemActiv() and isLeavesSystemMenuByMenuName($menuName)) { $hr="HR"; }
+// MTY - LEAVE SYSTEM    
+    
+  //if ($size=="22") $size==24;
   global $print, $outMode;
   $result='';
   if ($withHighlight) {
@@ -4260,4 +4457,205 @@ function splitCssAttributes($attr) {
     $res[$sep[0]]=$sep[1];
   }
   return $res;
+}
+// MTY - GENERIC DAY OFF
+/** Return the last day of the month - year
+ * @param integer $month = The month to retrieve last day
+ * @param integer $year = The year to retrieve last day month
+ * @return integer The last day of year month
+  */
+function lastDayOfMonth($month=null,$year=null) {
+    if ($month==null or $year==null) {
+        return 0;
+    }    
+    if ($year<1970) {
+        return 0;        
+    }    
+    $monthString = ($month>9?"":"0").$month;    
+    $date = new DateTime($year."-".$monthString."-01");
+    $lastDayDate = $date->format("Y-m-t");
+    return substr($lastDayDate,-2);
+}
+// MTY - GENERIC DAY OFF
+
+// MTY - EXPORT EXCEL OR ODS
+/**
+ * Finalize the export to a spreadsheet. Called from an export view.
+ * @param $context reference to PHPExcel object
+ * @param string $fileName filename of the spreadsheet (xlsx, ods)
+ * 
+ */
+function exportSpreadsheet($context, $fileName, $preCalculateFormulas=false) {
+    if (PHP_SAPI == 'cli') die('This example should only be run from a Web Browser');
+    date_default_timezone_set(Parameter::getGlobalParameter("paramDefaultTimezone"));
+
+    $typeOfExport = Parameter::getUserParameter("typeExportXLSorODS");
+
+    $objWriter = NULL;
+    $format = ($typeOfExport=="Excel2007"?"xlsx":"ods");
+   $fileName .= ".".$format;
+    $contentType = ($typeOfExport=="Excel2007"?"Content-Type: application/vnd.ms-excel":"Content-Type: application/vnd.oasis.opendocument.spreadsheet");
+    
+    // Redirect output to a clientâ€™s web browser (Excel2007)
+    
+    header($contentType);
+//    header('Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8');
+    header('Content-Disposition: attachment;filename="' . $fileName . '"');
+    header('Expires: Mon, 26 Jul 1997 05:00:00 GMT'); // Date in the past
+    header('Last-Modified: '.gmdate('D, d M Y H:i:s').' GMT'); // always modified
+    header('Cache-Control: cache, must-revalidate'); // HTTP/1.1
+    header('Pragma: public'); // HTTP/1.0
+    $objWriter = PHPExcel_IOFactory::createWriter($context, $typeOfExport);
+    
+    if ($preCalculateFormulas) {
+        $objWriter->setPreCalculateFormulas(true);
+    }
+    $objWriter->save('php://output');
+}
+
+/**
+ * Convert a sheet cell number to a column sheeet Letters
+ * @param integer $c : The column sheet number
+ * @return string : The column letters of the column sheet cell number
+ */
+function sheetCellColumnLetter($c){
+    $c = intval($c);
+    if ($c <= 0) {return '';}
+
+    $letter = '';
+             
+    while($c != 0){
+       $p = ($c - 1) % 26;
+       $c = intval(($c - $p) / 26);
+       $letter = chr(65 + $p) . $letter;
+    }
+    
+    return $letter;        
+}
+// MTY - EXPORT EXCEL OR ODS
+
+/**
+ * Send a notification. 
+ * If Notification System is'nt activ or receiver is not allowed to read notification :
+ *     - send an alert. If receiver is not allowed to read alert :
+ *          - send an email
+ * @param array $receivers : The array of receivers
+ * @param object $obj
+ * @param string $typeNotif
+ * @param string $title
+ * @param string $content
+ * @param string $name
+ * @param boolean $alertIfNotificationNotAllowed
+ * @param boolean $emailIfAlertNotAllowed
+ * @return void
+ */
+function sendNotification($receivers=null,$obj=null,$typeNotif="INFO",$title="",$content="",$name="",$alertIfNotificationNotAllowed=true,$emailIfAlertNotAllowed=true) {
+    if ($receivers==null or $obj==null or $title=="") { return;}    
+    if (!isNotificationSystemActiv() and !$alertIfNotificationNotAllowed and !$emailIfAlertNotAllowed) {return;}
+    
+    $class = get_class($obj);
+    if ($class=="") {return;}
+    if (strpos("Main",$class)!==false) {
+        $class = substr($class,0,-4);
+    }
+    
+    $menu = SqlElement::getFirstSqlElementFromCriteria("Menu", array("name" => "menu$class"));
+    if (!isset($menu->id)) {
+        $idMenu = null;
+    } else {
+        $idMenu = $menu->id;
+    }
+    if (isNotificationSystemActiv()) {
+        $notifType = SqlElement::getFirstSqlElementFromCriteria("Type", array("name" => $typeNotif, "scope" => "Notification"));
+        if (!isset($notifType->id)) {
+            $notifType = SqlElement::getFirstSqlElementFromCriteria("Type", array("scope" => "Notification"));
+        }
+        if (isset($notifType->id)) {
+            $idNotifType = $notifType->id;
+        } else {
+            $idNotifType = null;
+        }
+        $notifiable = SqlElement::getFirstSqlElementFromCriteria("Notifiable", array("notifiableItem" => $class));
+        if (isset($notifiable->id)) {
+            $idNotifiable = $notifiable->id;
+        } else {
+            $idNotifiable = null;
+        }
+        // Prepare notification values
+        $notif = new Notification();
+        $notif->idResource = getSessionUser()->id;
+        $notif->idNotifiable = $idNotifiable;
+        $notif->notifiedObjectId = $obj->id;
+        $notif->idNotificationDefinition=null;
+        $notif->idMenu=$idMenu;
+        $notif->name = $name;
+        $notifDate = new DateTime();
+        $notif->notificationDate = $notifDate->format("Y-m-d");
+        $notif->notificationTime = $notifDate->format("H:i:s");
+        $notif->idNotificationType = $idNotifType;
+        $notif->title = $title;
+        $notif->content = $content;
+        $notif->sendEmail = 0;
+        $notif->idle=0;
+    }
+    
+    // For each receivers
+    foreach($receivers as $receiver) {
+        $user = new User($receiver->id);
+        $readAllowed = false;
+        if (isNotificationSystemActiv()) {
+            // Must be set before access right
+            $notif->idUser = $receiver->id;
+            // Get access to menu Notification for receiver
+            $readAllowed = (securityGetAccessRightYesNo("menuNotification", "read", $notif, $user)=="YES");
+            // Notification allowed
+            if ($readAllowed) {
+                // Send Notification
+                $notif->id=null;
+                $notif->simpleSave();
+            }
+        }
+        if ($alertIfNotificationNotAllowed and $readAllowed==false) {
+            // ALERT
+            // Must be set before access right
+            $alert=new Alert();
+            $alert->idUser=$receiver->id;
+            // Get access to menu Alert
+            $readAllowed = (securityGetAccessRightYesNo("menuAlert", "read", $alert, $user)=="YES");
+            // Alert allowed
+            if ($readAllowed) {
+                // Emit alert
+                $title = $title;
+                $message = $content;
+                $theDate = new DateTime();
+                
+                $alert=new Alert();
+                $alert->idUser=$receiver->id;
+                $alert->alertType=htmlspecialchars("INFO",ENT_QUOTES,'UTF-8');
+                $alert->alertInitialDateTime=$theDate->format("Y-m-d H:i:s");
+                $alert->alertDateTime=$theDate->format("Y-m-d H:i:s");
+                $alert->title=htmlspecialchars($title,ENT_QUOTES,'UTF-8');
+                $alert->message=htmlspecialchars($message,ENT_QUOTES,'UTF-8');
+                $alert->simpleSave();
+            } elseif ($emailIfAlertNotAllowed) {
+                // EMAIL
+                if ($receiver->email!=null) {
+                    $subject = $title;
+                    $messageBody = $content;
+                    sendMail($receiver->email, $subject, $messageBody);
+                }
+            }            
+        }
+    }    
+}
+
+/**
+ * Determine if the leave system is activ
+ * It's the case when :
+ *  parameter leavesSystemActiv = YES
+ * @return Boolean = True if leave system is activ
+ */
+function isLeavesSystemActiv() {
+	//return ((Parameter::getGlobalParameter ( 'leavesSystemActiv' )=="NO"?false:true));
+	return Module::isModuleActive('moduleHR');
 }

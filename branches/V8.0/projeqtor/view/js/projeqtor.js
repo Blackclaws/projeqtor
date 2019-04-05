@@ -75,6 +75,88 @@ var mustApplyFilter=false;
  * @return void
  */
 
+// MTY - FACILITY FUNCTIONS
+/**
+ * Transforms an object Date to a string compatible with sql Date
+ * @param {Date} date
+ * @returns {String}
+ */
+function transformDateToSqlDate(date) {
+    var sqlDate="";
+    if (isDate(date)) {
+        month = date.getMonth()+1;
+        year = date.getFullYear();
+        day = date.getDate();
+        sqlDate = year+'-'+(month<10?'0':'')+month+'-'+(day<10?'0':'')+day;
+    }
+    return sqlDate;
+}
+
+/** ============================================================================
+ * Get the SqlElement operation result status
+ * @param {String} theResult
+ *              The result of an SqlElement operation
+ * @return {String}
+ */
+function getSqlElementOperationStatus(theResult) {
+    if (typeof(theResult)!=="string" && typeof(theResult)!=="String") {
+        return "TYPEOF RESULT = "+typeof(theResult);        
+    }
+    // Retrieve type of message
+    var indexResult = theResult.indexOf('id="lastOperationStatus" value="');
+    if (indexResult===-1) {
+        return "NOT RESULT OF SQLELEMENT OPERATION";
+    }
+    var result = theResult.substr(indexResult+32);
+    indexResult = result.indexOf('"');
+    var status = new String();
+    status = result.substr(0,indexResult);
+    return status;    
+}
+
+function isSqlElementOperationStatus(result) {
+    res = getSqlElementOperationStatus(result);
+    if (res.indexOf('TYPEOF RESULT = ')>=0 || res.indexOf('NOT RESULT OF SQLELEMENT OPERATION')>=0) {
+        return false;        
+    }
+    return true;
+}
+
+/** ============================================================================
+ * Return a message formated as a resultDiv result
+ * @param {string} messageType : ERROR or WARNING - If passed other value then = null and no header message
+ * @param {string} message : The message content. Default = 'An unknown error occurs' 
+ * @param {boolean} toTranslate : True, if the content must be translated. In this case, $message must have a translation in tool/i18n
+ * @param {integer} idValue : The id's value of the object on which the result occurs
+ * @param {string} lastOperationValue : The last operation introduising this result
+ * @param {string} lastOperationStatus : The status of the last operation introduising this result
+ * @return {string} formated html message, with corresponding html input
+ */
+function setLikeResultDivMessage(messageType=null, 
+                                 message="AnUnknownErrorOccurs",
+                                 toTranslate=false,
+                                 idValue="", 
+                                 lastOperationValue="ERROR", 
+                                 lastOperationStatus="ERROR") {
+    returnValue="";
+    if (messageType!="ERROR" && messageType!="WARNING") {messageType = null;}
+    if (message=="AnUnknownErrorOccurs") { 
+        message = i18n(message);
+    } else { 
+        message = (toTranslate?i18n(message):message);
+    }
+    if (messageType!=null) {
+        returnValue = '<div class="message'+messageType+'" >'+message+'</div>';
+    } else {
+        returnValue = message;
+    }
+    returnValue += '<input type="hidden" id="lastSaveId" value="'+idValue+'" />';
+    returnValue += '<input type="hidden" id="lastOperation" value="'+lastOperationValue+'" />';
+    returnValue += '<input type="hidden" id="lastOperationStatus" value="'+lastOperationStatus+'" />';
+  return returnValue;
+}
+// MTY - FACILITY FUNCTION
+
 // Function to call console log without messing with debug
 function consoleTraceLog(message) {
   // console.log to keep
@@ -267,7 +349,7 @@ function refreshJsonPlanning() {
       url += "listShowNullAssignment=true";
       param = true;
     }
-  }
+  } 
   if(dijit.byId('projectDate').get('checked')){
 	  dijit.byId('listSaveDates').set('checked', false);
 	  dojo.setAttr('startDatePlanView', 'value', null);
@@ -1528,9 +1610,18 @@ function finalizeMessageDisplay(destination, validationType) {
             }
           }
           if (dojo.byId('buttonDivCreationInfo')) {
+// MTY - LEAVE SYSTEM    
+            if (dojo.byId("forceRefreshMenu")) {
+                if (dojo.byId("forceRefreshMenu").value.substr(0,8)=='Resource') {
+                    var url="";
+                }
+            } else {
+              
             var url = '../tool/getObjectCreationInfo.php' + '?objectClass='
                 + dojo.byId('objectClass').value + '&objectId='
                 + lastSaveId.value;
+            }  
+// MTY - LEAVE SYSTEM    
             var callback=null;
             if (dojo.byId('objectClass').value=='ProductVersion' || dojo.byId('objectClass').value=='ComponentVersion' ) {
               callback=function() {
@@ -1547,8 +1638,12 @@ function finalizeMessageDisplay(destination, validationType) {
                 }
               };
             }
+// MTY - LEAVE SYSTEM    
+            if (url!="") {
+// MTY - LEAVE SYSTEM    
             loadDiv(url, 'buttonDivCreationInfo',null, callback);
           }
+        }
         }
         forceRefreshCreationInfo = false;
         if (dojo.byId('attachmentFileDirectDiv')) {
@@ -1723,12 +1818,32 @@ function finalizeMessageDisplay(destination, validationType) {
       showWait();
       noDisconnect = true;
       quitConfirmed = true;
+// MTY - LEAVE SYSTEM
+      // forceRefreshMenu = 'Resource_xxx' when xxx = id of resource 
+      // When in Ressource Screen and isEmployee is changed and leavesSystemActiv = YES and user is the modified ressource
+      // ===> Force relead menu and return to the Resource Screen
+      if (forceRefreshMenu.substr(0,8) == "Resource") {
+            dojo.byId("directAccessPage").value = "objectMain.php";
+            dojo.byId("menuActualStatus").value = menuActualStatus;
+            dojo.byId("p1name").value = "Resource";
+            dojo.byId("p1value").value = forceRefreshMenu.substr(9);
+      } else {
+            // When Leaves System Habilitations change 
+            if (forceRefreshMenu=="leavesSystemHabilitation") {
+                dojo.byId("directAccessPage").value = "leavesSystemHabilitation.php";
+                dojo.byId("menuActualStatus").value = menuActualStatus;
+                dojo.byId("p1name").value = "";
+                dojo.byId("p1value").value = "";              
+            } else {
+// MTY - LEAVE SYSTEM        
       // window.location="../view/main.php?directAccessPage=parameter.php&menuActualStatus="
       // + menuActualStatus + "&p1name=type&p1value="+forceRefreshMenu;
       dojo.byId("directAccessPage").value = "parameter.php";
       dojo.byId("menuActualStatus").value = menuActualStatus;
       dojo.byId("p1name").value = "type";
       dojo.byId("p1value").value = forceRefreshMenu;
+            }
+      }
       forceRefreshMenu = "";
       dojo.byId("directAccessForm").submit();
     }
@@ -2073,10 +2188,18 @@ function formInitialize(specificWidgetArray) {
   enableWidget('saveButton');
   enableWidget('printButton');
   enableWidget('printButtonPdf');
-  enableWidget('copyButton');
   disableWidget('undoButton');
   hideWidget('undoButton');
+// MTY - LEAVE SYSTEM
+  // Can't delete or copy certains elements of leave system
+  if ( isLeaveMngConditionsKO()) {
+    disableWidget('copyButton');
+    disableWidget('deleteButton');      
+  } else {
+    enableWidget('copyButton');
   enableWidget('deleteButton');
+  }
+// MTY - LEAVE SYSTEM  
   enableWidget('refreshButton');
   showWidget('refreshButton');
   enableWidget('mailButton');
@@ -3259,8 +3382,7 @@ function saveReportParametersForDialog() {
   };
   loadDiv("../tool/saveReportParametersForDialog.php", "resultDiv", "reportForm", callback);
       
-}	     
-
+}	  
 /**
  * Global save function through [CTRL)+s
  */
@@ -5622,7 +5744,6 @@ function refreshImputationValidation(directDate) {
 	var start = dijit.byId('weekImputationValidation');
 	start.constraints.max=end.get('value');
 	end.constraints.min=start.get('value');
-	
 	formInitialize();
 	showWait();
 	var callback=function() {
@@ -5663,7 +5784,7 @@ function saveImputationValidation(idWorkPeriod, buttonAction){
 	    	  refreshImputationValidation(null);
 	      }
 	      if(buttonAction == 'cancelSubmit'){
-	    	  cancelSubmitbyOther(idWorkPeriod);
+	  		cancelSubmitbyOther(idWorkPeriod);
 	  	  }
 	    }
 	  });

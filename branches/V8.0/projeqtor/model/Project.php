@@ -35,8 +35,10 @@ class Project extends ProjectMain {
 	 * @param $id the id of the object in the database (null if not stored yet)
 	 * @return void
 	 */
+// MTY - LEAVE SYSTEM    
 	function __construct($id = NULL, $withoutDependentObjects=false) {
 		parent::__construct($id,$withoutDependentObjects);
+// MTY - LEAVE SYSTEM    	
 	}
 	
 	/** ==========================================================================

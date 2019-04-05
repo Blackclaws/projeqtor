@@ -70,9 +70,14 @@ $keyDownEventScript=NumberFormatter52::getKeyDownEvent();
   <link rel="stylesheet" type="text/css" href="css/jsgantt.css" />
   <link rel="stylesheet" type="text/css" href="css/projeqtor.css" />
   <link rel="stylesheet" type="text/css" href="css/projeqtorFlat.css" />
+  <link rel="stylesheet" type="text/css" href="css/projeqtorHRFlat.css" />
   <link rel="shortcut icon" href="img/logo.ico" type="image/x-icon" />
   <link rel="stylesheet" type="text/css" href="../external/dojox/form/resources/CheckedMultiSelect.css" />
   <link rel="icon" href="img/logo.ico" type="image/x-icon" />
+<!-- ELIOTT - LEAVE SYSTEM -->
+  <link rel="stylesheet" type="text/css" href="css/projeqtorHr.css" />
+  <link rel="stylesheet" href="../external/dojox/calendar/themes/tundra/Calendar.css" />
+<!-- ELIOTT - LEAVE SYSTEM -->
   <script type="text/javascript" src="../external/html2canvas/html2canvas.js?version=<?php echo $version.'.'.$build;?>"></script>
   <?php if (isHtml5()) {?>
   <script type="text/javascript" src="../external/pdfmake/pdfmake.min.js?version=<?php echo $version.'.'.$build;?>"></script>
@@ -88,6 +93,9 @@ $keyDownEventScript=NumberFormatter52::getKeyDownEvent();
   <script type="text/javascript" src="js/projeqtorDialog.js?version=<?php echo $version.'.'.$build;?>" ></script>
   <script type="text/javascript" src="js/projeqtorFormatter.js?version=<?php echo $version.'.'.$build;?>" ></script>
   <script type="text/javascript" src="../external/ckeditor/ckeditor.js?version=<?php echo $version.'.'.$build;?>"></script>
+  <!-- ELIOTT - LEAVE SYSTEM -->
+  <script type="text/javascript" src="js/projeqtorHR.js?version=<?php echo $version.'.'.$build;?>" ></script>
+<!-- ELIOTT - LEAVE SYSTEM -->
    
  <script type="text/javascript" src="../external/promise/es6-promise.min.js"></script>
  <script type="text/javascript" src="../external/promise/es6-promise.auto.min.js"></script>
@@ -227,20 +235,58 @@ $keyDownEventScript=NumberFormatter52::getKeyDownEvent();
     var scaytAutoStartup=<?php echo (Parameter::getUserParameter('scaytAutoStartup')=='NO')?'false':'true';?>;
     var offDayList='<?php echo Calendar::getOffDayList();?>';
     var workDayList='<?php echo Calendar::getWorkDayList();?>';
+// MTY - MULTI CALENDAR    
+    var uOffDayList='<?php echo Calendar::getOffDayList(getSessionUser()->idCalendarDefinition);?>';
+    var uWorkDayList='<?php echo Calendar::getWorkDayList(getSessionUser()->idCalendarDefinition);?>';
+// MTY - MULTI CALENDAR    
     var defaultOffDays=new Array();
     <?php 
-    if (Parameter::getGlobalParameter('OpenDaySunday')=='offDays') echo "defaultOffDays[0]=0;";
-    if (Parameter::getGlobalParameter('OpenDayMonday')=='offDays') echo "defaultOffDays[1]=1;"; 
-    if (Parameter::getGlobalParameter('OpenDayTuesday')=='offDays') echo "defaultOffDays[2]=2;"; 
-    if (Parameter::getGlobalParameter('OpenDayWednesday')=='offDays') echo "defaultOffDays[3]=3;"; 
-    if (Parameter::getGlobalParameter('OpenDayThursday')=='offDays') echo "defaultOffDays[4]=4;"; 
-    if (Parameter::getGlobalParameter('OpenDayFriday')=='offDays') echo "defaultOffDays[5]=5;"; 
-    if (Parameter::getGlobalParameter('OpenDaySaturday')=='offDays') echo "defaultOffDays[6]=6;"; 
+// MTY - GENERIC DAY OFF
+    $defaultOffDays = array();
+    if (Parameter::getGlobalParameter('OpenDaySunday')=='offDays') {
+        echo "defaultOffDays[0]=0;";
+        $defaultOffDays[0] = 1;
+    }    
+    if (Parameter::getGlobalParameter('OpenDayMonday')=='offDays') {
+        echo "defaultOffDays[1]=1;"; 
+        $defaultOffDays[1] = 1;
+    }    
+    if (Parameter::getGlobalParameter('OpenDayTuesday')=='offDays') {
+        echo "defaultOffDays[2]=2;"; 
+        $defaultOffDays[2] = 1;
+    }    
+    if (Parameter::getGlobalParameter('OpenDayWednesday')=='offDays') {
+        echo "defaultOffDays[3]=3;"; 
+        $defaultOffDays[3] = 1;
+    }    
+    if (Parameter::getGlobalParameter('OpenDayThursday')=='offDays') {
+        echo "defaultOffDays[4]=4;";
+        $defaultOffDays[4] = 1;
+    }    
+    if (Parameter::getGlobalParameter('OpenDayFriday')=='offDays') {
+        echo "defaultOffDays[5]=5;"; 
+        $defaultOffDays[5] = 1;
+    }    
+    if (Parameter::getGlobalParameter('OpenDaySaturday')=='offDays') {
+        echo "defaultOffDays[6]=6;";
+        $defaultOffDays[6] = 1;        
+    }    
+    $calDef = new CalendarDefinition(getSessionUser()->idCalendarDefinition);
+    for ($i=0;$i<=6;$i++) {
+        $dayOfWeek = "dayOfWeek".$i;
+        if ($calDef->$dayOfWeek==1 and !array_key_exists($i, $defaultOffDays)) {
+            echo "defaultOffDays[$i]=$i;";
+        }
+    }
+// MTY - GENERIC DAY OFF
     ?>
 // BEGIN - ADD BY TABARY - NOTIFICATION SYSTEM
     var paramNotificationSystemActiv="<?php echo Parameter::getGlobalParameter("notificationSystemActiv")?>";
     var totalUnreadNotificationsCount=0;
 // END - ADD BY TABARY - NOTIFICATION SYSTEM
+// MTY - LEAVE SYSTEM
+    var isLeaveSystemActiv = <?php echo (isLeavesSystemActiv()?1:0); ?>;
+// MTY - LEAVE SYSTEM
     var draftSeparator='<?php echo Parameter::getGlobalParameter('draftSeparator');?>';
     var paramCurrency='<?php echo $currency;?>';
     var paramCurrencyPosition='<?php echo $currencyPosition;?>';
@@ -366,6 +412,26 @@ $keyDownEventScript=NumberFormatter52::getKeyDownEvent();
         $firstPage=$paramFirstPage;
       }
       if (array_key_exists("directAccessPage",$_REQUEST)) {
+ // MTY - LEAVE SYSTEM
+        // After reload when changing Resource and :
+        //      - leavesSystemActif = true 
+        //      - ressource.isemployee is changed to false
+        //      - ressource.id = user.id
+        if ($_REQUEST["directAccessPage"]=== "objectMain.php") {
+            if (array_key_exists("p1name", $_REQUEST)) {
+                if ($_REQUEST['p1name']=='Resource') {
+                    $class='Resource';
+                    $id=$_REQUEST['p1value'];
+                    $directObj=new $class($id);
+                    $rights=$user->getAccessControlRights();
+                    echo "dojo.byId('directAccessPage').value='';";
+                    echo "dojo.byId('menuActualStatus').value='';";
+                    echo 'gotoElement("' . $class . '","' . $id . '");';
+                    $firstPage="";
+                }
+            }
+        } else {
+// MTY - LEAVE SYSTEM          
         securityCheckRequest();
         $firstPage=$_REQUEST['directAccessPage'];
         /* This part is obsolete in V6.4 and would lead to open the menu
@@ -387,6 +453,7 @@ $keyDownEventScript=NumberFormatter52::getKeyDownEvent();
         }
         echo "dojo.byId('directAccessPage').value='';";
         echo "dojo.byId('menuActualStatus').value='';";
+}        
       } else if (array_key_exists('objectClass', $_REQUEST) and array_key_exists('objectId', $_REQUEST) ) {
         $class=$_REQUEST['objectClass'];
 		    Security::checkValidClass($class);
@@ -436,6 +503,16 @@ $keyDownEventScript=NumberFormatter52::getKeyDownEvent();
       dojo.byId("loadingDiv").style.display="none";
       dojo.byId("mainDiv").style.visibility="visible"; 
       setTimeout('checkAlert();',5000); //first check at 5 seco 
+
+// MTY - LEAVE SYSTEM
+      <?php
+        if (isLeavesSystemActiv() and getSessionUser()->isEmployee or isLeavesAdmin(getSessionUser()->id)) {
+      ?>
+            checkLeavesEarned(<?php echo getSessionUser()->id?>);
+      <?php
+        }
+      ?>
+// MTY - LEAVE SYSTEM
       <?php if ($firstPage=="welcome.php") {?>
           //setTimeout("runWelcomeAnimation();",2000);
       <?php } ?>

@@ -150,6 +150,16 @@ if ($type == 'empty') {
   if (array_key_exists ( 'selected', $_REQUEST )) {
     $selected = $_REQUEST ['selected'];
   }
+// MTY - LEAVE SYSTEM
+  $leaveProjectId=null;
+  if (isLeavesSystemActiv()) {
+    if (array_key_exists("withoutLeaveProject", $_REQUEST)) {
+          if ($_REQUEST['withoutLeaveProject']==1) {
+              $leaveProjectId = Project::getLeaveProjectId();
+          }
+    }
+  }
+// MTY - LEAVE SYSTEM    
   if ($dataType == 'planning') {
     $class = 'Project';
   } else {
@@ -202,6 +212,13 @@ if ($type == 'empty') {
       if ($prj != '*' and ! isset ( $restrictArray [$prj] ) or trim ( $prj ) == '') {
         unset ( $list [$prj] );
       }
+// MTY - LEAVE SYSTEM
+      if (isLeavesSystemActiv()) {
+        if ($leaveProjectId!=null and $prj == $leaveProjectId) {
+          unset ( $list [$prj] );              
+    }
+      }
+// MTY - LEAVE SYSTEM
     }
   } else if ($dataType == 'idProfile' and array_key_exists ( 'critField', $_REQUEST ) and array_key_exists ( 'critValue', $_REQUEST ) and $_REQUEST ['critField'] == 'idProject') {
     $idProj = $_REQUEST ['critValue'];
@@ -355,6 +372,14 @@ if ($type == 'empty') {
       $list = array_intersect_key ( $list, $listVisibleRes );
     }
     // ADD BY Marc TABARY - 2017-02-22 - RESOURCE VISIBILITY (list teamOrga)
+// MTY - LEAVE SYSTEM
+    if ($class == 'Project' and isLeavesSystemActiv()) {
+        if (!Project::isProjectLeaveVisible()) {
+            $idLeavePrj = Project::getLeaveProjectId();
+            unset($list[$idLeavePrj]);
+  }
+    }
+// MTY - LEAVE SYSTEM
   }
   if ($critField == 'scope' and $dataType = 'idEvent') {
     if (SqlElement::class_exists ( $critValue )) {

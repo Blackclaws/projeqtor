@@ -24,6 +24,14 @@
  *     
  *** DO NOT REMOVE THIS NOTICE ************************************************/
 
+// MTY - LEAVE SYSTEM
+// RULES :
+// x Don't take assignment for the LeaveProject if it's not visible by the connected user
+//      Done in getLines
+// x Can't imputate on an assignment that is in the leave project
+//      Done in getLines
+
+
 /**
  * ============================================================================
  * Project is the main object of the project managmement.
@@ -122,6 +130,23 @@ class ImputationLine {
     if (!$showIdle) {
       $critWhere.=" and idle=0";
     }
+// MTY - LEAVE SYSTEM
+    if (isLeavesSystemActiv()) {
+        // Don't take assignment for the LeaveProject if it's not visible by the connected user
+        if ($resourceId != $user->id) {
+            $theRes = new Resource($resourceId);
+        } else {
+            $theRes = $user;
+        }
+        $leaveProject = Project::getLeaveProject();
+        if ($leaveProject!=null) {$leaveProjectId = $leaveProject->id;} else {$leaveProjectId=null;};
+        if ($theRes->isEmployee==0 and $leaveProjectId!=null) {
+                    $critWhere .= " and idProject <> ". $leaveProjectId;
+        }
+    } else {
+        $leaveProjectId=null;
+    }
+// MTY - LEAVE SYSTEM
     $ass=new Assignment();
     $assList=$ass->getSqlElementsFromCriteria(null, false, $critWhere, null, true, true);
     
@@ -258,6 +283,14 @@ class ImputationLine {
     $notElementary=array();
     $cptNotAssigned=0;
     foreach ($assList as $idAss=>$ass) {
+// MTY - LEAVE SYSTEM
+      if (isLeavesSystemActiv()) {
+        // Can't imputate on an assignment that is in the leave project
+        if ($ass->idProject == $leaveProjectId && $leaveProjectId<>null) {
+            $ass->_locked = true;
+        }
+      }
+// MTY - LEAVE SYSTEM
       $elt=new ImputationLine();
       $elt->idle=$ass->idle;
       $elt->refType=$ass->refType;

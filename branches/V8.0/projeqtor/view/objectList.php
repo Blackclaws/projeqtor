@@ -313,7 +313,19 @@ if (property_exists($objectClass,'idStatus')) {
                 </div>
               </td>
               <?php }?>              
-              <?php if ( !$hideTypeSearch and property_exists($obj,'id' . $objectClass . 'Type') ) { ?>
+              <?php 
+// MTY - LEAVE SYSTEM        
+              $idClassType = "id". $objectClass. "Type";
+              if ( (!$hideTypeSearch and property_exists($obj,'id' . $objectClass . 'Type')) 
+              or (!$hideTypeSearch and $objectClass=='EmployeeLeaveEarned' and property_exists($obj,'idLeaveType')) ) {
+                if ($objectClass=="EmployeeLeaveEarned") {
+                  $idClassType = "idLeaveType";
+                } else {
+                  $idClassType = "id". $objectClass. "Type";
+                }
+//              if ( !$hideTypeSearch and property_exists($obj,'id' . $objectClass . 'Type') ) { 
+// MTY - LEAVE SYSTEM              
+              ?>
               <td style="vertical-align: middle; text-align:right;" width="5px">
                  <span class="nobr">&nbsp;&nbsp;&nbsp;
                 <?php echo i18n("colType");?>
@@ -323,8 +335,12 @@ if (property_exists($objectClass,'idStatus')) {
                 <select title="<?php echo i18n('filterOnType')?>" type="text" class="filterField roundedLeft" dojoType="dijit.form.FilteringSelect"
                 <?php echo autoOpenFilteringSelect();?> 
                 id="listTypeFilter" name="listTypeFilter" style="width:<?php echo $referenceWidth*4;?>px" value="<?php if(!$comboDetail and sessionValueExists('listTypeFilter'.$objectClass)){ echo getSessionValue('listTypeFilter'.$objectClass); }?>">
-                  <?php htmlDrawOptionForReference('id' . $objectClass . 'Type', $objectType, $obj, false); ?>
-                  <script type="dojo/method" event="onChange" >
+                <?php 
+// MTY - LEAVE SYSTEM              
+                    htmlDrawOptionForReference($idClassType, $objectType, $obj, false); 
+//                    htmlDrawOptionForReference('id' . $objectClass . 'Type', $objectType, $obj, false); 
+// MTY - LEAVE SYSTEM              
+                ?>                  <script type="dojo/method" event="onChange" >
                     refreshJsonList('<?php echo $objectClass;?>');
                   </script>
                 </select>

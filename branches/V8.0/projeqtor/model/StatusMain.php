@@ -44,6 +44,12 @@ class StatusMain extends SqlElement {
   public $idle;
   public $_sec_void;
   public $isCopyStatus;
+// MTY - LEAVE SYSTEM  
+  public $_sec_Leave;  
+  public $setSubmittedLeave;
+  public $setAcceptedLeave;
+  public $setRejectedLeave;
+// MTY - LEAVE SYSTEM  
   
   // Define the layout that will be used for lists
   private static $_layout='
@@ -59,6 +65,11 @@ class StatusMain extends SqlElement {
     ';
 
   private static $_fieldsAttributes=array(
+// MTY - LEAVE SYSTEM        
+      "setSubmittedLeave"=>"hidden",
+      "setRejectedLeave"=>"hidden",
+      "setAcceptedLeave"=>"hidden",
+// MTY - LEAVE SYSTEM  
       "isCopyStatus"=>"hidden", 
       "name"=>"required"
   );
@@ -69,6 +80,15 @@ class StatusMain extends SqlElement {
    */ 
   function __construct($id = NULL, $withoutDependentObjects=false) {
     parent::__construct($id,$withoutDependentObjects);
+// MTY - LEAVE SYSTEM  
+    if (isLeavesSystemActiv()) {
+        self::$_fieldsAttributes['setSubmittedLeave']="";
+        self::$_fieldsAttributes['setAcceptedLeave']="";
+        self::$_fieldsAttributes['setRejectedLeave']="";
+    } else {
+        unset($this->_sec_Leave);
+  }
+// MTY - LEAVE SYSTEM  
   }
 
   
@@ -108,5 +128,122 @@ class StatusMain extends SqlElement {
     }
     return $result;
   }
+  
+// MTY - LEAVE SYSTEM  
+  public function save() {
+      $old = $this->getOld();
+      $result = parent::save();
+      
+      if ($this->setSubmittedLeave != $old->setSubmittedLeave or
+          $this->setAcceptedLeave != $old->setAcceptedLeave or
+          $this->setRejectedLeave != $old->setRejectedLeave
+         ) {
+        
+        // ==============================  
+        // UNSYNCHRONIZED => SYNCHRONIZED  
+        // ==============================  
+        // Update leaves that where unsynchronized and are synchronized now
+        $whereClause = "idStatus = ".$this->id." AND statusSetLeaveChange=1 AND statusOutOfWorkflow=0 AND (";
+        // SUBMITTED
+        if ($this->setSubmittedLeave != $old->setSubmittedLeave) {
+            $whereClause .= "submitted=".($this->setSubmittedLeave==1?1:0);            
 }
-?>
+        // ACCEPTED
+        if ($this->setAcceptedLeave != $old->setAcceptedLeave) {
+            $whereClause .= " AND accepted=".($this->setAcceptedLeave==1?1:0);            
+        }
+        // REJECTED
+        if ($this->setRejectedLeave != $old->setRejectedLeave) {
+            $whereClause .= " AND rejected=".($this->setRejectedLeave==1?1:0);            
+        }
+        $whereClause .= ")";
+        $leave = new Leave();
+        // Set statusSetLeaveChange = 0
+        $query = "update ".$leave->getDatabaseTableName()." set statusSetLeaveChange=0 WHERE ".$whereClause;
+        SqlDirectElement::execute($query);
+
+        // ==============================  
+        // SYNCHRONIZED => UNSYNCHRONIZED  
+        // ==============================          
+        // Check if leaves with this status are unsynchronized with setXXXXLeave
+        $whereClause = "idStatus = ".$this->id." AND statusSetLeaveChange=0 AND statusOutOfWorkflow = 0 AND (";
+        // SUBMITTED
+        if ($this->setSubmittedLeave != $old->setSubmittedLeave) {
+            $whereClause .= "submitted=".($this->setSubmittedLeave==1?0:1);            
+        }
+        // ACCEPTED
+        if ($this->setAcceptedLeave != $old->setAcceptedLeave) {
+            $whereClause .= " OR accepted=".($this->setAcceptedLeave==1?0:1);            
+        }
+        // REJECTED
+        if ($this->setRejectedLeave != $old->setRejectedLeave) {
+            $whereClause .= " OR rejected=".($this->setRejectedLeave==1?0:1);            
+        }
+        $whereClause .=")";
+        // Search leave concerned by change
+        $leaveList = $leave->getSqlElementsFromCriteria(null,false,$whereClause);
+        $l=count($leaveList);
+        // No leave => Nothing else to do
+        if ($l===0) { return $result;}
+          
+        // Set statusSetLeaveChange = 1
+        $query = "update ".$leave->getDatabaseTableName()." set statusSetLeaveChange=1 WHERE ".$whereClause;
+        SqlDirectElement::execute($query);
+
+        // Send Notification or Alert or email
+        // Sender = User
+        $receivers[0] = getSessionUser();            
+        // Receiver = leaves admin
+        $receivers[1] = getLeavesAdmin();
+
+        $title = i18n("ChangesOnStatusHasImpactOnLeaves");
+        $content = i18n("StatusSetTransitionLeaveHasChange");
+        $name = strtoupper(i18n("Status"))." - ".i18n("maintenanceOnLeavesRequired");
+        sendNotification($receivers, $this, "WARNING", $title, $content, $name);        
+      }           
+      return $result;
+  }
+  
+  
+  
+  /* ========================================================================================
+  * VALIDATION SCRIPT
+    ======================================================================================== */   
+  
+   /** ==========================================================================
+   * Return the validation sript for some fields
+   * @return the validation javascript (for dojo frameword)
+   */
+  public function getValidationScript($colName) {
+    $colScript = parent::getValidationScript($colName);
+    
+    if($colName=="setSubmittedLeave"){
+        $colScript.='<script type="dojo/connect" event="onChange" >';
+        $colScript.='    statusSetLeaveFalse(this,"Rejected","Validated");';
+        $colScript.= '</script>';
+    }
+    if($colName=="setRejectedLeave"){
+        $colScript.='<script type="dojo/connect" event="onChange" >';
+        $colScript.='    statusSetLeaveFalse(this,"Submitted","Validated");';
+        $colScript.= '</script>';
+    }
+     if($colName=="setAcceptedLeave"){
+        $colScript.='<script type="dojo/connect" event="onChange" >';
+        $colScript.='    statusSetLeaveFalse(this,"Submitted","Rejected");';
+        $colScript.= '</script>';
+    }
+   
+    return $colScript;
+  }
+
+  /* ========================================================================================
+  * MISCELANIUS FUNCTIONS
+    ======================================================================================== */   
+    public function isLeaveNeutralStatus() {
+        return (($this->setAcceptedLeave==1 or $this->setRejectedLeave==1 or $this->setSubmittedLeave==1)?false:true);
+    }
+  
+// MTY - LEAVE SYSTEM  
+
+  
+}?>

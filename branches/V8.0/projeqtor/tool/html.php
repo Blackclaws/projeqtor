@@ -354,12 +354,55 @@ function htmlDrawOptionForReference($col, $selection, $obj=null, $required=false
           } 
           $type=new $typeClass($obj->$idType,true);
           if (property_exists($type,'idWorkflow') ) {
+
+// MTY - LEAVE SYSTEM              
+            if (isLeavesSystemActiv()) {
+                // For Leave System and Leave :
+                //   - Leave Admin or 
+                //   - Manager of Employee or
+                //   - Employee of the leave 
+                //   can see status
+                if ( get_class($obj)=='Leave' and 
+                     ( isLeavesAdmin() or 
+                       isManagerOfEmployee(getSessionUser()->id, $obj->idEmployee) or
+                       (getSessionUser()->isEmployee==1 and $obj->idEmployee == getSessionUser()->id)
+                     )
+                   )
+                {
+                    $admPrf = getFirstADMProfile();
+                    if ($admPrf!=null) {
+                        $profile = $admPrf->id;
+                    }
+                }
+            }  
+// MTY - LEAVE SYSTEM                            
             $ws=new WorkflowStatus();
             $crit=array('idWorkflow'=>$type->idWorkflow, 'allowed'=>1, 'idProfile'=>$profile, 'idStatusFrom'=>$obj->idStatus);
             $wsList=$ws->getSqlElementsFromCriteria($crit, false);
             $compTable=array($obj->idStatus=>'ok');
             foreach ($wsList as $ws) {
-              $compTable[$ws->idStatusTo]="ok";
+// MTY - LEAVE SYSTEM                
+              // For Leave System and Leave : 
+              //  Employee that is not Leave Admin or Manager of Employee can see only status :
+              //    - idStatus = 1
+              //    - OR setSubmittedLeave = 1
+              if ( isLeavesSystemActiv() and
+                get_class($obj)=='Leave' and 
+                !isLeavesAdmin() and 
+                !isManagerOfEmployee(getSessionUser()->id, $obj->idEmployee))
+                {
+                if ($ws->idStatusTo==1) {
+                  $compTable[$ws->idStatusTo]="ok";
+                } else {
+                  $theStatus = new Status($ws->idStatusTo);
+                  if ($theStatus->setSubmittedLeave==1 and ($theStatus->setRejectedLeave==0 and $theStatus->setAcceptedLeave==0)) {
+                    $compTable[$ws->idStatusTo]="ok";
+                  }
+                }
+              } else {
+// MTY - LEAVE SYSTEM                                
+                $compTable[$ws->idStatusTo]="ok";
+              }
             }
             $table=array_intersect_key($table,$compTable);
           }
@@ -519,6 +562,26 @@ function htmlDrawOptionForReference($col, $selection, $obj=null, $required=false
     }
     // End of $obj not set
   }
+  
+// MTY - LEAVE SYSTEM    
+    if ($col=="idEmployee") {
+        // Leave Admin can see all employee => Nothing to do
+        if (isLeavesAdmin()) {
+            $restrictArray = getUserVisibleResourcesList(true, 'List', '', true);
+        }
+        // Leave Manager can see its managed employees
+        elseif (isLeavesManager()) {
+            $manager = new EmployeeManager(getSessionUser()->id);
+            $restrictArray = $manager->getManagedEmployees();
+        } 
+        // If Employee, can see self only
+        if (getSessionUser()->isEmployee==1 and !array_key_exists(getSessionUser()->id, $restrictArray)) {
+            $restrictArray[getSessionUser()->id] = getSessionUser()->name;
+        }
+        if ($selection) $restrictArray[$selection]="OK";
+    }
+// MTY - LEAVE SYSTEM    
+    
   if ( ($col=='idResource'  or $col=='idResourceAll'  or $col=='idAccountable' or $col=='idResponsible') and Affectable::getVisibilityScope()!="all") {
     // Restrict List of affectables : restrict visibility (same Organization, or same Team or All)
     $restrictArray = getUserVisibleResourcesList(true);
@@ -634,7 +697,21 @@ function htmlDrawOptionForReference($col, $selection, $obj=null, $required=false
   $selectedFound=false;
   $next="";
   if (isset($table['*'])) unset($table['*']);
+  
+// MTY - LEAVE SYSTEM
+  if ($col=="idEmployee") {
+    $table = getUserVisibleResourcesList(true, "List",'', false, true,true);
+  }
+
+  if (isLeavesSystemActiv()) { $leaveProjectId = Project::getLeaveProjectId();}
+// MTY - LEAVE SYSTEM
   foreach($table as $key => $val) {
+// MTY - LEAVE SYSTEM
+    if ($col=="planning" and isLeavesSystemActiv()) {
+    // Don't show the leave system project
+      if ($key == $leaveProjectId) {continue;}
+    }          
+// MTY - LEAVE SYSTEM
     if (! array_key_exists($key, $excludeArray) and ( count($restrictArray)==0 or array_key_exists($key, $restrictArray) or $key==$selection) ) {
       if ( ($col=="idProject" or $col=="planning") and $sepChar!='no') {   
         if (isset($wbsList[$key])) {
@@ -682,7 +759,10 @@ function htmlDrawOptionForReference($col, $selection, $obj=null, $required=false
       }      
 // END ADD BY Marc TABARY - 2017-02-12 - ORGANIZATIONS COMBOBOX LIST
 
-      if ($col=='idResource' or $col=='idResourceAll' or $col=='idAccountable' or $col=='idResponsible') {
+// MTY - LEAVE SYSTEM      
+//      if ($col=='idResource' or $col=='idResourceAll' or $col=='idAccountable' or $col=='idResponsible') {
+      if ($col=='idResource' or $col=='idResourceAll' or $col=='idAccountable' or $col=='idResponsible' or $col=="idEmployee") {
+// MTY - LEAVE SYSTEM      
       	if ($key==$user->id) {
       		$next=$key;
       	}
@@ -696,7 +776,9 @@ function htmlDrawOptionForReference($col, $selection, $obj=null, $required=false
       	$selectedFound=true; 
       }
 // BEGIN - CHANGE BY TABARY - NOTIFICATION SYSTEM
-      if ($col=="idNotificationType" or $col=="idStatusNotification") {          
+// MTY - LEAVE SYSTEM      
+//      if ($col=="idNotificationType" or $col=="idStatusNotification") {          
+      if ($col=="idNotificationType" or $col=="idStatusNotification" or $col=="idManagmentType") {          
           echo '><span >'. htmlEncode(i18n($val)) . '</span></option>';
           if ($col=="idStatusNotification") {
               if ($selection==1) { $next=2; } else { $next=1;}
@@ -792,11 +874,31 @@ function htmlGetDeletedMessage($className) {
  * @return void
  */
 function htmlDrawCrossTable($lineObj, $lineProp, $columnObj, $colProp, $pivotObj, $pivotProp, $format='label', $formatList=null, $break=null) {
+// MTY - LEAVE SYSTEM
+    // Don't draw leave system menu
+    $testIfLeavesSystemMenu = false;
+    if (!is_array($lineObj)) {
+        if ($lineObj=="menu" and $lineProp=="idMenu") {
+            $testIfLeavesSystemMenu = true;
+        }
+    }
+// MTY - LEAVE SYSTEM
   global $collapsedList;
 	if (is_array($lineObj)) {
     $lineList=$lineObj;
   } else {
     $lineList=SqlList::getList($lineObj);
+// MTY - LEAVE SYSTEM        
+    if (isLeavesSystemActiv() and $testIfLeavesSystemMenu) {
+      $tempLineList = $lineList;
+      // Don't draw leave system menu
+      foreach($tempLineList as $id => $line) {
+        if (isLeavesSystemMenu($id)) {
+          unset($lineList[$id]);
+        }
+      }
+    }
+// MTY - LEAVE SYSTEM        
   }
   // Filter on line (for instance will filter menu)
   if (is_array($lineObj)) {
@@ -832,6 +934,23 @@ function htmlDrawCrossTable($lineObj, $lineProp, $columnObj, $colProp, $pivotObj
   $breakVal='';
   $breakNum=0;
   foreach($lineList as $lineId => $lineName) {
+// MTY - LEAVE SYSTEM
+        // Don't show menu of leave system in habilitation if not activ
+        if (!isLeavesSystemActiv() and 
+            $pivotObj=="habilitation" and 
+            $lineObj=="menu" and 
+            in_array($lineName, leavesSystemMenuI18nList())) {
+            $breakNum=0;
+            $breakVal='';
+            continue;
+        }
+        if (!is_array($lineObj) and $lineObj=="menu") {
+          $menuName=SqlList::getNameFromId('Menu', $lineId,false);
+          if (!Module::isMenuActive($menuName)) {
+            continue;
+          }
+        }
+// MTY - LEAVE SYSTEM      
   	if ($break and ! is_array($lineObj)) {
   		$class=ucfirst($lineObj);
   		$test=new $class($lineId,true);
@@ -951,6 +1070,12 @@ function htmlGetCrossTable($lineObj, $columnObj, $pivotObj) {
       $val="";
       if (array_key_exists($name,$_REQUEST)) {
         $val=$_REQUEST[$name];
+      }
+      if (!is_array($lineObj) and $lineObj=="menu") {
+        $menuName=SqlList::getNameFromId('Menu', $lineId,false);
+        if (!Module::isMenuActive($menuName)) {
+          continue;
+        }
       }
       // Note: this needs an in-depth security review - seems to allow arbitrary manipulations of values (including access rights) by calls to saveParameter.php
       // TODO (SECURITY) : check validity of returned values
@@ -1161,6 +1286,50 @@ function htmlGetWarningMessage($message) {
   $returnValue .= '<input type="hidden" id="lastOperationStatus" value="WARNING" />';
   return $returnValue;
 }
+
+// MTY - FACILITY
+/** ============================================================================
+ * Return a message formated as a resultDiv result
+ * @param string $messageType ERROR or WARNING - If passed other value then = null and no header message
+ * @param string $message The message content. Default = 'An unknown error occurs' 
+ * @param boolean $toTranslate True, if the content must be translated. In this case, $message must have a translation in tool/i18n
+ * @param integer $idValue The id's value of the object on which the result occurs
+ * @param string $lastOperationValue The last operation introduising this result
+ * @param string $lastOperationStatus The status of the last operation introduising this result
+ * @return string formated html message, with corresponding html input
+ */
+function htmlSetResultMessage($messageType=null, 
+                              $message="AnUnknownErrorOccurs",
+                              $toTranslate=false,
+                              $idValue="", 
+                              $lastOperationValue="ERROR", 
+                              $lastOperationStatus="ERROR") {
+    $returnValue="";
+    if ($messageType!="ERROR" and $messageType!="WARNING") {$messageType = null;}
+    if ($message=="AnUnknownErrorOccurs") { $message = i18n($message);} else { $message = ($toTranslate?i18n($message):$message);}
+    if ($messageType!=null) {
+        $returnValue = '<div class="message'.$messageType.'" >' . $message . '</div>';
+    } else {
+        $returnValue = $message;
+    }
+    $returnValue .= '<input type="hidden" id="lastSaveId" value="'.$idValue.'" />';
+    $returnValue .= '<input type="hidden" id="lastOperation" value="'.$lastOperationValue.'" />';
+    $returnValue .= '<input type="hidden" id="lastOperationStatus" value="'.$lastOperationStatus.'" />';
+  return $returnValue;
+}
+
+/**
+ * Return the message contented in the result of a CRUD operation
+ * @param string $result : The result of a CRUD operation
+ * @return string : The message contented in the result
+ */
+function getResultMessage($result) {
+    $needle = '<input type="hidden" id="lastOperationStatus"';
+    $message = substr($result,0,strpos($result,$needle));
+
+    return $message;
+}
+// MTY - FACILITY
 
 /** ============================================================================
  * Return an mime/Type formated as an image

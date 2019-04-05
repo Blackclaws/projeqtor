@@ -160,12 +160,167 @@ class Calendar extends SqlElement {
     $this->week=$year.weekNumber($calendarDate);
   }
   
+  // MTY - LEAVE SYSTEM
+  private function updateLeaveLeaveEarnedPlannedWork($result, $delete) {
+    if (strpos($result, "OK")===false and strpos($result,"NO_CHANGE")===false) {return $result;}
+    // Something changes in calendar
+    if (strpos($result,"NO_CHANGE")===false) {
+        // Update offDayList,workDayList (default calendar definition) and uOffDayList, uWorkDayList (user) cookies
+        $calDef = new CalendarDefinition($this->idCalendarDefinition);
+        $calDef->updateCookiesForCalendar();
+
+        // Employee with idCalendarDefinition of this
+        $critArray = array("idle" => "0",
+                           "idCalendarDefinition" => $this->idCalendarDefinition);
+        $employee = new Employee();
+        $employees = $employee->getSqlElementsFromCriteria($critArray);
+        if ($employees) {
+            $employeeIdIn = "idEmployee in (";
+            foreach ($employees as $employee) {
+                $employeeIdIn .= $employee->id . ",";
+            }
+            $employeeIdIn = substr($employeeIdIn, 0,-1).")";                
+        } else {
+            $employeeIdIn = "";
+        }
+        // update recorded leaves which have an Employee associated to this calendar :
+        if ($employeeIdIn!="") {
+            $lv = new Leave();
+            $critWhere="idStatus=1 AND $employeeIdIn AND startDate <= '".$this->calendarDate."' AND endDate >= '".$this->calendarDate."'";
+            $lvRq = $lv->getSqlElementsFromCriteria(null,false,$critWhere);
+            foreach($lvRq as $leave){
+                // Update NbDays
+                $oldLeave = $leave->getOld();
+                $leave->calculateNbDays();
+                $deleteLeave = false;
+                if ($leave->nbDays==0) {
+                    $deleteLeave=true;
+                    $critPurge="id=$leave->id";
+                    $resultL = $leave->purge($critPurge);
+                } else {
+                    $resultL = $leave->simpleSave();
+                }                
+                $lastStatus = getLastOperationStatus($resultL);
+                if($lastStatus!="OK" and $lastStatus!="NO_CHANGE"){
+                    $result = htmlSetResultMessage(null, 
+                                                  i18n("errorOnUpdatingLeaves"), 
+                                                  false,
+                                                  "", 
+                                                  "Updating nbDays of Leaves when calendar changes",
+                                                  $lastStatus);                    
+                    return $result;
+                }
+                if ($lastStatus=="NO_CHANGE") {
+                    continue;
+                }
+                // Update Leftquantity of corresponding Leave Earned
+                if ($deleteLeave) {
+                    $resultL = $leave->updateLeftQOfLeaveEarned($leave->idLeaveType,$leave->idEmployee,$leave->nbDays,(float)$oldLeave->nbDays,false, false, true);                    
+                } else {
+                    $resultL = $leave->updateLeftQOfLeaveEarned($leave->idLeaveType,$leave->idEmployee,$leave->nbDays,(float)$oldLeave->nbDays,false, true);
+                }    
+                $lastStatus = getLastOperationStatus($resultL);
+                if($lastStatus!="OK" and $lastStatus!="NO_CHANGE"){
+                    $result = htmlSetResultMessage(null, 
+                                                  i18n("errorOnUpdatingLeaves"), 
+                                                  false,
+                                                  "", 
+                                                  "Updating Leave Earned when calendar changes",
+                                                  $lastStatus);                    
+                    return $result;
+                }
+                $plWork = new PlannedWork();
+                $getIdPrjIdActIdAss = $leave->getIdProjectIdActivityIdAssignmentOfThis();
+                if ($this->isOffDay!=1 or $delete) {
+                    // Delete planned Work of corresponding date, idEmployee (idResource)
+                    $critPurge  = "idResource=$leave->idEmployee";
+                    $critPurge .= " AND idProject=".$getIdPrjIdActIdAss["idProject"];
+                    $critPurge .= " AND refType='Activity' AND refId=".$getIdPrjIdActIdAss["idActivity"];
+                    $critPurge .= " AND idAssignment = ".$getIdPrjIdActIdAss["idAssignment"];
+                    $critPurge .= " AND idLeave=$leave->id";
+                    $critPurge .= " AND workDate='$this->calendarDate'";
+                    $resultL = $plWork->purge($critPurge);
+                    $lastStatus = getLastOperationStatus($resultL);
+                    if($lastStatus!="OK" and $lastStatus!="NO_CHANGE"){
+                        $result = htmlSetResultMessage(null, 
+                                                      i18n("errorOnUpdatingLeaves"), 
+                                                      false,
+                                                      "", 
+                                                      "Purge Planned Work when calendar changes",
+                                                      $lastStatus);                    
+                        return $result;
+                    }
+                } else {
+                    // create or update the corresponding planned Work
+                    if($this->calendarDate==$leave->startDate and $leave->startAMPM=="PM"){
+                        $plWork->work=0.5;
+                    }else if($this->calendarDate==$leave->endDate and $leave->endAMPM=="AM"){
+                        $plWork->work=0.5;
+                    }else{
+                        $plWork->work=1.0;
+                    }
+                    $plWork->idResource=$leave->idEmployee;
+                    $plWork->idProject=$getIdPrjIdActIdAss["idProject"];
+                    $plWork->refType="Activity";
+                    $plWork->refId=$getIdPrjIdActIdAss["idActivity"];
+                    $plWork->idAssignment=$getIdPrjIdActIdAss["idAssignment"];
+                    $plWork->setDates($this->calendarDate);
+                    $plWork->idLeave = $leave->id;                        
+                    $critPlWork = array('idResource'=>$plWork->idResource);
+                    $critPlWork['idProject']= $plWork->idProject;
+                    $critPlWork['idAssignment']= $plWork->idAssignment;
+                    $critPlWork['refType']= $plWork->refType;
+                    $critPlWork['refId']= $plWork->refId;
+                    $critPlWork['idLeave']= $leave->id;
+                    $critPlWork['workDate']= $plWork->workDate;                    
+                    $existingPlWork = $plWork->getSqlElementsFromCriteria($critPlWork);
+                    if ($existingPlWork) {
+                        $plWork->id = $existingPlWork[0]->id;
+                    }
+                    $resultL = $plWork->simpleSave();
+                    $lastStatus = getLastOperationStatus($resultL);
+                    if($lastStatus!="OK" and $lastStatus!="NO_CHANGE"){
+                        $result = htmlSetResultMessage(null, 
+                                                      i18n("errorOnUpdatingLeaves"), 
+                                                      false,
+                                                      "", 
+                                                      "Create or Update Planned Work when calendar changes",
+                                                      $lastStatus);                    
+                        return $result;
+                    }                    
+                }
+            } // foreach($lvRq as $leave)
+        } // if ($employeeIdIn!="")
+    } // if (strpos($result,"NO_CHANGE")===false)
+    else { return $result;}
+  }
+  // MTY - LEAVE SYSTEM
+  
   public function save() {
     $this->setDates($this->calendarDate);
     $this->idle=0;
-  	return parent::save();
+    
+    $result = parent::save();
+//ELIOTT -  LEAVE SYSTEM
+    if (isLeavesSystemActiv()) {
+        $result = $this->updateLeaveLeaveEarnedPlannedWork($result, false);
+    } // if (isLeavesSystemActiv())
+//ELIOTT - LEAVE SYSTEM
+    return $result;
   }
   
+//MTY -  LEAVE SYSTEM
+  public function delete() {
+    $result = parent::delete();
+    
+    if (isLeavesSystemActiv()) {
+        $result = $this->updateLeaveLeaveEarnedPlannedWork($result, true);
+    }
+    
+    return $result;
+  }
+//MTY - LEAVE SYSTEM
+    
   public function initialize($contry,$year) {
 	  if ($contry=='fr') {  // Temporary desactivate France Holidays
 	    $aBankHolidays = array (
@@ -185,20 +340,88 @@ class Calendar extends SqlElement {
 	  }
   }
   
-  public static function getOffDayList() {
+// MTY - MULTI CALENDAR
+//  public static function getOffDayList() {
+  public static function getOffDayList($idCalDef='1',
+                                       $startDate=null,
+                                       $endDate=null,
+                                       $year=null,
+                                       $month=null,
+                                       $week=null,
+                                       $day=null) {
+// MTY - MULTI CALENDAR
   	$cal=New Calendar();
-  	$crit=array('isOffDay'=>'1', 'idCalendarDefinition'=>'1');
-  	$lst=$cal->getSqlElementsFromCriteria($crit);
+        
+// MTY - MULTI CALENDAR
+//  	$crit=array('isOffDay'=>'1', 'idCalendarDefinition'=>'1');
+        $whereClause = "isOffDay=1 AND idCalendarDefinition=$idCalDef";
+        if ($startDate!=null) {
+            $whereClause .= " AND calendarDate >= '$startDate'";
+        }
+        if ($endDate!=null) {
+            $whereClause .= " AND calendarDate <= '$endDate'";            
+        }
+        if ($startDate==null and $endDate==null) {
+            if ($year!=null) {
+                $whereClause .= " AND year=$year";
+            } elseif ($month!=null) {
+                $whereClause .= " AND month=$month";
+            } elseif ($week!=null) {
+                $whereClause .= " AND week=$week";
+            } elseif ($day!=null) {
+                $whereClause .= " AND day=$day";
+            }
+            
+        }
+        
+        $orderBy="calendarDate ASC";
+// MTY - MULTI CALENDAR
+//  	$lst=$cal->getSqlElementsFromCriteria($crit);
+  	$lst=$cal->getSqlElementsFromCriteria(null,false,$whereClause,$orderBy);
   	$res='';
   	foreach ($lst as $obj) {
   		$res.='#' . htmlEncode($obj->day) . '#';
   	}
   	return $res; 
   }
-  public static function getWorkDayList() {
+// MTY - MULTI CALENDAR
+//  public static function getWorkDayList() {
+  public static function getWorkDayList($idCalDef='1',
+                                        $startDate=null,
+                                        $endDate=null,
+                                        $year=null,
+                                        $month=null,
+                                        $week=null,
+                                        $day=null) {
+
+// MTY - MULTI CALENDAR
     $cal=New Calendar();
-    $crit=array('isOffDay'=>'0', 'idCalendarDefinition'=>'1');
-    $lst=$cal->getSqlElementsFromCriteria($crit);
+// MTY - MULTI CALENDAR
+//  	$crit=array('isOffDay'=>'0', 'idCalendarDefinition'=>'1');
+        $whereClause = "isOffDay=0 AND idCalendarDefinition=$idCalDef";
+        if ($startDate!=null) {
+            $whereClause .= " AND calendarDate >= '$startDate'";
+        }
+        if ($endDate!=null) {
+            $whereClause .= " AND calendarDate <= '$endDate'";            
+        }
+        if ($startDate==null and $endDate==null) {
+            if ($year!=null) {
+                $whereClause .= " AND year=$year";
+            } elseif ($month!=null) {
+                $whereClause .= " AND month=$month";
+            } elseif ($week!=null) {
+                $whereClause .= " AND week=$week";
+            } elseif ($day!=null) {
+                $whereClause .= " AND day=$day";
+            }
+            
+        }
+        
+        $orderBy="calendarDate ASC";
+// MTY - MULTI CALENDAR
+//    $lst=$cal->getSqlElementsFromCriteria($crit);
+    $lst=$cal->getSqlElementsFromCriteria(null,false,$whereClause,$orderBy);
     $res='';
     foreach ($lst as $obj) {
       $res.='#' . htmlEncode($obj->day) . '#';

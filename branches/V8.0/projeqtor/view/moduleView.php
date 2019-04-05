@@ -80,7 +80,9 @@ $user=getSessionUser();
         <td style="width:25%;padding:10px;vertical-align:top" class="hyperlink">
           <?php if ($mod->idModule) echo "<div style='width:40px;float:left'>&nbsp;</div>";?> 
           <div id="module_<?php echo $mod->id;?>" style="float:left;zoom:125%" dojoType="dijit.form.CheckBox" 
-           parent="<?php if ($mod->idModule) {echo $mod->idModule;}?>" type="checkbox" <?php echo ($mod->active)?'checked="checked"':'';?> class="moduleClass <?php if ($mod->idModule) {echo 'parentModule'.$mod->idModule;}?>" onclick="saveModuleStatus(<?php echo $mod->id?>,this.checked);"
+           parent="<?php if ($mod->idModule) {echo $mod->idModule;}?>" type="checkbox" <?php echo ($mod->active)?'checked="checked"':'';?> 
+           class="moduleClass <?php if ($mod->idModule) {echo 'parentModule'.$mod->idModule;}?>" 
+           onclick="saveModuleStatus(<?php echo $mod->id?>,this.checked);"
            data-dojo-props="" ></div>&nbsp;
           <label for="module_<?php echo $mod->id;?>" style="float:none;font-size:150%;font-weight:bold" class="hyperlink"><?php echo i18n($mod->name);?></label>
         </td>

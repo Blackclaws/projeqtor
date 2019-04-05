@@ -110,6 +110,9 @@ class ProjectMain extends SqlElement {
 
   // hidden
   public $sortOrder;
+// ELIOTT - LEAVE SYSTEM  
+  public $isLeaveMngProject=0;//Indicate that if it's the project dedicated to store the leave as work
+// ELIOTT - LEAVE SYSTEM  
   public $_nbColMax=3;
   // Define the layout that will be used for lists
   private static $_layout='
@@ -157,7 +160,10 @@ class ProjectMain extends SqlElement {
                                   "fixPlanning"=>"nobr",
                                   "fixPerimeter"=>"nobr",
                                   "isUnderConstruction"=>"nobr",
-                                  "excludeFromGlobalPlanning"=>"nobr"
+                                  "excludeFromGlobalPlanning"=>"nobr",
+  		                            // ELIOTT - LEAVE SYSTEM
+  		                            "isLeaveMngProject"=>"hidden"
+  		                            // ELIOTT - LEAVE SYSTEM
   );   
  
   private static $_colCaptionTransposition = array('idResource'=>'manager',
@@ -178,6 +184,49 @@ class ProjectMain extends SqlElement {
   function __construct($id = NULL, $withoutDependentObjects=false) {
     if ($id=='*') {$id='';}
   	parent::__construct($id,$withoutDependentObjects);
+  	// MTY - LEAVE SYSTEM
+  	if (isLeavesSystemActiv()) {
+  	  global $doNotRestrictLeave;
+  		// Can't see or modify a lot of attributs if this project is the leave project
+  		if ($this->isLeaveMngProject==1 and ! $doNotRestrictLeave) {
+  			self::$_fieldsAttributes['idProjectType']='readonly';
+  			self::$_fieldsAttributes['idProject']='hidden';
+  			self::$_fieldsAttributes['idStatus']='hidden';
+  			self::$_fieldsAttributes['idHealth']='hidden';
+  			self::$_fieldsAttributes['isUnderConstruction']='hidden';
+  			self::$_fieldsAttributes['handled']='hidden';
+  			self::$_fieldsAttributes['handledDate']='hidden';
+  			self::$_fieldsAttributes['done']='hidden';
+  			self::$_fieldsAttributes['doneDate']='hidden';
+  			self::$_fieldsAttributes['idle']='hidden';
+  			self::$_fieldsAttributes['idleDate']='hidden';
+  			self::$_fieldsAttributes['cancelled']='hidden';
+  			self::$_fieldsAttributes['idClient']='hidden';
+  			self::$_fieldsAttributes['idContact']='hidden';
+  			self::$_fieldsAttributes['idSponsor']='hidden';
+  			self::$_fieldsAttributes['idResource']='hidden';
+  			self::$_fieldsAttributes['fixPlanning']='hidden';
+  			self::$_fieldsAttributes['ProjectPlanningElement']='hidden';
+  	
+  			unset($this->_sec_Progress);
+  			unset($this->_sec_Affectations);
+  			unset($this->_spe_affectations);
+  			unset($this->_lib_cancelled);
+  			unset($this->_sec_ProductprojectProducts);
+  			unset($this->_ProductProject);
+  			unset($this->_sec_VersionprojectVersions);
+  			unset($this->_VersionProject);
+  			unset($this->_sec_Subprojects);
+  			unset($this->_spe_subprojects);
+  			unset($this->_sec_restrictTypes);
+  			unset($this->_spe_restrictTypes);
+  			unset($this->_sec_predecessor);
+  			unset($this->_Dependency_Predecessor);
+  			unset($this->_sec_successor);
+  			unset($this->_Dependency_Successor);
+  		}
+  	}
+  	// MTY - LEAVE SYSTEM
   }
 
    /** ==========================================================================
@@ -296,6 +345,71 @@ class ProjectMain extends SqlElement {
 // MISCELLANOUS FUNCTIONS
 // ============================================================================**********
   
+// MTY - LEAVE SYSTEM
+
+static function getLeaveProject() {
+    if (!getSessionValue('leaveProject')) {
+        $crit=['isLeaveMngProject' => '1'];
+        $prj = SqlElement::getSingleSqlElementFromCriteria('Project', $crit, true);
+        if (isset($prj->id)) {
+            setSessionValue('idLeaveProject', $prj->id);
+            setSessionValue('leaveProject', $prj);
+        } else {
+            setSessionValue('idLeaveProject', null);
+            setSessionValue('leaveProject', null);
+        }    
+    } 
+    return getSessionValue('leaveProject');
+}
+  
+  /** ==========================================================================
+   * Get the project's id that is the leave project (ie : isLeaveMngProject=1)
+   * If not done, store in session this id
+   * @return integer The leave project's id
+*/
+static function getLeaveProjectId() {
+    if (!getSessionValue('idLeaveProject')) {
+        Project::getLeaveProject();
+    }
+    $ret = getSessionValue('idLeaveProject');
+    return $ret;
+}
+
+private function setLeaveProjectId() {
+    setSessionValue('idLeaveProject', $this->id);
+}
+
+private function setLeaveProject() {
+    setSessionValue('leaveProject', $this);
+}
+
+
+/** ==========================================================================
+ * Return true if the leave Project is visible for the connected user 
+ * @return boolean True if leave system is activ and user is administrator
+*/
+static function isProjectLeaveVisible() {
+    $user = getSessionUser();
+    $ret = (($user->idProfile==1 and isLeavesSystemActiv())?true:false);
+    return $ret;
+}
+
+/** ==========================================================================
+   * Return true if the project that have the id passed in parameter is the leave project
+   * @param $id integer The project's id to test if it's the leave project
+   * @return boolean
+*/
+static function isTheLeaveProject($id=null) {
+    if ($id==null) {
+        return false;        
+    }
+    $ret = ($id==self::getLeaveProjectId()?true:false);
+    return $ret;
+}
+
+// MTY - LEAVE SYSTEM
+
+  
   /** ==========================================================================
    * Retrieves the hierarchic sub-projects of the current project
    * @return an array of Projects as sub-projects
@@ -320,6 +434,11 @@ class ProjectMain extends SqlElement {
     //uasort($subProjects,'wbsProjectSort');
     $subProjects=array();
     foreach($sorted as $projId=>$projName) {
+// MTY - LEAVE SYSTEM
+        if (isLeavesSystemActiv()) {
+          if (self::isTheLeaveProject($projId) && !self::isProjectLeaveVisible()) {continue;}
+        }
+// MTY - LEAVE SYSTEM        
       $subProjects[$projId]=new Project($projId, $withoutDependantElement);
     }
     return $subProjects;
@@ -344,6 +463,15 @@ class ProjectMain extends SqlElement {
       $crit['idle']='0';
     }
     $sorted=SqlList::getListWithCrit('Project',$crit,'name', null, ! $limitToActiveProjects);
+// MTY - LEAVE SYSTEM
+    if (isLeavesSystemActiv()) {
+        // For the Leave Project, if it's not visible by connected user ==> not taken into account
+        if (array_key_exists(self::getLeaveProjectId(), $sorted) && !self::isProjectLeaveVisible()) {
+            unset($sorted[self::getLeaveProjectId()]);
+        }
+    }
+// MTY - LEAVE SYSTEM
+    
     return $sorted;
   }
   
@@ -353,6 +481,11 @@ class ProjectMain extends SqlElement {
    */
   public function getRecursiveSubProjects($limitToActiveProjects=false) {
   scriptLog("Project($this->id)->getRecursiveSubProjects($limitToActiveProjects)");
+// MTY - LEAVE SYSTEM
+    if (isLeavesSystemActiv()) {
+      if (self::isTheLeaveProject($this->id) && !self::isProjectLeaveVisible()) {return null;}
+    }
+// MTY - LEAVE SYSTEM
     if (isset(self::$_subProjectList[$this->id])) {
     	//return self::$_subProjectList[$this->id];
     }    	
@@ -364,6 +497,11 @@ class ProjectMain extends SqlElement {
     $subProjects=$this->getSqlElementsFromCriteria($crit, false,null,null,null,true) ;
     $subProjectList=null;
     foreach ($subProjects as $subProj) {
+// MTY - LEAVE SYSTEM
+    if (isLeavesSystemActiv()) {
+      if (self::isTheLeaveProject($subProj->id) && !self::isProjectLeaveVisible()) {continue;}
+    }  
+// MTY - LEAVE SYSTEM
       $recursiveList=null;
       $recursiveList=$subProj->getRecursiveSubProjects($limitToActiveProjects);
       $arrayProj=array('id'=>$subProj->id, 'name'=>$subProj->name, 'subItems'=>$recursiveList);
@@ -413,7 +551,15 @@ class ProjectMain extends SqlElement {
     	return self::$topProjectListArray[$this->id.'#'.$includeSelf];	
     }
     if ($includeSelf) {
+// MTY - LEAVE SYSTEM
+        if (isLeavesSystemActiv()) {
+            if (!self::isTheLeaveProject($this->id) || self::isProjectLeaveVisible()) {
       return array_merge(array($this->id),$this->getTopProjectList(false));
+    }
+        } else {
+// MTY - LEAVE SYSTEM        
+            return array_merge(array($this->id),$this->getTopProjectList(false));            
+        }
     }
     if (! $this->idProject) {
       return array();
@@ -614,6 +760,12 @@ scriptLog("Project($this->id)->drawSubProjects(selectField=$selectField, recursi
     $result="<table>";
     $prjList=$this->getSqlElementsFromCriteria($critArray, false);
     foreach ($prjList as $prj) {
+// MTY - LEAVE SYSTEM
+    if (isLeavesSystemActiv()) {
+        // For the Leave Project, if it's not visible by connected user ==> not taken into account
+        if (self::isTheLeaveProject($prj->id) && !self::isProjectLeaveVisible()) {continue;}
+    }
+// MTY - LEAVE SYSTEM        
       $result.= '<tr><td valign="top" width="20px"><img src="css/images/iconList16.png" height="16px" /></td><td>';
       $result.=htmlDrawLink($prj);
       $result.= '</td></tr>';
@@ -775,11 +927,30 @@ scriptLog("Project($this->id)->drawSubProjects(selectField=$selectField, recursi
     		$subProj->save();
     	}
     }
-    
+    // MTY - LEAVE SYSTEM
+    if (isLeavesSystemActiv()) {
+    	if ($old->isLeaveMngProject==0 && $this->isLeaveMngProject==1) {
+    		$this->setLeaveProjectId();
+    		$this->setLeaveProject();
+    	}
+    }
+    // MTY - LEAVE SYSTEM
     return $result; 
 
   }
   public function delete() {
+    // MTY - LEAVE SYSTEM
+    if (isLeavesSystemActiv()) {
+    	if ($this->isLeaveMngProject) {
+    		$returnValue = i18n('cantDeleteTheLeaveMngProject');
+    		$returnStatus = "INVALID";
+    		$returnValue .= '<input type="hidden" id="lastSaveId" value="' . htmlEncode ( $this->id ) . '" />';
+    		$returnValue .= '<input type="hidden" id="lastOperation" value="save" />';
+    		$returnValue .= '<input type="hidden" id="lastOperationStatus" value="' . $returnStatus . '" />';
+    		return $returnValue;
+    	}
+    }
+    // MTY - LEAVE SYSTEM
   	$result = parent::delete();
   	User::resetAllVisibleProjects($this->id,null);
     return $result;
@@ -873,7 +1044,27 @@ scriptLog("Project($this->id)->drawSubProjects(selectField=$selectField, recursi
         $result.='<br/>' .i18n('cannotExcludeFromGlobalPlanning',array($cpt));
       }
     }
-    
+    // ELIOTT - LEAVE SYSTEM
+    if (isLeavesSystemActiv()) {
+    	// For the leave system Project (isLeaveMngProject=1)
+    	if($this->isLeaveMngProject==1){
+    		// Check if there is already one project with the attribute $isLeaveMngProject set to 1
+    		$isLvPrjRequest = $this->getFirstSqlElementFromCriteria('Project', array("isLeaveMngProject"=>1));
+    		if (!isset($isLvPrjRequest->id)) {
+    			$isLvPrjRequest=null;
+    		}
+    		if($isLvPrjRequest) {
+    			if ($isLvPrjRequest->id != $this->id){
+    				$result .= '<br/>' .i18n('leaveMngProjectAlreadyExists');
+    			}
+    		}
+    		// The Leave System Project can't have parent
+    		if ($this->idProject>0) {
+    			$result .= '<br/>' . i18n('leaveMngProjectCantHaveParentProject');
+    		}
+    	}
+    }
+    // ELIOTT - LEAVE SYSTEM
     $defaultControl=parent::control();
     if ($defaultControl!='OK') {
       $result.=$defaultControl;
@@ -884,7 +1075,7 @@ scriptLog("Project($this->id)->drawSubProjects(selectField=$selectField, recursi
     return $result;
   }
   
-  public static function getAdminitrativeProjectList($returnResultAsArray=false) {
+  public static function getAdminitrativeProjectList($returnResultAsArray=false, $withLeaveProject=true) {
   	$arrayProj=array();
   	$arrayProj[]=0;
   	$type=new ProjectType();
@@ -895,6 +1086,14 @@ scriptLog("Project($this->id)->drawSubProjects(selectField=$selectField, recursi
   		$critProj=array('idProjectType'=>$type->id);
       $listProj=$proj->getSqlElementsFromCriteria($critProj, false);
       foreach ($listProj as $proj) {
+// MTY - LEAVE SYSTEM
+                if (isLeavesSystemActiv()) {
+                    $isLvePrjt = self::isTheLeaveProject($proj->id);
+                    if ($isLvePrjt and $withLeaveProject==false) {continue;}
+                    if (self::isTheLeaveProject($proj->id) && !self::isProjectLeaveVisible()) {continue;}
+                }  
+// MTY - LEAVE SYSTEM
+          
       	$arrayProj[$proj->id]=$proj->id;
       }
   	}
@@ -909,6 +1108,11 @@ scriptLog("Project($this->id)->drawSubProjects(selectField=$selectField, recursi
     $critProj=array('fixPlanning'=>'1', 'idle'=>'0');
     $listProj=$proj->getSqlElementsFromCriteria($critProj, false);
     foreach ($listProj as $proj) {
+// MTY - LEAVE SYSTEM
+      if (isLeavesSystemActiv()) {  
+        if (self::isTheLeaveProject($proj->id) && !self::isProjectLeaveVisible()) {continue;}
+      }
+// MTY - LEAVE SYSTEM        
       $arrayProj[]=$proj->id;
       $sublist=$proj->getRecursiveSubProjectsFlatList(true);
       if ($sublist and count($sublist)>0) {
