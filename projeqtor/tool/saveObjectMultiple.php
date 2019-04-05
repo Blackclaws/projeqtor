@@ -198,6 +198,25 @@ $rate= RequestHandler::getValue('rate_multiple');
 $team=RequestHandler::getValue('idTeam_multiple');
 $changeStatusIdle=RequestHandler::getValue('changeStatusIdle');
 
+// MTY - LEAVE SYSTEM
+$startDate = "";
+if (array_key_exists('startDate',$_REQUEST)) {
+	$startDate=trim($_REQUEST['startDate']);
+}
+$endDate = "";
+if (array_key_exists('endDate',$_REQUEST)) {
+	$endDate=trim($_REQUEST['endDate']);
+}
+$quantity = "";
+if (array_key_exists('quantity',$_REQUEST)) {
+	$quantity=trim($_REQUEST['quantity']);
+}
+$isEmployee="";
+if (array_key_exists('isEmployee',$_REQUEST)) {
+	$isEmployee=trim($_REQUEST['isEmployee']);
+}
+
+// MTY - LEAVE SYSTEM
 SqlElement::unsetCurrentObject();
 
 $cptOk=0;
@@ -345,7 +364,20 @@ foreach ($selectList as $id) {
   		else $item->$pe->validatedWork=Work::convertWork($pe_validatedWork);
   	}
   }
-  $resultSave=$item->save();
+// MTY - LEAVE SYSTEM
+  if ($startDate and property_exists($item,'startDate')) {
+  	$item->startDate=$startDate;
+  }  
+  if ($endDate and property_exists($item,'endDate')) {
+  	$item->endDate=$endDate;
+  }
+  if ($quantity and property_exists($item,'quantity')) {
+  	$item->quantity=$quantity;
+  }  
+  if ($isEmployee and $isEmployee!="" and property_exists($item,'isEmployee')) {
+    $item->isEmployee=($isEmployee=='ON')?1:0;
+  }
+// MTY - LEAVE SYSTEM    $resultSave=$item->save();
   if ($note and property_exists($item,'_Note')) {
     $noteObj=new Note();
     $noteObj->refType=$className;

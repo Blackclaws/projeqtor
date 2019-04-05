@@ -156,7 +156,13 @@
     if ( array_key_exists('objectType',$_REQUEST)  and ! $quickSearch) {
       if (trim($_REQUEST['objectType'])!='') {
         $queryWhere.= ($queryWhere=='')?'':' and ';
-        $queryWhere.= $table . "." . $obj->getDatabaseColumnName('id' . $objectClass . 'Type') . "=" . Sql::str($_REQUEST['objectType']);
+// MTY - LEAVE SYSTEM        
+        if ($objectClass=="EmployeeLeaveEarned") {
+          $queryWhere.= $table . "." . $obj->getDatabaseColumnName('idLeaveType') . "=" . Sql::str($_REQUEST['objectType']);
+        } else {        
+          $queryWhere.= $table . "." . $obj->getDatabaseColumnName('id' . $objectClass . 'Type') . "=" . Sql::str($_REQUEST['objectType']);
+        }
+// MTY - LEAVE SYSTEM        
       }
     }
     // --- Direct filter on client
@@ -200,6 +206,15 @@
     	$queryWhere.=')';
     }
     //END ADD qCazelles
+// MTY - LEAVE SYSTEM
+    // Don't take the Leave Project if it's not visible for the connected user
+    if (isLeavesSystemActiv()) {
+        if ($objectClass=='Project' and !Project::isProjectLeaveVisible()) {
+            $queryWhere.= ($queryWhere=='')?'':' and ';
+            $queryWhere.= $table . ".isLeaveMngProject = 0 ";
+        }
+    }
+// MTY - LEAVE SYSTEM
     // --- Restrict to allowed projects : for Projects list
     if ($objectClass=='Project' and $accessRightRead!='ALL') {
         $accessRightRead='ALL';
@@ -208,9 +223,17 @@
         $queryWhere.= " or $table.codeType='TMP' "; // Templates projects are always visible in projects list
         $queryWhere.= ')';
     }  
-    
     // --- Restrict to allowed project taking into account selected project : for all list that are project dependant
     if (property_exists($obj, 'idProject') and sessionValueExists('project')) {
+// MTY - LEAVE SYSTEM
+        // Don't take the Leave Project if it's not visible for the connected user
+        if (isLeavesSystemActiv()) {
+            if ($objectClass!='Project' && !Project::isProjectLeaveVisible()) {
+                $queryWhere.= ($queryWhere=='')?'':' and ';
+                $queryWhere.= $table . ".idProject <> " . Project::getLeaveProjectId() . " ";
+            }
+        }
+// MTY - LEAVE SYSTEM
         if (getSessionValue('project')!='*' and !$showAllProjects) {
           $queryWhere.= ($queryWhere=='')?'':' and ';
           if ($objectClass=='Project') {
@@ -587,6 +610,78 @@
       }
     }
     
+// MTY - LEAVE SYSTEM
+    // For Class of Leave System
+    if (isLeavesSystemActiv()) {
+        if (array_key_exists($obj->getMenuClass(), leavesSystemHabilitationList())) {
+            $userId = getSessionUser()->id;
+            // If access right is OWN = In leave system, owner is 
+            // ObjectClass = Employee
+            //      - Self or manager of employee (id)
+            // ObjectClass = Other
+            //      - idUser or idEmployee
+            //      - Manager of the Employee
+            if ($accessRightRead=="OWN") {
+                // objectClass = Employee
+                if ($objectClass=="Employee") {
+                    $empMng = new EmployeeManager(getSessionUser()->id);
+                    $managedEmployees = $empMng->getManagedEmployees();
+                    // Manager
+                    if ($managedEmployees) {
+                        $queryWhere .= ($queryWhere==""?"":" AND ");
+                        $queryWhere .= "$table.id in (". getSessionUser()->id.",";
+                        foreach($managedEmployees as $key => $name) {
+                            if ($key != getSessionUser()->id) {$queryWhere .= "$key,";}
+                        }            
+                        $queryWhere .= ") ";
+                        $queryWhere = str_replace(",)",")", $queryWhere);
+                    }
+                    // Self
+                    else {
+                        $queryWhere .= ($queryWhere==""?"":" AND ");
+                        $queryWhere .= "$table.id=".getSessionUser()->id;
+                    }           
+                } 
+                // Other ObjectClass
+                else {
+                    //      - idUser or idEmployee
+                    $quote = false;
+                    if (property_exists($objectClass, "idUser")) {
+                        $queryWhere .= ($queryWhere==""?"":" AND ("). "$table.idUser = $userId ";
+                        if (property_exists($objectClass, "idEmployee")) {
+                            $queryWhere .= ($queryWhere==""?"":" OR ")."$table.idEmployee = $userId ";
+                        }
+                        $quote =true;
+                    } elseif (property_exists($objectClass, "idEmployee")) {
+                        $queryWhere .= ($queryWhere==""?"":" AND ")."$table.idEmployee = $userId ";
+                    }
+                    // Manager
+                    if (property_exists($objectClass, "idEmployee")) {
+                        $empMng = new EmployeeManager(getSessionUser()->id);
+                        $managedEmployees = $empMng->getManagedEmployees();
+                        if ($managedEmployees) {
+                            if ($quote) {
+                                $queryWhere .= ($queryWhere==""?"":" OR ");                                
+                            } else {
+                                $queryWhere .= ($queryWhere==""?"":" AND ");                                
+                            }
+                            $queryWhere .= "$table.idEmployee in (";
+                            foreach($managedEmployees as $key => $name) {
+                                $queryWhere .= "$key,";
+                            }            
+                            $queryWhere .= ") ";
+                            $queryWhere = str_replace(",)",")", $queryWhere);
+                        }                
+                    }
+                    if ($quote) {
+                        $queryWhere .=") ";
+                    }
+                }
+            }
+        }    
+    }
+// MTY - LEAVE SYSTEM
+
     if (!$queryWhere) $queryWhere='1=1';
     $query='select ' . $querySelect 
          . ' from ' . $queryFrom

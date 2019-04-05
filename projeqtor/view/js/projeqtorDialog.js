@@ -211,7 +211,7 @@ function showAlert(msg,callback) {
  *          the function to be executed if click on No button
  * @return void
  */
-function showQuestion(msg, actionYes, ActionNo) {
+function showQuestion(msg, actionYes, actionNo) {
   dojo.byId("dialogQuestionMessage").innerHTML=msg;
   dijit.byId("dialogQuestion").acceptCallbackYes=actionYes;
   dijit.byId("dialogQuestion").acceptCallbackNo=actionNo;
@@ -1091,8 +1091,8 @@ function addAttachment(attachmentType) {
     return;
   }
   dojo.byId("attachmentId").value="";
-  dojo.byId("attachmentRefType").value=dojo.byId('objectClass').value;
-  dojo.byId("attachmentRefId").value=dojo.byId("objectId").value;
+  dojo.byId("attachmentRefType").value=(dojo.byId('objectClass'))?dojo.byId('objectClass').value:'User';
+  dojo.byId("attachmentRefId").value=(dojo.byId('objectId'))?dojo.byId("objectId").value:dojo.byId("userMenuIdUser").value;
   dojo.byId("attachmentType").value=attachmentType;
   dojo.byId('attachmentFileName').innerHTML="";
   dojo.style(dojo.byId('downloadProgress'), {
@@ -5870,6 +5870,11 @@ function refreshList(field, param, paramVal, selected, destination, required, pa
     urlList+='&required=true';
   }
   if (objectClass) urlList+='&objectClass='+objectClass;
+  // MTY - LEAVE SYSTEM
+    if (destination=='idProjectPlan') {
+        urlList+='&withoutLeaveProject=1';
+    }
+// MTY - LEAVE SYSTEM
   var datastore=new dojo.data.ItemFileReadStore({
     url : urlList
   });
@@ -6618,9 +6623,9 @@ function loadMenuBarItem(item, itemName, from) {
   } else if (item == 'Absence') {
 	    loadContent("absenceMain.php", "centerDiv");
   } else if (item == 'ImputationValidation') {
-	    loadContent("imputationValidationMain.php", "centerDiv");
+	    loadContent("imputationValidationMain.php", "centerDiv");  
   } else if (item == 'AutoSendReport') {
-	    loadContent("autoSendReportList.php", "centerDiv"); 
+	loadContent("autoSendReportList.php", "centerDiv"); 
     //ADD qCazelles - GANTT
   } else if (item == 'VersionsPlanning') {
 	//CHANGE qCazelles - Correction GANTT - Ticket #100
@@ -6662,7 +6667,17 @@ function loadMenuBarItem(item, itemName, from) {
 	loadContent("dashboardRequirementMain.php", "centerDiv");
   } else if (pluginMenuPage && pluginMenuPage['menu'+item]) {
     loadMenuBarPlugin(item, itemName, from);
-  } else {  
+// ELIOTT - LEAVE SYSTEM    
+  } else if(item == "LeaveCalendar"){
+      loadContent("leaveCalendar.php", "centerDiv");
+  } else if(item == "LeavesSystemHabilitation"){
+      loadContent("LeavesSystemHabilitation.php", "centerDiv");
+  } else if(item == "DashboardEmployeeManager"){
+      loadContent("dashboardEmployeeManager.php", "centerDiv");
+// ELIOTT - LEAVE SYSTEM    
+  } else if(item == "Module"){
+    loadContent("moduleView.php", "centerDiv");
+  }else {  
     showInfo(i18n("messageSelectedNotAvailable", new Array(itemName)));
   }
   stockHistory(null,null,currentScreen);
@@ -6985,14 +7000,20 @@ function adminSendAlert() {
   }
 }
 
-function adminDisconnectAll() {
+// MTY - LEAVE SYSTEM
+// Add param 'toConfirm' set to true to adminDisconnectAll 
+// MTY - LEAVE SYSTEM
+//function adminDisconnectAll() {
+function adminDisconnectAll(toConfirm) {
   actionOK=function() {
     loadContent(
         "../tool/adminFunctionalities.php?adminFunctionality=disconnectAll&element=Audit",
         "resultDiv", "adminForm", true, 'admin');
   };
+  if (toConfirm) {
   msg=i18n('confirmDisconnectAll');
   showConfirm(msg, actionOK);
+}
 }
 
 function maintenance(operation, item) {
@@ -7947,9 +7968,9 @@ function showBigImage(objectClass, objectId, node, title, hideImage, nocache) {
     centerThumb80.style.top=topPx;
     centerThumb80.style.left=leftPx;
     centerThumb80.style.display="block";
-    var titleDivRect=dojo.byId('centerThumb80TitleContainer').getBoundingClientRect();
+    var titleDivRect=(dojo.byId('centerThumb80TitleContainer'))?dojo.byId('centerThumb80TitleContainer').getBoundingClientRect():null;
     var globalDivRect=document.documentElement.getBoundingClientRect();
-    if (titleDivRect.top+titleDivRect.height+50>globalDivRect.height) {
+    if (titleDivRect && titleDivRect.top+titleDivRect.height+50>globalDivRect.height) {
       var newTop=globalDivRect.height-titleDivRect.height-50;
       if (newTop<0) newTop=0;
       centerThumb80.style.top=newTop+'px';
@@ -8826,6 +8847,8 @@ function getMaxHeight(document){
 }
 
 function planningToCanvasToPDF(){
+
+  console.log("planningToCanvasToPDF - START");
   var iframe = document.createElement('iframe');
   
   //this onload is for firefox but also work on others browsers
@@ -9131,6 +9154,7 @@ function planningToCanvasToPDF(){
               }
               tabImage.push(ArrayToPut);
             }
+            console.log("step 6");
             for(var i=0;i<canvasList2.length;i++){
               if(canvasList2[i].width-widthIconTask>4){
                 //Add image to mapImage in base64 format
@@ -10017,10 +10041,67 @@ function cronExecutionDefinitionSave(){
   });
 }
 
+// MTY - GENERIC DAY OFF
+function addGenericBankOffDays(idCalendarDefinition) {
+    if (checkFormChangeInProgress()) {
+      showAlert(i18n('alertOngoingChange'));
+      return;
+    }
+
+    var params="&idGenericBankOffDays=0";
+    params += "&idCalendarDefinition="+idCalendarDefinition;
+    params += "&addMode=true&editMode=false";
+    
+    loadDialog('dialogGenericBankOffDays',null,true,params,true);        
+}
+
+function editGenericBankOffDays(idGenericBankOffDays,
+                                idCalendarDefinition,
+                                name,
+                                month,
+                                day,
+                                easterDay
+                                ) {
+    if (checkFormChangeInProgress()) {
+      showAlert(i18n('alertOngoingChange'));
+      return;
+    }
+    var params = "&idGenericBankOffDays="+idGenericBankOffDays;
+    params+="&idCalendarDefinition="+idCalendarDefinition;
+    params+="&name="+name;
+    params+="&month="+month;
+    params+="&day="+day;
+    params+="&easterDay="+easterDay;
+    params +="&addMode=false&editMode=true";
+    loadDialog('dialogGenericBankOffDays',null,true,params,true);    
+}
+
+function saveGenericBankOffDays() {
+  var formVar=dijit.byId('genericBankOffDaysForm');
+  if (formVar.validate()) {
+    loadContent("../tool/saveGenericBankOffDays.php", "resultDiv", "genericBankOffDaysForm", true, 'calendarBankOffDays');
+    dijit.byId('dialogGenericBankOffDays').hide();
+  } else {
+    showAlert(i18n("alertInvalidForm"));
+  }
+}
+
+function removeGenericBankOffDays(id, name) {
+    if (checkFormChangeInProgress()) {
+        showAlert(i18n('alertOngoingChange'));
+        return;
+    }
+    actionOK=function() {
+        loadContent("../tool/removeGenericBankOffDay.php?idBankOffDay="+id, "resultDiv", null, true, 'calendarBankOffDays');
+    };
+    msg=i18n('confirmDeleteGenericBankOffDay', new Array(name));
+    showConfirm(msg, actionOK);
+}
+// MTY - GENERIC DAY OFF
+
 function showDialogAutoSendReport(){
 	setTimeout(loadDialog('dialogAutoSendReport',null,true,null,true), 200);
 }
-
 function saveAutoSendReport(sendFrequency, idReport){
 	var month = dojo.byId('monthFrequency').value;
 	var week = dijit.byId('weekFrequency').get('value');
@@ -10053,4 +10134,78 @@ function saveAutoSendReport(sendFrequency, idReport){
 
 function refreshRadioButtonDiv(){
 	loadContent("../tool/refreshButtonAutoSendReport.php", "radioButtonDiv", "autoSendReportForm");
+}
+		  
+function saveModuleStatus(id,status) {
+  console.log(id+"/"+status);
+  if (id==12 && (status==false || status=='false')) {
+      actionOK = function () {
+        adminDisconnectAll(false);
+        saveModuleStatusContinue(id,status);
+      };
+      actionKO = function () {
+          dijit.byId("module_12").set("checked",true);
+      };
+      msg=i18n("thisActionWillDeleteAllsLeavesSystemElements")+"<br/><br/>"+i18n("AreYouSure")+" ?";
+      showQuestion(msg, actionOK, actionKO);
+  } else {
+    saveModuleStatusContinue(id,status);
+  }
+}   
+function saveModuleStatusContinue(id,status) {
+  var url='../tool/saveModuleStatus.php?idModule='+id+'&status='+status;
+  dojo.xhrGet({
+    url : url,
+    handleAs : "text",
+    load : function(){
+    }
+  });
+  dojo.query(".moduleClass.parentModule"+id).forEach(function(domNode){
+    var name=domNode.getAttribute('widgetid');
+    var widget=dijit.byId(name);
+    if (widget) {
+      widget.set('checked',(status==true)?true:false);
+      var idSub=name.replace('module_','');
+      var url='../tool/saveModuleStatus.php?idModule='+idSub+'&status='+status;
+      dojo.xhrGet({
+        url : url,
+        handleAs : "text",
+        load : function(){
+        }
+      });
+    }
+  });
+  saveModuleStatusCheckParent(id);  
+}
+function saveModuleStatusCheckParent(id) {
+  var wdgt=dijit.byId('module_'+id);
+  var parent=wdgt.get('parent');
+  if (parent && dojo.byId('module_'+parent)) {
+    console.log("parent="+parent);
+    var oneOn=false;
+    var allOff=true;
+    dojo.query(".moduleClass.parentModule"+parent).forEach(function(domNode){
+      var name=domNode.getAttribute('widgetid');
+      console.log("  name="+name);
+      var widget=dijit.byId(name);
+      if (widget) {
+        if (widget.get('checked')==true) {
+          allOff=false;
+          oneOn=true;
+        }
+      }
+    });
+    var status=(oneOn==true)?true:false;
+    var widget=dijit.byId('module_'+parent);
+    if (widget.get('checked')!=status) {
+      widget.set('checked',status);
+      var url='../tool/saveModuleStatus.php?idModule='+parent+'&status='+status;
+      dojo.xhrGet({
+        url : url,
+        handleAs : "text",
+        load : function(){         
+        }
+      });
+    }
+  }
 }

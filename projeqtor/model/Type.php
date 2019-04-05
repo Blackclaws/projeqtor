@@ -68,6 +68,10 @@ class Type extends SqlElement {
   public static $_cacheRestrictedTypesClass;
   public static $_cacheListRestritedTypesForClass;
   
+// MTY - LEAVE SYSTEM
+  private $___dFieldsAttributes=array();
+// MTY - LEAVE SYSTEM
+  
   // Define the layout that will be used for lists
   private static $_layout='
     <th field="id" formatter="numericFormatter" width="10%"># ${id}</th>
@@ -108,6 +112,14 @@ class Type extends SqlElement {
    */ 
   function __construct($id = NULL, $withoutDependentObjects=false) {
     parent::__construct($id,$withoutDependentObjects);
+// MTY - LEAVE SYSTEM
+    // Can't modify code = "LEAVESYST" for scope 'Activity'
+    if ($this->scope=="Activity" and $this->code=="LEAVESYST") {
+        $this->___dFieldsAttributes['code'] = "readonly";
+        $this->___dFieldsAttributes['idle'] = "readonly";
+        $this->___dFieldsAttributes['idWorkflow'] = "readonly";
+  }
+// MTY - LEAVE SYSTEM
   }
 
   
@@ -138,6 +150,21 @@ class Type extends SqlElement {
   protected function getStaticFieldsAttributes() {
     return self::$_fieldsAttributes;
   }
+  
+// MTY - LEAVE SYSTEM    
+    /**
+   * Get the dynamic attributes (or static if dynamic not found) of the field that name is passed in parameter
+   * @param String $fieldName : The fieldName for witch get attributes
+   * @return String Attributes of the field
+   */
+  public function getFieldAttributes($fieldName) {
+    if (array_key_exists ( $fieldName, $this->___dFieldsAttributes )) {
+      return $this->___dFieldsAttributes[$fieldName];
+    } else {
+        return parent::getFieldAttributes($fieldName);
+    }      
+  }
+// MTY - LEAVE SYSTEM  
   
     /** ========================================================================
    * Return the specific databaseTableName
@@ -248,6 +275,9 @@ class Type extends SqlElement {
     $result=array();
     if ($idProject ) {
       $result=SqlList::getListWithCrit('RestrictType', array('idProject'=>$idProject, 'className'=>$class),'idType');
+      global $doNotRestrictLeave;
+      $doNotRestrictLeave=true; // It is the only place where this is used... will have impact on ProjectMain::__construct()
+                               // This way is done to avoid changing the signature of constructor
       $proj=new Project($idProject,true);
       $idProjectType=$proj->idProjectType;
     } // else will retreive from project type
@@ -306,5 +336,42 @@ class Type extends SqlElement {
     self::$_cacheListRestritedTypesForClass=null;
     unsetSessionValue('listRestritedTypesForClass');
   }
+// MTY - LEAVE SYSTEM
+    public function control() {
+        $old = $this->getOld();
+        $result = parent::control();
+        $class = get_class($this);
+        // Can't create or update type with code='LEAVESYST' and scope='Activity' if code change
+        if ($class=="ActivityType" and $this->code=="LEAVESYST" and $this->code != $old->code) {
+            if ($result!="OK") {$result .= '<br/>';} else {$result="";}
+            $result .= i18n('CantGiveThisCode');
 }
-?>
+        return $result;
+    }
+
+    public function deleteControl() {
+        $result = parent::deleteControl();
+        // Can't Delete the following type : code='LEAVESYST' and scope='Activity' 
+        if ($this->scope=="Activity" and $this->code=="LEAVESYST") {
+            if ($result!="OK") {$result .= '<br/>';} else {$result="";}
+            $result .= i18n('CantDeleteTypeForThisScopeAndCode');
+        }
+        return $result;
+    }
+    
+    public function copy() {
+        if ($this->scope=='Activity' and $this->code=='LEAVESYST') {
+            $copyType = clone $this;
+            $result = i18n ( get_class ( $this ) ) . ' #' . htmlEncode ( $this->id ) . ' ' . i18n ( 'cantCopyWithThisCode' );
+            $result .= '<input type="hidden" id="lastSaveId" value="' . htmlEncode ( $copyType->id ) . '" />';
+            $result .= '<input type="hidden" id="lastOperation" value="copy" />';
+            $result .= '<input type="hidden" id="lastOperationStatus" value="INVALID" />';
+            
+            $copyType->_copyResult= $result;
+            return  $copyType;
+        }
+        return parent::copy();
+        
+    }
+// MTY - LEAVE SYSTEM
+}?>

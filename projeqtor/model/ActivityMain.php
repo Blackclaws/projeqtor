@@ -79,6 +79,9 @@ class ActivityMain extends SqlElement {
   public $_Attachment = array();
   public $_Note = array();
   public $_nbColMax = 3;
+// MTY - LEAVE SYSTEM  
+  public $_spe_isLeaveMngActivity;
+// MTY - LEAVE SYSTEM
   
   // Define the layout that will be used for lists
   private static $_layout = '
@@ -140,6 +143,44 @@ class ActivityMain extends SqlElement {
     if (Parameter::getGlobalParameter ( 'limitPlanningActivity' ) != "YES") {
       self::$_fieldsAttributes ['isPlanningActivity'] = 'hidden';
     }
+// MTY - LEAVE SYSTEM
+    // If it's an Leave activity (ie : Activity.idProject is the project Leave, id isLeaveSystemProject=1),
+    // can't modify a lot of attributes
+    $leaveProjectId = Project::getLeaveProjectId();
+    if ($leaveProjectId==$this->idProject && $leaveProjectId!=null) {
+      self::$_fieldsAttributes ['idActivity'] = 'hidden';
+      self::$_fieldsAttributes ['idProject'] = 'readonly';
+      self::$_fieldsAttributes ['idActivityType'] = 'hidden';
+      self::$_fieldsAttributes ['idStatus'] = 'hidden';
+      self::$_fieldsAttributes ['handled'] = 'hidden';
+      self::$_fieldsAttributes ['handledDate'] = 'hidden';
+      self::$_fieldsAttributes ['idle'] = 'hidden';
+      self::$_fieldsAttributes ['idleDate'] = 'hidden';
+      self::$_fieldsAttributes ['done'] = 'hidden';
+      self::$_fieldsAttributes ['doneDate'] = 'hidden';
+      self::$_fieldsAttributes ['cancelled'] = 'hidden';
+      self::$_fieldsAttributes ['idResource'] = 'hidden';
+      self::$_fieldsAttributes ['idContact'] = 'hidden';
+      self::$_fieldsAttributes ['result'] = 'hidden';
+      self::$_fieldsAttributes['ActivityPlanningElement'] = 'hidden';
+      self::$_fieldsAttributes['isPlanningActivity'] = 'hidden';
+      self::$_fieldsAttributes['idProduct'] = 'hidden';
+      self::$_fieldsAttributes['idComponent'] = 'hidden';
+      self::$_fieldsAttributes['idTargetProductVersion'] = 'hidden';
+      self::$_fieldsAttributes['idTargetComponentVersion'] = 'hidden';
+      self::$_fieldsAttributes['Origin'] = 'hidden';
+      unset($this->_sec_Progress);
+      unset($this->sec_productComponent);
+      unset($this->_sec_treatment);
+      unset($this->_sec_Assignment);      
+      unset($this->_Assignment);
+      unset($this->_sec_productComponent);
+      unset($this->_sec_predecessor);
+      unset($this->_Dependency_Predecessor);
+      unset($this->_sec_successor);
+      unset($this->_Dependency_Successor);
+  }
+// MTY - LEAVE SYSTEM
   }
   
   /**
@@ -196,6 +237,27 @@ class ActivityMain extends SqlElement {
     return self::$_databaseColumnName;
   }
   
+// MTY - LEAVE SYSTEM  
+// =============================================================================================================
+// DRAWING FUNCTION
+// =============================================================================================================
+
+  /** =========================================================================
+   * Draw a specific item for the current class.
+   * @param $item the item. 
+   * @return an html string able to display a specific item
+   *  must be redefined in the inherited class
+   */
+  public function drawSpecificItem($item,$readOnly=false,$refresh=false){
+      if ($item=='isLeaveMngActivity') {
+          if (isLeavesSystemActiv()) {
+            $leaveProject = (Project::isTheLeaveProject($this->idProject)?1:0);
+            echo '<input type="hidden" name="isLeaveMngActivity" id="isLeaveMngActivity" value='.$leaveProject.' />';
+          } else { echo '';}
+      }
+  }
+// MTY - LEAVE SYSTEM  
+  
   // ============================================================================**********
   // GET VALIDATION SCRIPT
   // ============================================================================**********
@@ -239,6 +301,56 @@ class ActivityMain extends SqlElement {
    */
   public function control() {
     $result = "";
+    $old = $this->getOld();
+    
+// MTY - LEAVE SYSTEM
+    if (isLeavesSystemActiv()) {
+        // Can't create or associate an activity on the project that is dedicated to the leave
+        $leaveProjectId = Project::getLeaveProjectId();
+        // At creation
+        //      => Can't create an activity associated with the project dedicated to the leave
+        if ($this->id==null && $leaveProjectId == $this->idProject) {
+          $result .= '<br/>' . i18n ( 'cantCreateAnActivityFromProjectLeave' );        
+        }
+        // At Update project
+        if ($this->id!=null && $old->idProject != $this->idProject) {
+            //      ==> Can't associated the activity with the project dedicated to the leave
+            if ($this->idProject == $leaveProjectId) {
+              $result .= '<br/>' . i18n ( 'cantAssociateAnActivityWithProjectLeave' );
+            }
+            //      ==> Can't change project if project is the leaveProject
+            if ($old->idProject == $leaveProjectId) {
+              $result .= '<br/>' . i18n ( 'cantChangeProjectOfActivityAssociatedWithProjectLeave' );
+            }
+        }
+
+        // At Update type
+        if ($this->id!=null && $old->idActivityType != $this->idActivityType) {
+            //      ==> Can't change the type of an activity associated with the project dedicated to the leave
+            if ($this->idProject == $leaveProjectId) {
+              $result .= '<br/>' . i18n ( 'cantChangeTypeOnActivityAssociatedWithProjectLeave' );
+            }
+        }
+
+        // At Update Parent Activity
+        if ($this->id!=null && $old->idActivity != $this->idActivity) {
+            //      ==> Can't change the Parent Activity of an activity associated with the project dedicated to the leave
+            if ($this->idProject == $leaveProjectId) {
+              $result .= '<br/>' . i18n ( 'cantChangeActivityParentOnActivityAssociatedWithProjectLeave' );
+            }
+        }
+
+        // At Update Status
+        if ($this->id!=null && $old->idStatus != $this->idStatus) {
+            //      ==> Can't change the Status of an activity associated with the project dedicated to the leave
+            if ($this->idProject == $leaveProjectId) {
+              $result .= '<br/>' . i18n ( 'cantChangeStatusOnActivityAssociatedWithProjectLeave' );
+            }
+        }
+    }
+    
+// MTY - LEAVE SYSTEM
+    
     if ($this->id and $this->id == $this->idActivity) {
       $result .= '<br/>' . i18n ( 'errorHierarchicLoop' );
     } else if ($this->ActivityPlanningElement and $this->ActivityPlanningElement->id) {
@@ -359,7 +471,7 @@ class ActivityMain extends SqlElement {
    * @see persistence/SqlElement#save()
    * @return the return message of persistence/SqlElement#save() method
    */
-  public function save() {
+  public function save($onlyProject=false) {
     $oldResource = null;
     $oldIdle = null;
     $oldIdProject = null;
@@ -390,7 +502,7 @@ class ActivityMain extends SqlElement {
       $this->ActivityPlanningElement->topRefId = $this->idProject;
       $this->ActivityPlanningElement->topId = null;
     }
-    if (trim ( $this->idProject ) != trim ( $oldIdProject ) or trim ( $this->idActivity ) != trim ( $oldIdActivity )) {
+    if ( (trim($this->idProject)!=trim($oldIdProject) and !$onlyProject) or trim($this->idActivity)!=trim( $oldIdActivity )) {
       $this->ActivityPlanningElement->wbs = null;
       $this->ActivityPlanningElement->wbsSortable = null;
     }
@@ -473,7 +585,11 @@ class ActivityMain extends SqlElement {
         foreach ( $lst as $obj ) {
           $objBis = new $elt ( $obj->id );
           $objBis->idProject = $this->idProject;
-          $tmpRes = $objBis->save ();
+          if ($elt=='Activity') {
+            $tmpRes = $objBis->save (true);
+          } else {
+            $tmpRes = $objBis->save ();
+          }
         }
       }
     }
@@ -572,6 +688,12 @@ class ActivityMain extends SqlElement {
         }
       }
     }*/
+    
+// MTY - LEAVE SYSTEM
+    if (isLeavesSystemActiv()) {
+        $leaveProjectId = Project::getLeaveProjectId();
+    }
+// MTY - LEAVE SYSTEM
     return $result;
   }
   public function setAttributes() {
@@ -580,5 +702,30 @@ class ActivityMain extends SqlElement {
     }
   }
 
+  
+// MTY - LEAVE SYSTEM  
+  /**
+   * =========================================================================
+   * Overrides SqlElement::delete() function to add specific treatments
+   * 
+   * @see persistence/SqlElement#delete()
+   * @param Boolean - withControlLeave = If the delete is made by LeaveTypeMain, then withControlLeave=false
+   * @return the return message of persistence/SqlElement#delete() method
+   */
+  public function delete($withControlLeave=true) {
+      if (isLeavesSystemActiv()) {
+        // Can't delete an activity of the leave system project.
+        $leaveProjectId = Project::getLeaveProjectId();
+        if ($leaveProjectId==$this->idProject && $withControlLeave==true && $leaveProjectId!=null) {
+          $returnValue = '<b>' . i18n ( 'messageCantDeleteAnActivityAssociatedToLeaveType' ) . '</b><br/>';
+          $returnValue .= '<input type="hidden" id="lastOperationStatus" value="INVALID" />';
+          $returnValue .= '<input type="hidden" id="lastSaveId" value="' . htmlEncode ( $this->id ) . '" />';
+          $returnValue .= '<input type="hidden" id="lastOperation" value="delete" />';
+          return $returnValue;
+}
+      }
+      return parent::delete();
+  }    
+// MTY - LEAVE SYSTEM  
 }
 ?>

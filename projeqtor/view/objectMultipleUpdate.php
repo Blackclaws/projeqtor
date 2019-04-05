@@ -167,7 +167,9 @@
             <?php }
       // Type
             $type='id'.get_class($obj).'Type';
-            if (isDisplayable($obj,$type)) {?>
+// MTY - LEAVE SYSTEM            
+//            if (isDisplayable($obj,$type)) {
+            if (isDisplayable($obj,$type) and get_class($obj)!="Leave") {?>
             <tr class="detail">
               <td class="label" style="width:<?php echo $labelWidth;?>px;"><?php echo i18n('colChangeType');?>&nbsp;:&nbsp;</td>
               <td>
@@ -681,8 +683,79 @@
                  rows="2" style="width:<?php echo $fieldWidth;?>px;" maxlength="4000" maxSize="4" class="input" ></textarea>
               </td>
             </tr>
-            <?php }?>
-          </table>
+            <?php }
+// MTY - LEAVE SYSTEM
+        $lsClass = get_class($obj);        
+       // startDate
+            if (isDisplayable($obj, 'startDate')) {
+                if ($lsClass=="EmployeeLeaveEarned") {
+                    ?>
+                    <tr class="detail">
+                      <td class="label" style="width:<?php echo $labelWidth;?>px;"><?php echo i18n('changeStartDate');?>&nbsp;:&nbsp;</td>
+                      <td>
+                        <div dojoType="dijit.form.DateTextBox" name="startDate" id="startDate"
+                        <?php if (sessionValueExists('browserLocaleDateFormatJs')) {
+                                echo ' constraints="{datePattern:\''.getSessionValue('browserLocaleDateFormatJs').'\'}" ';
+                              }?>
+                         style="width:100px;" class="input" value="" ></div>
+                      </td>
+                    </tr>
+                    <?php                 
+                }
+            }
+       // endDate
+            if (isDisplayable($obj, 'endDate')) {
+                if ($lsClass=="EmployeeLeaveEarned") {
+                ?>
+                    <tr class="detail">
+                      <td class="label" style="width:<?php echo $labelWidth;?>px;"><?php echo i18n('changeEndDate');?>&nbsp;:&nbsp;</td>
+                      <td>
+                        <div dojoType="dijit.form.DateTextBox" name="endDate" id="endDate"
+                        <?php if (sessionValueExists('browserLocaleDateFormatJs')) {
+                                echo ' constraints="{datePattern:\''.getSessionValue('browserLocaleDateFormatJs').'\'}" ';
+                              }?>
+                         style="width:100px;" class="input" value="" ></div>
+                      </td>
+                    </tr>
+                    <?php                 
+                }
+            }
+       // quantity
+            if (isDisplayable($obj,'quantity', true)) {
+                if ($lsClass=="EmployeeLeaveEarned") {
+                ?>
+                    <tr class="detail">
+                      <td class="label" style="width:<?php echo $labelWidth;?>px;"><?php echo i18n('ChangeQuantity');?>&nbsp;:&nbsp;</td>
+                      <td>
+                        <textarea dojoType="dijit.form.Textarea" name="quantity" id="quantity"
+                         rows="2" style="width:60px;" maxlength="4000" maxSize="4" class="input" ></textarea>
+                         <?php echo i18n("days");?>
+                      </td>
+                    </tr>
+                    <?php 
+                }
+            }
+       // isEmployee
+            if (isDisplayable($obj,'isEmployee', true)) {
+                if ($lsClass=="Resource") {
+                ?>
+                    <tr class="detail">
+                      <td class="label" style="width:<?php echo $labelWidth;?>px;"><?php echo i18n('changeIsEmployee');?>&nbsp;:&nbsp;</td>
+                      <td>
+                        <select dojoType="dijit.form.FilteringSelect" class="input" style="width:<?php echo $fieldWidth-25;?>px;" 
+                        <?php echo autoOpenFilteringSelect();?>
+                         id="isEmployee" name="isEmployee">
+                         <option value="ON"><?php echo i18n("checked");?></option>
+                         <option value="OFF"><?php echo i18n("unchecked");?></option>
+                        </select>
+                      </td>
+                    </tr>
+                    <?php 
+                }
+            }
+            
+// MTY - LEAVE SYSTEM
+            ?>          </table>
       </div>
       <?php $titlePane=get_class($obj)."_MultipleOthers";?>
       <br/>

@@ -35,6 +35,13 @@
    header ('Content-Type: text/html; charset=UTF-8');
    scriptLog('   ->/view/login.php');
    setSessionValue('application', "PROJEQTOR");
+// MTY - MULTI CALENDAR
+   // Delete calendar's cookies
+   setcookie("uOffDayList", "",0,'/');
+   setcookie("uWorkDayList", "",0,'/');
+   setcookie("offDayList", "",0,'/');
+   setcookie("workDayList", "",0,'/');
+// MTY - MULTI CALENDAR      
    if (getSessionValue('setup', null, true) or version_compare(ltrim(Sql::getDbVersion(),'V'), '5.0.0',"<") ) {
      $msgList=array();
    } else {

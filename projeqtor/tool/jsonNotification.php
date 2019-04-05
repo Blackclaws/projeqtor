@@ -139,6 +139,13 @@
                 $notif["definition"] = i18n("withoutNotificationDefinition");
             }
             
+// MTY - LEAVE SYSTEM            
+            // Notification without definition
+            if(is_null($notif["definition"])) {
+                $notif["definition"] = i18n("withoutNotificationDefinition");                
+            }
+// MTY - LEAVE SYSTEM
+            
             // First Level is 'Type'
             if ($notif["type"] <> $previousType) { // New Type
                 $arrayTree[$notif["type"]] = ["count" => 1, 

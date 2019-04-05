@@ -98,7 +98,14 @@
                     	  $arrayDisabled[]="CheckNotifications";
                     	}
 // END - ADD BY TABARY - NOTIFICATION SYSTEM     
-                    	if (isset($arrayTimes['CheckMailGroup']) and Mail::isMailGroupingActiv() and $arrayTimes['CheckMailGroup']!=-1) {
+// MTY - LEAVE SYSTEM
+                      if (isset($arrayTimes['CheckLeavesEarned']) and isLeavesSystemActiv() and $arrayTimes['CheckLeavesEarned']!=-1) {
+                        echo "<i><br/>&nbsp;&nbsp;&nbsp;" . i18n('adminCronCheckLeavesEarned', array($arrayTimes['CheckLeavesEarned'])) . '</i>';
+                      } else {
+                    	  $arrayDisabled[]="CheckLeavesEarned";
+                    	}
+// MTY - LEAVE SYSTEM                    	
+                      if (isset($arrayTimes['CheckMailGroup']) and Mail::isMailGroupingActiv() and $arrayTimes['CheckMailGroup']!=-1) {
                     	  echo "<i><br/>&nbsp;&nbsp;&nbsp;" . i18n('adminCronCheckMailGroup', array($arrayTimes['CheckMailGroup'],Mail::getMailGroupPeriod())) . '</i>';
                     	}else {
                     	  $arrayDisabled[]="CheckMailGroup";
@@ -248,7 +255,7 @@
                   <button id="disconnectAll" dojoType="dijit.form.Button" showlabel="true">
                     <?php echo i18n('disconnectAll'); ?>
                    <script type="dojo/connect" event="onClick" args="evt">                 
-                     adminDisconnectAll();
+                     adminDisconnectAll(true);
                      return false;
                    </script>
                  </button>

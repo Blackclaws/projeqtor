@@ -63,10 +63,14 @@ if (isset($obj)) {
   	$displayWidthButtonCI=$_REQUEST ['destinationWidth'];
   }
   ?>
-  <?php  if (property_exists($obj, 'idStatus') and $displayWidthButtonCI>=1000) {?>
+  <?php  if (property_exists($obj, 'idStatus') and $displayWidthButtonCI>=1000) {
+// Bug correction
+// Now take care of fieldAttribute      
+    $canUpdateStatus = (strpos('readonly',$obj->getFieldAttributes('idStatus'))===false?true:false);
+  ?>
   <div style="float:left;display:table-cell ;width:130px;height:35px;vertical-align:middle;position:relative;z-index:99998;">
-    <div style="width:133px;height:39px;display:table-cell;padding:0px 4px;vertical-align: middle;zoom:0.9;-moz-transform: scale(0.9);overflow:hidden;position:relative;<?php if ($updateRight) echo "cursor:pointer;";?>"
-    <?php if ($updateRight) {?> onClick="showDirectChangeStatus();" title="<?php echo i18n('moveStatusBar');?>" <?php }?> >
+    <div style="width:133px;height:39px;display:table-cell;padding:0px 4px;vertical-align: middle;zoom:0.9;-moz-transform: scale(0.9);overflow:hidden;position:relative;<?php if ($updateRight and $canUpdateStatus) echo "cursor:pointer;";?>"
+    <?php if ($updateRight and $canUpdateStatus) {?> onClick="showDirectChangeStatus();" title="<?php echo i18n('moveStatusBar');?>" <?php }?> >
     <?php if ($obj->idStatus) {
     	$status=new Status($obj->idStatus);
     	echo colorNameFormatter($status->name."#split#".$status->color);
@@ -92,12 +96,51 @@ if (isset($obj)) {
     			$type=new $typeClass($obj->$idType,true);
     			if (property_exists($type,'idWorkflow') ) {
     				$ws=new WorkflowStatus();
+// MTY - LEAVE SYSTEM
+            if (isLeavesSystemActiv()) {
+              // For Leave System and Leave :
+              //   - Leave Admin or 
+              //   - Manager of Employee or
+              //   - Employee of the leave 
+              //   can see status
+              if ($objectClass=='Leave') {
+                if (isLeavesAdmin() or isManagerOfEmployee(getSessionUser()->id, $obj->idEmployee) 
+                or (getSessionUser()->isEmployee==1 and $obj->idEmployee == getSessionUser()->id)) {
+                  $theProfile = getFirstADMProfile();
+                  if ($theProfile!=null) {
+                    $profile = $theProfile->id;
+                  }
+                }
+              }                
+            }
+// MTY - LEAVE SYSTEM
     				$crit=array('idWorkflow'=>$type->idWorkflow, 'allowed'=>1, 'idProfile'=>$profile, 'idStatusFrom'=>$obj->idStatus);
     				$wsList=$ws->getSqlElementsFromCriteria($crit, false);
     				$compTable=array($obj->idStatus=>'ok');
     				foreach ($wsList as $ws) {
-    					$compTable[$ws->idStatusTo]="ok";
-    				}
+// MTY - LEAVE SYSTEM
+              // For Leave System and Leave :
+              //   - Employee of the leave 
+              //   status that has not id = 1 and with setSubmittedLeave = 0 and setAcceptedLeave = 1 or setRejectedLeave = 1
+              // are not allowed
+              if (isLeavesSystemActiv() and $objectClass=='Leave' and $ws->idStatusTo <> 1) {
+                if ( getSessionUser()->isEmployee==1 and 
+                     $obj->idEmployee == getSessionUser()->id and
+                     !isLeavesAdmin() and 
+                     !isManagerOfEmployee(getSessionUser()->id, $obj->idEmployee)         
+                   ) {
+                  $theStatus = new Status($ws->idStatusTo);
+                  if  ($theStatus->setSubmittedLeave==1 and $theStatus->setRejectedLeave==0 and $theStatus->setAcceptedLeave==0) {
+    	  				    $compTable[$ws->idStatusTo]="ok";
+    		  		    }
+                } else {
+                  $compTable[$ws->idStatusTo]="ok";
+                }
+              } else {
+// MTY - LEAVE SYSTEM      
+                $compTable[$ws->idStatusTo]="ok";
+              }
+    				}    				
     				$table=array_intersect_key($table,$compTable);
     			}
     			$current=new Status($obj->idStatus,true);
