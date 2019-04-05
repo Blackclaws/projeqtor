@@ -39,6 +39,9 @@ $forceRefreshMenu='';
 // BEGIN - ADD BY TABARY - NOTIFICATION SYSTEM
 $changeNotificationSystemActiv=false;
 // END - ADD BY TABARY - NOTIFICATION SYSTEM
+// MTY - LEAVE SYSTEM
+$changeLeavesSystemActiv=false;
+// MTY - LEAVE SYSTEM
 if ($type=='habilitation') {
   $crosTable=htmlGetCrossTable('menu', 'profile', 'habilitation') ;
   $hab=new Habilitation();
@@ -254,6 +257,10 @@ if ($type=='habilitation') {
 // BEGIN - ADD BY TABARY - NOTIFICATION SYSTEM
   $changeNotificationSystemActiv = false;
 // END - ADD BY TABARY - NOTIFICATION SYSTEM  
+// MTY - LEAVE SYSTEM
+  $changeLeavesSystemActiv = false;  
+// MTY - LEAVE SYSTEM  
+  
   foreach($_REQUEST as $fld => $val) { // TODO (SECURITY) : forbit writting of db and prefix params
     if (array_key_exists($fld, $parameterList)) {
       $crit['parameterCode']=$fld;
@@ -281,6 +288,17 @@ if ($type=='habilitation') {
           $changeNotificationSystemActiv = true;
       }
 // END - ADD BY TABARY - NOTIFICATION SYSTEM      
+// MTY - LEAVE SYSTEM
+      if ($obj->parameterValue!=$val and $obj->parameterCode=="leavesSystemActiv") {
+          $changeLeavesSystemActiv = true;
+      }
+      if ($obj->parameterValue!=$val and $obj->parameterCode=="leavesSystemAdmin") {
+          if ($val == getSessionUser()->id or $obj->parameterValue == getSessionUser()->id) {
+            $changeLeavesSystemActiv = true;
+          }
+      }      
+// MTY - LEAVE SYSTEM
+      $oldValue = $obj->parameterValue;
       $obj->parameterValue=$val;
       $obj->idUser=null;
       $obj->idProject=null;
@@ -297,6 +315,27 @@ if ($type=='habilitation') {
           $status="OK";
         }
       }
+
+// MTY - GENERIC DAY OFF
+      if (substr($obj->parameterCode,0,7)=="OpenDay" and $oldValue!=$val and $isSaveOK) {
+        $weekDayNumWeekDayName = array("OpenDaySunday"=>"dayOfWeek0",
+                                       "OpenDayMonday"=>"dayOfWeek1",
+                                       "OpenDayTuesday"=>"dayOfWeek2",
+                                       "OpenDayWednesday"=>"dayOfWeek3",
+                                       "OpenDayThursday"=>"dayOfWeek4",
+                                       "OpenDayFriday"=>"dayOfWeek5",
+                                       "OpenDaySaturday"=>"dayOfWeek6");
+        $calDef = new CalendarDefinition();
+        $critCalDef = array("idle" => "0");
+        $calDefList = $calDef->getSqlElementsFromCriteria($critCalDef);
+        $theField = $weekDayNumWeekDayName[$obj->parameterCode];
+        foreach($calDefList as $calDef) {
+            $calDef->$theField = ($val=="openDays"?0:1);
+            $calDef->save(true);
+        }          
+      }      
+// MTY - GENERIC DAY OFF
+      
     }/* else if  ($fld=='imputationAlertGenerationDay'  or $fld=='imputationAlertGenerationHour'
        or $fld=='imputationAlertControlDay'     or $fld=='imputationAlertControlNumberOfDays'
        or $fld=='imputationAlertSendToResource' or $fld=='imputationAlertSendToProjectLeader'
@@ -341,6 +380,13 @@ if ($type=='habilitation') {
      resetUser();
   }
 // END - ADD BY TABARY - NOTIFICATION SYSTEM    
+// MTY - LEAVE SYSTEM
+  if ($changeLeavesSystemActiv) {
+     unsetSessionValue("leavesSystemMenus"); 
+     $forceRefreshMenu="globalParameter";
+     resetUser();
+  }
+// MTY - LEAVE SYSTEM    
   Parameter::clearGlobalParameters();// force refresh 
 } else {
    $errors="Save not implemented";

@@ -185,9 +185,15 @@
   }
   // Remove administrative projects :
   $queryWhere.= ($queryWhere=='')?'':' and ';
+// MTY - LEAVE SYSTEM
+   // If it's not the leave system project and portfolio
+  if ($portfolio and isLeavesSystemActiv()) {
+      $queryWhere.=  "(".$table . ".idProject not in " . Project::getAdminitrativeProjectList() ;      
+      $queryWhere.=  " OR ".$table . ".idProject = " . Project::getLeaveProjectId().") " ;      
+  } else {
   $queryWhere.=  $table . ".idProject not in " . Project::getAdminitrativeProjectList() ;
-
-  
+  }
+// MTY - LEAVE SYSTEM
   $querySelect .= $table . ".* ";
   $queryOrderBy .= $table . ".wbsSortable ";
   if ($global) {

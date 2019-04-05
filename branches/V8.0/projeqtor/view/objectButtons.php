@@ -48,6 +48,12 @@
   if (! isset($noselect)) {
   	$noselect=false;
   }
+
+// MTY - LEAVE SYSTEM
+    // Can't delete or copy if leave conditions are'nt satisfed.
+    $noSelectLeaveDeleteCopy = isLeaveMngConditionsKO($class, $id);
+// MTY - LEAVE SYSTEM  
+    
   $printPage="objectDetail.php";
   $printPagePdf="objectDetail.php";
   $modePdf='pdf';
@@ -222,7 +228,11 @@
       <?php organizeButtons();?>
       <button id="copyButton" dojoType="dijit.form.Button" showlabel="false"
        title="<?php echo i18n('buttonCopy', array(i18n($_REQUEST['objectClass'])));?>"
-       <?php if ($noselect) {echo "disabled";} ?>
+       <?php
+// MTY - LEAVE SYSTEM       
+            if ($noselect or $noSelectLeaveDeleteCopy) {echo "disabled";}
+// MTY - LEAVE SYSTEM       
+       ?>
        iconClass="dijitButtonIcon dijitButtonIconCopy" class="detailButton">
         <script type="dojo/connect" event="onClick" args="evt">
           hideExtraButtons('extraButtonsDetail');
@@ -311,7 +321,11 @@
       <?php organizeButtons();?>
       <button id="deleteButton" dojoType="dijit.form.Button" showlabel="false" 
        title="<?php echo i18n('buttonDelete', array(i18n($_REQUEST['objectClass'])));?>"
-       <?php if ($noselect) {echo "disabled";} ?> 
+       <?php
+// MTY - LEAVE SYSTEM       
+            if ($noselect or $noSelectLeaveDeleteCopy) {echo "disabled";} 
+// MTY - LEAVE SYSTEM       
+       ?> 
        iconClass="dijitButtonIcon dijitButtonIconDelete" class="detailButton">
         <script type="dojo/connect" event="onClick" args="evt">
           dojo.byId("deleteButton").blur();

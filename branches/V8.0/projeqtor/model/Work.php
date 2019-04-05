@@ -32,7 +32,7 @@ class Work extends GeneralWork {
 
 	 public $idBill;
 	 public $idWorkElement;
-	 
+   public $idLeave;//Eliott - LEAVE MANAGEMENT	 
 	 private static $_colCaptionTransposition = array(
 	     'workDate'=>'date'
 	 );

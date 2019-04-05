@@ -360,10 +360,11 @@ function drawTableFromObjectList($objectList) {
     <button id="saveParameterButton" dojoType="dijit.form.Button"
       showlabel="false"
       title="<?php echo i18n('buttonSaveParameters');?>"
-      iconClass="dijitButtonIcon dijitButtonIconSave" class="detailButton"><script
-      type="dojo/connect" event="onClick" args="evt">
-        	submitForm("../tool/saveParameter.php","resultDiv", "parameterForm", true);
-          </script></button>
+      iconClass="dijitButtonIcon dijitButtonIconSave" class="detailButton">
+        <script type="dojo/connect" event="onClick" args="evt">              
+          submitForm("../tool/saveParameter.php","resultDiv", "parameterForm", true);
+        </script>
+    </button>
     <div dojoType="dijit.Tooltip" connectId="saveButton"><?php echo i18n("buttonSaveParameter")?></div>
     </td>
     <td style="position:relative;">
@@ -375,8 +376,9 @@ function drawTableFromObjectList($objectList) {
 <div id="formDiv" dojoType="dijit.layout.ContentPane" region="center"
   style="overflow-y: auto; overflow-x: hidden;">
 <form dojoType="dijit.form.Form" id="parameterForm" jsId="parameterForm"
-  name="parameterForm" encType="multipart/form-data" action="" method=""><input
-  type="hidden" name="parameterType" value="<?php echo $type;?>" /> <?php 
+  name="parameterForm" encType="multipart/form-data" action="" method="">
+  <input type="hidden" name="parameterType" value="<?php echo $type;?>" />
+  <?php 
   if ($type=='habilitation') {
   	htmlDrawCrossTable('menu', 'idMenu', 'profile', 'idProfile', 'habilitation', 'allowAccess', 'check', null,'idMenu') ;
   } else if ($type=='accessRight') {
@@ -511,7 +513,6 @@ function drawTableFromObjectList($objectList) {
 // END ADD BY Marc TABARY - 2017-02-20 - ORGANIZATION VISIBILITY        
   } else {
   	drawTableFromObjectList($parameterList);
-    //var_dump($parameterList);
   }
   ?></form>
 </div>

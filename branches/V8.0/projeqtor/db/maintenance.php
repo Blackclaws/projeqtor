@@ -777,6 +777,18 @@ if (beforeVersion($currVersion,'V7.4.0')) {
     traceLog("   => $cpt saved");
   }
 }
+if (beforeVersion($currVersion,"V8.0.0")) {
+  if (Parameter::getGlobalParameter('notificationSystemActiv')!='YES') {
+    $mod=new Module(13);
+    $mod->active=false;
+    $mod->save();:
+  }
+  if (Parameter::getGlobalParameter('notificationSystemActiv')!='YES') {
+    $mod=new Module(12);
+    $mod->active=false;
+    $mod->save();:
+  }
+}
 // To be sure, after habilitations updates ...
 Habilitation::correctUpdates();
 Habilitation::correctUpdates();

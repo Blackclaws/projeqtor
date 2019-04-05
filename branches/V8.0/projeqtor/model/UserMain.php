@@ -46,7 +46,14 @@ class UserMain extends SqlElement {
   public $loginTry;
   
   public $isContact;
+// MTY - LEAVE SYSTEM
+  public $isEmployee=0;
+// MTY - LEAVE SYSTEM
   public $isResource=0;
+  
+// MTY - MULTI CALENDAR
+  public $idCalendarDefinition;
+// MTY - MULTI CALENDAR
   
   public $idle;
   public $description;
@@ -95,7 +102,13 @@ class UserMain extends SqlElement {
   		                                    "cookieHash"=>'hidden',
   		                                    "passwordChangeDate"=>'hidden',
   		                                    "apiKey"=>"readonly",
-                                          'idTeam'=>'hidden'
+                                          'idTeam'=>'hidden',
+// MTY - LEAVE SYSTEM
+                                          'isEmployee'=>'hidden',
+// MTY - LEAVE SYSTEM
+// MTY - MULTI CALENDAR
+                                          'idCalendarDefinition'=> "hidden",
+// MTY - MULTI CALENDAR      
   );  
   
   public $_calculateForColumn=array("name"=>"coalesce(fullName,concat(name,' #'))");
@@ -597,12 +610,21 @@ class UserMain extends SqlElement {
     $affPrjList=$this->getAffectedProjects($limitToActiveProjects);
     $profile=$this->idProfile;
     foreach($affPrjList as $idPrj=>$namePrj) {
+      // MTY - LEAVE SYSTEM
+      // Don't take account the affectation if the project's is the LeaveProject and it's not visible for the connected user
+      if ( isLeavesSystemActiv() && Project::isTheLeaveProject($idPrj) && !Project::isProjectLeaveVisible()) {continue;}
+      // MTY - LEAVE SYSTEM  
+        
       if (isset($affProfile[$idPrj])) {	        
         $profile=$affProfile[$idPrj];
         $resultAff[$idPrj]=$profile;
         $prj=new Project($idPrj,true);
         $lstSubPrj=$prj->getRecursiveSubProjectsFlatList($limitToActiveProjects);
         foreach ($lstSubPrj as $idSubPrj=>$nameSubPrj) {
+          // MTY - LEAVE SYSTEM
+          // Don't take account the sub-project if it's the LeaveProject and it's not visible for the connected user
+          if (isLeavesSystemActiv() && Project::isTheLeaveProject($idSubPrj) && !Project::isProjectLeaveVisible()) {continue;}
+          // MTY - LEAVE SYSTEM  
           $result[$idSubPrj]=$nameSubPrj;
           $resultAff[$idSubPrj]=$profile;
         }
@@ -667,6 +689,12 @@ class UserMain extends SqlElement {
     $affList=$aff->getSqlElementsFromCriteria($crit,false, null,'idProject asc, startDate asc');
     $today=date('Y-m-d');
     foreach ($affList as $aff) {
+      // MTY - LEAVE SYSTEM
+      if (isLeavesSystemActiv()) {
+        // Don't take account the affectation if the project's is the LeaveProject and it's not visible for the connected user
+        if (Project::isTheLeaveProject($aff->idProject) && !Project::isProjectLeaveVisible()) {continue;}
+      }
+      // MTY - LEAVE SYSTEM  
       if ( !$limitToActiveProjects or ((! $aff->startDate or $aff->startDate<=$today) and (! $aff->endDate or $aff->endDate>=$today))) {
         $affProfile[$aff->idProject]=$aff->idProfile;
         $resultProf[$aff->idProfile]=$aff->idProfile;
@@ -677,6 +705,12 @@ class UserMain extends SqlElement {
     if ($accessRightRead=="ALL") {
     	$listAllProjects=SqlList::getList('Project','name', null, true);
     	foreach($listAllProjects as $idPrj=>$namePrj) {
+            // MTY - LEAVE SYSTEM
+            // Don't take account the project if the project's is the LeaveProject and it's not visible for the connected user
+            if (isLeavesSystemActiv()) {
+                if (Project::isTheLeaveProject($idPrj) && !Project::isProjectLeaveVisible()) {continue;}
+            }
+            // MTY - LEAVE SYSTEM  
     		$result[$idPrj]=$namePrj;
     	}
     } 
@@ -1027,6 +1061,20 @@ class UserMain extends SqlElement {
     return $result;
   }
   
+// MTY - LEAVE SYSTEM
+  public function delete() {
+    $old=$this->getOld();
+    $result = parent::delete();
+    if (strpos($result,'id="lastOperationStatus" value="OK"')) {
+        if (isLeavesSystemActiv()) {
+            $old->isEmployee=0;
+            $result = initPurgeLeaveSystemElementsOfResource($old);
+        }
+    }
+    return $result;
+  }
+// MTY - LEAVE SYSTEM    
+  
   public function deleteControl($nested=false)
   {
     $result="";
@@ -1074,6 +1122,18 @@ class UserMain extends SqlElement {
       $this->password=hash('sha256',$paramDefaultPassword.$this->salt);
       $this->crypto='sha256';
     }
+// MTY - LEAVE SYSTEM
+    // If isResource become 0 => isEmployee become 0
+    if (isLeavesSystemActiv()) {
+        if ($this->isResource==0 and $old->isResource==1 and $this->isEmployee==1) {
+            $this->isEmployee=0;
+            $result = initPurgeLeaveSystemElementsOfResource($this);
+            if (strpos($result,'id="lastOperationStatus" value="OK"')===false) {
+              return $result;     
+            }
+        }
+    }
+// MTY - LEAVE SYSTEM    
     $result=parent::save();
     if (! strpos($result,'id="lastOperationStatus" value="OK"')) {
       return $result;     
@@ -1601,64 +1661,90 @@ debugTraceLog("User->authenticate('$paramlogin', '$parampassword')" );
     }
     return $result;
   } 
-  
+
+// MTY - LEAVE SYSTEM  
+  /** =========================================================================
+   * Get the list of employment Contract visible by the connected user, 
+   * @return a list of employmentContract id
+   */
+  public function getVisibleEmploymentContract($limitToActiveContracts=true) {
+    scriptLog("ResourceMain::getVisibleEmploymentContract(limitToActiveContracts=$limitToActiveContracts)");
+    if ($this->isEmployee==0) {
+        return array();
+}
+        
+    if ($limitToActiveContracts) { $where = "idle=0";} else {$where=null;}
+    $clauseOrderBy = "startDate ASC";
+    $emplC = new EmploymentContract();
+    $list = $emplC->getSqlElementsFromCriteria(null, false, $where, $clauseOrderBy);
+    $result = array();
+    foreach ($list as $emplC) {
+        $canRead = securityGetLeaveSystemAccessRight("menuEmploymentContract", "read", $emplC, $this, true);
+        if ($canRead == 'YES') {    
+            $result[$emplC->id]=$emplC->name;
+        }    
+    }
+    return $result;
+  }
+// MTY - LEAVE SYSTEM
+
   //gautier #itemTypeRestriction
   public function getItemTypeRestriction($obj,$objectClass,$user,$showIdle,$showIdleProjects) {
-    $table=$obj->getDatabaseTableName();
-    $resultOr = '';
-    $resultAnd = '';
-    $objType = $obj->getDatabaseColumnName($objectClass . 'Type');
-    $restrictType = new RestrictType();
-    $listRestrictType = $restrictType->getSqlElementsFromCriteria(array('className'=>$objType,'idProfile'=>$user->idProfile));
-    foreach ($listRestrictType as $typeRestrict){
-      $tabListIdRestrictType[] = $typeRestrict->idType;
-    }
-    if(isset($tabListIdRestrictType)){
-      $inTabListIdRestrictType = transformValueListIntoInClause($tabListIdRestrictType);
-      $resultAnd.= "  and ($table.id$objType in $inTabListIdRestrictType " ;
-    }else{
-      $resultAnd.= "  and ( 1=1" ;
-    }
-    
-    if (property_exists($obj,'idProject')) { 
-      if (getSessionValue('project')=='*'){
-        $resultAnd.= " and ($table.idProject in " . getVisibleProjectsList(! $showIdleProjects). " or $table.idProject is null)";
-      }
-        $monTab = getVisibleProjectsList(! $showIdleProjects);
-        $monTab = substr($monTab, 1);
-        $monTab = substr($monTab,0,-1);
-        $tabVisibleProjet = explode(', ', $monTab);
-        
-      $listProjOtherProfile = $user->getSpecificAffectedProfiles($showIdle);
-      foreach ($listProjOtherProfile as $id=>$idProfile){
-        if($idProfile != $user->idProfile){
-          $tabProfileByProj[$id]=$idProfile;
-        }
-      }
-      if(isset($tabProfileByProj)){
-        foreach ($tabProfileByProj as $idProj=>$idProfile){
-          if(in_array($idProj,$tabVisibleProjet)){
-            $listRestrictType = $restrictType->getSqlElementsFromCriteria(array('className'=>$objType,'idProfile'=>$idProfile));
-            $tabListIdRestrictTypeByProject = array();
-            foreach ($listRestrictType as $typeRestrict){
-              $tabListIdRestrictTypeByProject[] = $typeRestrict->idType;
-            }
-            if($tabListIdRestrictTypeByProject){
-              $tabListIdRestrictTypeByProject = transformValueListIntoInClause($tabListIdRestrictTypeByProject);
-              $resultOr.= " or ($table.idProject=$idProj and ( $table.id$objType in $tabListIdRestrictTypeByProject)) " ;
-            }else{
-              $resultOr.= " or ($table.idProject=$idProj ) " ;
-            }
-          }
-        }
-        $listIdProj = transformListIntoInClause($tabProfileByProj);
-        $resultAnd .= " and  $table.idProject not in $listIdProj ) ";
-      }
-     }else{
-      $resultOr = ')';
-     }
-    $result = $resultAnd.$resultOr;
-    return $result;
+  	$table=$obj->getDatabaseTableName();
+  	$resultOr = '';
+  	$resultAnd = '';
+  	$objType = $obj->getDatabaseColumnName($objectClass . 'Type');
+  	$restrictType = new RestrictType();
+  	$listRestrictType = $restrictType->getSqlElementsFromCriteria(array('className'=>$objType,'idProfile'=>$user->idProfile));
+  	foreach ($listRestrictType as $typeRestrict){
+  		$tabListIdRestrictType[] = $typeRestrict->idType;
+  	}
+  	if(isset($tabListIdRestrictType)){
+  		$inTabListIdRestrictType = transformValueListIntoInClause($tabListIdRestrictType);
+  		$resultAnd.= "  and ($table.id$objType in $inTabListIdRestrictType " ;
+  	}else{
+  		$resultAnd.= "  and ( 1=1" ;
+  	}
+  
+  	if (property_exists($obj,'idProject')) {
+  		if (getSessionValue('project')=='*'){
+  			$resultAnd.= " and ($table.idProject in " . getVisibleProjectsList(! $showIdleProjects). " or $table.idProject is null)";
+  		}
+  		$monTab = getVisibleProjectsList(! $showIdleProjects);
+  		$monTab = substr($monTab, 1);
+  		$monTab = substr($monTab,0,-1);
+  		$tabVisibleProjet = explode(', ', $monTab);
+  
+  		$listProjOtherProfile = $user->getSpecificAffectedProfiles($showIdle);
+  		foreach ($listProjOtherProfile as $id=>$idProfile){
+  			if($idProfile != $user->idProfile){
+  				$tabProfileByProj[$id]=$idProfile;
+  			}
+  		}
+  		if(isset($tabProfileByProj)){
+  			foreach ($tabProfileByProj as $idProj=>$idProfile){
+  				if(in_array($idProj,$tabVisibleProjet)){
+  					$listRestrictType = $restrictType->getSqlElementsFromCriteria(array('className'=>$objType,'idProfile'=>$idProfile));
+  					$tabListIdRestrictTypeByProject = array();
+  					foreach ($listRestrictType as $typeRestrict){
+  						$tabListIdRestrictTypeByProject[] = $typeRestrict->idType;
+  					}
+  					if($tabListIdRestrictTypeByProject){
+  						$tabListIdRestrictTypeByProject = transformValueListIntoInClause($tabListIdRestrictTypeByProject);
+  						$resultOr.= " or ($table.idProject=$idProj and ( $table.id$objType in $tabListIdRestrictTypeByProject)) " ;
+  					}else{
+  						$resultOr.= " or ($table.idProject=$idProj ) " ;
+  					}
+  				}
+  			}
+  			$listIdProj = transformListIntoInClause($tabProfileByProj);
+  			$resultAnd .= " and  $table.idProject not in $listIdProj ) ";
+  		}
+  	}else{
+  		$resultOr = ')';
+  	}
+  	$result = $resultAnd.$resultOr;
+  	return $result;
   }
 }
 ?>

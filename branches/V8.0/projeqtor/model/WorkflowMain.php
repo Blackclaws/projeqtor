@@ -85,7 +85,7 @@ class WorkflowMain extends SqlElement {
 
    /** ==========================================================================
    * Return the specific layout
-   * @return the layout
+   * @return string the layout
    */
   protected function getStaticLayout() {
     return self::$_layout;
@@ -101,7 +101,7 @@ class WorkflowMain extends SqlElement {
  
   /** ==========================================================================
    * Return list of workflow status for a workflow (id)
-   * @return an array of WorkflowStatus
+   * @return WorkflowStatus[] an array of WorkflowStatus
    */
   public function getWorkflowstatus() {
     if ($this->id==null or $this->id=='') {
@@ -118,7 +118,7 @@ class WorkflowMain extends SqlElement {
   
    /** ==========================================================================
    * Return check value of workflow status for a workflow
-   * @return a 3 level array [idStatusFrom] [idStatusTo] [idProfile] => check value
+   * @return array[idStatusFrom][idStatusTo][idProfile] a 3 level array [idStatusFrom] [idStatusTo] [idProfile] => check value
    */
   public function getWorkflowstatusArray() {
     $wsList=$this->getWorkflowstatus();
@@ -144,6 +144,85 @@ class WorkflowMain extends SqlElement {
     return $result;
   }
   
+  /** ==========================================================================
+   * Return true if the workflow as a status with idStatus
+   * @param integer $idStatus The id status
+   * @return boolean True if the workflow as a status with idStatus
+   */
+  public function hasStatus($idStatus) {
+      $theWorkflowStatus = $this->getWorkflowstatus();
+      foreach ($theWorkflowStatus as $wfStatus) {
+          if ($idStatus == $wfStatus->idStatusFrom or $idStatus == $wfStatus->idStatusTo) {
+              return true;
+          }
+      }
+      return false;
+  }
+
+  /** ==========================================================================
+   * Return a status of the workflow with $setStatusOrLeave = 1
+   * @param string $setStatusOrLeave The setStatusOrLeave
+   * @param integer $idle 0 = status has idle = 0 - 1 = status has idle = 1 - -1 all values of idle
+   * @return Status a status if the workflow as a status with $setStatusOrLeave = 1 - Else null
+   */
+  public function getAStatusWithSetStatusOrLeave($setStatusOrLeave,$idle=-1) {
+      if (!property_exists("Status", $setStatusOrLeave)) {
+          return null;
+      }
+      $theWorkflowStatus = $this->getWorkflowstatus();
+      $theStatus = null;
+      foreach ($theWorkflowStatus as $wfStatus) {
+          $status = new Status($wfStatus->idStatusFrom);
+          if ($status->$setStatusOrLeave == 1 and ($idle===-1 or ($idle===1 and $status->idle===1) or (($idle===0 and $status->idle===0)) )) {
+              $theStatus = $status;
+              break;
+          }
+          $status = new Status($wfStatus->idStatusTo);
+          if ($status->$setStatusOrLeave == 1 and ($idle===-1 or ($idle===1 and $status->idle===1) or (($idle===0 and $status->idle===0)) )) {
+              $theStatus = $status;              
+              break;
+          }
+      }
+      return $theStatus;
+  }
+
+  /** ==========================================================================
+   * Return true if the workflow as a status with $setStatusOrLeave = 1
+   * @param string $setStatusOrLeave The setStatusOrLeave
+   * @param integer $idle 0 = status has idle = 0 - 1 = status has idle = 1 - -1 all values of idle
+   * @return boolean True if the workflow as a status with $setStatusOrLeave = 1
+   */
+  public function hasSetStatusOrLeave($setStatusOrLeave, $idle=-1) {
+      return ($this->getAStatusWithSetStatusOrLeave($setStatusOrLeave,$idle)===null?false:true);
+  }
+
+// MTY - LEAVE SYSTEM  
+  /** ==========================================================================
+   * Return a status of the workflow with setSubmittedLeave = 0 and setAcceptedLeave = 0 and setRejectedLeave = 0
+   * @param integer $idle 0 = status has idle = 0 - 1 = status has idle = 1 - -1 all values of idle
+   * @return Status a status if the workflow as this type of status - Else null
+   */
+  public function getAStatusWhichIsNeutral($idle=-1) {
+      $theWorkflowStatus = $this->getWorkflowstatus();
+      $theStatus = null;
+      foreach ($theWorkflowStatus as $wfStatus) {
+          $status = new Status($wfStatus->idStatusFrom);
+          if ($status->setSubmittedLeave == 0 and $status->setAcceptedLeave == 0 and $status->setRejectedLeave == 0 and
+              ($idle===-1 or ($idle===1 and $status->idle===1) or (($idle===0 and $status->idle===0)) )) {
+              $theStatus = $status;
+              break;
+          }
+          $status = new Status($wfStatus->idStatusTo);
+          if ($status->setSubmittedLeave == 0 and $status->setAcceptedLeave == 0 and $status->setRejectedLeave == 0 and
+              ($idle===-1 or ($idle===1 and $status->idle===1) or (($idle===0 and $status->idle===0)) )) {
+              $theStatus = $status;              
+              break;
+          }
+      }
+      return $theStatus;
+  }
+// MTY - LEAVE SYSTEM  
+    
   private function getStatusList() {
   	if ($this->_statusList) {
   		return $this->_statusList;
@@ -161,7 +240,7 @@ class WorkflowMain extends SqlElement {
   }
   /** =========================================================================
    * Draw a specific item for the current class.
-   * @param $item the item. Correct values are : 
+   * @param string $item the item. Correct values are : 
    *    - subprojects => presents sub-projects as a tree
    * @return an html string able to display a specific item
    *  must be redefined in the inherited class
@@ -587,11 +666,8 @@ class WorkflowMain extends SqlElement {
     if ($defaultControl!='OK') {
       $result.=$defaultControl;
     }
-    if ($result=="") {
-      $result='OK';
+    return ($result==""?"OK":$result);
     }
-    return $result;
-  }
   
   /** =========================================================================
    * save data
@@ -599,6 +675,12 @@ class WorkflowMain extends SqlElement {
    */
   public function save() {
     global $_REQUEST;
+    
+// MTY - LEAVE SYSTEM    
+    if (isLeavesSystemActiv()) {
+        $oldWfStatuses = $this->getWorkflowStatusList(-1,"id");
+    }
+// MTY - LEAVE SYSTEM    
     
     projeqtor_set_time_limit(300);
     
@@ -650,6 +732,185 @@ class WorkflowMain extends SqlElement {
         }     
       }
     }
+    
+// MTY - LEAVE SYSTEM
+    if (isLeavesSystemActiv()) {
+        $newWfStatuses = $this->getWorkflowStatusList(-1,"id");
+
+        // No difference between old status in workflow and new status in workflow
+        // => Nothing else to do
+        if (count(twoArraysObjects_diff($oldWfStatuses, $newWfStatuses))===0) { return $result; }
+        // LEAVE TYPE
+        // Search Leave types associated to the workflow
+        $lvTypeList = LeaveType::getList(-1,$this->id);
+        // If no leave type associated with this workflow => nothing else to do
+        if (count($lvTypeList)===0) {return $result;}
+
+        $alertLess="";
+        $alertMore="";
+
+        $whereLeaveTypeClause = "";
+        foreach ($lvTypeList as $lvType) {
+            $whereLeaveTypeClause .= $lvType->id.",";
+        }
+        $whereLeaveTypeClause = "idLeaveType in (".substr($whereLeaveTypeClause,0,-1).")";
+        
+        // ==================================
+        // LESS STATUS IN NEW WORKFLOW STATUS        
+        // ==================================
+        // Search for less status in new workflow statuses
+        $statusLess=array();    
+        foreach($oldWfStatuses as $key=>$value) {
+            if (!in_array($value,$newWfStatuses)) {
+                $statusLess[$key] = $value;                
+            }        
+        }
+        // If less status => Do something
+        if (count($statusLess)>0) {
+            // Search for Leaves that have :
+            //    - a status is the less status list
+            //          AND
+            //    - a leave type associated with this workflow
+            // STATUS
+            $whereStatusClause = "";
+            foreach($statusLess as $status) {
+                $whereStatusClause .= $status->id.",";
+            }
+            $whereStatusClause = "idStatus in (".substr($whereStatusClause,0,-1).")";
+
+            $whereClause = $whereStatusClause. " AND ". $whereLeaveTypeClause;
+
+            // Search the leaves
+            $leave = new Leave();
+            $leaveList = $leave->getSqlElementsFromCriteria(null,false,$whereClause);
+            // Leaves => set statusOutOfWorkflow = 1
+            if (count($leaveList)>0) {
+                $alertLess = "ChangeWorkflowWithLeavesHavingStatusOutOfWorkflow";
+                // For each leaves that have lost status in the new workflow
+                $queryWhere = "id in (";
+                foreach($leaveList as $leave) {
+                    $queryWhere .= $leave->id.",";
+                }
+                $queryWhere = substr($queryWhere,0,-1).")";
+                $query = "update ".$leave->getDatabaseTableName()." set statusOutOfWorkflow=1 WHERE ".$queryWhere;
+                SqlDirectElement::execute($query);
+            }
+        }
+        
+        // ==================================
+        // MORE STATUS IN NEW WORKFLOW STATUS        
+        // ==================================
+        $statusMore=array();    
+        foreach($newWfStatuses as $key=>$value) {
+            if (!in_array($value,$oldWfStatuses)) {
+                $statusMore[$value->id] = $value;                
+            }        
+        }
+        // If more status => something to do
+        if (count($statusMore)>0) {
+            // WHERE STATUS
+            $whereStatusClause = "";
+            foreach($statusMore as $status) {
+                $whereStatusClause .= $status->id.",";
+            }
+            $whereStatusClause = "idStatus in (".substr($whereStatusClause,0,-1).")";
+                       
+            // Search for Leaves that have :
+            //    - a status is the more status list
+            //          AND
+            //    - statusOutOfWorkflow = 1 or statusSetLeaveChange = 1
+            //          AND
+            //    - a leave type associated with this workflow            
+            $whereStatusOutSetChangeClause = " AND (statusOutOfWorkflow=1 OR statusSetLeaveChange=1)";            
+            $whereClause = $whereStatusClause. " AND ". $whereLeaveTypeClause.$whereStatusOutSetChangeClause;
+            // Search the leaves
+            $leave = new Leave();
+            $leaveList = $leave->getSqlElementsFromCriteria(null,false,$whereClause);
+            // No Leave and no less alert => Nothing else to do
+            if (count($leaveList)===0 and $alertLess=="") {return $result;}
+            // Update Leave's statusOutOfWorkflow=0 and statusSetLeaveChange=0 with transition resynchronize with the status
+            // For each leave : Has setXXXXLeave resynchronize with transition
+            $leaveToChangeResynchronized = array();
+            foreach($leaveList as $leave) {
+                if ($leave->submitted==$statusMore[$leave->idStatus]->setSubmittedLeave AND
+                    $leave->accepted==$statusMore[$leave->idStatus]->setAcceptedLeave AND
+                    $leave->rejected==$statusMore[$leave->idStatus]->setRejectedLeave                        
+                   )  {
+                    array_push($leaveToChangeResynchronized, $leave->id);
+                }
+            }
+            $lR = count($leaveToChangeResynchronized);
+            if ($lR>0) {
+                $queryWhere = "id in (";
+                for($i=0; $i<$lR; $i++) {
+                    $queryWhere .= $leaveToChangeResynchronized[$i].",";
+                }
+                $queryWhere = substr($queryWhere,0,-1).")";
+                $query = "update ".$leave->getDatabaseTableName()." set statusOutOfWorkflow=0, statusSetLeaveChange=0 WHERE ".$queryWhere;
+                SqlDirectElement::execute($query);
+            }
+            
+            // For each leave : Has setXXXXLeave of the status change
+            $leaveToChangeStatusSetLeaveChange = array();
+            foreach($leaveList as $leave) {
+                foreach ($leaveToChangeResynchronized as $leaveR) {
+                    if ($leave->id == $leaveR) {continue;}
+                }
+                if (($leave->submitted==1 and $statusMore[$leave->idStatus]->setSubmittedLeave==0) OR
+                    ($leave->submitted==0 and $statusMore[$leave->idStatus]->setSubmittedLeave==1)    
+                   )  {
+                    array_push($leaveToChangeStatusSetLeaveChange, $leave->id);
+                    continue;
+                }
+                if (($leave->accepted==1 and $statusMore[$leave->idStatus]->setAcceptedLeave==0) OR
+                    ($leave->accepted==0 and $statusMore[$leave->idStatus]->setAcceptedLeave==1)    
+                   )  {
+                    array_push($leaveToChangeStatusSetLeaveChange, $leave->id);
+                    continue;
+                }
+                if (($leave->rejected==1 and $statusMore[$leave->idStatus]->setRejectedLeave==0) OR
+                    ($leave->rejected==0 and $statusMore[$leave->idStatus]->setRejectedLeave==1)    
+                   )  {
+                    array_push($leaveToChangeStatusSetLeaveChange, $leave->id);
+                    continue;
+                }
+                if (($leave->rejected==0 and $leave->accepted==0 and $leave->submitted==0 and 
+                    ($statusMore[$leave->idStatus]->setRejectedLeave==1 or 
+                     $statusMore[$leave->idStatus]->setAcceptedLeave==1 or
+                     $statusMore[$leave->idStatus]->setSubmittedLeave==1))    
+                   )  {
+                    array_push($leaveToChangeStatusSetLeaveChange, $leave->id);
+                    continue;
+                }
+            }
+            $l = count($leaveToChangeStatusSetLeaveChange);
+            if ($l>0) {
+                $alertMore = "StatusSetTransitionLeaveHasChange";
+                $queryWhere = "id in (";
+                for($i=0; $i<$l; $i++) {
+                    $queryWhere .= $leaveToChangeStatusSetLeaveChange[$i].",";
+                }
+                $queryWhere = substr($queryWhere,0,-1).")";
+                $query = "update ".$leave->getDatabaseTableName()." set statusOutOfWorkflow=0, statusSetLeaveChange=1 WHERE ".$queryWhere;
+                SqlDirectElement::execute($query);
+            }
+        }
+        
+        if ($alertLess!="" or $alertMore!="") {
+            // Send Notification or Alert or email
+            // Sender = User
+            $receivers[0] = getSessionUser();            
+            // Receiver = leaves admin
+            $receivers[1] = getLeavesAdmin();
+            
+            $title = i18n("ChangesOnWorkflowHasImpactOnLeaves");
+            $alertMore = ($alertMore==""?"":"".i18n("AND").$alertMore);
+            $content = i18n($alertLess).($alertLess!=""?" ":"").$alertMore;
+            $name = strtoupper(i18n("Workflow"))." - ".i18n("maintenanceOnLeavesRequired");
+            sendNotification($receivers, $this, "WARNING", $title, $content, $name);        
+        }
+    }
+// MTY - LEAVE SYSTEM    
     return $result;
   }
    
@@ -691,9 +952,147 @@ class WorkflowMain extends SqlElement {
           $allowedTable['#'.$ws->idStatusTo]=new Status($ws->idStatusTo);
         }
       }
+// MTY - LEAVE SYSTEM        
+        $leaveSystemCond = true;
+        if (isLeavesSystemActiv() and $class=='Leave') {
+            if (isLeavesAdmin() or isManagerOfEmployee(getSessionUser()->id, $obj->idEmployee)) {
+                $leaveSystemCond = false;                
+            }
+        }
+        if ($leaveSystemCond) {
+// MTY - LEAVE SYSTEM        
       $table=array_intersect_key($table, $allowedTable);
+    }
     }
     return $table;
   }
+  
+// MTY - LEAVE SYSTEM
+    public static function getAllowedStatusForObjectList($obj) {
+        $statusList = self::getAllowedStatusListForObject($obj);
+        $list = array();
+        foreach($statusList as $status) {
+            $list[$status->id] = $status->name;
 }
-?>
+        return $list;
+    }
+    
+    /**
+     * Get the list of From-To statuses of the workflow
+     * @return array [statusFrom][statusTo]
+     */
+    public function getListStatusFromTo() {
+        $lstStatus = $this->getWorkflowstatus();
+        
+        $theStatusList = array();
+        foreach($lstStatus as $status) {
+            if (!array_key_exists($status->idStatusFrom, $theStatusList)) {
+                $theStatusList[$status->idStatusFrom][$status->idStatusTo]=1;
+            } else {
+                if (!array_key_exists($status->idStatusTo, $theStatusList[$status->idStatusFrom])) {
+                    $theStatusList[$status->idStatusFrom][$status->idStatusTo]=1;
+                }
+            }
+        }
+        return $theStatusList;
+    }
+
+     /**
+      * Get the list of statuses of the workflow
+      * @param integer $idle = -1 for idle = 0 or 1
+      * @param $sortBy = Status's attribute to sort array with
+      * @return Status[]
+     */
+    public function getWorkflowStatusList($idle=-1, $sortBy="sortOrder") {        
+        $lstStatus = $this->getWorkflowstatus();
+        $theStatusListId = array();
+        foreach($lstStatus as $status) {
+            if (!in_array($status->idStatusFrom, $theStatusListId)) {
+                array_push($theStatusListId, $status->idStatusFrom);
+            }
+            if (!in_array($status->idStatusTo, $theStatusListId)) {
+                array_push($theStatusListId, $status->idStatusTo);
+            }
+        }
+        $l = count($theStatusListId);
+        // No statuses for this workflow ?????
+        if ($l===0) { return array(); }
+        
+        $whereClause = "";
+        if ($idle!=-1) {
+            $whereClause = "idle = $idle AND id in (";
+        } else {
+            $whereClause = "id in (";
+        }
+        for ($i=0;$i<$l; $i++) {
+            $whereClause .= $theStatusListId[$i].',';
+        }
+        $whereClause = substr($whereClause, 0,-1) .")";
+        
+        $status = new Status();
+        $theStatusList = $status->getSqlElementsFromCriteria(null,false,$whereClause);
+        $theStatusListSorted = sortArrayOfModelObjectsByAField($theStatusList,$sortBy,true);
+        return $theStatusListSorted;
+    }
+       
+    public static function getWorkflowLeaveMngList($withClosed=false) {
+        $wkfList = LeaveType::getWorkflowList(($withClosed?-1:0), -1);
+        return $wkfList;
+    }
+    
+    /**
+     * Get the list of From-To statuses of the workflows which are dedicated to the Leave Management
+     * @return array [statusFrom][statusTo]
+     */
+    public static function getLeaveMngListStatusFromTo() {
+        $wkfList = self::getWorkflowLeaveMngList();
+        $theStatusList = array();
+
+        foreach($wkfList as $wkf) {
+            $lstStatus = $wkf->getWorkflowstatus();
+
+            foreach($lstStatus as $status) {
+                if (!array_key_exists($status->idStatusFrom, $theStatusList)) {
+                    $theStatusList[$status->idStatusFrom][$status->idStatusTo]=1;
+                } else {
+                    if (!array_key_exists($status->idStatusTo, $theStatusList[$status->idStatusFrom])) {
+                        $theStatusList[$status->idStatusFrom][$status->idStatusTo]=1;
+                    }
+                }
+            }
+        }
+        return $theStatusList;
+    }
+    
+    /**
+     * Get the list of status of the workflows which are dedicated to the Leave Management
+     * @return WorkflowStatus[] Object
+     */
+    static function getLeaveMngListStatus($orderBySortOrder=true) {
+        $wkfList = self::getWorkflowLeaveMngList();
+        $theStatusList = array();
+        foreach($wkfList as $wkf) {
+            $lstStatus = $wkf->getWorkflowstatus();
+
+            foreach($lstStatus as $status) {
+                if (!array_key_exists($status->idStatusFrom, $theStatusList)) {
+                    $theStatus = new Status($status->idStatusFrom);
+                    $theStatusList[$status->idStatusFrom] = $theStatus;
+                }
+                if (!array_key_exists($status->idStatusTo, $theStatusList)) {
+                    $theStatus = new Status($status->idStatusTo);
+                    $theStatusList[$status->idStatusTo] = $theStatus;
+                }
+            }
+        }
+        if ($orderBySortOrder) {
+            usort($theStatusList, function($a, $b)
+                {
+                    return strcmp($a->sortOrder, $b->sortOrder);
+                }
+            );            
+        }
+        return $theStatusList;
+    }
+// MTY - LEAVE SYSTEM
+}?>

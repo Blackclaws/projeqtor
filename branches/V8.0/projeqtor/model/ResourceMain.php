@@ -27,6 +27,17 @@
 /* ============================================================================
  * User is a resource that can connect to the application.
  */ 
+
+// LEAVE SYSTEM
+// RULES :
+// x. At Creation :
+//      - Can't create in same time, Resource that is Employee => Pb in creation of it's EmploymentContract
+//              Done in construct
+// x. If update AND isEmployee changed => Init or purge elements of leave system for the resource
+//      Done in save
+// x. On delete resource => purge elements of leave system for this resource
+//      Done in delete
+
 require_once('_securityCheck.php');
 class ResourceMain extends SqlElement {
 
@@ -48,6 +59,10 @@ class ResourceMain extends SqlElement {
   public $fax;
   public $isContact;
   public $isUser;
+// MTY - LEAVE SYSTEM  
+  public $isEmployee;
+  public $isLeaveManager;
+// MTY - LEAVE SYSTEM  
   public $idle;
   public $description;
   public $_sec_ResourceCost;
@@ -112,7 +127,13 @@ class ResourceMain extends SqlElement {
    */ 
   function __construct($id = NULL, $withoutDependentObjects=false) {
     parent::__construct($id,$withoutDependentObjects);
+// MTY - LEAVE SYSTEM        
+        if (!isLeavesSystemActiv()) {
+            self::$_fieldsAttributes['isEmployee'] = "hidden";
+            self::$_fieldsAttributes['isLeaveManager'] = "hidden";
   }
+// MTY - LEAVE SYSTEM        
+    }     
 
   
   /** ==========================================================================
@@ -249,6 +270,22 @@ class ResourceMain extends SqlElement {
       $colScript .= '  } '; 
       $colScript .= '  formChanged();';
       $colScript .= '</script>';
+// MTY - LEAVE SYSTEM      
+    } elseif($colName=="isLeaveManager") {
+      $colScript .= '<script type="dojo/connect" event="onChange" >';
+      $colScript .= '  if (this.checked && dijit.byId("isEmployee").checked==false) { ';
+      $colScript .= '    dijit.byId("isEmployee").set("checked", true);';
+      $colScript .= '  } '; 
+      $colScript .= '  formChanged();';
+      $colScript .= '</script>';        
+    } elseif ($colName=="isEmployee") {
+      $colScript .= '<script type="dojo/connect" event="onChange" >';
+      $colScript .= '  if (this.checked==false && dijit.byId("isLeaveManager").checked) { ';
+      $colScript .= '    dijit.byId("isLeaveManager").set("checked", false);';
+      $colScript .= '  } '; 
+      $colScript .= '  formChanged();';
+      $colScript .= '</script>';                
+// MTY - LEAVE SYSTEM      
     }
     return $colScript;
 
@@ -481,10 +518,45 @@ class ResourceMain extends SqlElement {
       $paramDefaultPassword=Parameter::getGlobalParameter('paramDefaultPassword');
       $this->password=md5($paramDefaultPassword);
     }
+
+// MTY - LEAVE SYSTEM
+    // A leave manager, must be an employee
+    if ($this->isLeaveManager==1 and $this->isEmployee==0) {
+        $this->isEmployee=1;
+    }    
+    if ($this->isEmployee==0 and $this->isLeaveManager==1) {
+        $this->isLeaveManager=0;
+    }
+    $oldResource=$this->getOld();
+// MTY - LEAVE SYSTEM
+
   	$result=parent::save();
     if (! strpos($result,'id="lastOperationStatus" value="OK"')) {
       return $result;     
     }
+// MTY - LEAVE SYSTEM
+    if (isLeavesSystemActiv()) {
+        // isEmployee changes
+        if ($this->isEmployee != $oldResource->isEmployee) {
+            // => Init or purge elements of leave system for the resource
+            $resultI = initPurgeLeaveSystemElementsOfResource($this);
+            if (getLastOperationStatus($resultI)!="OK") {
+                return $resultI;
+            }
+        }
+        // isLeaveManager changes and become 0
+        if ($this->isLeaveManager == 0 and $oldResource->isLeaveManager==1) {
+            // Delete corresponding EmployeesManaged
+            $crit = array("idEmployeeManager" => $this->id);
+            $emplManaged = new EmployeesManaged();
+            $resultI = $emplManaged->purge($crit);
+            if (getLastOperationStatus($resultI)!="OK" and getLastOperationStatus($resultI)!="NO_CHANGE") {
+                return $resultI;
+            }
+        }
+    }
+// MTY - LEAVE SYSTEM
+    
   	Affectation::updateAffectations($this->id);
   	if ($this->id==getSessionUser()->id) { //must refresh data
   	  $user=getSessionUser();
@@ -497,8 +569,53 @@ class ResourceMain extends SqlElement {
   	  setSessionUser($user);
   	}
   	if ($this->id==getSessionUser()->id) User::refreshUserInSession();
+
+// MTY - MULTI CALENDAR
+    // If user is the changed resource AND idCalendarDefinition changed
+    // ==> Update the cookies values of uWorkDayList et uOffDayList (user cookies)
+    if ($this->id == getSessionUser()->id and $oldResource->idCalendarDefinition != $this->idCalendarDefinition) {
+        $calDef = new CalendarDefinition($this->idCalendarDefinition);
+        $calDef->updateCookiesForCalendar(true, $this->idCalendarDefinition);
+    }
+// MTY - MULTI CALENDAR    
+
+// MTY - LEAVE SYSTEM
+   if (isLeavesSystemActiv()) {
+        // Reload the menu if 
+        //          - changed resource is the user
+        //          - leave System is activ
+        if ($this->id == getSessionUser()->id and
+            $this->isEmployee != $oldResource->isEmployee and isLeavesSystemActiv()) {
+                $forceRefreshMenu="Resource";
+                $user=getSessionUser();
+                $user->reset();
+                setSessionUser($user);
+                Parameter::clearGlobalParameters();// force refresh 
+                echo '<input type="hidden" id="forceRefreshMenu" value="'.$forceRefreshMenu.'_'.$this->id.'" />';
+                echo '<input type="hidden" id="lastOperation" name="lastOperation" value="save">';
+                echo '<input type="hidden" id="lastOperationStatus" name="lastOperationStatus" value="' . 'OK' .'">';
+        }
+    }
+// MTY - LEAVE SYSTEM
+    
   	return $result;
   }
+  
+// ELIOTT - LEAVE SYSTEM
+  public function delete() {
+    if (isLeavesSystemActiv()) {
+        $theResource = clone $this;    
+        // On delete resource => purge elements of leave system for this resource
+        $theResource->isEmployee=0;
+        $result = initPurgeLeaveSystemElementsOfResource($theResource);
+        if (strpos($result,'id="lastOperationStatus" value="OK"')===false) {
+          return $result;     
+        }
+    }
+    $result = parent::delete();
+    return $result;
+  }
+// ELIOTT - LEAVE SYSTEM
   
   public function getResourceCost() {
     $result=array();
@@ -666,44 +783,83 @@ class ResourceMain extends SqlElement {
     return $result;
   }
   
-  
-  public function buildCapacityPeriod(){
-    $resCap = new ResourceCapacity();
-    $listResCap = $resCap->getSqlElementsFromCriteria(array('idResource'=>$this->id),null,null,'startDate desc');
-    foreach ($listResCap as $cap){
-      if($cap->idle == 0 ){
-        $capacityPeriod[$this->id][$cap->startDate]['capacity']=$cap->capacity;
-        $capacityPeriod[$this->id][$cap->startDate]['startDate']=$cap->startDate;
-        $capacityPeriod[$this->id][$cap->startDate]['endDate']=$cap->endDate;
-      }
-    }
-    if(!isset($capacityPeriod)){
-      $capacityPeriod = array();
-    }   
-    return $capacityPeriod;
-  }
-  
-  public function getCapacityPeriod($date) {
-     if(!sessionValueExists('capacityPeriod')){
-         setSessionValue('capacityPeriod', array());
-     }
-    if(!sessionTableValueExist('capacityPeriod', $this->id)){
-      setSessionTableValue('capacityPeriod',$this->id, $this->buildCapacityPeriod());
-    }
-    $capacityPeriod = getSessionTableValue('capacityPeriod', $this->id); 
-    foreach ($capacityPeriod as $val) {
-      foreach ($val as $value){
-        if ($date>=$value['startDate'] and $date<=$value['endDate']){
-          return $value['capacity'];
+// MTY - LEAVE SYSTEM
+    public function getEmployees($withClosed=false, $limitToUser=false) {
+        $whereClause = "isEmployee=1";
+        if (!$withClosed) {
+            $whereClause .= " AND idle=0";
         }
-      }
+        if ($limitToUser) {
+            $whereClause .= " AND isUser=1";            
+        }
+        return $this->getSqlElementsFromCriteria(null, false, $whereClause);
     }
-    return $this->capacity;
-  }
-  
-  public function getSurbookingCapacity($date) {
-    return getCapacityPeriod($date);
-  }
-  
+    
+    public function getEmployeesList($withClosed=false, $limitToUser=false) {
+        $employees = $this->getEmployees($withClosed, $limitToUser);
+        $emplList = array();
+        foreach($employees as $empl) {
+            $emplList[$empl->id] = $empl->name;
+        }
+        return $emplList;
+    }
+    public function getLeaveManagers($withClosed=false, $limitToUser=false) {
+        $whereClause = "isLeaveManager=1";
+        if (!$withClosed) {
+            $whereClause .= " AND idle=0";
+        }
+        if ($limitToUser) {
+            $whereClause .= " AND isUser=1";            
+        }
+        return $this->getSqlElementsFromCriteria(null, false, $whereClause);
+    }
+    
+    public function getLeaveManagersList($withClosed=false, $limitToUser=false) {
+        $managers = $this->getLeaveManagers($withClosed, $limitToUser);
+        $managersList = array();
+        foreach($managers as $man) {
+            $managersList[$man->id] = $name->name;
+        }
+        return $managersList;
+    }
+// MTY - LEAVE SYSTEM
+
+    public function buildCapacityPeriod(){
+    	$resCap = new ResourceCapacity();
+    	$listResCap = $resCap->getSqlElementsFromCriteria(array('idResource'=>$this->id),null,null,'startDate desc');
+    	foreach ($listResCap as $cap){
+    		if($cap->idle == 0 ){
+    			$capacityPeriod[$this->id][$cap->startDate]['capacity']=$cap->capacity;
+    			$capacityPeriod[$this->id][$cap->startDate]['startDate']=$cap->startDate;
+    			$capacityPeriod[$this->id][$cap->startDate]['endDate']=$cap->endDate;
+    		}
+    	}
+    	if(!isset($capacityPeriod)){
+    		$capacityPeriod = array();
+    	}
+    	return $capacityPeriod;
+    }
+    
+    public function getCapacityPeriod($date) {
+    	if(!sessionValueExists('capacityPeriod')){
+    		setSessionValue('capacityPeriod', array());
+    	}
+    	if(!sessionTableValueExist('capacityPeriod', $this->id)){
+    		setSessionTableValue('capacityPeriod',$this->id, $this->buildCapacityPeriod());
+    	}
+    	$capacityPeriod = getSessionTableValue('capacityPeriod', $this->id);
+    	foreach ($capacityPeriod as $val) {
+    		foreach ($val as $value){
+    			if ($date>=$value['startDate'] and $date<=$value['endDate']){
+    				return $value['capacity'];
+    			}
+    		}
+    	}
+    	return $this->capacity;
+    }
+    
+    public function getSurbookingCapacity($date) {
+    	return getCapacityPeriod($date);
+    }
 }
 ?>
