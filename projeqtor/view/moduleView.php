@@ -53,8 +53,14 @@ $user=getSessionUser();
               disableWidget("applyButton");
               showWait();
               noDisconnect=true;
-              quitConfirmed=true;        
-              dojo.byId("directAccessPage").value="moduleView.php";
+              quitConfirmed=true;
+<?php         if (getSessionValue('showModule')) {
+                $firstPage=getSessionValue('showModule');
+                unsetSessionValue('showModule');?>
+                dojo.byId("directAccessPage").value="<?php echo $firstPage;?>";
+<?php         } else { ?> 
+                dojo.byId("directAccessPage").value="moduleView.php";
+<?php         } ?>
               dojo.byId("menuActualStatus").value=menuActualStatus;
               dojo.byId("p1name").value="type";
               dojo.byId("p1value").value=forceRefreshMenu;
