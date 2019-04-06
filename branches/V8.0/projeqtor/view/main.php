@@ -493,7 +493,11 @@ $keyDownEventScript=NumberFormatter52::getKeyDownEvent();
         $hideMenu=true;
       }
       echo "menuDivSize='".Parameter::getUserParameter('contentPaneLeftDivWidth')."';";
-      if ($firstPage) {
+      // Module
+      if (getSessionValue('showModule')) {
+        setSessionValue('showModule', $firstPage); 
+        $firstPage=null;
+      } else if ($firstPage) {
       ?>
         loadContent("<?php echo $firstPage;?>","centerDiv");
       <?php 
@@ -656,6 +660,12 @@ $keyDownEventScript=NumberFormatter52::getKeyDownEvent();
   </div>
   <div dojoType="dijit/ProgressBar" id="downloadProgress" data-dojo-props="maximum:1">
   </div>
+  <?php
+  // Module
+  if (getSessionValue('showModule')) {
+    include "../view/moduleView.php";
+  }
+  ?>
   <?php $leftWidth=Parameter::getUserParameter('contentPaneLeftDivWidth');
      $leftWidth=($leftWidth and $leftWidth>35)?$leftWidth.'px':'20%';
      if ($hideMenu){
