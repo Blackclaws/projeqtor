@@ -132,13 +132,16 @@ function isSqlElementOperationStatus(result) {
  * @param {string} lastOperationStatus : The status of the last operation introduising this result
  * @return {string} formated html message, with corresponding html input
  */
-function setLikeResultDivMessage(messageType=null, 
-                                 message="AnUnknownErrorOccurs",
-                                 toTranslate=false,
-                                 idValue="", 
-                                 lastOperationValue="ERROR", 
-                                 lastOperationStatus="ERROR") {
-    returnValue="";
+function setLikeResultDivMessage(messageType, 
+                                 message,
+                                 toTranslate,
+                                 idValue, 
+                                 lastOperationValue, 
+                                 lastOperationStatus) {
+  if (!message)  message="AnUnknownErrorOccurs";
+  if (!lastOperationValue) lastOperationValue="ERROR";
+  if (!lastOperationStatus) lastOperationStatus="ERROR";
+  returnValue="";
     if (messageType!="ERROR" && messageType!="WARNING") {messageType = null;}
     if (message=="AnUnknownErrorOccurs") { 
         message = i18n(message);
@@ -2009,6 +2012,11 @@ function finaliseButtonDisplay(specificWidgetArray) {
         disableWidget('indentDecreaseButton');
         disableWidget('indentIncreaseButton');
       }
+      console.log("OK");
+      dojo.query(".pluginButton").forEach(function(node, index, nodelist) {
+        console.log(node);
+        disableWidget(node.getAttribute('widgetid'));
+      });
     }
   } else {
     // id does not exist => not selected, only new button possible
@@ -2027,6 +2035,9 @@ function finaliseButtonDisplay(specificWidgetArray) {
       enableWidget('printButton');
       enableWidget('printButtonPdf');
     }
+    dojo.query(".pluginButton").forEach(function(node, index, nodelist) {
+      disableWidget(node.getAttribute('widgetid'));
+    });
   }
   buttonRightLock();
 }
@@ -2156,7 +2167,11 @@ function formChanged(specificWidgetArray) {
         }
     }
 // END ADD BY Marc TABARY - 2017-03-06 -  - ALLOW DISABLED SPECIFIC WIDGET
-
+    console.log("OK formChanged");
+    dojo.query(".pluginButton").forEach(function(node, index, nodelist) {
+      console.log(node);
+      disableWidget(node.getAttribute('widgetid'));
+    });
 }
 
 /**
@@ -2217,6 +2232,9 @@ function formInitialize(specificWidgetArray) {
     enableWidget('indentDecreaseButton');
     enableWidget('indentIncreaseButton');
   }
+  dojo.query(".pluginButton").forEach(function(node, index, nodelist) {
+    enableWidget(node.getAttribute('widgetid'));
+  });
   formChangeInProgress = false;
   buttonRightLock();
 }
@@ -2244,6 +2262,9 @@ function formLock() {
   disableWidget('indentDecreaseButton');
   disableWidget('changeStatusButton');
   disableWidget('subscribeButton');
+  dojo.query(".pluginButton").forEach(function(node, index, nodelist) {
+    disableWidget(node.getAttribute('widgetid'));
+  });
 }
 
 /**
@@ -2270,6 +2291,9 @@ function buttonRightLock() {
       disableWidget('indentIncreaseButton');
       disableWidget('changeStatusButton');
       disableWidget('subscribeButton');
+      dojo.query(".pluginButton").forEach(function(node, index, nodelist) {
+        disableWidget(node.getAttribute('widgetid'));
+      });
     }
   }
   if (deleteRight) {

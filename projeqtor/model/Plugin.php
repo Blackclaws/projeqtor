@@ -38,6 +38,7 @@ class Plugin extends SqlElement {
     public $idle;
     
     private static $_triggeredEventList;
+    private static $_pluginButtonList;
     private static $pluginRequiredVersion=array(
         "V6.0.6"=>array("screenCustomization"=>"3.1")
     );
@@ -102,6 +103,7 @@ class Plugin extends SqlElement {
       $testUnicity=false;
       $testCompatibility=false;
       $arrayTriggers=array();
+      $arrayButtons=array();
       foreach($value as $ind=>$prop) {
         if ($prop['tag']=='PLUGIN') {
           if (isset($prop['attributes']['NAME'])) {
@@ -218,6 +220,38 @@ class Plugin extends SqlElement {
             }
           }
         }
+        if ($prop['tag']=='BUTTON') {
+          if (isset($prop['attributes']) and is_array($prop['attributes'])) {
+            $attr=$prop['attributes'];
+            $buttonName=(isset($attr['BUTTONNAME']))?$attr['BUTTONNAME']:null;
+            $className=(isset($attr['CLASS']))?$attr['CLASS']:null;
+            $scriptJS=(isset($attr['SCRIPTJS']))?$attr['SCRIPTJS']:null;
+            $scriptPHP=(isset($attr['SCRIPTPHP']))?$attr['SCRIPTPHP']:null;
+            $iconClass=(isset($attr['ICONCLASS']))?$attr['ICONCLASS']:null;
+            $scope=(isset($attr['SCOPE']))?$attr['SCOPE']:null;
+            $sortOrder=(isset($attr['SORTORDER']))?$attr['SORTORDER']:null;
+            if ($buttonName and $className and ($scriptJS or $scriptPHP) and $scope) {
+              $bt=new PluginButton();
+              $bt->idPlugin=null; // to be defined later
+              $bt->idle=0; // Active by default
+              if ($className!='Planning' and $className!='ResourcePlanning' and $className!='PortfolioPlanning' and $className!='GlobalPlanning') { // Pseudo Classes
+                Security::checkValidClass($className);
+              }
+              $bt->className=$className;
+              $bt->buttonName=$buttonName;
+              $bt->scriptPHP=$scriptPHP;
+              $bt->scriptJS=$scriptJS;
+              $bt->iconClass=$iconClass;
+              $bt->scope=$scope;
+              $bt->sortOrder=$sortOrder;
+              if (in_array($scope,PluginButton::$_allowedScope)) { // Will store event only if event is valid
+                $arrayButtons[]=$bt;
+              } else {
+                traceLog("button not stored : '$scope' is not a valid scope");
+              }
+            }
+          }
+        }
       }
       $globalCatchErrors=false;
       
@@ -231,6 +265,9 @@ class Plugin extends SqlElement {
       // Must purge previous events stored in Database
       $evt=new PluginTriggeredEvent();
       $evt->purge('idPlugin='.Sql::fmtId($old->id));
+      // Must purge previous buttons stored in Database
+      $bt=new PluginButton();
+      $bt->purge('idPlugin='.Sql::fmtId($old->id));
       
       traceLog("Plugin descriptor information :");
       traceLog(" => name : $this->name");
@@ -284,9 +321,17 @@ class Plugin extends SqlElement {
         $evt->script=self::getDir().'/'.$this->name.'/'.$evt->script;
         $resEvt=$evt->save();
       }
+      // Now can save buttons
+      foreach ($arrayButtons as $bt) {
+        $bt->idPlugin=$this->id;
+        $bt->scriptPHP=self::getDir().'/'.$this->name.'/'.$bt->scriptPHP;
+        $resBt=$bt->save();
+      }
       
       unsetSessionValue('triggeredEventList'); // Reset triggeredEventList (will be refresed on first need)
       self::$_triggeredEventList=null;
+      unsetSessionValue('pluginButtonList'); // Reset triggeredEventList (will be refresed on first need)
+      self::$_pluginButtonList=null;
       
       traceLog("Plugin $plugin V".$this->pluginVersion. " completely deployed");
       if (isset($pluginReload) and $pluginReload) {
@@ -495,6 +540,47 @@ class Plugin extends SqlElement {
         self::$_triggeredEventList[$evt->event][$evt->className][]=$evt->script;
       }
       setSessionValue('triggeredEventList', self::$_triggeredEventList); // save to session for quick access
+    }
+    
+    public static function getButtons($scope, $className) {
+      global $remoteDb;
+      if (isset($remoteDb) and $remoteDb) return array();
+      if (version_compare(Sql::getDbVersion(), 'V8.0.0')<0) return array();
+      if (!self::$_pluginButtonList) {
+        self::getButtonsList();
+      }
+      if (isset(self::$_pluginButtonList[$scope][$className])) {
+        return self::$_pluginButtonList[$scope][$className];
+      } else {
+        return array();
+      }
+    }
+    
+    private static function getButtonsList() {
+      global $remoteDb;
+      if (isset($remoteDb) and $remoteDb) {
+        self::$_pluginButtonList=array();
+        return;
+      }
+      $sessionList=getSessionValue('pluginButtonList',null,true);
+      if ($sessionList) {
+        self::$_pluginButtonList=$sessionList;
+        return;
+      }
+      $listActivePlugin=self::getActivePluginList();
+      $bt=new PluginButton();
+      $listBt=$bt->getSqlElementsFromCriteria(array('idle'=>'0'),null,null,'sortOrder asc');
+      self::$_pluginButtonList=array();
+      foreach ($listBt as $bt) {
+        if (!isset(self::$_pluginButtonList[$bt->scope])) {
+          self::$_pluginButtonList[$bt->scope]=array();
+        }
+        if (!isset(self::$_pluginButtonList[$bt->scope][$bt->className])) {
+          self::$_pluginButtonList[$bt->scope][$bt->className]=array();
+        }
+        self::$_pluginButtonList[$bt->scope][$bt->className][]=$bt;
+      }
+      setSessionValue('pluginButtonList', self::$_pluginButtonList); // save to session for quick access
     }
     
     public static function checkPluginCompatibility($version) {

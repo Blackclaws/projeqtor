@@ -586,3 +586,23 @@ CREATE TABLE `${prefix}resourcecapacity` (
 )
 ENGINE = InnoDB, DEFAULT CHARSET=utf8;
 CREATE INDEX `resourcevariablecapacity` ON `${prefix}resourcecapacity` (`idResource`);
+
+-- ===============================================================================
+-- plugin button
+-- ===============================================================================
+CREATE TABLE `${prefix}pluginbutton` (
+  `id` int(12) unsigned NOT NULL AUTO_INCREMENT,
+  `idPlugin` int(12) unsigned DEFAULT NULL,
+  `buttonName` varchar(100),
+  `className` varchar(100),
+  `scriptJS` varchar(255),
+  `scriptPHP` varchar(255),
+  `iconClass` varchar(100),
+  `scope` varchar(10),
+  `sortOrder` varchar(100),
+  `idle` int(1) unsigned DEFAULT 0,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 ;
+
+CREATE INDEX pluginbuttonplugin ON `${prefix}pluginbutton` (idPlugin);
+CREATE INDEX pluginbuttonclassname ON `${prefix}pluginbutton` (className);

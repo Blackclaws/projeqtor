@@ -39,7 +39,7 @@ require_once "../tool/projeqtor.php";
 require_once "../tool/formatter.php";
 
 // MTY - EXPORT EXCEL OR ODS
- require_once '../external/PHPExcel/Classes/PHPExcel.php';
+ require_once '../external/PHPOffice/PHPExcel/Classes/PHPExcel.php';
 // MTY - EXPORT EXCEL OR ODS
 
 scriptLog('   ->/tool/exportLeaveCalendarOfDashboardEmployeeManager.php');
@@ -283,7 +283,7 @@ $sheet->setCellValue('A2', strtoupper(getMonthName($month))." - ".$year);
 
 // Line Employee - Type - Status
 $sheet->mergeCells('A3:BI3');
-$sheet->setCellValue('A3', strtoupper(i18n("FOR")." ".i18n("employee")." = ".$employeeName." - ".i18n("colType")." = ".$leaveTypeName." - ".i18n("colIdStatus")." = ".$statusName));
+$sheet->setCellValue('A3', (i18n("FOR")." ".i18n("employee")." = ".$employeeName." - ".i18n("colType")." = ".$leaveTypeName." - ".i18n("colIdStatus")." = ".$statusName));
 $sheet->getStyle('A1:A3')->getFont()->setSize(20);
 $sheet->getStyle('A1:A3')->getFont()->setBold(true);
 
@@ -616,4 +616,62 @@ $objPHPExcel->setActiveSheetIndex(0);
 exportSpreadsheet($objPHPExcel, $fileName, true);
 
 exit;
+// MTY - EXPORT EXCEL OR ODS
+/**
+ * Finalize the export to a spreadsheet. Called from an export view.
+ * @param $context reference to PHPExcel object
+ * @param string $fileName filename of the spreadsheet (xlsx, ods)
+ * 
+ */
+
+function exportSpreadsheet($context, $fileName, $preCalculateFormulas=false) {
+    if (PHP_SAPI == 'cli') die('This example should only be run from a Web Browser');
+    date_default_timezone_set(Parameter::getGlobalParameter("paramDefaultTimezone"));
+
+    $typeOfExport = Parameter::getUserParameter("typeExportXLSorODS");
+
+    $objWriter = NULL;
+    $format = ($typeOfExport=="Excel2007"?"xlsx":"ods");
+    $fileName .= ".".$format;
+    $contentType = ($typeOfExport=="Excel2007"?"Content-Type: application/vnd.ms-excel":"Content-Type: application/vnd.oasis.opendocument.spreadsheet");
+    
+    // Redirect output to a client’s web browser (Excel2007)
+    
+    header($contentType);
+//    header('Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8');
+    header('Content-Disposition: attachment;filename="' . $fileName . '"');
+    header('Expires: Mon, 26 Jul 1997 05:00:00 GMT'); // Date in the past
+    header('Last-Modified: '.gmdate('D, d M Y H:i:s').' GMT'); // always modified
+    header('Cache-Control: cache, must-revalidate'); // HTTP/1.1
+    header('Pragma: public'); // HTTP/1.0
+    
+    $objWriter = PHPExcel_IOFactory::createWriter($context, $typeOfExport);
+    
+    if ($preCalculateFormulas) {
+        $objWriter->setPreCalculateFormulas(true);
+    }
+    $objWriter->save('php://output');
+}
+
+/**
+ * Convert a sheet cell number to a column sheeet Letters
+ * @param integer $c : The column sheet number
+ * @return string : The column letters of the column sheet cell number
+ */
+function sheetCellColumnLetter($c){
+    $c = intval($c);
+    if ($c <= 0) {return '';}
+
+    $letter = '';
+             
+    while($c != 0){
+       $p = ($c - 1) % 26;
+       $c = intval(($c - $p) / 26);
+       $letter = chr(65 + $p) . $letter;
+    }
+    
+    return $letter;        
+}
+// MTY - EXPORT EXCEL OR ODS
+
 ?>

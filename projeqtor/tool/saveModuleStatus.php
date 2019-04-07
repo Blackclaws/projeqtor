@@ -39,5 +39,4 @@ $module=new Module($id);
 $module->active=$status;
 $res=$module->save();
 Sql::commitTransaction();
-debugLog("Activity=".Module::isMenuActive('menuActivity'));
 ?>

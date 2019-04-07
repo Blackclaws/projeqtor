@@ -276,8 +276,8 @@
                 <?php echo autoOpenFilteringSelect();?>
                  id="<?php echo $checkField;?>" name="<?php echo $checkField;?>">
                  <option value=""> </option>
-                 <option value="ON"><?php echo i18n("checked");?></option>
-                 <option value="OFF"><?php echo i18n("unchecked");?></option>
+                 <option value="ON"><?php echo i18n("checkBox");?></option>
+                 <option value="OFF"><?php echo i18n("uncheckedBox");?></option>
                 </select>
               </td>
             </tr>
@@ -745,8 +745,9 @@
                         <select dojoType="dijit.form.FilteringSelect" class="input" style="width:<?php echo $fieldWidth-25;?>px;" 
                         <?php echo autoOpenFilteringSelect();?>
                          id="isEmployee" name="isEmployee">
-                         <option value="ON"><?php echo i18n("checked");?></option>
-                         <option value="OFF"><?php echo i18n("unchecked");?></option>
+                         <option value=""> </option>
+                         <option value="ON"><?php echo i18n("checkBox");?></option>
+                         <option value="OFF"><?php echo i18n("uncheckedBox");?></option>
                         </select>
                       </td>
                     </tr>

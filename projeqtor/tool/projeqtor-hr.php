@@ -222,8 +222,7 @@ function initPurgeLeaveSystemElements($leavesSystemActiv) {
                                             getLastOperationStatus($result));
             }            
         }
-        
-        $clause = "idProject=". Project::getLeaveProjectId();
+        $clause = "idProject=". ((Project::getLeaveProjectId())?Project::getLeaveProjectId():0);
         // Work corresponding to leaves
         $wk = new Work();
         $result = $wk->purge($clause);
