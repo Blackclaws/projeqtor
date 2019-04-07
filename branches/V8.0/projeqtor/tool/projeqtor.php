@@ -4478,61 +4478,6 @@ function lastDayOfMonth($month=null,$year=null) {
 }
 // MTY - GENERIC DAY OFF
 
-// MTY - EXPORT EXCEL OR ODS
-/**
- * Finalize the export to a spreadsheet. Called from an export view.
- * @param $context reference to PHPExcel object
- * @param string $fileName filename of the spreadsheet (xlsx, ods)
- * 
- */
-function exportSpreadsheet($context, $fileName, $preCalculateFormulas=false) {
-    if (PHP_SAPI == 'cli') die('This example should only be run from a Web Browser');
-    date_default_timezone_set(Parameter::getGlobalParameter("paramDefaultTimezone"));
-
-    $typeOfExport = Parameter::getUserParameter("typeExportXLSorODS");
-
-    $objWriter = NULL;
-    $format = ($typeOfExport=="Excel2007"?"xlsx":"ods");
-   $fileName .= ".".$format;
-    $contentType = ($typeOfExport=="Excel2007"?"Content-Type: application/vnd.ms-excel":"Content-Type: application/vnd.oasis.opendocument.spreadsheet");
-    
-    // Redirect output to a clientâ€™s web browser (Excel2007)
-    
-    header($contentType);
-//    header('Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8');
-    header('Content-Disposition: attachment;filename="' . $fileName . '"');
-    header('Expires: Mon, 26 Jul 1997 05:00:00 GMT'); // Date in the past
-    header('Last-Modified: '.gmdate('D, d M Y H:i:s').' GMT'); // always modified
-    header('Cache-Control: cache, must-revalidate'); // HTTP/1.1
-    header('Pragma: public'); // HTTP/1.0
-    $objWriter = PHPExcel_IOFactory::createWriter($context, $typeOfExport);
-    
-    if ($preCalculateFormulas) {
-        $objWriter->setPreCalculateFormulas(true);
-    }
-    $objWriter->save('php://output');
-}
-
-/**
- * Convert a sheet cell number to a column sheeet Letters
- * @param integer $c : The column sheet number
- * @return string : The column letters of the column sheet cell number
- */
-function sheetCellColumnLetter($c){
-    $c = intval($c);
-    if ($c <= 0) {return '';}
-
-    $letter = '';
-             
-    while($c != 0){
-       $p = ($c - 1) % 26;
-       $c = intval(($c - $p) / 26);
-       $letter = chr(65 + $p) . $letter;
-    }
-    
-    return $letter;        
-}
-// MTY - EXPORT EXCEL OR ODS
 
 /**
  * Send a notification. 

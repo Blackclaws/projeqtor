@@ -194,6 +194,8 @@ class ProjectMain extends SqlElement {
   			self::$_fieldsAttributes['idStatus']='hidden';
   			self::$_fieldsAttributes['idHealth']='hidden';
   			self::$_fieldsAttributes['isUnderConstruction']='hidden';
+			self::$_fieldsAttributes['fixPerimeter']='hidden';
+			self::$_fieldsAttributes['excludeFromGlobalPlanning']='hidden';			
   			self::$_fieldsAttributes['handled']='hidden';
   			self::$_fieldsAttributes['handledDate']='hidden';
   			self::$_fieldsAttributes['done']='hidden';
@@ -207,6 +209,7 @@ class ProjectMain extends SqlElement {
   			self::$_fieldsAttributes['idResource']='hidden';
   			self::$_fieldsAttributes['fixPlanning']='hidden';
   			self::$_fieldsAttributes['ProjectPlanningElement']='hidden';
+			self::$_fieldsAttributes['_sec_treatment']='hidden';
   	
   			unset($this->_sec_Progress);
   			unset($this->_sec_Affectations);

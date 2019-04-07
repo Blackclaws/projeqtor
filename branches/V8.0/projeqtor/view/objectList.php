@@ -776,6 +776,32 @@ if (property_exists($objectClass,'idStatus')) {
                 </script>
               </button>
             </td>    
+ <?php if (! $comboDetail) {            
+    $extraPlgButtons=Plugin::getButtons('list', $objectClass);
+    foreach ($extraPlgButtons as $bt) { ?>
+    <td width="36px">
+      <button id="pluginButtonList<?php echo $bt->id;?>" dojoType="dijit.form.Button" showlabel="false"
+        title="<?php echo i18n($bt->buttonName);?>"
+        iconClass="<?php echo $bt->iconClass;?>" class="detailButton">
+        <script type="dojo/connect" event="onClick" args="evt">
+          <?php if ($bt->scriptJS) {?>
+          <?php echo $bt->scriptJS;?>;
+          <?php } else {?>
+          if (waitingForReply) {
+            showInfo(i18n("alertOngoingQuery"));
+            return true;
+          }
+          for (name in CKEDITOR.instances) {
+            CKEDITOR.instances[name].updateElement();
+          }
+          loadContent("<?php echo $bt->scriptPHP;?>", "resultDiv", "objectForm", false);
+          <?php }?>
+        </script>
+      </button>
+    </td>
+<?php }
+     }?>             
+            
 <?php if ( property_exists($obj,'isEis') and !$hideEisSearch) { ?>
               <td style="vertical-align: middle; width:15%; min-width:110px; text-align:right;white-space:normal;">
                 <div style="max-height:32px;"> 

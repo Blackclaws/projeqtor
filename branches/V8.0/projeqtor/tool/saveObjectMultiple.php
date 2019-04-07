@@ -377,7 +377,8 @@ foreach ($selectList as $id) {
   if ($isEmployee and $isEmployee!="" and property_exists($item,'isEmployee')) {
     $item->isEmployee=($isEmployee=='ON')?1:0;
   }
-// MTY - LEAVE SYSTEM    $resultSave=$item->save();
+// MTY - LEAVE SYSTEM    
+  $resultSave=$item->save();
   if ($note and property_exists($item,'_Note')) {
     $noteObj=new Note();
     $noteObj->refType=$className;
