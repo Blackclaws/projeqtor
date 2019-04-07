@@ -94,11 +94,9 @@ $plannableProjectsList=getSessionUser()->getListOfPlannableProjects();
 
 // foreach ($plannedProjectList as $plannedProject){
 //   if($plannedProject->validatedStartDate < $startDate and $plannedProject->validatedStartDate != ''){
-//     debugLog('start : '.$plannedProject->validatedStartDate);
 //     $startDate = $plannedProject->validatedStartDate;
 //   }
 //   if($plannedProject->validatedEndDate > $endDate and $plannedProject->validatedEndDate != ''){
-//   	debugLog('end : '.$plannedProject->validatedEndDate);
 //   	$endDate = $plannedProject->validatedEndDate;
 //   }
 // }

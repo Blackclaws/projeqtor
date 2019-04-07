@@ -60,7 +60,7 @@
                 <td><span class="title"><?php echo i18n('menuLeavesSystemHabilitation');?>&nbsp;</span></td>
                 <td width="10px">&nbsp;</td>
                 <td width="50px">
-                    <button id="saveLSHabilitationButton" dojoType="dijit.form.Button"
+                    <button id="saveParameterButton" dojoType="dijit.form.Button"
                             showlabel="false"
                             title="<?php echo i18n('buttonSave');?>"
                             iconClass="dijitButtonIcon dijitButtonIconSave" class="detailButton">
@@ -68,7 +68,7 @@
                             submitForm("../tool/saveLeavesSystemHabilitation.php","resultDiv", "LeavesSystemHabilitationForm", true);
                         </script>
                     </button>
-                    <div dojoType="dijit.Tooltip" connectId="saveLSHabilitationButton"><?php echo i18n("saveLeavesSystemHabilitation")?></div>
+                    <div dojoType="dijit.Tooltip" connectId="saveParameterButton"><?php echo i18n("saveLeavesSystemHabilitation")?></div>
                 </td>
                 <td style="position:relative;"></td>
             </tr>

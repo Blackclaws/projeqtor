@@ -90,7 +90,6 @@ class Module extends SqlElement {
       self::initializeMenuInactiveList();
     }
     $list=getSessionValue('menuInactiveList',null,true);
-    //debugLog("isMenuActive($menu) list menuInactiveList=>");
     if (isset($list[$menu])) return false;
     else return true;
   }
@@ -99,8 +98,6 @@ class Module extends SqlElement {
       self::initializeModuleList();
     }
     $list=getSessionValue('moduleList',null,true);
-    //debugLog("isModuleActive($module) list=>");
-    //debugLog($list);
     if (isset($list[$module]) and $list[$module]==1) return true;
     else return false;
   }
@@ -133,7 +130,6 @@ class Module extends SqlElement {
     foreach ($list as $module) {
       $result[$module->name]=$module->active;
     }
-    debugLog($result);
     setSessionValue('moduleList', $result,true);
   }
   

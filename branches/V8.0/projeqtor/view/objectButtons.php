@@ -530,6 +530,36 @@
       <?php }?>
       <input type="hidden" id="buttonHistoryVisible" value="<?php echo $paramHistoryVisible;?>" />
     </span>
+    
+    <?php $extraPlgButtons=Plugin::getButtons('detail', $objectClass);
+    foreach ($extraPlgButtons as $bt) { 
+    organizeButtons();?>
+    <span id="pluginButton<?php echo $bt->id;?>Div" style="display:inline;">
+      <button id="pluginButton<?php echo $bt->id;?>" dojoType="dijit.form.Button" showlabel="false"
+        title="<?php echo i18n($bt->buttonName);?>"
+        <?php if ($noselect) {echo "disabled";} ?>
+        iconClass="<?php echo $bt->iconClass;?>" class="detailButton pluginButton">
+        <script type="dojo/connect" event="onClick" args="evt">
+          <?php if ($bt->scriptJS) {?>
+          <?php echo $bt->scriptJS;?>;
+          <?php } else {?>
+          if (waitingForReply) {
+            showInfo(i18n("alertOngoingQuery"));
+            return true;
+          }
+          for (name in CKEDITOR.instances) {
+            CKEDITOR.instances[name].updateElement();
+          }
+          dojo.byId("pluginButton<?php echo $bt->id;?>").blur();
+          submitForm("<?php echo $bt->scriptPHP;?>", "resultDiv", "listForm", true);
+          <?php }?>
+          hideExtraButtons('extraButtonsDetail');
+        </script>
+      </button>
+    </span>
+    <?php }?>
+    
+    
     <?php organizeButtonsEnd();?>
     
       <input type="hidden" id="createRight" name="createRight" value="<?php echo $createRight;?>" />
