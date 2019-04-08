@@ -145,8 +145,7 @@ if (RequestHandler::isCodeSet('destinationWidth')) {
                         </script>                    
                 </span>&nbsp;<?php echo i18n('criticalPath');?>
               </div>
-            </td></tr> 
-      		  
+            </td></tr>       		  
     		  </table>
 		    </td>
 		    <td>   
@@ -178,7 +177,7 @@ if (RequestHandler::isCodeSet('destinationWidth')) {
 <?php }?>             
 		            </td>
 		            <td style="white-space:nowrap;width:<?php echo ($displayWidthPlan>1030)?240:150;?>px">
-		              <table>
+		              <table align="right" style="margin:7px">
                     <tr>
                       <td align="right">&nbsp;&nbsp;&nbsp;<?php echo ($displayWidthPlan>1030)?i18n("displayStartDate"):i18n("from");?>&nbsp;&nbsp;</td><td>
                         <div dojoType="dijit.form.DateTextBox"
@@ -188,12 +187,12 @@ if (RequestHandler::isCodeSet('destinationWidth')) {
                            id="startDatePlanView" name="startDatePlanView"
                            invalidMessage="<?php echo i18n('messageInvalidDate')?>"
                            type="text" maxlength="10" 
+                            <?php if ($projectDate) {echo 'disabled'; } ?> 
                            style="width:100px; text-align: center;" class="input roundedLeft"
                            hasDownArrow="true"
-                           value="<?php if(sessionValueExists('startDatePlanView')){ echo getSessionValue('startDatePlanView'); }else{ echo $startDate; } ?>" >
+                           value="<?php if(sessionValueExists('startDatePlanView') and !$projectDate){ echo getSessionValue('startDatePlanView'); }else{ echo $startDate; } ?>" >
                            <script type="dojo/method" event="onChange" >
                             saveDataToSession('startDatePlanView',formatDate(dijit.byId('startDatePlanView').get("value")), false);
-													  (this.value != '')?dijit.byId('projectDate').set('checked', false):'';
                             refreshJsonPlanning();
                            </script>
                          </div>
@@ -209,9 +208,10 @@ if (RequestHandler::isCodeSet('destinationWidth')) {
                            id="endDatePlanView" name="endDatePlanView"
                            invalidMessage="<?php echo i18n('messageInvalidDate')?>"
                            type="text" maxlength="10"
+                            <?php if ($projectDate) {echo 'disabled'; } ?> 
                            style="width:100px; text-align: center;" class="input roundedLeft"
                            hasDownArrow="true"
-                           value="<?php if(sessionValueExists('endDatePlanView')){ echo getSessionValue('endDatePlanView'); }else{ echo $endDate; } ?>" >
+                           value="<?php if(sessionValueExists('endDatePlanView') and !$projectDate){ echo getSessionValue('endDatePlanView'); }else{ echo $endDate; } ?>" >
                            <script type="dojo/method" event="onChange" >
                             saveDataToSession('endDatePlanView',formatDate(dijit.byId('endDatePlanView').get("value")), false);
 													  (this.value != '')?dijit.byId('projectDate').set('checked', false):'';
@@ -223,17 +223,31 @@ if (RequestHandler::isCodeSet('destinationWidth')) {
                   </table>
 		            </td>
                 <td style="width:250px;">
-                  <table>
+                  <table >
                     <tr>
-                    <td style="white-space:nowrap;">
+                    <td style="white-space:nowrap;padding-right:10px;position:relative;top:4px">
                             <span title="<?php echo i18n("projectDate")?>" dojoType="dijit.form.CheckBox"
                                type="checkbox" id="projectDate" name="projectDate" class="whiteCheck"
                                <?php if ($projectDate) {echo 'checked="checked"'; } ?>  >
                               <script type="dojo/method" event="onChange" >
                                 saveUserParameter('projectDate',((this.checked)?'1':'0'));
-                                date = new Date();
-                               (this.checked == false)?dojo.setAttr('startDatePlanView', 'value', date.toLocaleDateString()):'';
-                               refreshJsonPlanning();
+                                var now = formatDate(new Date());
+                                if (this.checked == false) {
+                                  //dojo.setAttr('startDatePlanView', 'value', date.toLocaleDateString());
+                                  dijit.byId('startDatePlanView').set("value",now);
+                                  enableWidget("startDatePlanView");
+                                  enableWidget("endDatePlanView");
+                                  enableWidget("listSaveDates");
+                                } else {
+                                  dijit.byId('startDatePlanView').reset();
+                                  dijit.byId('endDatePlanView').reset();
+                                  dijit.byId('listSaveDates').set('checked', false);
+                                  disableWidget("startDatePlanView");
+                                  disableWidget("endDatePlanView");
+                                  disableWidget("listSaveDates");
+                                }
+                             
+                                refreshJsonPlanning();
                               </script>
                             </span>
                             <span for="projectDate"><?php echo i18n("projectDate");?></span>
@@ -307,11 +321,11 @@ if (RequestHandler::isCodeSet('destinationWidth')) {
                       </td>
                     </tr>
                     <tr>
-                    <td style="white-space:nowrap;">
+                    <td style="white-space:nowrap;padding-right:10px;position:relative;top:-4px">
                             <span title="<?php echo i18n('saveDates')?>" dojoType="dijit.form.CheckBox"
                                type="checkbox" id="listSaveDates" name="listSaveDates" class="whiteCheck"
+                                <?php if ($projectDate) {echo 'disabled'; } ?> 
                                <?php if ( $saveDates) {echo 'checked="checked"'; } ?>  >
-    
                               <script type="dojo/method" event="onChange" >
                             refreshJsonPlanning();
                           </script>
