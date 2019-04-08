@@ -608,9 +608,11 @@ class BudgetMain extends SqlElement {
       self::$_fieldsAttributes["initialFullAmount"]="readonly";
     }
     // Retreive value for $availableTransferedAmount and $availableTransferedFullAmount 
-    $crit=array("budgetStartDate"=>$this->budgetStartDate, "budgetEndDate"=>$this->budgetEndDate, "elementary"=>"1");
-    $this->availableTransferedAmount=(-1)*$this->sumSqlElementsFromCriteria('update4Amount', $crit);
-    $this->availableTransferedFullAmount=(-1)*$this->sumSqlElementsFromCriteria('update4FullAmount', $crit);
+    //$crit=array("budgetStartDate"=>$this->budgetStartDate, "budgetEndDate"=>$this->budgetEndDate, "elementary"=>"1");
+    $critClause="budgetStartDate='$this->budgetStartDate' and budgetEndDate='$this->budgetEndDate' and elementary=1";
+    $critClause.=" and bbsSortable like '".substr($this->bbsSortable,0,5)."%'";
+    $this->availableTransferedAmount=(-1)*$this->sumSqlElementsFromCriteria('update4Amount', null,$critClause);
+    $this->availableTransferedFullAmount=(-1)*$this->sumSqlElementsFromCriteria('update4FullAmount', null,$critClause);
   }
 }
 ?>

@@ -7245,7 +7245,7 @@ function endBuffering($prevSection, $included) {
       'testcaserun'=>array('2'=>'bottom', '3'=>'bottom'), 
       'testcaserunsummary'=>array('2'=>'left', '3'=>'extra'), 
       'testcasesummary'=>array('2'=>'right', '3'=>'extra'),
-      'totalfinancialsynthesis'=>array('2'=>'right', '3'=>'extra'),
+      'totalfinancialsynthesis'=>array('2'=>'bottom', '3'=>'bottom'),
       'void'=>array('2'=>'right', '3'=>'right'), 
       'workflowdiagram'=>array('2'=>'bottom', '3'=>'bottom'), 
       'workflowstatus'=>array('2'=>'bottom', '3'=>'bottom'));
