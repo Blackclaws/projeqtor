@@ -787,14 +787,7 @@ if (property_exists($objectClass,'idStatus')) {
           <?php if ($bt->scriptJS) {?>
           <?php echo $bt->scriptJS;?>;
           <?php } else {?>
-          if (waitingForReply) {
-            showInfo(i18n("alertOngoingQuery"));
-            return true;
-          }
-          for (name in CKEDITOR.instances) {
-            CKEDITOR.instances[name].updateElement();
-          }
-          loadContent("<?php echo $bt->scriptPHP;?>", "resultDiv", "objectForm", false);
+          loadContent("<?php echo $bt->scriptPHP;?>", "resultDiv", "listForm", false);
           <?php }?>
         </script>
       </button>
